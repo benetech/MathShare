@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<title>Step by Step Algebra Example</title>
+
+<link rel="stylesheet" href="../dist/mathlive.core.css" type="text/css">
+<link rel="stylesheet" href="../dist/mathlive.css" type="text/css">
+<script src="../dist/mathlive.js"></script><script>
+
+/**
+ * The overall structure for the solution steps is a table with two columns
+ * The first column is the math and the second column is the reason
+ * The last row is the active math editing area.
+ * Following the math editing area is another table for the palettes.
+ *
+ */
+ 
+/**
+ * 'Freeze' the current element by making it static math and add a new
+ * new active editing row with the math content. 
+ */
+function NewMathEditorRow(mathContent) {
+	let oldActiveElement = TheActiveMathField.el();
+
+	// find parent row so we can add a new row before it
+	let activeRow = oldActiveElement.parentNode;
+	while (activeRow.nodeName != 'TR') {
+		activeRow = activeRow.parentNode;
+	}
+	
+	// create new row	
+	let newRow = document.createElement("tr");
+	newRow.className = 'step';
+	newRow.innerHTML = '<td><div class="staticMath"></div></td>' +
+					   '<td><p></p></td>';
+					   
+	// take the contents of the active row and stuff it into the new row	
+	let newFirstCol = newRow.firstChild.firstChild;
+	newFirstCol.innerText = '$$' + TheActiveMathField.latex() + '$$';
+	MathLive.renderMathInElement(newFirstCol);	
+	
+	// copy the editor's reason and then clear it
+	let mathEditorReason = document.getElementById("mathEditorReason");
+	newRow.lastChild.firstChild.innerText = mathEditorReason.value;
+	mathEditorReason.value = '';
+		
+	// Reset active row
+	TheActiveMathField.latex(mathContent);
+	activeRow.parentNode.insertBefore(newRow,activeRow);
+}
+
+/**
+ * Remove all crossouts and if there are replacements associated with them,
+ * put those in place of the crossouts.
+ * @param {string} latexStr The LaTeX string to be matches
+ * 
+ * @return {string} The string with the crossouts removed and replacements done
+ * 
+ */
+function CleanUpCrossouts(latexStr) {
+	// FIX: a proper "compass adornment" feature for MathLive doesn't exist yet.
+	// Right now, code looks for:
+	//   crossout^replacement
+	//   crossout_replacement
+	//   \overset{replacement}{crossout}
+	//   \underset{replacement}{crossout}
+	// where crossout is \enclose{updiagonalstrike downdiagonalstrike}[..]{...}
+	// This is missing compass points NW, W, SW, E
+	// If a replacement pattern isn't found, the crossout is removed
+	// FIX: this looks for very specific uses of crossout and needs to change
+	//   if the crossout pattern changes
+	// FIX: this would be easier/less error prone if we use MathML (not yet implemented)
+	
+	// crossout pattern makes the contents of the []s optional
+	// FIX: this fails if the thing being crossed out has {}s.
+	//   Regular exprs won't handle the nesting/counting
+	let crossoutPattern = "\\\\enclose\\{updiagonalstrike downdiagonalstrike\\}(?:\\[2px solid red\\])*?(?:\\{)?[^}]+?(?:\\})";
+	let scriptsRE = new RegExp(
+		crossoutPattern + "(?:\\^|_)([^\\{]|[a-z]+|\\{.+?\\})",
+		"g");
+	latexStr = latexStr.replace(scriptsRE, "$1");
+	let limitsRE = new RegExp(
+		"\\\\(?:underset|overset)([^\\{]|[a-z]+|\\{.+?\\}){" + crossoutPattern + "}",
+		"g");
+	latexStr = latexStr.replace(limitsRE, "$1");
+	let prescriptsRE = new RegExp(
+		"\\\\,\\{\\}(?:\\^|_)([^\\{]|[a-z]+|\\{.+?\\})" + crossoutPattern,
+		"g");
+	prescriptsRE = new RegExp(
+		"\\\\,\\{\\}(?:\\^|_)([^\\{]|[a-z]+|\\{.+?\\})" + crossoutPattern,
+		"g");
+	latexStr = latexStr.replace(prescriptsRE, "$1");
+	return latexStr.replace(new RegExp(crossoutPattern, "g"), "");
+}
+
+function MathLivePasteFromButton(element) {
+    let insertionString = MathLive.getOriginalContent(element).
+		replace(/\$\$/g,'').
+		replace('\\blacksquare','#0').
+		replace('\\square','#?').
+		trim();
+	TheActiveMathField.perform(['insert', insertionString, 
+				{insertionMode: 'replaceSelection',
+				 selectionMode: 'placeholder'}]);
+	TheActiveMathField.focus();
+}
+
+/*
+ * Delete the currently active row and make the previous row active
+ */
+function DeleteActiveMath() {
+	let oldActiveElement = TheActiveMathField.el();
+
+	// find parent row so we can delete it and make the row before it active
+	let activeRow = oldActiveElement.parentNode;
+	while (activeRow.nodeName != 'TR') {
+		activeRow = activeRow.parentNode;
+	}
+	
+	let previousRow = activeRow.previousElementSibling;
+	if (!previousRow)
+		return;
+		
+	// It's a bit simpler to replace the contents of the active row and delete
+	// the previous row, so that's how we do it.
+	// Also, this makes is similar to adding a new row
+	
+	// copy the editor's reason and then clear it
+	let mathReason = previousRow.lastElementChild.innerText;
+	document.getElementById("mathEditorReason").value = mathReason;
+		
+	// copy the math content
+	let mathContent = MathLive.getOriginalContent(previousRow.firstElementChild.firstElementChild);
+	TheActiveMathField.latex(mathContent);
+	
+	// all done with the previous row's content -- delete it
+	activeRow.parentNode.removeChild(previousRow);
+	
+	TheActiveMathField.focus();
+}
+</script>
+<style>
+.staticMath {
+	max-width: 35em;
+	padding: 1ex;
+}
+
+.mathEditor {
+	max-width: 35em;
+	padding: 0ex;
+	background-color: lightyellow
+}
+
+.mathEditorWithPalete {
+	max-width: 60em;
+   border: 2px solid green;
+}
+
+.step {
+	max-width: 60em;
+   border: 2px solid green;
+}
+
+.step table {
+   border-style: none;
+}
+
+.step td {
+   width: 40em;
+   padding: 0em;
+   border-style: none;
+   border: 0px;
+}
+
+.mathEditorWithPalete table {
+   border-style: none;
+}
+
+.mathEditorWithPalete td {
+   width: 40em;
+   padding: 1em;
+   border-style: none;
+   border: 0px;
+}
+
+.palette td {
+   padding: 0.1em;
+   border: 1px solid black;
+   text-align:center;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+table, th, td {
+   border: 1px solid black;
+   padding: 1px;
+   text-align:left;
+}
+
+</style>
+</head>
+<body lang=EN-US>
+
+<h1> Step-by-step Example </h1>
+
+<table>
+ <tr class="step">
+  <td>
+    <div class="staticMath">$$7x + 13 = -1$$</div>
+  </td>
+  <td>
+  </td>
+ </tr>
+ <tr class="step">
+  <td>
+    <div class="staticMath">$$7x\enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{+}\enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{13}=\enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{-1}^{-14}$$</div>
+  </td>
+  <td>
+  <p> Subtract 13 from both sides </p>
+  </td>
+ </tr>
+ <tr class="step">
+  <td>
+    <div class="staticMath">$$7x=-14$$</div>
+  </td>
+  <td>
+  </td>
+ </tr>
+<tr class="mathEditorWithPalete">
+  <td>
+    <div class="mathEditor" id='mathEditorActive'> \enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{7}x= \enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{-14}-2</div>
+  </td> 
+  <td>
+     <span>
+       <button  style="display: block;" name="Type reason for work">
+	     <img width=30 height=30 src="AlgebraPallette_files/pencil.png" alt="pencil icon">
+	   </button>
+       <button  style="display: inline;" name="Speak reason for work">
+	     <img width=30 height=30 src="AlgebraPallette_files/microphone.png" alt="microphone icon">
+	   </button>
+	 </span>
+     <input type="text" id="mathEditorReason" placeholder="reason" name="Reason for edits"> 
+  </td>
+</tr>
+</table>
+
+<table class="palette">
+ <tr>
+  <td>
+  <button class="staticMath" onclick="MathLivePasteFromButton(this)">$$\frac{\blacksquare}{\square}$$</button>
+  </td>
+  <td>
+  <button class="staticMath" onclick="MathLivePasteFromButton(this)">$${\blacksquare}^{\square}$$</button>
+  </td>
+  <td>
+  <button class="staticMath" onclick="MathLivePasteFromButton(this)">$${\blacksquare}_{\square}$$</button>
+  </td>
+  <td>
+  <button class="staticMath"  onclick="MathLivePasteFromButton(this)">$$\sqrt{\blacksquare}$$</button>
+  </td>
+   <td>
+  <button class="staticMath"  onclick="MathLivePasteFromButton(this)">$$\sqrt[{\blacksquare}]{\blacksquare}$$</button>
+  </td>
+  <td>
+    <button class="staticMath" onclick="MathLivePasteFromButton(this)">$$ \,{}^\square \enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{\blacksquare}$$</button>
+  </td>
+  <td>
+    <button class="staticMath" onclick="MathLivePasteFromButton(this)">$$\overset{\square}{\enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{\blacksquare}}$$</button>
+  </td>
+  <td>
+    <button class="staticMath" onclick="MathLivePasteFromButton(this)">$$  \enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{\blacksquare} ^{\square}$$</button>
+  </td>
+</tr>
+ <tr>
+  <td>
+  <button class="staticMath" onclick="MathLivePasteFromButton(this)">$$\cdot$$</button>
+  </td>
+  <td>
+  <button class="staticMath" onclick="MathLivePasteFromButton(this)">$$\times$$</button>
+  </td>
+  <td>
+  <button class="staticMath" onclick="MathLivePasteFromButton(this)">$$\div$$</button>
+  </td>
+  <td>
+  <button class="staticMath" onclick="MathLivePasteFromButton(this)">$$\pm$$</button>
+  </td>
+  <td>
+  </td>
+  <td>
+   <button class="staticMath" onclick="MathLivePasteFromButton(this)">$${\square} \enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{\blacksquare}$$</button>
+  </td>
+  <td>
+    <button class="staticMath" onclick="MathLivePasteFromButton(this)">$$\enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{\blacksquare}$$</button>
+  </td>
+  <td>
+    <button class="staticMath" onclick="MathLivePasteFromButton(this)">$$\enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{\blacksquare} {\square}$$</button>
+  </td>
+</tr>
+ <tr>
+  <td>
+  <button class="staticMath" onclick="MathLivePasteFromButton(this)">$$\leq$$</button>
+  </td>
+  <td>
+  <button class="staticMath" onclick="MathLivePasteFromButton(this)">$$\geq$$</button>
+  </td>
+  <td>
+  <button class="staticMath" onclick="MathLivePasteFromButton(this)">$$\neq$$</button>
+  </td>
+  <td>
+  <button class="staticMath" onclick="MathLivePasteFromButton(this)">$$\overset{?}{=}$$</button>
+  </td>
+  <td>
+  </td>
+  <td>
+    <button class="staticMath" onclick="MathLivePasteFromButton(this)">$$\,{}_\square \enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{\blacksquare}$$</button>
+  </td>
+  <td>
+    <button class="staticMath" onclick="MathLivePasteFromButton(this)">$$\underset{\square}{\enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{\blacksquare}}$$</button>
+  </td>
+  <td>
+    <button class="staticMath" onclick="MathLivePasteFromButton(this)">$$  \enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{\blacksquare} _{\square}$$</button>
+  </td>
+
+ </tr>
+ <!-- add some user defined buttons -- need support drag/drop copy/paste for these
+ <tr>
+  <td width=194 colspan=2 >
+  <button><p align=center><o:p>User 1</o:p></p></button>
+  </td>
+  <td>
+  <button><p align=center><o:p>User 2</o:p></p></button>
+  </td>
+  <td>
+  <button><p align=center><o:p>User 3</o:p></p></button>
+  </td>
+  <td>
+  <button><p align=center><o:p>User 4</o:p></p></button>
+  </td>
+ </tr>
+ -->
+ 
+ <tr>
+  <td>
+  <button class="staticMath" onclick="MathLivePasteFromButton(this)">$$\Bigl{(}\blacksquare\Bigr{)}$$</button>
+  </td>
+  <td>
+  <button class="staticMath" onclick="MathLivePasteFromButton(this)">$$\Bigl{[}\blacksquare\Bigr{]}$$</button>
+  </td>
+  <td>
+  <button class="staticMath" onclick="MathLivePasteFromButton(this)">$$\Bigl{|}\blacksquare\Bigr{|}$$</button>
+  </td>
+  <td>
+  <button class="staticMath" onclick="MathLivePasteFromButton(this)">$$\Bigl{\lfloor}\blacksquare\Bigr{\rfloor}$$</button>
+  </td>
+  <td>
+  <button class="staticMath" onclick="MathLivePasteFromButton(this)">$$\Bigl{\lceil}\blacksquare\Bigr{\rceil}$$</button>
+  </td>
+  <td>
+  </td>
+  <td>
+  </td>
+  <td>
+  </td>
+</tr>
+
+ <tr>
+  <td>
+  <button class="staticMath" onclick="MathLivePasteFromButton(this)">$$\triangle$$</button>
+  </td>
+  <td>
+  <button class="staticMath" onclick="MathLivePasteFromButton(this)">$$\angle$$</button>
+  </td>
+  <td>
+  <button class="staticMath" onclick="MathLivePasteFromButton(this)">$$\cong$$</button>
+  </td>
+  <td>
+  <button class="staticMath" onclick="MathLivePasteFromButton(this)">$$\perp$$</button>
+  </td>
+  <td>
+  <button class="staticMath" onclick="MathLivePasteFromButton(this)">$$\parallel$$</button>
+  </td>
+  <td>
+  </td>
+  <td>
+  </td>
+  <td>
+  </td>
+</tr>
+
+ <tr>
+  <td>
+  <button onclick=
+	"NewMathEditorRow(TheActiveMathField.latex())">
+	  <p align=center>Copy<br>Down</p>
+  </button>
+  </td>
+  <td>
+  <button onclick=
+     "NewMathEditorRow(CleanUpCrossouts(TheActiveMathField.latex()))">
+	   <p align=center>Cleanup<br>Crossouts</p>
+  </button>
+  </td>
+  <td>
+    <button onclick=
+	"NewMathEditorRow(CleanUpCrossouts(TheActiveMathField.latex()));
+     NewMathEditorRow(TheActiveMathField.latex())">
+      <p align=center>Cleanup &<br>Copy<br>Down</p>
+    </button>
+  </td>
+  <td>
+  <button onclick="DeleteActiveMath()"
+    ><p align=center>Delete<br>Current<br>Step</p></button>
+  </td>
+  <td>
+  <button><p align=center>Clear</p></button>
+  </td>
+  <td>
+  <button><p align=center>Cut</p></button>
+  </td>
+  <td>
+  <button><p align=center>Copy</p></button>
+  </td>
+  <td>
+  <button><p align=center>Paste</p></button>
+  </td>
+ </tr>
+</table>
+</div>
+<script>
+	MathLive.renderMathInDocument();
+	TheActiveMathField = MathLive.makeMathField(
+		document.getElementById('mathEditorActive'),
+	  	{commandbarToggle: 'hidden',
+		 overrideDefaultInlineShortcuts: false});
+</script>
+
+</body>
+
+</html>
