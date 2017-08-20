@@ -84,6 +84,10 @@ function CleanUpCrossouts(latexStr) {
 	return latexStr.replace(new RegExp(crossoutPattern, "g"), "");
 }
 
+/**
+ * Paste the button into the active math editor after substituting
+ * for the black and white squares
+ */
 function MathLivePasteFromButton(element) {
     let insertionString = MathLive.getOriginalContent(element).
 		replace(/\$\$/g,'').
@@ -96,7 +100,7 @@ function MathLivePasteFromButton(element) {
 	TheActiveMathField.focus();
 }
 
-/*
+/**
  * Delete the currently active row and make the previous row active
  */
 function DeleteActiveMath() {
@@ -128,4 +132,55 @@ function DeleteActiveMath() {
 	activeRow.parentNode.removeChild(previousRow);
 	
 	TheActiveMathField.focus();
+}
+
+/**
+ * Update the palette with the current selection for the active math editor
+ * Reset the palette when the selecdtion is just an insertion cursor
+ * @param mathField -- the active math editor called on 'onSelectionDidChange'
+ */
+function UpdatePalette(mathField) {
+	if (mathField.mathlist) {
+		// build up the latex corresponding to the selection
+		let latex = '';
+		let contents = mathField.mathlist.extractContents();
+		if (contents) {
+			for (const atom of contents) {
+				latex += atom.toLatex();
+			}
+		}
+		
+		// probably only one palette, but future-proof and handle all
+		// for every button in all the palettes...
+		//   substitute in the latex for the black square and use that for the rendering
+		// this could be more efficient by not making a change if the selection didn't change,
+		//   but this seems efficient enough. It could be that mathlive already does this optimization
+		// Note: the original value remains stored in a data attr and that value works
+		//   regardless of the selection because the 'insert' command replaces the selection
+		let palettes =  document.getElementsByClassName('palette');
+		for (let iPalette=0; iPalette<palettes.length; iPalette++) {
+			let templates = palettes[iPalette].getElementsByClassName('template');
+			for (let iTemplate=0; iTemplate<templates.length; iTemplate++) {
+				let elem = templates[iTemplate];
+				const mathstyle = elem.getAttribute('data-' + /*options.namespace +(*/ 'mathstyle') || 'displaystyle';
+				try {
+					let newContents = MathLive.getOriginalContent(elem);
+					if (latex) {
+						// we have latex for the selection, so substitute it in
+					    newContents = newContents.
+							replace(/\$\$/g,'').
+							replace('\\blacksquare', latex);
+					}							
+					elem.innerHTML = MathLive.latexToMarkup(newContents, mathstyle);
+				} catch (e) {
+					console.error(
+						"Could not parse'" + 
+						MathLive.getOriginalContent(elem).
+							replace(/\$\$/g,'').
+							replace('\\blacksquare',latex) + "'"
+					);
+				}
+			}
+		}			
+	}
 }

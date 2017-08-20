@@ -4,7 +4,9 @@ define(['mathlive/mathlive'],
 	  MathLive.renderMathInDocument();
 	  TheActiveMathField = MathLive.makeMathField(
 		document.getElementById('mathEditorActive'),
-	  	{commandbarToggle: 'hidden',
-		 overrideDefaultInlineShortcuts: false});
+	  	{//commandbarToggle: 'hidden',
+		 overrideDefaultInlineShortcuts: false,
+		 onSelectionDidChange: UpdatePalette
+		 });
 	}
 )
