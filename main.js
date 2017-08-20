@@ -7,6 +7,7 @@ define(['mathlive/mathlive'],
 	  	{//commandbarToggle: 'hidden',
 		 overrideDefaultInlineShortcuts: false,
 		 onSelectionDidChange: UpdatePalette
-		 });
+		}
+	  );
 	}
 )
