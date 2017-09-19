@@ -10,6 +10,21 @@
  * 'Freeze' the current element by making it static math and add a new
  * new active editing row with the math content. 
  */
+ 
+/*
+ * Global var to share the representation used for crossouts
+ */
+CrossoutTeXString = "\\enclose{updiagonalstrike downdiagonalstrike}[2px solid red]";
+"\enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{2}"
+
+// crossout pattern makes the contents of the []s optional
+// FIX: this fails if the thing being crossed out has {}s.
+//   Regular exprs won't handle the nesting/counting
+CrossoutRegExpPattern = /\\enclose\{updiagonalstrike downdiagonalstrike\}(?:\[2px solid red\])*?(?:\{)?[^}]+?(?:\})/;
+
+CrossoutFindRegExpPattern = /\\enclose\{updiagonalstrike downdiagonalstrike\}\[2px solid red\]/g;
+
+
 function NewMathEditorRow(mathContent) {
 	let oldActiveElement = TheActiveMathField.el();
 
@@ -62,26 +77,22 @@ function CleanUpCrossouts(latexStr) {
 	//   if the crossout pattern changes
 	// FIX: this would be easier/less error prone if we use MathML (not yet implemented)
 	
-	// crossout pattern makes the contents of the []s optional
-	// FIX: this fails if the thing being crossed out has {}s.
-	//   Regular exprs won't handle the nesting/counting
-	let crossoutPattern = "\\\\enclose\\{updiagonalstrike downdiagonalstrike\\}(?:\\[2px solid red\\])*?(?:\\{)?[^}]+?(?:\\})";
 	let scriptsRE = new RegExp(
-		crossoutPattern + "(?:\\^|_)([^\\{]|[a-z]+|\\{.+?\\})",
+		CrossoutRegExpPattern + "(?:\\^|_)([^\\{]|[a-z]+|\\{.+?\\})",
 		"g");
 	latexStr = latexStr.replace(scriptsRE, "$1");
 	let limitsRE = new RegExp(
-		"\\\\(?:underset|overset)([^\\{]|[a-z]+|\\{.+?\\}){" + crossoutPattern + "}",
+		"\\\\(?:underset|overset)([^\\{]|[a-z]+|\\{.+?\\}){" + CrossoutRegExpPattern + "}",
 		"g");
 	latexStr = latexStr.replace(limitsRE, "$1");
 	let prescriptsRE = new RegExp(
-		"\\\\,\\{\\}(?:\\^|_)([^\\{]|[a-z]+|\\{.+?\\})" + crossoutPattern,
+		"\\\\,\\{\\}(?:\\^|_)([^\\{]|[a-z]+|\\{.+?\\})" + CrossoutRegExpPattern,
 		"g");
 	prescriptsRE = new RegExp(
-		"\\\\,\\{\\}(?:\\^|_)([^\\{]|[a-z]+|\\{.+?\\})" + crossoutPattern,
+		"\\\\,\\{\\}(?:\\^|_)([^\\{]|[a-z]+|\\{.+?\\})" + CrossoutRegExpPattern,
 		"g");
 	latexStr = latexStr.replace(prescriptsRE, "$1");
-	return latexStr.replace(new RegExp(crossoutPattern, "g"), "");
+	return latexStr.replace(new RegExp(CrossoutRegExpPattern, "g"), "");
 }
 
 /**
@@ -89,16 +100,41 @@ function CleanUpCrossouts(latexStr) {
  * for the black and white squares
  */
 function MathLivePasteFromButton(element) {
+	// Button contents as a string
     let insertionString = MathLive.getOriginalContent(element).
 		replace(/\$\$/g,'').
 		replace('\\blacksquare','#0').
 		replace('\\square','#?').
 		trim();
+
+	if ( !TheActiveMathField.selectionIsCollapsed() &&
+		 CrossoutFindRegExpPattern.test(insertionString) ) {
+		// if the insertionString contains a cross out, remove all crossout in the selection
+		let selection = TheActiveMathField.selectedText('latex')
+							.replace(CrossoutFindRegExpPattern, "");
+	
+		// stick the modified selection into the black square (#0) in the insertionString
+		insertionString = insertionString.replace(/#0/, selection);
+	}
+
 	TheActiveMathField.perform(['insert', insertionString, 
 				{insertionMode: 'replaceSelection',
 				 selectionMode: 'placeholder'}]);
 	TheActiveMathField.focus();
 }
+
+/**
+ * Call paste function if someone hits enter over palette entry
+ * Important for accessibility
+ */
+function MathLivePasteFromButtonKeyDown(event, element) {
+	if (event.key == "Enter") {
+		MathLivePasteFromButton(element);
+		return false;
+	} else
+		return true;
+}
+
 
 /**
  * Delete the currently active row and make the previous row active
@@ -136,20 +172,16 @@ function DeleteActiveMath() {
 
 /**
  * Update the palette with the current selection for the active math editor
- * Reset the palette when the selecdtion is just an insertion cursor
+ * Reset the palette when the selection is just an insertion cursor
  * @param mathField -- the active math editor called on 'onSelectionDidChange'
  */
 function UpdatePalette(mathField) {
 	if (mathField.mathlist) {
-		// build up the latex corresponding to the selection
-		let latex = '';
-		let contents = mathField.mathlist.extractContents();
-		if (contents) {
-			for (const atom of contents) {
-				latex += atom.toLatex();
-			}
-		}
-		
+		let origSelection = mathField.selectedText('latex')
+		let cleanedSelection = origSelection;	// selection without crossouts (pre-compute)
+		if ( CrossoutFindRegExpPattern.test(origSelection) )
+			cleanedSelection = origSelection.replace(CrossoutFindRegExpPattern, "");
+
 		// probably only one palette, but future-proof and handle all
 		// for every button in all the palettes...
 		//   substitute in the latex for the black square and use that for the rendering
@@ -165,11 +197,16 @@ function UpdatePalette(mathField) {
 				const mathstyle = elem.getAttribute('data-' + /*options.namespace +(*/ 'mathstyle') || 'displaystyle';
 				try {
 					let newContents = MathLive.getOriginalContent(elem);
-					if (latex) {
+					if (origSelection) {
 						// we have latex for the selection, so substitute it in
+						// if both have cross outs, remove them from the selection
+						// this matches the behavior on activation
+						let selection = ( CrossoutFindRegExpPattern.test(newContents) ) ? cleanedSelection : origSelection;
+						CrossoutFindRegExpPattern.lastIndex = 0; // past match if not reset
+
 					    newContents = newContents.
 							replace(/\$\$/g,'').
-							replace('\\blacksquare', latex);
+							replace('\\blacksquare', selection);
 					}							
 					elem.innerHTML = MathLive.latexToMarkup(newContents, mathstyle);
 				} catch (e) {
@@ -177,10 +214,35 @@ function UpdatePalette(mathField) {
 						"Could not parse'" + 
 						MathLive.getOriginalContent(elem).
 							replace(/\$\$/g,'').
-							replace('\\blacksquare',latex) + "'"
+							replace('\\blacksquare',selection) + "'"
 					);
 				}
 			}
 		}			
 	}
+}
+
+function HandleKeyDown(event)
+{
+	if (event.ctrlKey && (event.key=="Delete" || event.key=="Backspace")) {
+		if ( TheActiveMathField.selectionIsCollapsed() ) {
+			// if an insertion cursor, extend the selection unless we are at an edge
+			if ( TheActiveMathField.selectionAtStart() && event.key=="Backspace" )
+				return false;
+			if ( TheActiveMathField.selectionAtEnd() && event.key=="Delete" )
+				return false;
+		
+			TheActiveMathField.perform(event.key=="Delete" ? 'extendToNextChar' : 'extendToPreviousChar');
+		}
+		
+		let selection = TheActiveMathField.selectedText('latex').replace(CrossoutFindRegExpPattern, "");
+		
+		let insertionString = CrossoutTeXString + "{" + selection + "}";
+		TheActiveMathField.perform(['insert', insertionString, 
+								    {insertionMode: 'replaceSelection',
+									 selectionMode: 'item'}]);
+		TheActiveMathField.focus();
+		return false;
+	}
+	return true;
 }
