@@ -1,0 +1,3 @@
+[submodule "mathlive"]
+	path = mathlive
+	url = git@github.com:arnog/mathlive.git
