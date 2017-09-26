@@ -37,7 +37,7 @@ function NewMathEditorRow(mathContent) {
 	// create new row	
 	let newRow = document.createElement("tr");
 	newRow.className = 'step';
-	newRow.innerHTML = '<td><div class="staticMath"></div></td>' +
+	newRow.innerHTML = '<td><div class="staticMath" tabindex="0"></div></td>' +
 					   '<td><p></p></td>';
 					   
 	// take the contents of the active row and stuff it into the new row	
