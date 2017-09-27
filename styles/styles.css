@@ -1,0 +1,147 @@
+/* 	Styles for Structure */
+	html,body {height: 100%;margin: 0;}
+	.mainContent {
+	  display: flex;
+	  flex-direction: column;
+	  height: 100%;
+	  height: calc(100% - 75px);
+	  height: -moz-calc(100% - 75px);
+	  height: -webkit-calc(100% - 75px);
+	  width: 1000px;
+	  margin: 0px auto;
+	}
+	.mathHistory {
+	  flex-shrink: 10;
+	  overflow: auto;
+	}
+	.mathHistory, .scroll {transform: scale(1,-1);}
+	.text-input {resize: vertical;}
+	
+/* 	Styles From Neil */
+	.staticMath {
+	max-width: 35em;
+	padding: 1ex;
+	}
+	
+	.mathEditor {
+		margin: 15px 0px 15px 0px;
+	}
+	
+/*
+	.mathEditorWithPalete {
+		max-width: 60em;
+	   border: 2px solid green;
+	}
+*/
+	
+/*
+	.step {
+		max-width: 60em;
+	   border: 2px solid green;
+	}
+	
+	.step table {
+	   border-style: none;
+	}
+	
+	.step td {
+	   width: 40em;
+	   padding: 0em;
+	   border-style: none;
+	   border: 0px;
+	}
+	
+	.mathEditorWithPalete table {
+	   border-style: none;
+	}
+	
+	.mathEditorWithPalete td {
+	   width: 40em;
+	   padding: 1em;
+	   border-style: none;
+	   border: 0px;
+	}
+	
+	.palette td {
+	   padding: 0.1em;
+	   border: 1px solid black;
+	   text-align:center;
+	}
+	
+	table {
+	    border-collapse: collapse;
+	}
+	
+	table, th, td {
+	   border: 1px solid black;
+	   padding: 1px;
+	   text-align:left;
+	}
+*/
+	
+/* 	From Jason	 */
+		
+/*
+	header {
+		background-color: #222F3F;
+		height: 75px;
+		width: 100%;
+	}
+*/
+	
+	
+	.navbar-default {
+	background-color: #222F3F;
+}
+
+.navbar {
+	height: 75px;
+	border-radius: 0px;
+	margin-bottom: 0px;
+}
+
+.navbar-default .navbar-nav>li>a {
+	color: #FFF;
+}
+
+.navbar-default .navbar-nav>li>a:hover {
+	text-decoration: underline;
+	color: #FFF;
+}
+
+.navbar-nav>li {
+	margin-left: 1em;
+}
+
+.mathStep {
+	border-radius: 5px;
+	padding: 5px 0px 5px 0px;
+}
+
+.mathStep:nth-child(even) {
+    background-color: #eee;
+}
+
+.mathStepTitle {
+	float: left;
+	width: 125px;
+	font-weight: bold;
+	font-size: 25px;
+	color: #CCC;
+	padding-left: 10px;
+}
+
+.mathStepAnnotation {
+	padding-left: 125px;
+}
+
+.paletteButton {
+  padding: 0;
+  margin: 3px;
+  width: 43px;
+  height: 43px;
+}
+
+.mathWorkArea {
+	 
+}
