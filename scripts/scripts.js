@@ -1,14 +1,20 @@
 /**
- * The overall structure for the solution steps is a table with two columns
- * The first column is the math and the second column is the reason
- * The last row is the active math editing area.
- * Following the math editing area is another table for the palettes.
- *
- */
- 
-/**
- * 'Freeze' the current element by making it static math and add a new
- * new active editing row with the math content. 
+ * The overall structure for the solution steps is a series of divs consistings of the
+ *   the label, the math, and the annotation (might be empty). These have classes as follows:
+ * <div class="mathStep" data-step="[num]">';
+ *   <div class="mathStepTitle">Step [num]</div>';
+ *   <div class="mathStepEquation staticMath">$$[[latex for equation]]$$</div>';
+ *   <div class="mathStepAnnotation">[[annotation]]</div>';
+ * </div>
+ * After those, the current working area occurs and has the form:
+ * <div ...>
+ *   <div class="mathStepTitle" ...>Current</div>
+ *   <div class="mathEditor" id='mathEditorActive'> [latex for the active area] </div>
+ *   <div...> ...<textarea ... id="mathAnnotation"> [annotation/reason] </textarea>
+
+ * </div>
+ * The palette buttons should have the classes 'staticMath' and if they have a place square 
+ *   to indicate where the selection ends up, they should also have the class 'paletteButton'
  */
  
 /*
@@ -24,31 +30,60 @@ CrossoutRegExpPattern = /\\enclose\{updiagonalstrike downdiagonalstrike\}(?:\[2p
 
 CrossoutFindRegExpPattern = /\\enclose\{updiagonalstrike downdiagonalstrike\}\[2px solid red\]/g;
 
+/**
+ * Freeze the active/"current" element by making it and it's annotation be static math in a new row/step.
+ * Make the active/"current" element have 'mathContent' and clear the annotation.
+ */ 
 function NewMathEditorRow(mathContent) {
+	// assemble the new static area from the current math/annotation
+	let mathStepEquation = TheActiveMathField.latex();
+	let mathStepAnnotation = $('#mathAnnotation').val();
+	let mathStepNumber = $('.mathStep:last').data('step');
+	let mathStepNewNumber = mathStepNumber ? mathStepNumber+1 : 1;	// worry about no steps yet
+	let mathStepTitle = "Step "+mathStepNewNumber+":";
 	
-	var mathStepEquation = TheActiveMathField.latex();
-	var mathStepAnnotation = $('#mathAnnotation').val();
-	var mathStepCurrent = $('.mathStep:last').data('step');
-	var mathStepNew = mathStepCurrent+1;
-	var mathStepTitle = "Step "+mathStepNew+":";
-	
-	var html =  '<div class="mathStep" data-step="'+mathStepNew+'">';
+	let html =  '<div class="mathStep" data-step="'+mathStepNewNumber+'">';
 	html += '<div class="mathStepTitle">'+mathStepTitle+'</div>';
 	html += '<div class="mathStepEquation staticMath">$$'+mathStepEquation+'$$</div>';
 	html += '<div class="mathStepAnnotation">'+mathStepAnnotation+'</div>';
 	html += '</div>';
 	$( ".scroll" ).append(html);
+	MathLive.renderMathInElement( $('.mathStep:last') );
 	
+	// set the new active math and clear the annotation
+	TheActiveMathField.latex(mathContent);
 	$('#mathAnnotation').val('');
 	
 	
-	
-	
-	
 	MathLive.renderMathInDocument();
-	
-	
 }	
+
+
+/**
+ * Delete the currently active area and make the last step active...
+ * Or, put another way...
+ * Copy the contents of the last step/row into the active area and delete that step/row
+ */
+function DeleteActiveMath() {
+	// nothing to do if there are no steps
+	if (!$('.mathStep:last'))
+		return;
+
+	let oldActiveElement = TheActiveMathField.el();
+
+	// get the contents of the last row/step
+	let lastStep = $('.mathStep:last');
+	// TODO: add active/current latex and annotation to undo stack
+
+	// put the contents of the last row/step into the active/current line
+	TheActiveMathField.latex( lastStep.find('.mathStepEquation').text() );
+	$('#mathAnnotation').val( lastStep.find('.mathStepAnnotation').text() );
+	
+	// ok to delete last row now...
+	lastStep.detach();
+	
+	TheActiveMathField.focus();
+}
 
 /*
 function NewMathEditorRow(mathContent) {
@@ -164,41 +199,6 @@ function MathLivePasteFromButtonKeyDown(event, element) {
 		return true;
 }
 
-
-/**
- * Delete the currently active row and make the previous row active
- */
-function DeleteActiveMath() {
-	let oldActiveElement = TheActiveMathField.el();
-
-	// find parent row so we can delete it and make the row before it active
-	let activeRow = oldActiveElement.parentNode;
-	while (activeRow.nodeName != 'TR') {
-		activeRow = activeRow.parentNode;
-	}
-	
-	let previousRow = activeRow.previousElementSibling;
-	if (!previousRow)
-		return;
-		
-	// It's a bit simpler to replace the contents of the active row and delete
-	// the previous row, so that's how we do it.
-	// Also, this makes is similar to adding a new row
-	
-	// copy the editor's reason and then clear it
-	let mathReason = previousRow.lastElementChild.innerText;
-	document.getElementById("mathEditorReason").value = mathReason;
-		
-	// copy the math content
-	let mathContent = MathLive.getOriginalContent(previousRow.firstElementChild.firstElementChild);
-	TheActiveMathField.latex(mathContent);
-	
-	// all done with the previous row's content -- delete it
-	activeRow.parentNode.removeChild(previousRow);
-	
-	TheActiveMathField.focus();
-}
-
 /**
  * Update the palette with the current selection for the active math editor
  * Reset the palette when the selection is just an insertion cursor
@@ -218,34 +218,31 @@ function UpdatePalette(mathField) {
 		//   but this seems efficient enough. It could be that mathlive already does this optimization
 		// Note: the original value remains stored in a data attr and that value works
 		//   regardless of the selection because the 'insert' command replaces the selection
-		let palettes =  document.getElementsByClassName('palette');
-		for (let iPalette=0; iPalette<palettes.length; iPalette++) {
-			let templates = palettes[iPalette].getElementsByClassName('template');
-			for (let iTemplate=0; iTemplate<templates.length; iTemplate++) {
-				let elem = templates[iTemplate];
-				const mathstyle = elem.getAttribute('data-' + /*options.namespace +(*/ 'mathstyle') || 'displaystyle';
-				try {
-					let newContents = MathLive.getOriginalContent(elem);
-					if (origSelection) {
-						// we have latex for the selection, so substitute it in
-						// if both have cross outs, remove them from the selection
-						// this matches the behavior on activation
-						let selection = ( CrossoutFindRegExpPattern.test(newContents) ) ? cleanedSelection : origSelection;
-						CrossoutFindRegExpPattern.lastIndex = 0; // past match if not reset
+		let templates = $('.paletteButton');
+		for (let iTemplate=0; iTemplate<templates.length; iTemplate++) {
+			let elem = templates[iTemplate];
+			const mathstyle = elem.getAttribute('data-' + /*options.namespace +(*/ 'mathstyle') || 'displaystyle';
+			try {
+				let newContents = MathLive.getOriginalContent(elem);
+				if (origSelection) {
+					// we have latex for the selection, so substitute it in
+					// if both have cross outs, remove them from the selection
+					// this matches the behavior on activation
+					let selection = ( CrossoutFindRegExpPattern.test(newContents) ) ? cleanedSelection : origSelection;
+					CrossoutFindRegExpPattern.lastIndex = 0; // past match if not reset
 
-					    newContents = newContents.
-							replace(/\$\$/g,'').
-							replace('\\blacksquare', selection);
-					}							
-					elem.innerHTML = MathLive.latexToMarkup(newContents, mathstyle);
-				} catch (e) {
-					console.error(
-						"Could not parse'" + 
-						MathLive.getOriginalContent(elem).
-							replace(/\$\$/g,'').
-							replace('\\blacksquare',selection) + "'"
-					);
-				}
+					 newContents = newContents.
+						replace(/\$\$/g,'').
+						replace('\\blacksquare', selection);
+				}							
+				elem.innerHTML = MathLive.latexToMarkup(newContents, mathstyle);
+			} catch (e) {
+				console.error(
+					"Could not parse'" + 
+					MathLive.getOriginalContent(elem).
+						replace(/\$\$/g,'').
+						replace('\\blacksquare',selection) + "'"
+				);
 			}
 		}			
 	}
