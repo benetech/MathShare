@@ -120,7 +120,7 @@
 	  <div class="mathWorkArea">
 		<div class="row" style="border-top: 10px solid #222F3F; border-bottom: 3px solid #222F3F; margin-top: 5px;">
 		  <div class="col-md-6">
-			  <div class="mathStepTitle" style="color:#222F3F; margin-top: 13px;">>>>>>></div>
+			  <div class="mathStepTitle" style="color:#222F3F; margin-top: 13px;">Current</div>
 			  <div class="mathEditor" id='mathEditorActive'> \enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{7}x= \enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{-14}-2</div>
 		  </div>
 		  <div class="col-md-6" style="text-align: right; padding-top: 17px;">
@@ -183,7 +183,11 @@
 		<div class="row" style="border-top: 3px solid #222F3F; padding: 7px 0px 7px 0px; text-align: right;">
 			<div class="col-md-12">
 				<button class="btn btn-default" onclick="NewMathEditorRow(TheActiveMathField.latex())">Copy Down</button>
-				<button class="btn btn-primary" onclick="NewMathEditorRow(CleanUpCrossouts(TheActiveMathField.latex()));">Cleanup & Copy Down</button>
+				<button class="btn btn-primary"
+					onclick="NewMathEditorRow(CleanUpCrossouts(TheActiveMathField.latex()));
+								NewMathEditorRow(CleanUpCrossouts(TheActiveMathField.latex()));">
+					Cleanup & Copy Down
+				</button>
 			</div>
 		</div>
 	  </div>
