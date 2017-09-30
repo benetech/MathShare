@@ -62,57 +62,28 @@
 		    <div class="mathStep" data-step="0">
 			    <div class="mathStepTitle">Original:</div>
 			    <div class="mathStepEquation staticMath">$$7x + 13 = -1$$</div>
-			    <div class="mathStepAnnotation">Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo min</div>
+			    <div class="mathStepAnnotation">Solve for x</div>
 		    </div>
 		    <div class="mathStep" data-step="1">
 			    <div class="mathStepTitle">Step 1:</div>
-			    <div class="mathStepEquation staticMath">$$7x + 13 = -1$$</div>
-			    <div class="mathStepAnnotation">Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo min</div>
+			    <div class="mathStepEquation staticMath">$$7x + 13-13 = -1-13$$</div>
+			    <div class="mathStepAnnotation">Subtract 13 from both sides
+</div>
 		    </div>
 		    <div class="mathStep" data-step="2">
 			    <div class="mathStepTitle">Step 2:</div>
-			    <div class="mathStepEquation staticMath">$$7x + 13 = -1$$</div>
-			    <div class="mathStepAnnotation">Distinctio. Nam libero tempore, cum soluta nobis.</div>
+			    <div class="mathStepEquation staticMath">$$7x \enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{+ 13-13} = \enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{-1-13} -14$$</div>
+			    <div class="mathStepAnnotation">Do arithmetic</div>
 		    </div>
 		    <div class="mathStep" data-step="3">
 			    <div class="mathStepTitle">Step 3:</div>
-			    <div class="mathStepEquation staticMath">$$7x + 13 = -1$$</div>
-			    <div class="mathStepAnnotation">Eleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis volup</div>
+			    <div class="mathStepEquation staticMath">$$7x =-14$$</div>
+			    <div class="mathStepAnnotation"></div>
 		    </div>
 		    <div class="mathStep" data-step="4">
 			    <div class="mathStepTitle">Step 4:</div>
-			    <div class="mathStepEquation staticMath">$$7x + 13 = -1$$</div>
-			    <div class="mathStepAnnotation"></div>
-		    </div>
-		    <div class="mathStep" data-step="5">
-			    <div class="mathStepTitle">Step 5:</div>
-			    <div class="mathStepEquation staticMath">$$7x + 13 = -1$$</div>
-			    <div class="mathStepAnnotation"></div>
-		    </div>
-		    <div class="mathStep" data-step="6">
-			    <div class="mathStepTitle">Step 6:</div>
-			    <div class="mathStepEquation staticMath">$$7x + 13 = -1$$</div>
-			    <div class="mathStepAnnotation"></div>
-		    </div>
-		    <div class="mathStep" data-step="7">
-			    <div class="mathStepTitle">Step 7:</div>
-			    <div class="mathStepEquation staticMath">$$7x + 13 = -1$$</div>
-			    <div class="mathStepAnnotation"></div>
-		    </div>
-		    <div class="mathStep" data-step="8">
-			    <div class="mathStepTitle">Step 8:</div>
-			    <div class="mathStepEquation staticMath">$$7x + 13 = -1$$</div>
-			    <div class="mathStepAnnotation"></div>
-		    </div>
-		    <div class="mathStep" data-step="9">
-			    <div class="mathStepTitle">Step 9:</div>
-			    <div class="mathStepEquation staticMath">$$7x + 13 = -1$$</div>
-			    <div class="mathStepAnnotation"></div>
-		    </div>
-		    <div class="mathStep" data-step="10">
-			    <div class="mathStepTitle">Step 10:</div>
-			    <div class="mathStepEquation staticMath">$$7x + 13 = -1$$</div>
-			    <div class="mathStepAnnotation"></div>
+			    <div class="mathStepEquation staticMath">$$\enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{7}x =-\enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{14}2$$</div>
+			    <div class="mathStepAnnotation">Divide both sides by 7. 7/7=1 and 1 times anything is just that thing, so we just have x. On the right hand side of the equation, we have 14/7. That is = 2. Clean up the cross outs and...</div>
 		    </div>
 	    </div>
 	  </div>
@@ -121,37 +92,43 @@
 		<div class="row" style="border-top: 10px solid #222F3F; border-bottom: 3px solid #222F3F; margin-top: 5px;">
 		  <div class="col-md-6">
 			  <div class="mathStepTitle" style="color:#222F3F; margin-top: 13px;">Current</div>
-			  <div class="mathEditor" id='mathEditorActive'> \enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{7}x= \enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{-14}-2</div>
+			  <div class="mathEditor" id='mathEditorActive'> x = -2</div>
 		  </div>
-		  <div class="col-md-6" style="text-align: right; padding-top: 17px;">
-			  <button class="btn btn-default" onclick="NewMathEditorRow(CleanUpCrossouts(TheActiveMathField.latex()))">Cleanup Crossouts</button>
-			  <button class="btn btn-default" onclick="DeleteActiveMath()">Delete Current Step</button>
+		  <div class="col-md-6">
+			  <div class="mathAnnotation">
+				<div class="form-group">
+				  <label for="comment">Describe your work</label>
+				  <textarea class="form-control" rows="2" id="mathAnnotation">Final answer. You can delete this and previous steps and re-derive to play with Galois.</textarea>
+				</div>
+			  </div>
 		  </div>
-		</div> 
-		  
+		</div>
 		  
 		<div class="row" style=" padding-top: 7px;">
-		  <div class="col-md-6">
+		  <div class="col-md-7">
 			  <div class="mathPalette">
+				  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\cdot$$</button>
+				  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\times$$</button>
+				  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\div$$</button>
+				  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\pm$$</button>
+				  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{\blacksquare}$$</button>
 				  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\frac{\blacksquare}{\square}$$</button>
 				  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$${\blacksquare}^{\square}$$</button>
 				  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$${\blacksquare}_{\square}$$</button>
 				  <button class="staticMath btn btn-default paletteButton"  onclick="MathLivePasteFromButton(this)">$$\sqrt{\blacksquare}$$</button>
 				  <button class="staticMath btn btn-default paletteButton"  onclick="MathLivePasteFromButton(this)">$$\sqrt[{\square}]{\blacksquare}$$</button>
-				  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\cdot$$</button>
-				  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\times$$</button>
-				  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\div$$</button>
-				  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\pm$$</button>
-				  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{\blacksquare} {\square}$$</button>
+				  <br/>
 				  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\leq$$</button>
 				  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\geq$$</button>
 				  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\neq$$</button>
 				  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\overset{?}{=}$$</button>
+				  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$ \enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{\blacksquare}^\square $$</button>
 				  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\Bigl{(}\blacksquare\Bigr{)}$$</button>
 				  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\Bigl{[}\blacksquare\Bigr{]}$$</button>
 				  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\Bigl{|}\blacksquare\Bigr{|}$$</button>
 				  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\Bigl{\lfloor}\blacksquare\Bigr{\rfloor}$$</button>
 				  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\Bigl{\lceil}\blacksquare\Bigr{\rceil}$$</button>
+				  <br/>
 				  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\triangle$$</button>
 				  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\angle$$</button>
 				  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\cong$$</button>
@@ -169,26 +146,19 @@
 				  <!-- <button class="btn btn-default">Cut</button> -->
 				  <!-- <button class="btn btn-default">Copy</button> -->
 				  <!-- <button class="btn btn-default">Paste</button> -->
-			  </div>
-		  </div>
-		  <div class="col-md-6">
-			  <div class="mathAnnotation">
-				<div class="form-group">
-				  <label for="comment">Describe your work</label>
-				  <textarea class="form-control" rows="5" id="mathAnnotation"></textarea>
-				</div>
-			  </div>
-		  </div>
-		</div>
-		<div class="row" style="border-top: 3px solid #222F3F; padding: 7px 0px 7px 0px; text-align: right;">
-			<div class="col-md-12">
-				<button class="btn btn-default" onclick="NewMathEditorRow(TheActiveMathField.latex())">Copy Down</button>
-				<button class="btn btn-primary"
+			   </div>
+		   </div>
+		   <div class="col-md-4">
+			   <button class="btn btn-default" onclick="NewMathEditorRow(CleanUpCrossouts(TheActiveMathField.latex()))">Cleanup Crossouts</button>
+			   <button class="btn btn-default" onclick="DeleteActiveMath()">Delete Current Step</button>
+				<br/>
+			   <button class="btn btn-default" onclick="NewMathEditorRow(TheActiveMathField.latex())">Copy Step</button>
+				<button class="btn btn-default"
 					onclick="NewMathEditorRow(CleanUpCrossouts(TheActiveMathField.latex()));
 								NewMathEditorRow(CleanUpCrossouts(TheActiveMathField.latex()));">
-					Cleanup & Copy Down
+					Cleanup & Copy Step
 				</button>
-			</div>
+		   </div>
 		</div>
 	  </div>
 	</div>
