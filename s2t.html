@@ -1,0 +1,83 @@
+<html>
+	<head>
+		<!--CDN scripts. -->
+		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g=" crossorigin="anonymous"></script>
+		<!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+		<!-- Optional theme -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+		<!-- Latest compiled and minified JavaScript -->
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+		
+		<script>
+			$(function(){
+				"use strict";
+				var spokens = [];
+				function changeButtonStates(){
+					if($("#speechbutton").prop("disabled"))
+						$("#speechbutton").prop("disabled", false);
+					else
+						$("#speechbutton").prop("disabled", true);
+					if($("#stopbutton").prop("disabled"))
+						$("#stopbutton").prop("disabled", false);
+					else
+						$("#stopbutton").prop("disabled", true);
+				}
+				$("#speechbutton").click(function(evt){
+					changeButtonStates();
+					recognition.start();
+					$("#indicator").text("Speak, please!");
+				});
+				$("#stopbutton").click(function(evt){
+					changeButtonStates();
+					recognition.stop();
+					$("#indicator").text("Not listening");
+				});
+				var recognition = new webkitSpeechRecognition();
+				recognition.interimResults = false;
+				recognition.continuous = true;
+				var text = $("#text");
+				recognition.onresult = function(event) {
+					var res = [];
+					for(var i= event.resultIndex; i<event.results.length; i++)
+						res.push(event.results[i][0].transcript);
+					var utterance = res+"";
+					text.append(utterance);
+					$("#indicator-sr").text(utterance);
+					spokens = spokens.concat(res);
+				};
+				$("#undobutton").click(function(event){
+					if(!spokens.length){
+						$("#indicator").text("Can't undo");
+						return;
+					}
+					var remove = spokens.pop();
+					var utterance = spokens+"";
+					text.text(utterance);
+					$("#indicator").text("Removed "+remove);
+				});
+				$("#clearbutton").click(function(event){
+					if(!confirm("Are you sure you want to delete everything you said? This cannot be undone.")){
+						return;
+					}
+					spokens = [];
+					text.text("");
+					$("#indicator").text("Everything you said was just deleted.");
+				});
+			});
+		</script>
+		<title>speech recognition</title>
+	</head>
+	<body>
+		<h1>speech recognition</h1>
+		<textarea id="text"></textarea>
+		<div id="buttons">
+			<button  id="speechbutton">Speak</button>
+			<button disabled="true" id="stopbutton">Stop</button>
+			<button  id="undobutton">delete last line</button>
+			<button  id="clearbutton">delete everything I said</button>
+		</div>
+		<div id="indicator" role="status"></div>
+		<div id="indicator-sr" class="sr-only" role="status"></div>
+	</body>
+</html>
