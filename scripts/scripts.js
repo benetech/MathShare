@@ -42,12 +42,16 @@ function NewMathEditorRow(mathContent) {
 	let mathStepNewNumber = mathStepNumber ? mathStepNumber+1 : 1;	// worry about no steps yet
 	let mathStepTitle = "Step "+mathStepNewNumber+":";
 	
-	let html =  '<div class="mathStep" data-step="'+mathStepNewNumber+'">';
-	html += '<div class="mathStepTitle">'+mathStepTitle+'</div>';
-	html += '<div class="mathStepEquation staticMath">$$'+mathStepEquation+'$$</div>';
-	html += '<div class="mathStepAnnotation">'+mathStepAnnotation+'</div>';
+	alert(mathStepNumber);
+	
+	let html = '<div class="row mathStep">';
+	html +=  '<div class="col-md-1">'+mathStepTitle+'</div>';
+	html +=  '<div class="col-md-4 staticMath">$$'+mathStepEquation+'$$</div>';
+	html +=  '<div class="col-md-5">'+mathStepAnnotation+'</div>';
+	html +=  '<div class="col-md-2" style="text-align: right;"><button class="btn btn-sm btn-default">Delete</button></div>';
 	html += '</div>';
-	$( ".scroll" ).append(html);
+
+	$( ".mathHistory" ).append(html);
 	MathLive.renderMathInElement( $('.mathStep:last') );
 	
 	// set the new active math and clear the annotation

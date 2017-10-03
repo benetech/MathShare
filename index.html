@@ -8,6 +8,7 @@
 	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 	<link rel="stylesheet" href="styles/styles.css" type="text/css">
 	<script type="text/javascript">	
+/*
 		$(document).ready(function() {
 		    //Reverse wheel direction
 			document.querySelector('.history-container').addEventListener('wheel', function(e) {
@@ -17,10 +18,132 @@
 			  }
 			});
 		});
+*/
 	</script>
 	<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 	<script src="mathlive/dist/mathlive.js"></script>
+	<script src="data/example01.js"></script>
+	<script src="data/example02.js"></script>
+	<script type="text/javascript">	
+		$(function(){
+				"use strict";
+				var spokens = [];
+				function changeButtonStates(){
+					if($("#speechbutton").prop("disabled"))
+						$("#speechbutton").prop("disabled", false);
+					else
+						$("#speechbutton").prop("disabled", true);
+					if($("#stopbutton").prop("disabled"))
+						$("#stopbutton").prop("disabled", false);
+					else
+						$("#stopbutton").prop("disabled", true);
+				}
+				$("#speechbutton").click(function(evt){
+					changeButtonStates();
+					recognition.start();
+					$("#indicator").text("Speak, please!");
+				});
+				$("#stopbutton").click(function(evt){
+					changeButtonStates();
+					recognition.stop();
+					$("#indicator").text("Not listening");
+				});
+				var recognition = new webkitSpeechRecognition();
+				recognition.interimResults = false;
+				recognition.continuous = true;
+				var text = $("#mathAnnotation");
+				recognition.onresult = function(event) {
+					var res = [];
+					for(var i= event.resultIndex; i<event.results.length; i++)
+						res.push(event.results[i][0].transcript);
+					var utterance = res+"";
+					text.append(utterance);
+					$("#indicator-sr").text(utterance);
+					spokens = spokens.concat(res);
+				};
+				$("#undobutton").click(function(event){
+					if(!spokens.length){
+						$("#indicator").text("Can't undo");
+						return;
+					}
+					var remove = spokens.pop();
+					var utterance = spokens+"";
+					text.text(utterance);
+					$("#indicator").text("Removed "+remove);
+				});
+				$("#clearbutton").click(function(event){
+					if(!confirm("Are you sure you want to delete everything you said? This cannot be undone.")){
+						return;
+					}
+					spokens = [];
+					text.text("");
+					$("#indicator").text("Everything you said was just deleted.");
+				});
+			});
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		$(document).ready(function() {
+
+		    //OPEN AND POPULATE MODAL WITH EQUATION
+		    function StartProblem(example) {
+			    clearProblem();
+			    var html = "";
+				for (var i = 0; i < example[0].steps.length; i++) {			      
+			      html += '<div class="row mathStep">';
+			      
+			      if(i==0) {
+				       html +=  '<div class="col-md-1">Original</div>';
+			      }else {
+				       html +=  '<div class="col-md-1">Step '+i+':</div>';
+			      }
+			      html +=  '<div class="col-md-4 staticMath">$$'+example[0].steps[i].equation+'$$</div>';
+			      html +=  '<div class="col-md-5">'+example[0].steps[i].annotation+'</div>';
+			      html +=  '<div class="col-md-2" style="text-align: right;"><button class="btn btn-sm btn-default">Delete</button></div>';
+			      html += '</div>';
+			    }
+			    $('.mathHistory').html(html);
+				MathLive.renderMathInDocument();
+				$('#MathEditorModal').modal();
+		    	
+	    	}
+	    	
+	    	//CCLEAR ALL VALUES FROM THE MODAL
+	    	function clearProblem() {
+		    	$('.mathHistory').empty();
+	    	}
+	    	
+	    	// WIRE UP EXAMPLE BUTTONS ON HOME PAGE
+		    $('#example01').click(function() {
+			    StartProblem(example01);
+			});
+			
+			$('#example02').click(function() {
+			    StartProblem(example02);
+			});
+			
+			$('#example03').click(function() {
+			    StartProblem(example03);
+			});
+		    
+		    
+		});
+	</script>
 	<script src="scripts/scripts.js"></script>
 </head>
 
@@ -39,14 +162,12 @@
 	        <span class="icon-bar"></span>
 	      </button>
 	      <a class="navbar-brand" href="trial03.html">
-		      <img src="images/Logo.png" alt="Galois Math Editor Logo" height="37">
+		      <img src="" alt="Galois Math Editor Logo" height="37">
 	      </a>
 	    </div>
 	    <!-- Collect the nav links, forms, and other content for toggling -->
 	    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 	      <ul class="nav navbar-nav navbar-right">
-		    <li><a href="">Sample 1</a></li>
-		    <li><a href="">Sample 2</a></li>
 	        <li><a href="mailto:info@diagramcenter.org">Contact Us</a></li>
 	      </ul>
 	    </div><!-- /.navbar-collapse -->
@@ -54,114 +175,140 @@
 	</nav>
 	</header>
 	<!-- END TOP HEADER/NAVIGATION -->
+		<div class="row" style="width: 1000px; margin: 0px auto; margin-top: 150px;">
+			<div class="col-md-12 text-center">
+				<h2>Click an example below to try out the new Galois math editor!</h2>
+				<br/><br/>
+			</div>
+		</div>
+		<div class="row" style="width: 1000px; margin: 0px auto;">
+			<div class="col-md-4 text-center">
+				<button class="btn btn-default btn-huge" id="example01">Example 1</button>
+			</div>
+			<div class="col-md-4 text-center">
+				<button class="btn btn-default btn-huge" id="example02">Example 2</button>
+			</div>
+			<div class="col-md-4 text-center">
+				<button class="btn btn-default btn-huge" id="example03">Example 3</button>
+			</div>
+		</div>
+	
+	
+	
+	
+	
+	
+	
+	
 	
 
-	<div class="mainContent">
-	  <div class="mathHistory">
-	    <div class="scroll">
-		    <div class="mathStep" data-step="0">
-			    <div class="mathStepTitle">Original:</div>
-			    <div class="mathStepEquation staticMath">$$7x + 13 = -1$$</div>
-			    <div class="mathStepAnnotation">Solve for x</div>
-		    </div>
-		    <div class="mathStep" data-step="1">
-			    <div class="mathStepTitle">Step 1:</div>
-			    <div class="mathStepEquation staticMath">$$7x + 13-13 = -1-13$$</div>
-			    <div class="mathStepAnnotation">Subtract 13 from both sides
-</div>
-		    </div>
-		    <div class="mathStep" data-step="2">
-			    <div class="mathStepTitle">Step 2:</div>
-			    <div class="mathStepEquation staticMath">$$7x \enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{+ 13-13} = \enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{-1-13} -14$$</div>
-			    <div class="mathStepAnnotation">Do arithmetic</div>
-		    </div>
-		    <div class="mathStep" data-step="3">
-			    <div class="mathStepTitle">Step 3:</div>
-			    <div class="mathStepEquation staticMath">$$7x =-14$$</div>
-			    <div class="mathStepAnnotation"></div>
-		    </div>
-		    <div class="mathStep" data-step="4">
-			    <div class="mathStepTitle">Step 4:</div>
-			    <div class="mathStepEquation staticMath">$$\enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{7}x =-\enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{14}2$$</div>
-			    <div class="mathStepAnnotation">Divide both sides by 7. 7/7=1 and 1 times anything is just that thing, so we just have x. On the right hand side of the equation, we have 14/7. That is = 2. Clean up the cross outs and...</div>
-		    </div>
-	    </div>
-	  </div>
+<!-- START MODAL CODE -->
+<div class="modal fade" tabindex="-1" role="dialog" id="MathEditorModal">
+  <div class="modal-dialog modal-lg" role="document" style="width: 1000px">
+    <div class="modal-content">
+      
+      
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Modal title</h4>
+      </div>
+      
+      
+      <div class="modal-body">
+		  <div class="mathHistory container-fluid" style="height: 300px; overflow-y: scroll;">
+			 <!-- Equation History Here --> 
+		  </div>
 	  
-	  <div class="mathWorkArea">
-		<div class="row" style="border-top: 10px solid #222F3F; border-bottom: 3px solid #222F3F; margin-top: 5px;">
-		  <div class="col-md-6">
-			  <div class="mathStepTitle" style="color:#222F3F; margin-top: 13px;">Current</div>
-			  <div class="mathEditor" id='mathEditorActive'> x = -2</div>
-		  </div>
-		  <div class="col-md-6">
-			  <div class="mathAnnotation">
-				<div class="form-group">
-				  <label for="comment">Describe your work</label>
-				  <textarea class="form-control" rows="2" id="mathAnnotation">Final answer. You can delete this and previous steps and re-derive to play with Galois.</textarea>
+		  <div class="mathWorkArea" style="height: 205px; ">
+			<div class="row" style="border-top: 10px solid #222F3F; border-bottom: 3px solid #222F3F; margin-top: 5px;">
+				<div class="col-md-6">
+					<div class="mathStepTitle" style="color:#222F3F; margin-top: 13px;">Current</div>
+					<div class="mathEditor" id='mathEditorActive'> x = -2</div>
 				</div>
-			  </div>
-		  </div>
-		</div>
-		  
-		<div class="row" style=" padding-top: 7px;">
-		  <div class="col-md-7">
-			  <div class="mathPalette">
-				  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\cdot$$</button>
-				  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\times$$</button>
-				  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\div$$</button>
-				  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\pm$$</button>
-				  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{\blacksquare}$$</button>
-				  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\frac{\blacksquare}{\square}$$</button>
-				  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$${\blacksquare}^{\square}$$</button>
-				  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$${\blacksquare}_{\square}$$</button>
-				  <button class="staticMath btn btn-default paletteButton"  onclick="MathLivePasteFromButton(this)">$$\sqrt{\blacksquare}$$</button>
-				  <button class="staticMath btn btn-default paletteButton"  onclick="MathLivePasteFromButton(this)">$$\sqrt[{\square}]{\blacksquare}$$</button>
-				  <br/>
-				  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\leq$$</button>
-				  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\geq$$</button>
-				  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\neq$$</button>
-				  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\overset{?}{=}$$</button>
-				  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$ \enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{\blacksquare}^\square $$</button>
-				  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\Bigl{(}\blacksquare\Bigr{)}$$</button>
-				  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\Bigl{[}\blacksquare\Bigr{]}$$</button>
-				  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\Bigl{|}\blacksquare\Bigr{|}$$</button>
-				  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\Bigl{\lfloor}\blacksquare\Bigr{\rfloor}$$</button>
-				  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\Bigl{\lceil}\blacksquare\Bigr{\rceil}$$</button>
-				  <br/>
-				  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\triangle$$</button>
-				  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\angle$$</button>
-				  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\cong$$</button>
-				  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\perp$$</button>
-				  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\parallel$$</button>
-				  <!-- <button class="staticMath paletteButton" onclick="MathLivePasteFromButton(this)">$$ \,{}^\square \enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{\blacksquare}$$</button> -->
-				  <!-- <button class="staticMath paletteButton" onclick="MathLivePasteFromButton(this)">$$\overset{\square}{\enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{\blacksquare}}$$</button> -->
-				  <!-- <button class="staticMath paletteButton" onclick="MathLivePasteFromButton(this)">$$  \enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{\blacksquare} ^{\square}$$</button> -->
-				  <!-- <button class="staticMath paletteButton" onclick="MathLivePasteFromButton(this)">$$\,{}_\square \enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{\blacksquare}$$</button> -->
-				  <!-- <button class="staticMath paletteButton" onclick="MathLivePasteFromButton(this)">$$\underset{\square}{\enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{\blacksquare}}$$</button> -->
-				  <!-- <button class="staticMath paletteButton" onclick="MathLivePasteFromButton(this)">$$  \enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{\blacksquare} _{\square}$$</button>		   -->
-				  <!-- <button class="staticMath paletteButton" onclick="MathLivePasteFromButton(this)">$${\square} \enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{\blacksquare}$$</button> -->
-				  <!-- <button class="staticMath paletteButton" onclick="MathLivePasteFromButton(this)">$$\enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{\blacksquare}$$</button> -->			  
-				  <!-- <button class="btn btn-default">Clear</button> -->
-				  <!-- <button class="btn btn-default">Cut</button> -->
-				  <!-- <button class="btn btn-default">Copy</button> -->
-				  <!-- <button class="btn btn-default">Paste</button> -->
+				<div class="col-md-6">
+					<div class="mathAnnotation">
+						<div class="row" style="margin: 5px 0px 5px 0px;">
+							<div class="col-md-7"> 
+								<label>Describe your work</label>   
+							</div>    
+							<div class="col-md-5 pull right"> 
+								<button  id="speechbutton">Speak</button>
+								<button  disabled="true" id="stopbutton">Stop</button>
+								<!-- <button  id="undobutton">delete last line</button> -->
+								<button  id="clearbutton">Delete</button>   
+							</div>    
+						</div>    
+						<div class="row" style="margin-bottom: 5px;">
+							<div class="col-md-12"> 
+								 <textarea class="form-control" rows="2" id="mathAnnotation">Final answer. You can delete this and previous steps and re-derive to play with Galois.</textarea> 
+							</div>
+						</div>   
+					</div>
+				</div>
+			</div>
+		    <div class="row" style=" padding-top: 7px;">
+			  <div class="col-md-7">
+				  <div class="mathPalette">
+					  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\cdot$$</button>
+					  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\times$$</button>
+					  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\div$$</button>
+					  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\pm$$</button>
+					  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{\blacksquare}$$</button>
+					  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\frac{\blacksquare}{\square}$$</button>
+					  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$${\blacksquare}^{\square}$$</button>
+					  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$${\blacksquare}_{\square}$$</button>
+					  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\sqrt{\blacksquare}$$</button>
+					  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\sqrt[{\square}]{\blacksquare}$$</button>
+					  <br/>
+					  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\leq$$</button>
+					  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\geq$$</button>
+					  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\neq$$</button>
+					  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\overset{?}{=}$$</button>
+					  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$ \enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{\blacksquare}^\square $$</button>
+					  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\Bigl{(}\blacksquare\Bigr{)}$$</button>
+					  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\Bigl{[}\blacksquare\Bigr{]}$$</button>
+					  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\Bigl{|}\blacksquare\Bigr{|}$$</button>
+					  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\Bigl{\lfloor}\blacksquare\Bigr{\rfloor}$$</button>
+					  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\Bigl{\lceil}\blacksquare\Bigr{\rceil}$$</button>
+				   </div>
 			   </div>
-		   </div>
-		   <div class="col-md-4">
-			   <button class="btn btn-default" onclick="NewMathEditorRow(CleanUpCrossouts(TheActiveMathField.latex()))">Cleanup Crossouts</button>
-			   <button class="btn btn-default" onclick="DeleteActiveMath()">Delete Current Step</button>
-				<br/>
-			   <button class="btn btn-default" onclick="NewMathEditorRow(TheActiveMathField.latex())">Copy Step</button>
-				<button class="btn btn-default"
-					onclick="NewMathEditorRow(CleanUpCrossouts(TheActiveMathField.latex()));
-								NewMathEditorRow(CleanUpCrossouts(TheActiveMathField.latex()));">
-					Cleanup & Copy Step
-				</button>
-		   </div>
-		</div>
-	  </div>
-	</div>
+			   <div class="col-md-4">
+				   <div class="mathPalette">
+					  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\triangle$$</button>
+					  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\angle$$</button>
+					  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\cong$$</button>
+					  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\perp$$</button>
+				      <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\parallel$$</button>
+				   </div>
+			   </div>
+		    </div>
+		  </div>     
+      </div>    
+      <div class="modal-footer" style="text-align: left;">
+        <button class="btn btn-default" onclick="NewMathEditorRow(CleanUpCrossouts(TheActiveMathField.latex()))">Cleanup Crossouts</button>
+	    <button class="btn btn-default" onclick="DeleteActiveMath()">Delete Current Step</button>
+	    <button class="btn btn-default" onclick="NewMathEditorRow(TheActiveMathField.latex())">Copy Step</button>
+	    <button class="btn btn-default" onclick="NewMathEditorRow(CleanUpCrossouts(TheActiveMathField.latex())); NewMathEditorRow(CleanUpCrossouts(TheActiveMathField.latex()));">Cleanup & Copy Step</button>
+	    <button class="btn btn-primary pull-right" data-dismiss="modal">Done</button>
+      </div>
+
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!-- END MODAL CODE -->
+
+
+
+
+<script>
+		   
+	
+	
+	
+	
+	
+	
+</script>
 </body>
 
 <!-- MATHLIVE INITIALIZATION RENDER SCRIPT -->
@@ -175,6 +322,7 @@
 		}
 	);
 </script>
+
 <!-- END MATHLIVE INITIALIZATION RENDER SCRIPT -->
 
 </html>

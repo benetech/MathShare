@@ -1,4 +1,5 @@
 /* 	Styles for Structure */
+/*
 	html,body {height: 100%;margin: 0;}
 	.mainContent {
 	  display: flex;
@@ -10,84 +11,27 @@
 	  width: 1000px;
 	  margin: 0px auto;
 	}
+*/
+/*
 	.mathHistory {
 	  flex-shrink: 10;
 	  overflow: auto;
 	}
 	.mathHistory, .scroll {transform: scale(1,-1);}
 	.text-input {resize: vertical;}
+*/
 	
 /* 	Styles From Neil */
+/*
 	.staticMath {
 	max-width: 35em;
 	padding: 1ex;
 	}
+*/
 	
 	.mathEditor {
 		margin: 15px 0px 15px 0px;
 	}
-	
-/*
-	.mathEditorWithPalete {
-		max-width: 60em;
-	   border: 2px solid green;
-	}
-*/
-	
-/*
-	.step {
-		max-width: 60em;
-	   border: 2px solid green;
-	}
-	
-	.step table {
-	   border-style: none;
-	}
-	
-	.step td {
-	   width: 40em;
-	   padding: 0em;
-	   border-style: none;
-	   border: 0px;
-	}
-	
-	.mathEditorWithPalete table {
-	   border-style: none;
-	}
-	
-	.mathEditorWithPalete td {
-	   width: 40em;
-	   padding: 1em;
-	   border-style: none;
-	   border: 0px;
-	}
-	
-	.palette td {
-	   padding: 0.1em;
-	   border: 1px solid black;
-	   text-align:center;
-	}
-	
-	table {
-	    border-collapse: collapse;
-	}
-	
-	table, th, td {
-	   border: 1px solid black;
-	   padding: 1px;
-	   text-align:left;
-	}
-*/
-	
-/* 	From Jason	 */
-		
-/*
-	header {
-		background-color: #222F3F;
-		height: 75px;
-		width: 100%;
-	}
-*/
 	
 	
 	.navbar-default {
@@ -118,7 +62,7 @@
 	padding: 5px 0px 5px 0px;
 }
 
-.mathStep:nth-child(even) {
+.mathStep:nth-child(odd) {
     background-color: #eee;
 }
 
@@ -144,4 +88,11 @@
 
 .mathWorkArea {
 	 
+}
+
+.btn-huge{
+	width: 300px;
+    padding-top:50px;
+    padding-bottom:50px;
+    margin: 0px auto;
 }
