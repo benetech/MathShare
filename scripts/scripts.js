@@ -41,14 +41,11 @@ function NewMathEditorRow(mathContent) {
 	let mathStepNumber = $('.mathStep:last').data('step');
 	let mathStepNewNumber = mathStepNumber ? mathStepNumber+1 : 1;	// worry about no steps yet
 	let mathStepTitle = "Step "+mathStepNewNumber+":";
-	
-	alert(mathStepNumber);
-	
-	let html = '<div class="row mathStep">';
-	html +=  '<div class="col-md-1">'+mathStepTitle+'</div>';
-	html +=  '<div class="col-md-4 staticMath">$$'+mathStepEquation+'$$</div>';
+
+	let html = '<div class="row mathStep" data-step="'+mathStepNewNumber+'" data-equation="'+mathStepEquation+'" data-annotation="'+mathStepAnnotation+'">';
+	html +=  '<div class="col-md-2">'+mathStepTitle+'</div>';
+	html +=  '<div class="col-md-5 staticMath">$$'+mathStepEquation+'$$</div>';
 	html +=  '<div class="col-md-5">'+mathStepAnnotation+'</div>';
-	html +=  '<div class="col-md-2" style="text-align: right;"><button class="btn btn-sm btn-default">Delete</button></div>';
 	html += '</div>';
 
 	$( ".mathHistory" ).append(html);

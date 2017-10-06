@@ -23,124 +23,32 @@
 	<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 	<script src="mathlive/dist/mathlive.js"></script>
-	<script src="data/example01.js"></script>
-	<script src="data/example02.js"></script>
+	<script src="data/data01.js"></script>
+	<script src="scripts/speech2text.js"></script>
+	<script src="scripts/functions.js"></script>
 	<script type="text/javascript">	
-		$(function(){
-				"use strict";
-				var spokens = [];
-				function changeButtonStates(){
-					if($("#speechbutton").prop("disabled"))
-						$("#speechbutton").prop("disabled", false);
-					else
-						$("#speechbutton").prop("disabled", true);
-					if($("#stopbutton").prop("disabled"))
-						$("#stopbutton").prop("disabled", false);
-					else
-						$("#stopbutton").prop("disabled", true);
-				}
-				$("#speechbutton").click(function(evt){
-					changeButtonStates();
-					recognition.start();
-					$("#indicator").text("Speak, please!");
-				});
-				$("#stopbutton").click(function(evt){
-					changeButtonStates();
-					recognition.stop();
-					$("#indicator").text("Not listening");
-				});
-				var recognition = new webkitSpeechRecognition();
-				recognition.interimResults = false;
-				recognition.continuous = true;
-				var text = $("#mathAnnotation");
-				recognition.onresult = function(event) {
-					var res = [];
-					for(var i= event.resultIndex; i<event.results.length; i++)
-						res.push(event.results[i][0].transcript);
-					var utterance = res+"";
-					text.append(utterance);
-					$("#indicator-sr").text(utterance);
-					spokens = spokens.concat(res);
-				};
-				$("#undobutton").click(function(event){
-					if(!spokens.length){
-						$("#indicator").text("Can't undo");
-						return;
-					}
-					var remove = spokens.pop();
-					var utterance = spokens+"";
-					text.text(utterance);
-					$("#indicator").text("Removed "+remove);
-				});
-				$("#clearbutton").click(function(event){
-					if(!confirm("Are you sure you want to delete everything you said? This cannot be undone.")){
-						return;
-					}
-					spokens = [];
-					text.text("");
-					$("#indicator").text("Everything you said was just deleted.");
-				});
-			});
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 		$(document).ready(function() {
-
-		    //OPEN AND POPULATE MODAL WITH EQUATION
-		    function StartProblem(example) {
-			    clearProblem();
-			    var html = "";
-				for (var i = 0; i < example[0].steps.length; i++) {			      
-			      html += '<div class="row mathStep">';
-			      
-			      if(i==0) {
-				       html +=  '<div class="col-md-1">Original</div>';
-			      }else {
-				       html +=  '<div class="col-md-1">Step '+i+':</div>';
-			      }
-			      html +=  '<div class="col-md-4 staticMath">$$'+example[0].steps[i].equation+'$$</div>';
-			      html +=  '<div class="col-md-5">'+example[0].steps[i].annotation+'</div>';
-			      html +=  '<div class="col-md-2" style="text-align: right;"><button class="btn btn-sm btn-default">Delete</button></div>';
-			      html += '</div>';
-			    }
-			    $('.mathHistory').html(html);
-				MathLive.renderMathInDocument();
-				$('#MathEditorModal').modal();
-		    	
-	    	}
-	    	
-	    	//CCLEAR ALL VALUES FROM THE MODAL
-	    	function clearProblem() {
-		    	$('.mathHistory').empty();
-	    	}
+			//Define All problem data
+			var problems = [problem01,problem02,newEditor];
 	    	
 	    	// WIRE UP EXAMPLE BUTTONS ON HOME PAGE
-		    $('#example01').click(function() {
-			    StartProblem(example01);
+		    $('#problem01').click(function() {
+			    SetCurrentProblem(problem01);
+			    PopulateEditorModal(CurrentProblem);
+			    OpenEditorModal();
 			});
 			
-			$('#example02').click(function() {
-			    StartProblem(example02);
+			$('#problem02').click(function() {
+				SetCurrentProblem(problem02);
+			    PopulateEditorModal(CurrentProblem);
+			    OpenEditorModal();
 			});
 			
-			$('#example03').click(function() {
-			    StartProblem(example03);
+			$('#newEditor').click(function() {
+				SetCurrentProblem(newEditor);
+			    PopulateEditorModal(CurrentProblem);
+			    OpenEditorModal();
 			});
-		    
 		    
 		});
 	</script>
@@ -183,13 +91,13 @@
 		</div>
 		<div class="row" style="width: 1000px; margin: 0px auto;">
 			<div class="col-md-4 text-center">
-				<button class="btn btn-default btn-huge" id="example01">Example 1</button>
+				<button class="btn btn-default btn-huge" id="problem01">Problem 1</button>
 			</div>
 			<div class="col-md-4 text-center">
-				<button class="btn btn-default btn-huge" id="example02">Example 2</button>
+				<button class="btn btn-default btn-huge" id="problem02">Problem 2</button>
 			</div>
 			<div class="col-md-4 text-center">
-				<button class="btn btn-default btn-huge" id="example03">Example 3</button>
+				<button class="btn btn-default btn-huge" id="newEditor">New Editor</button>
 			</div>
 		</div>
 	
@@ -203,19 +111,17 @@
 	
 
 <!-- START MODAL CODE -->
-<div class="modal fade" tabindex="-1" role="dialog" id="MathEditorModal">
+<div class="modal fade" tabindex="-1" role="dialog" id="EditorModal">
   <div class="modal-dialog modal-lg" role="document" style="width: 1000px">
     <div class="modal-content">
       
-      
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Modal title</h4>
+        <h4 class="modal-title" data-title data-equation data-annotation>Modal title</h4>
       </div>
       
       
       <div class="modal-body">
-		  <div class="mathHistory container-fluid" style="height: 300px; overflow-y: scroll;">
+		  <div class="mathHistory container-fluid" style="height: 300px; overflow-y: scroll;" id="MathHistory">
 			 <!-- Equation History Here --> 
 		  </div>
 	  
@@ -235,7 +141,7 @@
 								<button  id="speechbutton">Speak</button>
 								<button  disabled="true" id="stopbutton">Stop</button>
 								<!-- <button  id="undobutton">delete last line</button> -->
-								<button  id="clearbutton">Delete</button>   
+<!-- 								<button  id="clearbutton">Delete</button> -->   
 							</div>    
 						</div>    
 						<div class="row" style="margin-bottom: 5px;">
@@ -289,7 +195,10 @@
 	    <button class="btn btn-default" onclick="DeleteActiveMath()">Delete Current Step</button>
 	    <button class="btn btn-default" onclick="NewMathEditorRow(TheActiveMathField.latex())">Copy Step</button>
 	    <button class="btn btn-default" onclick="NewMathEditorRow(CleanUpCrossouts(TheActiveMathField.latex())); NewMathEditorRow(CleanUpCrossouts(TheActiveMathField.latex()));">Cleanup & Copy Step</button>
-	    <button class="btn btn-primary pull-right" data-dismiss="modal">Done</button>
+	    
+	    <button class="btn btn-primary pull-right" id="BtnMarkCompleted">Mark Completed!</button>
+	    <button class="btn btn-default pull-right" id="BtnSaveForLater">Save For Later</button>
+	    
       </div>
 
     </div><!-- /.modal-content -->
