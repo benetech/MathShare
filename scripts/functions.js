@@ -55,15 +55,16 @@ function PopulateEditorModal(dataObj) {
 		);
     	
     //7 Wire up SAVE FOR LATER btn
-    $('#BtnSaveForLater').click(function() {
+    $('#BtnSave').click(function() {
 	    SaveProblem(CurrentProblem);
 	    CloseEditorModal();
     });
     
     //8 Wire up Mark Completed
-    $('#BtnMarkCompleted').click(function() {
-	    SaveProblem(CurrentProblem);
-	    CloseEditorModal();
+    $('#BtnCancel').click(function() {
+	    if (confirm("Any work on this problem will NOT be saved") == true) {
+		    CloseEditorModal();
+		}
     });
 }
 //***************************************************************************************************************************************************
@@ -98,8 +99,8 @@ function ClearEditorModal() {
 		 $('#mathAnnotation').val('');
 	
 	//5. Unwire Save Buttons
-		$('#BtnSaveForLater').unbind('click');
-		$('#BtnMarkCompleted').unbind('click');
+		$('#BtnSave').unbind('click');
+		$('#BtnCancel').unbind('click');
 }
 
 //***************************************************************************************************************************************************

@@ -83,13 +83,16 @@
 	</nav>
 	</header>
 	<!-- END TOP HEADER/NAVIGATION -->
-		<div class="row" style="width: 1000px; margin: 0px auto; margin-top: 150px;">
+		
+		
+	<div class="container" style="width: 1000px; margin: 0px auto; margin-top: 150px;">	
+		<div class="row">
 			<div class="col-md-12 text-center">
 				<h2>Click an example below to try out the new Galois math editor!</h2>
 				<br/><br/>
 			</div>
 		</div>
-		<div class="row" style="width: 1000px; margin: 0px auto;">
+		<div class="row">
 			<div class="col-md-4 text-center">
 				<button class="btn btn-default btn-huge" id="problem01">Problem 1</button>
 			</div>
@@ -100,7 +103,7 @@
 				<button class="btn btn-default btn-huge" id="newEditor">New Editor</button>
 			</div>
 		</div>
-	
+	</div>
 	
 	
 	
@@ -118,7 +121,6 @@
       <div class="modal-header">
         <h4 class="modal-title" data-title data-equation data-annotation>Modal title</h4>
       </div>
-      
       
       <div class="modal-body">
 		  <div class="mathHistory container-fluid" style="height: 300px; overflow-y: scroll;" id="MathHistory">
@@ -141,7 +143,7 @@
 								<button  id="speechbutton">Speak</button>
 								<button  disabled="true" id="stopbutton">Stop</button>
 								<!-- <button  id="undobutton">delete last line</button> -->
-<!-- 								<button  id="clearbutton">Delete</button> -->   
+								<!-- <button  id="clearbutton">Delete</button> -->   
 							</div>    
 						</div>    
 						<div class="row" style="margin-bottom: 5px;">
@@ -195,29 +197,14 @@
 	    <button class="btn btn-default" onclick="DeleteActiveMath()">Delete Current Step</button>
 	    <button class="btn btn-default" onclick="NewMathEditorRow(TheActiveMathField.latex())">Copy Step</button>
 	    <button class="btn btn-default" onclick="NewMathEditorRow(CleanUpCrossouts(TheActiveMathField.latex())); NewMathEditorRow(CleanUpCrossouts(TheActiveMathField.latex()));">Cleanup & Copy Step</button>
-	    
-	    <button class="btn btn-primary pull-right" id="BtnMarkCompleted">Mark Completed!</button>
-	    <button class="btn btn-default pull-right" id="BtnSaveForLater">Save For Later</button>
-	    
+	    <button class="btn btn-primary pull-right" id="BtnSave">Save</button>
+	    <button class="btn btn-default pull-right" id="BtnCancel">Cancel</button>
       </div>
-
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 <!-- END MODAL CODE -->
 
-
-
-
-<script>
-		   
-	
-	
-	
-	
-	
-	
-</script>
 </body>
 
 <!-- MATHLIVE INITIALIZATION RENDER SCRIPT -->
