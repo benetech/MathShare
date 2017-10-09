@@ -1,39 +1,172 @@
-/**
- * The overall structure for the solution steps is a series of divs consistings of the
- *   the label, the math, and the annotation (might be empty). These have classes as follows:
- * <div class="mathStep" data-step="[num]">';
- *   <div class="mathStepTitle">Step [num]</div>';
- *   <div class="mathStepEquation staticMath">$$[[latex for equation]]$$</div>';
- *   <div class="mathStepAnnotation">[[annotation]]</div>';
- * </div>
- * After those, the current working area occurs and has the form:
- * <div ...>
- *   <div class="mathStepTitle" ...>Current</div>
- *   <div class="mathEditor" id='mathEditorActive'> [latex for the active area] </div>
- *   <div...> ...<textarea ... id="mathAnnotation"> [annotation/reason] </textarea>
+//***************************************************************************************************************************************************
+// GLOBAL VARIABLES
+	// Global var to share the representation used for crossouts
 
- * </div>
- * The palette buttons should have the classes 'staticMath' and if they have a place square 
- *   to indicate where the selection ends up, they should also have the class 'paletteButton'
- */
- 
-/*
- * Global var to share the representation used for crossouts
- */
-CrossoutTeXString = "\\enclose{updiagonalstrike downdiagonalstrike}[2px solid red]";
-"\enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{2}"
+	CrossoutTeXString = "\\enclose{updiagonalstrike downdiagonalstrike}[2px solid red]";
+	"\enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{2}"
+		
+	// crossout pattern makes the contents of the []s optional
+	// FIX: this fails if the thing being crossed out has {}s.
+	//   Regular exprs won't handle the nesting/counting
+	CrossoutRegExpPattern = /\\enclose\{updiagonalstrike downdiagonalstrike\}(?:\[2px solid red\])*?(?:\{)?[^}]+?(?:\})/;
+		
+	CrossoutFindRegExpPattern = /\\enclose\{updiagonalstrike downdiagonalstrike\}\[2px solid red\]/g;
 
-// crossout pattern makes the contents of the []s optional
-// FIX: this fails if the thing being crossed out has {}s.
-//   Regular exprs won't handle the nesting/counting
-CrossoutRegExpPattern = /\\enclose\{updiagonalstrike downdiagonalstrike\}(?:\[2px solid red\])*?(?:\{)?[^}]+?(?:\})/;
+//***************************************************************************************************************************************************
+// RENDER ACTIVE MATH EDITOR
+function RenderMathEditor() {
+	TheActiveMathField = MathLive.makeMathField(
+		document.getElementById('mathEditorActive'),
+	  	{commandbarToggle: 'hidden',
+		 overrideDefaultInlineShortcuts: false,
+         //onSelectionDidChange: UpdatePalette
+		}
+	);
+}
 
-CrossoutFindRegExpPattern = /\\enclose\{updiagonalstrike downdiagonalstrike\}\[2px solid red\]/g;
+//***************************************************************************************************************************************************
+// POPULATE EDITOR WINDOW
+function PopulateEditorModal(dataObj) {
+    //1 Clear existing info in modal
+    	ClearEditorModal();
+    //2 Get all variables from js objects
+    	let originalProblemTitle = dataObj[0].metadata[0].title;
+    	let originalProblemEquation = dataObj[1].originalProblem[0].equation;    	 
+    	let originalProblemAnnotation = dataObj[1].originalProblem[0].annotation;    	 
+    	let currentEditorEquation = dataObj[2].currentEditor[0].equation;    	 
+    	let currentEditorAnnotation = dataObj[2].currentEditor[0].annotation;    	
+    	let historyObj = dataObj[3].history;
+    //3 Build HTML HISTORY
+    	let htmlHistory = '';
+		for (let i = 0; i < historyObj.length; i++) {			      
+	        htmlHistory += '<div class="row mathStep" data-step="'+i+'" data-equation="'+historyObj[i].equation+'" data-annotation="'+historyObj[i].annotation+'">';
+		    htmlHistory +=  '<div class="col-md-2">Step '+i+':</div>';
+	        htmlHistory +=  '<div class="col-md-5 staticMath">$$'+historyObj[i].equation+'$$</div>';
+	        htmlHistory +=  '<div class="col-md-5">'+historyObj[i].annotation+'</div>';
+	        htmlHistory += '</div>';
+	    }
+    //3 BUILD HTML TITLE
+    	let htmlTitle = ''+originalProblemTitle+': '+originalProblemEquation+ ', '+originalProblemAnnotation+'';
+    //4 POPULATE HTML
+    	$('#EditorModal .modal-title').html(htmlTitle);
+    	$('#EditorModal .modal-title').data('title', originalProblemTitle );
+    	$('#EditorModal .modal-title').data('equation', originalProblemEquation );
+    	$('#EditorModal .modal-title').data('annotation', originalProblemAnnotation );
+    	
+    	$('#EditorModal .mathHistory').html(htmlHistory);
+    	$('#mathEditorActive').html(currentEditorEquation);
+    	$('#mathAnnotation').val(currentEditorAnnotation);
+    //5 RUN RENDER MATH
+    	MathLive.renderMathInDocument();
+    
+    //6 RENDER MATH EDITOR
+    	TheActiveMathField = MathLive.makeMathField(
+			document.getElementById('mathEditorActive'),
+		  	{commandbarToggle: 'hidden',
+			 overrideDefaultInlineShortcuts: false,
+	         //onSelectionDidChange: UpdatePalette
+			}
+		);
+    	
+    //7 Wire up SAVE FOR LATER btn
+    $('#BtnSave').click(function() {
+	    SaveProblem(CurrentProblem);
+	    CloseEditorModal();
+    });
+    
+    //8 Wire up Mark Completed
+    $('#BtnCancel').click(function() {
+	    if (confirm("Any work on this problem will NOT be saved") == true) {
+		    CloseEditorModal();
+		}
+    });
+}
+//***************************************************************************************************************************************************
+// OPEN EDITOR MODAL
+function OpenEditorModal() {
+	$('#EditorModal').modal({
+    	backdrop: 'static',
+		keyboard: false
+	});
+}
 
-/**
- * Freeze the active/"current" element by making it and it's annotation be static math in a new row/step.
- * Make the active/"current" element have 'mathContent' and clear the annotation.
- */ 
+//***************************************************************************************************************************************************
+// CLOSE EDITOR MODAL
+function CloseEditorModal() {
+    $('#EditorModal').modal('hide');
+    ClearEditorModal();
+}
+
+//***************************************************************************************************************************************************
+// CLEAR THE EDITOR MODAL
+function ClearEditorModal() {
+	//1. Clear Title
+	     $('#EditorModal .modal-title').html('');
+	     
+	//2. Clear History
+	     $('#EditorModal .mathHistory').html('');
+	     
+	//3. Clear Editor 
+	     $('#mathEditorActive').html('');
+	     
+	//4. Clear Annotation
+		 $('#mathAnnotation').val('');
+	
+	//5. Unwire Save Buttons
+		$('#BtnSave').unbind('click');
+		$('#BtnCancel').unbind('click');
+}
+
+//***************************************************************************************************************************************************
+// RECREATE PROBLEM OBJECT FROM DOM
+function SaveProblem(dataObj) {
+	//1 Get Variable from DOM
+	let originalProblemTitle = $('#EditorModal .modal-title').data('title');
+    let originalProblemEquation = $('#EditorModal .modal-title').data('equation');    	 
+    let originalProblemAnnotation = $('#EditorModal .modal-title').data('annotation');    	 
+    let currentEditorEquation = TheActiveMathField.latex();   	 
+    let currentEditorAnnotation = $('#mathAnnotation').val();
+    
+    let mathStep = $('.mathStep');
+	let history_array = [];
+	
+	$.each(mathStep, function (index, item) {
+	    history_array.push( {equation: $(item).data('equation'), annotation: $(item).data('annotation')} );  
+	});
+	let tempObjName = CurrentProblem[0].metadata[0].variableName;
+	window[tempObjName] = 	[{"metadata": [
+								{
+								"title": originalProblemTitle,
+			    				"variableName":tempObjName
+			    				}]
+    			    		},
+							{"originalProblem": [
+									{
+				    				"equation":originalProblemEquation,
+				    				"annotation":originalProblemAnnotation
+				    				}]
+		    			    },
+		    			    {"currentEditor": [
+									{
+				    				"equation":currentEditorEquation,
+				    				"annotation":currentEditorAnnotation
+				    				}]
+			    			},
+			    			{"history": history_array
+			    			}];
+}
+
+//***************************************************************************************************************************************************
+// SET CURRENT PROBLEM TO GLOBAL VARIABLE
+var CurrentProblem;
+function SetCurrentProblem(dataObj) {
+	CurrentProblem = dataObj;
+	//console.log('Current Problem is: '+CurrentProblem[1].metadata[0].title);
+}
+
+
+//***************************************************************************************************************************************************
+// CREATE NEW HISTORY ROW FROM CURRENT CONTENT
 function NewMathEditorRow(mathContent) {
 	// assemble the new static area from the current math/annotation
 	let mathStepEquation = TheActiveMathField.latex();
@@ -55,16 +188,13 @@ function NewMathEditorRow(mathContent) {
 	TheActiveMathField.latex(mathContent);
 	$('#mathAnnotation').val('');
 	
-	
 	MathLive.renderMathInDocument();
 }	
 
-
-/**
- * Delete the currently active area and make the last step active...
- * Or, put another way...
- * Copy the contents of the last step/row into the active area and delete that step/row
- */
+//***************************************************************************************************************************************************
+// Delete the currently active area and make the last step active...
+// Or, put another way...
+// Copy the contents of the last step/row into the active area and delete that step/row
 function DeleteActiveMath() {
 	// nothing to do if there are no steps
 	if (!$('.mathStep:last'))
@@ -86,48 +216,11 @@ function DeleteActiveMath() {
 	TheActiveMathField.focus();
 }
 
-/*
-function NewMathEditorRow(mathContent) {
-	let oldActiveElement = TheActiveMathField.el();
-
-	// find parent row so we can add a new row before it
-	let activeRow = oldActiveElement.parentNode;
-	while (activeRow.nodeName != 'TR') {
-		activeRow = activeRow.parentNode;
-	}
-	
-	// create new row	
-	console.log(TheActiveMathField.latex());
-	
-	let newRow = document.createElement("tr");
-	newRow.className = 'step';
-	newRow.innerHTML = '<td><div class="staticMath"></div></td>' +
-					   '<td><p></p></td>';
-					   
-	// take the contents of the active row and stuff it into the new row	
-	let newFirstCol = newRow.firstChild.firstChild;
-	newFirstCol.innerText = '$$' + TheActiveMathField.latex() + '$$';
-	MathLive.renderMathInElement(newFirstCol);	
-	
-	// copy the editor's reason and then clear it
-	let mathEditorReason = document.getElementById("mathEditorReason");
-	newRow.lastChild.firstChild.innerText = mathEditorReason.value;
-	mathEditorReason.value = '';
-		
-	// Reset active row
-	TheActiveMathField.latex(mathContent);
-	activeRow.parentNode.insertBefore(newRow,activeRow);
-}
-*/
-
-/**
- * Remove all crossouts and if there are replacements associated with them,
- * put those in place of the crossouts.
- * @param {string} latexStr The LaTeX string to be matches
- * 
- * @return {string} The string with the crossouts removed and replacements done
- * 
- */
+//***************************************************************************************************************************************************
+// Remove all crossouts and if there are replacements associated with them,
+// put those in place of the crossouts.
+// @param {string} latexStr The LaTeX string to be matches
+// @return {string} The string with the crossouts removed and replacements done
 function CleanUpCrossouts(latexStr) {
 	// FIX: a proper "compass adornment" feature for MathLive doesn't exist yet.
 	// Right now, code looks for:
@@ -160,10 +253,9 @@ function CleanUpCrossouts(latexStr) {
 	return latexStr.replace(new RegExp(CrossoutRegExpPattern, "g"), "");
 }
 
-/**
- * Paste the button into the active math editor after substituting
- * for the black and white squares
- */
+//***************************************************************************************************************************************************
+// Paste the button into the active math editor after substituting
+// for the black and white squares
 function MathLivePasteFromButton(element) {
 	// Button contents as a string
     let insertionString = MathLive.getOriginalContent(element).
@@ -188,10 +280,9 @@ function MathLivePasteFromButton(element) {
 	TheActiveMathField.focus();
 }
 
-/**
- * Call paste function if someone hits enter over palette entry
- * Important for accessibility
- */
+//***************************************************************************************************************************************************
+// Call paste function if someone hits enter over palette entry
+// Important for accessibility
 function MathLivePasteFromButtonKeyDown(event, element) {
 	if (event.key == "Enter") {
 		MathLivePasteFromButton(element);
@@ -200,11 +291,10 @@ function MathLivePasteFromButtonKeyDown(event, element) {
 		return true;
 }
 
-/**
- * Update the palette with the current selection for the active math editor
- * Reset the palette when the selection is just an insertion cursor
- * @param mathField -- the active math editor called on 'onSelectionDidChange'
- */
+//***************************************************************************************************************************************************
+// Update the palette with the current selection for the active math editor
+// Reset the palette when the selection is just an insertion cursor
+// @param mathField -- the active math editor called on 'onSelectionDidChange'
 function UpdatePalette(mathField) {
 	if (mathField.mathlist) {
 		let origSelection = mathField.selectedText('latex')
@@ -249,6 +339,7 @@ function UpdatePalette(mathField) {
 	}
 }
 
+//***************************************************************************************************************************************************
 function HandleKeyDown(event)
 {
 	if (event.ctrlKey && (event.key=="Delete" || event.key=="Backspace")) {
@@ -273,3 +364,22 @@ function HandleKeyDown(event)
 	}
 	return true;
 }
+
+
+
+
+
+
+
+
+
+
+		
+		
+
+
+
+
+
+
+
