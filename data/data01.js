@@ -76,14 +76,12 @@ var newEditor =    [{"metadata": [
     			    },
 					{"originalProblem": [
 							{
-		    				"equation":"",
-		    				"annotation":""
+		    				
 		    				}]
     			    },
     			    {"currentEditor": [
 							{
-		    				"equation":"",
-		    				"annotation":""
+		    				
 		    				}]
 	    			},
 	    			{"history": [

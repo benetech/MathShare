@@ -31,22 +31,38 @@ function PopulateEditorModal(dataObj) {
     	ClearEditorModal();
     //2 Get all variables from js objects
     	let originalProblemTitle = dataObj[0].metadata[0].title;
+    	let originalProblemVariable = dataObj[0].metadata[0].variableName;
     	let originalProblemEquation = dataObj[1].originalProblem[0].equation;    	 
     	let originalProblemAnnotation = dataObj[1].originalProblem[0].annotation;    	 
     	let currentEditorEquation = dataObj[2].currentEditor[0].equation;    	 
     	let currentEditorAnnotation = dataObj[2].currentEditor[0].annotation;    	
     	let historyObj = dataObj[3].history;
+    	
+    	if (originalProblemVariable=="newEditor") {
+	    	originalProblemEquation = "";
+	    	originalProblemAnnotation = "";
+	    	currentEditorEquation = "";
+	    	currentEditorAnnotation = "";
+	    	historyObj = "";
+    	}
+    	
+    	
     //3 Build HTML HISTORY
     	let htmlHistory = '';
-		for (let i = 0; i < historyObj.length; i++) {			      
-	        htmlHistory += '<div class="row mathStep" data-step="'+i+'" data-equation="'+historyObj[i].equation+'" data-annotation="'+historyObj[i].annotation+'">';
-		    htmlHistory +=  '<div class="col-md-2">Step '+i+':</div>';
+		for (let i = 0; i < historyObj.length; i++) {	
+			let tempStepNumber = i+1;	      
+	        htmlHistory += '<div class="row mathStep" data-step="'+tempStepNumber+'" data-equation="'+historyObj[i].equation+'" data-annotation="'+historyObj[i].annotation+'">';
+		    htmlHistory +=  '<div class="col-md-2">Step '+tempStepNumber+':</div>';
 	        htmlHistory +=  '<div class="col-md-5 staticMath">$$'+historyObj[i].equation+'$$</div>';
 	        htmlHistory +=  '<div class="col-md-5">'+historyObj[i].annotation+'</div>';
 	        htmlHistory += '</div>';
 	    }
     //3 BUILD HTML TITLE
-    	let htmlTitle = ''+originalProblemTitle+': '+originalProblemEquation+ ', '+originalProblemAnnotation+'';
+    	let htmlTitle = 'Original Problem: '+originalProblemEquation+ ', '+originalProblemAnnotation+'';
+    	if (originalProblemVariable=="newEditor") {
+	    	htmlTitle = ''+originalProblemTitle+'';
+	    }
+	    	
     //4 POPULATE HTML
     	$('#EditorModal .modal-title').html(htmlTitle);
     	$('#EditorModal .modal-title').data('title', originalProblemTitle );
@@ -68,13 +84,18 @@ function PopulateEditorModal(dataObj) {
 			}
 		);
     	
-    //7 Wire up SAVE FOR LATER btn
+    //7 Wire up SAVE btn & hide if newEditor
+    $('#BtnSave').show();
     $('#BtnSave').click(function() {
 	    SaveProblem(CurrentProblem);
 	    CloseEditorModal();
     });
+    if (originalProblemVariable=="newEditor") {
+	     $('#BtnSave').hide();
+	}
     
-    //8 Wire up Mark Completed
+    
+    //8 Wire up cancel btn
     $('#BtnCancel').click(function() {
 	    if (confirm("Any work on this problem will NOT be saved") == true) {
 		    CloseEditorModal();
