@@ -363,7 +363,7 @@ if (!('webkitSpeechRecognition' in window)) {
     }
     final_transcript = capitalize(final_transcript);
     results01.innerText = linebreak(final_transcript);
-    interim_span.innerHTML = linebreak(interim_transcript);
+    results01.innerText = linebreak(interim_transcript);
     if (final_transcript || interim_transcript) {
       showButtons('inline-block');
     }
