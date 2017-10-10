@@ -26,8 +26,8 @@ $(function(){
 		$("#indicator").text("Not listening");
 	});
 	var recognition = new webkitSpeechRecognition();
+	recognition.continuous = true;
 	recognition.interimResults = true;
-	recognition.continuous = false;
 	var text = $("#mathAnnotation");
 	recognition.onresult = function(event) {
 		var res = [];
