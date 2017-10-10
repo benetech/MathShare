@@ -71,7 +71,7 @@ function PopulateEditorModal(dataObj) {
     	
     	$('#EditorModal .mathHistory').html(htmlHistory);
     	$('#mathEditorActive').html(currentEditorEquation);
-    	$('#mathAnnotation').val(currentEditorAnnotation);
+    	$('#mathAnnotation').text(currentEditorAnnotation);
     //5 RUN RENDER MATH
     	MathLive.renderMathInDocument();
     
@@ -146,7 +146,7 @@ function SaveProblem(dataObj) {
     let originalProblemEquation = $('#EditorModal .modal-title').data('equation');    	 
     let originalProblemAnnotation = $('#EditorModal .modal-title').data('annotation');    	 
     let currentEditorEquation = TheActiveMathField.latex();   	 
-    let currentEditorAnnotation = $('#mathAnnotation').val();
+    let currentEditorAnnotation = $('#mathAnnotation').text();
     
     let mathStep = $('.mathStep');
 	let history_array = [];
@@ -191,7 +191,7 @@ function SetCurrentProblem(dataObj) {
 function NewMathEditorRow(mathContent) {
 	// assemble the new static area from the current math/annotation
 	let mathStepEquation = TheActiveMathField.latex();
-	let mathStepAnnotation = $('#mathAnnotation').val();
+	let mathStepAnnotation = $('#mathAnnotation').text();
 	let mathStepNumber = $('.mathStep:last').data('step');
 	let mathStepNewNumber = mathStepNumber ? mathStepNumber+1 : 1;	// worry about no steps yet
 	let mathStepTitle = "Step "+mathStepNewNumber+":";
@@ -207,7 +207,7 @@ function NewMathEditorRow(mathContent) {
 	
 	// set the new active math and clear the annotation
 	TheActiveMathField.latex(mathContent);
-	$('#mathAnnotation').val('');
+	$('#mathAnnotation').text('');
 	
 	MathLive.renderMathInDocument();
 }	
@@ -229,7 +229,7 @@ function DeleteActiveMath() {
 
 	// put the contents of the last row/step into the active/current line
 	TheActiveMathField.latex( lastStep.find('.mathStepEquation').text() );
-	$('#mathAnnotation').val( lastStep.find('.mathStepAnnotation').text() );
+	$('#mathAnnotation').text( lastStep.find('.mathStepAnnotation').text() );
 	
 	// ok to delete last row now...
 	lastStep.detach();
