@@ -11,14 +11,6 @@
     e.className = e.className.replace(/\bno-js\b/,'js');
   })(document.documentElement, window.navigator.userAgent)
     </script>
-    <meta charset="utf-8">
-    <meta content="initial-scale=1, minimum-scale=1, width=device-width" name="viewport">
-    <meta content=
-    "Google Chrome is a browser that combines a minimal design with sophisticated technology to make the web faster, safer, and easier."
-    name="description">
-    <title>
-      Chrome Browser
-    </title>
     <link href="https://plus.google.com/100585555255542998765" rel="publisher">
     <link href="//www.google.com/images/icons/product/chrome-32.png" rel="icon" type="image/ico">
     <link href="//fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&amp;subset=latin" rel=
@@ -43,7 +35,6 @@ new gweb.analytics.AutoTrack({
     }
     #results {
     font-size: 14px;
-    font-weight: bold;
     border: 1px solid #ddd;
     padding: 15px;
     text-align: left;
@@ -89,14 +80,6 @@ a.c1 {font-weight: normal;}
   </head>
   <body class="" id="grid">
     <div class="browser-landing" id="main">
-      <div class="compact marquee-stacked" id="marquee">
-        <div class="marquee-copy">
-          <h1>
-            <a class="c1" href="http://dvcs.w3.org/hg/speech-api/raw-file/tip/speechapi.html">Web
-            Speech API</a> Demonstration
-          </h1>
-        </div>
-      </div>
       <div class="compact marquee">
         <div id="info">
           <p id="info_start">
@@ -138,31 +121,9 @@ a.c1 {font-weight: normal;}
           <span class="final" id="final_span"></span> <span class="interim" id=
           "interim_span"></span>
         </div>
-        <div id="copy">
-          <button class="button" id="copy_button" onclick="copyButton()">Copy and Paste</button>
-          <div id="copy_info">
-            <p>
-              Press Control-C to copy text.
-            </p>
-            <p>
-              (Command-C on Mac.)
-            </p>
-          </div><button class="button" id="email_button" onclick="emailButton()">Create
-          Email</button>
-          <div id="email_info">
-            <p>
-              Text sent to default email application.
-            </p>
-            <p>
-              (See chrome://settings/handlers to change.)
-            </p>
-          </div>
-        </div>
-        <div class="compact marquee" id="div_language">
-          <select id="select_language" onchange="updateCountry()">
-            </select>&nbsp;&nbsp; <select id="select_dialect">
-            </select>
-        </div>
+        
+        <textarea id="results01"></textarea>
+        
       </div>
     </div><script src="/intl/en/chrome/assets/common/js/chrome.min.js">
 </script> <script>
@@ -375,10 +336,12 @@ if (!('webkitSpeechRecognition' in window)) {
       range.selectNode(document.getElementById('final_span'));
       window.getSelection().addRange(range);
     }
+/*
     if (create_email) {
       create_email = false;
       createEmail();
     }
+*/
   };
 
   recognition.onresult = function(event) {
@@ -421,6 +384,7 @@ function capitalize(s) {
   return s.replace(first_char, function(m) { return m.toUpperCase(); });
 }
 
+/*
 function createEmail() {
   var n = final_transcript.indexOf('\n');
   if (n < 0 || n >= 80) {
@@ -430,7 +394,9 @@ function createEmail() {
   var body = encodeURI(final_transcript.substring(n + 1));
   window.location.href = 'mailto:?subject=' + subject + '&body=' + body;
 }
+*/
 
+/*
 function copyButton() {
   if (recognizing) {
     recognizing = false;
@@ -440,7 +406,9 @@ function copyButton() {
   copy_info.style.display = 'inline-block';
   showInfo('');
 }
+*/
 
+/*
 function emailButton() {
   if (recognizing) {
     create_email = true;
@@ -453,6 +421,7 @@ function emailButton() {
   email_info.style.display = 'inline-block';
   showInfo('');
 }
+*/
 
 function startButton(event) {
   if (recognizing) {
