@@ -131,7 +131,7 @@ function ClearEditorModal() {
 	     $('#mathEditorActive').html('');
 	     
 	//4. Clear Annotation
-		 $('#mathAnnotation').val('');
+		 $('#mathAnnotation').text('');
 	
 	//5. Unwire Save Buttons
 		$('#BtnSave').unbind('click');

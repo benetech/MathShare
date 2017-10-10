@@ -84,7 +84,7 @@ $(function(){
 		$("#indicator").text("Not listening");
 	});
 	var recognition = new webkitSpeechRecognition();
-	recognition.interimResults = false;
+	recognition.interimResults = true;
 	recognition.continuous = true;
 	var text = $("#mathAnnotation");
 	recognition.onresult = function(event) {
