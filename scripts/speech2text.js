@@ -35,9 +35,11 @@ $(function(){
 			res.push(event.results[i][0].transcript);
 		var utterance = res+"";
 		text.append(utterance);
+		console.log('Utterance: '+utterance);
 		$("#indicator-sr").text(utterance);
 		spokens = spokens.concat(res);
 	};
+/*
 	$("#undobutton").click(function(event){
 		if(!spokens.length){
 			$("#indicator").text("Can't undo");
@@ -48,6 +50,8 @@ $(function(){
 		text.text(utterance);
 		$("#indicator").text("Removed "+remove);
 	});
+*/
+/*
 	$("#clearbutton").click(function(event){
 		if(!confirm("Are you sure you want to delete everything you said? This cannot be undone.")){
 			return;
@@ -56,4 +60,5 @@ $(function(){
 		text.text("");
 		$("#indicator").text("Everything you said was just deleted.");
 	});
+*/
 });
