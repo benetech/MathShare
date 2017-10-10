@@ -29,6 +29,34 @@ $(function(){
 	recognition.continuous = true;
 	recognition.interimResults = true;
 	var text = $("#mathAnnotation");
+	
+	
+	recognition.onresult = function(event) {
+    var interim_transcript = '';
+	    if (typeof(event.results) == 'undefined') {
+	      recognition.onend = null;
+	      recognition.stop();
+	      upgrade();
+	      return;
+	    }
+	    for (var i = event.resultIndex; i < event.results.length; ++i) {
+	      if (event.results[i].isFinal) {
+	        final_transcript += event.results[i][0].transcript;
+	      } else {
+	        interim_transcript += event.results[i][0].transcript;
+	      }
+	    }
+	    final_transcript = capitalize(final_transcript);
+	    text.innerHTML = linebreak(final_transcript);
+	    interim_span.innerHTML = linebreak(interim_transcript);
+	    if (final_transcript || interim_transcript) {
+	      showButtons('inline-block');
+	    }
+	};
+	
+	
+	
+/*
 	recognition.onresult = function(event) {
 		var res = [];
 		for(var i= event.resultIndex; i<event.results.length; i++)
@@ -39,6 +67,7 @@ $(function(){
 		$("#indicator-sr").text(utterance);
 		spokens = spokens.concat(res);
 	};
+*/
 /*
 	$("#undobutton").click(function(event){
 		if(!spokens.length){
