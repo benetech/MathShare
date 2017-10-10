@@ -34,7 +34,7 @@
 					$("#indicator").text("Not listening");
 				});
 				var recognition = new webkitSpeechRecognition();
-				recognition.interimResults = false;
+				recognition.interimResults = true;
 				recognition.continuous = true;
 				var text = $("#text");
 				recognition.onresult = function(event) {
