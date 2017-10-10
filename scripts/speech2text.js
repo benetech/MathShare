@@ -27,7 +27,7 @@ $(function(){
 	});
 	var recognition = new webkitSpeechRecognition();
 	recognition.interimResults = true;
-	recognition.continuous = true;
+	recognition.continuous = false;
 	var text = $("#mathAnnotation");
 	recognition.onresult = function(event) {
 		var res = [];
