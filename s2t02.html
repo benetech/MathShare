@@ -65,6 +65,7 @@ new gweb.analytics.AutoTrack({
     top: -50px;
     }
 
+/*
     #copy {
     margin-top: 20px;
     }
@@ -73,6 +74,7 @@ new gweb.analytics.AutoTrack({
     display: none;
     margin: 0 70px;
     }
+*/
     </style>
     <style>
 a.c1 {font-weight: normal;}
@@ -360,7 +362,7 @@ if (!('webkitSpeechRecognition' in window)) {
       }
     }
     final_transcript = capitalize(final_transcript);
-    final_span.innerHTML = linebreak(final_transcript);
+    results01.innerText = linebreak(final_transcript);
     interim_span.innerHTML = linebreak(interim_transcript);
     if (final_transcript || interim_transcript) {
       showButtons('inline-block');
@@ -459,10 +461,10 @@ function showButtons(style) {
     return;
   }
   current_style = style;
-  copy_button.style.display = style;
-  email_button.style.display = style;
-  copy_info.style.display = 'none';
-  email_info.style.display = 'none';
+  //copy_button.style.display = style;
+  //email_button.style.display = style;
+  //copy_info.style.display = 'none';
+  //email_info.style.display = 'none';
 }
     </script>
   </body>
