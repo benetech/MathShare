@@ -73,11 +73,30 @@ $(function(){
 		else
 			$("#stopbutton").prop("disabled", true);
 	}
+	
+	
+	
+	
+/*
+	$("#speechbutton").toggle(function() {
+	  alert( "First" );
+	}, function() {
+	  alert( "Second" );
+	});
+*/
+	
+	
+	
+
 	$("#speechbutton").click(function(evt){
+		let temp = '';
+		
+		
 		changeButtonStates();
 		recognition.start();
 		$("#indicator").text("Speak, please!");
 	});
+
 	$("#stopbutton").click(function(evt){
 		changeButtonStates();
 		recognition.stop();
@@ -95,6 +114,12 @@ $(function(){
 		text.append(utterance);
 		$("#indicator-sr").text(utterance);
 		spokens = spokens.concat(res);
+	};
+	recognition.onstart = function() {
+	    console.log("started");
+	    //recognizing = true;
+	    //showInfo('info_speak_now');
+	    //start_img.src = 'images/mic-animate.gif';
 	};
 	$("#undobutton").click(function(event){
 		if(!spokens.length){

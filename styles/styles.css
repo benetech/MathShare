@@ -96,3 +96,8 @@
     padding-bottom:50px;
     margin: 0px auto;
 }
+
+.btn-mic {
+	border: 0px;
+	background-color: #FFF;
+}
