@@ -31,6 +31,7 @@ $(function(){
 	var text = $("#mathAnnotation");
 	
 	
+/*
 	recognition.onresult = function(event) {
     var interim_transcript = '';
 	    if (typeof(event.results) == 'undefined') {
@@ -53,10 +54,10 @@ $(function(){
 	      showButtons('inline-block');
 	    }
 	};
+*/
 	
 	
 	
-/*
 	recognition.onresult = function(event) {
 		var res = [];
 		for(var i= event.resultIndex; i<event.results.length; i++)
@@ -67,7 +68,6 @@ $(function(){
 		$("#indicator-sr").text(utterance);
 		spokens = spokens.concat(res);
 	};
-*/
 /*
 	$("#undobutton").click(function(event){
 		if(!spokens.length){

@@ -64,17 +64,6 @@ new gweb.analytics.AutoTrack({
     position: relative;
     top: -50px;
     }
-
-/*
-    #copy {
-    margin-top: 20px;
-    }
-
-    #copy > div {
-    display: none;
-    margin: 0 70px;
-    }
-*/
     </style>
     <style>
 a.c1 {font-weight: normal;}
@@ -120,7 +109,7 @@ a.c1 {font-weight: normal;}
           src="images/mic.gif"></button>
         </div>
         <div id="results">
-          <span class="final" id="final_span"></span> <span class="interim" id=
+          <span class="final" id="final_span" contenteditable></span> <span class="interim" id=
           "interim_span"></span>
         </div>
         
@@ -362,9 +351,8 @@ if (!('webkitSpeechRecognition' in window)) {
       }
     }
     final_transcript = capitalize(final_transcript);
-    results01.innerText = linebreak(final_transcript);
-    results01.innerText = linebreak(interim_transcript);
-    results01.innerText = linebreak(final_transcript);
+    final_span.innerHTML = linebreak(final_transcript);
+    interim_span.innerHTML = linebreak(interim_transcript);
     if (final_transcript || interim_transcript) {
       showButtons('inline-block');
     }
