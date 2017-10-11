@@ -63,6 +63,7 @@ $(function(){
 $(function(){
 	"use strict";
 	var spokens = [];
+/*
 	function changeButtonStates(){
 		if($("#speechbutton").prop("disabled"))
 			$("#speechbutton").prop("disabled", false);
@@ -73,16 +74,45 @@ $(function(){
 		else
 			$("#stopbutton").prop("disabled", true);
 	}
+*/
+/*
 	$("#speechbutton").click(function(evt){
 		changeButtonStates();
 		recognition.start();
 		$("#indicator").text("Speak, please!");
 	});
+*/
+	
+	$("#start_button").click(function(evt){
+		//changeButtonStates();
+		//recognition.start();
+		//$("#indicator").text("Speak, please!");
+		
+		
+		
+		
+		if($("#start_button").prop("micEnabled")) {
+			$("#start_button").prop("micEnabled", false);
+			$('#mic_img').attr('src', 'images/mic.gif');
+			recognition.stop();
+			
+			
+		} else {
+			$("#start_button").prop("micEnabled", true);
+			$('#mic_img').attr('src', 'images/mic-animate.gif');
+			recognition.start();
+		}
+			
+	});
+	
+
+/*
 	$("#stopbutton").click(function(evt){
 		changeButtonStates();
 		recognition.stop();
 		$("#indicator").text("Not listening");
 	});
+*/
 	var recognition = new webkitSpeechRecognition();
 	recognition.interimResults = false;
 	recognition.continuous = true;
