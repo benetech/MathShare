@@ -228,8 +228,8 @@ function DeleteActiveMath() {
 	// TODO: add active/current latex and annotation to undo stack
 
 	// put the contents of the last row/step into the active/current line
-	TheActiveMathField.latex( lastStep.find('.mathStepEquation').text() );
-	$('#mathAnnotation').text( lastStep.find('.mathStepAnnotation').text() );
+	TheActiveMathField.latex( lastStep.data('equation') );
+	$('#mathAnnotation').text( lastStep.data('annotation') );
 	
 	// ok to delete last row now...
 	lastStep.detach();
