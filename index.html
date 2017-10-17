@@ -165,28 +165,31 @@
 				<div class="col-md-6">
 					<div class="mathAnnotation">
 						<div class="row" style="margin: 5px 0px 5px 0px;">
-							<div class="col-md-7"> 
-								<label>Describe your work</label>   
-							</div>    
-							<div class="col-md-5 pull right"> 
+<!--							<div class="col-md-5 pull right"> -->
 <!-- 								<button  id="speechbutton">Speak</button> -->
 <!-- 								<button  disabled="true" id="stopbutton">Stop</button> -->
 <!-- 								 <button  id="undobutton">delete last line</button> --> 
 <!-- 								 <button  id="clearbutton">Delete</button> -->   
-							</div>    
+<!--							</div>    -->
 						</div>    
 						<div class="row" style="margin-bottom: 5px;">
 							<div class="col-md-10"> 
-								 <textarea class="form-control" rows="2" id="mathAnnotation"></textarea> 
+								<textarea class="form-control" rows="3" id="mathAnnotation" placeholder="Type or click the microphone to explain your work"></textarea> 
 							</div>
-							<div class="col-md-2">
-								<button id="start_button" class="btn btn-mic pull-right" micStatus="off"><img alt="Start" id="mic_img" src="images/mic.gif"></button>
+							<div class="col-md-2"> 
+								<button id="start_button" class="btn btn-mic" micStatus="off" data-toggle="tooltip" title="Click to start/stop speech-to-text"><img alt="Start Speaking" id="mic_img" src="images/mic.gif"></button>
+								<button class="btn btn-default" data-toggle="tooltip" title="Delete this Step" alt="Delete this step" onclick="DeleteActiveMath()"><span class="glyphicon glyphicon-trash"></span></button>
+		<!--
+								<button class="btn btn-default" onclick="NewMathEditorRow(CleanUpCrossouts(TheActiveMathField.latex()))">Cleanup Crossouts</button>
+								<button class="btn btn-default" onclick="NewMathEditorRow(TheActiveMathField.latex())">Copy Step</button>
+		-->
+								<button class="btn btn-default" data-toggle="tooltip" title="Clean up the cross outs and start a new step" onclick="NewMathEditorRow(CleanUpCrossouts(TheActiveMathField.latex())); NewMathEditorRow(CleanUpCrossouts(TheActiveMathField.latex()));">Next</button>
 							</div>
-							
 						</div>   
 					</div>
 				</div>
 			</div>
+		  </div>
 		    <div class="row" style=" padding-top: 7px;">
 			  <div class="col-md-7">
 				  <div class="mathPalette">
@@ -223,13 +226,8 @@
 				   </div>
 			   </div>
 		    </div>
-		  </div>     
       </div>    
       <div class="modal-footer" style="text-align: left;">
-        <button class="btn btn-default" onclick="NewMathEditorRow(CleanUpCrossouts(TheActiveMathField.latex()))">Cleanup Crossouts</button>
-	    <button class="btn btn-default" onclick="DeleteActiveMath()">Delete Current Step</button>
-	    <button class="btn btn-default" onclick="NewMathEditorRow(TheActiveMathField.latex())">Copy Step</button>
-	    <button class="btn btn-default" onclick="NewMathEditorRow(CleanUpCrossouts(TheActiveMathField.latex())); NewMathEditorRow(CleanUpCrossouts(TheActiveMathField.latex()));">Cleanup & Copy Step</button>
 	    <button class="btn btn-primary pull-right" id="BtnSave">Save</button>
 	    <button class="btn btn-default pull-right" id="BtnCancel">Cancel</button>
       </div>
@@ -239,9 +237,13 @@
 <!-- END MODAL CODE -->
 
 </body>
-
-<!-- MATHLIVE INITIALIZATION RENDER SCRIPT -->
 <script>
+	<!-- Initialize JQuery tooltip code -->
+	$(document).ready(function(){
+	    $('[data-toggle="tooltip"]').tooltip();   
+	});
+
+	<!-- MATHLIVE INITIALIZATION RENDER SCRIPT -->
 	RenderMathEditor();
 </script>
 <script src="scripts/speech2text.js"></script>
