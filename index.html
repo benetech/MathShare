@@ -181,20 +181,21 @@
 
 			  <div class="col-md-7">
 				  <div class="mathPalette">
-					  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\cdot$$</button>
-					  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\times$$</button>
-					  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\div$$</button>
-					  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\pm$$</button>
-					  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{\blacksquare}$$</button>
-					  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\frac{\blacksquare}{\square}$$</button>
-					  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$${\blacksquare}^{\square}$$</button>
-					  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$${\blacksquare}_{\square}$$</button>
-					  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\sqrt{\blacksquare}$$</button>
+					  <!-- ⏎ is return char glyph --> 
+					  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Keyboard shortcut: \cdot⏎" onclick="MathLivePasteFromButton(this)">$$\cdot$$</button>
+					  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Keyboard shortcut: xx" onclick="MathLivePasteFromButton(this)">$$\times$$</button>
+					  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Keyboard shortcut: \div⏎" onclick="MathLivePasteFromButton(this)">$$\div$$</button>
+					  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Keyboard shortcut: +-" onclick="MathLivePasteFromButton(this)">$$\pm$$</button>
+					  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Keyboard shortcut: shift+delete" onclick="MathLivePasteFromButton(this)">$$\enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{\blacksquare}$$</button>
+					  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Keyboard shortcut: /" onclick="MathLivePasteFromButton(this)">$$\frac{\blacksquare}{\square}$$</button>
+					  <button class="staticMath btn btn-default paletteButton"  data-toggle="tooltip" title="Keyboard shortcut: ^"onclick="MathLivePasteFromButton(this)">$${\blacksquare}^{\square}$$</button>
+					  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Keyboard shortcut: _" onclick="MathLivePasteFromButton(this)">$${\blacksquare}_{\square}$$</button>
+					  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Keyboard shortcut: sqrt" onclick="MathLivePasteFromButton(this)">$$\sqrt{\blacksquare}$$</button>
 					  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\sqrt[{\square}]{\blacksquare}$$</button>
 					  <br/>
-					  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\leq$$</button>
-					  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\geq$$</button>
-					  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\neq$$</button>
+					  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Keyboard shortcut: <=" onclick="MathLivePasteFromButton(this)">$$\leq$$</button>
+					  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Keyboard shortcut: >=" onclick="MathLivePasteFromButton(this)">$$\geq$$</button>
+					  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Keyboard shortcut: !=" onclick="MathLivePasteFromButton(this)">$$\neq$$</button>
 					  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\overset{?}{=}$$</button>
 					  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$ \enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{\blacksquare}^\square $$</button>
 					  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\Bigl{(}\blacksquare\Bigr{)}$$</button>
