@@ -38,6 +38,7 @@ function RenderMathEditor() {
          //onSelectionDidChange: UpdatePalette
 		}
 	);
+	document.onkeydown = HandleKeyDown;
 }
 
 //***************************************************************************************************************************************************
@@ -92,13 +93,7 @@ function PopulateEditorModal(dataObj) {
     	MathLive.renderMathInDocument();
     
     //6 RENDER MATH EDITOR
-    	TheActiveMathField = MathLive.makeMathField(
-			document.getElementById('mathEditorActive'),
-		  	{commandbarToggle: 'hidden',
-			 overrideDefaultInlineShortcuts: false,
-	         //onSelectionDidChange: UpdatePalette
-			}
-		);
+    	RenderMathEditor();
     	
     //7 Wire up SAVE btn & hide if newEditor
     $('#BtnSave').show();
@@ -379,7 +374,7 @@ function UpdatePalette(mathField) {
 //***************************************************************************************************************************************************
 function HandleKeyDown(event)
 {
-	if (event.ctrlKey && (event.key=="Delete" || event.key=="Backspace")) {
+	if (event.shiftKey && (event.key=="Delete" || event.key=="Backspace")) {
 		if ( TheActiveMathField.selectionIsCollapsed() ) {
 			// if an insertion cursor, extend the selection unless we are at an edge
 			if ( TheActiveMathField.selectionAtStart() && event.key=="Backspace" )
@@ -401,22 +396,3 @@ function HandleKeyDown(event)
 	}
 	return true;
 }
-
-
-
-
-
-
-
-
-
-
-		
-		
-
-
-
-
-
-
-

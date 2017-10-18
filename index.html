@@ -117,10 +117,11 @@
       </div>
       
       <div class="modal-body">
-		  <div class="mathHistory container-fluid" style="height: 300px; overflow-y: scroll;" id="MathHistory">
+		    <div class="mathHistory container-fluid" style="height: 300px; overflow-y: scroll;" id="MathHistory">
 			 <!-- Equation History Here --> 
-		  </div>
+		    </div>
 	  
+<<<<<<< HEAD
 		  <div class="mathWorkArea">
 			<div class="row" style="border-top: 10px solid #222F3F; border-bottom: 3px solid #222F3F; padding-top: 5px;">
 				<div class="col-md-5">
@@ -150,6 +151,44 @@
 			</div>
 		  </div>
 		    <div class="row" style=" padding-top: 10px;">
+=======
+		    <div class="mathWorkArea" style="height: 205px; ">
+				<div class="row" style="border-top: 10px solid #222F3F; border-bottom: 3px solid #222F3F; margin-top: 5px;">
+					<div class="col-md-6">
+						<div class="mathStepTitle" style="color:#222F3F; margin-top: 13px;">Current</div>
+						<div class="mathEditor" id='mathEditorActive'> x = -2</div>
+					</div>
+
+					<div class="col-md-6">
+						<div class="mathAnnotation">
+							<div class="row" style="margin: 5px 0px 5px 0px;">
+	<!--							<div class="col-md-5 pull right"> -->
+	<!-- 								<button  id="speechbutton">Speak</button> -->
+	<!-- 								<button  disabled="true" id="stopbutton">Stop</button> -->
+	<!-- 								 <button  id="undobutton">delete last line</button> --> 
+	<!-- 								 <button  id="clearbutton">Delete</button> -->   
+	<!--							</div>    -->
+							</div>    
+							<div class="row" style="margin-bottom: 5px;">
+								<div class="col-md-10"> 
+									<textarea class="form-control" rows="3" id="mathAnnotation" placeholder="Type or click the microphone to explain your work"></textarea> 
+								</div>
+								<div class="col-md-2"> 
+									<button id="start_button" class="btn btn-mic" micStatus="off" data-toggle="tooltip" title="Click to start/stop speech-to-text"><img alt="Start Speaking" id="mic_img" src="images/mic.gif"></button>
+									<button class="btn btn-default" data-toggle="tooltip" title="Delete this Step" alt="Delete this step" onclick="DeleteActiveMath()"><span class="glyphicon glyphicon-trash"></span></button>
+			<!--
+									<button class="btn btn-default" onclick="NewMathEditorRow(CleanUpCrossouts(TheActiveMathField.latex()))">Cleanup Crossouts</button>
+									<button class="btn btn-default" onclick="NewMathEditorRow(TheActiveMathField.latex())">Copy Step</button>
+			-->
+									<button class="btn btn-default" data-toggle="tooltip" title="Clean up the cross outs and start a new step" onclick="NewMathEditorRow(CleanUpCrossouts(TheActiveMathField.latex())); NewMathEditorRow(CleanUpCrossouts(TheActiveMathField.latex()));">Next</button>
+								</div>
+							</div>   
+						</div>
+					</div>
+				</div>
+			</div>
+		    <div class="row" style=" padding-top: 7px;">
+>>>>>>> origin/master
 			  <div class="col-md-7">
 				  <div class="mathPalette">
 					  <button class="staticMath btn btn-default paletteButton" onclick="MathLivePasteFromButton(this)">$$\cdot$$</button>
