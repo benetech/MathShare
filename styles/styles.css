@@ -29,9 +29,15 @@
 	}
 */
 	
+html, body {
+    height: 100%;
+}	
+
+
+	
 .mathEditor {
-		margin: 15px 0px 15px 0px;
-	}
+	margin: 15px 0px 15px 0px;
+}
 	
 	
 .navbar-default {
@@ -100,4 +106,11 @@
 .btn-mic {
 	border: 0px;
 	background-color: #FFF;
+	padding: 0px;
+}
+
+.form-control {
+	border: 0px;
+	box-shadow: none;
+	transition: none;
 }

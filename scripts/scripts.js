@@ -12,6 +12,22 @@
 		
 	CrossoutFindRegExpPattern = /\\enclose\{updiagonalstrike downdiagonalstrike\}\[2px solid red\]/g;
 
+
+
+
+//***************************************************************************************************************************************************
+// RESIZE MODAL SIZE BASED ON BROWSER HEIGHT
+function ResizeModalEditorHeight() {
+	let windowHeight = $(window).height();
+	
+	if (windowHeight < 600) {
+		$('.mathHistory').css('height','175');
+	} else {
+		$('.mathHistory').css('height','300');
+	}
+}
+
+
 //***************************************************************************************************************************************************
 // RENDER ACTIVE MATH EDITOR
 function RenderMathEditor() {
