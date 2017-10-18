@@ -221,7 +221,15 @@ function NewMathEditorRow(mathContent) {
 	$('#mathAnnotation').text('');
 	
 	MathLive.renderMathInDocument();
-}	
+}
+
+function NewRowOrRowsAfterCleanup(mathContent) {
+	let cleanedUp = CleanUpCrossouts(mathContent);
+	NewMathEditorRow(cleanedUp);
+	if ( mathContent!=cleanedUp ) {
+		NewMathEditorRow(cleanedUp);
+	}
+}
 
 //***************************************************************************************************************************************************
 // Delete the currently active area and make the last step active...
