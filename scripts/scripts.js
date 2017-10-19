@@ -204,10 +204,12 @@ function SetCurrentProblem(dataObj) {
 function NewMathEditorRow(mathContent) {
 	// assemble the new static area from the current math/annotation
 	let mathStepEquation = TheActiveMathField.latex();
-	let mathStepAnnotation = $('#mathAnnotation').text();
+	let mathStepAnnotation = $('#mathAnnotation').val();
 	let mathStepNumber = $('.mathStep:last').data('step');
 	let mathStepNewNumber = mathStepNumber ? mathStepNumber+1 : 1;	// worry about no steps yet
 	let mathStepTitle = "Step "+mathStepNewNumber+":";
+
+	alert(mathStepAnnotation);
 
 	let html = '<div class="row mathStep" data-step="'+mathStepNewNumber+'" data-equation="'+mathStepEquation+'" data-annotation="'+mathStepAnnotation+'">';
 	html +=  '<div class="col-md-2">'+mathStepTitle+'</div>';
@@ -220,7 +222,7 @@ function NewMathEditorRow(mathContent) {
 	
 	// set the new active math and clear the annotation
 	TheActiveMathField.latex(mathContent);
-	$('#mathAnnotation').text('');
+	$('#mathAnnotation').val('');
 	
 	MathLive.renderMathInDocument();
 }
