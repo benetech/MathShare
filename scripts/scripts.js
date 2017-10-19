@@ -35,6 +35,8 @@ function RenderMathEditor() {
 		document.getElementById('mathEditorActive'),
 	  	{commandbarToggle: 'hidden',
 		 overrideDefaultInlineShortcuts: false,
+		 inlineShortcuts: { '>-': '>-',			// override builtin shortcut (\succ)
+							'<-': '<-'},		// override builtin shortcut (\leftarrow)
          //onSelectionDidChange: UpdatePalette
 		}
 	);
