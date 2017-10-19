@@ -119,6 +119,7 @@ $(function(){
 		for(var i= event.resultIndex; i<event.results.length; i++)
 			res.push(event.results[i][0].transcript);
 		var utterance = res+"";
+		console.log(utterance);
 		text.append(utterance);
 		$("#indicator-sr").text(utterance);
 		spokens = spokens.concat(res);
