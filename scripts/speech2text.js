@@ -87,10 +87,7 @@ $(function(){
 		//changeButtonStates();
 		//recognition.start();
 		//$("#indicator").text("Speak, please!");
-		
-		
-		
-		
+
 		if($("#start_button").prop("micEnabled")) {
 			$("#start_button").prop("micEnabled", false);
 			$('#mic_img').attr('src', 'images/mic.gif');

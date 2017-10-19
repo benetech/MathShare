@@ -35,8 +35,6 @@ function RenderMathEditor() {
 		document.getElementById('mathEditorActive'),
 	  	{commandbarToggle: 'hidden',
 		 overrideDefaultInlineShortcuts: false,
-		 inlineShortcuts: { '>-': '>-',			// override builtin shortcut (\succ)
-							'<-': '<-'},		// override builtin shortcut (\leftarrow)
          //onSelectionDidChange: UpdatePalette
 		}
 	);
@@ -90,7 +88,7 @@ function PopulateEditorModal(dataObj) {
     	
     	$('#EditorModal .mathHistory').html(htmlHistory);
     	$('#mathEditorActive').html(currentEditorEquation);
-    	$('#mathAnnotation').text(currentEditorAnnotation);
+    	$('#mathAnnotation').val(currentEditorAnnotation);
     //5 RUN RENDER MATH
     	MathLive.renderMathInDocument();
     
@@ -144,7 +142,7 @@ function ClearEditorModal() {
 	     $('#mathEditorActive').html('');
 	     
 	//4. Clear Annotation
-		 $('#mathAnnotation').text('');
+		 $('#mathAnnotation').val('');
 	
 	//5. Unwire Save Buttons
 		$('#BtnSave').unbind('click');
@@ -159,7 +157,7 @@ function SaveProblem(dataObj) {
     let originalProblemEquation = $('#EditorModal .modal-title').data('equation');    	 
     let originalProblemAnnotation = $('#EditorModal .modal-title').data('annotation');    	 
     let currentEditorEquation = TheActiveMathField.latex();   	 
-    let currentEditorAnnotation = $('#mathAnnotation').text();
+    let currentEditorAnnotation = $('#mathAnnotation').val();
     
     let mathStep = $('.mathStep');
 	let history_array = [];
@@ -250,7 +248,7 @@ function DeleteActiveMath() {
 
 	// put the contents of the last row/step into the active/current line
 	TheActiveMathField.latex( lastStep.data('equation') );
-	$('#mathAnnotation').text( lastStep.data('annotation') );
+	$('#mathAnnotation').val( lastStep.data('annotation') );
 	
 	// ok to delete last row now...
 	lastStep.detach();
@@ -321,58 +319,6 @@ function MathLivePasteFromButton(element) {
 				 selectionMode: 'placeholder'}]);
 	TheActiveMathField.focus();
 }
-
-
-//***************************************************************************************************************************************************
-// Grab the selection, remove any cross outs, and then do any binary arithmetic operations.
-// If anything is done, cross out the selection and add the calculated result after it.
-// Otherwise, alert that no calculations could be done.
-function CalculateAndReplace(element) {
-	
-	let doCalculation = function(latex) {
-		// Return either the calculated result (as a string) or an empty string if can't calculate
-		// Start by converting various character points into one set
-		latex = latex.replace(/\\times/g, '*')
-					 .replace(/\\cdot/g, '*')
-					 .replace(/\\div/g, '/')
-					 .replace(/\\frac{(.+?)}{(.+?)}/g, '($1)/($2)');
-		
-		// make sure there are numbers AND operators
-		if ( !(/[\d.]/.test(latex) && /[+\-*/]/.test(latex)) ) {
-			return "";
-		}
-		// avoid security issues, etc., and rule out letters, etc, that can be part of JS program
-		if ( /[a-zA-Z<=>]/.test(latex) ) {
-			return "";
-		}
-		
-		try {
-			return eval(latex);
-		} catch(e) {
-			return "";
-		}
-	}
-	if ( TheActiveMathField.selectionIsCollapsed() ) {
-		return alert( "You must select an arithmetic expression for calculation." );
-	}
-	
-	// if the insertionString contains a cross out, remove all crossout in the selection
-	let selection = TheActiveMathField.selectedText('latex')
-						.replace(CrossoutFindRegExpPattern, "");
-
-	let result = doCalculation(selection);
-	if (!result) {
-		return alert( "Selection must contain only numbers and operators.");
-	}
-	
-	let insertionString = CrossoutTeXString + "{" + selection + "}" + result;
-
-	TheActiveMathField.perform(['insert', insertionString, 
-				{insertionMode: 'replaceSelection',
-				 selectionMode: 'after'}]);
-	TheActiveMathField.focus();
-}
-
 
 //***************************************************************************************************************************************************
 // Call paste function if someone hits enter over palette entry
