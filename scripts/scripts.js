@@ -209,8 +209,6 @@ function NewMathEditorRow(mathContent) {
 	let mathStepNewNumber = mathStepNumber ? mathStepNumber+1 : 1;	// worry about no steps yet
 	let mathStepTitle = "Step "+mathStepNewNumber+":";
 
-	alert(mathStepAnnotation);
-
 	let html = '<div class="row mathStep" data-step="'+mathStepNewNumber+'" data-equation="'+mathStepEquation+'" data-annotation="'+mathStepAnnotation+'">';
 	html +=  '<div class="col-md-2">'+mathStepTitle+'</div>';
 	html +=  '<div class="col-md-5 staticMath">$$'+mathStepEquation+'$$</div>';
