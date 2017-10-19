@@ -121,9 +121,6 @@ $(function(){
 		var utterance = res+"";
 		let currentAnnotation = $('#mathAnnotation').val();
 		
-		console.log(currentAnnotation);
-		console.log(utterance);
-		
 		text.val(currentAnnotation +' '+ utterance);
 		
 		$("#indicator-sr").text(utterance);
