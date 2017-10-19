@@ -6,7 +6,7 @@ var problem01 =    [{"metadata": [
     			    },
 					{"originalProblem": [
 							{
-		    				"equation":"7x + 13 = -1",
+		    				"equation":"$$7x + 13 = -1$$",
 		    				"annotation":"Solve for x"
 		    				}]
     			    },
@@ -47,7 +47,7 @@ var problem02 =    [{"metadata": [
     			    },
 					{"originalProblem": [
 							{
-		    				"equation":"222x + 13 = -1",
+		    				"equation":"$$222x + 13 = -1$$",
 		    				"annotation":"Solve for x"
 		    				}]
     			    },
