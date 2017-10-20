@@ -149,20 +149,20 @@ var problem05 =    [{"metadata": [
     			    },
 					{"originalProblem": [
 							{
-		    				"equation":"55555",
-		    				"annotation":"55555"
+		    				"equation":"",
+		    				"annotation":"Solve for x: Angles a and b are supplementary. Angle a is 78 degrees and angle b is equal to 3x"
 		    				}]
     			    },
     			    {"currentEditor": [
 							{
-		    				"equation":"55555",
+		    				"equation":"",
 		    				"annotation":""
 		    				}]
 	    			},
 	    			{"history": [
 							{
-		    				"equation":"55555",
-		    				"annotation":"55555"
+		    				"equation":"",
+		    				"annotation":"Solve for x: Angles a and b are supplementary. Angle a is 78 degrees and angle b is equal to 3x"
 		    				}]
 	    			}];	    			
 	    			
@@ -174,20 +174,20 @@ var problem06 =    [{"metadata": [
     			    },
 					{"originalProblem": [
 							{
-		    				"equation":"66666",
-		    				"annotation":"66666"
+		    				"equation":"",
+		    				"annotation":"What is the area of a circle with a diameter of 10 (use pi or the value of pi to the hundredths place)?"
 		    				}]
     			    },
     			    {"currentEditor": [
 							{
-		    				"equation":"66666",
+		    				"equation":"",
 		    				"annotation":""
 		    				}]
 	    			},
 	    			{"history": [
 							{
-		    				"equation":"66666",
-		    				"annotation":"66666"
+		    				"equation":"",
+		    				"annotation":"What is the area of a circle with a diameter of 10 (use pi or the value of pi to the hundredths place)?"
 		    				}]
 	    			}];	    			
 	    			 			
@@ -199,20 +199,20 @@ var problem07 =    [{"metadata": [
     			    },
 					{"originalProblem": [
 							{
-		    				"equation":"77777",
-		    				"annotation":"77777"
+		    				"equation":"",
+		    				"annotation":"Sarah works at a coffee shop. Her weekly salary is $325 and she early 11.5% commission on sales. How much does she make if she sells $2800 in merchandise?"
 		    				}]
     			    },
     			    {"currentEditor": [
 							{
-		    				"equation":"77777",
+		    				"equation":"",
 		    				"annotation":""
 		    				}]
 	    			},
 	    			{"history": [
 							{
-		    				"equation":"77777",
-		    				"annotation":"77777"
+		    				"equation":"",
+		    				"annotation":"Sarah works at a coffee shop. Her weekly salary is $325 and she early 11.5% commission on sales. How much does she make if she sells $2800 in merchandise?"
 		    				}]
 	    			}];
 
