@@ -35,6 +35,8 @@ function RenderMathEditor() {
 		document.getElementById('mathEditorActive'),
 	  	{commandbarToggle: 'hidden',
 		 overrideDefaultInlineShortcuts: false,
+		 inlineShortcuts: { '>-': '>-',			// override builtin shortcut (\succ)
+							'<-': '<-'},		// override builtin shortcut (\leftarrow)
          //onSelectionDidChange: UpdatePalette
 		}
 	);
@@ -195,7 +197,7 @@ var UndoDeleteStack = [];			// objects on the stack have fields 'latex' and 'ann
 function SetCurrentProblem(dataObj) {
 	CurrentProblem = dataObj;
 	UndoDeleteStack = [];
-	$('#undoDelete').hide();
+	$('#undoDelete').show();
 	//console.log('Current Problem is: '+CurrentProblem[1].metadata[0].title);
 }
 
