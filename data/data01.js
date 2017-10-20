@@ -124,19 +124,19 @@ var problem04 =    [{"metadata": [
     			    },
 					{"originalProblem": [
 							{
-		    				"equation":"\\frac{b}{9}-34 <= -36",
+		    				"equation":"\\frac{b}{9}-34 \\leq -36",
 		    				"annotation":"Solve the inequality"
 		    				}]
     			    },
     			    {"currentEditor": [
 							{
-		    				"equation":"\\frac{b}{9}-34 <= -36",
+		    				"equation":"\\frac{b}{9}-34 \\leq -36",
 		    				"annotation":""
 		    				}]
 	    			},
 	    			{"history": [
 							{
-		    				"equation":"\\frac{b}{9}-34 <= -36",
+		    				"equation":"\\frac{b}{9}-34 \\leq -36",
 		    				"annotation":"Solve the inequality"
 		    				}]
 	    			}];	    			
