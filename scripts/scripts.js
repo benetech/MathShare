@@ -191,8 +191,11 @@ function SaveProblem(dataObj) {
 //***************************************************************************************************************************************************
 // SET CURRENT PROBLEM TO GLOBAL VARIABLE
 var CurrentProblem;
+var UndoDeleteStack = [];			// objects on the stack have fields 'latex' and 'annotation'
 function SetCurrentProblem(dataObj) {
 	CurrentProblem = dataObj;
+	UndoDeleteStack = [];
+	$('#undoDelete').hide();
 	//console.log('Current Problem is: '+CurrentProblem[1].metadata[0].title);
 }
 
@@ -240,11 +243,14 @@ function DeleteActiveMath() {
 	if (!$('.mathStep:last'))
 		return;
 
-	let oldActiveElement = TheActiveMathField.el();
-
+	UndoDeleteStack.push(
+		{ latex: TheActiveMathField.latex(),
+		  annotation: $('#mathAnnotation').val()
+		});
+	$('#undoDelete').show();
+	
 	// get the contents of the last row/step
 	let lastStep = $('.mathStep:last');
-	// TODO: add active/current latex and annotation to undo stack
 
 	// put the contents of the last row/step into the active/current line
 	TheActiveMathField.latex( lastStep.data('equation') );
@@ -252,6 +258,20 @@ function DeleteActiveMath() {
 	
 	// ok to delete last row now...
 	lastStep.detach();
+	
+	TheActiveMathField.focus();
+}
+
+function UndoDeleteStep() {
+	stackEntry = UndoDeleteStack.pop();
+	if (stackEntry===undefined)
+		return;	// shouldn't happen because button is disabled
+	
+	if (UndoDeleteStack.length===0)
+		$('#undoDelete').hide();
+	
+	NewMathEditorRow( stackEntry.latex )
+	$('#mathAnnotation').val( stackEntry.annotation );
 	
 	TheActiveMathField.focus();
 }
