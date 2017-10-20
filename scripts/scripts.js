@@ -49,7 +49,7 @@ function PopulateEditorModal(dataObj) {
     //2 Get all variables from js objects
     	let originalProblemTitle = dataObj[0].metadata[0].title;
     	let originalProblemVariable = dataObj[0].metadata[0].variableName;
-    	let originalProblemEquation = dataObj[1].originalProblem[0].equation;    	 
+    	let originalProblemEquation = '<span class="staticMath">$$'+dataObj[1].originalProblem[0].equation+'$$</span>';    	 
     	let originalProblemAnnotation = dataObj[1].originalProblem[0].annotation;    	 
     	let currentEditorEquation = dataObj[2].currentEditor[0].equation;    	 
     	let currentEditorAnnotation = dataObj[2].currentEditor[0].annotation;    	
