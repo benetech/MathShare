@@ -49,19 +49,19 @@ var problem01 =    [{"metadata": [
     			    },
 					{"originalProblem": [
 							{
-		    				"equation":"3(-1/6)(-2/5)",
+		    				"equation":"3(-\\frac{1}{6})(-\\frac{2}{5})",
 		    				"annotation":"Find the product"
 		    				}]
     			    },
     			    {"currentEditor": [
 							{
-		    				"equation":"3(-1/6)(-2/5)",
+		    				"equation":"3(-\\frac{1}{6})(-\\frac{2}{5})",
 		    				"annotation":""
 		    				}]
 	    			},
 	    			{"history": [
 							{
-		    				"equation":"3(-1/6)(-2/5)",
+		    				"equation":"3(-\\frac{1}{6})(-\\frac{2}{5})",
 		    				"annotation":"Find the product"	
 		    				}]
 	    			}];	
@@ -124,19 +124,19 @@ var problem04 =    [{"metadata": [
     			    },
 					{"originalProblem": [
 							{
-		    				"equation":"b/9-34 < -36",
+		    				"equation":"\\frac{b}{9}-34 <= -36",
 		    				"annotation":"Solve the inequality"
 		    				}]
     			    },
     			    {"currentEditor": [
 							{
-		    				"equation":"b/9-34 < -36",
+		    				"equation":"\\frac{b}{9}-34 <= -36",
 		    				"annotation":""
 		    				}]
 	    			},
 	    			{"history": [
 							{
-		    				"equation":"b/9-34 < -36",
+		    				"equation":"\\frac{b}{9}-34 <= -36",
 		    				"annotation":"Solve the inequality"
 		    				}]
 	    			}];	    			
@@ -150,7 +150,7 @@ var problem05 =    [{"metadata": [
 					{"originalProblem": [
 							{
 		    				"equation":"",
-		    				"annotation":"Solve for <span class='staticMath'>$$x$$<span>: Angles <span class='staticMath'>$$a$$<span> and <span class='staticMath'>$$b$$<span> are supplementary. Angle <span class='staticMath'>$$a$$<span> is 78 degrees and angle <span class='staticMath'>$$b$$<span> is equal to <span class='staticMath'>$$3x$$<span>"
+		    				"annotation":"Solve for <span class='staticMath'>$$x$$<span>: Angles <span class='staticMath'>$$a$$<span> and <span class='staticMath'>$$b$$<span> are supplementary. Angle <span class='staticMath'>$$a$$<span> is 78<span class='staticMath'>$$\\degree$$</span> and angle <span class='staticMath'>$$b$$<span> is equal to <span class='staticMath'>$$3x$$<span>"
 		    				}]
     			    },
     			    {"currentEditor": [
@@ -162,7 +162,7 @@ var problem05 =    [{"metadata": [
 	    			{"history": [
 							{
 		    				"equation":"",
-		    				"annotation":"Solve for <span class='staticMath'>$$x$$<span>: Angles <span class='staticMath'>$$a$$<span> and <span class='staticMath'>$$b$$<span> are supplementary. Angle <span class='staticMath'>$$a$$<span> is 78 degrees and angle <span class='staticMath'>$$b$$<span> is equal to <span class='staticMath'>$$3x$$<span>"
+		    				"annotation":"Solve for <span class='staticMath'>$$x$$<span>: Angles <span class='staticMath'>$$a$$<span> and <span class='staticMath'>$$b$$<span> are supplementary. Angle <span class='staticMath'>$$a$$<span> is 78<span class='staticMath'>$$\\degree$$</span> and angle <span class='staticMath'>$$b$$<span> is equal to <span class='staticMath'>$$3x$$<span>"
 		    				}]
 	    			}];	    			
 	    			
