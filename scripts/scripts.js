@@ -587,10 +587,17 @@ function CalculateAndReplace(element) {
 		
 		// now deal with the ones that are TeX commands
 		expr = ReplaceTeXCommands( expr,
-									{ "frac": {pattern: "($0)/($1)"},
-									  "sqrt": {pattern: "($1)**(1/($0))", defaults: ["2"]}
+									{ "frac": {pattern: "(($0)/($1))"},
+									  "sqrt": {pattern: "(($1)**(1/($0)))", defaults: ["2"]}
 									} );
-
+									
+		// replace any {}s with ()s -- e.g, deals with 3^{4+5)					
+		expr = expr.replace(/\{/g, '(').replace(/\}/g, ")");
+		
+		// handle implied multiplication -- two cases (...)(...) and number (...) are common
+		// note that fractions and roots have been converted to have parens around them
+		expr = expr.replace(/\)\(/g, ")*(").replace(/(\d)\(/g, "$1*(")
+							
 		// make sure there are numbers AND operators
 		if ( !(/[\d.]/.test(expr) && /[+\-*/@]/.test(expr)) ) {
 			return "";
