@@ -586,15 +586,11 @@ function CalculateAndReplace(element) {
 					 .replace(/\^/g, '**');
 		
 		// now deal with the ones that are TeX commands
-		// to get around the letter check below, we use '@ instead of Math.pow
 		expr = ReplaceTeXCommands( expr,
 									{ "frac": {pattern: "($0)/($1)"},
 									  "sqrt": {pattern: "($1)**(1/($0))", defaults: ["2"]}
 									} );
 
-		
-		// Powers ("^") are hard: consider '\frac{3}{4}^{4-1}' and (3+4)^2
-		// Fix:  for now, punt
 		// make sure there are numbers AND operators
 		if ( !(/[\d.]/.test(expr) && /[+\-*/@]/.test(expr)) ) {
 			return "";
