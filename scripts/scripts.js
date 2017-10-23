@@ -582,13 +582,14 @@ function CalculateAndReplace(element) {
 		// Start by converting various character points into one set
 		let expr = latex.replace(/\\times/g, '*')
 					 .replace(/\\cdot/g, '*')
-					 .replace(/\\div/g, '/');
+					 .replace(/\\div/g, '/')
+					 .replace(/\^/g, '**');
 		
 		// now deal with the ones that are TeX commands
 		// to get around the letter check below, we use '@ instead of Math.pow
 		expr = ReplaceTeXCommands( expr,
 									{ "frac": {pattern: "($0)/($1)"},
-									  "sqrt": {pattern: "@($1,1/($0))", defaults: ["2"]}
+									  "sqrt": {pattern: "($1)**(1/($0))", defaults: ["2"]}
 									} );
 
 		
@@ -603,11 +604,10 @@ function CalculateAndReplace(element) {
 			return "";
 		}
 		
-		// fixup square root
-		expr = expr.replace(/@/g, 'Math.pow'); // already have parens around arguments
-		
 		try {
-			return eval(expr);
+			let result = eval(expr);
+			let rounded = Math.round(result);
+			return Math.abs(result-rounded)<1e-15 ? rounded : result;
 		} catch(e) {
 			return "";
 		}
