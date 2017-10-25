@@ -40,7 +40,9 @@ function PopulateEditorModal(dataObj) {
     //2 Get all variables from js objects
     	let originalProblemTitle = dataObj[0].metadata[0].title;
     	let originalProblemVariable = dataObj[0].metadata[0].variableName;
-    	let originalProblemEquation = '<span class="staticMath">$$'+dataObj[1].originalProblem[0].equation+'$$</span>';    	 
+    	let originalProblemEquation = dataObj[1].originalProblem[0].equation;
+    	
+    	let originalProblemEquationHTML = '<span class="staticMath">$$'+dataObj[1].originalProblem[0].equation+'$$</span>';    	 
     	let originalProblemAnnotation = dataObj[1].originalProblem[0].annotation;    	 
     	let currentEditorEquation = dataObj[2].currentEditor[0].equation;    	 
     	let currentEditorAnnotation = dataObj[2].currentEditor[0].annotation;    	
@@ -66,7 +68,7 @@ function PopulateEditorModal(dataObj) {
 	        htmlHistory += '</div>';
 	    }
     //3 BUILD HTML TITLE
-    	let htmlTitle = 'Original Problem: '+originalProblemEquation+ ', '+originalProblemAnnotation+'';
+    	let htmlTitle = 'Original Problem: '+originalProblemEquationHTML+ ', '+originalProblemAnnotation+'';
     	if (originalProblemVariable=="newEditor") {
 	    	htmlTitle = ''+originalProblemTitle+'';
 	    }
@@ -145,7 +147,8 @@ function ClearEditorModal() {
 function SaveProblem(dataObj) {
 	//1 Get Variable from DOM
 	let originalProblemTitle = $('#EditorModal .modal-title').data('title');
-    let originalProblemEquation = $('#EditorModal .modal-title').data('equation');    	 
+    let originalProblemEquation = $('#EditorModal .modal-title').data('equation');
+    console.log(originalProblemEquation);    	 
     let originalProblemAnnotation = $('#EditorModal .modal-title').data('annotation');    	 
     let currentEditorEquation = TheActiveMathField.latex();   	 
     let currentEditorAnnotation = $('#mathAnnotation').val();
