@@ -140,6 +140,9 @@ function ClearEditorModal() {
 	//5. Unwire Save Buttons
 		$('#BtnSave').unbind('click');
 		$('#BtnCancel').unbind('click');
+	
+	//6. Hide Undo Button
+		$('#undoDelete').hide();
 }
 
 //***************************************************************************************************************************************************
