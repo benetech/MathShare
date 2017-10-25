@@ -33,7 +33,8 @@
 	<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 	<script src="lib/mathlivedist/mathlive.js"></script>
-	<script src="data/data01.js"></script>
+	
+	<script src="data/data02.js"></script>
 	<script type="text/javascript">	
 		$(document).ready(function() {
 			//Define All problem data
@@ -132,29 +133,29 @@
 		</div>
 		<div class="row">
 			<div class="col-md-4 text-center">
-				<button class="btn btn-default btn-huge" id="problem01">1. <span class="staticMath">$$3(-\frac{1}{6})(-\frac{2}{5})$$</span><br/>Find the product</button>
+				<button class="btn btn-default btn-huge" id="problem01">1. <span class="staticMath">$$3(-\frac{1}{6})(-\frac{2}{5})=$$</span><br/>Find the product</button>
 			</div>
 			<div class="col-md-4 text-center">
-				<button class="btn btn-default btn-huge" id="problem02">2. <span class="staticMath">$$7x-13 = 1$$</span><br/>Solve for x</button>
+				<button class="btn btn-default btn-huge" id="problem02">2. <span class="staticMath">$$-\frac{2}{5}(-\frac{1}{2})(-\frac{5}{6})=$$</span><br/>Find the product</button>
 			</div>
 			<div class="col-md-4 text-center">
-				<button class="btn btn-default btn-huge" id="problem03">3. <span class="staticMath">$$3x+14 = 5$$</span><br/>Solve for x</button>
-			</div>
-		</div>
-		<div class="row" style="margin-top: 30px;">
-			<div class="col-md-4 text-center">
-				<button class="btn btn-default btn-huge" id="problem04">4. <span class="staticMath">$$\frac{b}{9} -34 \leq -36$$</span><br/>Solve the inequality</button>
-			</div>
-			<div class="col-md-4 text-center">
-				<button class="btn btn-default btn-huge" id="problem05">5. Solve for x: Angles <span class="staticMath">$$a$$</span> and <span class="staticMath">$$b$$</span> are<br/> supplementary. Angle <span class="staticMath">$$a$$</span> is 78<span class="staticMath">$$\degree$$</span> and <br/>angle <span class="staticMath">$$b$$</span> is equal to <span class="staticMath">$$3x$$</span></button>
-			</div>
-			<div class="col-md-4 text-center">
-				<button class="btn btn-default btn-huge" id="problem06">6. What is the area of a circle with a <br/>diameter of 10 (use <span class="staticMath">$$\pi$$</span> or the value of <span class="staticMath">$$\pi$$</span><br/> to the hundredths place)?</button>
+				<button class="btn btn-default btn-huge" id="problem03">3. <span class="staticMath">$$\frac{55}{\frac{1}{2}}=$$</span><br/>Find the quotient</button>
 			</div>
 		</div>
 		<div class="row" style="margin-top: 30px;">
 			<div class="col-md-4 text-center">
-				<button class="btn btn-default btn-huge" id="problem07">7. Sarah works at a coffee shop. Her <br/>weekly salary is $325 and she early<br/> 11.5% commission on sales. How much<br/> does she make if she sells $2800<br/> in merchandise?</button>
+				<button class="btn btn-default btn-huge" id="problem04">4. <span class="staticMath">$$\frac{3}{10}\div (\frac{5}{8})=$$</span><br/>Find the quotient</button>
+			</div>
+			<div class="col-md-4 text-center">
+				<button class="btn btn-default btn-huge" id="problem05">5. Sarah works at a coffee shop. Her <br/>weekly salary is $325 and she early<br/> 11.5% commission on sales. How much<br/> does she make if she sells $2800<br/> in merchandise?</button>
+			</div>
+			<div class="col-md-4 text-center">
+				<button class="btn btn-default btn-huge" id="problem06">6. <span class="staticMath">$$7x-13=1$$</span><br/>Solve for x</button>
+			</div>
+		</div>
+		<div class="row" style="margin-top: 30px;">
+			<div class="col-md-4 text-center">
+				<button class="btn btn-default btn-huge" id="problem07">7. <span class="staticMath">$$\frac{b}{9}-34\leq -36$$</span><br/>Solve the inequality</button>
 			</div>
 			<div class="col-md-4 text-center">
 				<button class="btn btn-default btn-huge" id="newEditor">8. Try your own problem<br/><br/></button>
@@ -195,7 +196,7 @@
 				
 				<div class="col-md-10">
 					<div id="workArea" style="border: 1px solid #CCC; border-radius: 5px; background-color: #FFF; height: 79px;"> 
-						<div style="float: left; min width: 400px;" data-step="1" data-intro="Start Here - Edit the equation using the keyboard and the math buttons below.">
+						<div style="float: left; min width: 400px;" data-step="1" data-intro="Start Here - Write or Edit the equation using the keyboard and the math buttons below.">
 							<div class="mathEditor" id='mathEditorActive' style="float: left;"> x = -2</div>
 						</div>
 						<div class="mathAnnotation" style="float: right; border-left: 1px solid #CCC;" data-step="2" data-intro="Describe your work by trying or clicking the microphone to talk.">   
