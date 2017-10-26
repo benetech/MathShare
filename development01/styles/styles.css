@@ -125,8 +125,11 @@ html, body {
 	display: inline;
 }
 
-.mathEditor .ML__mathlive{
-    font-size: 22pt;
+.mathEditor .ML__mathlive {
+   display: block;
+   transform: scale(1.6, 1.6);
+   -webkit-transform: scale(1.6, 1.6);
+   -ms-transform: scale(1.6, 1.6);
 }
 
 .btn-default {
