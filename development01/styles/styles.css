@@ -40,6 +40,17 @@ html, body {
 	min-width: 350px;
 }
 	
+.mathEditor .ML__mathlive {
+   display: block;
+   transform: scale(1.6, 1.6);
+   -webkit-transform: scale(1.6, 1.6);
+   -ms-transform: scale(1.6, 1.6);
+}
+
+.mathWorkArea {
+	 
+}
+
 	
 .navbar-default {
 	background-color: #222F3F;
@@ -67,6 +78,7 @@ html, body {
 .mathStep {
 	border-radius: 5px;
 	padding: 5px 0px 5px 0px;
+    border-bottom: 1px solid #CCC;
 }
 
 /*
@@ -74,10 +86,6 @@ html, body {
     background-color: #eee;
 }
 */
-
-.mathStep {
-    border-bottom: 1px solid #CCC;
-}
 
 .mathStepTitle {
 	float: left;
@@ -100,10 +108,6 @@ html, body {
   background-color: #f0f0f0!important;
 }
 
-.mathWorkArea {
-	 
-}
-
 .btn-huge{
 	width: 300px;
 	height: 150px;
@@ -123,13 +127,6 @@ html, body {
 	box-shadow: none;
 	transition: none;
 	display: inline;
-}
-
-.mathEditor .ML__mathlive {
-   display: block;
-   transform: scale(1.6, 1.6);
-   -webkit-transform: scale(1.6, 1.6);
-   -ms-transform: scale(1.6, 1.6);
 }
 
 .btn-default {
