@@ -32,26 +32,6 @@
 html, body {
     height: 100%;
 }	
-
-
-	
-.mathEditor {
-	margin: 15px 0px 15px 15px;
-	min-width: 350px;
-}
-	
-.mathEditor .ML__mathlive {
-   display: block;
-   transform-origin: top left;
-   transform: scale(1.6, 1.6);
-   -webkit-transform: scale(1.6, 1.6);
-   -ms-transform: scale(1.6, 1.6);
-}
-
-.mathWorkArea {
-	 
-}
-
 	
 .navbar-default {
 	background-color: #222F3F;
@@ -77,8 +57,9 @@ html, body {
 }
 
 .mathStep {
+	font-size: 120%;
 	border-radius: 5px;
-	padding: 5px 0px 5px 0px;
+	padding: 5px 0px 10px 0px;
     border-bottom: 1px solid #CCC;
 }
 
@@ -99,6 +80,31 @@ html, body {
 
 .mathStepAnnotation {
 	padding-left: 125px;
+}
+
+.mathEditor {
+	margin: 15px 0px 15px 15px;
+	min-width: 350px;
+}
+	
+.mathEditor .ML__mathlive {
+   display: block;
+   transform-origin: top left;
+   transform: scale(1.6, 1.6);
+   -webkit-transform: scale(1.6, 1.6);
+   -ms-transform: scale(1.6, 1.6);
+}
+
+.mathStep .ML__mathlive {
+   display: block;
+   transform-origin: top left;
+   transform: scale(1.15, 1.15);
+   -webkit-transform: scale(1.15, 1.15);
+   -ms-transform: scale(1.15, 1.15);
+}
+
+.mathWorkArea {
+	 
 }
 
 .paletteButton {
