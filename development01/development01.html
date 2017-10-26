@@ -171,7 +171,7 @@
       <div class="modal-header" role="heading" aria-level="1">
         <h4 class="modal-title" style="float: left;" data-title data-equation data-annotation></h4>
         
-        <button onclick="introJs().start();" style="float: right;" type="button" class="btn btn-default btn-sm">Tour the editor</button>
+        <button onclick="introJs().start();" style="float: right;" type="button" class="btn btn-default btn-sm">Help</button>
         
       </div>
       
@@ -196,10 +196,10 @@
 				
 				<div class="col-md-10">
 					<div id="workArea" style="border: 1px solid #CCC; border-radius: 5px; background-color: #FFF; height: 100px;"> 
-						<div style="float: left; min width: 400px;" data-step="1" data-intro="Start Here - Write or Edit the equation using the keyboard and the math buttons below.">
+						<div style="float: left; min width: 400px;" data-step="1" data-intro="Start Here - write or edit the equation using the keyboard and the math buttons below.">
 							<div  role="heading" aria-level="3 aria-label="Enter math here" class="mathEditor" id='mathEditorActive' style="float: left;"> x = -2</div>
 						</div>
-						<div class="mathAnnotation" role="heading" aria-level="3" style="float: right; border-left: 1px solid #CCC;" data-step="2" data-intro="Describe your work by trying or clicking the microphone to talk.">   
+						<div class="mathAnnotation" role="heading" aria-level="3" style="float: right; border-left: 1px solid #CCC;" data-step="2" data-intro="Describe your work -- type or click on the microphone to describe your work.">   
 							<span><textarea class="form-control" rows="4" id="mathAnnotation" placeholder="Type or click the microphone to explain your work" style="width: 280px;"></textarea></span>
 							<span style="float: right;"><button id="start_button" class="btn btn-mic" micStatus="off" data-toggle="tooltip" title="Click to start/stop speech-to-text"><img alt="Start Speaking" id="mic_img" src="images/mic.gif"></button></span>
 						</div>
