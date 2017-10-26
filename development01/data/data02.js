@@ -49,19 +49,19 @@ var problem01 =    [{"metadata": [
     			    },
 					{"originalProblem": [
 							{
-		    				"equation":"3(-\\frac{1}{6})(-\\frac{2}{5})=",
+		    				"equation":"3(-\\frac{1}{6})(-\\frac{2}{5})",
 		    				"annotation":"Find the product"
 		    				}]
     			    },
     			    {"currentEditor": [
 							{
-		    				"equation":"3(-\\frac{1}{6})(-\\frac{2}{5})=",
+		    				"equation":"3(-\\frac{1}{6})(-\\frac{2}{5})",
 		    				"annotation":""
 		    				}]
 	    			},
 	    			{"history": [
 							{
-		    				"equation":"3(-\\frac{1}{6})(-\\frac{2}{5})=",
+		    				"equation":"3(-\\frac{1}{6})(-\\frac{2}{5})",
 		    				"annotation":"Find the product"	
 		    				}]
 	    			}];	
@@ -74,19 +74,19 @@ var problem02 =    [{"metadata": [
     			    },
 					{"originalProblem": [
 							{
-		    				"equation":"-\\frac{2}{5}(-\\frac{1}{2})(-\\frac{5}{6})=",
+		    				"equation":"-\\frac{2}{5}(-\\frac{1}{2})(-\\frac{5}{6})",
 		    				"annotation":"Find the product"
 		    				}]
     			    },
     			    {"currentEditor": [
 							{
-		    				"equation":"-\\frac{2}{5}(-\\frac{1}{2})(-\\frac{5}{6})=",
+		    				"equation":"-\\frac{2}{5}(-\\frac{1}{2})(-\\frac{5}{6})",
 		    				"annotation":""
 		    				}]
 	    			},
 	    			{"history": [
 							{
-		    				"equation":"-\\frac{2}{5}(-\\frac{1}{2})(-\\frac{5}{6})=",
+		    				"equation":"-\\frac{2}{5}(-\\frac{1}{2})(-\\frac{5}{6})",
 		    				"annotation":"Find the product"
 		    				}]
 	    			}];	   
@@ -99,19 +99,19 @@ var problem03 =    [{"metadata": [
     			    },
 					{"originalProblem": [
 							{
-		    				"equation":"\\frac{55}{\\frac{1}{2}}=",
+		    				"equation":"\\frac{55}{\\frac{1}{2}}",
 		    				"annotation":"Find the quotient"
 		    				}]
     			    },
     			    {"currentEditor": [
 							{
-		    				"equation":"\\frac{55}{\\frac{1}{2}}=",
+		    				"equation":"\\frac{55}{\\frac{1}{2}}",
 		    				"annotation":""
 		    				}]
 	    			},
 	    			{"history": [
 							{
-		    				"equation":"\\frac{55}{\\frac{1}{2}}=",
+		    				"equation":"\\frac{55}{\\frac{1}{2}}",
 		    				"annotation":"Find the quotient"
 		    				}]
 	    			}];
@@ -124,19 +124,19 @@ var problem04 =    [{"metadata": [
     			    },
 					{"originalProblem": [
 							{
-		    				"equation":"\\frac{3}{10}\\div (\\frac{5}{8})=",
+		    				"equation":"\\frac{3}{10}\\div (\\frac{5}{8})",
 		    				"annotation":"Find the quotient"
 		    				}]
     			    },
     			    {"currentEditor": [
 							{
-		    				"equation":"\\frac{3}{10}\\div (\\frac{5}{8})=",
+		    				"equation":"\\frac{3}{10}\\div (\\frac{5}{8})",
 		    				"annotation":""
 		    				}]
 	    			},
 	    			{"history": [
 							{
-		    				"equation":"\\frac{3}{10}\\div (\\frac{5}{8})=",
+		    				"equation":"\\frac{3}{10}\\div (\\frac{5}{8})",
 		    				"annotation":"Find the quotient"
 		    				}]
 	    			}];	    			
@@ -150,7 +150,7 @@ var problem05 =    [{"metadata": [
 					{"originalProblem": [
 							{
 		    				"equation":"",
-		    				"annotation":"Sarah works at a coffee shop. Her weekly salary is $325 and she early 11.5% commission on sales. How much does she make if she sells $2800 in merchandise?"
+		    				"annotation":"Sarah works at a coffee shop. Her weekly salary is $325 and she earns 11.5% commission on sales. How much does she make if she sells $2800 in merchandise?"
 		    				}]
     			    },
     			    {"currentEditor": [
@@ -162,7 +162,7 @@ var problem05 =    [{"metadata": [
 	    			{"history": [
 							{
 		    				"equation":"",
-		    				"annotation":"Sarah works at a coffee shop. Her weekly salary is $325 and she early 11.5% commission on sales. How much does she make if she sells $2800 in merchandise?"
+		    				"annotation":"Sarah works at a coffee shop. Her weekly salary is $325 and she earns 11.5% commission on sales. How much does she make if she sells $2800 in merchandise?"
 		    				}]
 	    			}];	    			
 	    			
