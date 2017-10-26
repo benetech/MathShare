@@ -168,7 +168,7 @@
   <div class="modal-dialog modal-lg" role="document" style="width: 1000px">
     <div class="modal-content">
       
-      <div class="modal-header">
+      <div class="modal-header" role="heading" aria-level="1">
         <h4 class="modal-title" style="float: left;" data-title data-equation data-annotation></h4>
         
         <button onclick="introJs().start();" style="float: right;" type="button" class="btn btn-default btn-sm">Tour the editor</button>
@@ -177,7 +177,7 @@
       
       <div class="modal-body" style="background-color: #f0f0f0;">
 		    <div class="row" data-step="4" data-intro="Review your work here.">
-		        <div class="col-md-2">
+		        <div class="col-md-2"  role="heading" aria-level="2">
 			        <div style="color:#222F3F; font-style: italic; font-size: 22px; float: left; font-weight: bold; opacity: 0.65;">My <br>Steps</div>
 		        </div>
 				<div class="col-md-10">
@@ -190,16 +190,16 @@
 		  <div class="mathWorkArea">
 			<div class="row" style="border-top: 3px solid #222F3F; padding-top: 5px;">
 				<div class="col-md-2">
-					<div style="color:#222F3F; font-style: italic; font-size: 22px; float: left; font-weight: bold; margin-top: 8px;">My <br> Work</div>
-					<div class="glyphicon glyphicon-menu-right" aria-hidden="true" style="color: red; font-size: 35px; float: right;margin-top:20px;"></div>
+					<div  role="heading" aria-level="2" style="color:#222F3F; font-style: italic; font-size: 22px; float: left; font-weight: bold; margin-top: 8px;">My <br> Work</div>
+					<div class="glyphicon glyphicon-menu-right" style="color: red; font-size: 35px; float: right;margin-top:20px;"></div>
 				</div>
 				
 				<div class="col-md-10">
 					<div id="workArea" style="border: 1px solid #CCC; border-radius: 5px; background-color: #FFF; height: 79px;"> 
 						<div style="float: left; min width: 400px;" data-step="1" data-intro="Start Here - Write or Edit the equation using the keyboard and the math buttons below.">
-							<div class="mathEditor" id='mathEditorActive' style="float: left;"> x = -2</div>
+							<div  role="heading" aria-level="3 aria-label="Enter math here" class="mathEditor" id='mathEditorActive' style="float: left;"> x = -2</div>
 						</div>
-						<div class="mathAnnotation" style="float: right; border-left: 1px solid #CCC;" data-step="2" data-intro="Describe your work by trying or clicking the microphone to talk.">   
+						<div class="mathAnnotation" role="heading" aria-level="3" style="float: right; border-left: 1px solid #CCC;" data-step="2" data-intro="Describe your work by trying or clicking the microphone to talk.">   
 							<span><textarea class="form-control" rows="3" id="mathAnnotation" placeholder="Type or click the microphone to explain your work" style="width: 280px;"></textarea></span>
 							<span style="float: right;"><button id="start_button" class="btn btn-mic" micStatus="off" data-toggle="tooltip" title="Click to start/stop speech-to-text"><img alt="Start Speaking" id="mic_img" src="images/mic.gif"></button></span>
 						</div>
@@ -213,7 +213,7 @@
 <!-- 				  Do your work here and then click the "Next Step" button to the right -->
 			  </div>  
 			  <div class="col-md-8">
-				  <div class="mathPalette">
+				  <div class="mathPalette" role="heading" aria-level="3 aria-label="math input buttons">
 					  <!-- ⏎ is return char glyph --> 
 					  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Dot times (⌨: \cdot⏎)" onclick="MathLivePasteFromButton(this)">$$\cdot$$</button>
 					  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Times (⌨: xx)" onclick="MathLivePasteFromButton(this)">$$\times$$</button>

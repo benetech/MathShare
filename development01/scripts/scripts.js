@@ -33,6 +33,42 @@ function RenderMathEditor() {
 }
 
 //***************************************************************************************************************************************************
+/**
+Convert number to ordinal -- checked with NVDA that 2nd will read as "second", etc.
+From https://stackoverflow.com/questions/13627308/add-st-nd-rd-and-th-ordinal-suffix-to-a-number
+The rules are as follows:
+	st is used with numbers ending in 1 (e.g. 1st, pronounced first)
+	nd is used with numbers ending in 2 (e.g. 92nd, pronounced ninety-second)
+	rd is used with numbers ending in 3 (e.g. 33rd, pronounced thirty-third)
+	As an exception to the above rules, all the "teen" numbers ending with 11, 12 or 13 use -th (e.g. 11th, pronounced eleventh, 112th, pronounced one hundred [and] twelfth)
+	th is used for all other numbers (e.g. 9th, pronounced ninth).
+**/
+function OrdinalSuffix(i) {
+    var j = i % 10,
+        k = i % 100;
+    if (j == 1 && k != 11) {
+        return i + "st";
+    }
+    if (j == 2 && k != 12) {
+        return i + "nd";
+    }
+    if (j == 3 && k != 13) {
+        return i + "rd";
+    }
+    return i + "th";
+}
+
+// build a row of history
+function HTMLForRow(stepNumber, math, annotation) {
+	let result = '<div class="row mathStep" role="heading" aria-level="3" data-step="'+stepNumber+'" data-equation="'+math+'" data-annotation="'+annotation+'">';
+	result += '<span class="SROnly">' + OrdinalSuffix(stepNumber) +' step</span>';
+	result +=  '<div class="col-md-2" aria-hidden="true" >Step '+stepNumber+':</div>';
+	result +=  '<div class="col-md-5 staticMath" role="heading" aria-level="4">$$'+math+'$$</div>';
+	result +=  '<div class="col-md-5" role="heading" aria-level="4">'+annotation+'</div>';
+	result += '</div>';
+	return result;
+}
+
 // POPULATE EDITOR WINDOW
 function PopulateEditorModal(dataObj) {
     //1 Clear existing info in modal
@@ -59,13 +95,8 @@ function PopulateEditorModal(dataObj) {
     	
     //3 Build HTML HISTORY
     	let htmlHistory = '';
-		for (let i = 0; i < historyObj.length; i++) {	
-			let tempStepNumber = i+1;	      
-	        htmlHistory += '<div class="row mathStep" data-step="'+tempStepNumber+'" data-equation="'+historyObj[i].equation+'" data-annotation="'+historyObj[i].annotation+'">';
-		    htmlHistory +=  '<div class="col-md-2">Step '+tempStepNumber+':</div>';
-	        htmlHistory +=  '<div class="col-md-5 staticMath">$$'+historyObj[i].equation+'$$</div>';
-	        htmlHistory +=  '<div class="col-md-5">'+historyObj[i].annotation+'</div>';
-	        htmlHistory += '</div>';
+		for (let i = 0; i < historyObj.length; i++) {
+			htmlHistory += HTMLForRow(i+1, historyObj[i].equation, historyObj[i].annotation);
 	    }
     //3 BUILD HTML TITLE
     	let htmlTitle = 'Original Problem: '+originalProblemEquationHTML+ ', '+originalProblemAnnotation+'';
@@ -207,18 +238,10 @@ function NewMathEditorRow(mathContent) {
 	let mathStepAnnotation = $('#mathAnnotation').val();
 	let mathStepNumber = $('.mathStep:last').data('step');
 	let mathStepNewNumber = mathStepNumber ? mathStepNumber+1 : 1;	// worry about no steps yet
-	let mathStepTitle = "Step "+mathStepNewNumber+":";
 
-	let html = '<div class="row mathStep" data-step="'+mathStepNewNumber+'" data-equation="'+mathStepEquation+'" data-annotation="'+mathStepAnnotation+'">';
-	html +=  '<div class="col-md-2">'+mathStepTitle+'</div>';
-	html +=  '<div class="col-md-5 staticMath">$$'+mathStepEquation+'$$</div>';
-	html +=  '<div class="col-md-5">'+mathStepAnnotation+'</div>';
-	html += '</div>';
+	let result = HTMLForRow(mathStepNewNumber, mathStepEquation, mathStepAnnotation)
 
-	$('.mathHistory').append(html);
-	
-	
-	
+	$('.mathHistory').append( result );
 	$('.mathHistory').animate({ scrollTop: $('.mathHistory')[0].scrollHeight}, 500);
 
 	MathLive.renderMathInElement( $('.mathStep:last') );
@@ -545,8 +568,6 @@ function CleanUpCrossouts(latexStr, options) {
 	// where crossout is \enclose{updiagonalstrike downdiagonalstrike}[..]{...}
 	// This is missing compass points NW, W, SW, E
 	// If a replacement pattern isn't found, the crossout is removed
-	// FIX: this looks for very specific uses of crossout and needs to change
-	//   if the crossout pattern changes
 	// FIX: this would be easier/less error prone if we use MathML (not yet implemented)
 	// FIX: there are  places where whitespace is legal but not checked (eg, around optional '^')
 	options = options || {erase:false};
