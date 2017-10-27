@@ -182,7 +182,6 @@ function SaveProblem(dataObj) {
 	//1 Get Variable from DOM
 	let originalProblemTitle = $('#EditorModal .modal-title').data('title');
     let originalProblemEquation = $('#EditorModal .modal-title').data('equation');
-    console.log(originalProblemEquation);    	 
     let originalProblemAnnotation = $('#EditorModal .modal-title').data('annotation');    	 
     let currentEditorEquation = TheActiveMathField.latex();   	 
     let currentEditorAnnotation = $('#mathAnnotation').val();

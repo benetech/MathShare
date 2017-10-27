@@ -15,6 +15,7 @@
 	<link rel="stylesheet" href="mathlivedist/mathlive.core.css" type="text/css">
 	<link rel="stylesheet" href="mathlivedist/mathlive.css" type="text/css">
 	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<link rel="stylesheet" href="lib/intro/minified/introjs.min.css" type="text/css">
 	<link rel="stylesheet" href="styles/styles.css" type="text/css">
 	<script type="text/javascript">	
 		/*
@@ -32,6 +33,7 @@
 	<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 	<script src="mathlivedist/mathlive.js"></script>
+	
 	<script src="data/data01.js"></script>
 	<script type="text/javascript">	
 		$(document).ready(function() {
@@ -39,11 +41,6 @@
 			var problems = [problem01,problem02,problem03,problem04,problem05,problem06,problem07,newEditor];
 	    	
 	    	// WIRE UP EXAMPLE BUTTONS ON HOME PAGE
-	    	$('#SampleProblemBtn').click(function() {
-			    $('#SampleProblemModal').modal();
-			});
-	    	
-	    	
 		    $('#problem01').click(function() {
 			    SetCurrentProblem(problem01);
 			    PopulateEditorModal(CurrentProblem);
@@ -127,7 +124,7 @@
 	<!-- END TOP HEADER/NAVIGATION -->
 		
 	<!-- START MAIN PAGE CODE -->	
-	<div class="container" style="width: 1000px; margin: 0px auto; margin-top: 150px; margin-bottom: 100px;">	
+	<div class="container" style="width: 1000px; margin: 0px auto; margin-top: 150px; margin-bottom: 100px; -webkit-transform: scale(1.10, 1.10);">	
 		<div class="row">
 			<div class="col-md-12 text-center">
 				<h2>Select a problem and try out Benetech's Math Editor!</h2>
@@ -168,119 +165,110 @@
 			</div>
 		</div>
 	</div>
-	<!-- END MAIN PAGE CODE -->
+<!-- END MAIN PAGE CODE -->
 	
-	<!-- START SAMPLE MODAL CODE -->	
-	<div class="modal fade" id="SampleProblemModal">
-	  <div class="modal-dialog modal-lg" style="width: 1000px">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-	        <h4 class="modal-title">Using this Tool</h4>
-	      </div>
-	      <div class="modal-body" style="text-align: center;">
-	        <img src="images/SampleProblem.png" alt="SampleProblem" width="700">
-	      </div>
-	      <div class="modal-footer">
-	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-	      </div>
-	    </div><!-- /.modal-content -->
-	  </div><!-- /.modal-dialog -->
-	</div><!-- /.modal -->
-	<!-- END SAMPLE MODAL CODE -->	
-	
-	<!-- START MODAL CODE -->
-	<div class="modal fade" tabindex="-1" role="dialog" id="EditorModal">
-	  <div class="modal-dialog modal-lg" role="document" style="width: 1000px">
-	    <div class="modal-content">
-	      
-	      <div class="modal-header">
-	        <h4 class="modal-title" data-title data-equation data-annotation>Modal title</h4>
-	      </div>
-	      <div class="modal-body">
-			    <div class="mathHistory container-fluid" style="height: 175px; overflow-y: scroll;" id="MathHistory">
-				 <!-- Equation History Here --> 
-			    </div>
-			  <div class="mathWorkArea">
-				<div class="row" style="border-top: 10px solid #222F3F; border-bottom: 3px solid #222F3F; padding-top: 5px;">
-					<div class="col-md-5">
-						<div class="mathStepTitle" style="color:#222F3F; margin-top: 13px;">Current</div>
-						<div class="mathEditor" id='mathEditorActive'> x = -2</div>
-					</div>
-					<div class="col-md-7">
-						<div class="mathAnnotation">   
-							<div class="row" style="margin-bottom: 5px;">
-								<div class="col-md-9"> 
-									<div class="row" style="border: 1px solid #CCC; border-radius: 4px;">
-										<div class="col-md-10" style="padding-left: 0px;">
-											<textarea class="form-control" rows="3" id="mathAnnotation"></textarea>
-										</div>
-										<div class="col-md-2" style="text-align: right; margin-top: 10px;">
-											<button id="start_button" class="btn btn-mic" micStatus="off" data-toggle="tooltip" title="Click to start/stop speech-to-text"><img alt="Start Speaking" id="mic_img" src="images/mic.gif"></button>
-										</div>
-									</div>
-								</div>
-								<div class="col-md-3" style="margin-top: 0px; text-align: right;"> 
-	 								<button class="btn btn-default" id="undoDelete" data-toggle="tooltip" title="Undo Last Delete" alt="Undo Last Delete" onclick="UndoDeleteStep()" style="margin-bottom: 5px;">Undo</span></button>
-									<button class="btn btn-default" data-toggle="tooltip" title="Delete this Step" alt="Delete this step" onclick="DeleteActiveMath()" style="margin-bottom: 5px;"><span class="glyphicon glyphicon-trash"></span></button>
-									<br>
-									<button class="btn btn-primary" data-toggle="tooltip" title="Clean up the cross outs and start a new step" onclick="NewRowOrRowsAfterCleanup(TheActiveMathField.latex());" style="margin-right: 4px;">Next</button>
-								</div>
-							</div>   
+<!-- START MODAL CODE -->
+<div class="modal fade" tabindex="-1" role="dialog" id="EditorModal">
+  <div class="modal-dialog modal-lg" role="document" style="width: 1000px">
+    <div class="modal-content">
+      
+      <div class="modal-header" role="heading" aria-level="1">
+        <h4 class="modal-title" style="float: left;" data-title data-equation data-annotation></h4>
+        
+        <button onclick="introJs().start();" style="float: right;" type="button" class="btn btn-default btn-sm">Help</button>
+        
+      </div>
+      
+      <div class="modal-body" style="background-color: #f0f0f0;">
+		    <div class="row" data-step="4" data-intro="Review your work here.">
+		        <div class="col-md-2"  role="heading" aria-level="2">
+			        <div style="color:#222F3F; font-style: italic; font-size: 22px; float: left; font-weight: bold; opacity: 0.65;">My <br>Steps</div>
+		        </div>
+				<div class="col-md-10">
+					<div class="mathHistory container-fluid" style="height: 175px; overflow-y: scroll; color: #222F3F; opacity: 0.65;" id="MathHistory">
+					 <!-- Equation History Here --> 
+				    </div>
+		        </div>
+		    </div>
+		    
+		  <div class="mathWorkArea">
+			<div class="row" style="border-top: 3px solid #222F3F; padding-top: 5px;">
+				<div class="col-md-2">
+					<div  role="heading" aria-level="2" style="color:#222F3F; font-style: italic; font-size: 22px; float: left; font-weight: bold; margin-top: 8px;">My <br> Work</div>
+					<div class="glyphicon glyphicon-menu-right" style="color: red; font-size: 35px; float: right;margin-top:20px;"></div>
+				</div>
+				
+				<div class="col-md-10">
+					<div id="workArea" style="border: 1px solid #CCC; border-radius: 5px; background-color: #FFF; height: 100px;"> 
+						<div style="float: left; min width: 400px;" data-step="1" data-intro="Start Here - write or edit the equation using the keyboard and the math buttons below.">
+							<div  role="heading" aria-level="3 aria-label="Enter math here" class="mathEditor" id='mathEditorActive' style="float: left;"> x = -2</div>
+						</div>
+						<div class="mathAnnotation" role="heading" aria-level="3" style="float: right; border-left: 1px solid #CCC;" data-step="2" data-intro="Describe your work -- type or click on the microphone to describe your work.">   
+							<span><textarea class="form-control" rows="4" id="mathAnnotation" placeholder="Type or click the microphone to explain your work" style="width: 280px;"></textarea></span>
+							<span style="float: right;"><button id="start_button" class="btn btn-mic" micStatus="off" data-toggle="tooltip" title="Click to start/stop speech-to-text"><img alt="Start Speaking" id="mic_img" src="images/mic.gif"></button></span>
 						</div>
 					</div>
 				</div>
-			  </div>
-			    <div class="row" style=" padding-top: 10px;">
-				  <div class="col-md-7">
-					  <div class="mathPalette">
-						  <!-- ⏎ is return char glyph --> 
-						  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Dot times (⌨: \cdot⏎)" onclick="MathLivePasteFromButton(this)">$$\cdot$$</button>
-						  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Times (⌨: xx)" onclick="MathLivePasteFromButton(this)">$$\times$$</button>
-						  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Divsion (⌨: \div⏎)" onclick="MathLivePasteFromButton(this)">$$\div$$</button>
-						  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Plus minus (⌨: +-)" onclick="MathLivePasteFromButton(this)">$$\pm$$</button>
-						  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Cross out (⌨: shift+delete)" onclick="MathLivePasteFromButton(this)">$$\enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{\blacksquare}$$</button>
-						  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Fraction (⌨: /)" onclick="MathLivePasteFromButton(this)">$$\frac{\blacksquare}{\square}$$</button>
-						  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Superscript (⌨: ^)"onclick="MathLivePasteFromButton(this)">$${\blacksquare}^{\square}$$</button>
-						  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Subscript (⌨: _)" onclick="MathLivePasteFromButton(this)">$${\blacksquare}_{\square}$$</button>
-						  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Square root (⌨: sqrt)" onclick="MathLivePasteFromButton(this)">$$\sqrt{\blacksquare}$$</button>
-						  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="RootH" onclick="MathLivePasteFromButton(this)">$$\sqrt[{\square}]{\blacksquare}$$</button>
-						  <br/>
-						  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Less than or equal  (⌨: <=)" onclick="MathLivePasteFromButton(this)">$$\leq$$</button>
-						  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Greater than or equal  (⌨: >=)" onclick="MathLivePasteFromButton(this)">$$\geq$$</button>
-						  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Not equal (⌨: !=)" onclick="MathLivePasteFromButton(this)">$$\neq$$</button>
-						  <button class="staticMath btn btn-default paletteButton"  data-toggle="tooltip" title="Is equal to" onclick="MathLivePasteFromButton(this)">$$\overset{?}{=}$$</button>
-						  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Cross out with replacement" onclick="MathLivePasteFromButton(this)">$$ \enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{\blacksquare}^{\square} $$</button>
-						  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Parentheses" onclick="MathLivePasteFromButton(this)">$$\Bigl{(}\blacksquare\Bigr{)}$$</button>
-						  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Square brackets" onclick="MathLivePasteFromButton(this)">$$\Bigl{[}\blacksquare\Bigr{]}$$</button>
-						  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Absolute value" onclick="MathLivePasteFromButton(this)">$$\Bigl{|}\blacksquare\Bigr{|}$$</button>
-						  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Floor" onclick="MathLivePasteFromButton(this)">$$\Bigl{\lfloor}\blacksquare\Bigr{\rfloor}$$</button>
-						  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Ceiling" onclick="MathLivePasteFromButton(this)">$$\Bigl{\lceil}\blacksquare\Bigr{\rceil}$$</button>
-					   </div>
+				
+			</div>
+		  </div>
+		    <div class="row" style=" padding-top: 10px;">
+			  <div class="col-md-2" style="color: #222F3F; opacity: 0.65; font-style: italic;">  
+<!-- 				  Do your work here and then click the "Next Step" button to the right -->
+			  </div>  
+			  <div class="col-md-8">
+				  <div class="mathPalette" role="heading" aria-level="3 aria-label="math input buttons">
+					  <!-- ⏎ is return char glyph --> 
+					  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Dot times (⌨: \cdot⏎)" onclick="MathLivePasteFromButton(this)">$$\cdot$$</button>
+					  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Times (⌨: xx)" onclick="MathLivePasteFromButton(this)">$$\times$$</button>
+					  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Divsion (⌨: \div⏎)" onclick="MathLivePasteFromButton(this)">$$\div$$</button>
+					  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Plus minus (⌨: +-)" onclick="MathLivePasteFromButton(this)">$$\pm$$</button>
+					  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Cross out (⌨: shift+delete)" onclick="MathLivePasteFromButton(this)">$$\enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{\blacksquare}$$</button>
+					  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Fraction (⌨: /)" onclick="MathLivePasteFromButton(this)">$$\frac{\blacksquare}{\square}$$</button>
+					  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Superscript (⌨: ^)"onclick="MathLivePasteFromButton(this)">$${\blacksquare}^{\square}$$</button>
+					  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Subscript (⌨: _)" onclick="MathLivePasteFromButton(this)">$${\blacksquare}_{\square}$$</button>
+					  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Square root (⌨: sqrt)" onclick="MathLivePasteFromButton(this)">$$\sqrt{\blacksquare}$$</button>
+					  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="RootH" onclick="MathLivePasteFromButton(this)">$$\sqrt[{\square}]{\blacksquare}$$</button>
+					  
+					  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Triangle (⌨: \triangle⏎)" onclick="MathLivePasteFromButton(this)">$$\triangle$$</button>
+					  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Angle (⌨: \angle⏎)" onclick="MathLivePasteFromButton(this)">$$\angle$$</button>
+					  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Congruent (⌨: \cong⏎)" onclick="MathLivePasteFromButton(this)">$$\cong$$</button>
+					  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Perpendicular (⌨: \perp⏎)" onclick="MathLivePasteFromButton(this)">$$\perp$$</button>
+					  
+					  <br/>
+					  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Less than or equal  (⌨: <=)" onclick="MathLivePasteFromButton(this)">$$\leq$$</button>
+					  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Greater than or equal  (⌨: >=)" onclick="MathLivePasteFromButton(this)">$$\geq$$</button>
+					  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Not equal (⌨: !=)" onclick="MathLivePasteFromButton(this)">$$\neq$$</button>
+					  <button class="staticMath btn btn-default paletteButton"  data-toggle="tooltip" title="Is equal to" onclick="MathLivePasteFromButton(this)">$$\overset{?}{=}$$</button>
+					  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Cross out with replacement" onclick="MathLivePasteFromButton(this)">$$ \enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{\blacksquare}^{\square} $$</button>
+					  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Parentheses" onclick="MathLivePasteFromButton(this)">$$\Bigl{(}\blacksquare\Bigr{)}$$</button>
+					  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Square brackets" onclick="MathLivePasteFromButton(this)">$$\Bigl{[}\blacksquare\Bigr{]}$$</button>
+					  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Absolute value" onclick="MathLivePasteFromButton(this)">$$\Bigl{|}\blacksquare\Bigr{|}$$</button>
+					  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Floor" onclick="MathLivePasteFromButton(this)">$$\Bigl{\lfloor}\blacksquare\Bigr{\rfloor}$$</button>
+					  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Ceiling" onclick="MathLivePasteFromButton(this)">$$\Bigl{\lceil}\blacksquare\Bigr{\rceil}$$</button>
+				   
+					  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Parallel (⌨: \parallel⏎)" onclick="MathLivePasteFromButton(this)">$$\parallel$$</button>
+				      <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Degree (⌨: \degreel⏎)" onclick="MathLivePasteFromButton(this)">$$\degree$$</button>
+				      <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Pi (⌨: pi⏎)" onclick="MathLivePasteFromButton(this)">$$\pi$$</button>
+ 				      <button class="btn btn-default paletteButton" data-toggle="tooltip" title="Calculate" onclick="CalculateAndReplace(this)">Calc</button> 
 				   </div>
-				   <div class="col-md-4">
-					   <div class="mathPalette">
-						  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Triangle (⌨: \triangle⏎)" onclick="MathLivePasteFromButton(this)">$$\triangle$$</button>
-						  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Angle (⌨: \angle⏎)" onclick="MathLivePasteFromButton(this)">$$\angle$$</button>
-						  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Congruent (⌨: \cong⏎)" onclick="MathLivePasteFromButton(this)">$$\cong$$</button>
-						  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Perpendicular (⌨: \perp⏎)" onclick="MathLivePasteFromButton(this)">$$\perp$$</button>
-					      <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Parallel (⌨: \parallel⏎)" onclick="MathLivePasteFromButton(this)">$$\parallel$$</button>
-					      <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Degree (⌨: \degreel⏎)" onclick="MathLivePasteFromButton(this)">$$\degree$$</button>
-					      <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Pi (⌨: pi⏎)" onclick="MathLivePasteFromButton(this)">$$\pi$$</button>
-						  
-	 				      <button class="btn btn-default paletteButton" data-toggle="tooltip" title="Calculate" onclick="CalculateAndReplace(this)">Calc</button> 
-					   </div>
-				   </div>
-			    </div>
-	      </div>    
-	      <div class="modal-footer" style="text-align: right;">
-		    <button class="btn btn-default" id="BtnCancel">Cancel</button>
-		    <button class="btn btn-primary" id="BtnSave">Save</button>
-	      </div>
-	    </div><!-- /.modal-content -->
-	  </div><!-- /.modal-dialog -->
-	</div><!-- /.modal -->
-	<!-- END MODAL CODE -->
+			   </div>
+			   <div class="col-md-2" style="text-align: right;">
+					<button class="btn btn-default" id="undoDelete" data-toggle="tooltip" title="Undo Last Delete" alt="Undo Last Delete" onclick="UndoDeleteStep()" style="margin-bottom: 5px;">Undo</span></button>
+					<button class="btn btn-default" data-toggle="tooltip" title="Delete this Step" alt="Delete this step" onclick="DeleteActiveMath()" style="margin-bottom: 5px;"><span class="glyphicon glyphicon-trash"></span></button>
+					<br>
+					<button class="btn btn-primary" data-toggle="tooltip" title="Clean up the cross outs and start a new step" onclick="NewRowOrRowsAfterCleanup(TheActiveMathField.latex());" style="margin-top: 11px;" data-step="3" data-intro="Click here to start a new line">Next Step</button>
+			   </div>
+		    </div>
+      </div>    
+      <div class="modal-footer" style="text-align: left;">
+	    <button class="btn btn-default" id="BtnCancel">Close Problem</button>
+	    <button class="btn btn-default" id="BtnSave" data-step="5" data-intro="Save your work to complete it later">Save Problem</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!-- END MODAL CODE -->
 
 </body>
 <script>
@@ -296,4 +284,5 @@
 	MathLive.renderMathInDocument();
 </script>
 <script src="scripts/speech2text.js"></script>
+<script src="lib/intro/minified/intro.min.js"></script>
 </html>
