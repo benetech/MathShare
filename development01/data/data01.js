@@ -32,19 +32,19 @@
     			  ,
 					"originalProblem": 
 							{
-		    				"equation":"7}-13 = 1",
+		    				"equation":"7x-13 = 1",
 		    				"annotation":"Solve for }"
 		    				}
     			  ,
     			    "currentEditor": 
 							{
-		    				"equation":"7}-13 = 1",
+		    				"equation":"7x-13 = 1",
 		    				"annotation":""
 		    				}
 	    		,
 	    			"history": [
 							{
-		    				"equation":"7}-13 = 1",
+		    				"equation":"7x-13 = 1",
 		    				"annotation":"Solve for }"
 		    				}]
 	    			},	   
@@ -57,19 +57,19 @@
     			  ,
 					"originalProblem": 
 							{
-		    				"equation":"3}+14 = 5",
+		    				"equation":"3x+14 = 5",
 		    				"annotation":"Solve for }"
 		    				}
     			  ,
     			    "currentEditor": 
 							{
-		    				"equation":"3}+14 = 5",
+		    				"equation":"3x+14 = 5",
 		    				"annotation":""
 		    				}
 	    		,
 	    			"history": [
 							{
-		    				"equation":"3}+14 = 5",
+		    				"equation":"3x+14 = 5",
 		    				"annotation":"Solve for }"
 		    				}]
 	    			},
@@ -108,7 +108,7 @@
 					"originalProblem": 
 							{
 		    				"equation":"",
-		    				"annotation":"Solve for <span class='staticMath'>$$}$$<span>: Angles <span class='staticMath'>$$a$$<span> and <span class='staticMath'>$$b$$<span> are supplementary. Angle <span class='staticMath'>$$a$$<span> is 78<span class='staticMath'>$$\\degree$$</span> and angle <span class='staticMath'>$$b$$<span> is equal to <span class='staticMath'>$$3}$$<span>"
+		    				"annotation":"Solve for <span class='staticMath'>$$}$$<span>: Angles <span class='staticMath'>$$a$$<span> and <span class='staticMath'>$$b$$<span> are supplementary. Angle <span class='staticMath'>$$a$$<span> is 78<span class='staticMath'>$$\\degree$$</span> and angle <span class='staticMath'>$$b$$<span> is equal to <span class='staticMath'>$$3x$$<span>"
 		    				}
     			  ,
     			    "currentEditor": 
@@ -120,7 +120,7 @@
 	    			"history": [
 							{
 		    				"equation":"",
-		    				"annotation":"Solve for <span class='staticMath'>$$}$$<span>: Angles <span class='staticMath'>$$a$$<span> and <span class='staticMath'>$$b$$<span> are supplementary. Angle <span class='staticMath'>$$a$$<span> is 78<span class='staticMath'>$$\\degree$$</span> and angle <span class='staticMath'>$$b$$<span> is equal to <span class='staticMath'>$$3}$$<span>"
+		    				"annotation":"Solve for <span class='staticMath'>$$}$$<span>: Angles <span class='staticMath'>$$a$$<span> and <span class='staticMath'>$$b$$<span> are supplementary. Angle <span class='staticMath'>$$a$$<span> is 78<span class='staticMath'>$$\\degree$$</span> and angle <span class='staticMath'>$$b$$<span> is equal to <span class='staticMath'>$$3x$$<span>"
 		    				}]
 	    			},	    			
 	    			
