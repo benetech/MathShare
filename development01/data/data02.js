@@ -46,12 +46,12 @@
 			"annotation": "Find the quotient"
 		},
 		"currentEditor": {
-			"equation": "\\frac{55}{\\frac{1}{2},}",
+			"equation": "\\frac{55}{\\frac{1}{2}}",
 			"annotation": ""
 		},
 		"history": [
 			{
-				"equation": "\\frac{55}{\\frac{1}{2},",
+				"equation": "\\frac{55}{\\frac{1}{2}",
 				"annotation": "Find the quotient"
 			}
 		]
