@@ -60,29 +60,109 @@ function OrdinalSuffix(i) {
 
 // build a row of history
 function HTMLForRow(stepNumber, math, annotation) {
-	let result = '<div class="row mathStep" role="heading" aria-level="3" data-step="'+stepNumber+'" data-equation="'+math+'" data-annotation="'+annotation+'">';
-	result += '<span class="SROnly">' + OrdinalSuffix(stepNumber) +' step</span>';
-	result +=  '<div class="col-md-2" aria-hidden="true" >Step '+stepNumber+':</div>';
-	result +=  '<div class="col-md-5 staticMath" role="heading" aria-level="4">$$'+math+'$$</div>';
-	result +=  '<div class="col-md-5" role="heading" aria-level="4">'+annotation+'</div>';
-	result += '</div>';
+	let html = '<div class="row mathStep" role="heading" aria-level="3" data-step="'+stepNumber+'" data-equation="'+math+'" data-annotation="'+annotation+'">';
+	html += '<span class="SROnly">' + OrdinalSuffix(stepNumber) +' step</span>';
+	html +=  '<div class="col-md-2" aria-hidden="true" >Step '+stepNumber+':</div>';
+	html +=  '<div class="col-md-5 staticMath" role="heading" aria-level="4">$$'+math+'$$</div>';
+	html +=  '<div class="col-md-5" role="heading" aria-level="4">'+annotation+'</div>';
+	html += '</div>';
+	return html;
+}
+
+
+
+// Read data file and build a section containing links to open the editor on them
+function ReadFile(fileName) {
+	let result;
+	$.get( fileName, function(data) {
+		result = data;
+	}, 'json').always( function(data) {
+		// fall back sample data -- useful for testing with local files which can't be read
+		result = [
+			{"metadata": {"title":"Problem 1","variableName":"problem01"},
+			 "originalProblem": {"equation":"3(-\\frac{1}{6})(-\\frac{2}{5})","annotation":"Find the product"},
+			 "currentEditor": {"equation":"3(-\\frac{1}{6})(-\\frac{2}{5})","annotation":""},
+			 "history": [{"equation":"3(-\\frac{1}{6})(-\\frac{2}{5})","annotation":"Find the product"}]},
+			{"metadata": {"title":"Problem 2",    "variableName":"problem02"},		 
+			 "originalProblem": {"equation":"-\\frac{2}{5}(-\\frac{1}{2})(-\\frac{5}{6})", "annotation":"Find the product"},
+			 "currentEditor": {"equation":"-\\frac{2}{5}(-\\frac{1}{2})(-\\frac{5}{6})",    "annotation":""},
+			 "history": [{"equation":"-\\frac{2}{5}(-\\frac{1}{2})(-\\frac{5}{6})",    "annotation":"Find the product"}]},
+			{"metadata": {"title":"Problem 3",    "variableName":"problem03"},
+			 "originalProblem": {"equation":"\\frac{55}{\\frac{1}{2}}",    "annotation":"Find the quotient"},
+			 "currentEditor": {"equation":"\\frac{55}{\\frac{1}{2},",    "annotation":""},
+			 "history": [{"equation":"\\frac{55}{\\frac{1}{2},",    "annotation":"Find the quotient"}]},
+			{"metadata": {"title":"Problem 4",    "variableName":"problem04"},
+			 "originalProblem": {"equation":"\\frac{3}{10}\\div (\\frac{5}{8})",    "annotation":"Find the quotient"},
+			 "currentEditor": {"equation":"\\frac{3}{10}\\div (\\frac{5}{8})",    "annotation":""},
+			 "history": [{"equation":"\\frac{3}{10}\\div (\\frac{5}{8})",    "annotation":"Find the quotient"}]},
+			{"metadata": {"title":"Problem 5",    "variableName":"problem05"},
+			 "originalProblem": {"equation":"",    "annotation":"Sarah works at a coffee shop. Her weekly salary is $325 and she earns 11.5% commission on sales. How much does she make if she sells $2800 in merchandise?"},
+			 "currentEditor": {"equation":"",    "annotation":""},
+			 "history": [{"equation":"",    "annotation":"Sarah works at a coffee shop. Her weekly salary is $325 and she earns 11.5% commission on sales. How much does she make if she sells $2800 in merchandise?"}]},
+			{ "metadata": {"title":"Problem 6",    "variableName":"problem06"},
+			 "originalProblem": {"equation":"7x-13=1",    "annotation":"Solve for x"},
+			 "currentEditor": {"equation":"7x-13=1",    "annotation":""},
+			 "history": [{"equation":"7x-13=1",    "annotation":"Solve for x"}]},
+			{"metadata": {"title":"Problem 7",    "variableName":"problem07"},
+			 "originalProblem": {"equation":"\\frac{b}{9}-34\\leq -36",    "annotation":"Solve the inequality"},
+			 "currentEditor": {"equation":"\\frac{b}{9}-34\\leq -36",    "annotation":""},
+			 "history": [{"equation":"\\frac{b}{9}-34\\leq -36",    "annotation":"Solve the inequality"}]},
+			{"metadata": {"title":"Try your own problem",    "variableName":"newEditor"},
+			 "originalProblem": {"equation":"", "annotation":"Try your own problem"},
+			 "currentEditor": {},
+			 "history": [{}]}
+		]
+	});
 	return result;
 }
 
+// Create all the problems on the main page
+// Data for each problem is stored into the argument of the 'onclick' function		
+function PopulateMainPage(problemData) {
+	let html = '<div class="row">';
+	
+	for (let i=0; i< problemData.length; i++) {
+		let problem = problemData[i].originalProblem;
+		html += '<div class="col-md-4 text-center">' +
+					'<button class="btn btn-default btn-huge"' +
+							 // warning: 'problemData' uses ""s, so we need to use ''s to surround it
+					         'onclick=\'SetAndOpenEditorModel(this, ' +
+							 JSON.stringify(problemData[i]) + ')\'>' +
+						(i+1) + '. ' +
+						problem.annotation +
+						'<br/><br/>' +
+						'<span class="staticMath">$$' + problem.equation + '$$</span>' + 
+					'</button>' +
+					'</div>';
+	};
+	
+	html += '</div>';	
+	let node = document.createDocumentFragment();
+	let child = document.createElement("div");
+	child.innerHTML = html;
+	node.appendChild(child); 
+	return node;
+}
+		
+function SetAndOpenEditorModel(buttonElement, dataObj) {
+	PopulateEditorModal(buttonElement, dataObj);
+	OpenEditorModal();
+}	
+
 // POPULATE EDITOR WINDOW
-function PopulateEditorModal(dataObj) {
+function PopulateEditorModal(buttonElement, dataObj) {
     //1 Clear existing info in modal
     	ClearEditorModal();
     //2 Get all variables from js objects
-    	let originalProblemTitle = dataObj[0].metadata[0].title;
-    	let originalProblemVariable = dataObj[0].metadata[0].variableName;
-    	let originalProblemEquation = dataObj[1].originalProblem[0].equation;
+    	let originalProblemTitle = dataObj.metadata.title;
+    	let originalProblemVariable = dataObj.metadata.variableName;
+    	let originalProblemEquation = dataObj.originalProblem.equation;
     	
-    	let originalProblemEquationHTML = '<span class="staticMath">$$'+dataObj[1].originalProblem[0].equation+'$$</span>';    	 
-    	let originalProblemAnnotation = dataObj[1].originalProblem[0].annotation;    	 
-    	let currentEditorEquation = dataObj[2].currentEditor[0].equation;    	 
-    	let currentEditorAnnotation = dataObj[2].currentEditor[0].annotation;    	
-    	let historyObj = dataObj[3].history;
+    	let originalProblemEquationHTML = '<span class="staticMath">$$'+dataObj.originalProblem.equation+'$$</span>';    	 
+    	let originalProblemAnnotation = dataObj.originalProblem.annotation;    	 
+    	let currentEditorEquation = dataObj.currentEditor.equation;    	 
+    	let currentEditorAnnotation = dataObj.currentEditor.annotation;    	
+    	let historyObj = dataObj.history;
     	
     	if (originalProblemVariable=="newEditor") {
 	    	originalProblemEquation = "";
@@ -122,7 +202,7 @@ function PopulateEditorModal(dataObj) {
     //7 Wire up SAVE btn & hide if newEditor
     $('#BtnSave').show();
     $('#BtnSave').click(function() {
-	    SaveProblem(CurrentProblem);
+	    SaveProblem(buttonElement);
 	    CloseEditorModal();
     });
     if (originalProblemVariable=="newEditor") {
@@ -155,6 +235,7 @@ function CloseEditorModal() {
 
 //***************************************************************************************************************************************************
 // CLEAR THE EDITOR MODAL
+var UndoDeleteStack = [];			// objects on the stack have fields 'latex' and 'annotation'
 function ClearEditorModal() {
 	//1. Clear Title
 	     $('#EditorModal .modal-title').html('');
@@ -174,11 +255,14 @@ function ClearEditorModal() {
 	
 	//6. Hide Undo Button
 		$('#undoDelete').hide();
+		
+	//7. Reset UndoDeleteStack
+		UndoDeleteStack = [];
 }
 
 //***************************************************************************************************************************************************
 // RECREATE PROBLEM OBJECT FROM DOM
-function SaveProblem(dataObj) {
+function SaveProblem(buttonElement) {
 	//1 Get Variable from DOM
 	let originalProblemTitle = $('#EditorModal .modal-title').data('title');
     let originalProblemEquation = $('#EditorModal .modal-title').data('equation');
@@ -192,40 +276,17 @@ function SaveProblem(dataObj) {
 	$.each(mathStep, function (index, item) {
 	    history_array.push( {equation: $(item).data('equation'), annotation: $(item).data('annotation')} );  
 	});
-	let tempObjName = CurrentProblem[0].metadata[0].variableName;
-	window[tempObjName] = 	[{"metadata": [
-								{
-								"title": originalProblemTitle,
-			    				"variableName":tempObjName
-			    				}]
-    			    		},
-							{"originalProblem": [
-									{
-				    				"equation":originalProblemEquation,
-				    				"annotation":originalProblemAnnotation
-				    				}]
-		    			    },
-		    			    {"currentEditor": [
-									{
-				    				"equation":currentEditorEquation,
-				    				"annotation":currentEditorAnnotation
-				    				}]
-			    			},
-			    			{"history": history_array
-			    			}];
-}
+	problem = {
+		"metadata": {"title": originalProblemTitle},
+		"originalProblem": {"equation":originalProblemEquation, "annotation":originalProblemAnnotation},
+		"currentEditor": {"equation":currentEditorEquation, "annotation":currentEditorAnnotation},
+		"history": history_array
+	};
+	console.log(JSON.stringify(problem, null, '\t'));
+	// warning: 'problem' uses ""s, so we need to use ''s below
+	buttonElement.setAttribute('onclick', 'SetAndOpenEditorModel(this, ' + JSON.stringify(problem) +')');
 
-//***************************************************************************************************************************************************
-// SET CURRENT PROBLEM TO GLOBAL VARIABLE
-var CurrentProblem;
-var UndoDeleteStack = [];			// objects on the stack have fields 'latex' and 'annotation'
-function SetCurrentProblem(dataObj) {
-	CurrentProblem = dataObj;
-	UndoDeleteStack = [];
-	$('#undoDelete').show();
-	//console.log('Current Problem is: '+CurrentProblem[1].metadata[0].title);
 }
-
 
 //***************************************************************************************************************************************************
 // CREATE NEW HISTORY ROW FROM CURRENT CONTENT

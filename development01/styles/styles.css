@@ -120,6 +120,7 @@ html, body {
 	height: 150px;
     margin: 0px auto;
     vertical-align: middle;
+	white-space: normal;
 }
 
 .btn-mic {

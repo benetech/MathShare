@@ -35,63 +35,15 @@
 	<script src="lib/mathlivedist/mathlive.js"></script>
 	
 	<script src="data/data02.js"></script>
+	<script src="scripts/scripts.js"></script>
 	<script type="text/javascript">	
 		$(document).ready(function() {
-			//Define All problem data
-			var problems = [problem01,problem02,problem03,problem04,problem05,problem06,problem07,newEditor];
-	    	
-	    	// WIRE UP EXAMPLE BUTTONS ON HOME PAGE
-		    $('#problem01').click(function() {
-			    SetCurrentProblem(problem01);
-			    PopulateEditorModal(CurrentProblem);
-			    OpenEditorModal();
-			});
-			
-			$('#problem02').click(function() {
-				SetCurrentProblem(problem02);
-			    PopulateEditorModal(CurrentProblem);
-			    OpenEditorModal();
-			});
-			
-			 $('#problem03').click(function() {
-			    SetCurrentProblem(problem03);
-			    PopulateEditorModal(CurrentProblem);
-			    OpenEditorModal();
-			});
-			
-			$('#problem04').click(function() {
-				SetCurrentProblem(problem04);
-			    PopulateEditorModal(CurrentProblem);
-			    OpenEditorModal();
-			});
-			
-			 $('#problem05').click(function() {
-			    SetCurrentProblem(problem05);
-			    PopulateEditorModal(CurrentProblem);
-			    OpenEditorModal();
-			});
-			
-			$('#problem06').click(function() {
-				SetCurrentProblem(problem06);
-			    PopulateEditorModal(CurrentProblem);
-			    OpenEditorModal();
-			});
-			
-			 $('#problem07').click(function() {
-			    SetCurrentProblem(problem07);
-			    PopulateEditorModal(CurrentProblem);
-			    OpenEditorModal();
-			});
-			
-			$('#newEditor').click(function() {
-				SetCurrentProblem(newEditor);
-			    PopulateEditorModal(CurrentProblem);
-			    OpenEditorModal();
-			});
-		    
-		});
+			//generate all problem data for main page
+			document.getElementById("mainPageBody").append(
+				PopulateMainPage( ReadFile('data/data01.js') )
+			);
+		})
 	</script>
-	<script src="scripts/scripts.js"></script>
 </head>
 
 <body lang=EN-US>
@@ -124,41 +76,11 @@
 	<!-- END TOP HEADER/NAVIGATION -->
 		
 		
-	<div class="container" style="width: 1000px; margin: 0px auto; margin-top: 150px; margin-bottom: 100px; -webkit-transform: scale(1.10, 1.10);">	
+	<div id="mainPageBody" class="container" style="width: 1000px; margin: 0px auto; margin-top: 150px; margin-bottom: 100px; -webkit-transform: scale(1.10, 1.10);">	
 		<div class="row">
 			<div class="col-md-12 text-center">
 				<h2>Select a problem and try out Benetech's Math Editor!</h2>
 				<br/><br/>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-4 text-center">
-				<button class="btn btn-default btn-huge" id="problem01">1. <span class="staticMath">$$3(-\frac{1}{6})(-\frac{2}{5})$$</span><br/>Find the product</button>
-			</div>
-			<div class="col-md-4 text-center">
-				<button class="btn btn-default btn-huge" id="problem02">2. <span class="staticMath">$$-\frac{2}{5}(-\frac{1}{2})(-\frac{5}{6})$$</span><br/>Find the product</button>
-			</div>
-			<div class="col-md-4 text-center">
-				<button class="btn btn-default btn-huge" id="problem03">3. <span class="staticMath">$$\frac{55}{\frac{1}{2}}$$</span><br/>Find the quotient</button>
-			</div>
-		</div>
-		<div class="row" style="margin-top: 30px;">
-			<div class="col-md-4 text-center">
-				<button class="btn btn-default btn-huge" id="problem04">4. <span class="staticMath">$$\frac{3}{10}\div (\frac{5}{8})$$</span><br/>Find the quotient</button>
-			</div>
-			<div class="col-md-4 text-center">
-				<button class="btn btn-default btn-huge" id="problem05">5. Sarah works at a coffee shop. Her <br/>weekly salary is $325 and she earns<br/> 11.5% commission on sales. How much<br/> does she make if she sells $2800<br/> in merchandise?</button>
-			</div>
-			<div class="col-md-4 text-center">
-				<button class="btn btn-default btn-huge" id="problem06">6. <span class="staticMath">$$7x-13=1$$</span><br/>Solve for x</button>
-			</div>
-		</div>
-		<div class="row" style="margin-top: 30px;">
-			<div class="col-md-4 text-center">
-				<button class="btn btn-default btn-huge" id="problem07">7. <span class="staticMath">$$\frac{b}{9}-34\leq -36$$</span><br/>Solve the inequality</button>
-			</div>
-			<div class="col-md-4 text-center">
-				<button class="btn btn-default btn-huge" id="newEditor">8. Try your own problem<br/><br/></button>
 			</div>
 		</div>
 	</div>
