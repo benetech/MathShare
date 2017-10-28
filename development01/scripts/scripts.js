@@ -76,6 +76,7 @@ function ReadFile(fileName) {
 	let result;
 	$.getJSON( fileName, function(data) {
 		document.getElementById("mainPageBody").append( PopulateMainPage(data) );
+		MathLive.renderMathInDocument();
 	}, 'json').always( function(data) {
 		// fall back sample data -- useful for testing with local files which can't be read
 		result = [
@@ -113,6 +114,7 @@ function ReadFile(fileName) {
 			 "history": [{}]}
 		];
 		document.getElementById("mainPageBody").append(PopulateMainPage(result));
+		MathLive.renderMathInDocument();
 	});
 	return result;
 }
