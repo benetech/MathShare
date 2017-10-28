@@ -74,7 +74,7 @@ function HTMLForRow(stepNumber, math, annotation) {
 // Read data file and build a section containing links to open the editor on them
 function ReadFile(fileName) {
 	let result;
-	$.get( fileName, function(data) {
+	$.getJSON(( fileName, function(data) {
 		result = data;
 	}, 'json').always( function(data) {
 		// fall back sample data -- useful for testing with local files which can't be read
