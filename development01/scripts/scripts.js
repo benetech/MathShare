@@ -74,11 +74,11 @@ function HTMLForRow(stepNumber, math, annotation) {
 // Read data file and build a section containing links to open the editor on them
 // This is asynchronous, so the funcitonality is broken into two parts
 function ReadFileInitiate(fileName) {
-	console.log("ReadFileInitiate: main");
+	//console.log("ReadFileInitiate: main");
 	$.getJSON( fileName, function(data) {ReadFileFinish(data)} )
 	.always( function(data) {
 		// fall back sample data -- useful for testing with local files which can't be read
-		console.log("ReadFileInitiate: always");
+		//console.log("ReadFileInitiate: always");
 		ReadFileFinish([
 			{"metadata": {"title":"Problem 1","variableName":"problem01"},
 			 "originalProblem": {"equation":"3(-\\frac{1}{6})(-\\frac{2}{5})","annotation":"Find the product"},
@@ -118,7 +118,7 @@ function ReadFileInitiate(fileName) {
 
 // Finish reading the file now that the data is available
 function ReadFileFinish(data) {
-	console.log("ReadFileFinish");
+	//console.log("ReadFileFinish");
 	document.getElementById("mainPageBody").append( PopulateMainPage(data) );
 	MathLive.renderMathInDocument();
 }
