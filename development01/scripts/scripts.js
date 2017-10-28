@@ -76,57 +76,65 @@ function HTMLForRow(stepNumber, math, annotation) {
 function ReadFileInitiate(fileName) {
 	//console.log("ReadFileInitiate: main");
 	$.getJSON( fileName, function(data) {ReadFileFinish(data)} )
-	.always( function(data) {
+	.fail( function(data) {
 		// fall back sample data -- useful for testing with local files which can't be read
 		//console.log("ReadFileInitiate: always");
-		ReadFileFinish([
-			{"metadata": {"title":"Problem 1","variableName":"problem01"},
-			 "originalProblem": {"equation":"3(-\\frac{1}{6})(-\\frac{2}{5})","annotation":"Find the product"},
-			 "currentEditor": {"equation":"3(-\\frac{1}{6})(-\\frac{2}{5})","annotation":""},
-			 "history": [{"equation":"3(-\\frac{1}{6})(-\\frac{2}{5})","annotation":"Find the product"}]},
-			{"metadata": {"title":"Problem 2",    "variableName":"problem02"},		 
-			 "originalProblem": {"equation":"-\\frac{2}{5}(-\\frac{1}{2})(-\\frac{5}{6})", "annotation":"Find the product"},
-			 "currentEditor": {"equation":"-\\frac{2}{5}(-\\frac{1}{2})(-\\frac{5}{6})",    "annotation":""},
-			 "history": [{"equation":"-\\frac{2}{5}(-\\frac{1}{2})(-\\frac{5}{6})",    "annotation":"Find the product"}]},
-			{"metadata": {"title":"Problem 3",    "variableName":"problem03"},
-			 "originalProblem": {"equation":"\\frac{55}{\\frac{1}{2}}",    "annotation":"Find the quotient"},
-			 "currentEditor": {"equation":"\\frac{55}{\\frac{1}{2},",    "annotation":""},
-			 "history": [{"equation":"\\frac{55}{\\frac{1}{2},",    "annotation":"Find the quotient"}]},
-			{"metadata": {"title":"Problem 4",    "variableName":"problem04"},
-			 "originalProblem": {"equation":"\\frac{3}{10}\\div (\\frac{5}{8})",    "annotation":"Find the quotient"},
-			 "currentEditor": {"equation":"\\frac{3}{10}\\div (\\frac{5}{8})",    "annotation":""},
-			 "history": [{"equation":"\\frac{3}{10}\\div (\\frac{5}{8})",    "annotation":"Find the quotient"}]},
-			{"metadata": {"title":"Problem 5",    "variableName":"problem05"},
-			 "originalProblem": {"equation":"",    "annotation":"Sarah works at a coffee shop. Her weekly salary is $325 and she earns 11.5% commission on sales. How much does she make if she sells $2800 in merchandise?"},
-			 "currentEditor": {"equation":"",    "annotation":""},
-			 "history": [{"equation":"",    "annotation":"Sarah works at a coffee shop. Her weekly salary is $325 and she earns 11.5% commission on sales. How much does she make if she sells $2800 in merchandise?"}]},
-			{ "metadata": {"title":"Problem 6",    "variableName":"problem06"},
-			 "originalProblem": {"equation":"7x-13=1",    "annotation":"Solve for x"},
-			 "currentEditor": {"equation":"7x-13=1",    "annotation":""},
-			 "history": [{"equation":"7x-13=1",    "annotation":"Solve for x"}]},
-			{"metadata": {"title":"Problem 7",    "variableName":"problem07"},
-			 "originalProblem": {"equation":"\\frac{b}{9}-34\\leq -36",    "annotation":"Solve the inequality"},
-			 "currentEditor": {"equation":"\\frac{b}{9}-34\\leq -36",    "annotation":""},
-			 "history": [{"equation":"\\frac{b}{9}-34\\leq -36",    "annotation":"Solve the inequality"}]},
-			{"metadata": {"title":"Try your own problem",    "variableName":"newEditor"},
-			 "originalProblem": {"equation":"", "annotation":"Try your own problem"},
-			 "currentEditor": {},
-			 "history": [{}]}
-		])
+		ReadFileFinish({
+			"metadata": { "title": "Fallback on read failure" },
+			"problems": [
+				{"metadata": {"title":"Problem 1","variableName":"problem01"},
+				 "originalProblem": {"equation":"3(-\\frac{1}{6})(-\\frac{2}{5})","annotation":"Find the product"},
+				 "currentEditor": {"equation":"3(-\\frac{1}{6})(-\\frac{2}{5})","annotation":""},
+				 "history": [{"equation":"3(-\\frac{1}{6})(-\\frac{2}{5})","annotation":"Find the product"}]},
+				{"metadata": {"title":"Problem 2",    "variableName":"problem02"},		 
+				 "originalProblem": {"equation":"-\\frac{2}{5}(-\\frac{1}{2})(-\\frac{5}{6})", "annotation":"Find the product"},
+				 "currentEditor": {"equation":"-\\frac{2}{5}(-\\frac{1}{2})(-\\frac{5}{6})",    "annotation":""},
+				 "history": [{"equation":"-\\frac{2}{5}(-\\frac{1}{2})(-\\frac{5}{6})",    "annotation":"Find the product"}]},
+				{"metadata": {"title":"Problem 3",    "variableName":"problem03"},
+				 "originalProblem": {"equation":"\\frac{55}{\\frac{1}{2}}",    "annotation":"Find the quotient"},
+				 "currentEditor": {"equation":"\\frac{55}{\\frac{1}{2}",    "annotation":""},
+				 "history": [{"equation":"\\frac{55}{\\frac{1}{2}",    "annotation":"Find the quotient"}]},
+				{"metadata": {"title":"Problem 4",    "variableName":"problem04"},
+				 "originalProblem": {"equation":"\\frac{3}{10}\\div (\\frac{5}{8})",    "annotation":"Find the quotient"},
+				 "currentEditor": {"equation":"\\frac{3}{10}\\div (\\frac{5}{8})",    "annotation":""},
+				 "history": [{"equation":"\\frac{3}{10}\\div (\\frac{5}{8})",    "annotation":"Find the quotient"}]},
+				{"metadata": {"title":"Problem 5",    "variableName":"problem05"},
+				 "originalProblem": {"equation":"",    "annotation":"Sarah works at a coffee shop. Her weekly salary is $325 and she earns 11.5% commission on sales. How much does she make if she sells $2800 in merchandise?"},
+				 "currentEditor": {"equation":"",    "annotation":""},
+				 "history": [{"equation":"",    "annotation":"Sarah works at a coffee shop. Her weekly salary is $325 and she earns 11.5% commission on sales. How much does she make if she sells $2800 in merchandise?"}]},
+				{ "metadata": {"title":"Problem 6",    "variableName":"problem06"},
+				 "originalProblem": {"equation":"7x-13=1",    "annotation":"Solve for x"},
+				 "currentEditor": {"equation":"7x-13=1",    "annotation":""},
+				 "history": [{"equation":"7x-13=1",    "annotation":"Solve for x"}]},
+				{"metadata": {"title":"Problem 7",    "variableName":"problem07"},
+				 "originalProblem": {"equation":"\\frac{b}{9}-34\\leq -36",    "annotation":"Solve the inequality"},
+				 "currentEditor": {"equation":"\\frac{b}{9}-34\\leq -36",    "annotation":""},
+				 "history": [{"equation":"\\frac{b}{9}-34\\leq -36",    "annotation":"Solve the inequality"}]},
+				{"metadata": {"title":"Try your own problem",    "variableName":"newEditor"},
+				 "originalProblem": {"equation":"", "annotation":"Try your own problem"},
+				 "currentEditor": {},
+				 "history": [{}]}
+			]
+		})
 	});
 }
 
 // Finish reading the file now that the data is available
 function ReadFileFinish(data) {
 	//console.log("ReadFileFinish");
+	document.getElementById("mainPageBody").setAttribute(
+			"data-galois-metadata",
+			JSON.stringify(data.metadata)
+		);
 	document.getElementById("mainPageBody").append( PopulateMainPage(data) );
 	MathLive.renderMathInDocument();
 }
 
 // Create all the problems on the main page
 // Data for each problem is stored into the argument of the 'onclick' function		
-function PopulateMainPage(problemData) {
+function PopulateMainPage(data) {
 	let html = '<div class="row">';
+	let problemData = data.problems;
 	
 	for (let i=0; i< problemData.length; i++) {
 		let problem = problemData[i].originalProblem;
