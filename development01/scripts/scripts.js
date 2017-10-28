@@ -72,14 +72,14 @@ function HTMLForRow(stepNumber, math, annotation) {
 
 
 // Read data file and build a section containing links to open the editor on them
-function ReadFile(fileName) {
-	let result;
-	$.getJSON( fileName, function(data) {
-		document.getElementById("mainPageBody").append( PopulateMainPage(data) );
-		MathLive.renderMathInDocument();
-	}, 'json').always( function(data) {
+// This is asynchronous, so the funcitonality is broken into two parts
+function ReadFileInitiate(fileName) {
+	console.log("ReadFileInitiate: main");
+	$.getJSON( fileName, function(data) {ReadFileFinish(data)} )
+	.always( function(data) {
 		// fall back sample data -- useful for testing with local files which can't be read
-		result = [
+		console.log("ReadFileInitiate: always");
+		ReadFileFinish([
 			{"metadata": {"title":"Problem 1","variableName":"problem01"},
 			 "originalProblem": {"equation":"3(-\\frac{1}{6})(-\\frac{2}{5})","annotation":"Find the product"},
 			 "currentEditor": {"equation":"3(-\\frac{1}{6})(-\\frac{2}{5})","annotation":""},
@@ -112,11 +112,15 @@ function ReadFile(fileName) {
 			 "originalProblem": {"equation":"", "annotation":"Try your own problem"},
 			 "currentEditor": {},
 			 "history": [{}]}
-		];
-		document.getElementById("mainPageBody").append(PopulateMainPage(result));
-		MathLive.renderMathInDocument();
+		])
 	});
-	return result;
+}
+
+// Finish reading the file now that the data is available
+function ReadFileFinish(data) {
+	console.log("ReadFileFinish");
+	document.getElementById("mainPageBody").append( PopulateMainPage(data) );
+	MathLive.renderMathInDocument();
 }
 
 // Create all the problems on the main page
