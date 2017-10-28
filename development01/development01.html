@@ -34,13 +34,12 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 	<script src="lib/mathlivedist/mathlive.js"></script>
 	
-	<script src="data/data02.js"></script>
 	<script src="scripts/scripts.js"></script>
 	<script type="text/javascript">	
 		$(document).ready(function() {
 			//generate all problem data for main page
 			document.getElementById("mainPageBody").append(
-				PopulateMainPage( ReadFile('data/data01.js') )
+				PopulateMainPage( ReadFile('data/data02.js') )
 			);
 		})
 	</script>
