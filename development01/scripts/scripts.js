@@ -75,7 +75,7 @@ function HTMLForRow(stepNumber, math, annotation) {
 function ReadFile(fileName) {
 	let result;
 	$.getJSON( fileName, function(data) {
-		result = data;
+		document.getElementById("mainPageBody").append( PopulateMainPage(data) );
 	}, 'json').always( function(data) {
 		// fall back sample data -- useful for testing with local files which can't be read
 		result = [
@@ -111,7 +111,8 @@ function ReadFile(fileName) {
 			 "originalProblem": {"equation":"", "annotation":"Try your own problem"},
 			 "currentEditor": {},
 			 "history": [{}]}
-		]
+		];
+		document.getElementById("mainPageBody").append(PopulateMainPage(result));
 	});
 	return result;
 }
