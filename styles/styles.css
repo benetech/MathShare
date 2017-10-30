@@ -32,13 +32,6 @@
 html, body {
     height: 100%;
 }	
-
-
-	
-.mathEditor {
-	margin: 15px 0px 15px 0px;
-}
-	
 	
 .navbar-default {
 	background-color: #222F3F;
@@ -64,13 +57,17 @@ html, body {
 }
 
 .mathStep {
+	font-size: 120%;
 	border-radius: 5px;
-	padding: 5px 0px 5px 0px;
+	padding: 5px 0px 10px 0px;
+    border-bottom: 1px solid #CCC;
 }
 
+/*
 .mathStep:nth-child(odd) {
     background-color: #eee;
 }
+*/
 
 .mathStepTitle {
 	float: left;
@@ -85,15 +82,37 @@ html, body {
 	padding-left: 125px;
 }
 
-.paletteButton {
-  padding: 0;
-  margin: 3px;
-  width: 43px;
-  height: 43px;
+.mathEditor {
+	margin: 15px 0px 15px 15px;
+	min-width: 350px;
+}
+	
+.mathEditor .ML__mathlive {
+   display: block;
+   transform-origin: top left;
+   transform: scale(1.6, 1.6);
+   -webkit-transform: scale(1.6, 1.6);
+   -ms-transform: scale(1.6, 1.6);
+}
+
+.mathStep .ML__mathlive {
+   display: block;
+   transform-origin: top left;
+   transform: scale(1.15, 1.15);
+   -webkit-transform: scale(1.15, 1.15);
+   -ms-transform: scale(1.15, 1.15);
 }
 
 .mathWorkArea {
 	 
+}
+
+.paletteButton {
+  padding: 0;
+  margin: 0px 0px 4px 0px;
+  width: 40px;
+  height: 40px;
+  background-color: #f0f0f0!important;
 }
 
 .btn-huge{
@@ -101,16 +120,91 @@ html, body {
 	height: 150px;
     margin: 0px auto;
     vertical-align: middle;
+	white-space: normal;
 }
 
 .btn-mic {
 	border: 0px;
 	background-color: #FFF;
 	padding: 0px;
+	margin-top: 2px;
 }
 
 .form-control {
 	border: 0px;
 	box-shadow: none;
 	transition: none;
+	display: inline;
 }
+
+.btn-default {
+	background-color: #fafafa;
+}
+
+.modal-header {
+    padding:9px 15px;
+    border-bottom:0px solid #eee;
+    background-color: #222F3F;
+    -webkit-border-top-left-radius: 5px;
+    -webkit-border-top-right-radius: 5px;
+    -moz-border-radius-topleft: 5px;
+    -moz-border-radius-topright: 5px;
+     border-top-left-radius: 5px;
+     border-top-right-radius: 5px;
+     color: #FFF;
+ }
+ 
+
+ .modal-footer {
+    padding:9px 15px;
+    border-bottom:0px solid #eee;
+    background-color: #222F3F;
+    -webkit-border-bottom-left-radius: 5px;
+    -webkit-border-bottom-right-radius: 5px;
+    -moz-border-radius-bottomleft: 5px;
+    -moz-border-radius-bottomright: 5px;
+     border-bottom-left-radius: 5px;
+     border-bottom-right-radius: 5px;
+ }
+ 
+ 
+ @keyframes pulse_animation {
+	0% { transform: scale(1); }
+	30% { transform: scale(1); }
+	40% { transform: scale(1.08); }
+	50% { transform: scale(1); }
+	60% { transform: scale(1); }
+	70% { transform: scale(1.05); }
+	80% { transform: scale(1); }
+	100% { transform: scale(1); }
+}
+
+.pulse {
+	animation-name: pulse_animation;
+	animation-duration: 5000ms;
+	transform-origin:70% 70%;
+	animation-iteration-count: infinite;
+	animation-timing-function: linear;
+}
+
+pulse.off {
+	animation-name: none;	
+}
+ 
+.introjs-helperLayer {
+	border: 1px solid rgba(255,255,255,1);
+	background-color: rgba(255,255,255,.5);
+}
+
+/* style to use if only the screen reader user should hear this */
+.SROnly {
+  clip: rect(1px, 1px, 1px, 1px);
+  position: absolute !important;
+  white-space: nowrap;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+}
+ 
+ 
+
