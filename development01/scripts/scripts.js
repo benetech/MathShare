@@ -140,7 +140,7 @@ function PopulateMainPage(data) {
 	
 	for (let i=0; i< problemData.length; i++) {
 		let problem = problemData[i].originalProblem;
-		html += '<div class="col-md-4 text-center">' +
+		html += '<div class="col-md-4 text-center" style="margin-bottom: 20px;">' +
 					'<button class="btn btn-default btn-huge"' +
 							 // warning: 'problemData' uses ""s, so we need to use ''s to surround it
 					         'onclick=\'SetAndOpenEditorModel(this, ' +
