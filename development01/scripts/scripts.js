@@ -59,12 +59,14 @@ function OrdinalSuffix(i) {
 }
 
 // build a row of history
-function HTMLForRow(stepNumber, math, annotation) {
+function HTMLForRow(stepNumber, math, annotation, trash) {
 	let html = '<div class="row mathStep" role="heading" aria-level="3" data-step="'+stepNumber+'" data-equation="'+math+'" data-annotation="'+annotation+'">';
 	html += '<span class="SROnly">' + OrdinalSuffix(stepNumber) +' step</span>';
-	html +=  '<div class="col-md-2" aria-hidden="true" >Step '+stepNumber+':</div>';
-	html +=  '<div class="col-md-5 staticMath" role="heading" aria-level="4">$$'+math+'$$</div>';
+	html +=  '<div class="col-md-6 staticMath" role="heading" aria-level="4"><span class="stepHeader">Step '+stepNumber+':</span> $$'+math+'$$</div>';
 	html +=  '<div class="col-md-5" role="heading" aria-level="4">'+annotation+'</div>';
+	if (typeof trash !== 'undefined') { 
+		html +=  '<div class="col-md-1 trashButtonContainer" role="heading" aria-level="4" style="text-align: right;">'+trash+'</div>';
+	}
 	html += '</div>';
 	return html;
 }
@@ -138,7 +140,7 @@ function PopulateMainPage(data) {
 	
 	for (let i=0; i< problemData.length; i++) {
 		let problem = problemData[i].originalProblem;
-		html += '<div class="col-md-4 text-center">' +
+		html += '<div class="col-md-4 text-center" style="margin-bottom: 20px;">' +
 					'<button class="btn btn-default btn-huge"' +
 							 // warning: 'problemData' uses ""s, so we need to use ''s to surround it
 					         'onclick=\'SetAndOpenEditorModel(this, ' +
@@ -311,10 +313,19 @@ function NewMathEditorRow(mathContent) {
 	// assemble the new static area from the current math/annotation
 	let mathStepEquation = TheActiveMathField.latex();
 	let mathStepAnnotation = $('#mathAnnotation').val();
+    let trashButton = '<div style="float:right;"><button class="btn btn-default" data-toggle="tooltip" title="Delete this Step" alt="Delete this step" onclick="DeleteActiveMath()" style="margin-bottom: 5px;"><span class="glyphicon glyphicon-trash"></span></button></div>';
+
 	let mathStepNumber = $('.mathStep:last').data('step');
 	let mathStepNewNumber = mathStepNumber ? mathStepNumber+1 : 1;	// worry about no steps yet
 
-	let result = HTMLForRow(mathStepNewNumber, mathStepEquation, mathStepAnnotation)
+	let result = HTMLForRow(mathStepNewNumber, mathStepEquation, mathStepAnnotation, trashButton)
+
+	//remove previous trash button if necessary
+		//get the current step
+		//subtract 1 from the current step
+		//select the previousStep 
+	$('.mathStep:last .trashButtonContainer').empty();
+
 
 	$('.mathHistory').append( result );
 	$('.mathHistory').animate({ scrollTop: $('.mathHistory')[0].scrollHeight}, 500);
@@ -363,6 +374,9 @@ function DeleteActiveMath() {
 	
 	// ok to delete last row now...
 	lastStep.detach();
+	
+	// readd trash button to previous step
+	$('.mathStep:last .trashButtonContainer').html('<div style="float:right;"><button class="btn btn-default" data-toggle="tooltip" title="Delete this Step" alt="Delete this step" onclick="DeleteActiveMath()" style="margin-bottom: 5px;"><span class="glyphicon glyphicon-trash"></span></button></div>');
 	
 	TheActiveMathField.focus();
 }

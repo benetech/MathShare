@@ -205,6 +205,13 @@ pulse.off {
   width: 1px;
   overflow: hidden;
 }
+
+.stepHeader {
+	border: 1px solid #CCC;
+	border-radius: 5px;
+	float: left;
+	padding: 5px;
+}
  
  
 
