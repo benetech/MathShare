@@ -92,8 +92,8 @@ function ReadFileInitiate(fileName) {
 				 "history": [{"equation":"-\\frac{2}{5}(-\\frac{1}{2})(-\\frac{5}{6})",    "annotation":"Find the product"}]},
 				{"metadata": {"title":"Problem 3",    "variableName":"problem03"},
 				 "originalProblem": {"equation":"\\frac{55}{\\frac{1}{2}}",    "annotation":"Find the quotient"},
-				 "currentEditor": {"equation":"\\frac{55}{\\frac{1}{2}",    "annotation":""},
-				 "history": [{"equation":"\\frac{55}{\\frac{1}{2}",    "annotation":"Find the quotient"}]},
+				 "currentEditor": {"equation":"\\frac{55}{\\frac{1}{2}}",    "annotation":""},
+				 "history": [{"equation":"\\frac{55}{\\frac{1}{2}}",    "annotation":"Find the quotient"}]},
 				{"metadata": {"title":"Problem 4",    "variableName":"problem04"},
 				 "originalProblem": {"equation":"\\frac{3}{10}\\div (\\frac{5}{8})",    "annotation":"Find the quotient"},
 				 "currentEditor": {"equation":"\\frac{3}{10}\\div (\\frac{5}{8})",    "annotation":""},
@@ -500,18 +500,51 @@ const TeXCommands = {
 // meaningful TeX substrings from a string 
 // @param {string} string to search
 // @param {int} the optional starting point to search (default: 0)
-// @param {dictionary} {"command": {'pattern':"replace pattern", 'defaults': ["...", ...]}, ...}
+// @param {dictionary} commands to match and what to replace them with. The form of the dictionary is:
+//		{"command": {'patterns':[match/replacement, match/replacement, ...],
+//					 'defaults': ["...", ...]},   ...}
 //		'command': TeX command name (e.g., "frac")
-//      'replace pattern': replacement as in a reg expr (e.g., "($1)/($2)", where the arg is substituted into '$1')
+//		'patterns' An array of {match, replacement} -- the first match found uses the replacement
+//			As a shorthand, if 'patterns' is a string, it is the same as
+//				[{matches: ".*", replacement: string}]
+//			'match' -- an array (one per required/default argument) of reg exp match patterns
+//					  (default: match any)
+//			'replacement' - a reg exp pattern describing what to do with the arguments
+//			Note: because regular expressions can't handle nested {}s (etc),
+//				{}s should be avoided in the matches
 // 		'defaults': if one of the commands has optional args and no arg is given, what default should be used
 //					(e.g, for \sqrt{2}, it is missing the index, a default could be "2")
 //					There should one entry for each optional arg. If there are none, "" is used
-//		If 'replace pattern' is empty, the command will be deleted.
-// @return {string} a string where TeX commands in 'replacePattern' are replaced with the pattern
+//		If 'replace pattern' is empty or no pattern matches, the command and its args will be deleted.
+// @return {string} a string where TeX commands in 'replacements' dict are replaced 
+//					with 'replacement' if the 'match' is true
 // @throws {string} if {}s or []s don't match
-function ReplaceTeXCommands(str, replacePatterns) {
+function ReplaceTeXCommands(str, replacements) {
 	function stackTop(parseStack) {
 		return parseStack[parseStack.length-1];
+	}
+	
+	function MatchAndReplace(topOfStack, str, i) {
+		// For each pattern, see if the first arg in that pattern matches the TeX arg.
+		//	 matches: do the replacement, remove that first arg (already matched)
+		//   doesn't match: remove the pattern from the array (don't add to new array)
+		// Because elements are removed and we don't want undefined elements, we build a new array
+		let texArg = str.slice(topOfStack.iArgStart, i);
+		let newPatterns = [];		// patterns that matched with their replacements
+		topOfStack.patterns.forEach( function(pattern) {
+			// if the reg exp is "", it matches anything, so we need to deal with that case
+			let firstPattern = pattern.match[0];
+			if ( (firstPattern.length===0 && texArg.length===0) ||
+				 (firstPattern.length>0 && new RegExp(pattern.match[0]).test(texArg)) ) {
+				newPatterns.push( {
+					match: pattern.match.slice(1),
+					replacement: pattern.replacement.replace(
+									new RegExp('\\$'+topOfStack.iArg, 'g'),
+									texArg)
+				} );
+			}
+		} );
+		topOfStack.patterns = newPatterns;
 	}
 	
 	let result = "";
@@ -538,9 +571,14 @@ function ReplaceTeXCommands(str, replacePatterns) {
 			// check to see if there should have been an optional arg and do replacement if so
 			let top = stackTop(parseStack);
 			if ( braceCount===top.nestingLevel && !top.args[top.iArg] ) {
-				top.replacement = top.replacement.replace(
-										new RegExp('\\$'+top.iArg, 'g'),
-										top.defaultValues.shift() || "" );
+				let defaultValue = top.defaultValues.shift() || "";
+				// substitute in default value into replacement for each match
+				top.patterns.forEach(
+					function(pattern) {
+						pattern.replacement = pattern.replacement.replace(
+												new RegExp('\\$'+top.iArg, 'g'),
+												defaultValue);
+					} );
 				top.iArg++;
 			}
 			if ( braceCount===top.nestingLevel )
@@ -570,14 +608,16 @@ function ReplaceTeXCommands(str, replacePatterns) {
 				if ( top.args[top.iArg] )					// true if required arg ({...})
 					throw ("Bad TeX syntax: expected '{arg}' but found '[arg]'");
 			}
-			top.replacement = top.replacement.replace(
-									new RegExp('\\$'+top.iArg, 'g'),
-									str.slice(top.iArgStart, i) );
+			
+			MatchAndReplace(top, str, i);
 			top.iArg++;
 			if (top.iArg==top.args.length) {
 				// processed all the args, done with command
-				result += top.replacement;
-				iReplaceStart = i+1;
+				if ( top.patterns.length>0 ) {
+					result += top.patterns[0].replacement ;	// use first match
+					iReplaceStart = i+1;
+				}
+				// else if no match, do nothing (iReplaceStart remains where it was)
 				parseStack.pop();
 			}
 			break;
@@ -598,18 +638,25 @@ function ReplaceTeXCommands(str, replacePatterns) {
 			if (!commandArgs)
 				break;								// search some more
 						
-			replacePattern = replacePatterns[commandName];
-			if (replacePattern) {
+			let actions = replacements[commandName];
+			if (actions) {
 				// found a command we care about -- push on stack so args get handled
 				if ( parseStack.length===0 ) {
 					result += str.slice(iReplaceStart, iNameStart-1);	// add on stuff up to command
+					iReplaceStart = iNameStart-1;
 				}
 
+				if ( typeof actions.patterns ==="undefined" || typeof actions.patterns==="string" ) {
+					// simple case -> general case w/'match anything' for all args
+					actions.patterns = [ {
+						match: Array(commandArgs.length).fill('.*'),
+						replacement: actions.patterns}];
+				}
 				parseStack.push( {args: commandArgs,
 								  iArg: 0,
 								  nestingLevel: braceCount,
-								  defaultValues: replacePattern.defaults || [],
-								  replacement: replacePattern.pattern || "",
+								  defaultValues: actions.defaults || [],
+								  patterns: actions.patterns,
 								  iArgStart: iNameEnd+1
 								 } );
 				expectingOpen = true;
@@ -648,18 +695,33 @@ function CleanUpCrossouts(latexStr, options) {
 	options = options || {erase:false};
 	let result;
 	if (options.erase) {
-		result = ReplaceTeXCommands( latexStr, { "enclose": {pattern: "$2"} } );		
+		result = ReplaceTeXCommands( latexStr, { "enclose": {patterns: "$2"} } );		
 	} else {									 // delete
 		const replaceChar = '\uFFFD';			// temporary replacement char -- can't be in latexStr
-		result = ReplaceTeXCommands( latexStr,
-										{ "enclose": {pattern: replaceChar},
-										  "underset": {pattern: "{$0}"},
-										  "overset": {pattern: "{$0}"}
-										} );
-		
+		const notReplaceChar = '[^'+replaceChar+']+';
+		result = ReplaceTeXCommands( latexStr,{ "enclose": {patterns: replaceChar} } );
+		result = ReplaceTeXCommands( result,{ "underset": {patterns: "{$0}"} } );
+		result = ReplaceTeXCommands( result,{ "overset": {patterns: "{$0}" } } );
+/*** should be able to do in single call, but need to fix ReplaceTeXCommands so that 'str' is modified on a match
+						  "underset": {patterns: "{$0}"},
+						  "overset": {patterns: "{$0}"},
+						  "frac": {patterns: [
+									{match: ["", ""], replacement: "\\frac{1}{1}"},
+									{match: ["", ".+"], replacement: "\\frac{1}{$1}"},
+									{match: [".+", ""], replacement: "\\frac{$0}{1}"}
+								  ] }
+						} );
+***/		
 		// if there are any cross out patterns that use sub/superscripts for replacements, fix them
 		result = result.replace( new RegExp(replaceChar+'(\\^|_)?', 'g'), "" );
 	}
+		result = ReplaceTeXCommands( result,
+					{ "frac": {patterns: [
+								{match: ["", ""], replacement: "\\frac{1}{1}"},
+								{match: ["", ".+"], replacement: "\\frac{1}{$1}"},
+								{match: [".+", ""], replacement: "\\frac{$0}{1}"}
+							   ] }
+					} );
 	
 	return result;
 
@@ -694,8 +756,8 @@ function CalculateAndReplace(element) {
 		
 		// now deal with the ones that are TeX commands
 		expr = ReplaceTeXCommands( expr,
-									{ "frac": {pattern: "(($0)/($1))"},
-									  "sqrt": {pattern: "(($1)**(1/($0)))", defaults: ["2"]}
+									{ "frac": {patterns: "(($0)/($1))"},
+									  "sqrt": {patterns: "(($1)**(1/($0)))" , defaults: ["2"]}
 									} );
 									
 		// replace any {}s with ()s -- e.g, deals with 3^{4+5)					
