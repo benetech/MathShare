@@ -224,9 +224,6 @@ function PopulateEditorModal(buttonElement, dataObj) {
 	    SaveProblem(buttonElement);
 	    CloseEditorModal();
     });
-    if (originalProblemVariable=="newEditor") {
-	     $('#BtnSave').hide();
-	}
     
     
     //8 Wire up cancel btn
