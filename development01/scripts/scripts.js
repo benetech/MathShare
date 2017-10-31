@@ -25,7 +25,9 @@ function RenderMathEditor() {
 	  	{commandbarToggle: 'hidden',
 		 overrideDefaultInlineShortcuts: false,
 		 inlineShortcuts: { '>-': '>-',			// override builtin shortcut (\succ)
-							'<-': '<-'},		// override builtin shortcut (\leftarrow)
+							'<-': '<-',			// override builtin shortcut (\leftarrow)
+							'?=': '\\overset{?}{=}'	// is equal to
+						  }
          // onSelectionDidChange: UpdatePalette
 		}
 	);
