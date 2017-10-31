@@ -196,7 +196,9 @@ function PopulateEditorModal(buttonElement, dataObj) {
 			htmlHistory += HTMLForRow(i+1, historyObj[i].equation, historyObj[i].annotation);
 	    }
     //3 BUILD HTML TITLE
-    	let htmlTitle = 'Original Problem: '+originalProblemEquationHTML+ ', '+originalProblemAnnotation+'';
+    	let htmlTitle = originalProblemAnnotation;
+		if (dataObj.originalProblem.equation)
+			htmlTitle += ': '+ originalProblemEquationHTML;
     	if (originalProblemVariable=="newEditor") {
 	    	htmlTitle = ''+originalProblemTitle+'';
 	    }
