@@ -770,10 +770,9 @@ function CalculateAndReplace(element) {
 					 .replace(/\^/g, '**');
 		
 		// now deal with the ones that are TeX commands
-		expr = ReplaceTeXCommands( expr,
-									{ "frac": {patterns: "(($0)/($1))"},
-									  "sqrt": {patterns: "(($1)**(1/($0)))" , defaults: ["2"]}
-									} );
+		expr = ReplaceTeXCommands( expr, { "frac": {patterns: "(($0)/($1))"} } );
+									
+		expr = ReplaceTeXCommands( expr, { "sqrt": {patterns: "(($1)**(1/($0)))" , defaults: ["2"]} } );
 									
 		// replace any {}s with ()s -- e.g, deals with 3^{4+5)					
 		expr = expr.replace(/\{/g, '(').replace(/\}/g, ")");
