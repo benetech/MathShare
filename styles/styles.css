@@ -190,10 +190,42 @@ html, body {
 pulse.off {
 	animation-name: none;	
 }
+
+/* the whole modal */
+ .introjs-overlay {
+	opacity: 0.2 !important; /* opacity set in style on element, so need to override */
+}
  
+/* used on *both* the element being referenced and the instructions/buttons element */
 .introjs-helperLayer {
 	border: 1px solid rgba(255,255,255,1);
-	background-color: rgba(255,255,255,.5);
+}
+
+/* used on the element being referenced -- want more transparency */
+.introjs-fixedTooltip {
+	background-color: rgba(0, 150, 255, 0.2);
+}
+
+/* instructions, progress, and buttons */
+.introjs-tooltip {
+	background-color: rgba(0, 150, 255, 0.9);
+}
+
+/* just the instruction text */
+.introjs-tooltiptext {
+}
+
+/* button properties (enabled and disabled buttons)
+ * Background set by 'background-image: linear-gradient(#8e2424,#a76a6a);'  in introjs.css
+ * This needs to have the value 'unset' if background-color is used instead
+ */
+.introjs-button, introjs-disabled {
+	background-image: linear-gradient(rgb(9, 193, 249),#e2e9f1);
+}
+
+/* done button */
+.introjs-donebutton {
+	background-image: linear-gradient(rgb(0, 255, 0),#e2e9f1);	
 }
 
 /* style to use if only the screen reader user should hear this */
@@ -204,6 +236,13 @@ pulse.off {
   height: 1px;
   width: 1px;
   overflow: hidden;
+}
+
+.stepHeader {
+	border: 1px solid #CCC;
+	border-radius: 5px;
+	float: left;
+	padding: 5px;
 }
  
  
