@@ -65,9 +65,12 @@ function OrdinalSuffix(i) {
 // build a row of history
 function HTMLForRow(stepNumber, math, annotation, trash) {
 	let html = '<div class="row mathStep" role="heading" aria-level="3" data-step="'+stepNumber+'" data-equation="'+math+'" data-annotation="'+annotation+'">';
-	html += '<span class="SROnly">' + OrdinalSuffix(stepNumber) +' step</span>';
-	html +=  '<div class="col-md-6 staticMath" role="heading" aria-level="4"><span class="stepHeader">Step '+stepNumber+':</span> $$'+math+'$$</div>';
-	html +=  '<div class="col-md-5" role="heading" aria-level="4">'+annotation+'</div>';
+	html += '<div class="col-md-6">';
+	html +=   '<span class="SROnly" role="heading" aria-level="3">' + OrdinalSuffix(stepNumber) +' step</span>';
+	html +=   '<span class="stepHeader" aria-hidden="true">Step '+stepNumber+':</span>';
+	html +=   '<span class="staticMath" role="heading" aria-level="4">$$'+math+'$$</span>';
+	html += '</div>';
+	html += '<div class="col-md-5" role="heading" aria-level="4">'+annotation+'</div>';
 	if (typeof trash !== 'undefined') { 
 		html +=  '<div class="col-md-1 trashButtonContainer" role="heading" aria-level="4" style="text-align: right;">'+trash+'</div>';
 	}
@@ -241,9 +244,13 @@ function PopulateEditorModal(buttonElement, dataObj) {
 // OPEN EDITOR MODAL
 function OpenEditorModal() {
 	$('#EditorModal').modal({
-    	backdrop: 'static',
-		keyboard: false
+    	backdrop: 'static',		// prevent key clicks outside of modal from closing modal
+//		keyboard: false			// prevent esc key from closing modal
 	});
+	
+	$('#EditorModal').on('shown.bs.modal', function () {
+  $('.modal-header').focus()
+})
 }
 
 //***************************************************************************************************************************************************
