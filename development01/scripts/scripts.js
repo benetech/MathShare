@@ -26,6 +26,8 @@ function RenderMathEditor() {
 		 overrideDefaultInlineShortcuts: false,
 		 inlineShortcuts: { '>-': '>-',			// override builtin shortcut (\succ)
 							'<-': '<-',			// override builtin shortcut (\leftarrow)
+							'<=': '\\leq',		// use more familiar ≤
+							'>=': '\\geq',		// use more familar ≥
 							'$': '\\$',			// make it easy to type $
 							'%': '\\%',			// make it easy to type %
 							'?=': '\\overset{?}{=}'	// is equal to
