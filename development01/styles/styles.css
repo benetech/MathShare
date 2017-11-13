@@ -167,6 +167,13 @@ html, body {
      border-bottom-right-radius: 5px;
  }
  
+ .modalAreaHeading {
+	 color:#222F3F;
+	 font-style: italic;
+	 font-size: 22px;
+	 float: left;
+	 font-weight: bold;
+ }
  
  @keyframes pulse_animation {
 	0% { transform: scale(1); }

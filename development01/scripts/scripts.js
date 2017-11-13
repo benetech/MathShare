@@ -144,13 +144,13 @@ function ReadFileFinish(data) {
 // Create all the problems on the main page
 // Data for each problem is stored into the argument of the 'onclick' function		
 function PopulateMainPage(data) {
-	let html = '<div class="row">';
+	let html = '<div class="row" role="list">';
 	let problemData = data.problems;
 	
 	for (let i=0; i< problemData.length; i++) {
 		let problem = problemData[i].originalProblem;
 		html += '<div class="col-md-4 text-center" style="margin-bottom: 20px;">' +
-					'<button class="btn btn-default btn-huge"' +
+					'<button class="btn btn-default btn-huge" role="listitem"' +
 							 // warning: 'problemData' uses ""s, so we need to use ''s to surround it
 					         'onclick=\'SetAndOpenEditorModel(this, ' +
 							 JSON.stringify(problemData[i]) + ')\'>' +
@@ -325,7 +325,7 @@ function NewMathEditorRow(mathContent) {
 	// assemble the new static area from the current math/annotation
 	let mathStepEquation = TheActiveMathField.latex();
 	let mathStepAnnotation = $('#mathAnnotation').val();
-    let trashButton = '<div style="float:right;"><button class="btn btn-default" data-toggle="tooltip" title="Delete this Step" alt="Delete this step" onclick="DeleteActiveMath()" style="margin-bottom: 5px;"><span class="glyphicon glyphicon-trash"></span></button></div>';
+    let trashButton = '<div style="float:right;"><button class="btn btn-default" data-toggle="tooltip" title="Delete this Step" onclick="DeleteActiveMath()" style="margin-bottom: 5px;"><span class="glyphicon glyphicon-trash"></span></button></div>';
 
 	let mathStepNumber = $('.mathStep:last').data('step');
 	let mathStepNewNumber = mathStepNumber ? mathStepNumber+1 : 1;	// worry about no steps yet
