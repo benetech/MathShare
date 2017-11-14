@@ -66,9 +66,9 @@ function OrdinalSuffix(i) {
 
 // build a row of history
 function HTMLForRow(stepNumber, math, annotation, trash) {
-	let html = '<div class="row mathStep">';
+	let html = '<div class="row mathStep" data-step="'+stepNumber+'">';
 	html += '<div class="col-md-6">';
-	html +=   '<span role="heading" aria-level="3" data-step="'+stepNumber+'" data-equation="'+math+'" data-annotation="'+annotation+'">';
+	html +=   '<span role="heading" aria-level="3">';
 	html +=     '<span class="SROnly">' + OrdinalSuffix(stepNumber) +' step</span>';
 	html +=     '<span class="stepHeader" aria-hidden="true">Step '+stepNumber+':</span>';
 	html +=   '</span>';
