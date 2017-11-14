@@ -66,13 +66,19 @@ function OrdinalSuffix(i) {
 
 // build a row of history
 function HTMLForRow(stepNumber, math, annotation, trash) {
-	let html = '<div class="row mathStep" role="heading" aria-level="3" data-step="'+stepNumber+'" data-equation="'+math+'" data-annotation="'+annotation+'">';
+	let html = '<div class="row mathStep">';
 	html += '<div class="col-md-6">';
-	html +=   '<span class="SROnly" role="heading" aria-level="3">' + OrdinalSuffix(stepNumber) +' step</span>';
-	html +=   '<span class="stepHeader" aria-hidden="true">Step '+stepNumber+':</span>';
-	html +=   '<span class="staticMath" role="heading" aria-level="4">$$'+math+'$$</span>';
+	html +=   '<span role="heading" aria-level="3" data-step="'+stepNumber+'" data-equation="'+math+'" data-annotation="'+annotation+'">';
+	html +=     '<span class="SROnly">' + OrdinalSuffix(stepNumber) +' step</span>';
+	html +=     '<span class="stepHeader" aria-hidden="true">Step '+stepNumber+':</span>';
+	html +=   '</span>';
+	html +=     '<span class="sr-only" role="heading" aria-level="4"> math: </span>';
+	html +=        '<span class="staticMath" >$$'+math+'$$</span>';
 	html += '</div>';
-	html += '<div class="col-md-5" role="heading" aria-level="4">'+annotation+'</div>';
+	html += '<div class="col-md-5">';
+	html +=    '<span class="sr-only"  role="heading" aria-level="4">reason:</span>';
+	html +=    '<span>'+annotation+'</span>';
+	html += '</div>';
 	if (typeof trash !== 'undefined') { 
 		html +=  '<div class="col-md-1 trashButtonContainer" role="heading" aria-level="4" style="text-align: right;">'+trash+'</div>';
 	}
@@ -387,7 +393,7 @@ function DeleteActiveMath() {
 	// ok to delete last row now...
 	lastStep.detach();
 	
-	// readd trash button to previous step
+	// read trash button to previous step
 	$('.mathStep:last .trashButtonContainer').html('<div style="float:right;"><button class="btn btn-default" data-toggle="tooltip" title="Delete this Step" alt="Delete this step" onclick="DeleteActiveMath()" style="margin-bottom: 5px;"><span class="glyphicon glyphicon-trash"></span></button></div>');
 	
 	TheActiveMathField.focus();
