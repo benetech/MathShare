@@ -144,13 +144,13 @@ function ReadFileFinish(data) {
 // Create all the problems on the main page
 // Data for each problem is stored into the argument of the 'onclick' function		
 function PopulateMainPage(data) {
-	let html = '<div class="row" role="list">';
+	let html = '<ul class="row">';
 	let problemData = data.problems;
 	
 	for (let i=0; i< problemData.length; i++) {
 		let problem = problemData[i].originalProblem;
-		html += '<div class="col-md-4 text-center" style="margin-bottom: 20px;">' +
-					'<button class="btn btn-default btn-huge" role="listitem"' +
+		html += '<li class="col-md-4 text-center" style="list-style: none; margin-bottom: 20px;">' +
+					'<span class="btn btn-default btn-huge" role="link" ' +
 							 // warning: 'problemData' uses ""s, so we need to use ''s to surround it
 					         'onclick=\'SetAndOpenEditorModel(this, ' +
 							 JSON.stringify(problemData[i]) + ')\'>' +
@@ -158,11 +158,11 @@ function PopulateMainPage(data) {
 						problem.annotation +
 						'<br/><br/>' +
 						'<span class="staticMath">$$' + problem.equation + '$$</span>' + 
-					'</button>' +
-					'</div>';
+					'</span>' +
+					'</li>';
 	};
 	
-	html += '</div>';	
+	html += '</ul>';	
 	let node = document.createDocumentFragment();
 	let child = document.createElement("div");
 	child.innerHTML = html;

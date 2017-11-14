@@ -122,7 +122,7 @@
 							<section id='mathEditorActive' aria-label="Enter math here"></section>
 						</div>
 						<div>
-							<h3 class="mathAnnotation" style="float: right; border-left: 1px solid #CCC;"> </h3>
+							<h3 class="mathAnnotation sr-only" style="float: right; border-left: 1px solid #CCC;">Describe your work</h3>
 							<span><textarea class="form-control" rows="4" id="mathAnnotation" placeholder="Type or click the microphone to explain your work" style="width: 280px;" data-step="2" data-intro="Describe your work -- type or click on the microphone to describe your work."></textarea></span>
 							<span style="float: right;"><button id="start_button" class="btn btn-mic" data-toggle="tooltip" title="Click to start/stop speech-to-text"><img alt="Start Speaking" id="mic_img" src="images/mic.gif"></button></span>
 						</div>
@@ -136,7 +136,8 @@
 <!-- 				  Do your work here and then click the "Next Step" button to the right -->
 			  </div>  
 			  <div class="col-md-8">
-				  <div class="mathPalette" role="heading" aria-level="3" aria-label="math input buttons">
+				  <h3 class="sr-only">math input buttons</h3>
+				  <div class="mathPalette">
 					  <!-- ⏎ is return char glyph --> 
 					  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Dot times (⌨: \cdot⏎)" onclick="MathLivePasteFromButton(this)">$$\cdot$$</button>
 					  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Times (⌨: xx)" onclick="MathLivePasteFromButton(this)">$$\times$$</button>
