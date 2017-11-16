@@ -84,6 +84,7 @@
 	
 <!-- START MODAL CODE -->
 <div class="modal fade" tabindex="-1" role="dialog" id="EditorModal">
+
   <div class="modal-dialog modal-lg" role="document" style="width: 1000px">
     <div class="modal-content">
       
@@ -112,7 +113,7 @@
 				<h2 class="col-md-2">
 					<span class="modalAreaHeading"  style="margin-top: 8px;" aria-hidden="true">My<br>Work</span>
 			        <span class="sr-only">My Work</span>
-					<span class="glyphicon glyphicon-menu-right" style="color: red; font-size: 35px; float: right;margin-top:20px;"></span>
+					<span class="glyphicon glyphicon-menu-right" style="color: red; font-size: 35px; float: right;margin-top:20px;" aria-hidden="true"></span>
 				</h2>
 				
 				<div class="col-md-10">
@@ -123,8 +124,8 @@
 						</div>
 						<div>
 							<h3 class="mathAnnotation sr-only" style="float: right; border-left: 1px solid #CCC;">Describe your work</h3>
-							<span><textarea class="form-control" rows="4" id="mathAnnotation" placeholder="Type or click the microphone to explain your work" style="width: 280px;" data-step="2" data-intro="Describe your work -- type or click on the microphone to describe your work."></textarea></span>
-							<span style="float: right;"><button id="start_button" class="btn btn-mic" data-toggle="tooltip" title="Click to start/stop speech-to-text"><img alt="Start Speaking" id="mic_img" src="images/mic.gif"></button></span>
+							<span><textarea class="form-control" rows="4" id="mathAnnotation" placeholder="Use the microphone button or type to explain your work" style="width: 280px;" data-step="2" data-intro="Describe your work -- type or click on the microphone to describe your work."></textarea></span>
+							<span style="float: right;"><button id="start_button" class="btn btn-mic" data-toggle="tooltip"><img alt="Start Speaking" id="mic_img" src="images/mic.gif"></button></span>
 						</div>
 					</div>
 				</div>
@@ -137,40 +138,40 @@
 			  </div>  
 			  <div class="col-md-8">
 				  <h3 class="sr-only">math input buttons</h3>
-				  <div class="mathPalette">
+				  <div class="mathPalette" role="list">
 					  <!-- ⏎ is return char glyph --> 
-					  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Dot times (⌨: \cdot⏎)" onclick="MathLivePasteFromButton(this)">$$\cdot$$</button>
-					  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Times (⌨: xx)" onclick="MathLivePasteFromButton(this)">$$\times$$</button>
-					  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Divsion (⌨: \div⏎)" onclick="MathLivePasteFromButton(this)">$$\div$$</button>
-					  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Plus minus (⌨: +-)" onclick="MathLivePasteFromButton(this)">$$\pm$$</button>
-					  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Cross out (⌨: shift+delete)" onclick="MathLivePasteFromButton(this)">$$\enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{\blacksquare}$$</button>
-					  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Fraction (⌨: /)" onclick="MathLivePasteFromButton(this)">$$\frac{\blacksquare}{\square}$$</button>
-					  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Superscript (⌨: ^)" onclick="MathLivePasteFromButton(this)">$${\blacksquare}^{\square}$$</button>
-					  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Subscript (⌨: _)" onclick="MathLivePasteFromButton(this)">$${\blacksquare}_{\square}$$</button>
-					  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Square root (⌨: sqrt)" onclick="MathLivePasteFromButton(this)">$$\sqrt{\blacksquare}$$</button>
-					  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="General root(⌨: \sqrt[n])" onclick="MathLivePasteFromButton(this)">$$\sqrt[{\square}]{\blacksquare}$$</button>
+					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Dot times (⌨: \cdot⏎)" onclick="MathLivePasteFromButton(this)">$$\cdot$$</button></span>
+					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Times (⌨: xx)" onclick="MathLivePasteFromButton(this)">$$\times$$</button></span>
+					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Division (⌨: \div⏎)" onclick="MathLivePasteFromButton(this)">$$\div$$</button></span>
+					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Plus minus (⌨: +-)" onclick="MathLivePasteFromButton(this)">$$\pm$$</button></span>
+					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Cross out (⌨: shift+delete)" onclick="MathLivePasteFromButton(this)">$$\enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{\blacksquare}$$</button></span>
+					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Fraction (⌨: /)" onclick="MathLivePasteFromButton(this)">$$\frac{\blacksquare}{\square}$$</button></span>
+					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Superscript (⌨: ^)" onclick="MathLivePasteFromButton(this)">$${\blacksquare}^{\square}$$</button></span>
+					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Subscript (⌨: _)" onclick="MathLivePasteFromButton(this)">$${\blacksquare}_{\square}$$</button></span>
+					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Square root (⌨: sqrt)" onclick="MathLivePasteFromButton(this)">$$\sqrt{\blacksquare}$$</button></span>
+					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="General root(⌨: \sqrt[n])" onclick="MathLivePasteFromButton(this)">$$\sqrt[{\square}]{\blacksquare}$$</button></span>
 					  
-					  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Triangle (⌨: \triangle⏎)" onclick="MathLivePasteFromButton(this)">$$\triangle$$</button>
-					  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Angle (⌨: \angle⏎)" onclick="MathLivePasteFromButton(this)">$$\angle$$</button>
-					  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Congruent (⌨: \cong⏎)" onclick="MathLivePasteFromButton(this)">$$\cong$$</button>
-					  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Perpendicular (⌨: \perp⏎)" onclick="MathLivePasteFromButton(this)">$$\perp$$</button>
+					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Triangle (⌨: \triangle⏎)" onclick="MathLivePasteFromButton(this)">$$\triangle$$</button></span>
+					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Angle (⌨: \angle⏎)" onclick="MathLivePasteFromButton(this)">$$\angle$$</button></span>
+					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Congruent (⌨: \cong⏎)" onclick="MathLivePasteFromButton(this)">$$\cong$$</button></span>
+					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Perpendicular (⌨: \perp⏎)" onclick="MathLivePasteFromButton(this)">$$\perp$$</button></span>
 					  
 					  <br/>
-					  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Less than or equal  (⌨: <=)" onclick="MathLivePasteFromButton(this)">$$\leq$$</button>
-					  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Greater than or equal  (⌨: >=)" onclick="MathLivePasteFromButton(this)">$$\geq$$</button>
-					  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Not equal (⌨: !=)" onclick="MathLivePasteFromButton(this)">$$\neq$$</button>
-					  <button class="staticMath btn btn-default paletteButton"  data-toggle="tooltip" title="Is equal to (⌨: ?=)" onclick="MathLivePasteFromButton(this)">$$\overset{?}{=}$$</button>
-					  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Cross out with replacement" onclick="MathLivePasteFromButton(this)">$$ \enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{\blacksquare}^{\square} $$</button>
-					  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Parentheses" onclick="MathLivePasteFromButton(this)">$$\Bigl{(}\blacksquare\Bigr{)}$$</button>
-					  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Square brackets" onclick="MathLivePasteFromButton(this)">$$\Bigl{[}\blacksquare\Bigr{]}$$</button>
-					  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Absolute value" onclick="MathLivePasteFromButton(this)">$$\Bigl{|}\blacksquare\Bigr{|}$$</button>
-					  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Floor" onclick="MathLivePasteFromButton(this)">$$\Bigl{\lfloor}\blacksquare\Bigr{\rfloor}$$</button>
-					  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Ceiling" onclick="MathLivePasteFromButton(this)">$$\Bigl{\lceil}\blacksquare\Bigr{\rceil}$$</button>
+					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Less than or equal  (⌨: <=)" onclick="MathLivePasteFromButton(this)">$$\leq$$</button></span>
+					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Greater than or equal  (⌨: >=)" onclick="MathLivePasteFromButton(this)">$$\geq$$</button></span>
+					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Not equal (⌨: !=)" onclick="MathLivePasteFromButton(this)">$$\neq$$</button></span>
+					  <span role="listitem"><button class="staticMath btn btn-default paletteButton"  data-toggle="tooltip" title="Is equal to (⌨: ?=)" onclick="MathLivePasteFromButton(this)">$$\overset{?}{=}$$</button></span>
+					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Cross out with replacement" onclick="MathLivePasteFromButton(this)">$$ \enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{\blacksquare}^{\square} $$</button></span>
+					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Parentheses" onclick="MathLivePasteFromButton(this)">$$\Bigl{(}\blacksquare\Bigr{)}$$</button></span>
+					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Square brackets" onclick="MathLivePasteFromButton(this)">$$\Bigl{[}\blacksquare\Bigr{]}$$</button></span>
+					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Absolute value" onclick="MathLivePasteFromButton(this)">$$\Bigl{|}\blacksquare\Bigr{|}$$</button></span>
+					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Floor" onclick="MathLivePasteFromButton(this)">$$\Bigl{\lfloor}\blacksquare\Bigr{\rfloor}$$</button></span>
+					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Ceiling" onclick="MathLivePasteFromButton(this)">$$\Bigl{\lceil}\blacksquare\Bigr{\rceil}$$</button></span>
 				   
-					  <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Parallel (⌨: \parallel⏎)" onclick="MathLivePasteFromButton(this)">$$\parallel$$</button>
-				      <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Degree (⌨: \degreel⏎)" onclick="MathLivePasteFromButton(this)">$$\degree$$</button>
-				      <button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Pi (⌨: pi⏎)" onclick="MathLivePasteFromButton(this)">$$\pi$$</button>
- 				      <button class="btn btn-default paletteButton" data-toggle="tooltip" title="Calculate" onclick="CalculateAndReplace(this)">Calc</button> 
+					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Parallel (⌨: \parallel⏎)" onclick="MathLivePasteFromButton(this)">$$\parallel$$</button></span>
+				      <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Degree (⌨: \degreel⏎)" onclick="MathLivePasteFromButton(this)">$$\degree$$</button></span>
+				      <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Pi (⌨: pi⏎)" onclick="MathLivePasteFromButton(this)">$$\pi$$</button></span>
+ 				      <span role="listitem"><button class="btn btn-default paletteButton" data-toggle="tooltip" title="Calculate" onclick="CalculateAndReplace(this)">Calc</button></span> 
 				   </div>
 			   </div>
 			   <div class="col-md-2" style="text-align: right;">
@@ -178,7 +179,7 @@
 <!-- 					<button class="btn btn-default" data-toggle="tooltip" title="Delete this Step" alt="Delete this step" onclick="DeleteActiveMath()" style="margin-bottom: 5px;"><span class="glyphicon glyphicon-trash"></span></button> -->
 					<br>
 					<span role="heading" aria-level="3">
-					  <button class="btn btn-primary" data-toggle="tooltip" title="Clean up the cross outs and start a new step" onclick="NewRowOrRowsAfterCleanup(TheActiveMathField.latex());" style="margin-top: 11px;" data-step="3" data-intro="Click here to clean up the cross outs and start a new step.">Next Step</button>
+					  <button class="btn btn-primary" data-toggle="tooltip" title="Clean up the cross outs and start a new step" onclick="NewRowOrRowsAfterCleanup(TheActiveMathField.latex());" style="margin-top: 11px;" data-step="3" data-intro="Click here to clean up the cross outs and start a new step.">Add Step</button>
 					</span>
 			   </div>
 		    </div>
