@@ -65,8 +65,8 @@ function OrdinalSuffix(i) {
 }
 
 // build a row of history
-function HTMLForRow(stepNumber, math, annotation, trash) {
-	let html = '<div class="row mathStep" data-step="'+stepNumber+'">';
+function HTMLForRow(stepNumber, math, annotation, showTrash) {
+	let html = '<div class="row mathStep" data-step="'+stepNumber+'" data-equation="'+math+'" data-annotation="'+annotation+'">';
 	html += '<div class="col-md-6">';
 	html +=   '<span role="heading" aria-level="3">';
 	html +=     '<span class="SROnly">' + OrdinalSuffix(stepNumber) +' step</span>';
@@ -79,8 +79,12 @@ function HTMLForRow(stepNumber, math, annotation, trash) {
 	html +=    '<span class="sr-only"  role="heading" aria-level="4">reason:</span>';
 	html +=    '<span>'+annotation+'</span>';
 	html += '</div>';
-	if (typeof trash !== 'undefined') { 
-		html +=  '<div class="col-md-1 trashButtonContainer" role="heading" aria-level="4" style="text-align: right;">'+trash+'</div>';
+	if (showTrash) { 
+		html +=  '<div class="col-md-1 trashButtonContainer" role="heading" aria-level="4" style="text-align: right; float:right;">'+
+					'<button class="btn btn-default" data-toggle="tooltip" title="Delete this Step" onclick="DeleteActiveMath()" style="margin-bottom: 5px;">' +
+						'<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>' +
+						'<span class="SROnly">Delete ' + OrdinalSuffix(stepNumber) +' step</span>' +
+			'</button></div>';
 	}
 	html += '</div>';
 	return html;
@@ -156,7 +160,7 @@ function PopulateMainPage(data) {
 	for (let i=0; i< problemData.length; i++) {
 		let problem = problemData[i].originalProblem;
 		html += '<li class="col-md-4 text-center" style="list-style: none; margin-bottom: 20px;">' +
-					'<span class="btn btn-default btn-huge" role="link" ' +
+					'<span class="btn btn-default btn-huge" ' +
 							 // warning: 'problemData' uses ""s, so we need to use ''s to surround it
 					         'onclick=\'SetAndOpenEditorModel(this, ' +
 							 JSON.stringify(problemData[i]) + ')\'>' +
@@ -165,7 +169,7 @@ function PopulateMainPage(data) {
 						'<br/><br/>' +
 						'<span class="staticMath">$$' + problem.equation + '$$</span>' + 
 					'</span>' +
-					'</li>';
+				'</li>';
 	};
 	
 	html += '</ul>';	
@@ -248,6 +252,7 @@ function PopulateEditorModal(buttonElement, dataObj) {
 		}
     });
 }
+
 //***************************************************************************************************************************************************
 // OPEN EDITOR MODAL
 function OpenEditorModal() {
@@ -331,12 +336,10 @@ function NewMathEditorRow(mathContent) {
 	// assemble the new static area from the current math/annotation
 	let mathStepEquation = TheActiveMathField.latex();
 	let mathStepAnnotation = $('#mathAnnotation').val();
-    let trashButton = '<div style="float:right;"><button class="btn btn-default" data-toggle="tooltip" title="Delete this Step" onclick="DeleteActiveMath()" style="margin-bottom: 5px;"><span class="glyphicon glyphicon-trash"></span></button></div>';
-
 	let mathStepNumber = $('.mathStep:last').data('step');
 	let mathStepNewNumber = mathStepNumber ? mathStepNumber+1 : 1;	// worry about no steps yet
 
-	let result = HTMLForRow(mathStepNewNumber, mathStepEquation, mathStepAnnotation, trashButton)
+	let result = HTMLForRow(mathStepNewNumber, mathStepEquation, mathStepAnnotation, true)
 
 	//remove previous trash button if necessary
 		//get the current step
@@ -394,7 +397,7 @@ function DeleteActiveMath() {
 	lastStep.detach();
 	
 	// read trash button to previous step
-	$('.mathStep:last .trashButtonContainer').html('<div style="float:right;"><button class="btn btn-default" data-toggle="tooltip" title="Delete this Step" alt="Delete this step" onclick="DeleteActiveMath()" style="margin-bottom: 5px;"><span class="glyphicon glyphicon-trash"></span></button></div>');
+	$('.mathStep:last .trashButtonContainer').html('<div style="float:right;"><button class="btn btn-default" data-toggle="tooltip" onclick="DeleteActiveMath()" style="margin-bottom: 5px;"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span><span class="sr-only" id="deleteButton">delete xxx step</span></button></div>');
 	
 	TheActiveMathField.focus();
 }
