@@ -72,8 +72,8 @@ function HTMLForRow(stepNumber, math, annotation, showTrash) {
 	html +=     '<span class="SROnly">' + OrdinalSuffix(stepNumber) +' step</span>';
 	html +=     '<span class="stepHeader" aria-hidden="true">Step '+stepNumber+':</span>';
 	html +=   '</span>';
-	html +=     '<span class="sr-only" role="heading" aria-level="4"> math: </span>';
-	html +=        '<span class="staticMath" >$$'+math+'$$</span>';
+	html +=   '<span class="sr-only" role="heading" aria-level="4"> math: </span>';
+	html +=      '<span class="staticMath" >$$'+math+'$$</span>';
 	html += '</div>';
 	html += '<div class="col-md-5">';
 	html +=    '<span class="sr-only"  role="heading" aria-level="4">reason:</span>';
