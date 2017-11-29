@@ -178,12 +178,16 @@ pulse.off {
 
 /* used on the element being referenced -- want more transparency */
 .introjs-fixedTooltip {
+/* 	background-color: rgba(0, 150, 255, 0.2); */
+}
+
+.introjs-fixedTooltip {
 	background-color: rgba(0, 150, 255, 0.2);
 }
 
 /* instructions, progress, and buttons */
 .introjs-tooltip {
-	background-color: rgba(0, 150, 255, 0.9);
+/* 	background-color: rgba(0, 150, 255, 0.9); */
 }
 
 /* just the instruction text */
@@ -195,12 +199,12 @@ pulse.off {
  * This needs to have the value 'unset' if background-color is used instead
  */
 .introjs-button, introjs-disabled {
-	background-image: linear-gradient(rgb(9, 193, 249),#e2e9f1);
+/* 	background-image: linear-gradient(rgb(9, 193, 249),#e2e9f1); */
 }
 
 /* done button */
 .introjs-donebutton {
-	background-image: linear-gradient(rgb(0, 255, 0),#e2e9f1);	
+/* 	background-image: linear-gradient(rgb(0, 255, 0),#e2e9f1);	 */
 }
 
 /* style to use if only the screen reader user should hear this */
