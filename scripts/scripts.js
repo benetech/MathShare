@@ -26,6 +26,10 @@ function RenderMathEditor() {
 		 overrideDefaultInlineShortcuts: false,
 		 inlineShortcuts: { '>-': '>-',			// override builtin shortcut (\succ)
 							'<-': '<-',			// override builtin shortcut (\leftarrow)
+							'<=': '\\leq',		// use more familiar ≤
+							'>=': '\\geq',		// use more familar ≥
+							'$': '\\$',			// make it easy to type $
+							'%': '\\%',			// make it easy to type %
 							'?=': '\\overset{?}{=}'	// is equal to
 						  }
          // onSelectionDidChange: UpdatePalette
@@ -61,13 +65,26 @@ function OrdinalSuffix(i) {
 }
 
 // build a row of history
-function HTMLForRow(stepNumber, math, annotation, trash) {
-	let html = '<div class="row mathStep" role="heading" aria-level="3" data-step="'+stepNumber+'" data-equation="'+math+'" data-annotation="'+annotation+'">';
-	html += '<span class="SROnly">' + OrdinalSuffix(stepNumber) +' step</span>';
-	html +=  '<div class="col-md-6 staticMath" role="heading" aria-level="4"><span class="stepHeader">Step '+stepNumber+':</span> $$'+math+'$$</div>';
-	html +=  '<div class="col-md-5" role="heading" aria-level="4">'+annotation+'</div>';
-	if (typeof trash !== 'undefined') { 
-		html +=  '<div class="col-md-1 trashButtonContainer" role="heading" aria-level="4" style="text-align: right;">'+trash+'</div>';
+function HTMLForRow(stepNumber, math, annotation, showTrash) {
+	let html = '<div class="row mathStep" data-step="'+stepNumber+'" data-equation="'+math+'" data-annotation="'+annotation+'">';
+	html += '<div class="col-md-6">';
+	html +=   '<span role="heading" aria-level="3">';
+	html +=     '<span class="SROnly">' + OrdinalSuffix(stepNumber) +' step</span>';
+	html +=     '<span class="stepHeader" aria-hidden="true">Step '+stepNumber+':</span>';
+	html +=   '</span>';
+	html +=   '<span class="sr-only" role="heading" aria-level="4"> math: </span>';
+	html +=      '<span class="staticMath" >$$'+math+'$$</span>';
+	html += '</div>';
+	html += '<div class="col-md-5">';
+	html +=    '<span class="sr-only"  role="heading" aria-level="4">reason:</span>';
+	html +=    '<span>'+annotation+'</span>';
+	html += '</div>';
+	if (showTrash) { 
+		html +=  '<div class="col-md-1 trashButtonContainer" role="heading" aria-level="4" style="text-align: right; float:right;">'+
+					'<button class="btn btn-default" data-toggle="tooltip" title="Delete this Step" onclick="DeleteActiveMath()" style="margin-bottom: 5px;">' +
+						'<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>' +
+						'<span class="SROnly">Delete ' + OrdinalSuffix(stepNumber) +' step</span>' +
+			'</button></div>';
 	}
 	html += '</div>';
 	return html;
@@ -137,13 +154,13 @@ function ReadFileFinish(data) {
 // Create all the problems on the main page
 // Data for each problem is stored into the argument of the 'onclick' function		
 function PopulateMainPage(data) {
-	let html = '<div class="row">';
+	let html = '<ul class="row">';
 	let problemData = data.problems;
 	
 	for (let i=0; i< problemData.length; i++) {
 		let problem = problemData[i].originalProblem;
-		html += '<div class="col-md-4 text-center" style="margin-bottom: 20px;">' +
-					'<button class="btn btn-default btn-huge"' +
+		html += '<li class="col-md-4 text-center" style="list-style: none; margin-bottom: 20px;">' +
+					'<span class="btn btn-default btn-huge" ' +
 							 // warning: 'problemData' uses ""s, so we need to use ''s to surround it
 					         'onclick=\'SetAndOpenEditorModel(this, ' +
 							 JSON.stringify(problemData[i]) + ')\'>' +
@@ -151,11 +168,11 @@ function PopulateMainPage(data) {
 						problem.annotation +
 						'<br/><br/>' +
 						'<span class="staticMath">$$' + problem.equation + '$$</span>' + 
-					'</button>' +
-					'</div>';
+					'</span>' +
+				'</li>';
 	};
 	
-	html += '</div>';	
+	html += '</ul>';	
 	let node = document.createDocumentFragment();
 	let child = document.createElement("div");
 	child.innerHTML = html;
@@ -235,13 +252,18 @@ function PopulateEditorModal(buttonElement, dataObj) {
 		}
     });
 }
+
 //***************************************************************************************************************************************************
 // OPEN EDITOR MODAL
 function OpenEditorModal() {
 	$('#EditorModal').modal({
-    	backdrop: 'static',
-		keyboard: false
+    	backdrop: 'static',		// prevent key clicks outside of modal from closing modal
+//		keyboard: false			// prevent esc key from closing modal
 	});
+	
+	$('#EditorModal').on('shown.bs.modal', function () {
+  $('.modal-header').focus()
+})
 }
 
 //***************************************************************************************************************************************************
@@ -314,12 +336,10 @@ function NewMathEditorRow(mathContent) {
 	// assemble the new static area from the current math/annotation
 	let mathStepEquation = TheActiveMathField.latex();
 	let mathStepAnnotation = $('#mathAnnotation').val();
-    let trashButton = '<div style="float:right;"><button class="btn btn-default" data-toggle="tooltip" title="Delete this Step" alt="Delete this step" onclick="DeleteActiveMath()" style="margin-bottom: 5px;"><span class="glyphicon glyphicon-trash"></span></button></div>';
-
 	let mathStepNumber = $('.mathStep:last').data('step');
 	let mathStepNewNumber = mathStepNumber ? mathStepNumber+1 : 1;	// worry about no steps yet
 
-	let result = HTMLForRow(mathStepNewNumber, mathStepEquation, mathStepAnnotation, trashButton)
+	let result = HTMLForRow(mathStepNewNumber, mathStepEquation, mathStepAnnotation, true)
 
 	//remove previous trash button if necessary
 		//get the current step
@@ -376,8 +396,8 @@ function DeleteActiveMath() {
 	// ok to delete last row now...
 	lastStep.detach();
 	
-	// readd trash button to previous step
-	$('.mathStep:last .trashButtonContainer').html('<div style="float:right;"><button class="btn btn-default" data-toggle="tooltip" title="Delete this Step" alt="Delete this step" onclick="DeleteActiveMath()" style="margin-bottom: 5px;"><span class="glyphicon glyphicon-trash"></span></button></div>');
+	// read trash button to previous step
+	$('.mathStep:last .trashButtonContainer').html('<div style="float:right;"><button class="btn btn-default" data-toggle="tooltip" onclick="DeleteActiveMath()" style="margin-bottom: 5px;"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span><span class="sr-only" id="deleteButton">delete xxx step</span></button></div>');
 	
 	TheActiveMathField.focus();
 }
@@ -562,20 +582,23 @@ function ReplaceTeXCommands(str, replacements) {
 		topOfStack.patterns = newPatterns;
 	}
 	
-	let result = "";
-	const  len = str.length;
 	let braceCount = 0;								// changed when processing command args ({}s)
 	let i = 0;
-	let iReplaceStart = 0;
 	let parseStack = [];
 	let expectingOpen = false;						// parsing command args--next ch should be { or [
-	while( i<len ) {
+	
+	// Loop through the string looking for {}s, []s, and \commands
+	// If a command is found, info about the command and its location in the string are pushed on the stack
+	// When arguments match the patterns inside of the brackets and all args processed,
+	//   replace that part of the string with the filled-in replacement and pop the stack
+	while( i<str.length ) {
 		// FIX: if (expectingOpen) grab next non-whitespace char (mathlive always adds {}s???
 		if ( parseStack.length===0 ) {
+			// optimization...
 			// not processing a TeX command, so no need to worry about {} or [] -- skip to command
 			i = str.indexOf('\\', i);
 			if ( i===-1) {
-				i = len;							// no more commands, we're done
+				i = str.length;							// no more commands, we're done
 				break;
 			}
 		}
@@ -587,7 +610,7 @@ function ReplaceTeXCommands(str, replacements) {
 			let top = stackTop(parseStack);
 			if ( braceCount===top.nestingLevel && !top.args[top.iArg] ) {
 				let defaultValue = top.defaultValues.shift() || "";
-				// substitute in default value into replacement for each match
+				// substitute in default value into replacement for each pattern/replacement
 				top.patterns.forEach(
 					function(pattern) {
 						pattern.replacement = pattern.replacement.replace(
@@ -597,18 +620,19 @@ function ReplaceTeXCommands(str, replacements) {
 				top.iArg++;
 			}
 			if ( braceCount===top.nestingLevel )
-				stackTop(parseStack).iArgStart = i+1;
+				top.iArgStart = i+1;
 			expectingOpen = false;
 			braceCount++;
 			break;
 		}
-		case '[':
+		case '[': {
 			// note: optional args can't be nested
+			let top = stackTop(parseStack);
 			if ( braceCount===top.nestingLevel )
-				stackTop(parseStack).iArgStart = i+1;
+				top.iArgStart = i+1;
 			expectingOpen = false;
 			break;
-			
+		}	
 		case '}':
 			braceCount--;
 		case ']': {
@@ -629,10 +653,11 @@ function ReplaceTeXCommands(str, replacements) {
 			if (top.iArg==top.args.length) {
 				// processed all the args, done with command
 				if ( top.patterns.length>0 ) {
-					result += top.patterns[0].replacement ;	// use first match
-					iReplaceStart = i+1;
+					let replacement = top.patterns[0].replacement;
+					str = str.substring(0, top.iCommandStart) + replacement + str.substring(i+1);
+					i = top.iCommandStart + replacement.length - 1; 
 				}
-				// else if no match, do nothing (iReplaceStart remains where it was)
+				// else if no match do nothing
 				parseStack.pop();
 			}
 			break;
@@ -656,11 +681,6 @@ function ReplaceTeXCommands(str, replacements) {
 			let actions = replacements[commandName];
 			if (actions) {
 				// found a command we care about -- push on stack so args get handled
-				if ( parseStack.length===0 ) {
-					result += str.slice(iReplaceStart, iNameStart-1);	// add on stuff up to command
-					iReplaceStart = iNameStart-1;
-				}
-
 				if ( typeof actions.patterns ==="undefined" || typeof actions.patterns==="string" ) {
 					// simple case -> general case w/'match anything' for all args
 					actions.patterns = [ {
@@ -668,6 +688,7 @@ function ReplaceTeXCommands(str, replacements) {
 						replacement: actions.patterns}];
 				}
 				parseStack.push( {args: commandArgs,
+								  iCommandStart: iNameEnd-1-commandName.length,
 								  iArg: 0,
 								  nestingLevel: braceCount,
 								  defaultValues: actions.defaults || [],
@@ -685,7 +706,7 @@ function ReplaceTeXCommands(str, replacements) {
 		i++;
 	}
 	
-	return result + str.slice(iReplaceStart, i);
+	return str;
 }
 
 
@@ -715,28 +736,22 @@ function CleanUpCrossouts(latexStr, options) {
 		const replaceChar = '\uFFFD';			// temporary replacement char -- can't be in latexStr
 		const notReplaceChar = '[^'+replaceChar+']+';
 		result = ReplaceTeXCommands( latexStr,{ "enclose": {patterns: replaceChar} } );
-		result = ReplaceTeXCommands( result,{ "underset": {patterns: "{$0}"} } );
-		result = ReplaceTeXCommands( result,{ "overset": {patterns: "{$0}" } } );
-/*** should be able to do in single call, but need to fix ReplaceTeXCommands so that 'str' is modified on a match
-						  "underset": {patterns: "{$0}"},
-						  "overset": {patterns: "{$0}"},
+
+		// if there are any cross out patterns that use sub/superscripts for replacements, fix them
+		result = result.replace( new RegExp(replaceChar+'(\\^|_)?', 'g'), "" );
+		
+		// now do the same for underset, overset, and clean up fractions
+		result = ReplaceTeXCommands( result,
+						{
+						  "underset": {patterns: [{match: [".*", replaceChar], replacement: "{$0}"}]},
+						  "overset": {patterns: [{match: [".*", replaceChar], replacement: "{$0}"}]},
 						  "frac": {patterns: [
 									{match: ["", ""], replacement: "\\frac{1}{1}"},
 									{match: ["", ".+"], replacement: "\\frac{1}{$1}"},
 									{match: [".+", ""], replacement: "\\frac{$0}{1}"}
 								  ] }
 						} );
-***/		
-		// if there are any cross out patterns that use sub/superscripts for replacements, fix them
-		result = result.replace( new RegExp(replaceChar+'(\\^|_)?', 'g'), "" );
 	}
-		result = ReplaceTeXCommands( result,
-					{ "frac": {patterns: [
-								{match: ["", ""], replacement: "\\frac{1}{1}"},
-								{match: ["", ".+"], replacement: "\\frac{1}{$1}"},
-								{match: [".+", ""], replacement: "\\frac{$0}{1}"}
-							   ] }
-					} );
 	
 	return result;
 
@@ -770,9 +785,9 @@ function CalculateAndReplace(element) {
 					 .replace(/\^/g, '**');
 		
 		// now deal with the ones that are TeX commands
-		expr = ReplaceTeXCommands( expr, { "frac": {patterns: "(($0)/($1))"} } );
-									
-		expr = ReplaceTeXCommands( expr, { "sqrt": {patterns: "(($1)**(1/($0)))" , defaults: ["2"]} } );
+		expr = ReplaceTeXCommands( expr, { "frac": {patterns: "(($0)/($1))"},
+										   "sqrt": {patterns: "(($1)**(1/($0)))" , defaults: ["2"]}
+										 } );
 									
 		// replace any {}s with ()s -- e.g, deals with 3^{4+5)					
 		expr = expr.replace(/\{/g, '(').replace(/\}/g, ")");
