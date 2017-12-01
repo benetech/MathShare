@@ -218,10 +218,8 @@ pulse.off {
 }
 
 .stepHeader {
-	border: 1px solid #CCC;
-	border-radius: 5px;
+	font-weight: bold;
 	float: left;
-	padding: 5px;
 }
  
  
