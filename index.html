@@ -112,6 +112,7 @@
 				  <div class="mathPalette" role="list">
 					  <!-- ⏎ is return char glyph --> 
 					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Cross out (⌨: shift+delete)" onclick="MathLivePasteFromButton(this)">$$\enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{\blacksquare}$$</button></span>
+					  <span role="listitem"><button class="btn btn-default paletteButton" data-toggle="tooltip" title="Calculate" onclick="CalculateAndReplace(this)">Calc</button></span>
 					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Dot times (⌨: \cdot⏎)" onclick="MathLivePasteFromButton(this)">$$\cdot$$</button></span>
 					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Times (⌨: xx)" onclick="MathLivePasteFromButton(this)">$$\times$$</button></span>
 					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Division (⌨: \div⏎)" onclick="MathLivePasteFromButton(this)">$$\div$$</button></span>
@@ -127,10 +128,11 @@
 					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Perpendicular (⌨: \perp⏎)" onclick="MathLivePasteFromButton(this)">$$\perp$$</button></span>
 					  <br/>
 					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Cross out with replacement" onclick="MathLivePasteFromButton(this)">$$ \enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{\blacksquare}^{\square} $$</button></span>
+					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" style="border: none;"></button></span>
 					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Less than or equal  (⌨: <=)" onclick="MathLivePasteFromButton(this)">$$\leq$$</button></span>
 					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Greater than or equal  (⌨: >=)" onclick="MathLivePasteFromButton(this)">$$\geq$$</button></span>
 					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Not equal (⌨: !=)" onclick="MathLivePasteFromButton(this)">$$\neq$$</button></span>
-					  <span role="listitem"><button class="staticMath btn btn-default paletteButton"  data-toggle="tooltip" title="Is equal to (⌨: ?=)" onclick="MathLivePasteFromButton(this)">$$\overset{?}{=}$$</button></span>
+					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Is equal to (⌨: ?=)" onclick="MathLivePasteFromButton(this)">$$\overset{?}{=}$$</button></span>
 					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Parentheses" onclick="MathLivePasteFromButton(this)">$$\Bigl{(}\blacksquare\Bigr{)}$$</button></span>
 					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Square brackets" onclick="MathLivePasteFromButton(this)">$$\Bigl{[}\blacksquare\Bigr{]}$$</button></span>
 					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Absolute value" onclick="MathLivePasteFromButton(this)">$$\Bigl{|}\blacksquare\Bigr{|}$$</button></span>
