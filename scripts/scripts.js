@@ -81,8 +81,8 @@ function HTMLForRow(stepNumber, math, annotation, showTrash) {
 	html += '</div>';
 	if (showTrash) { 
 		html +=  '<div class="col-md-1 trashButtonContainer" role="heading" aria-level="4" style="text-align: right; float:right;">'+
-					'<button class="btn btn-default" data-toggle="tooltip" title="Delete this Step" onclick="DeleteActiveMath()" style="margin-bottom: 5px;">' +
-						'<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>' +
+					'<button class="btn btn-default paletteButton" data-toggle="tooltip" title="Delete this Step" onclick="DeleteActiveMath()" style="margin-bottom: 5px;">' +
+						'<i class="fa fa-trash-o" aria-hidden="true"></i>' +
 						'<span class="SROnly">Delete ' + OrdinalSuffix(stepNumber) +' step</span>' +
 			'</button></div>';
 	}
@@ -397,7 +397,7 @@ function DeleteActiveMath() {
 	lastStep.detach();
 	
 	// read trash button to previous step
-	$('.mathStep:last .trashButtonContainer').html('<div style="float:right;"><button class="btn btn-default" data-toggle="tooltip" onclick="DeleteActiveMath()" style="margin-bottom: 5px;"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span><span class="sr-only" id="deleteButton">delete xxx step</span></button></div>');
+	$('.mathStep:last .trashButtonContainer').html('<div style="float:right;"><button class="btn btn-default paletteButton" data-toggle="tooltip" onclick="DeleteActiveMath()" style="margin-bottom: 5px;"><i class="fa fa-trash-o" aria-hidden="true"></i><span class="sr-only" id="deleteButton">delete xxx step</span></button></div>');
 	
 	TheActiveMathField.focus();
 }
