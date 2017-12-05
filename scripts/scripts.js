@@ -947,3 +947,13 @@ function HandleKeyDown(event)
 	}
 	return true;
 }
+
+function GoogleAnalytics(var1) {
+	ga('send', {
+	  hitType: 'event',
+	  eventCategory: 'Editor',
+	  eventAction: var1,
+	  eventLabel: ''
+	});
+	console.log('Logged: '+var1);
+}

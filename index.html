@@ -63,7 +63,7 @@
       <div class="modal-header">
         <h1 class="modal-title" style="float: left; font-size:12pt;">Problem title</h1>
         
-        <button aria-hidden='true' onclick="introJs().setOption('tooltipClass', 'introjs-helperLayer').start();" style="float: right;" type="button" class="btn btn-default btn-sm">Help</button>
+        <button aria-hidden='true' onclick="introJs().setOption('tooltipClass', 'introjs-helperLayer').start(); onclick="; GoogleAnalytics('Tour');" style="float: right;" type="button" class="btn btn-default btn-sm">Help</button>
         
       </div>
       
@@ -96,7 +96,7 @@
 						<div style="float: right;">
 							<h3 class="mathAnnotation sr-only" style="float: right; border-left: 1px solid #CCC;">Describe your work</h3>
 							<span><textarea class="form-control" id="mathAnnotation" placeholder="Use the microphone button or type to explain your work" style="width: 280px; height: 98px; border-left: 1px solid #CCC;" data-step="2" data-intro="Describe your work by typing directly or using the microphone to record an explanation of your work."></textarea></span>
-							<span style="float: right;"><button id="start_button" class="btn btn-mic" data-toggle="tooltip"><img alt="Start Speaking" id="mic_img" src="images/mic.gif"></button></span>
+							<span style="float: right;"><button id="start_button" class="btn btn-mic" data-toggle="tooltip" onclick="; GoogleAnalytics('S2T Clicked');"><img alt="Start Speaking" id="mic_img" src="images/mic.gif"></button></span>
 						</div>
 					</div>
 				</div>
@@ -110,8 +110,8 @@
 			  <div class="col-lg-8">
 				  <h3 class="sr-only">math input buttons</h3>
 				  <div class="mathPalette" role="list">
-					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Cross out (⌨: shift+delete)" onclick="MathLivePasteFromButton(this)">$$\enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{\blacksquare}$$</button></span>
-					  <span role="listitem"><button class="btn btn-default paletteButton" data-toggle="tooltip" title="Calculate" onclick="CalculateAndReplace(this)">Calc</button></span>
+					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Cross out (⌨: shift+delete)" onclick="MathLivePasteFromButton(this); GoogleAnalytics('Cross Out');">$$\enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{\blacksquare}$$</button></span>
+					  <span role="listitem"><button class="btn btn-default paletteButton" data-toggle="tooltip" title="Calculate" onclick="CalculateAndReplace(this); GoogleAnalytics('Calculate');">Calc</button></span>
 					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Dot times (⌨: \cdot⏎)" onclick="MathLivePasteFromButton(this)">$$\cdot$$</button></span>
 					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Times (⌨: xx)" onclick="MathLivePasteFromButton(this)">$$\times$$</button></span>
 					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Division (⌨: \div⏎)" onclick="MathLivePasteFromButton(this)">$$\div$$</button></span>
@@ -126,7 +126,7 @@
 					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Congruent (⌨: \cong⏎)" onclick="MathLivePasteFromButton(this)">$$\cong$$</button></span>
 					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Perpendicular (⌨: \perp⏎)" onclick="MathLivePasteFromButton(this)">$$\perp$$</button></span>
 					  <br/>
-					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Cross out with replacement" onclick="MathLivePasteFromButton(this)">$$ \enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{\blacksquare}^{\square} $$</button></span>
+					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Cross out with replacement" onclick="MathLivePasteFromButton(this); GoogleAnalytics('Cross Out & Replace');">$$ \enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{\blacksquare}^{\square} $$</button></span>
 					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" style="border: none;"></button></span>
 					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Less than or equal  (⌨: <=)" onclick="MathLivePasteFromButton(this)">$$\leq$$</button></span>
 					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Greater than or equal  (⌨: >=)" onclick="MathLivePasteFromButton(this)">$$\geq$$</button></span>
@@ -153,8 +153,8 @@
 		    </div>
       </div>    
       <div class="modal-footer" style="text-align: left;">
-	    <button class="btn btn-default" id="BtnCancel">Close Problem</button>
-	    <button class="btn btn-default" id="BtnSave" data-step="5" data-intro="Save your work to complete it later.">Save Problem</button>
+	    <button class="btn btn-default" id="BtnCancel" onclick="; GoogleAnalytics('Close');">Close Problem</button>
+	    <button class="btn btn-default" id="BtnSave" data-step="5" data-intro="Save your work or close out to try again from the beginning." onclick="; GoogleAnalytics('Save');>Save Problem</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
