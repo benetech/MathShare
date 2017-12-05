@@ -68,7 +68,7 @@
       </div>
       
       <div class="modal-body" style="background-color: #f0f0f0;">
-		    <div class="row" data-step="4" data-intro="See your work here. Use the trash can to delete this step from the history and put it into the editor to work on some more.">
+		    <div class="row" data-step="4" data-intro="Review your work. The trash icon also allows you to delete and rework a prior step.">
 		        <h2 class="col-lg-2">
 			        <span class="modalAreaHeading" style="opacity: 0.65;" aria-hidden="true">My<br>Steps</span>
 			        <span class="sr-only ">My Steps</span>
@@ -89,13 +89,13 @@
 				
 				<div class="col-lg-10">
 					<div id="workArea" class="mathEditor" style="border: 1px solid #CCC; border-radius: 5px; background-color: #FFF; height: 100px;"> 
-						<div style=	"float: left; min-width: 400px; margin: 15px 0px 15px 15px;" data-step="1" data-position="top" data-intro="Start Here - write or edit the equation using the keyboard and the math buttons below. The cross out and 'Calc' buttons help show your work.">
+						<div style=	"float: left; min-width: 400px; margin: 15px 0px 15px 15px;" data-step="1" data-position="top" data-intro="Type or edit the equation using your keyboard and the math keys below. Try using the cross out, replace, and calc buttons to help show your work.">
 							<h3 class="sr-only" style="float: left;">Enter math here</h3>
 							<section id='mathEditorActive' aria-label="Enter math here"></section>
 						</div>
 						<div style="float: right;">
 							<h3 class="mathAnnotation sr-only" style="float: right; border-left: 1px solid #CCC;">Describe your work</h3>
-							<span><textarea class="form-control" id="mathAnnotation" placeholder="Use the microphone button or type to explain your work" style="width: 280px; height: 98px; border-left: 1px solid #CCC;" data-step="2" data-intro="Describe your work -- type or click on the microphone to describe your work."></textarea></span>
+							<span><textarea class="form-control" id="mathAnnotation" placeholder="Use the microphone button or type to explain your work" style="width: 280px; height: 98px; border-left: 1px solid #CCC;" data-step="2" data-intro="Describe your work by typing directly or using the microphone to record an explanation of your work."></textarea></span>
 							<span style="float: right;"><button id="start_button" class="btn btn-mic" data-toggle="tooltip"><img alt="Start Speaking" id="mic_img" src="images/mic.gif"></button></span>
 						</div>
 					</div>
@@ -147,7 +147,7 @@
 <!-- 					<button class="btn btn-default" data-toggle="tooltip" title="Delete this Step" alt="Delete this step" onclick="DeleteActiveMath()" style="margin-bottom: 5px;"><span class="glyphicon glyphicon-trash"></span></button> -->
 					<br>
 					<span role="heading" aria-level="3">
-					  <button class="btn btn-primary" data-toggle="tooltip" title="Clean up the cross outs and start a new step" onclick="NewRowOrRowsAfterCleanup(TheActiveMathField.latex());" style="margin-top: 11px;" data-step="3" data-intro="Click here to clean up the cross outs and start a new step.">Add Step</button>
+					  <button class="btn btn-primary" data-toggle="tooltip" title="Clean up the cross outs and start a new step" onclick="NewRowOrRowsAfterCleanup(TheActiveMathField.latex());" style="margin-top: 11px;" data-step="3" data-intro="Clean-up your work and start a new step.">Add Step</button>
 					</span>
 			   </div>
 		    </div>
