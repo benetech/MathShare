@@ -159,7 +159,7 @@
       <div class="modal-header">
         <h1 class="modal-title" style="float: left; font-size:12pt;">Problem title</h1>
         
-        <button aria-hidden='true' onclick="introJs().setOption('tooltipClass', 'introjs-helperLayer').start(); GoogleAnalytics('Tour');" style="float: right;" type="button" class="btn btn-default btn-sm">Help</button>
+        <button aria-hidden='true' onclick="introJs().setOption('tooltipClass', 'introjs-helperLayer').start(); GoogleAnalytics('Tour');" type="button" class="btn btn-default btn-sm pointer float-right">Help</button>
         
       </div>
       
@@ -192,7 +192,7 @@
 						<div style="float: right;">
 							<h3 class="mathAnnotation sr-only" style="float: right; border-left: 1px solid #CCC;">Describe your work</h3>
 							<span><textarea class="form-control" id="mathAnnotation" placeholder="Use the microphone button or type to explain your work" style="width: 280px; height: 98px; border-left: 1px solid #CCC;" data-step="2" data-intro="Describe your work by typing directly or using the microphone to record an explanation of your work."></textarea></span>
-							<span style="float: right;"><button id="start_button" class="btn btn-mic" data-toggle="tooltip" onclick="; GoogleAnalytics('S2T Clicked');"><img alt="Start Speaking" id="mic_img" src="images/mic.gif"></button></span>
+							<span style="float: right;"><button id="start_button" class="btn btn-mic pointer" data-toggle="tooltip" onclick="GoogleAnalytics('S2T Clicked');"><img alt="Start Speaking" id="mic_img" src="images/mic.gif"></button></span>
 						</div>
 					</div>
 				</div>
@@ -243,14 +243,14 @@
 <!-- 					<button class="btn btn-default" data-toggle="tooltip" title="Delete this Step" alt="Delete this step" onclick="DeleteActiveMath()" style="margin-bottom: 5px;"><span class="glyphicon glyphicon-trash"></span></button> -->
 					<br>
 					<span role="heading" aria-level="3">
-					  <button class="btn btn-primary" data-toggle="tooltip" title="Clean up the cross outs and start a new step" onclick="NewRowOrRowsAfterCleanup(TheActiveMathField.latex());" style="margin-top: 11px;" data-step="3" data-intro="Clean-up your work and start a new step.">Add Step</button>
+					  <button class="btn btn-primary pointer" data-toggle="tooltip" title="Clean up the cross outs and start a new step" onclick="NewRowOrRowsAfterCleanup(TheActiveMathField.latex());" style="margin-top: 11px;" data-step="3" data-intro="Clean-up your work and start a new step.">Add Step</button>
 					</span>
 			   </div>
 		    </div>
       </div>    
       <div class="modal-footer" style="text-align: left;">
-	    <button class="btn btn-default" id="BtnCancel" onclick="; GoogleAnalytics('Close');">Close Problem</button>
-	    <button class="btn btn-default" id="BtnSave" data-step="5" data-intro="Save your work or close out to try again from the beginning." onclick="GoogleAnalytics('Save');">Save Problem</button>
+	    <button class="btn btn-default pointer" id="BtnCancel" onclick="; GoogleAnalytics('Close');">Close Problem</button>
+	    <button class="btn btn-default pointer" id="BtnSave" data-step="5" data-intro="Save your work or close out to try again from the beginning." onclick="GoogleAnalytics('Save');">Save Problem</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
