@@ -104,7 +104,7 @@ function ReadFileInitiate(fileName) {
 			"metadata": { "title": "Fallback on read failure" },
 			"problems": [
 				{"metadata": {"title":"Problem 1","variableName":"problem01"},
-				 "originalProblem": {"equation":"3(-\\frac{1}{6})(-\\frac{2}{5})","annotation":"Find the product"},
+				 "originalProblem": {"equation":"223(-\\frac{1}{6})(-\\frac{2}{5})","annotation":"Find the product"},
 				 "currentEditor": {"equation":"3(-\\frac{1}{6})(-\\frac{2}{5})","annotation":""},
 				 "history": [{"equation":"3(-\\frac{1}{6})(-\\frac{2}{5})","annotation":"Find the product"}]},
 				{"metadata": {"title":"Problem 2",    "variableName":"problem02"},		 
@@ -156,11 +156,10 @@ function ReadFileFinish(data) {
 function PopulateMainPage(data) {
 	let html = '<ul class="row">';
 	let problemData = data.problems;
-	
 	for (let i=0; i< problemData.length; i++) {
 		let problem = problemData[i].originalProblem;
 		html += '<li class="col-md-4 text-center" style="list-style: none; margin-bottom: 20px;">' +
-					'<span class="btn btn-default btn-huge" ' +
+					'<span class="btn btn-default btn-huge" style="cursor: pointer;" ' +
 							 // warning: 'problemData' uses ""s, so we need to use ''s to surround it
 					         'onclick=\'SetAndOpenEditorModel(this, ' +
 							 JSON.stringify(problemData[i]) + ')\'>' +
@@ -258,12 +257,16 @@ function PopulateEditorModal(buttonElement, dataObj) {
 function OpenEditorModal() {
 	$('#EditorModal').modal({
     	backdrop: 'static',		// prevent key clicks outside of modal from closing modal
-//		keyboard: false			// prevent esc key from closing modal
+		//keyboard: false			// prevent esc key from closing modal
 	});
 	
+	
+	
 	$('#EditorModal').on('shown.bs.modal', function () {
-  $('.modal-header').focus()
-})
+	  $('.modal-header').focus();
+	  $("#MathHistory").animate({ scrollTop: $('#MathHistory').prop("scrollHeight")}, 1000);
+	});
+	
 }
 
 //***************************************************************************************************************************************************
