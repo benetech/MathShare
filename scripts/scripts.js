@@ -928,13 +928,13 @@ function UpdatePalette(mathField) {
 
 //***************************************************************************************************************************************************
 function HandleKeyDown(event)
-{
-	if (event.shiftKey && (event.key=="Delete" || event.key=="Backspace")) {
+{	
+	if (event.shiftKey && (event.key==='Delete' || event.key==='Backspace')) {
 		if ( TheActiveMathField.selectionIsCollapsed() ) {
 			// if an insertion cursor, extend the selection unless we are at an edge
-			if ( TheActiveMathField.selectionAtStart() && event.key=="Backspace" )
+			if ( TheActiveMathField.selectionAtStart() && event.key==='Backspace' )
 				return false;
-			if ( TheActiveMathField.selectionAtEnd() && event.key=="Delete" )
+			if ( TheActiveMathField.selectionAtEnd() && event.key==='Delete' )
 				return false;
 		
 			TheActiveMathField.perform(event.key=="Delete" ? 'extendToNextChar' : 'extendToPreviousChar');
@@ -942,13 +942,21 @@ function HandleKeyDown(event)
 		
 		let selection = CleanUpCrossouts( TheActiveMathField.selectedText('latex'), {erase:true} );
 		let insertionString = CrossoutTeXString + "{" + selection + "}";
+		if (event.ctrlKey) // cross out and replace
+			insertionString += '^{#?}';
 		TheActiveMathField.perform(['insert', insertionString, 
 								    {insertionMode: 'replaceSelection',
-									 selectionMode: 'item'}]);
+									 selectionMode: event.ctrlKey ? 'placeholder' : 'item'}]);
 		TheActiveMathField.focus();
 		return false;
 	}
-	return true;
+	
+	if (event.shiftKey && event.key==='Enter') {
+		NewRowOrRowsAfterCleanup(TheActiveMathField.latex());
+		return false;
+	}
+	
+	HandleKeyDown.lastChar
 }
 
 function GoogleAnalytics(var1) {
