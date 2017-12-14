@@ -103,36 +103,36 @@ function ReadFileInitiate(fileName) {
 		ReadFileFinish({
 			"metadata": { "title": "Fallback on read failure" },
 			"problems": [
-				{"metadata": {"title":"Problem 1","variableName":"problem01"},
-				 "originalProblem": {"equation":"223(-\\frac{1}{6})(-\\frac{2}{5})","annotation":"Find the product"},
+				{"metadata": {"title":"Local Prob 1","variableName":"problem01"},
+				 "originalProblem": {"equation":"223(-\\frac{1}{6})(-\\frac{2}{5})","annotation":"LOCAL Find the product"},
 				 "currentEditor": {"equation":"3(-\\frac{1}{6})(-\\frac{2}{5})","annotation":""},
 				 "history": [{"equation":"3(-\\frac{1}{6})(-\\frac{2}{5})","annotation":"Find the product"}]},
-				{"metadata": {"title":"Problem 2",    "variableName":"problem02"},		 
-				 "originalProblem": {"equation":"-\\frac{2}{5}(-\\frac{1}{2})(-\\frac{5}{6})", "annotation":"Find the product"},
+				{"metadata": {"title":"Local Prob 2",    "variableName":"problem02"},		 
+				 "originalProblem": {"equation":"-\\frac{2}{5}(-\\frac{1}{2})(-\\frac{5}{6})", "annotation":"LOCAL Find the product"},
 				 "currentEditor": {"equation":"-\\frac{2}{5}(-\\frac{1}{2})(-\\frac{5}{6})",    "annotation":""},
-				 "history": [{"equation":"-\\frac{2}{5}(-\\frac{1}{2})(-\\frac{5}{6})",    "annotation":"Find the product"}]},
-				{"metadata": {"title":"Problem 3",    "variableName":"problem03"},
-				 "originalProblem": {"equation":"\\frac{55}{\\frac{1}{2}}",    "annotation":"Find the quotient"},
+				 "history": [{"equation":"-\\frac{2}{5}(-\\frac{1}{2})(-\\frac{5}{6})",    "annotation":"LOCAL Find the product"}]},
+				{"metadata": {"title":"Local Prob 3",    "variableName":"problem03"},
+				 "originalProblem": {"equation":"\\frac{55}{\\frac{1}{2}}",    "annotation":"LOCAL Find the quotient"},
 				 "currentEditor": {"equation":"\\frac{55}{\\frac{1}{2}}",    "annotation":""},
-				 "history": [{"equation":"\\frac{55}{\\frac{1}{2}}",    "annotation":"Find the quotient"}]},
-				{"metadata": {"title":"Problem 4",    "variableName":"problem04"},
-				 "originalProblem": {"equation":"\\frac{3}{10}\\div (\\frac{5}{8})",    "annotation":"Find the quotient"},
+				 "history": [{"equation":"\\frac{55}{\\frac{1}{2}}",    "annotation":"LOCAL Find the quotient"}]},
+				{"metadata": {"title":"Local Prob 4",    "variableName":"problem04"},
+				 "originalProblem": {"equation":"\\frac{3}{10}\\div (\\frac{5}{8})",    "annotation":"LOCAL Find the quotient"},
 				 "currentEditor": {"equation":"\\frac{3}{10}\\div (\\frac{5}{8})",    "annotation":""},
-				 "history": [{"equation":"\\frac{3}{10}\\div (\\frac{5}{8})",    "annotation":"Find the quotient"}]},
-				{"metadata": {"title":"Problem 5",    "variableName":"problem05"},
-				 "originalProblem": {"equation":"",    "annotation":"Sarah works at a coffee shop. Her weekly salary is $325 and she earns 11.5% commission on sales. How much does she make if she sells $2800 in merchandise?"},
+				 "history": [{"equation":"\\frac{3}{10}\\div (\\frac{5}{8})",    "annotation":"LOCAL Find the quotient"}]},
+				{"metadata": {"title":"Local Prob 5",    "variableName":"problem05"},
+				 "originalProblem": {"equation":"",    "annotation":"LOCAL Sarah works at a coffee shop. Her weekly salary is $325 and she earns 11.5% commission on sales. How much does she make if she sells $2800 in merchandise?"},
 				 "currentEditor": {"equation":"",    "annotation":""},
-				 "history": [{"equation":"",    "annotation":"Sarah works at a coffee shop. Her weekly salary is $325 and she earns 11.5% commission on sales. How much does she make if she sells $2800 in merchandise?"}]},
-				{ "metadata": {"title":"Problem 6",    "variableName":"problem06"},
-				 "originalProblem": {"equation":"7x-13=1",    "annotation":"Solve for x"},
+				 "history": [{"equation":"",    "annotation":"LOCAL Sarah works at a coffee shop. Her weekly salary is $325 and she earns 11.5% commission on sales. How much does she make if she sells $2800 in merchandise?"}]},
+				{ "metadata": {"title":"Local Prob 6",    "variableName":"problem06"},
+				 "originalProblem": {"equation":"7x-13=1",    "annotation":"LOCAL Solve for x"},
 				 "currentEditor": {"equation":"7x-13=1",    "annotation":""},
-				 "history": [{"equation":"7x-13=1",    "annotation":"Solve for x"}]},
-				{"metadata": {"title":"Problem 7",    "variableName":"problem07"},
-				 "originalProblem": {"equation":"\\frac{b}{9}-34\\leq -36",    "annotation":"Solve the inequality"},
+				 "history": [{"equation":"7x-13=1",    "annotation":"LOCAL Solve for x"}]},
+				{"metadata": {"title":"Local Prob 7",    "variableName":"problem07"},
+				 "originalProblem": {"equation":"\\frac{b}{9}-34\\leq -36",    "annotation":"LOCAL Solve the inequality"},
 				 "currentEditor": {"equation":"\\frac{b}{9}-34\\leq -36",    "annotation":""},
-				 "history": [{"equation":"\\frac{b}{9}-34\\leq -36",    "annotation":"Solve the inequality"}]},
-				{"metadata": {"title":"Try your own problem",    "variableName":"newEditor"},
-				 "originalProblem": {"equation":"", "annotation":"Try your own problem"},
+				 "history": [{"equation":"\\frac{b}{9}-34\\leq -36",    "annotation":"LOCAL Solve the inequality"}]},
+				{"metadata": {"title":"LOCAL Try your own problem",    "variableName":"newEditor"},
+				 "originalProblem": {"equation":"", "annotation":"LOCAL Try your own problem"},
 				 "currentEditor": {},
 				 "history": [{}]}
 			]
@@ -956,7 +956,10 @@ function HandleKeyDown(event)
 		return false;
 	}
 	
-	HandleKeyDown.lastChar
+	if (event.ctrlKey && event.key==='=') {
+		CalculateAndReplace(TheActiveMathField);
+		return false;
+	}
 }
 
 function GoogleAnalytics(var1) {
