@@ -104,7 +104,7 @@ function ReadFileInitiate(fileName) {
 			"metadata": { "title": "Fallback on read failure" },
 			"problems": [
 				{"metadata": {"title":"Local Prob 1","variableName":"problem01"},
-				 "originalProblem": {"equation":"223(-\\frac{1}{6})(-\\frac{2}{5})","annotation":"LOCAL Find the product"},
+				 "originalProblem": {"equation":"3(-\\frac{1}{6})(-\\frac{2}{5})","annotation":"LOCAL Find the product"},
 				 "currentEditor": {"equation":"3(-\\frac{1}{6})(-\\frac{2}{5})","annotation":""},
 				 "history": [{"equation":"3(-\\frac{1}{6})(-\\frac{2}{5})","annotation":"Find the product"}]},
 				{"metadata": {"title":"Local Prob 2",    "variableName":"problem02"},		 
