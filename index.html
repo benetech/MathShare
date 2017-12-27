@@ -25,11 +25,8 @@
 	<script src="scripts/scripts.js"></script>
 	<script src="data/example01.js"></script>
 	<script type="text/javascript">	
-		$(document).ready(function() {
-			//generate all problem data for main page -- this is asynchronous
-			 ReadFileInitiate('data/data02.js');
-			 
-// 			 console.log(JSON.stringify(example02));
+		$(document).ready(function() {			 
+			 ReadFileInitiate('data/data01.js');
 		})
 		
 	</script>
@@ -46,16 +43,23 @@
 		  </a>
 		  <div class="collapse navbar-collapse" id="navbarNav">
 		    <ul class="navbar-nav mr-auto">
-<!--
-		      <li class="nav-item active">
-		        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-		      </li>
--->
 		    </ul>
 		    <ul class="navbar-nav">
 		      <li class="nav-item">
 		        <a class="nav-link pointer" onclick="SetAndOpenEditorModel(this, example01)">Getting Started</a>
 		      </li>
+		      <li class="nav-item dropdown">
+			    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Problem Sets</a>
+			    <div class="dropdown-menu">
+			      <a class="dropdown-item" onclick="alert('something');">Problem Set 01</a>
+			      <a class="dropdown-item" href="#">Problem Set 02</a>
+			      <a class="dropdown-item" href="#">Problem Set 03</a>
+<!--
+			      <div class="dropdown-divider"></div>
+			      <a class="dropdown-item" href="#">Upload Problem Set</a>
+-->
+			    </div>
+			  </li>
 		      <li class="nav-item">
 		        <a class="nav-link" href="http://www.surveygizmo.com/s3/4048161/Benetech-s-Math-Editor-Online-Feedback" target="_blank">Provide Feedback</a>
 		      </li>
@@ -65,10 +69,6 @@
 		    </ul>
 		    
 		  </div>
-<!--
-		  <a style="color: #FFF;">Example</a>
-		  <a href="mailto:info@diagramcenter.org" style="color: #FFF;">Contact Us</a>
--->
 		</nav>
 	</header>
 	<!-- END TOP HEADER/NAVIGATION -->
@@ -127,27 +127,6 @@
 	    </div>
 	</footer>
 	<!-- END FOOTER -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 	
 <!-- START MODAL CODE -->

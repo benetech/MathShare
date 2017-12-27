@@ -151,6 +151,10 @@ function ReadFileFinish(data) {
 	MathLive.renderMathInDocument();
 }
 
+function ReadFileEmpty() {
+	$('#something').empty();
+}
+
 // Create all the problems on the main page
 // Data for each problem is stored into the argument of the 'onclick' function		
 function PopulateMainPage(data) {
@@ -969,5 +973,5 @@ function GoogleAnalytics(var1) {
 	  eventAction: var1,
 	  eventLabel: ''
 	});
-	console.log('Logged: '+var1);
+	console.log('GA Logged: '+var1);
 }

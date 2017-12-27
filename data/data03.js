@@ -6,17 +6,17 @@
 				"title": "Problem 1"
 			},
 			"originalProblem": {
-				"equation": "3(-\\frac{1}{6})(-\\frac{2}{5})",
-				"annotation": "Find the product"
+				"equation": "3333(-\\frac{1}{6})(-\\frac{2}{5})",
+				"annotation": "333Find the product"
 			},
 			"currentEditor": {
-				"equation": "3(-\\frac{1}{6})(-\\frac{2}{5})",
-				"annotation": ""
+				"equation": "3333(-\\frac{1}{6})(-\\frac{2}{5})",
+				"annotation": "333"
 			},
 			"history": [
 				{
-					"equation": "3(-\\frac{1}{6})(-\\frac{2}{5})",
-					"annotation": "Find the product"
+					"equation": "3333(-\\frac{1}{6})(-\\frac{2}{5})",
+					"annotation": "333Find the product"
 				}
 			]
 		},
