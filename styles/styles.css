@@ -75,8 +75,8 @@ a {
 .paletteButton {
   padding: 0;
   margin: 0px 0px 4px 0px;
-  width: 38px;
-  height: 38px;
+  width: 37px;
+  height: 37px;
   background-color: #f0f0f0!important;
   border: 1px solid #CCC;
   cursor: pointer;
@@ -224,6 +224,11 @@ pulse.off {
 .stepHeader {
 	font-weight: bold;
 	float: left;
+}
+
+.mathPalette {
+	float: left;
+/* 	margin-right: 10px; */
 }
  
  
