@@ -1,6 +1,10 @@
 html, body {
     height: 100%;
 }	
+
+a {
+	cursor: pointer;
+}
 	
 .navbar-default {
 	background-color: #222F3F;
