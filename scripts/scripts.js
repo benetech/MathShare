@@ -147,7 +147,10 @@ function ReadFileFinish(data) {
 			"data-galois-metadata",
 			JSON.stringify(data.metadata)
 		);
-	document.getElementById("mainPageBody").append( PopulateMainPage(data) );
+	$('#ProblemSet').empty();
+	$('#ProblemSet').html(PopulateMainPage(data));
+	
+	//document.getElementById("mainPageBody").append( PopulateMainPage(data) );
 	MathLive.renderMathInDocument();
 }
 
