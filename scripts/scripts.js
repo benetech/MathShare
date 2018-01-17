@@ -963,7 +963,7 @@ function HandleKeyDown(event)
 		return false;
 	}
 	
-	if (event.ctrlKey && event.key==='=') {
+	if (event.ctrlKey && event.key==='=' && !event.shiftKey) {
 		CalculateAndReplace(TheActiveMathField);
 		return false;
 	}
