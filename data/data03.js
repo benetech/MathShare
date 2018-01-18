@@ -25,17 +25,17 @@
 				"title": "Problem 2"
 			},
 			"originalProblem": {
-				"equation": "",
-				"annotation": ""
+				"equation": "(-\\frac{3}{8})(-\\frac{2}{7})(-\\frac{4}{6})",
+				"annotation": "Find the product"
 			},
 			"currentEditor": {
-				"equation": "",
+				"equation": "(-\\frac{3}{8})(-\\frac{2}{7})(-\\frac{4}{6})",
 				"annotation": ""
 			},
 			"history": [
 				{
-				"equation": "",
-					"annotation": ""
+				"equation": "(-\\frac{3}{8})(-\\frac{2}{7})(-\\frac{4}{6})",
+					"annotation": "Find the product"
 				}
 			]
 		},
@@ -44,17 +44,17 @@
 				"title": "Problem 3"
 			},
 			"originalProblem": {
-				"equation": "",
-				"annotation": ""
+				"equation": "(-\\frac{4}{3})(\\frac{2}{8})(-\\frac{6}{2})",
+				"annotation": "Find the product"
 			},
 			"currentEditor": {
-				"equation": "",
+				"equation": "(-\\frac{4}{3})(\\frac{2}{8})(-\\frac{6}{2})",
 				"annotation": ""
 			},
 			"history": [
 				{
-				"equation": "",
-					"annotation": ""
+				"equation": "(-\\frac{4}{3})(\\frac{2}{8})(-\\frac{6}{2})",
+					"annotation": "Find the product"
 				}
 			]
 		},
