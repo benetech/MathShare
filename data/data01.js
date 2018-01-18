@@ -34,7 +34,7 @@
 			},
 			"history": [
 				{
-				"equation": "-\\frac{2}{5}(-\\frac{1}{2})(-\\frac{5}{6}})",
+				"equation": "-\\frac{2}{5}(-\\frac{1}{2})(-\\frac{5}{6})",
 					"annotation": "Find the product"
 				}
 			]
@@ -53,7 +53,7 @@
 			},
 			"history": [
 				{
-					"equation": "\\frac{55}{\\frac{1}{2}",
+					"equation": "\\frac{55}{\\frac{1}{2}}",
 					"annotation": "Find the quotient"
 				}
 			]
