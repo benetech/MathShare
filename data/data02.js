@@ -83,7 +83,7 @@
 			},
 			"originalProblem": {
 				"equation": "",
-				"annotation": ""
+				"annotation": "Solve for x: Angles a and b are supplementary. Angle a is 78 $$\\degree$$ and angle b is equal to 3x"
 			},
 			"currentEditor": {
 				"equation": "",
@@ -92,7 +92,7 @@
 			"history": [
 				{
 				"equation": "",
-					"annotation": ""
+					"annotation": "Solve for x: Angles a and b are supplementary. Angle a is 78 $$\\degree$$ and angle b is equal to 3x"
 				}
 			]
 		},
