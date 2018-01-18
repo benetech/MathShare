@@ -92,7 +92,7 @@
 			"history": [
 				{
 				"equation": "",
-					"annotation": "Solve for x: Angles a and b are supplementary. Angle a is 78$$\degree$$ and angle b is equal to 3x"
+					"annotation": "Solve for x: Angles a and b are supplementary. Angle a is 78$$\\degree$$ and angle b is equal to 3x"
 				}
 			]
 		},
@@ -111,7 +111,7 @@
 			"history": [
 				{
 				"equation": "",
-					"annotation": "What is the area of a circle with a diameter of 10 (use $$\pi$$ or the value of $$\pi$$ to the hundredths place)?"
+					"annotation": "What is the area of a circle with a diameter of 10 (use $$\\pi$$ or the value of $$\\pi$$ to the hundredths place)?"
 				}
 			]
 		},
