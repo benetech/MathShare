@@ -83,7 +83,7 @@
 			},
 			"originalProblem": {
 				"equation": "",
-				"annotation": "Solve for x: Angles a and b are supplementary. Angle a is 78 $$\\degree$$ and angle b is equal to 3x"
+				"annotation": "Solve for x: Angles a and b are supplementary. Angle a is 78$$\\degree$$ and angle b is equal to 3x"
 			},
 			"currentEditor": {
 				"equation": "",
@@ -92,7 +92,7 @@
 			"history": [
 				{
 				"equation": "",
-					"annotation": "Solve for x: Angles a and b are supplementary. Angle a is 78 $$\\degree$$ and angle b is equal to 3x"
+					"annotation": "Solve for x: Angles a and b are supplementary. Angle a is 78$$\\degree$$ and angle b is equal to 3x"
 				}
 			]
 		},
@@ -102,7 +102,7 @@
 			},
 			"originalProblem": {
 				"equation": "",
-				"annotation": ""
+				"annotation": "What is the area of a circle with a diameter of 10 (use $$\\pi$$ or the value of $$\\pi$$ to the hundredths place)?"
 			},
 			"currentEditor": {
 				"equation": "",
@@ -111,7 +111,7 @@
 			"history": [
 				{
 				"equation": "",
-					"annotation": ""
+					"annotation": "What is the area of a circle with a diameter of 10 (use $$\\pi$$ or the value of $$\\pi$$ to the hundredths place)?"
 				}
 			]
 		},
@@ -121,7 +121,7 @@
 			},
 			"originalProblem": {
 				"equation": "",
-				"annotation": ""
+				"annotation": "Sarah works at a coffee shop. Her weekly salary is $325 and she early 11.5% commission on sales. How much does she make if she sells $2800 in merchandise?"
 			},
 			"currentEditor": {
 				"equation": "",
@@ -130,7 +130,7 @@
 			"history": [
 				{
 				"equation": "",
-					"annotation": ""
+					"annotation": "Sarah works at a coffee shop. Her weekly salary is $325 and she early 11.5% commission on sales. How much does she make if she sells $2800 in merchandise?"
 				}
 			]
 		},
