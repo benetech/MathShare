@@ -63,17 +63,17 @@
 				"title": "Problem 4"
 			},
 			"originalProblem": {
-				"equation": "",
-				"annotation": ""
+				"equation": "5x-10=10",
+				"annotation": "Solve for x"
 			},
 			"currentEditor": {
-				"equation": "",
+				"equation": "5x-10=10",
 				"annotation": ""
 			},
 			"history": [
 				{
-				"equation": "",
-					"annotation": ""
+				"equation": "5x-10=10",
+					"annotation": "Solve for x"
 				}
 			]
 		},
@@ -82,17 +82,17 @@
 				"title": "Problem 5"
 			},
 			"originalProblem": {
-				"equation": "",
-				"annotation": ""
+				"equation": "6x+14=8",
+				"annotation": "Solve for x"
 			},
 			"currentEditor": {
-				"equation": "",
+				"equation": "6x+14=8",
 				"annotation": ""
 			},
 			"history": [
 				{
-				"equation": "",
-					"annotation": ""
+				"equation": "6x+14=8",
+					"annotation": "Solve for x"
 				}
 			]
 		},
@@ -101,17 +101,17 @@
 				"title": "Problem 6"
 			},
 			"originalProblem": {
-				"equation": "",
-				"annotation": ""
+				"equation": "-7y\\leq 14",
+				"annotation": "Solve for y"
 			},
 			"currentEditor": {
-				"equation": "",
+				"equation": "-7y\\leq 14",
 				"annotation": ""
 			},
 			"history": [
 				{
-				"equation": "",
-					"annotation": ""
+				"equation": "-7y\\leq 14",
+					"annotation": "Solve for y"
 				}
 			]
 		},
@@ -120,17 +120,17 @@
 				"title": "Problem 7"
 			},
 			"originalProblem": {
-				"equation": "",
-				"annotation": ""
+				"equation": "-3x+13>9",
+				"annotation": "Solve for y"
 			},
 			"currentEditor": {
-				"equation": "",
+				"equation": "-3x+13>9",
 				"annotation": ""
 			},
 			"history": [
 				{
-				"equation": "",
-					"annotation": ""
+				"equation": "-3x+13>9",
+					"annotation": "Solve for y"
 				}
 			]
 		},
