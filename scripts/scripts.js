@@ -274,6 +274,8 @@ function OpenEditorModal() {
 	  $("#MathHistory").animate({ scrollTop: $('#MathHistory').prop("scrollHeight")}, 1000);
 	});
 	
+	MathLive.renderMathInDocument();
+	
 }
 
 //***************************************************************************************************************************************************
