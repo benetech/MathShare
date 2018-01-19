@@ -165,6 +165,7 @@ function PopulateMainPage(data) {
 	let problemData = data.problems;
 	for (let i=0; i< problemData.length; i++) {
 		let problem = problemData[i].originalProblem;
+		alert(problem.annotation);
 		html += '<li class="col-md-4 text-center" style="list-style: none; margin-bottom: 20px;">' +
 					'<span class="btn btn-default btn-huge" style="cursor: pointer;" ' +
 							 // warning: 'problemData' uses ""s, so we need to use ''s to surround it
@@ -172,7 +173,7 @@ function PopulateMainPage(data) {
 							 JSON.stringify(problemData[i]) + ')\'>' +
 						(i+1) + '. ' +
 						problem.annotation +
-						'AAA<br/><br/>' +
+						'<br/><br/>' +
 						'<span class="staticMath">$$' + problem.equation + '$$</span>' + 
 					'</span>' +
 				'</li>';
