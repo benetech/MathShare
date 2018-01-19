@@ -6,16 +6,16 @@
 				"title": "Problem 1"
 			},
 			"originalProblem": {
-				"equation": "7773(-\\frac{1}{6})(-\\frac{2}{5})",
-				"annotation": "777Find the product"
+				"equation": "3(-\\frac{1}{6})(-\\frac{2}{5})",
+				"annotation": "Find the product"
 			},
 			"currentEditor": {
-				"equation": "7773(-\\frac{1}{6})(-\\frac{2}{5})",
+				"equation": "3(-\\frac{1}{6})(-\\frac{2}{5})",
 				"annotation": ""
 			},
 			"history": [
 				{
-					"equation": "7773(-\\frac{1}{6})(-\\frac{2}{5})",
+					"equation": "3(-\\frac{1}{6})(-\\frac{2}{5})",
 					"annotation": "Find the product"
 				}
 			]
@@ -25,17 +25,17 @@
 				"title": "Problem 2"
 			},
 			"originalProblem": {
-				"equation": "-\\frac{2}{5}(-\\frac{1}{2})(-\\frac{5}{6})",
-				"annotation": "Find the product"
+				"equation": "7x-12=2",
+				"annotation": "Solve for x"
 			},
 			"currentEditor": {
-				"equation": "-\\frac{2}{5}(-\\frac{1}{2})(-\\frac{5}{6})",
+				"equation": "7x-12=2",
 				"annotation": ""
 			},
 			"history": [
 				{
-				"equation": "-\\frac{2}{5}(-\\frac{1}{2})(-\\frac{5}{6}})",
-					"annotation": "Find the product"
+				"equation": "7x-12=2",
+					"annotation": "Solve for x"
 				}
 			]
 		},
@@ -44,80 +44,23 @@
 				"title": "Problem 3"
 			},
 			"originalProblem": {
-				"equation": "\\frac{55}{\\frac{1}{2}}",
-				"annotation": "Find the quotient"
-			},
-			"currentEditor": {
-				"equation": "\\frac{55}{\\frac{1}{2}}",
-				"annotation": ""
-			},
-			"history": [
-				{
-					"equation": "\\frac{55}{\\frac{1}{2}",
-					"annotation": "Find the quotient"
-				}
-			]
-		},
-		{
-			"metadata": {
-				"title": "Problem 4"
-			},
-			"originalProblem": {
-				"equation": "\\frac{3}{10}\\div (\\frac{5}{8})",
-				"annotation": "Find the quotient"
-			},
-			"currentEditor": {
-				"equation": "\\frac{3}{10}\\div (\\frac{5}{8})",
-				"annotation": ""
-			},
-			"history": [
-				{
-					"equation": "\\frac{3}{10}\\div (\\frac{5}{8})",
-					"annotation": "Find the quotient"
-				}
-			]
-		},
-		{
-			"metadata": {
-				"title": "Problem 5"
-			},
-			"originalProblem": {
-				"equation": "",
-				"annotation": "Sarah works at a coffee shop. Her weekly salary is $325 and she earns 11.5% commission on sales. How much does she make if she sells $2800 in merchandise?"
-			},
-			"currentEditor": {
-				"equation": "",
-				"annotation": ""
-			},
-			"history": [
-				{
-					"equation": "",
-					"annotation": "Sarah works at a coffee shop. Her weekly salary is $325 and she earns 11.5% commission on sales. How much does she make if she sells $2800 in merchandise?"
-				}
-			]
-		},
-		{
-			"metadata": {
-				"title": "Problem 6"
-			},
-			"originalProblem": {
-				"equation": "7x-13=1",
+				"equation": "3x+14=5",
 				"annotation": "Solve for x"
 			},
 			"currentEditor": {
-				"equation": "7x-13=1",
+				"equation": "3x+14=5",
 				"annotation": ""
 			},
 			"history": [
 				{
-					"equation": "7x-13=1",
+				"equation": "3x+14=5",
 					"annotation": "Solve for x"
 				}
 			]
 		},
 		{
 			"metadata": {
-				"title": "Problem 7"
+				"title": "Problem 4"
 			},
 			"originalProblem": {
 				"equation": "\\frac{b}{9}-34\\leq -36",
@@ -129,8 +72,65 @@
 			},
 			"history": [
 				{
-					"equation": "\\frac{b}{9}-34\\leq -36",
+				"equation": "\\frac{b}{9}-34\\leq -36",
 					"annotation": "Solve the inequality"
+				}
+			]
+		},
+		{
+			"metadata": {
+				"title": "Problem 5"
+			},
+			"originalProblem": {
+				"equation": "",
+				"annotation": "Solve for x: Angles a and b are supplementary. Angle a is 78$$\\degree$$ and angle b is equal to 3x"
+			},
+			"currentEditor": {
+				"equation": "",
+				"annotation": ""
+			},
+			"history": [
+				{
+				"equation": "",
+					"annotation": "Solve for x: Angles a and b are supplementary. Angle a is 78$$\degree$$ and angle b is equal to 3x"
+				}
+			]
+		},
+		{
+			"metadata": {
+				"title": "Problem 6"
+			},
+			"originalProblem": {
+				"equation": "",
+				"annotation": "What is the area of a circle with a diameter of 10 (use $$\\pi$$ or the value of $$\\pi$$ to the hundredths place)?"
+			},
+			"currentEditor": {
+				"equation": "",
+				"annotation": ""
+			},
+			"history": [
+				{
+				"equation": "",
+					"annotation": "What is the area of a circle with a diameter of 10 (use \\pi or the value of \\pi to the hundredths place)?"
+				}
+			]
+		},
+		{
+			"metadata": {
+				"title": "Problem 7"
+			},
+			"originalProblem": {
+				"equation": "",
+				"annotation": "Sarah works at a coffee shop. Her weekly salary is $325 and she early 11.5% commission on sales. How much does she make if she sells $2800 in merchandise?"
+			},
+			"currentEditor": {
+				"equation": "",
+				"annotation": ""
+			},
+			"history": [
+				{
+				"equation": "",
+					"annotation": "Sarah works at a coffee shop. Her weekly salary is $325 and she early 11.5% commission on sales. How much does she make if she sells $2800 in merchandise?"
 				}
 			]
 		},

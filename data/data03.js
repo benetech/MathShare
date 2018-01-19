@@ -6,17 +6,17 @@
 				"title": "Problem 1"
 			},
 			"originalProblem": {
-				"equation": "3333(-\\frac{1}{6})(-\\frac{2}{5})",
-				"annotation": "333Find the product"
+				"equation": "4(-\\frac{2}{9})(-\\frac{9}{4})",
+				"annotation": "Find the product"
 			},
 			"currentEditor": {
-				"equation": "3333(-\\frac{1}{6})(-\\frac{2}{5})",
-				"annotation": "333"
+				"equation": "4(-\\frac{2}{9})(-\\frac{9}{4})",
+				"annotation": ""
 			},
 			"history": [
 				{
-					"equation": "3333(-\\frac{1}{6})(-\\frac{2}{5})",
-					"annotation": "333Find the product"
+					"equation": "4(-\\frac{2}{9})(-\\frac{9}{4})",
+					"annotation": "Find the product"
 				}
 			]
 		},
@@ -25,16 +25,16 @@
 				"title": "Problem 2"
 			},
 			"originalProblem": {
-				"equation": "-\\frac{2}{5}(-\\frac{1}{2})(-\\frac{5}{6})",
+				"equation": "(-\\frac{3}{8})(-\\frac{2}{7})(-\\frac{4}{6})",
 				"annotation": "Find the product"
 			},
 			"currentEditor": {
-				"equation": "-\\frac{2}{5}(-\\frac{1}{2})(-\\frac{5}{6})",
+				"equation": "(-\\frac{3}{8})(-\\frac{2}{7})(-\\frac{4}{6})",
 				"annotation": ""
 			},
 			"history": [
 				{
-				"equation": "-\\frac{2}{5}(-\\frac{1}{2})(-\\frac{5}{6}})",
+				"equation": "(-\\frac{3}{8})(-\\frac{2}{7})(-\\frac{4}{6})",
 					"annotation": "Find the product"
 				}
 			]
@@ -44,17 +44,17 @@
 				"title": "Problem 3"
 			},
 			"originalProblem": {
-				"equation": "\\frac{55}{\\frac{1}{2}}",
-				"annotation": "Find the quotient"
+				"equation": "(-\\frac{4}{3})(\\frac{2}{8})(-\\frac{6}{2})",
+				"annotation": "Find the product"
 			},
 			"currentEditor": {
-				"equation": "\\frac{55}{\\frac{1}{2}}",
+				"equation": "(-\\frac{4}{3})(\\frac{2}{8})(-\\frac{6}{2})",
 				"annotation": ""
 			},
 			"history": [
 				{
-					"equation": "\\frac{55}{\\frac{1}{2}",
-					"annotation": "Find the quotient"
+				"equation": "(-\\frac{4}{3})(\\frac{2}{8})(-\\frac{6}{2})",
+					"annotation": "Find the product"
 				}
 			]
 		},
@@ -63,17 +63,17 @@
 				"title": "Problem 4"
 			},
 			"originalProblem": {
-				"equation": "\\frac{3}{10}\\div (\\frac{5}{8})",
-				"annotation": "Find the quotient"
+				"equation": "5x-10=10",
+				"annotation": "Solve for x"
 			},
 			"currentEditor": {
-				"equation": "\\frac{3}{10}\\div (\\frac{5}{8})",
+				"equation": "5x-10=10",
 				"annotation": ""
 			},
 			"history": [
 				{
-					"equation": "\\frac{3}{10}\\div (\\frac{5}{8})",
-					"annotation": "Find the quotient"
+				"equation": "5x-10=10",
+					"annotation": "Solve for x"
 				}
 			]
 		},
@@ -82,17 +82,17 @@
 				"title": "Problem 5"
 			},
 			"originalProblem": {
-				"equation": "",
-				"annotation": "Sarah works at a coffee shop. Her weekly salary is $325 and she earns 11.5% commission on sales. How much does she make if she sells $2800 in merchandise?"
+				"equation": "6x+14=8",
+				"annotation": "Solve for x"
 			},
 			"currentEditor": {
-				"equation": "",
+				"equation": "6x+14=8",
 				"annotation": ""
 			},
 			"history": [
 				{
-					"equation": "",
-					"annotation": "Sarah works at a coffee shop. Her weekly salary is $325 and she earns 11.5% commission on sales. How much does she make if she sells $2800 in merchandise?"
+				"equation": "6x+14=8",
+					"annotation": "Solve for x"
 				}
 			]
 		},
@@ -101,17 +101,17 @@
 				"title": "Problem 6"
 			},
 			"originalProblem": {
-				"equation": "7x-13=1",
-				"annotation": "Solve for x"
+				"equation": "-7y\\leq 14",
+				"annotation": "Solve for y"
 			},
 			"currentEditor": {
-				"equation": "7x-13=1",
+				"equation": "-7y\\leq 14",
 				"annotation": ""
 			},
 			"history": [
 				{
-					"equation": "7x-13=1",
-					"annotation": "Solve for x"
+				"equation": "-7y\\leq 14",
+					"annotation": "Solve for y"
 				}
 			]
 		},
@@ -120,17 +120,17 @@
 				"title": "Problem 7"
 			},
 			"originalProblem": {
-				"equation": "\\frac{b}{9}-34\\leq -36",
-				"annotation": "Solve the inequality"
+				"equation": "-3x+13>9",
+				"annotation": "Solve for y"
 			},
 			"currentEditor": {
-				"equation": "\\frac{b}{9}-34\\leq -36",
+				"equation": "-3x+13>9",
 				"annotation": ""
 			},
 			"history": [
 				{
-					"equation": "\\frac{b}{9}-34\\leq -36",
-					"annotation": "Solve the inequality"
+				"equation": "-3x+13>9",
+					"annotation": "Solve for y"
 				}
 			]
 		},
