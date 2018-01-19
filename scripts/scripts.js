@@ -31,7 +31,7 @@ function readBlob(opt_startByte, opt_stopByte) {
 		var parsedUploadedString = JSON.parse(uploadedString);
 		console.log(parsedUploadedString);
 		
-		ReadFileInitiate(parsedUploadedString);
+		ReadFileFinish(parsedUploadedString);
       
       }
     };
