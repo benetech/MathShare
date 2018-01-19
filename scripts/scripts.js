@@ -1,3 +1,68 @@
+function readBlob(opt_startByte, opt_stopByte) {
+    var files = $('#fileid').get(0).files;
+    console.log('files:'+file);
+    //var files = document.getElementById('files').files;
+    if (!files.length) {
+      alert('Please select a file!');
+      return;
+    }
+
+    var file = files[0];
+    console.log('file:'+file);
+    var start = parseInt(opt_startByte) || 0;
+    console.log('start:'+start);
+    var stop = parseInt(opt_stopByte) || file.size - 1;
+    console.log('stop:'+stop);
+
+    var reader = new FileReader();
+
+    // If we use onloadend, we need to check the readyState.
+    reader.onloadend = function(evt) {
+      if (evt.target.readyState == FileReader.DONE) { // DONE == 2
+        
+        var uploadedString = evt.target.result;
+        //console.log(evt.target.result);
+        //document.getElementById('byte_content').textContent = evt.target.result;
+        //document.getElementById('byte_range').textContent = 
+            //['Read bytes: ', start + 1, ' - ', stop + 1,
+             //' of ', file.size, ' byte file'].join('');
+      
+      
+		var parsedUploadedString = JSON.parse(uploadedString);
+		console.log(parsedUploadedString);
+		
+		ReadFileInitiate(parsedUploadedString);
+      
+      }
+    };
+
+    var blob = file.slice(start, stop + 1);
+    reader.readAsBinaryString(blob);
+  }
+
+
+
+
+
+
+function OpenFileUpload() {
+  document.getElementById('fileid').click();
+}
+
+    $(document).ready(function(){
+        $('input[type="file"]').change(function(){
+            //alert("A file has been selected.");
+            var file = $('#fileid').get(0).files[0];
+            //console.log(file);
+            
+            //var reader = new FileReader();
+            //console.log(reader.readAsBinaryString(file));
+            readBlob();
+        });
+    });
+
+
+
 //***************************************************************************************************************************************************
 // GLOBAL VARIABLES
 	// Global var to share the representation used for crossouts
