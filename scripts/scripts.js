@@ -77,7 +77,7 @@ function HTMLForRow(stepNumber, math, annotation, showTrash) {
 	html += '</div>';
 	html += '<div class="col-md-5">';
 	html +=    '<span class="sr-only"  role="heading" aria-level="4">reason:</span>';
-	html +=    '<span>'+annotation+'</span>';
+	html +=    '<span class="staticMath">'+annotation+'</span>';
 	html += '</div>';
 	if (showTrash) { 
 		html +=  '<div class="col-md-1 trashButtonContainer" role="heading" aria-level="4" style="text-align: right; float:right;">'+
