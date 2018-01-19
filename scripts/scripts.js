@@ -201,7 +201,7 @@ function PopulateEditorModal(buttonElement, dataObj) {
     	let originalProblemEquation = dataObj.originalProblem.equation;
     	
     	let originalProblemEquationHTML = '<span class="staticMath">$$'+dataObj.originalProblem.equation+'$$</span>';    	 
-    	let originalProblemAnnotation = dataObj.originalProblem.annotation;    	 
+    	let originalProblemAnnotation = '<span class="staticMath">'+dataObj.originalProblem.annotation+'$$</span>';    	 
     	let currentEditorEquation = dataObj.currentEditor.equation;    	 
     	let currentEditorAnnotation = dataObj.currentEditor.annotation;    	
     	let historyObj = dataObj.history;
