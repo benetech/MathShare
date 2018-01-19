@@ -172,7 +172,7 @@ function PopulateMainPage(data) {
 							 JSON.stringify(problemData[i]) + ')\'>' +
 						(i+1) + '. ' +
 						problem.annotation +
-						'<br/><br/>' +
+						'AAA<br/><br/>' +
 						'<span class="staticMath">$$' + problem.equation + '$$</span>' + 
 					'</span>' +
 				'</li>';
@@ -201,7 +201,7 @@ function PopulateEditorModal(buttonElement, dataObj) {
     	let originalProblemEquation = dataObj.originalProblem.equation;
     	
     	let originalProblemEquationHTML = '<span class="staticMath">$$'+dataObj.originalProblem.equation+'$$</span>';    	 
-    	let originalProblemAnnotation = '<span class="staticMath">'+dataObj.originalProblem.annotation+'$$</span>';    	 
+    	let originalProblemAnnotation = dataObj.originalProblem.annotation;    	 
     	let currentEditorEquation = dataObj.currentEditor.equation;    	 
     	let currentEditorAnnotation = dataObj.currentEditor.annotation;    	
     	let historyObj = dataObj.history;
