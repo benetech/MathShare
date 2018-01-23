@@ -18,7 +18,7 @@ define(['mathlive/mathlive'],
 	  document.onkeydown = HandleKeyDown;
 		$(document).ready(function() {
 			//generate all problem data for main page -- this is asynchronous
-			 ReadFileInitiate('../development01/data/data02.js');
+			 ReadFileInitiate('../data/data01.js');
 		});
 	}
 )
