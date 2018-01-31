@@ -1,5 +1,84 @@
 html, body {
-    height: 100%;
+  height: 100%;
+  margin: 0;
+  background-color: #f0f0f0;
+}
+
+/* FLEX LAYOUT  */
+.mainWrapper {
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+}
+
+.contentWrapper {
+  display: flex;
+  
+}
+.header, .footer {
+  flex: 0 0 50px;
+}
+.leftNavigation {
+  overflow: auto;
+  flex: 0 0 300px;
+  background-color: #FFFFCC;
+  border-right: 1px solid #CCC;
+}
+
+.leftNavigation ul {
+	list-style: none; 
+	padding: 0px; 
+	margin: 0px;
+}
+
+.leftNavigation li {
+	background-color: #f0f0f0; 
+	padding: 10px; 
+	border-bottom: 1px solid #CCC;
+	cursor: pointer;
+}
+
+.leftNavigation .problemAnnotation {
+	display: block;
+}
+
+.leftNavigation .problemEquation {
+	display: block;
+	padding-left: 15px;
+}
+
+.problemHeader {
+	background-color: #222F3F; 
+	padding: 5px;
+	display: flex;
+	justify-content: space-between;
+}
+
+.problemTitle {
+	font-size: 1.2em;
+	color: #FFF;
+	margin: 0px;
+	
+}
+
+.editorAndHistoryWrapper {
+  background-color: #f0f0f0; 
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.editorWrapper {
+  flex: 0 0 100px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.historyWrapper {
+  overflow: auto;
+  padding-left: 10px;
+  padding-right: 10px;
 }	
 
 a {
@@ -42,6 +121,14 @@ a {
 	font-size: 25px;
 	color: #CCC;
 	padding-left: 10px;
+}
+
+.pageHeader {
+	font-size: 2.0em;
+	font-weight: bold;
+	text-align: center;
+	padding: 10px;
+	border-bottom: 1px solid #CCC;
 }
 
 .mathStepAnnotation {

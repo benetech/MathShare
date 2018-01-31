@@ -40,13 +40,23 @@ function readBlob(opt_startByte, opt_stopByte) {
     reader.readAsBinaryString(blob);
   }
 
+
+
+
+
+
 function OpenFileUpload() {
   document.getElementById('fileid').click();
 }
 
     $(document).ready(function(){
         $('input[type="file"]').change(function(){
+            //alert("A file has been selected.");
             var file = $('#fileid').get(0).files[0];
+            //console.log(file);
+            
+            //var reader = new FileReader();
+            //console.log(reader.readAsBinaryString(file));
             readBlob();
         });
     });
@@ -57,6 +67,20 @@ function OpenFileUpload() {
 // GLOBAL VARIABLES
 	// Global var to share the representation used for crossouts
 	CrossoutTeXString = "\\enclose{updiagonalstrike downdiagonalstrike}[2px solid red]";
+
+
+//***************************************************************************************************************************************************
+// RESIZE MODAL SIZE BASED ON BROWSER HEIGHT
+function ResizeModalEditorHeight() {
+	let windowHeight = $(window).height();
+	
+	if (windowHeight < 600) {
+		$('.mathHistory').css('height','175');
+	} else {
+		$('.mathHistory').css('height','300');
+	}
+}
+
 
 //***************************************************************************************************************************************************
 // RENDER ACTIVE MATH EDITOR
@@ -184,13 +208,14 @@ function ReadFileInitiate(fileName) {
 // Finish reading the file now that the data is available
 function ReadFileFinish(data) {
 	//console.log("ReadFileFinish");
-	document.getElementById("ContentWrapper").setAttribute(
+	document.getElementById("mainPageBody").setAttribute(
 			"data-galois-metadata",
 			JSON.stringify(data.metadata)
 		);
-	$('#LeftNavigation').empty();
-	$('#LeftNavigation').html(PopulateMainPage(data));
+	$('#ProblemSet').empty();
+	$('#ProblemSet').html(PopulateMainPage(data));
 	
+	//document.getElementById("mainPageBody").append( PopulateMainPage(data) );
 	MathLive.renderMathInDocument();
 }
 
@@ -201,21 +226,22 @@ function ReadFileEmpty() {
 // Create all the problems on the main page
 // Data for each problem is stored into the argument of the 'onclick' function		
 function PopulateMainPage(data) {
-	let html = '<ul>';
-	html += '<li onclick="SetAndOpenEditorModel(this, example01)">' +
-						'<span class="problemAnnotation">Getting Started</span>' +
-						'<span class="problemEquation">Click here to see an example problem and learn how to use the editor</span>' + 
-					'</li>';
+	let html = '<ul class="row">';
 	let problemData = data.problems;
 	for (let i=0; i< problemData.length; i++) {
 		let problem = problemData[i].originalProblem;
-		html += '<li onclick=\'SetAndOpenEditorModel(this, ' + JSON.stringify(problemData[i]) + ')\'>' +
-						'<span class="problemAnnotation">' +(i+1) + '. ' + problem.annotation + '</span>' +
-						'<span class="problemEquation staticMath">$$' + problem.equation + '$$</span>' + 
-					'</li>';
-		
-		
-
+		//alert(problem.annotation);
+		html += '<li class="col-md-4 text-center" style="list-style: none; margin-bottom: 20px;">' +
+					'<span class="btn btn-default btn-huge" style="cursor: pointer;" ' +
+							 // warning: 'problemData' uses ""s, so we need to use ''s to surround it
+					         'onclick=\'SetAndOpenEditorModel(this, ' +
+							 JSON.stringify(problemData[i]) + ')\'>' +
+						(i+1) + '. ' +
+						problem.annotation +
+						'<br/><br/>' +
+						'<span class="staticMath">$$' + problem.equation + '$$</span>' + 
+					'</span>' +
+				'</li>';
 	};
 	
 	html += '</ul>';	
@@ -228,7 +254,7 @@ function PopulateMainPage(data) {
 		
 function SetAndOpenEditorModel(buttonElement, dataObj) {
 	PopulateEditorModal(buttonElement, dataObj);
-	MathLive.renderMathInDocument();
+	OpenEditorModal();
 }	
 
 // POPULATE EDITOR WINDOW
@@ -269,12 +295,12 @@ function PopulateEditorModal(buttonElement, dataObj) {
 	    }
 	    	
     //4 POPULATE HTML
-    	$('#ProblemTitle').html(htmlTitle);
-    	$('#ProblemTitle').data('title', originalProblemTitle );
-    	$('#ProblemTitle').data('equation', originalProblemEquation );
-    	$('#ProblemTitle').data('annotation', originalProblemAnnotation );
+    	$('#EditorModal .modal-title').html(htmlTitle);
+    	$('#EditorModal .modal-title').data('title', originalProblemTitle );
+    	$('#EditorModal .modal-title').data('equation', originalProblemEquation );
+    	$('#EditorModal .modal-title').data('annotation', originalProblemAnnotation );
     	
-    	$('#MathHistory').html(htmlHistory);
+    	$('#EditorModal .mathHistory').html(htmlHistory);
     	$('#mathEditorActive').html(currentEditorEquation);
     	$('#mathAnnotation').val(currentEditorAnnotation);
     //5 RUN RENDER MATH
@@ -302,30 +328,26 @@ function PopulateEditorModal(buttonElement, dataObj) {
 //***************************************************************************************************************************************************
 // OPEN EDITOR MODAL
 function OpenEditorModal() {
-/*
 	$('#EditorModal').modal({
     	backdrop: 'static',		// prevent key clicks outside of modal from closing modal
 		//keyboard: false			// prevent esc key from closing modal
 	});
-*/
 	
 	
 	
-/*
 	$('#EditorModal').on('shown.bs.modal', function () {
 	  $('.modal-header').focus();
 	  $("#MathHistory").animate({ scrollTop: $('#MathHistory').prop("scrollHeight")}, 1000);
 	});
-*/
 	
-// 	MathLive.renderMathInDocument();
+	MathLive.renderMathInDocument();
 	
 }
 
 //***************************************************************************************************************************************************
 // CLOSE EDITOR MODAL
 function CloseEditorModal() {
-//     $('#EditorModal').modal('hide');
+    $('#EditorModal').modal('hide');
     ClearEditorModal();
 }
 
@@ -334,10 +356,10 @@ function CloseEditorModal() {
 var UndoDeleteStack = [];			// objects on the stack have fields 'latex' and 'annotation'
 function ClearEditorModal() {
 	//1. Clear Title
-	     $('#ProblemTitle').html('');
+	     $('#EditorModal .modal-title').html('');
 	     
 	//2. Clear History
-	     $('#MathHistory').html('');
+	     $('#EditorModal .mathHistory').html('');
 	     
 	//3. Clear Editor 
 	     $('#mathEditorActive').html('');
@@ -360,9 +382,9 @@ function ClearEditorModal() {
 // RECREATE PROBLEM OBJECT FROM DOM
 function SaveProblem(buttonElement) {
 	//1 Get Variable from DOM
-	let originalProblemTitle = $('#ProblemTitle').data('title');
-    let originalProblemEquation = $('#ProblemTitle').data('equation');
-    let originalProblemAnnotation = $('#ProblemTitle').data('annotation');    	 
+	let originalProblemTitle = $('#EditorModal .modal-title').data('title');
+    let originalProblemEquation = $('#EditorModal .modal-title').data('equation');
+    let originalProblemAnnotation = $('#EditorModal .modal-title').data('annotation');    	 
     let currentEditorEquation = TheActiveMathField.latex();   	 
     let currentEditorAnnotation = $('#mathAnnotation').val();
     
