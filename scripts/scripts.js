@@ -19,15 +19,7 @@ function readBlob(opt_startByte, opt_stopByte) {
     // If we use onloadend, we need to check the readyState.
     reader.onloadend = function(evt) {
       if (evt.target.readyState == FileReader.DONE) { // DONE == 2
-        
         var uploadedString = evt.target.result;
-        //console.log(evt.target.result);
-        //document.getElementById('byte_content').textContent = evt.target.result;
-        //document.getElementById('byte_range').textContent = 
-            //['Read bytes: ', start + 1, ' - ', stop + 1,
-             //' of ', file.size, ' byte file'].join('');
-      
-      
 		var parsedUploadedString = JSON.parse(uploadedString);
 		console.log(parsedUploadedString);
 		
@@ -44,12 +36,12 @@ function OpenFileUpload() {
   document.getElementById('fileid').click();
 }
 
-    $(document).ready(function(){
-        $('input[type="file"]').change(function(){
-            var file = $('#fileid').get(0).files[0];
-            readBlob();
-        });
+$(document).ready(function(){
+    $('input[type="file"]').change(function(){
+        var file = $('#fileid').get(0).files[0];
+        readBlob();
     });
+});
 
 
 
@@ -203,21 +195,17 @@ function ReadFileEmpty() {
 function PopulateMainPage(data) {
 	let html = '<ul>';
 	html += '<li onclick="SetAndOpenEditorModel(this, example01)">' +
-						'<span class="problemAnnotation">Getting Started</span>' +
-						'<span class="problemEquation">Click here to see an example problem and learn how to use the editor</span>' + 
-					'</li>';
+				'<span class="problemAnnotation">Getting Started</span>' +
+				'<span class="problemEquation">Click here to see an example problem and learn how to use the editor</span>' + 
+			'</li>';
 	let problemData = data.problems;
 	for (let i=0; i< problemData.length; i++) {
 		let problem = problemData[i].originalProblem;
 		html += '<li onclick=\'SetAndOpenEditorModel(this, ' + JSON.stringify(problemData[i]) + ')\'>' +
-						'<span class="problemAnnotation">' +(i+1) + '. ' + problem.annotation + '</span>' +
-						'<span class="problemEquation staticMath">$$' + problem.equation + '$$</span>' + 
-					'</li>';
-		
-		
-
+					'<span class="problemAnnotation">' +(i+1) + '. ' + problem.annotation + '</span>' +
+					'<span class="problemEquation staticMath">$$' + problem.equation + '$$</span>' + 
+				'</li>';
 	};
-	
 	html += '</ul>';	
 	let node = document.createDocumentFragment();
 	let child = document.createElement("div");
@@ -228,7 +216,7 @@ function PopulateMainPage(data) {
 		
 function SetAndOpenEditorModel(buttonElement, dataObj) {
 	PopulateEditorModal(buttonElement, dataObj);
-	MathLive.renderMathInDocument();
+	//MathLive.renderMathInDocument();
 }	
 
 // POPULATE EDITOR WINDOW
@@ -254,11 +242,15 @@ function PopulateEditorModal(buttonElement, dataObj) {
 	    	historyObj = "";
     	}
     	
-    	
     //3 Build HTML HISTORY
     	let htmlHistory = '';
 		for (let i = 0; i < historyObj.length; i++) {
-			htmlHistory += HTMLForRow(i+1, historyObj[i].equation, historyObj[i].annotation);
+			
+			let showTrash = false;
+			if (i==historyObj.length-1 && historyObj.length>1) {
+				showTrash = true;
+			}
+			htmlHistory += HTMLForRow(i+1, historyObj[i].equation, historyObj[i].annotation, showTrash);
 	    }
     //3 BUILD HTML TITLE
     	let htmlTitle = originalProblemAnnotation;
@@ -277,6 +269,9 @@ function PopulateEditorModal(buttonElement, dataObj) {
     	$('#MathHistory').html(htmlHistory);
     	$('#mathEditorActive').html(currentEditorEquation);
     	$('#mathAnnotation').val(currentEditorAnnotation);
+    //5 SCROLL TO BOTTOM OF HISTORY
+    	ScrollHistoryToBottom();
+    	
     //5 RUN RENDER MATH
     	MathLive.renderMathInDocument();
     
@@ -287,48 +282,15 @@ function PopulateEditorModal(buttonElement, dataObj) {
     $('#BtnSave').show();
     $('#BtnSave').click(function() {
 	    SaveProblem(buttonElement);
-	    CloseEditorModal();
     });
     
-    
-    //8 Wire up cancel btn
-    $('#BtnCancel').click(function() {
-	    if (confirm("Any work on this problem will NOT be saved") == true) {
-		    CloseEditorModal();
-		}
-    });
 }
 
 //***************************************************************************************************************************************************
-// OPEN EDITOR MODAL
-function OpenEditorModal() {
-/*
-	$('#EditorModal').modal({
-    	backdrop: 'static',		// prevent key clicks outside of modal from closing modal
-		//keyboard: false			// prevent esc key from closing modal
-	});
-*/
-	
-	
-	
-/*
-	$('#EditorModal').on('shown.bs.modal', function () {
-	  $('.modal-header').focus();
-	  $("#MathHistory").animate({ scrollTop: $('#MathHistory').prop("scrollHeight")}, 1000);
-	});
-*/
-	
-// 	MathLive.renderMathInDocument();
-	
+// SCROLL HISTORY SECTION TO BOTTOM
+function ScrollHistoryToBottom() {
+	$('.historyWrapper').animate({ scrollTop: $('.historyWrapper')[0].scrollHeight}, 500);
 }
-
-//***************************************************************************************************************************************************
-// CLOSE EDITOR MODAL
-function CloseEditorModal() {
-//     $('#EditorModal').modal('hide');
-    ClearEditorModal();
-}
-
 //***************************************************************************************************************************************************
 // CLEAR THE EDITOR MODAL
 var UndoDeleteStack = [];			// objects on the stack have fields 'latex' and 'annotation'
@@ -347,7 +309,7 @@ function ClearEditorModal() {
 	
 	//5. Unwire Save Buttons
 		$('#BtnSave').unbind('click');
-		$('#BtnCancel').unbind('click');
+		//$('#BtnCancel').unbind('click');
 	
 	//6. Hide Undo Button
 		$('#undoDelete').hide();
@@ -381,6 +343,8 @@ function SaveProblem(buttonElement) {
 	console.log(JSON.stringify(problem, null, '\t'));
 	// warning: 'problem' uses ""s, so we need to use ''s below
 	buttonElement.setAttribute('onclick', 'SetAndOpenEditorModel(this, ' + JSON.stringify(problem) +')');
+	
+	alert("Problem Saved!");
 
 }
 
@@ -405,7 +369,7 @@ function NewMathEditorRow(mathContent) {
 
 
 	$('.mathHistory').append( result );
-	$('.mathHistory').animate({ scrollTop: $('.mathHistory')[0].scrollHeight}, 500);
+	ScrollHistoryToBottom();
 
 	MathLive.renderMathInElement( $('.mathStep:last') );
 	

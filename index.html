@@ -69,7 +69,7 @@
 	</header>
 	<!-- END TOP HEADER/NAVIGATION -->
   </div>
-  <div class="pageHeader">Select a problem and try out Benetech's Math Editor (alpha)!</div>
+<!--   <div class="pageHeader">Select a problem and try out Benetech's Math Editor (alpha)!</div> -->
   <div class="contentWrapper" id="ContentWrapper">
     <div class="leftNavigation" id="LeftNavigation">
     </div>
@@ -82,32 +82,41 @@
 	      </div>
       </div>
       
-      <div class="historyWrapper">
-        <div class="row" data-step="4" data-intro="Review your work. The trash icon also allows you to delete and rework a prior step.">
-			<h2 class="col-lg-2">
-				<span class="modalAreaHeading" style="opacity: 0.65;" aria-hidden="true">My<br>Steps</span>
+      
+      <div style="flex: 0 0 50px; padding: 10px 0px 0px 10px;">
+	      <h2>
+				<span class="modalAreaHeading" aria-hidden="true">My Steps</span>
 				<span class="sr-only ">My Steps</span>
 			</h2>
-			<div class="col-lg-10">
-				<div class="mathHistory container-fluid" style="height: 175px; overflow-y: scroll; color: #222F3F; opacity: 0.65;" id="MathHistory">
-				 <!-- Equation History Here --> 
+      </div>
+      <div class="historyWrapper"> 
+	     
+	      
+	      
+	      
+	      
+
+        <div class="row" data-step="4" data-intro="Review your work. The trash icon also allows you to delete and rework a prior step.">
+			<div class="col-lg-12">
+				<div class="mathHistory container-fluid" style="color: #222F3F; opacity: 0.65;" id="MathHistory">
+				 
 				</div>
 			</div>
 		</div>
+
+      </div>
+
+	  <div style="flex: 0 0 50px; border-top: 3px solid #222F3F; padding-left: 10px;">
+	    <h2>
+			<span class="modalAreaHeading"  style="margin-top: 8px;" aria-hidden="true">My Work</span>
+			<span class="sr-only">My Work</span>
+		</h2>
       </div>
 
       <div class="editorWrapper">
-      
-      
-      
       <div class="mathWorkArea">
-			<div class="row" style="border-top: 3px solid #222F3F; padding-top: 5px;">
-				<h2 class="col-lg-2">
-					<span class="modalAreaHeading"  style="margin-top: 8px;" aria-hidden="true">My<br>Work</span>
-			        <span class="sr-only">My Work</span>
-				</h2>
-				
-				<div class="col-lg-10">
+			<div class="row">
+				<div class="col-lg-12">
 					<div id="workArea" class="mathEditor" style="border: 1px solid #CCC; border-radius: 5px; background-color: #FFF; height: 100px;"> 
 						<div style=	"float: left; min-width: 400px; margin: 15px 0px 15px 15px;" data-step="1" data-position="top" data-intro="Type or edit the equation using your keyboard and the math keys below. Try using the cross out, replace, and calc buttons to help show your work.">
 							<h3 class="sr-only" style="float: left;">Enter math here</h3>
@@ -123,10 +132,8 @@
 				
 			</div>
 		  </div>
-		    <div class="row" style=" padding-top: 10px;">
-			  <div class="col-lg-2" style="color: #222F3F; opacity: 0.65; font-style: italic;">  
-			  </div>  
-			  <div class="col-lg-8">
+		    <div class="row" style=" padding-top: 10px;"> 
+			  <div class="col-lg-10">
 				  <h3 class="sr-only">math input buttons</h3>
 				  <span class="mathPalette" role="list">
 					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Cross out (⌨: shift+delete)" onclick="MathLivePasteFromButton(this); GoogleAnalytics('Cross Out');">$$\enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{\blacksquare}$$</button></span>
@@ -174,43 +181,17 @@
 					</span>
 			   </div>
 		    </div>
-      
-      
-      
-      
-      
-      
-      
       </div>
        
     </div>
   </div>
   
-  <div class="footer"> 
-	<!-- PROVIDE FEEDBACK SECTION -->
-	<div class="row" style="padding-bottom: 0px; margin-bottom: 10px; background-color: #222F3F">
-	<div class="container">
-	<div class="row">
-	  	<div class="col-md-3" style="padding: 10px;">
-		  	<span>
-		  	<a href="http://www.surveygizmo.com/s3/4048161/Benetech-s-Math-Editor-Online-Feedback" target="_blank">
-		  	<button role="presentation" type="button" class="btn btn-primary btn-lg pointer" style="background-color: #F7931E; border: 0px;">
-		  		<i class="fa fa-arrow-circle-right" aria-hidden="true" style="font-size: 1.2em; padding-top: 3px;"></i>
-		  		Provide Feedback
-		  	</button>
-		  	</a>
-		  	</span>
-	  	</div>
-	  	<div class="col-md-9" style="padding: 10px;">
-		 	<span style="font-size: 1em; color: #FFF;">The Benetech Math Editor (alpha) is an open source project that has been developed for the community. Share your feedback to help make this resource even better!</span>
-	  	</div>
-	</div>
-	</div>
-	</div>
-	<!-- END PROVIDE FEEDBACK SECTION -->
+   
+
 	  
 	<!-- BEGIN FOOTER -->
-	<footer class="footer" style="margin-bottom: 10px;">
+	<div class="footer">
+	<footer class="footer" style="margin-bottom: 10px; background-color: #FFF; border-top: 5px solid #222F3F;">
 	    <div class="container">
 	        <div class="row">
 	            <div class="col-md-12 ideaText">
@@ -231,8 +212,9 @@
 	        </div>
 	    </div>
 	</footer>
+	</div>
 	<!-- END FOOTER -->  
-  </div>
+  
 </div>
 
 <script>
