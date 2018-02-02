@@ -48,6 +48,10 @@ html, body {
 	padding-left: 15px;
 }
 
+.navItemLink {
+  color: inherit;
+}
+
 .problemHeader {
 	flex: 0 0 50px;
 	background-color: #222F3FC0; 

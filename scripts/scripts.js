@@ -194,17 +194,18 @@ function ReadFileEmpty() {
 // Data for each problem is stored into the argument of the 'onclick' function		
 function PopulateMainPage(data) {
 	let html = '<ul>';
-	html += '<li onclick="SetAndOpenEditorModel(this, example01)">' +
+	html += '<li> <a href="#ProblemTitle" class="navItemLink" onclick="SetAndOpenEditorModel(this, example01)">' +
 				'<span class="problemAnnotation">Getting Started</span>' +
 				'<span class="problemEquation">Click here to see an example problem and learn how to use the editor</span>' + 
-			'</li>';
+			'</a> </li>';
 	let problemData = data.problems;
 	for (let i=0; i< problemData.length; i++) {
 		let problem = problemData[i].originalProblem;
-		html += '<li onclick=\'SetAndOpenEditorModel(this, ' + JSON.stringify(problemData[i]) + ')\'>' +
+		let functionToCall = 'SetAndOpenEditorModel(this, ' + JSON.stringify(problemData[i]) + ');';
+		html += '<li> <a href="#ProblemTitle" class="navItemLink" onclick=\''+functionToCall+'\' onkeypress=\''+functionToCall+'\'>' +
 					'<span class="problemAnnotation">' +(i+1) + '. ' + problem.annotation + '</span>' +
 					'<span class="problemEquation staticMath">$$' + problem.equation + '$$</span>' + 
-				'</li>';
+				'</a> </li>';
 	};
 	html += '</ul>';	
 	let node = document.createDocumentFragment();
