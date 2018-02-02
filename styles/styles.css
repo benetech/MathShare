@@ -20,7 +20,7 @@ html, body {
   flex: 0 0 50px;
 }
 .leftNavigation {
-  overflow: auto;
+  overflow-y: auto;
   flex: 0 0 300px;
   background-color: #FFFFCC;
   border-right: 1px solid #CCC;
