@@ -83,7 +83,7 @@
 	      <h1 class="problemTitle" id="ProblemTitle">Problem title</h1>
 	      <div style="white-space: nowrap;">
 	      	<button aria-hidden='true' onclick="introJs().setOption('tooltipClass', 'introjs-helperLayer').start(); GoogleAnalytics('Tour');" type="button" class="btn btn-default pointer" style="margin-right: 5px;">Help</button>
-		  	<button class="btn btn-default pointer" id="BtnSave" data-step="5" data-intro="Save your work or close out to try again from the beginning." onclick="GoogleAnalytics('Save');">Save Problem</button>
+		  	
 	      </div>
       </div>
       <div style="flex: 0 0 50px; padding: 10px 0px 0px 10px;">
@@ -178,14 +178,18 @@
 					</span>
 			   </div>
 		    </div>
+		    
+		    <div class="row" style=" padding-top: 10px; margin-bottom: 10px;"> 
+			  <div class="col-lg-12" style="text-align:right;">
+				  <button class="btn btn-primary pointer" id="BtnSave" data-step="5" data-intro="Save your work or close out to try again from the beginning." onclick="GoogleAnalytics('Save');">Save Problem</button>
+			  </div>
+		    </div>
+		    
       </div>
        
     </div>
   </div>
-  
-   
 
-	  
 	<!-- BEGIN FOOTER -->
 	<div class="footer">
 	<footer class="footer" style="margin-bottom: 10px; background-color: #001F3F; border-top: 10px solid #001F3F; display: flex; border-bottom: 10px solid #001F3F;">
@@ -202,34 +206,6 @@
 				<img style="float: right;margin: 0px 10px 0px 25px; background-color: #FFF; padding: 5px;" src="images/benetech_logo_transparent.gif" alt="Benetech Logo" height="50">
 			</a>
 	    </div>
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-<!--
-	    <div class="container">
-	        <div class="row">
-	            <div class="col-md-12 ideaText">
-		            <div style="width: 100%">
-			            <a href="https://www2.ed.gov/about/offices/list/osers/osep/index.html" target="_blank">
-				            <img style="float: left; margin: 0px 25px 0px 0px;" src="images/IDEA-logo.gif" alt="IDEA Logo" height="50">
-			            </a>
-					</div>
-		            <div style="width: 100%">
-			            <a href="https://www.benetech.org/" target="_blank">
-				            <img style="float: right;margin: 0px 0px 0px 25px;" src="images/benetech_logo_transparent.gif" alt="Benetech Logo" height="50">
-			            </a>
-					</div>
-					<div style="font-size: 0.7em; color: #FFF;">
-					    The <a href="http://diagramcenter.org/" target="_blank">DIAGRAM Center</a> is a <a href="http://www.benetech.org/" target="_blank">Benetech</a> initiative supported by the U.S. Department of Education, Office of Special Education Programs (Cooperative Agreement #H327B100001). Opinions expressed herein are those of the authors and do not necessarily represent the position of the U.S. Department of Education. Poet™ is a trademark of Beneficent Technology, Inc. This website is copyright © 2012-2017, Beneficent Technology, Inc.
-					</div>
-	            </div>
-	        </div>
-	    </div>
--->
 	</footer>
 	</div>
 	<!-- END FOOTER -->  
@@ -241,10 +217,8 @@
 	$(document).ready(function(){
 	    $('[data-toggle="tooltip"]').tooltip();   
 	});
-
 	<!-- MATHLIVE INITIALIZATION RENDER SCRIPT -->
 	RenderMathEditor();
-	
 	MathLive.renderMathInDocument();
 	SetAndOpenEditorModel(this, example01);
 </script>
