@@ -35,10 +35,10 @@
 </head>
 
 <body lang=EN-US>
-	
+<div class="mainWrapper">
+  <div class="header">	
 	<!-- BEGIN TOP HEADER/NAVIGATION -->
 	<header>
-<!-- 		<nav class="navbar navbar-default" id="topNavigation"> -->
 		<nav class="navbar navbar-expand-lg navbar-default" id="topNavigation">
 		  <a class="navbar-brand" href="#">
 		    <img src="../images/logo.png" alt="Galois Math Editor Logo" height="37">
@@ -58,13 +58,8 @@
 			      <a class="dropdown-item" onclick="ReadFileInitiate('../data/data03.js');">Problem Set 03</a>
 			      <a class="dropdown-item" onclick="OpenFileUpload();">Upload</a>
 			      <input id='fileid' type='file' hidden/>
-<!--
-			      <div class="dropdown-divider"></div>
-			      <a class="dropdown-item" href="#">Upload Problem Set</a>
--->
 			    </div>
 			  </li>
-		    </ul>
 		      <li class="nav-item">
 		        <a class="nav-link" href="http://www.surveygizmo.com/s3/4048161/Benetech-s-Math-Editor-Online-Feedback" target="_blank">Provide Feedback</a>
 		      </li>
@@ -72,120 +67,64 @@
 		        <a  class="nav-link" href="mailto:info@diagramcenter.org" >Contact Us</a>
 		      </li>
 		    </ul>
-		    
 		  </div>
 		</nav>
 	</header>
 	<!-- END TOP HEADER/NAVIGATION -->
+  </div>
 		
-	<div id="mainPageBody" class="container" style="width: 1000px; margin: 0px auto; margin-top: 150px; margin-bottom: 100px; -webkit-transform: scale(1.10, 1.10);">	
-		<div class="row">
-			<div class="col-lg-12 text-center">
-				<h2>Select a problem and try out Benetech's Math Editor (alpha)!</h2>
-				<br/><br/>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-lg-12 text-center" id="ProblemSet">
-				
-			</div>
-		</div>
-	</div>
-
-	<!-- PROVIDE FEEDBACK SECTION -->
-	<div class="row" style="padding-bottom: 0px; margin-bottom: 20px; background-color: #222F3F">
-	<div class="container">
-	<div class="row">
-	  	<div class="col-md-3" style="padding: 15px;">
-		  	<span>
-		  	<a href="http://www.surveygizmo.com/s3/4048161/Benetech-s-Math-Editor-Online-Feedback" target="_blank">
-		  	<button role="presentation" type="button" class="btn btn-primary btn-lg pointer" style="background-color: #F7931E; border: 0px;">
-		  		<i class="fa fa-arrow-circle-right" aria-hidden="true" style="font-size: 1.2em; padding-top: 3px;"></i>
-		  		Provide Feedback
-		  	</button>
-		  	</a>
-		  	</span>
-	  	</div>
-	  	<div class="col-md-9" style="padding: 15px;">
-		 	<span style="font-size: 1em; color: #FFF;">The Benetech Math Editor (alpha) is an open source project that has been developed for the community. Share your feedback to help make this resource even better!</span>
-	  	</div>
-	</div>
-	</div>
-	</div>
-	<!-- END PROVIDE FEEDBACK SECTION -->
-	
-	<!-- BEGIN FOOTER -->
-	<footer class="footer" style="margin-bottom: 20px;">
-	    <div class="container">
-	        <div class="row">
-	            <div class="col-md-12 ideaText">
-		            <div style="width: 100%">
-			            <a href="https://www2.ed.gov/about/offices/list/osers/osep/index.html" target="_blank">
-				            <img style="float: left; margin: 0px 25px 40px 0px;" src="../images/IDEA-logo.gif" alt="IDEA Logo" width="87" height="60">
-			            </a>
-					</div>
-		            <div style="width: 100%">
-			            <a href="https://www.benetech.org/" target="_blank">
-				            <img style="float: right;margin: 0px 0px 40px 25px;" src="../images/benetech_logo_transparent.gif" alt="Benetech Logo" height="60">
-			            </a>
-					</div>
-					<div>
-					    The <a href="http://diagramcenter.org/" target="_blank">DIAGRAM Center</a> is a <a href="http://www.benetech.org/" target="_blank">Benetech</a> initiative supported by the U.S. Department of Education, Office of Special Education Programs (Cooperative Agreement #H327B100001). Opinions expressed herein are those of the authors and do not necessarily represent the position of the U.S. Department of Education. Poet™ is a trademark of Beneficent Technology, Inc. This website is copyright © 2012-2017, Beneficent Technology, Inc.
-					</div>
-	            </div>
-	        </div>
-	    </div>
-	</footer>
-	<!-- END FOOTER -->
-
-
-
-
-
-
-
-
-
-
-	
-<!-- START MODAL CODE -->
-<div class="modal fade" tabindex="-1" role="dialog" id="EditorModal">
-
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      
-      <div class="modal-header">
-        <h1 class="modal-title" style="float: left; font-size:12pt;">Problem title</h1>
-        
-        <button aria-hidden='true' onclick="introJs().setOption('tooltipClass', 'introjs-helperLayer').start(); GoogleAnalytics('Tour');" type="button" class="btn btn-default btn-sm pointer float-right">Help</button>
-        
+<!--   <div class="pageHeader">Select a problem and try out Benetech's Math Editor (alpha)!</div> -->
+  <div class="contentWrapper" id="ContentWrapper">
+    <div class="leftNavigation" id="LeftNavigation">
+    </div>
+    <div class="editorAndHistoryWrapper">
+      <div class="problemHeader">
+	      <h1 class="problemTitle" id="ProblemTitle">Problem title</h1>
+	      <div>
+	      	<button aria-hidden='true' onclick="introJs().setOption('tooltipClass', 'introjs-helperLayer').start(); GoogleAnalytics('Tour');" type="button" class="btn btn-default pointer" style="margin-right: 5px;">Help</button>
+		  	<button class="btn btn-default pointer" id="BtnSave" data-step="5" data-intro="Save your work or close out to try again from the beginning." onclick="GoogleAnalytics('Save');">Save Problem</button>
+	      </div>
       </div>
       
-      <div class="modal-body" style="background-color: #f0f0f0;">
-		  <div class="row" data-step="4" data-intro="Review your work. The trash icon also allows you to delete and rework a prior step.">
-			<h2 class="col-lg-2">
-				<span class="modalAreaHeading" style="opacity: 0.65;" aria-hidden="true">My<br>Steps</span>
+      
+      <div style="flex: 0 0 50px; padding: 10px 0px 0px 10px;">
+	      <h2>
+				<span class="modalAreaHeading" aria-hidden="true">My Steps</span>
 				<span class="sr-only ">My Steps</span>
 			</h2>
-			<div class="col-lg-10">
-				<div class="mathHistory container-fluid" style="height: 175px; overflow-y: scroll; color: #222F3F; opacity: 0.65;" id="MathHistory">
-				 <!-- Equation History Here --> 
+      </div>
+      <div class="historyWrapper"> 
+	     
+	      
+	      
+	      
+	      
+
+        <div class="row" data-step="4" data-intro="Review your work. The trash icon also allows you to delete and rework a prior step.">
+			<div class="col-lg-12">
+				<div class="mathHistory container-fluid" style="color: #222F3F; opacity: 0.65;" id="MathHistory">
+				 
 				</div>
 			</div>
-		  </div>
+		</div>
 
-		  <div class="mathWorkArea">
-			<div class="row" style="border-top: 3px solid #222F3F; padding-top: 5px;">
-				<h2 class="col-lg-2">
-					<span class="modalAreaHeading"  style="margin-top: 8px;" aria-hidden="true">My<br>Work</span>
-			        <span class="sr-only">My Work</span>
-				</h2>
-				
-				<div class="col-lg-10">
-					<div id="workArea" class="mathEditor" style="border: 1px solid #CCC; border-radius: 5px; background-color: #FFF; height: 100px;">
+      </div>
+
+	  <div style="flex: 0 0 50px; border-top: 3px solid #222F3F; padding-left: 10px;">
+	    <h2>
+			<span class="modalAreaHeading"  style="margin-top: 8px;" aria-hidden="true">My Work</span>
+			<span class="sr-only">My Work</span>
+		</h2>
+      </div>
+
+      <div class="editorWrapper">
+      <div class="mathWorkArea">
+			<div class="row">
+				<div class="col-lg-12">
+					<div id="workArea" class="mathEditor" style="border: 1px solid #CCC; border-radius: 5px; background-color: #FFF; height: 100px;"> 
 						<div style=	"float: left; min-width: 400px; margin: 15px 0px 15px 15px;" data-step="1" data-position="top" data-intro="Type or edit the equation using your keyboard and the math keys below. Try using the cross out, replace, and calc buttons to help show your work.">
-							<h3 class="sr-only" style="float: left;">Enter math here</h3>
-							<section id='mathEditorActive' role="application" aria-label="Enter math here"></section>
+							<h3 class="sr-only" style="float: left;" onfocus="this.getElementsByClassName('ML__mathlive')[0].focus">Math editor</h3>
+							<section id='mathEditorActive' aria-label="Enter math here" onfocus="this.getElementsByClassName('ML__mathlive')[0].focus"></section>
 						</div>
 						<div style="float: right;">
 							<h3 class="mathAnnotation sr-only" style="float: right; border-left: 1px solid #CCC;">Describe your work</h3>
@@ -197,11 +136,8 @@
 				
 			</div>
 		  </div>
-		    <div class="row" style=" padding-top: 10px;">
-			  <div class="col-lg-2" style="color: #222F3F; opacity: 0.65; font-style: italic;">  
-<!-- 				  Do your work here and then click the "Next Step" button to the right -->
-			  </div>  
-			  <div class="col-lg-8">
+		    <div class="row" style=" padding-top: 10px;"> 
+			  <div class="col-lg-10">
 				  <h3 class="sr-only">math input buttons</h3>
 				  <span class="mathPalette" role="list">
 					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Cross out (⌨: shift+delete)" onclick="MathLivePasteFromButton(this); GoogleAnalytics('Cross Out');">$$\enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{\blacksquare}$$</button></span>
@@ -243,22 +179,47 @@
 			   </div>
 			   <div class="col-lg-2" style="text-align: right;">
 					<button class="btn btn-default" id="undoDelete" data-toggle="tooltip" title="Undo Last Delete" onclick="UndoDeleteStep()" style="margin-bottom: 5px;">Undo</button>
-<!-- 					<button class="btn btn-default" data-toggle="tooltip" title="Delete this Step" alt="Delete this step" onclick="DeleteActiveMath()" style="margin-bottom: 5px;"><span class="glyphicon glyphicon-trash"></span></button> -->
 					<br>
 					<span role="heading" aria-level="3">
 					  <button class="btn btn-primary pointer" data-toggle="tooltip" title="Clean up the cross outs and start a new step (⌨: shift+enter)" onclick="NewRowOrRowsAfterCleanup(TheActiveMathField.latex());" style="margin-top: 11px;" data-step="3" data-intro="Clean-up your work and start a new step.">Add Step</button>
 					</span>
 			   </div>
 		    </div>
-      </div>    
-      <div class="modal-footer" style="text-align: left;">
-	    <button class="btn btn-default pointer" id="BtnCancel" onclick="; GoogleAnalytics('Close');">Close Problem</button>
-	    <button class="btn btn-default pointer" id="BtnSave" data-step="5" data-intro="Save your work or close out to try again from the beginning." onclick="GoogleAnalytics('Save');">Save Problem</button>
       </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-<!-- END MODAL CODE -->
+       
+    </div>
+  </div>
+  
+   
+
+	  
+	<!-- BEGIN FOOTER -->
+	<div class="footer">
+	<footer class="footer" style="margin-bottom: 10px; background-color: #FFF; border-top: 5px solid #222F3F;">
+	    <div class="container">
+	        <div class="row">
+	            <div class="col-md-12 ideaText">
+		            <div style="width: 100%">
+			            <a href="https://www2.ed.gov/about/offices/list/osers/osep/index.html" target="_blank">
+				            <img style="float: left; margin: 0px 25px 0px 0px;" src="../images/IDEA-logo.gif" alt="IDEA Logo" height="50">
+			            </a>
+					</div>
+		            <div style="width: 100%">
+			            <a href="https://www.benetech.org/" target="_blank">
+				            <img style="float: right;margin: 0px 0px 0px 25px;" src="../images/benetech_logo_transparent.gif" alt="Benetech Logo" height="50">
+			            </a>
+					</div>
+					<div style="font-size: 0.7em;">
+					    The <a href="http://diagramcenter.org/" target="_blank">DIAGRAM Center</a> is a <a href="http://www.benetech.org/" target="_blank">Benetech</a> initiative supported by the U.S. Department of Education, Office of Special Education Programs (Cooperative Agreement #H327B100001). Opinions expressed herein are those of the authors and do not necessarily represent the position of the U.S. Department of Education. Poet™ is a trademark of Beneficent Technology, Inc. This website is copyright © 2012-2017, Beneficent Technology, Inc.
+					</div>
+	            </div>
+	        </div>
+	    </div>
+	</footer>
+	</div>
+	<!-- END FOOTER -->  
+  
+</div>
 
 <script src="../scripts/speech2text.js"></script>
 <!-- minjs causes an error related to 'define' ("Uncaught Error: Mismatched anonymous define() module:" This means the 'Help' button doesn't work.
