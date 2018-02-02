@@ -112,14 +112,14 @@ function HTMLForRow(stepNumber, math, annotation, showTrash) {
 	html +=    '<span class="sr-only"  role="heading" aria-level="4">reason:</span>';
 	html +=    '<span class="staticMath">'+annotation+'</span>';
 	html += '</div>';
+	html +=  '<div class="col-md-1 trashButtonContainer" role="heading" aria-level="4" style="text-align: right; float:right;">';
 	if (showTrash) { 
-		html +=  '<div class="col-md-1 trashButtonContainer" role="heading" aria-level="4" style="text-align: right; float:right;">'+
-					'<button class="btn btn-default paletteButton" data-toggle="tooltip" title="Delete this Step" onclick="DeleteActiveMath()" style="margin-bottom: 5px;">' +
+		html +=  '<button class="btn btn-default paletteButton" data-toggle="tooltip" title="Delete this Step" onclick="DeleteActiveMath()" style="margin-bottom: 5px;">' +
 						'<i class="fa fa-trash-o" aria-hidden="true"></i>' +
 						'<span class="SROnly">Delete ' + OrdinalSuffix(stepNumber) +' step</span>' +
-			'</button></div>';
+			'</button>';
 	}
-	html += '</div>';
+	html += '</div></div>';
 	return html;
 }
 
