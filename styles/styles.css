@@ -54,7 +54,7 @@ html, body {
 
 .problemHeader {
 	flex: 0 0 50px;
-	background-color: #222F3FC0; 
+	background-color: #0073D9; 
 	padding: 5px;
 	display: flex;
 	justify-content: space-between;
@@ -92,7 +92,7 @@ a {
 }
 	
 .navbar-default {
-	background-color: #222F3F;
+	background-color: #001F3F;
 }
 
 .navbar {
@@ -128,16 +128,6 @@ a {
 	color: #CCC;
 	padding-left: 10px;
 }
-
-/*
-.pageHeader {
-	font-size: 2.0em;
-	font-weight: bold;
-	text-align: center;
-	padding: 10px;
-	border-bottom: 1px solid #CCC;
-}
-*/
 
 .mathStepAnnotation {
 	padding-left: 125px;
@@ -198,44 +188,15 @@ a {
 	box-shadow: none;
 	transition: none;
 	display: inline;
+	border-radius: 0px;
 }
 
 .btn-default {
 	background-color: #fafafa;
 }
 
-.modal-header {
-    padding:9px 15px;
-    border-bottom:0px solid #eee;
-    background-color: #222F3F;
-    -webkit-border-top-left-radius: 5px;
-    -webkit-border-top-right-radius: 5px;
-    -moz-border-radius-topleft: 5px;
-    -moz-border-radius-topright: 5px;
-     border-top-left-radius: 5px;
-     border-top-right-radius: 5px;
-     color: #FFF;
- }
- 
-
- .modal-footer {
-    padding:9px 15px;
-    border-bottom:0px solid #eee;
-    background-color: #222F3F;
-    -webkit-border-bottom-left-radius: 5px;
-    -webkit-border-bottom-right-radius: 5px;
-    -moz-border-radius-bottomleft: 5px;
-    -moz-border-radius-bottomright: 5px;
-     border-bottom-left-radius: 5px;
-     border-bottom-right-radius: 5px;
- }
- 
- .modal-lg {
-	 max-width: 1000px;
- }
- 
  .modalAreaHeading {
-	 color:#222F3F;
+	 color:#001F3F;
 	 font-style: italic;
 	 font-size: 22px;
 	 float: left;

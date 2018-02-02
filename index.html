@@ -58,10 +58,15 @@
 			    </div>
 			  </li>
 		      <li class="nav-item">
-		        <a class="nav-link" href="http://www.surveygizmo.com/s3/4048161/Benetech-s-Math-Editor-Online-Feedback" target="_blank">Provide Feedback</a>
+		        <a  class="nav-link" href="mailto:info@diagramcenter.org" >Contact Us</a>
 		      </li>
 		      <li class="nav-item">
-		        <a  class="nav-link" href="mailto:info@diagramcenter.org" >Contact Us</a>
+			    <a href="http://www.surveygizmo.com/s3/4048161/Benetech-s-Math-Editor-Online-Feedback" target="_blank">
+				  <button role="presentation" type="button" class="btn btn-primary btn-lg pointer" style="background-color: #FF4236; border: 0px;">
+				  	<i class="fa fa-arrow-circle-right" aria-hidden="true" style="font-size: 1.2em; padding-top: 3px;"></i>
+				  	Provide Feedback
+				  </button>
+			  	</a>
 		      </li>
 		    </ul>
 		  </div>
@@ -76,13 +81,11 @@
     <div class="editorAndHistoryWrapper">
       <div class="problemHeader">
 	      <h1 class="problemTitle" id="ProblemTitle">Problem title</h1>
-	      <div>
+	      <div style="white-space: nowrap;">
 	      	<button aria-hidden='true' onclick="introJs().setOption('tooltipClass', 'introjs-helperLayer').start(); GoogleAnalytics('Tour');" type="button" class="btn btn-default pointer" style="margin-right: 5px;">Help</button>
 		  	<button class="btn btn-default pointer" id="BtnSave" data-step="5" data-intro="Save your work or close out to try again from the beginning." onclick="GoogleAnalytics('Save');">Save Problem</button>
 	      </div>
       </div>
-      
-      
       <div style="flex: 0 0 50px; padding: 10px 0px 0px 10px;">
 	      <h2>
 				<span class="modalAreaHeading" aria-hidden="true">My Steps</span>
@@ -90,15 +93,9 @@
 			</h2>
       </div>
       <div class="historyWrapper"> 
-	     
-	      
-	      
-	      
-	      
-
         <div class="row" data-step="4" data-intro="Review your work. The trash icon also allows you to delete and rework a prior step.">
 			<div class="col-lg-12">
-				<div class="mathHistory container-fluid" style="color: #222F3F; opacity: 0.65;" id="MathHistory">
+				<div class="mathHistory container-fluid" style="color: #001F3F; opacity: 0.65;" id="MathHistory">
 				 
 				</div>
 			</div>
@@ -106,7 +103,7 @@
 
       </div>
 
-	  <div style="flex: 0 0 50px; border-top: 3px solid #222F3F; padding-left: 10px;">
+	  <div style="flex: 0 0 50px; border-top: 10px solid #0073D9; padding-left: 10px;">
 	    <h2>
 			<span class="modalAreaHeading"  style="margin-top: 8px;" aria-hidden="true">My Work</span>
 			<span class="sr-only">My Work</span>
@@ -117,8 +114,8 @@
       <div class="mathWorkArea">
 			<div class="row">
 				<div class="col-lg-12">
-					<div id="workArea" class="mathEditor" style="border: 1px solid #CCC; border-radius: 5px; background-color: #FFF; height: 100px;"> 
-						<div style=	"float: left; min-width: 400px; margin: 15px 0px 15px 15px;" data-step="1" data-position="top" data-intro="Type or edit the equation using your keyboard and the math keys below. Try using the cross out, replace, and calc buttons to help show your work.">
+					<div id="workArea" class="mathEditor" style="border: 1px solid #CCC; border-radius: 5px; background-color: #FFF; height: 100px;" data-step="1" data-position="top" data-intro="Type or edit the equation using your keyboard and the math keys below. Try using the cross out, replace, and calc buttons to help show your work."> 
+						<div style=	"float: left; min-width: 400px; margin: 15px 0px 15px 15px;" >
 							<h3 class="sr-only" style="float: left;" onfocus="this.getElementsByClassName('ML__mathlive')[0].focus">Math editor</h3>
 							<section id='mathEditorActive' aria-label="Enter math here" onfocus="this.getElementsByClassName('ML__mathlive')[0].focus"></section>
 						</div>
@@ -191,7 +188,28 @@
 	  
 	<!-- BEGIN FOOTER -->
 	<div class="footer">
-	<footer class="footer" style="margin-bottom: 10px; background-color: #FFF; border-top: 5px solid #222F3F;">
+	<footer class="footer" style="margin-bottom: 10px; background-color: #001F3F; border-top: 10px solid #001F3F; display: flex; border-bottom: 10px solid #001F3F;">
+	    <div style="flex: 0 0 100px;">
+		    <a href="https://www2.ed.gov/about/offices/list/osers/osep/index.html" target="_blank">
+				<img style="float: left; margin: 0px 25px 0px 10px; background-color: #FFF; padding: 5px;" src="images/IDEA-logo.gif" alt="IDEA Logo" height="50">
+			</a>
+	    </div>
+	    <div style="font-size: 0.7em; color: #FFF;">
+			The <a href="http://diagramcenter.org/" target="_blank">DIAGRAM Center</a> is a <a href="http://www.benetech.org/" target="_blank">Benetech</a> initiative supported by the U.S. Department of Education, Office of Special Education Programs (Cooperative Agreement #H327B100001). Opinions expressed herein are those of the authors and do not necessarily represent the position of the U.S. Department of Education. Poet™ is a trademark of Beneficent Technology, Inc. This website is copyright © 2012-2017, Beneficent Technology, Inc.
+		</div>
+	    <div style="flex: 0 0 100px;">
+		    <a href="https://www.benetech.org/" target="_blank">
+				<img style="float: right;margin: 0px 10px 0px 25px; background-color: #FFF; padding: 5px;" src="images/benetech_logo_transparent.gif" alt="Benetech Logo" height="50">
+			</a>
+	    </div>
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+<!--
 	    <div class="container">
 	        <div class="row">
 	            <div class="col-md-12 ideaText">
@@ -205,12 +223,13 @@
 				            <img style="float: right;margin: 0px 0px 0px 25px;" src="images/benetech_logo_transparent.gif" alt="Benetech Logo" height="50">
 			            </a>
 					</div>
-					<div style="font-size: 0.7em;">
+					<div style="font-size: 0.7em; color: #FFF;">
 					    The <a href="http://diagramcenter.org/" target="_blank">DIAGRAM Center</a> is a <a href="http://www.benetech.org/" target="_blank">Benetech</a> initiative supported by the U.S. Department of Education, Office of Special Education Programs (Cooperative Agreement #H327B100001). Opinions expressed herein are those of the authors and do not necessarily represent the position of the U.S. Department of Education. Poet™ is a trademark of Beneficent Technology, Inc. This website is copyright © 2012-2017, Beneficent Technology, Inc.
 					</div>
 	            </div>
 	        </div>
 	    </div>
+-->
 	</footer>
 	</div>
 	<!-- END FOOTER -->  
