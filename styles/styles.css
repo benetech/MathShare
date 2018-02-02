@@ -60,6 +60,14 @@ html, body {
 	justify-content: space-between;
 }
 
+.problemFooter {
+	flex: 0 0 50px;
+	background-color: #0073D9; 
+	padding: 5px;
+	display: flex;
+	justify-content: space-between;
+}
+
 .problemTitle {
 	font-size: 1.2em;
 	color: #FFF;
