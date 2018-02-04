@@ -233,7 +233,7 @@ function PopulateEditorModal(buttonElement, dataObj) {
     	let originalProblemVariable = dataObj.metadata.variableName;
     	let originalProblemEquation = dataObj.originalProblem.equation;
     	
-    	let originalProblemEquationHTML = '<span class="staticMath problemTitle">$$'+dataObj.originalProblem.equation+'$$</span>';    	 
+    	let originalProblemEquationHTML = '<span class="staticMath problemTitle">$$'+originalProblemEquation+'$$</span>';    	 
     	let originalProblemAnnotation = dataObj.originalProblem.annotation;    	 
     	let currentEditorEquation = dataObj.currentEditor.equation;    	 
     	let currentEditorAnnotation = dataObj.currentEditor.annotation;    	
@@ -268,7 +268,7 @@ function PopulateEditorModal(buttonElement, dataObj) {
 	    	
     //4 POPULATE HTML
     	$('#ProblemTitle').html(htmlTitle);
-    	$('#ProblemTitle').after(originalProblemEquationHTML);	// shouldn't be part of title	
+    	$('#ProblemMath').html(originalProblemEquationHTML);	// shouldn't be part of title	
     	$('#ProblemTitle').data('title', originalProblemTitle );
     	$('#ProblemTitle').data('equation', originalProblemEquation );
     	$('#ProblemTitle').data('annotation', originalProblemAnnotation );
