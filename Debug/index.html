@@ -80,11 +80,15 @@
 		
 <!--   <div class="pageHeader">Select a problem and try out Benetech's Math Editor (alpha)!</div> -->
   <div class="contentWrapper" id="ContentWrapper">
-    <div class="leftNavigation" id="LeftNavigation">
-    </div>
-    <div class="editorAndHistoryWrapper">
+   
+    <nav class="leftNavigation" id="LeftNavigation"  aria-label="List of problems:">
+    </nav>
+    <main class="editorAndHistoryWrapper">
       <div class="problemHeader">
-	      <h1 class="problemTitle" id="ProblemTitle">Problem title</h1>
+		  <div>
+	        <span class="problemTitle" id="ProblemTitle" role="heading" aria-level="1">Problem title</span>
+			<!-- content programmaticly inserted here -->
+		  </div>
 	      <div style="white-space: nowrap;">
 	      	<button aria-hidden='true' onclick="introJs().setOption('tooltipClass', 'introjs-helperLayer').start(); GoogleAnalytics('Tour');" type="button" class="btn btn-default pointer" style="margin-right: 5px;">Help</button>
 		  	<button class="btn btn-default pointer" id="BtnSave" data-step="5" data-intro="Save your work or close out to try again from the beginning." onclick="GoogleAnalytics('Save');">Save Problem</button>
@@ -186,7 +190,7 @@
 		    </div>
       </div>
        
-    </div>
+    </main>
   </div>
   
    

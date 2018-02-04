@@ -110,9 +110,11 @@ function HTMLForRow(stepNumber, math, annotation, showTrash) {
 	html += '</div>';
 	html += '<div class="col-md-5">';
 	html +=    '<span class="sr-only"  role="heading" aria-level="4">reason:</span>';
-	html +=    '<span class="staticMath">'+annotation+'</span>';
+	// for screen readers, we want some content for empty annotations so they know they are on the field
+	html +=    '<span class="staticMath' +
+					(annotation ? '' : ' sr-only') + '">'+(annotation ? annotation : 'no reason given')+'</span>';
 	html += '</div>';
-	html +=  '<div class="col-md-1 trashButtonContainer" role="heading" aria-level="4" style="text-align: right; float:right;">';
+	html +=  '<div class="col-md-1 trashButtonContainer" style="text-align: right; float:right;">';
 	if (showTrash) { 
 		html +=  '<button class="btn btn-default paletteButton" data-toggle="tooltip" title="Delete this Step" onclick="DeleteActiveMath()" style="margin-bottom: 5px;">' +
 						'<i class="fa fa-trash-o" aria-hidden="true"></i>' +
@@ -194,18 +196,20 @@ function ReadFileEmpty() {
 // Data for each problem is stored into the argument of the 'onclick' function		
 function PopulateMainPage(data) {
 	let html = '<ul>';
-	html += '<li> <a href="#ProblemTitle" class="navItemLink" onclick="SetAndOpenEditorModel(this, example01)">' +
+	html += '<li> <button class="navItemLink" onclick="SetAndOpenEditorModel(this, example01)">' +
 				'<span class="problemAnnotation">Getting Started</span>' +
 				'<span class="problemEquation">Click here to see an example problem and learn how to use the editor</span>' + 
-			'</a> </li>';
+			'</button> </li>';
 	let problemData = data.problems;
 	for (let i=0; i< problemData.length; i++) {
 		let problem = problemData[i].originalProblem;
 		let functionToCall = 'SetAndOpenEditorModel(this, ' + JSON.stringify(problemData[i]) + ');';
-		html += '<li> <a href="#ProblemTitle" class="navItemLink" onclick=\''+functionToCall+'\' onkeypress=\''+functionToCall+'\'>' +
-					'<span class="problemAnnotation">' +(i+1) + '. ' + problem.annotation + '</span>' +
-					'<span class="problemEquation staticMath">$$' + problem.equation + '$$</span>' + 
-				'</a> </li>';
+		let eventHandlers = 'onclick=\'' +functionToCall+ '\' onkeypress=\'' +functionToCall+ '\'';
+		html += '<li> <button class="navItemButton"' + eventHandlers + '>' +
+					'<div class="problemAnnotation">' +(i+1) + '. ' + problem.annotation + '</div>' +
+				  '</button>' +
+				  '<div  class="problemEquation staticMath"'+ eventHandlers + '>$$' + problem.equation + '$$</div>' + 
+				'</li>';
 	};
 	html += '</ul>';	
 	let node = document.createDocumentFragment();
@@ -229,7 +233,7 @@ function PopulateEditorModal(buttonElement, dataObj) {
     	let originalProblemVariable = dataObj.metadata.variableName;
     	let originalProblemEquation = dataObj.originalProblem.equation;
     	
-    	let originalProblemEquationHTML = '<span class="staticMath">$$'+dataObj.originalProblem.equation+'$$</span>';    	 
+    	let originalProblemEquationHTML = '<span class="staticMath problemTitle">$$'+dataObj.originalProblem.equation+'$$</span>';    	 
     	let originalProblemAnnotation = dataObj.originalProblem.annotation;    	 
     	let currentEditorEquation = dataObj.currentEditor.equation;    	 
     	let currentEditorAnnotation = dataObj.currentEditor.annotation;    	
@@ -255,14 +259,16 @@ function PopulateEditorModal(buttonElement, dataObj) {
 	    }
     //3 BUILD HTML TITLE
     	let htmlTitle = originalProblemAnnotation;
-		if (dataObj.originalProblem.equation)
-			htmlTitle += ': '+ originalProblemEquationHTML;
+		if (dataObj.originalProblem.equation) {
+			htmlTitle += ': ';
+		}
     	if (originalProblemVariable=="newEditor") {
 	    	htmlTitle = ''+originalProblemTitle+'';
 	    }
 	    	
     //4 POPULATE HTML
     	$('#ProblemTitle').html(htmlTitle);
+    	$('#ProblemTitle').after(originalProblemEquationHTML);	// shouldn't be part of title	
     	$('#ProblemTitle').data('title', originalProblemTitle );
     	$('#ProblemTitle').data('equation', originalProblemEquation );
     	$('#ProblemTitle').data('annotation', originalProblemAnnotation );

@@ -48,8 +48,13 @@ html, body {
 	padding-left: 15px;
 }
 
-.navItemLink {
-  color: inherit;
+.navItemButton {
+  border: none;
+  background-color: inherit;
+  text-align: left;
+  text-decoration: none;
+  display: inline-block;
+  width: 100%;
 }
 
 .problemHeader {
