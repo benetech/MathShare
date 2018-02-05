@@ -206,7 +206,7 @@ function PopulateMainPage(data) {
 		let functionToCall = 'SetAndOpenEditorModel(this, ' + JSON.stringify(problemData[i]) + ');';
 		let eventHandlers = 'onclick=\'' +functionToCall+ '\' onkeypress=\'' +functionToCall+ '\'';
 		html += '<li> <button class="navItemButton"' + eventHandlers + '>' +
-					'<div class="problemAnnotation">' +(i+1) + '. ' + problem.annotation + '</div>' +
+					'<span class="problemAnnotation">' +(i+1) + '. ' + problem.annotation + '</span>' +
 				  '</button>' +
 				  '<div  class="problemEquation staticMath"'+ eventHandlers + '>$$' + problem.equation + '$$</div>' + 
 				'</li>';
