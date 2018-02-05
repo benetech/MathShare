@@ -121,10 +121,11 @@
 			<div class="row">
 				<div class="col-lg-12">
 					<div id="workArea" class="mathEditor" style="border: 1px solid #CCC; border-radius: 5px; background-color: #FFF; height: 100px;" data-step="1" data-position="top" data-intro="Type or edit the equation using your keyboard and the math keys below. Try using the cross out, replace, and calc buttons to help show your work."> 
-						<div style=	"float: left; min-width: 400px; margin: 15px 0px 15px 15px;" >
+						<section id='mathEditorActive' aria-label="Enter math here" onfocus="this.getElementsByClassName('ML__mathlive')[0].focus">
+							<div style=	"float: left; min-width: 400px; margin: 15px 0px 15px 15px;" >
 							<h3 class="sr-only" style="float: left;" onfocus="this.getElementsByClassName('ML__mathlive')[0].focus">Math editor</h3>
-							<section id='mathEditorActive' aria-label="Enter math here" onfocus="this.getElementsByClassName('ML__mathlive')[0].focus"></section>
-						</div>
+							</div>
+						</section>
 						<div style="float: right;">
 							<h3 class="mathAnnotation sr-only" style="float: right; border-left: 1px solid #CCC;">Describe your work</h3>
 							<span><textarea class="form-control" id="mathAnnotation" placeholder="Use the microphone button or type to explain your work" style="width: 280px; height: 98px; border-left: 1px solid #CCC;" data-step="2" data-intro="Describe your work by typing directly or using the microphone to record an explanation of your work."></textarea></span>
