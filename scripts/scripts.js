@@ -195,18 +195,21 @@ function ReadFileEmpty() {
 // Create all the problems on the main page
 // Data for each problem is stored into the argument of the 'onclick' function		
 function PopulateMainPage(data) {
-	let functionToCall = 'SetAndOpenEditorModel(this, ' + (example01 ? example01 : "LOCAL TEST: can't read local files") + ');';
+	let functionToCall = 'SetAndOpenEditorModel(this, example01); ' +
+						 'document.getElementById("MySteps").focus(); ';
 	let eventHandlers = 'onclick=\'' +functionToCall+ '\' onkeypress=\'' +functionToCall+ '\'';
 	let html = '<ul>';
 	html += '<li ' + eventHandlers + '>' + 
-				'<button class="navItemLink">' +
-				'<span class="problemAnnotation">Getting Started</span>' +
+				'<button class="navItemButton">' +
+				   '<span class="problemAnnotation">Getting Started</span>' +
+				'</button> ' +
 				'<span class="problemEquation">Click here to see an example problem and learn how to use the editor</span>' + 
-			'</button> </li>';
+			'</li>';
 	let problemData = data.problems;
 	for (let i=0; i< problemData.length; i++) {
 		let problem = problemData[i].originalProblem;
-		functionToCall = 'SetAndOpenEditorModel(this, ' + JSON.stringify(problemData[i]) + ');';
+		functionToCall = 'SetAndOpenEditorModel(this, ' + JSON.stringify(problemData[i]) + '); ' +
+						 'document.getElementById("MySteps").focus();';
 		eventHandlers = 'onclick=\'' +functionToCall+ '\' onkeypress=\'' +functionToCall+ '\'';
 		html +=
 			'<li ' + eventHandlers + '>' +

@@ -32,6 +32,7 @@
 	</script>
 	<script data-main="main" src="../../mathlive/node_modules/requirejs/require.js"></script>
 	<script src="../scripts/scripts.js"></script>	
+	<script src="../data/example01.js"></script>
 </head>
 
 <body lang=EN-US>
@@ -61,7 +62,7 @@
 			    </div>
 			  </li>
 		      <li class="nav-item">
-		        <a  class="nav-link" href="mailto:info@diagramcenter.org" >Contact Us</a>
+		        <a class="nav-link" href="mailto:info@diagramcenter.org" >Contact Us</a>
 		      </li>
 		      <li class="nav-item">
 			    <a href="http://www.surveygizmo.com/s3/4048161/Benetech-s-Math-Editor-Online-Feedback" target="_blank"  class="nav-link">
@@ -87,13 +88,10 @@
 		  </div>
 	      <div style="white-space: nowrap;">
 	      	<button aria-hidden='true' onclick="introJs().setOption('tooltipClass', 'introjs-helperLayer').start(); GoogleAnalytics('Tour');" type="button" class="btn btn-default pointer" style="margin-right: 5px;">Help</button>
-		  	<button class="btn btn-default pointer" id="BtnSave" data-step="5" data-intro="Save your work or close out to try again from the beginning." onclick="GoogleAnalytics('Save');">Save Problem</button>
 	      </div>
       </div>
-      
-      
       <div style="flex: 0 0 50px; padding: 10px 0px 0px 10px;">
-	      <h2>
+			<h2 id="MySteps" tabindex="-1">
 				<span class="modalAreaHeading" aria-hidden="true">My Steps</span>
 				<span class="sr-only ">My Steps</span>
 			</h2>
@@ -190,8 +188,6 @@
     </main>
   </div>
   
-   
-
 	  
 	<!-- BEGIN FOOTER -->
 	<div class="footer">
