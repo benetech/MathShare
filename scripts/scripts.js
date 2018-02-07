@@ -195,21 +195,26 @@ function ReadFileEmpty() {
 // Create all the problems on the main page
 // Data for each problem is stored into the argument of the 'onclick' function		
 function PopulateMainPage(data) {
+	let functionToCall = 'SetAndOpenEditorModel(this, ' + (example01 ? example01 : "LOCAL TEST: can't read local files") + ');';
+	let eventHandlers = 'onclick=\'' +functionToCall+ '\' onkeypress=\'' +functionToCall+ '\'';
 	let html = '<ul>';
-	html += '<li> <button class="navItemLink" onclick="SetAndOpenEditorModel(this, example01)">' +
+	html += '<li ' + eventHandlers + '>' + 
+				'<button class="navItemLink">' +
 				'<span class="problemAnnotation">Getting Started</span>' +
 				'<span class="problemEquation">Click here to see an example problem and learn how to use the editor</span>' + 
 			'</button> </li>';
 	let problemData = data.problems;
 	for (let i=0; i< problemData.length; i++) {
 		let problem = problemData[i].originalProblem;
-		let functionToCall = 'SetAndOpenEditorModel(this, ' + JSON.stringify(problemData[i]) + ');';
-		let eventHandlers = 'onclick=\'' +functionToCall+ '\' onkeypress=\'' +functionToCall+ '\'';
-		html += '<li> <button class="navItemButton"' + eventHandlers + '>' +
+		functionToCall = 'SetAndOpenEditorModel(this, ' + JSON.stringify(problemData[i]) + ');';
+		eventHandlers = 'onclick=\'' +functionToCall+ '\' onkeypress=\'' +functionToCall+ '\'';
+		html +=
+			'<li ' + eventHandlers + '>' +
+				'<button class="navItemButton">' +
 					'<span class="problemAnnotation">' +(i+1) + '. ' + problem.annotation + '</span>' +
-				  '</button>' +
-				  '<div  class="problemEquation staticMath"'+ eventHandlers + '>$$' + problem.equation + '$$</div>' + 
-				'</li>';
+			    '</button>' +
+				'<div  class="problemEquation staticMath">$$' + problem.equation + '$$</div>' + 
+			'</li>';
 	};
 	html += '</ul>';	
 	let node = document.createDocumentFragment();
