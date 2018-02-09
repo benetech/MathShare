@@ -198,7 +198,7 @@ function PopulateMainPage(data) {
 	let functionToCall = 'SetAndOpenEditorModel(this, example01); ' +
 						 'document.getElementById("MySteps").focus(); ';
 	let eventHandlers = 'onclick=\'' +functionToCall+ '\' onkeypress=\'' +functionToCall+ '\'';
-	let html = '<ul>';
+	let html = '<ul aria-labelled-by="LeftNavigationHeader">';
 	html += '<li class="leftNavigationBackgroundActive" ' + eventHandlers + '>' + 
 				'<button class="navItemButton">' +
 				   '<span class="problemAnnotation">Getting Started</span>' +

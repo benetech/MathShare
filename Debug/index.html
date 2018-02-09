@@ -11,7 +11,7 @@
 	</script>
 	<meta charset="utf-8">
 	<title>Galois Math Editor</title>
-	<link rel="icon" type="image/png" href="../images/favicon.png" />
+	<link rel="icon" type="../image/png" href="../images/favicon.png" />
 	<link rel="stylesheet" href="../../mathlive/dist/mathlive.core.css" type="text/css">
 	<link rel="stylesheet" href="../../mathlive/dist/mathlive.css" type="text/css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
@@ -37,26 +37,27 @@
 
 <body lang=EN-US>
 <div class="mainWrapper">
-  <div class="header">	
+  <div class="header">
 	<!-- BEGIN TOP HEADER/NAVIGATION -->
 	<header>
+	   <h2 class="sr-only"> Header </h2>
 		<nav class="navbar navbar-expand-lg navbar-default" id="topNavigation">
 		  <a class="navbar-brand" href="#">
-		    <img src="../images/logo.png" alt="Galois Math Editor Logo" height="37">
+		    <img src="../images/logo.png" alt="Galois Math Editor" height="37">
 		  </a>
 		  <div class="collapse navbar-collapse" id="navbarNav">
 		    <ul class="navbar-nav mr-auto">
 		    </ul>
-		    <ul class="navbar-nav">
+		    <ol class="navbar-nav">
 		      <li class="nav-item">
 		        <a class="nav-link pointer" onclick="SetAndOpenEditorModel(this, example01)">Getting Started</a>
 		      </li>
 		      <li class="nav-item dropdown">
 			    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Problem Sets</a>
 			    <div class="dropdown-menu">
-			      <a class="dropdown-item" onclick="ReadFileInitiate('../data/data01.js');">Problem Set 01</a>
-			      <a class="dropdown-item" onclick="ReadFileInitiate('../data/data02.js');">Problem Set 02</a>
-			      <a class="dropdown-item" onclick="ReadFileInitiate('../data/data03.js');">Problem Set 03</a>
+			      <a class="dropdown-item" onclick="ReadFileInitiate('data/data01.js');">Problem Set 01</a>
+			      <a class="dropdown-item" onclick="ReadFileInitiate('data/data02.js');">Problem Set 02</a>
+			      <a class="dropdown-item" onclick="ReadFileInitiate('data/data03.js');">Problem Set 03</a>
 			      <a class="dropdown-item" onclick="OpenFileUpload();">Upload</a>
 			      <input id='fileid' type='file' hidden/>
 			    </div>
@@ -70,7 +71,7 @@
 				  	Provide Feedback
 			  	</a>
 		      </li>
-		    </ul>
+		    </ol>
 		  </div>
 		</nav>
 	</header>
@@ -78,7 +79,9 @@
   </div>
 <!--   <div class="pageHeader">Select a problem and try out Benetech's Math Editor (alpha)!</div> -->
   <div class="contentWrapper" id="ContentWrapper">
-    <nav class="leftNavigation" id="LeftNavigation" aria-label="List of problems:">
+    <nav class="leftNavigation" aria-labelledby="LeftNavigationHeader">
+		<h2 id="LeftNavigationHeader" class="sr-only"> Problems to solve </h2>
+		<div id="LeftNavigation"></div> <!-- place for list of problems -->
     </nav>
     <main class="editorAndHistoryWrapper">
       <div class="problemHeader">
@@ -119,10 +122,8 @@
 			<div class="row">
 				<div class="col-lg-12">
 					<div id="workArea" class="mathEditor" style="border: 1px solid #CCC; border-radius: 5px; background-color: #FFF; height: 100px;" data-step="1" data-position="top" data-intro="Type or edit the equation using your keyboard and the math keys below. Try using the cross out, replace, and calc buttons to help show your work."> 
-						<section id='mathEditorActive' aria-label="Enter math here" onfocus="this.getElementsByClassName('ML__mathlive')[0].focus">
-							<div style=	"float: left; min-width: 400px; margin: 15px 0px 15px 15px;" >
-							<h3 class="sr-only" style="float: left;" onfocus="this.getElementsByClassName('ML__mathlive')[0].focus">Math editor</h3>
-							</div>
+						<section role="region" style="float: left; min-width: 400px; margin: 15px 0px 15px 15px;" id='mathEditorActive' aria-label="Enter math here">
+							<h3 class="sr-only">Math editor</h3>							
 						</section>
 						<div style="float: right;">
 							<h3 class="mathAnnotation sr-only" style="float: right; border-left: 1px solid #CCC;">Describe your work</h3>
@@ -137,13 +138,15 @@
 		    <div class="row" style=" padding-top: 10px;"> 
 			  <div class="col-lg-10">
 				  <h3 class="sr-only">math input buttons</h3>
-				  <span class="mathPalette" role="list">
+				  <h4 class="sr-only">cross out and calc buttons</h4>
+				  <div class="mathPalette" role="list">
 					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Cross out (⌨: shift+delete)" onclick="MathLivePasteFromButton(this); GoogleAnalytics('Cross Out');">$$\enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{\blacksquare}$$</button></span>
 					  <span role="listitem"><button class="btn btn-default paletteButton" data-toggle="tooltip" title="Calculate (⌨: ctrl+=)" onclick="CalculateAndReplace(this); GoogleAnalytics('Calculate');">Calc</button></span>
 					  <br>
 					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Cross out & replace (⌨: shift+ctrl+delete)" onclick="MathLivePasteFromButton(this); GoogleAnalytics('Cross Out & Replace');">$$ \enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{\blacksquare}^{\square} $$</button></span>
-				  </span>
-				  <span class="mathPalette" role="list">
+				  </div>
+				  <h4 class="sr-only">Operator buttons</h4>
+				  <div class="mathPalette" role="list">
 				  	  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Dot times (⌨: \cdot⏎)" onclick="MathLivePasteFromButton(this)">$$\cdot$$</button></span>
 				  	  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Times (⌨: xx)" onclick="MathLivePasteFromButton(this)">$$\times$$</button></span>
 					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Division (⌨: \div⏎)" onclick="MathLivePasteFromButton(this)">$$\div$$</button></span>
@@ -153,45 +156,63 @@
 					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title='Greater than or equal  (⌨: >=)' onclick="MathLivePasteFromButton(this)">$$\geq$$</button></span>
 					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Not equal (⌨: !=)" onclick="MathLivePasteFromButton(this)">$$\neq$$</button></span>
 					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Is equal to (⌨: ?=)" onclick="MathLivePasteFromButton(this)">$$\overset{?}{=}$$</button></span>
-				  </span>
-				  <span class="mathPalette" role="list">
+				  </div>
+				  <h4 class="sr-only">Fraction and other notation buttons</h4>
+				  <div class="mathPalette" role="list">
 				  	  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Fraction (⌨: /)" onclick="MathLivePasteFromButton(this)">$$\frac{\blacksquare}{\square}$$</button></span>
 					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Superscript (⌨: ^)" onclick="MathLivePasteFromButton(this)">$${\blacksquare}^{\square}$$</button></span>
 					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Subscript (⌨: _)" onclick="MathLivePasteFromButton(this)">$${\blacksquare}_{\square}$$</button></span>
 					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Square root (⌨: sqrt)" onclick="MathLivePasteFromButton(this)">$$\sqrt{\blacksquare}$$</button></span>
 					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="General root(⌨: \sqrt[n])" onclick="MathLivePasteFromButton(this)">$$\sqrt[{\square}]{\blacksquare}$$</button></span>
-					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Triangle (⌨: \triangle⏎)" onclick="MathLivePasteFromButton(this)">$$\triangle$$</button></span>
-					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Angle (⌨: \angle⏎)" onclick="MathLivePasteFromButton(this)">$$\angle$$</button></span>
-					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Congruent (⌨: \cong⏎)" onclick="MathLivePasteFromButton(this)">$$\cong$$</button></span>
-					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Perpendicular (⌨: \perp⏎)" onclick="MathLivePasteFromButton(this)">$$\perp$$</button></span>
 					  <br>
 					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Parentheses" onclick="MathLivePasteFromButton(this)">$$\Bigl{(}\blacksquare\Bigr{)}$$</button></span>
 					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Square brackets" onclick="MathLivePasteFromButton(this)">$$\Bigl{[}\blacksquare\Bigr{]}$$</button></span>
 					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Absolute value" onclick="MathLivePasteFromButton(this)">$$\Bigl{|}\blacksquare\Bigr{|}$$</button></span>
 					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Floor" onclick="MathLivePasteFromButton(this)">$$\Bigl{\lfloor}\blacksquare\Bigr{\rfloor}$$</button></span>
 					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Ceiling" onclick="MathLivePasteFromButton(this)">$$\Bigl{\lceil}\blacksquare\Bigr{\rceil}$$</button></span>
+				  </div>
+				  <h4 class="sr-only">Additional symbols buttons</h4>
+				  <div class="mathPalette" role="list">
+					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Triangle (⌨: \triangle⏎)" onclick="MathLivePasteFromButton(this)">$$\triangle$$</button></span>
+					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Angle (⌨: \angle⏎)" onclick="MathLivePasteFromButton(this)">$$\angle$$</button></span>
+					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Congruent (⌨: \cong⏎)" onclick="MathLivePasteFromButton(this)">$$\cong$$</button></span>
+					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Perpendicular (⌨: \perp⏎)" onclick="MathLivePasteFromButton(this)">$$\perp$$</button></span>
+					  <br>
 					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Parallel (⌨: \parallel⏎)" onclick="MathLivePasteFromButton(this)">$$\parallel$$</button></span>
 				      <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Degree (⌨: \degree⏎)" onclick="MathLivePasteFromButton(this)">$$\degree$$</button></span>
 				      <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Pi (⌨: pi⏎)" onclick="MathLivePasteFromButton(this)">$$\pi$$</button></span>
-				  </span>
+				  </div>
 			   </div>
 			   <div class="col-lg-2" style="text-align: right;">
 					<button class="btn btn-default" id="undoDelete" data-toggle="tooltip" title="Undo Last Delete" onclick="UndoDeleteStep()" style="margin-bottom: 5px;">Undo</button>
 					<br>
-					<span role="heading" aria-level="3">
+					<h3 role="heading" class="sr-only" aria-level="3">Clean up and add new step</h3>
 					  <button class="btn btn-primary pointer" data-toggle="tooltip" title="Clean up the cross outs and start a new step (⌨: shift+enter)" onclick="NewRowOrRowsAfterCleanup(TheActiveMathField.latex());" style="margin-top: 11px;" data-step="3" data-intro="Clean-up your work and start a new step.">Add Step</button>
-					</span>
 			   </div>
 		    </div>
+		    
+		    
+		    
+      </div>
+      
+      <div class="problemFooter">
+	      <div></div>
+	      <div class="row"> 
+			  <div class="col-lg-12" style="text-align:right;">
+				  <button class="btn btn-default pointer" id="BtnSave" data-step="5" data-intro="Save your work or close out to try again from the beginning." onclick="GoogleAnalytics('Save');">Save Problem</button>
+			  </div>
+		    </div>
+<!-- 		    <button class="btn btn-default pointer float-right" id="BtnSave" data-step="5" data-intro="Save your work or close out to try again from the beginning." onclick="GoogleAnalytics('Save');">Save Problem</button>		  	 -->
+	     
       </div>
        
     </main>
   </div>
-  
-	  
+
 	<!-- BEGIN FOOTER -->
 	<div class="footer">
 	<footer class="footer" style="margin-bottom: 10px; background-color: #001F3F; border-top: 10px solid #001F3F; display: flex; border-bottom: 10px solid #001F3F;">
+		<h2 class="sr-only"> Footer </h2>
 	    <div style="flex: 0 0 100px;">
 		    <a href="https://www2.ed.gov/about/offices/list/osers/osep/index.html" target="_blank">
 				<img style="float: left; margin: 0px 25px 0px 10px; background-color: #FFF; padding: 5px;" src="../images/IDEA-logo.gif" alt="IDEA Logo" height="50">

@@ -7,7 +7,7 @@ var example01 =	    {
 						"originalProblem":
 						{
 							"equation":"7x-13=1",
-							"annotation":"Getting Started: Solve for x"
+							"annotation":"Solve for x"
 						},
 						"currentEditor":
 						{
