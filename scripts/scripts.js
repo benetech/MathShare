@@ -199,7 +199,7 @@ function PopulateMainPage(data) {
 						 'document.getElementById("MySteps").focus(); ';
 	let eventHandlers = 'onclick=\'' +functionToCall+ '\' onkeypress=\'' +functionToCall+ '\'';
 	let html = '<ul>';
-	html += '<li ' + eventHandlers + '>' + 
+	html += '<li class="leftNavigationBackgroundActive" ' + eventHandlers + '>' + 
 				'<button class="navItemButton">' +
 				   '<span class="problemAnnotation">Getting Started</span>' +
 				'</button> ' +
@@ -233,7 +233,11 @@ function SetAndOpenEditorModel(buttonElement, dataObj) {
 }	
 
 // POPULATE EDITOR WINDOW
-function PopulateEditorModal(buttonElement, dataObj) {
+function PopulateEditorModal(buttonElement, dataObj) {	
+	
+	$(".leftNavigation li").removeClass("leftNavigationBackgroundActive");
+	
+	$(buttonElement).addClass("leftNavigationBackgroundActive");
     //1 Clear existing info in modal
     	ClearEditorModal();
     //2 Get all variables from js objects

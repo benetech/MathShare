@@ -32,6 +32,15 @@ html, body {
 	margin: 0px;
 }
 
+.leftNavigationBackgroundActive {
+	background-color: #0073D9 !important;
+	color: #FFF;
+}
+
+.leftNavigationBackgroundActive .navItemButton {
+	color: #fff;
+}
+
 .leftNavigation li {
 	background-color: #f0f0f0; 
 	padding: 10px; 
@@ -41,6 +50,11 @@ html, body {
 
 .leftNavigation .problemAnnotation {
 	display: block;
+	cursor: pointer;
+}
+
+.navItemButton {
+	cursor:pointer;
 }
 
 .leftNavigation .problemEquation {
