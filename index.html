@@ -51,10 +51,10 @@
 		      <li class="nav-item dropdown">
 			    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Problem Sets</a>
 			    <div class="dropdown-menu" role="list" aria-label="Problem Sets">
-			      <a role="li" class="dropdown-item" onclick="ReadFileInitiate('data/data01.js');">Problem Set 01</a>
-			      <a  role="li"class="dropdown-item" onclick="ReadFileInitiate('data/data02.js');">Problem Set 02</a>
-			      <a  role="li"class="dropdown-item" onclick="ReadFileInitiate('data/data03.js');">Problem Set 03</a>
-			      <a  role="li"class="dropdown-item" onclick="OpenFileUpload();">Upload</a>
+			      <a class="dropdown-item" onclick="ReadFileInitiate('data/data01.js');">Problem Set 01</a>
+			      <a class="dropdown-item" onclick="ReadFileInitiate('data/data02.js');">Problem Set 02</a>
+			      <a class="dropdown-item" onclick="ReadFileInitiate('data/data03.js');">Problem Set 03</a>
+			      <a class="dropdown-item" onclick="OpenFileUpload();">Upload</a>
 			      <input id='fileid' type='file' hidden/>
 			    </div>
 			  </li>
@@ -181,7 +181,7 @@
 			   <div class="col-lg-2" style="text-align: right;">
 					<button class="btn btn-default" id="undoDelete" data-toggle="tooltip" title="Undo Last Delete" onclick="UndoDeleteStep()" style="margin-bottom: 5px;">Undo</button>
 					<br>
-					<h3 role="heading" class="sr-only" aria-level="3">Clean up and add new step</h3>
+					<h3 role="heading" class="sr-only">Clean up and add new step</h3>
 					  <button class="btn btn-primary pointer" data-toggle="tooltip" title="Clean up the cross outs and start a new step (⌨: shift+enter)" onclick="NewRowOrRowsAfterCleanup(TheActiveMathField.latex());" style="margin-top: 11px;" data-step="3" data-intro="Clean-up your work and start a new step.">Add Step</button>
 			   </div>
 		    </div>
