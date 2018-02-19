@@ -63,6 +63,7 @@ function RenderMathEditor() {
 							'>=': '\\geq',		// use more familar ≥
 							'$': '\\$',			// make it easy to type $
 							'%': '\\%',			// make it easy to type %
+							'*': '\\times',		// what most people want
 							'?=': '\\overset{?}{=}'	// is equal to
 						  }
          // onSelectionDidChange: UpdatePalette
@@ -996,6 +997,13 @@ function HandleKeyDown(event)
 		CalculateAndReplace(TheActiveMathField);
 		return false;
 	}
+	
+	if (event.key === 'Escape') {
+		document.getElementById("mathEditorActive").previousElementSibling.focus();
+		return false;
+	}
+	
+	return true;
 }
 
 function GoogleAnalytics(var1) {
