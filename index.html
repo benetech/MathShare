@@ -36,11 +36,11 @@
   <div class="header">
 	<!-- BEGIN TOP HEADER/NAVIGATION -->
 	<header>
+	   <h2 class="sr-only"> Header </h2>
 		<nav class="navbar navbar-expand-lg navbar-default" id="topNavigation">
 		  <a class="navbar-brand" href="#">
 		    <img src="images/logo.png" alt="Galois Math Editor" height="37">
 		  </a>
-	      <h2 class="sr-only"> Navigation </h2>
 		  <div class="collapse navbar-collapse" id="navbarNav">
 		    <ul class="navbar-nav mr-auto">
 		    </ul>
@@ -119,17 +119,11 @@
 				<div class="col-lg-12">
 					<div id="workArea" class="mathEditor" style="border: 1px solid #CCC; border-radius: 5px; background-color: #FFF; height: 100px;" data-step="1" data-position="top" data-intro="Type or edit the equation using your keyboard and the math keys below. Try using the cross out, replace, and calc buttons to help show your work."> 
 						<h3 class="sr-only">Math editor</h3>		
-						<div id='mathEditorActive' role="application" tabindex="0" style="float: left; min-width: 400px; margin: 15px 0px 15px 15px;" onfocus="TheActiveMathField.focus();"> </div>
-						<script>
-						   function appEvent(element, event) {
-								var textArea = element.getElementsByClassName('ML__textarea--textarea').children[0];
-								console.log("App's handler got called");
-								textArea.onkeypress(element, event);
-							}
-						</script>
+						<div aria-label="edit equation" id='mathEditorActive' role="application" tabindex="0" style="float: left; min-width: 400px; margin: 15px 0px 15px 15px;" onfocus="TheActiveMathField.focus();"> </div>
 						<div style="float: right;">
-							<h3 class="mathAnnotation sr-only" style="float: right; border-left: 1px solid #CCC;">Describe your work</h3>
-							<span><textarea class="form-control" id="mathAnnotation" placeholder="Use the microphone button or type to explain your work" style="width: 280px; height: 98px; border-left: 1px solid #CCC;" data-step="2" data-intro="Describe your work by typing directly or using the microphone to record an explanation of your work."></textarea></span>
+							<h3 id="mathAnnotationHeader" class="mathAnnotation sr-only" style="float: right; border-left: 1px solid #CCC;" tabindex="-1">Describe your work</h3>
+							<span>
+							<textarea class="form-control" id="mathAnnotation" placeholder="Use the microphone button or type to explain your work" style="width: 280px; height: 98px; border-left: 1px solid #CCC;" data-step="2" data-intro="Describe your work by typing directly or using the microphone to record an explanation of your work."></textarea></span>
 							<span style="float: right;"><button id="start_button" class="btn btn-mic pointer" data-toggle="tooltip" onclick="GoogleAnalytics('S2T Clicked');"><img alt="Start Speaking" id="mic_img" src="images/mic.gif"></button></span>
 						</div>
 					</div>
@@ -188,7 +182,7 @@
 					<button class="btn btn-default" id="undoDelete" data-toggle="tooltip" title="Undo Last Delete" onclick="UndoDeleteStep()" style="margin-bottom: 5px;">Undo</button>
 					<br>
 					<h3 class="sr-only">Clean up and add new step</h3>
-					  <button class="btn btn-primary pointer" data-toggle="tooltip" title="Clean up the cross outs and start a new step (⌨: shift+enter)" onclick="NewRowOrRowsAfterCleanup(TheActiveMathField.latex());" style="margin-top: 11px;" data-step="3" data-intro="Clean-up your work and start a new step.">Add Step</button>
+					  <button class="btn btn-primary pointer" data-toggle="tooltip" title="Clean up the cross outs and start a new step (⌨: shift+enter)" onclick="NewRowOrRowsAfterCleanup(TheActiveMathField.latex()); MathLive.focus();" style="margin-top: 11px;" data-step="3" data-intro="Clean-up your work and start a new step.">Add Step</button>
 			   </div>
 		    </div>
 		    

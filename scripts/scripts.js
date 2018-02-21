@@ -106,8 +106,8 @@ function HTMLForRow(stepNumber, math, annotation, showTrash) {
 	html +=     '<span class="SROnly">' + OrdinalSuffix(stepNumber) +' step</span>';
 	html +=     '<span class="stepHeader" aria-hidden="true">Step '+stepNumber+':</span>';
 	html +=   '</span>';
-	html +=   '<span class="sr-only" role="heading" aria-level="4"> math: </span>';
-	html +=      '<span class="staticMath" >$$'+math+'$$</span>';
+	html +=   '<span class="sr-only"> math: </span>';
+	html +=   '<span class="staticMath" >$$'+math+'$$</span>';
 	html += '</div>';
 	html += '<div class="col-md-5">';
 	html +=    '<span class="sr-only"  role="heading" aria-level="4">reason:</span>';
@@ -391,13 +391,13 @@ function NewMathEditorRow(mathContent) {
 	$('.mathHistory').append( result );
 	ScrollHistoryToBottom();
 
-	MathLive.renderMathInElement( $('.mathStep:last') );
+	MathLive.renderMathInElement( $('.mathStep:last')[0] );
 	
 	// set the new active math and clear the annotation
 	TheActiveMathField.latex(mathContent);
 	$('#mathAnnotation').val('');
 	
-	MathLive.renderMathInDocument();
+	//MathLive.renderMathInDocument();
 }
 // Creates one or two rows (two if 'mathContent' contains cross outs)
 // @param {mathContent} latex for new active area after being cleaned.
@@ -408,6 +408,8 @@ function NewRowOrRowsAfterCleanup(mathContent) {
 	if ( mathContent!=cleanedUp ) {
 		NewMathEditorRow(cleanedUp);
 	}
+	let mathStepNumber = $('.mathStep:last').data('step');
+	$('#mathEditorActive').find('span[aria-live]')[0].textContent = "added step " + mathStepNumber;
 }
 
 //***************************************************************************************************************************************************
@@ -999,7 +1001,9 @@ function HandleKeyDown(event)
 	}
 	
 	if (event.key === 'Escape') {
-		document.getElementById("mathEditorActive").previousElementSibling.focus();
+		$("#mathAnnotationHeader").focus();
+			$('#mathEditorActive').find('span[aria-live]')[0].textContent = "after application";
+
 		return false;
 	}
 	

@@ -8,8 +8,11 @@ define(['mathlive/mathlive'],
 		 overrideDefaultInlineShortcuts: false,
 		 inlineShortcuts: { '>-': '>-',			// override builtin shortcut (\succ)
 							'<-': '<-',			// override builtin shortcut (\leftarrow)
+							'<=': '\\leq',		// use more familiar ≤
+							'>=': '\\geq',		// use more familar ≥
 							'$': '\\$',			// make it easy to type $
 							'%': '\\%',			// make it easy to type %
+							'*': '\\times',		// what most people want
 							'?=': '\\overset{?}{=}'	// is equal to
 						  }
          //onSelectionDidChange: UpdatePalette
