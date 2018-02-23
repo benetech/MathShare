@@ -41,6 +41,8 @@ $(document).ready(function(){
         var file = $('#fileid').get(0).files[0];
         readBlob();
     });
+	$('#undoDelete').hide();
+	$('#addStep').prop('disabled', true); 
 });
 
 
@@ -297,8 +299,11 @@ function PopulateEditorModal(buttonElement, dataObj) {
     
     //6 RENDER MATH EDITOR
     	RenderMathEditor();
-    	
-    //7 Wire up SAVE btn & hide if newEditor
+		
+	//7 DISABLE Add Step until new data
+	$('#addStep').prop('disabled', $('#mathAnnotation').val() === ''); 
+
+    //8 Wire up SAVE btn & hide if newEditor
     $('#BtnSave').show();
     $('#BtnSave').click(function() {
 	    SaveProblem(buttonElement);
@@ -408,6 +413,9 @@ function NewRowOrRowsAfterCleanup(mathContent) {
 	if ( mathContent!=cleanedUp ) {
 		NewMathEditorRow(cleanedUp);
 	}
+	
+	$('#addStep').prop('disabled', $('#mathAnnotation').val() === ''); 
+	
 	let mathStepNumber = $('.mathStep:last').data('step');
 	$('#mathEditorActive').find('span[aria-live]')[0].textContent = "added step " + mathStepNumber;
 }
@@ -441,6 +449,7 @@ function DeleteActiveMath() {
 	// read trash button to previous step
 	$('.mathStep:last .trashButtonContainer').html('<div style="float:right;"><button class="btn btn-default paletteButton" data-toggle="tooltip" onclick="DeleteActiveMath()" style="margin-bottom: 5px;"><i class="fa fa-trash-o" aria-hidden="true"></i><span class="sr-only" id="deleteButton">delete xxx step</span></button></div>');
 	
+	$('#addStep').prop('disabled', $('#mathAnnotation').val() === ''); 
 	TheActiveMathField.focus();
 }
 
@@ -455,6 +464,7 @@ function UndoDeleteStep() {
 	NewMathEditorRow( stackEntry.latex )
 	$('#mathAnnotation').val( stackEntry.annotation );
 	
+	$('#addStep').prop('disabled', $('#mathAnnotation').val() === ''); 
 	TheActiveMathField.focus();
 }
 
@@ -967,7 +977,7 @@ function UpdatePalette(mathField) {
 
 //***************************************************************************************************************************************************
 function HandleKeyDown(event)
-{	
+{
 	if (event.shiftKey && (event.key==='Delete' || event.key==='Backspace')) {
 		if ( TheActiveMathField.selectionIsCollapsed() ) {
 			// if an insertion cursor, extend the selection unless we are at an edge
@@ -990,7 +1000,7 @@ function HandleKeyDown(event)
 		return false;
 	}
 	
-	if (event.shiftKey && event.key==='Enter') {
+	if (event.shiftKey && event.key==='Enter' && $('#mathAnnotation').val() !== '') {
 		NewRowOrRowsAfterCleanup(TheActiveMathField.latex());
 		return false;
 	}

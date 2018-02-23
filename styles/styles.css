@@ -222,6 +222,10 @@ a {
 	background-color: #fafafa;
 }
 
+#addStep:disabled {
+	background: #8888ff;
+}
+
  .modalAreaHeading {
 	 color:#001F3F;
 	 font-style: italic;
