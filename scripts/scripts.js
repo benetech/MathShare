@@ -41,6 +41,9 @@ $(document).ready(function(){
         var file = $('#fileid').get(0).files[0];
         readBlob();
     });
+	//$('#MainWorkArea').hide();    
+	//$('#ProblemArea').show();
+
 	$('#undoDelete').hide();
 	$('#addStep').prop('disabled', true); 
 });
@@ -63,11 +66,19 @@ function RenderMathEditor() {
 							'<-': '<-',			// override builtin shortcut (\leftarrow)
 							'<=': '\\leq',		// use more familiar ≤
 							'>=': '\\geq',		// use more familar ≥
-							'$': '\\$',			// make it easy to type $
-							'%': '\\%',			// make it easy to type %
 							'*': '\\times',		// what most people want
 							'?=': '\\overset{?}{=}'	// is equal to
-						  }
+						  },
+		 onMoveOutOf:	function(mathField, dir) { return false; },	// don't wrap around
+		 onKeystroke:	function(key, event) {
+				// Esc key moves to the next field
+				if (key !== 'Esc') {
+					return true;
+				}
+				$("#mathAnnotationHeader").focus();
+				$('#mathEditorActive').find('span[aria-live]')[0].textContent = "after application";
+				return false;
+			}
          // onSelectionDidChange: UpdatePalette
 		}
 	);
@@ -308,7 +319,10 @@ function PopulateEditorModal(buttonElement, dataObj) {
     $('#BtnSave').click(function() {
 	    SaveProblem(buttonElement);
     });
-    
+	
+	//9 Hide/show parts of page
+	//$('#ProblemArea').hide();
+	//$('#MainWorkArea').show();    
 }
 
 //***************************************************************************************************************************************************
@@ -371,6 +385,9 @@ function SaveProblem(buttonElement) {
 	
 	alert("Problem Saved!");
 
+	//$('#MainWorkArea').hide();    
+	//$('#ProblemArea').show();
+
 }
 
 //***************************************************************************************************************************************************
@@ -393,7 +410,7 @@ function NewMathEditorRow(mathContent) {
 	$('.mathStep:last .trashButtonContainer').empty();
 
 
-	$('.mathHistory').append( result );
+	$('.mathHistory').html( result );
 	ScrollHistoryToBottom();
 
 	MathLive.renderMathInElement( $('.mathStep:last')[0] );
@@ -1009,14 +1026,7 @@ function HandleKeyDown(event)
 		CalculateAndReplace(TheActiveMathField);
 		return false;
 	}
-	
-	if (event.key === 'Escape') {
-		$("#mathAnnotationHeader").focus();
-			$('#mathEditorActive').find('span[aria-live]')[0].textContent = "after application";
-
-		return false;
-	}
-	
+		
 	return true;
 }
 
