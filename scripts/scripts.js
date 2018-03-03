@@ -410,7 +410,7 @@ function NewMathEditorRow(mathContent) {
 	$('.mathStep:last .trashButtonContainer').empty();
 
 
-	$('.mathHistory').html( result );
+	$('.mathHistory').append( result );
 	ScrollHistoryToBottom();
 
 	MathLive.renderMathInElement( $('.mathStep:last')[0] );
