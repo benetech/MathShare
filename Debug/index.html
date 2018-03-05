@@ -37,11 +37,11 @@
 
 <body lang=EN-US>
 <div class="mainWrapper">
-  <div class="header">
+  <div id="topNavigation" class="header">
 	<!-- BEGIN TOP HEADER/NAVIGATION -->
 	<header>
 	   <h2 class="sr-only"> Header </h2>
-		<nav class="navbar navbar-expand-lg navbar-default" id="topNavigation">
+		<nav class="navbar navbar-expand-lg navbar-default">
 		  <a class="navbar-brand" href="#">
 		    <img src="../images/logo.png" alt="Galois Math Editor" height="37">
 		  </a>
@@ -77,13 +77,18 @@
 	</header>
 	<!-- END TOP HEADER/NAVIGATION -->
   </div>
-<!--   <div class="pageHeader">Select a problem and try out Benetech's Math Editor (alpha)!</div> -->
   <div class="contentWrapper" id="ContentWrapper">
-    <nav class="leftNavigation" aria-labelledby="LeftNavigationHeader">
+    <nav id="LeftNavigation" class="leftNavigation" aria-labelledby="LeftNavigationHeader">
 		<h2 id="LeftNavigationHeader" class="sr-only"> Problems to solve </h2>
-		<div id="LeftNavigation"></div> <!-- place for list of problems -->
+		<div class="row">
+			<div class="col-lg-12 text-center">
+				<h2>Select a problem and try out Benetech's Math Editor (alpha)!</h2>
+				<br/><br/>
+			</div>
+		</div>
+		<div id="ProblemList"></div> <!-- place for list of problems -->
     </nav>
-    <main class="editorAndHistoryWrapper">
+    <main id="MainWorkArea" class="editorAndHistoryWrapper">
       <div class="problemHeader">
 		  <div>
 	        <span class="problemTitle" id="ProblemTitle" role="heading" aria-level="1">Problem title</span>
@@ -110,7 +115,7 @@
 
       </div>
 
-	  <div style="flex: 0 0 50px; border-top: 10px solid #0073D9; padding-left: 10px;">
+	  <div id="historyWorkSeparator">
 	    <h2>
 			<span class="modalAreaHeading"  style="margin-top: 8px;" aria-hidden="true">My Work</span>
 			<span class="sr-only">My Work</span>
@@ -144,6 +149,7 @@
 					  <span role="listitem"><button class="btn btn-default paletteButton" data-toggle="tooltip" title="Calculate (⌨: ctrl+=)" onclick="CalculateAndReplace(this); GoogleAnalytics('Calculate');">Calc</button></span>
 					  <br>
 					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Cross out & replace (⌨: shift+ctrl+delete)" onclick="MathLivePasteFromButton(this); GoogleAnalytics('Cross Out & Replace');">$$ \enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{\blacksquare}^{\square} $$</button></span>
+					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="stack below (⌨: ctrl+enter)" onclick="MathLivePasteFromButton(this); GoogleAnalytics('stack below');">$$ \underset{\square}{\blacksquare}$$</button></span>
 				  </div>
 				  <h4 class="sr-only">Operator buttons</h4>
 				  <div class="mathPalette" role="list">
@@ -210,7 +216,7 @@
   </div>
 
 	<!-- BEGIN FOOTER -->
-	<div class="footer">
+	<div id="footer" class="footer">
 	<footer class="footer" style="margin-bottom: 10px; background-color: #001F3F; border-top: 10px solid #001F3F; display: flex; border-bottom: 10px solid #001F3F;">
 		<h2 class="sr-only"> Footer </h2>
 	    <div style="flex: 0 0 100px;">
