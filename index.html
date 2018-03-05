@@ -73,13 +73,18 @@
 	</header>
 	<!-- END TOP HEADER/NAVIGATION -->
   </div>
-<!--   <div class="pageHeader">Select a problem and try out Benetech's Math Editor (alpha)!</div> -->
   <div class="contentWrapper" id="ContentWrapper">
-    <nav class="leftNavigation" aria-labelledby="LeftNavigationHeader">
+    <nav id="LeftNavigation" class="leftNavigation" aria-labelledby="LeftNavigationHeader">
 		<h2 id="LeftNavigationHeader" class="sr-only"> Problems to solve </h2>
-		<div id="LeftNavigation"></div> <!-- place for list of problems -->
+		<div class="row">
+			<div class="col-lg-12 text-center">
+				<h2>Select a problem and try out Benetech's Math Editor (alpha)!</h2>
+				<br/><br/>
+			</div>
+		</div>
+		<div id="ProblemList"></div> <!-- place for list of problems -->
     </nav>
-    <main class="editorAndHistoryWrapper">
+    <main id="MainWorkArea" class="editorAndHistoryWrapper">
       <div class="problemHeader">
 		  <div>
 	        <span class="problemTitle" id="ProblemTitle" role="heading" aria-level="1">Problem title</span>
@@ -106,7 +111,7 @@
 
       </div>
 
-	  <div style="flex: 0 0 50px; border-top: 10px solid #0073D9; padding-left: 10px;">
+	  <div id="historyWorkSeparator">
 	    <h2>
 			<span class="modalAreaHeading"  style="margin-top: 8px;" aria-hidden="true">My Work</span>
 			<span class="sr-only">My Work</span>
@@ -122,7 +127,6 @@
 						<div aria-label="edit equation" id='mathEditorActive' role="application" tabindex="0" style="float: left; min-width: 400px; margin: 15px 0px 15px 15px;" onfocus="TheActiveMathField.focus();"> </div>
 						<div style="float: right;">
 							<h3 id="mathAnnotationHeader" class="mathAnnotation sr-only" style="float: right; border-left: 1px solid #CCC;" tabindex="-1">Describe your work</h3>
-							<span>
 							    <textarea class="form-control" id="mathAnnotation" placeholder="Use the microphone button or type to explain your work (required)" style="width: 280px; height: 98px; border-left: 1px solid #CCC;" data-step="2" data-intro="Describe your work by typing directly or using the microphone to record an explanation of your work (required)." onkeyup="$('#addStep').prop('disabled', $(this).val() === '');"></textarea>
 							<span style="float: right;"><button id="start_button" class="btn btn-mic pointer" data-toggle="tooltip" onclick="GoogleAnalytics('S2T Clicked');"><img alt="Start Speaking" id="mic_img" src="images/mic.gif"></button></span>
 						</div>
@@ -139,6 +143,7 @@
 					  <span role="listitem"><button class="btn btn-default paletteButton" data-toggle="tooltip" title="Calculate (⌨: ctrl+=)" onclick="CalculateAndReplace(this); GoogleAnalytics('Calculate');">Calc</button></span>
 					  <br>
 					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Cross out & replace (⌨: shift+ctrl+delete)" onclick="MathLivePasteFromButton(this); GoogleAnalytics('Cross Out & Replace');">$$ \enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{\blacksquare}^{\square} $$</button></span>
+					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="stack below (⌨: ctrl+enter)" onclick="MathLivePasteFromButton(this); GoogleAnalytics('stack below');">$$ \underset{\square}{\blacksquare}$$</button></span>
 				  </div>
 				  <h4 class="sr-only">Operator buttons</h4>
 				  <div class="mathPalette" role="list">

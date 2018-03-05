@@ -41,13 +41,26 @@ $(document).ready(function(){
         var file = $('#fileid').get(0).files[0];
         readBlob();
     });
-	//$('#MainWorkArea').hide();    
-	//$('#ProblemArea').show();
+	ShowWorkArea(false);
 
 	$('#undoDelete').hide();
 	$('#addStep').prop('disabled', true); 
 });
 
+function ShowWorkArea(show) {
+	// shows either the work area or the question area
+	if (show) {
+		$('#topNavigation').hide();
+		$('#LeftNavigation').hide();
+		$('#MainWorkArea').show();    
+		$('#footer').hide();
+	} else {
+		$('#topNavigation').show();
+		$('#LeftNavigation').show();
+		$('#MainWorkArea').hide();    
+		$('#footer').show();
+	}
+}
 
 
 //***************************************************************************************************************************************************
@@ -196,8 +209,8 @@ function ReadFileFinish(data) {
 			"data-galois-metadata",
 			JSON.stringify(data.metadata)
 		);
-	$('#LeftNavigation').empty();
-	$('#LeftNavigation').html(PopulateMainPage(data));
+	$('#ProblemList').empty();
+	$('#ProblemList').html(PopulateMainPage(data));
 	
 	MathLive.renderMathInDocument();
 }
@@ -212,12 +225,15 @@ function PopulateMainPage(data) {
 	let functionToCall = 'SetAndOpenEditorModel(this, example01); ' +
 						 'document.getElementById("MySteps").focus(); ';
 	let eventHandlers = 'onclick=\'' +functionToCall+ '\' onkeypress=\'' +functionToCall+ '\'';
-	let html = '<ul aria-labelled-by="LeftNavigationHeader">';
-	html += '<li class="leftNavigationBackgroundActive" ' + eventHandlers + '>' + 
-				'<button class="navItemButton">' +
-				   '<span class="problemAnnotation">Getting Started</span>' +
-				'</button> ' +
-				'<span class="problemEquation">Click here to see an example problem and learn how to use the editor</span>' + 
+	let html = '<ul class="row" aria-labelled-by="LeftNavigationHeader">';
+	html +=
+			'<li class="col-md-4 text-center" style="list-style: none; margin-bottom: 20px;" ' + eventHandlers + '>' +
+				'<span class="btn btn-default btn-huge" style="cursor: pointer;"> ' +
+					'<button class="navItemButton ">' +
+					   '<span class="problemAnnotation">Getting Started</span><br/>' +
+					'</button> ' +
+					'<span class="problemEquation">Click here to see an example problem and learn how to use the editor</span>' + 
+				'</span>' +
 			'</li>';
 	let problemData = data.problems;
 	for (let i=0; i< problemData.length; i++) {
@@ -226,11 +242,13 @@ function PopulateMainPage(data) {
 						 'document.getElementById("MySteps").focus();';
 		eventHandlers = 'onclick=\'' +functionToCall+ '\' onkeypress=\'' +functionToCall+ '\'';
 		html +=
-			'<li ' + eventHandlers + '>' +
-				'<button class="navItemButton">' +
-					'<span class="problemAnnotation">' +(i+1) + '. ' + problem.annotation + '</span>' +
-			    '</button>' +
-				'<div  class="problemEquation staticMath">$$' + problem.equation + '$$</div>' + 
+			'<li class="col-md-4 text-center" style="list-style: none; margin-bottom: 20px;" ' + eventHandlers + '>' +
+				'<span class="btn btn-default btn-huge" style="cursor: pointer;"> ' +
+					'<button class="navItemButton">' +
+						'<span class="problemAnnotation">' +(i+1) + '. ' + problem.annotation + '</span>' +
+					'</button>' +
+					'<span  class="problemEquation staticMath">$$' + problem.equation + '$$</span>' + 
+				'</span>' +
 			'</li>';
 	};
 	html += '</ul>';	
@@ -321,8 +339,7 @@ function PopulateEditorModal(buttonElement, dataObj) {
     });
 	
 	//9 Hide/show parts of page
-	//$('#ProblemArea').hide();
-	//$('#MainWorkArea').show();    
+	ShowWorkArea(true);
 }
 
 //***************************************************************************************************************************************************
@@ -385,8 +402,7 @@ function SaveProblem(buttonElement) {
 	
 	alert("Problem Saved!");
 
-	//$('#MainWorkArea').hide();    
-	//$('#ProblemArea').show();
+	ShowWorkArea(false);
 
 }
 
