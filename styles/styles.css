@@ -23,7 +23,7 @@ html, body {
 .leftNavigation {
   overflow-y: auto;
   flex: 0 0 100%;
-  background-color: #0062d94f;
+  background-color: #FFFFF;
   border-right: 1px solid #CCC;
 }
 
@@ -50,20 +50,24 @@ html, body {
 	cursor: pointer;
 }
 
-.leftNavigation .problemAnnotation {
-	display: block;
-	cursor: pointer;
-}
-
+*/
 .navItemButton {
 	cursor:pointer;
 }
 
-.leftNavigation .problemEquation {
+.problemAnnotation {
 	display: block;
+	text-align: center;
+	cursor: pointer;
+	margin-bottom: 2ex;
+}
+
+.problemEquation {
+	display: block;
+	text-align: center;
 	padding-left: 15px;
 }
-*/
+
 .navItemButton {
   border: none;
   background-color: inherit;
