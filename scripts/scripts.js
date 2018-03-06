@@ -228,9 +228,9 @@ function PopulateMainPage(data) {
 	let html = '<ul class="row" aria-labelled-by="LeftNavigationHeader">';
 	html +=
 			'<li class="col-md-4 text-center" style="list-style: none; margin-bottom: 20px;" ' + eventHandlers + '>' +
-				'<span class="btn btn-default btn-huge" style="cursor: pointer;"> ' +
-					'<button class="navItemButton ">' +
-					   '<span class="problemAnnotation">Getting Started</span><br/>' +
+				'<span class="btn btn-default btn-huge navItemButton"> ' +
+					'<button class="navItemButton">' +
+					   '<span class="problemAnnotation">Getting Started</span>' +
 					'</button> ' +
 					'<span class="problemEquation">Click here to see an example problem and learn how to use the editor</span>' + 
 				'</span>' +
@@ -243,7 +243,7 @@ function PopulateMainPage(data) {
 		eventHandlers = 'onclick=\'' +functionToCall+ '\' onkeypress=\'' +functionToCall+ '\'';
 		html +=
 			'<li class="col-md-4 text-center" style="list-style: none; margin-bottom: 20px;" ' + eventHandlers + '>' +
-				'<span class="btn btn-default btn-huge" style="cursor: pointer;"> ' +
+				'<span class="btn btn-default btn-huge navItemButton"> ' +
 					'<button class="navItemButton">' +
 						'<span class="problemAnnotation">' +(i+1) + '. ' + problem.annotation + '</span>' +
 					'</button>' +
@@ -741,10 +741,12 @@ function ReplaceTeXCommands(str, replacements) {
 				if ( top.patterns.length>0 ) {
 					let replacement = top.patterns[0].replacement;
 					if (replacement[0]==='`' && replacement[replacement.length-1]==='`') {
+						// if eval fails, don't want `` in replacement
+						replacement = replacement.slice(1,-1);
 						// evaluate the contents
-						let evalResult = DoCalculation(replacement.slice(1,-1));
+						let evalResult = DoCalculation(replacement);
 						if (evalResult!=="") {
-							replacement = evalResult==0 ? "" : evalResult;
+							replacement = evalResult==0 ? "" : evalResult;	// don't show '0'
 						}
 					}
 					str = str.substring(0, top.iCommandStart) + replacement + str.substring(i+1);
