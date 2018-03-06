@@ -630,6 +630,7 @@ const TeXCommands = {
 //			'match' -- an array (one per required/default argument) of reg exp match patterns
 //					  (default: match any)
 //			'replacement' - a reg exp pattern describing what to do with the arguments
+//						    if replacement starts and ends with `'s (e.g., `$0+$1`), it is evaluated
 //			Note: because regular expressions can't handle nested {}s (etc),
 //				{}s should be avoided in the matches
 // 		'defaults': if one of the commands has optional args and no arg is given, what default should be used
@@ -739,6 +740,13 @@ function ReplaceTeXCommands(str, replacements) {
 				// processed all the args, done with command
 				if ( top.patterns.length>0 ) {
 					let replacement = top.patterns[0].replacement;
+					if (replacement[0]==='`' && replacement[replacement.length-1]==='`') {
+						// evaluate the contents
+						let evalResult = DoCalculation(replacement.slice(1,-1));
+						if (evalResult!=="") {
+							replacement = evalResult==0 ? "" : evalResult;
+						}
+					}
 					str = str.substring(0, top.iCommandStart) + replacement + str.substring(i+1);
 					i = top.iCommandStart + replacement.length - 1; 
 				}
@@ -828,7 +836,10 @@ function CleanUpCrossouts(latexStr, options) {
 		// now do the same for underset, overset, and clean up fractions
 		result = ReplaceTeXCommands( result,
 						{
-						  "underset": {patterns: [{match: [".*", replaceChar], replacement: "{$0}"}]},
+						  "underset": {patterns: [
+									{match: [".*", replaceChar], replacement: "{$0}"},
+									{match: ["^(\\+|-)?\\d*\\.?\\d*$", "^(\\+|-)?\\d*\\.?\\d*$"], replacement: "`$1 + $0`"}
+								  ] },
 						  "overset": {patterns: [{match: [".*", replaceChar], replacement: "{$0}"}]},
 						  "frac": {patterns: [
 									{match: ["", ""], replacement: "\\frac{1}{1}"},
@@ -858,6 +869,45 @@ function CleanUpCrossouts(latexStr, options) {
 // Otherwise, alert that no calculations could be done.
 // @param {element} element being operated on (currently ignored, uses 'TheActiveMathField' instead)
 // @return {nothing} No return value
+
+function DoCalculation(latex) {
+	// Return either the calculated result (as a string) or an empty string if can't calculate
+	// Start by converting various character points into one set
+	let expr = latex.replace(/\\times/g, '*')
+				 .replace(/\\cdot/g, '*')
+				 .replace(/\\div/g, '/')
+				 .replace(/\^/g, '**');
+	
+	// now deal with the ones that are TeX commands
+	expr = ReplaceTeXCommands( expr, { "frac": {patterns: "(($0)/($1))"},
+									   "sqrt": {patterns: "(($1)**(1/($0)))" , defaults: ["2"]}
+									 } );
+								
+	// replace any {}s with ()s -- e.g, deals with 3^{4+5)					
+	expr = expr.replace(/\{/g, '(').replace(/\}/g, ")");
+	
+	// handle implied multiplication -- two cases (...)(...) and number (...) are common
+	// note that fractions and roots have been converted to have parens around them
+	expr = expr.replace(/\)\(/g, ")*(").replace(/(\d)\(/g, "$1*(")
+						
+	// make sure there are numbers AND operators
+	if ( !(/[\d.]/.test(expr) && /[+\-*/@]/.test(expr)) ) {
+		return "";
+	}
+	// avoid security issues, etc., and rule out letters, etc, that can be part of JS program
+	if ( /[a-zA-Z<=>]/.test(expr) ) {
+		return "";
+	}
+	
+	try {
+		let result = eval(expr);
+		let rounded = Math.round(result);
+		return Math.abs(result-rounded)<1e-15 ? rounded : result;
+	} catch(e) {
+		return "";
+	}
+}
+
 
 function CalculateAndReplace(element) {
 	
@@ -904,7 +954,7 @@ function CalculateAndReplace(element) {
 	}
 	
 	let selection = TheActiveMathField.selectedText('latex');
-	let result = doCalculation( CleanUpCrossouts(selection) );
+	let result = DoCalculation( CleanUpCrossouts(selection) );
 	if (!result) {
 		return alert( "Selection must contain only numbers and operators.");
 	}
