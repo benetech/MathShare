@@ -44,7 +44,14 @@ $(document).ready(function(){
 	ShowWorkArea(false);
 
 	$('#undoDelete').hide();
-	$('#addStep').prop('disabled', true); 
+	$('#addStep').prop('disabled', true);
+	$('#BtnDiscard').click(function() {
+		if (confirm("Any work on this problem will NOT be saved")) {
+			ShowWorkArea(false);
+			return true;
+		}
+		return false;
+	});
 });
 
 function ShowWorkArea(show) {
@@ -332,8 +339,7 @@ function PopulateEditorModal(buttonElement, dataObj) {
 	//7 DISABLE Add Step until new data
 	$('#addStep').prop('disabled', $('#mathAnnotation').val() === ''); 
 
-    //8 Wire up SAVE btn & hide if newEditor
-    $('#BtnSave').show();
+    //8 Wire up DISCARD & SAVE btns
     $('#BtnSave').click(function() {
 	    SaveProblem(buttonElement);
     });
@@ -365,7 +371,6 @@ function ClearEditorModal() {
 	
 	//5. Unwire Save Buttons
 		$('#BtnSave').unbind('click');
-		//$('#BtnCancel').unbind('click');
 	
 	//6. Hide Undo Button
 		$('#undoDelete').hide();
