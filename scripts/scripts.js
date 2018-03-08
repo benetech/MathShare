@@ -44,7 +44,6 @@ $(document).ready(function(){
 	ShowWorkArea(false);
 
 	$('#undoDelete').hide();
-	$('#addStep').prop('disabled', true);
 });
 
 function ShowWorkArea(show) {
@@ -52,11 +51,13 @@ function ShowWorkArea(show) {
 	if (show) {
 		$('#topNavigation').hide();
 		$('#LeftNavigation').hide();
-		$('#MainWorkArea').show();    
+		$('#MainWorkArea').show(); 
+		$('#MySteps').focus();
 		$('#footer').hide();
 	} else {
 		$('#topNavigation').show();
 		$('#LeftNavigation').show();
+		$("#LeftNavigation li:first").focus();
 		$('#MainWorkArea').hide();    
 		$('#footer').show();
 	}
@@ -329,10 +330,7 @@ function PopulateEditorModal(buttonElement, dataObj) {
     //6 RENDER MATH EDITOR
     	RenderMathEditor();
 		
-	//7 DISABLE Add Step until new data
-	$('#addStep').prop('disabled', $('#mathAnnotation').val() === ''); 
-
-    //8 Wire up DISCARD & SAVE btns
+    //7 Wire up DISCARD & SAVE btns
 	$('#BtnDiscard').click(function() {
 		if (ProblemIsUnchanged(buttonElement)) {
 			ShowWorkArea(false);
@@ -349,7 +347,7 @@ function PopulateEditorModal(buttonElement, dataObj) {
 	    SaveProblem(buttonElement);
     });
 	
-	//9 Hide/show parts of page
+	//8 Hide/show parts of page
 	ShowWorkArea(true);
 }
 
@@ -467,10 +465,18 @@ function NewRowOrRowsAfterCleanup(mathContent) {
 		NewMathEditorRow(cleanedUp);
 	}
 	
-	$('#addStep').prop('disabled', $('#mathAnnotation').val() === ''); 
-	
 	let mathStepNumber = $('.mathStep:last').data('step');
 	$('#mathEditorActive').find('span[aria-live]')[0].textContent = "added step " + mathStepNumber;
+}
+
+function AddStep() {
+	if (!$('#mathAnnotation').val()) {
+		$('#mathAnnotation').focus();
+		alert("Please provide a reason.");
+		return;
+	}
+	NewRowOrRowsAfterCleanup(TheActiveMathField.latex());
+	TheActiveMathField.focus();
 }
 
 //***************************************************************************************************************************************************
@@ -502,7 +508,6 @@ function DeleteActiveMath() {
 	// read trash button to previous step
 	$('.mathStep:last .trashButtonContainer').html('<div style="float:right;"><button class="btn btn-default paletteButton" data-toggle="tooltip" onclick="DeleteActiveMath()" style="margin-bottom: 5px;"><i class="fa fa-trash-o" aria-hidden="true"></i><span class="sr-only" id="deleteButton">delete xxx step</span></button></div>');
 	
-	$('#addStep').prop('disabled', $('#mathAnnotation').val() === ''); 
 	TheActiveMathField.focus();
 }
 
@@ -517,7 +522,6 @@ function UndoDeleteStep() {
 	NewMathEditorRow( stackEntry.latex )
 	$('#mathAnnotation').val( stackEntry.annotation );
 	
-	$('#addStep').prop('disabled', $('#mathAnnotation').val() === ''); 
 	TheActiveMathField.focus();
 }
 
