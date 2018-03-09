@@ -20,7 +20,14 @@ html, body {
 .header, .footer {
   flex: 0 0 50px;
 }
+
+/* Note:  the 'hidden' value for overflow-x is due to a bootstrap bug in "row" that causes the 
+ *   horizontal scrollbars to appear:  https://github.com/twbs/bootstrap/issues/8959
+ * The work around mentioned near the bottom of that thread (adding class="container-fluid")
+ *   didn't work.
+ */
 .leftNavigation {
+overflow-x: hidden;
   overflow-y: auto;
   flex: 0 0 100%;
   background-color: #FFFFF;
@@ -103,6 +110,7 @@ html, body {
 .editorAndHistoryWrapper {
   background-color: #f0f0f0; 
   width: 100%;
+overflow-x: hidden;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -116,6 +124,7 @@ html, body {
 
 .historyWrapper {
   height: 100%;
+overflow-x: hidden;
   overflow-y: scroll;
   padding-left: 10px;
   padding-right: 10px;
