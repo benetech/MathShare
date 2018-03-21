@@ -473,6 +473,7 @@ function AddStep() {
 	if (!$('#mathAnnotation').val()) {
 		$('#mathAnnotation').focus();
 		alert("Please provide a reason.");
+		$('#mathAnnotation').focus();
 		return;
 	}
 	NewRowOrRowsAfterCleanup(TheActiveMathField.latex());
@@ -635,7 +636,7 @@ const TeXCommands = {
 	"cancel": [true],
 	"bcancel": [true],
 	"xcancel": [true],
-	"begin": [true],
+	"begin": [true, true, true],
 	"end": [true],
 };
 
@@ -692,6 +693,24 @@ function ReplaceTeXCommands(str, replacements) {
 		topOfStack.patterns = newPatterns;
 	}
 	
+	function ReplaceInStr(top, str, i) {
+		if ( top.patterns.length>0 ) {
+			let replacement = top.patterns[0].replacement;
+			if (replacement[0]==='`' && replacement[replacement.length-1]==='`') {
+				// if eval fails, don't want `` in replacement
+				replacement = replacement.slice(1,-1);
+				// evaluate the contents
+				let evalResult = DoCalculation(replacement);
+				if (evalResult!=="") {
+					replacement = evalResult==0 ? "" : evalResult;	// don't show '0'
+				}
+			}
+			str = str.substring(0, top.iCommandStart) + replacement + str.substring(i+1);
+			i = top.iCommandStart + replacement.length - 1; 
+		}
+		return [str, i]
+	}
+
 	let braceCount = 0;								// changed when processing command args ({}s)
 	let i = 0;
 	let parseStack = [];
@@ -706,10 +725,15 @@ function ReplaceTeXCommands(str, replacements) {
 		if ( parseStack.length===0 ) {
 			// optimization...
 			// not processing a TeX command, so no need to worry about {} or [] -- skip to command
-			i = str.indexOf('\\', i);
-			if ( i===-1) {
+			let iBackSlash = str.indexOf('\\', i);
+			if ( iBackSlash===-1) {
 				i = str.length;							// no more commands, we're done
 				break;
+			}
+			if (iBackSlash+1<str.length && str[iBackSlash+1]!=='\\') { // avoid escaped '\' 
+				i = iBackSlash;
+			} else {
+				i = iBackSlash+2;	// after escaped '\'
 			}
 		}
 			
@@ -762,28 +786,21 @@ function ReplaceTeXCommands(str, replacements) {
 			top.iArg++;
 			if (top.iArg==top.args.length) {
 				// processed all the args, done with command
-				if ( top.patterns.length>0 ) {
-					let replacement = top.patterns[0].replacement;
-					if (replacement[0]==='`' && replacement[replacement.length-1]==='`') {
-						// if eval fails, don't want `` in replacement
-						replacement = replacement.slice(1,-1);
-						// evaluate the contents
-						let evalResult = DoCalculation(replacement);
-						if (evalResult!=="") {
-							replacement = evalResult==0 ? "" : evalResult;	// don't show '0'
-						}
-					}
-					str = str.substring(0, top.iCommandStart) + replacement + str.substring(i+1);
-					i = top.iCommandStart + replacement.length - 1; 
-				}
+				[str, i] = ReplaceInStr(top, str, i);
 				// else if no match do nothing
 				parseStack.pop();
+			} else if (top.isBegin && top.iArg+1===top.args.length) {
+				top.iArgStart = i+1;
 			}
 			break;
 		}
 		case '\\': {
 			// get command name
-			const iNameStart=i+1;
+			let iNameStart=i+1;
+			if (str.charAt(iNameStart)==='\\') {
+				i++;
+				break;	// escaped '\'
+			}
 			let iNameEnd = iNameStart;
 			for( let ch=str.charAt(iNameEnd); /[a-zA-Z]/.test(ch); iNameEnd++ ) // skip letters
 				ch = str.charAt(iNameEnd);
@@ -793,9 +810,25 @@ function ReplaceTeXCommands(str, replacements) {
 			const commandName = str.slice(iNameStart, iNameEnd);
 			const commandArgs = TeXCommands[commandName];// see if it is a TeX command with args
 			
-			i = iNameEnd-1;
+			if (commandName=="end" && parseStack.length>0) {
+				// matching begin/end pair (hopefully) -- process contents as if it were an arg
+				let top = stackTop(parseStack);
+				if (!top.isBegin) {
+					throw ("Bad TeX syntax: \\end found without matching \\begin");
+				}
+				let iChange = i;	// change after replacement
+				MatchAndReplace(top, str, i);
+				[str, i] = ReplaceInStr(top, str, i);
+				iChange = i - iChange;
+				parseStack.pop();
+				iNameStart = iNameStart + iChange;
+				iNameEnd = iNameEnd + iChange;
+			} else {
+				i = iNameEnd-1;
+			}
 			if (!commandArgs)
 				break;								// search some more
+			
 						
 			let actions = replacements[commandName];
 			if (actions) {
@@ -812,7 +845,8 @@ function ReplaceTeXCommands(str, replacements) {
 								  nestingLevel: braceCount,
 								  defaultValues: actions.defaults || [],
 								  patterns: actions.patterns,
-								  iArgStart: iNameEnd+1
+								  iArgStart: iNameEnd+1,
+								  isBegin: commandName==="begin"
 								 } );
 				expectingOpen = true;
 			}
@@ -863,15 +897,19 @@ function CleanUpCrossouts(latexStr, options) {
 		result = ReplaceTeXCommands( result,
 						{
 						  "underset": {patterns: [
-									{match: [".*", replaceChar], replacement: "{$0}"},
-									{match: ["^(\\+|-)?\\d*\\.?\\d*$", "^(\\+|-)?\\d*\\.?\\d*$"], replacement: "`$1 + $0`"}
+									{match: [".*", replaceChar], replacement: "{$0}"}
 								  ] },
 						  "overset": {patterns: [{match: [".*", replaceChar], replacement: "{$0}"}]},
 						  "frac": {patterns: [
 									{match: ["", ""], replacement: "\\frac{1}{1}"},
 									{match: ["", ".+"], replacement: "\\frac{1}{$1}"},
 									{match: [".+", ""], replacement: "\\frac{$0}{1}"}
-								  ] }
+								  ] },
+						  // used for "stacks"
+						  "begin": {patterns: [
+									{match: ["array", "r", /*"^(\\+|-)?\\d*\\.?\\d* \\\\\\\\ (\\+|-)?\\d*\\.?\\d*$"*/".*"], replacement: ""}
+						  		] },
+						  "end": {patterns: [{match: ["array"], replacement: ""}] }
 						} );
 	}
 	
