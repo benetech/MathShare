@@ -944,6 +944,7 @@ function DoCalculation(latex) {
 	let expr = latex.replace(/\\times/g, '*')
 				 .replace(/\\cdot/g, '*')
 				 .replace(/\\div/g, '/')
+				 .replace(/−/g, '-') // U2212 -> ASCII minus
 				 .replace(/\^/g, '**');
 	
 	// now deal with the ones that are TeX commands
@@ -1023,7 +1024,7 @@ function CalculateAndReplace(element) {
 	
 	let selection = TheActiveMathField.selectedText('latex');
 	let result = DoCalculation( CleanUpCrossouts(selection) );
-	if (!result) {
+	if (result==="") {
 		return alert( "Selection must contain only numbers and operators.");
 	}
 	
