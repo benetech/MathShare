@@ -10,7 +10,7 @@
 	  gtag('config', 'UA-107874733-1');
 	</script>
 	<meta charset="utf-8">
-	<title>Galois Math Editor</title>
+	<title>Benetech Math Editor</title>
 	<link rel="icon" type="image/png" href="images/favicon.png" />
 	<link rel="stylesheet" href="lib/mathlivedist/mathlive.core.css" type="text/css">
 	<link rel="stylesheet" href="lib/mathlivedist/mathlive.css" type="text/css">
@@ -39,7 +39,7 @@
 	   <h2 class="sr-only"> Header </h2>
 		<nav class="navbar navbar-expand-lg navbar-default" id="topNavigation">
 		  <a class="navbar-brand" href="#">
-		    <img src="images/logo.png" alt="Galois Math Editor" height="37">
+		    <img src="images/logo.png" alt="Benetech Math Editor" height="37">
 		  </a>
 		  <div class="collapse navbar-collapse" id="navbarNav">
 		    <ul class="navbar-nav mr-auto">
@@ -143,7 +143,7 @@
 					  <span role="listitem"><button class="btn btn-default paletteButton" data-toggle="tooltip" title="Calculate (⌨: ctrl+=)" onclick="CalculateAndReplace(this); GoogleAnalytics('Calculate');">Calc</button></span>
 					  <br>
 					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="Cross out & replace (⌨: shift+ctrl+delete)" onclick="MathLivePasteFromButton(this); GoogleAnalytics('Cross Out & Replace');">$$ \enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{\blacksquare}^{\square} $$</button></span>
-					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="stack below (⌨: ctrl+enter)" onclick="MathLivePasteFromButton(this); GoogleAnalytics('stack below');">$$ \underset{\square}{\blacksquare}$$</button></span>
+					  <span role="listitem"><button class="staticMath btn btn-default paletteButton" data-toggle="tooltip" title="stack below (⌨: ctrl+enter)" onclick="MathLivePasteFromButton(this); GoogleAnalytics('stack below');">$$ \begin{array}{r} \blacksquare \\ \square\end{array}$$</button></span>
 				  </div>
 				  <h4 class="sr-only">Operator buttons</h4>
 				  <div class="mathPalette" role="list">
