@@ -859,6 +859,10 @@ function CleanUpCrossouts(latexStr, options) {
 		// if there are any cross out patterns that use sub/superscripts for replacements, fix them
 		result = result.replace( new RegExp(replaceChar+'(\\^|_)?', 'g'), "" );
 		
+		// elmininate extra level of '{}'s which messes up other matches -- comes from {replaceChar} -> {}
+		result = result.replace( new RegExp('{{}}', 'g'), "{}" );
+
+		
 		// now do the same for underset, overset, and clean up fractions
 		result = ReplaceTeXCommands( result,
 						{
