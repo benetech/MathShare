@@ -1,4 +1,6 @@
-# Intro.js v2.7.0
+# Intro.js v2.9.3
+
+[![Build Status](https://travis-ci.org/usablica/intro.js.svg?branch=master)](https://travis-ci.org/usablica/intro.js)
 
 > Better introductions for websites and features with a step-by-step guide for your projects.
 
@@ -28,7 +30,7 @@ For example:
 <a href='http://google.com/' data-intro='Hello step one!'></a>
 ````
 
-See all attributes [here](https://github.com/usablica/intro.js/wiki/Documentation/#attributes).
+See all attributes [here](https://introjs.com/docs/intro/attributes/).
 
 **3)** Call this JavaScript function:
 ```javascript
@@ -71,12 +73,18 @@ Want to learn faster and easier? Here we have **Instant IntroJs**, Packt Publish
 
 ## <a href="https://github.com/usablica/intro.js/blob/master/changelog.md">Release History</a>
 
-## Author
+## Authors
 **Afshin Mehrabani**
 
 - [Twitter](https://twitter.com/afshinmeh)
 - [Github](https://github.com/afshinm)
 - [Personal page](http://afshinm.name/)
+
+**Benjamin J DeLong**
+
+- [Twitter](https://twitter.com/bozdoz)
+- [Github](https://github.com/bozdoz)
+- [Personal page](https://bozdoz.com/)
 
 [Other contributors](https://github.com/usablica/intro.js/graphs/contributors)
 
