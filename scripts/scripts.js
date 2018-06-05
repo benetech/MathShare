@@ -166,8 +166,8 @@ function ReadFileInitiate(fileName) {
 		ReadFileFinish({
 			"metadata": { "title": "Fallback on read failure" },
 			"problems": [
-				{"metadata": {"title":"Local Prob 1"},
-				 "originalProblem": {"equation":"3(-\\frac{1}{6})(-\\frac{2}{5})","annotation":"LOCAL Find the product"},
+				{"metadata": {"title":"Local Prob 1 (testing mathlive in annotation $$\\pi$$)"},
+				 "originalProblem": {"equation":"3(-\\frac{1}{6})(-\\frac{2}{5})","annotation":" (testing mathlive in annotation $$\\alpha$$)LOCAL Find the product"},
 				 "currentEditor": {"equation":"3(-\\frac{1}{6})(-\\frac{2}{5})","annotation":""},
 				 "history": [{"equation":"3(-\\frac{1}{6})(-\\frac{2}{5})","annotation":"Find the product"}]},
 				{"metadata": {"title":"Local Prob 2"},		 
@@ -807,27 +807,26 @@ function ReplaceTeXCommands(str, replacements) {
 			if ( iNameEnd>iNameStart )
 				iNameEnd--;								// back up to end of name
 			// note: loop might exit immediately for escaped chars, but the following still works
-			const commandName = str.slice(iNameStart, iNameEnd);
+			let commandName = str.slice(iNameStart, iNameEnd);
 			const commandArgs = TeXCommands[commandName];// see if it is a TeX command with args
 			
 			if (commandName=="end" && parseStack.length>0) {
-				// matching begin/end pair (hopefully) -- process contents as if it were an arg
+				// matching begin/end pair (hopefully) -- process contents of \begin as if it were an arg
 				let top = stackTop(parseStack);
 				if (!top.isBegin) {
 					throw ("Bad TeX syntax: \\end found without matching \\begin");
 				}
-				let iChange = i;	// change after replacement
 				MatchAndReplace(top, str, i);
-				[str, i] = ReplaceInStr(top, str, i);
-				iChange = i - iChange;
+				
+				let iEndOfEnd = str.indexOf('}', i+1);	// wipe out all of \begin...\end{arg}
+				[str, i] = ReplaceInStr(top, str, iEndOfEnd);
 				parseStack.pop();
-				iNameStart = iNameStart + iChange;
-				iNameEnd = iNameEnd + iChange;
+				commandName = '';						// processed \end
 			} else {
 				i = iNameEnd-1;
 			}
 			if (!commandArgs)
-				break;								// search some more
+				break;									// search some more
 			
 						
 			let actions = replacements[commandName];
@@ -911,7 +910,7 @@ function CleanUpCrossouts(latexStr, options) {
 								  ] },
 						  // used for "stacks"
 						  "begin": {patterns: [
-									{match: ["array", "r", /*"^(\\+|-)?\\d*\\.?\\d* \\\\\\\\ (\\+|-)?\\d*\\.?\\d*$"*/".*"], replacement: ""}
+									{match: ["array", "r", /*"^(\\+|-)?\\d*\\.?\\d* \\\\\\\\ (\\+|-)?\\d*\\.?\\d*$"*/".*"], replacement: "`$2`"}
 						  		] },
 						  "end": {patterns: [{match: ["array"], replacement: ""}] }
 						} );
@@ -958,6 +957,9 @@ function DoCalculation(latex) {
 	// handle implied multiplication -- two cases (...)(...) and number (...) are common
 	// note that fractions and roots have been converted to have parens around them
 	expr = expr.replace(/\)\(/g, ")*(").replace(/(\d)\(/g, "$1*(")
+	
+	// stacked exprs are separated with '\\' -- consider that as addition
+	expr = expr.replace(/\\\\/g,  " + ");
 						
 	// make sure there are numbers AND operators
 	if ( !(/[\d.]/.test(expr) && /[+\-*/@]/.test(expr)) ) {
