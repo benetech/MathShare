@@ -211,7 +211,6 @@ a {
   margin: 0px 0px 4px 0px;
   width: 37px;
   height: 37px;
-  background-color: #f0f0f0!important;
   border: 1px solid #CCC;
   cursor: pointer;
 }
@@ -242,6 +241,26 @@ a {
 
 .btn-default {
 	background-color: #fafafa;
+}
+
+.btn-delete {
+	background-color: #f0f0f0!important;
+}
+
+.btn-facility {
+	background-color: #f6ff5d!important;
+}
+
+.btn-operator {
+	background-color: #ffd35c!important;
+}
+
+.btn-notation {
+	background-color: #00ff9a!important;
+}
+
+.btn-symbol {
+	background-color: #a479ff!important;
 }
 
 #addStep:disabled {
