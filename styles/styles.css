@@ -244,23 +244,23 @@ a {
 }
 
 .btn-delete {
-	background-color: #f0f0f0!important;
+	background-color: #f0f0f0;
 }
 
 .btn-facility {
-	background-color: #f6ff5d!important;
+	background-color: #f6ff5d;
 }
 
 .btn-operator {
-	background-color: #ffd35c!important;
+	background-color: #ffd35c;
 }
 
 .btn-notation {
-	background-color: #00ff9a!important;
+	background-color: #00ff9a;
 }
 
 .btn-symbol {
-	background-color: #a479ff!important;
+	background-color: #a479ff;
 }
 
 #addStep:disabled {
