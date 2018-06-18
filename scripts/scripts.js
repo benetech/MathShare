@@ -144,7 +144,7 @@ function HTMLForRow(stepNumber, math, annotation, showTrash) {
 	html += '</div>';
 	html +=  '<div class="col-md-1 trashButtonContainer" style="text-align: right; float:right;">';
 	if (showTrash) { 
-		html +=  '<button class="btn btn-default paletteButton" data-toggle="tooltip" title="Delete this Step" onclick="DeleteActiveMath()" style="margin-bottom: 5px;">' +
+		html +=  '<button class="btn btn-delete paletteButton" data-toggle="tooltip" title="Delete this Step" onclick="DeleteActiveMath()" style="margin-bottom: 5px;">' +
 						'<i class="fa fa-trash-o" aria-hidden="true"></i>' +
 						'<span class="SROnly">Delete ' + OrdinalSuffix(stepNumber) +' step</span>' +
 			'</button>';
