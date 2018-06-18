@@ -13,9 +13,7 @@ html, body {
 }
 
 .contentWrapper {
-  display: flex;
-  height: 100%
-  
+  display: flex;  
 }
 .header, .footer {
   flex: 0 0 50px;
@@ -123,7 +121,6 @@ overflow-x: hidden;
 }
 
 .historyWrapper {
-  height: 100%;
 overflow-x: hidden;
   overflow-y: scroll;
   padding-left: 10px;
