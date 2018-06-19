@@ -150,7 +150,9 @@
 					  <br>
 					  <span role="listitem"><button class="staticMath btn btn-facility paletteButton" data-toggle="tooltip" title="stack below (⌨: ctrl+enter)" onclick="MathLivePasteFromButton(this); GoogleAnalytics('stack below');">$$ \begin{array}{r} \blacksquare \\ \square\end{array}$$</button></span>
 					  <br>
-					  <span role="listitem"><button class="btn btn-facility paletteButton" data-toggle="tooltip" title="Calculate (⌨: ctrl+=)" onclick="CalculateAndReplace(this); GoogleAnalytics('Calculate');">Calc</button></span>
+						<span role="listitem"><button class="btn btn-facility paletteButton" data-toggle="tooltip" title="Calculate (⌨: ctrl+=)" onclick="CalculateAndReplace(this); GoogleAnalytics('Calculate');">Calc</button></span>
+						<br>
+						<span role="listitem">Edit</span>
 				  </div>
 				  <h4 class="sr-only">Operator buttons</h4>
 				  <div class="mathPalette" role="list">
@@ -163,7 +165,9 @@
 					  <span role="listitem"><button class="staticMath btn btn-operator paletteButton" data-toggle="tooltip" title='Greater than or equal  (⌨: >=)' onclick="MathLivePasteFromButton(this)">$$\geq$$</button></span>
 					  <br>
 					  <span role="listitem"><button class="staticMath btn btn-operator paletteButton" data-toggle="tooltip" title="Not equal (⌨: !=)" onclick="MathLivePasteFromButton(this)">$$\neq$$</button></span>
-					  <span role="listitem"><button class="staticMath btn btn-operator paletteButton" data-toggle="tooltip" title="Is equal to (⌨: ?=)" onclick="MathLivePasteFromButton(this)">$$\overset{?}{=}$$</button></span>
+						<span role="listitem"><button class="staticMath btn btn-operator paletteButton" data-toggle="tooltip" title="Is equal to (⌨: ?=)" onclick="MathLivePasteFromButton(this)">$$\overset{?}{=}$$</button></span>
+						<br>
+						<span role="listitem">Operators</span>
 				  </div>
 				  <h4 class="sr-only">Fraction and other notation buttons</h4>
 				  <div class="mathPalette" role="list">
@@ -178,7 +182,9 @@
 					  <span role="listitem"><button class="staticMath btn btn-notation paletteButton" data-toggle="tooltip" title="Square brackets" onclick="MathLivePasteFromButton(this)">$$\Bigl{[}\blacksquare\Bigr{]}$$</button></span>
 					  <span role="listitem"><button class="staticMath btn btn-notation paletteButton" data-toggle="tooltip" title="Absolute value" onclick="MathLivePasteFromButton(this)">$$\Bigl{|}\blacksquare\Bigr{|}$$</button></span>
 					  <span role="listitem"><button class="staticMath btn btn-notation paletteButton" data-toggle="tooltip" title="Floor" onclick="MathLivePasteFromButton(this)">$$\Bigl{\lfloor}\blacksquare\Bigr{\rfloor}$$</button></span>
-					  <span role="listitem"><button class="staticMath btn btn-notation paletteButton" data-toggle="tooltip" title="Ceiling" onclick="MathLivePasteFromButton(this)">$$\Bigl{\lceil}\blacksquare\Bigr{\rceil}$$</button></span>
+						<span role="listitem"><button class="staticMath btn btn-notation paletteButton" data-toggle="tooltip" title="Ceiling" onclick="MathLivePasteFromButton(this)">$$\Bigl{\lceil}\blacksquare\Bigr{\rceil}$$</button></span>
+						<br>
+						<span role="listitem">Notations</span>
 				  </div>
 				  <h4 class="sr-only">Additional symbols buttons</h4>
 				  <div class="mathPalette" role="list">
@@ -190,14 +196,16 @@
 					  <span role="listitem"><button class="staticMath btn btn-symbol paletteButton" data-toggle="tooltip" title="Parallel (⌨: \parallel⏎)" onclick="MathLivePasteFromButton(this)">$$\parallel$$</button></span>
 					  <span role="listitem"><button class="staticMath btn btn-symbol paletteButton" data-toggle="tooltip" title="Degree (⌨: \degree⏎)" onclick="MathLivePasteFromButton(this)">$$\degree$$</button></span>
 					  <br>
-					  <span role="listitem"><button class="staticMath btn btn-symbol paletteButton" data-toggle="tooltip" title="Pi (⌨: pi⏎)" onclick="MathLivePasteFromButton(this)">$$\pi$$</button></span>
+						<span role="listitem"><button class="staticMath btn btn-symbol paletteButton" data-toggle="tooltip" title="Pi (⌨: pi⏎)" onclick="MathLivePasteFromButton(this)">$$\pi$$</button></span>
+						<br>
+						<span role="listitem">Geometry</span>
 				  </div>
 			   </div>
 			   <div class="col-lg-2" style="text-align: right;">
 					<button class="btn btn-default" id="undoDelete" data-toggle="tooltip" title="Undo Last Delete" onclick="UndoDeleteStep()" style="margin-bottom: 5px;">Undo</button>
 					<br>
 					<h3 class="sr-only">Clean up and add new step</h3>
-					  <button id='addStep' class="btn btn-primary pointer" data-toggle="tooltip" title="Clean up the cross outs and start a new step (⌨: shift+enter)" onclick="AddStep();" style="margin-top: 11px;" data-step="3" data-intro="Clean-up your work and start a new step.">Add Step</button>
+					  <button id='addStep' class="btn btn-primary pointer" data-toggle="tooltip" title="Clean up the cross outs and start a new step (⌨: shift+enter)" onclick="AddStep();" style="margin-top: 11px;" data-step="3" data-intro="Clean-up your work and start a new step."><i class="fa fa-plus"></i> Add Step</button>
 			   </div>
 		    </div>
 		    
@@ -210,7 +218,8 @@
 	      <div class="row"> 
 			  <div class="col-lg-12" style="text-align:right;">
 				  <button class="btn btn-default pointer" id="BtnDiscard" onclick="GoogleAnalytics('Discard');">Discard</button>
-				  <button class="btn btn-default pointer" id="BtnSave" data-step="5" data-intro="Save your work or close out to try again from the beginning." onclick="GoogleAnalytics('Save');">Save Problem</button>
+					<button class="btn btn-default pointer" id="BtnSave" data-step="5" data-intro="Save your work or close out to try again from the beginning." onclick="GoogleAnalytics('Save');"><i class="fa fa-thumbs-up"></i> </button>
+					<button class="btn btn-default pointer" id="BtnClearAll"><i class="fa fa-times-circle"></i> Clear all</button>
 			  </div>
 		    </div>
 <!-- 		    <button class="btn btn-default pointer float-right" id="BtnSave" data-step="5" data-intro="Save your work or close out to try again from the beginning." onclick="GoogleAnalytics('Save');">Save Problem</button>		  	 -->
