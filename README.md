@@ -1,9 +1,7 @@
-# ProceduralMathEditor
-This is a step by step editor built on top of mathlive
+# MathShare
+This is a step by step editor built on top of mathlive. 
 
-To use this, you must get the 'dist' directory of mathlive from github:
-https://github.com/arnog/mathlive/tree/master/dist
+Open index.html to see a list of sample problems. Clicking on one of them will take you to the editor. Debug/index.html is for being able to debug mathlive code as well as this project's code and requires a few other files.
 
-Either create a sibling mathlive/dist directory to this project or adjust the values in the html files to point to the dist directory.
-
-The debug version of the file is for being able to debug mathlive code as well as this project's code and requires a few other files.
+# Acknowledgement
+Benetech and its funding partners are developing this tool to benefit all kids, regardless of their abilities, to learn and do math.
