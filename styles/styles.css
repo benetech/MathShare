@@ -242,6 +242,26 @@ a {
 
 .btn-delete {
 	background-color: #f0f0f0;
+	background-image: url(../images/delete.png);
+}
+
+.btn-delete:active {
+	background-image: url(../images/delete.png)!important;
+}
+
+.btn-undo {
+	background-color: #f0f0f0;
+	background-image: url(../images/undo.png);
+}
+
+.btn-undo:active {
+	background-image: url(../images/undo.png)!important;
+}
+
+.btn-background {
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 80%;
 }
 
 .btn-facility {
