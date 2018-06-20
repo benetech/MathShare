@@ -13,7 +13,7 @@ html, body {
 }
 
 .contentWrapper {
-  display: flex;  
+  display: contents;  
 }
 .header, .footer {
   flex: 0 0 50px;
