@@ -126,13 +126,19 @@ function OrdinalSuffix(i) {
 }
 
 // build a row of history
-function HTMLForRow(stepNumber, math, annotation, showTrash) {
+function HTMLForRow(stepNumber, math, annotation, showTrash, showStepLabel) {
 	let html = '<div class="row mathStep" data-step="'+stepNumber+'" data-equation="'+math+'" data-annotation="'+annotation+'">';
-	html += '<div class="col-md-6">';
+	html += '<div class="col-md-1">';
 	html +=   '<span role="heading" aria-level="3">';
-	html +=     '<span class="SROnly">' + OrdinalSuffix(stepNumber) +' step</span>';
-	html +=     '<span class="stepHeader" aria-hidden="true">Step '+stepNumber+':</span>';
+	if (showStepLabel) {
+		html +=     '<span class="SROnly">' + OrdinalSuffix(stepNumber) +' step</span>';
+		html +=     '<span class="stepHeader" aria-hidden="true">Step '+stepNumber+':</span>';
+	} else {
+		html +=     '<span class="SROnly">' + OrdinalSuffix(stepNumber) +' step, after cleanup</span>';
+	}
 	html +=   '</span>';
+	html += '</div>';
+	html += '<div class="col-md-5">';
 	html +=   '<span class="sr-only"> math: </span>';
 	html +=   '<span class="staticMath" >$$'+math+'$$</span>';
 	html += '</div>';
@@ -299,7 +305,7 @@ function PopulateEditorModal(buttonElement, dataObj) {
 			if (i==historyObj.length-1 && historyObj.length>1) {
 				showTrash = true;
 			}
-			htmlHistory += HTMLForRow(i+1, historyObj[i].equation, historyObj[i].annotation, showTrash);
+			htmlHistory += HTMLForRow(i+1, historyObj[i].equation, historyObj[i].annotation, showTrash, historyObj[i].annotation != '(cleanup)');
 	    }
     //3 BUILD HTML TITLE
     	let htmlTitle = originalProblemAnnotation;
@@ -427,14 +433,14 @@ function ProblemIsUnchanged(buttonElement) {
 // CREATE NEW HISTORY ROW FROM CURRENT CONTENT
 // @param {mathContent} latex for new active area after being cleaned.
 // @return {nothing} No return value
-function NewMathEditorRow(mathContent) {
+function NewMathEditorRow(mathContent, showStepLabel, cleanup) {
 	// assemble the new static area from the current math/annotation
 	let mathStepEquation = TheActiveMathField.latex();
-	let mathStepAnnotation = $('#mathAnnotation').val();
+	let mathStepAnnotation = cleanup ? '(cleanup)' : $('#mathAnnotation').val();
 	let mathStepNumber = $('.mathStep:last').data('step');
 	let mathStepNewNumber = mathStepNumber ? mathStepNumber+1 : 1;	// worry about no steps yet
 
-	let result = HTMLForRow(mathStepNewNumber, mathStepEquation, mathStepAnnotation, true)
+	let result = HTMLForRow(mathStepNewNumber, mathStepEquation, mathStepAnnotation, true, showStepLabel)
 
 	//remove previous trash button if necessary
 		//get the current step
@@ -459,9 +465,11 @@ function NewMathEditorRow(mathContent) {
 // @return {nothing} No return value
 function NewRowOrRowsAfterCleanup(mathContent) {
 	let cleanedUp = CleanUpCrossouts(mathContent);
-	NewMathEditorRow(cleanedUp);
 	if ( mathContent!=cleanedUp ) {
-		NewMathEditorRow(cleanedUp);
+		NewMathEditorRow(cleanedUp, true, false);
+		NewMathEditorRow(cleanedUp, false, true);
+	} else {
+		NewMathEditorRow(cleanedUp, true, false);
 	}
 	
 	let mathStepNumber = $('.mathStep:last').data('step');
