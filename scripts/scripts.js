@@ -518,6 +518,9 @@ function DeleteActiveMath() {
   'onclick="DeleteActiveMath()" style="margin-bottom: 5px;"><span class="sr-only" id="deleteButton">delete xxx step</span></button></div>');
 	
 	TheActiveMathField.focus();
+	if (lastStep.data('annotation') == "(cleanup)") {
+		DeleteActiveMath()
+	}
 }
 
 function UndoDeleteStep() {
@@ -528,10 +531,15 @@ function UndoDeleteStep() {
 	if (UndoDeleteStack.length===0)
 		$('#undoDelete').hide();
 	
-	NewMathEditorRow( stackEntry.latex )
+	var cleanup = $('#mathAnnotation').val() == '(cleanup)';
+	NewMathEditorRow( stackEntry.latex , cleanup)
 	$('#mathAnnotation').val( stackEntry.annotation );
 	
 	TheActiveMathField.focus();
+
+	if (UndoDeleteStack.length > 0 && stackEntry.annotation == '(cleanup)') {
+		UndoDeleteStep();
+	}
 }
 
 //***************************************************************************************************************************************************
