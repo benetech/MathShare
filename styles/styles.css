@@ -121,7 +121,7 @@ overflow-x: hidden;
 
 .historyWrapper {
 overflow-x: hidden;
-  overflow-y: scroll;
+  overflow-y: auto;
   padding-left: 10px;
   padding-right: 10px;
 }
