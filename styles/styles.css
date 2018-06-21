@@ -34,43 +34,43 @@ overflow-x: hidden;
 
 /*
 .leftNavigation ul {
-	list-style: none; 
-	padding: 0px; 
-	margin: 0px;
+    list-style: none;
+    padding: 0px;
+    margin: 0px;
 }
 
 .leftNavigationBackgroundActive {
-	background-color: #0073D9 !important;
-	color: #FFF;
+    background-color: #0073D9 !important;
+    color: #FFF;
 }
 
 .leftNavigationBackgroundActive .navItemButton {
-	color: #fff;
+    color: #fff;
 }
 
 .leftNavigation li {
-	background-color: #f0f0f0; 
-	padding: 10px; 
-	border-bottom: 1px solid #CCC;
-	cursor: pointer;
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-bottom: 1px solid #CCC;
+    cursor: pointer;
 }
 
 */
 .navItemButton {
-	cursor:pointer;
+    cursor:pointer;
 }
 
 .problemAnnotation {
-	display: block;
-	text-align: center;
-	cursor: pointer;
-	margin-bottom: 2ex;
+    display: block;
+    text-align: center;
+    cursor: pointer;
+    margin-bottom: 2ex;
 }
 
 .problemEquation {
-	display: block;
-	text-align: center;
-	padding-left: 15px;
+    display: block;
+    text-align: center;
+    padding-left: 15px;
 }
 
 .navItemButton {
@@ -83,26 +83,26 @@ overflow-x: hidden;
 }
 
 .problemHeader {
-	z-index: 1;
-	flex: 0 0 60px;
-	background-color: #0062d9;
-	padding: 5px;
-	display: flex;
-	justify-content: space-between;
+    z-index: 1;
+    flex: 0 0 60px;
+    background-color: #0062d9;
+    padding: 5px;
+    display: flex;
+    justify-content: space-between;
 }
 
 .problemFooter {
-	flex: 0 0 50px;
-	padding: 5px;
-	display: flex;
-	justify-content: space-between;
+    flex: 0 0 50px;
+    padding: 5px;
+    display: flex;
+    justify-content: space-between;
 }
 
 .problemTitle {
-	font-size: 1.2em;
-	color: #FFF;
-	margin: 0px;
-	
+    font-size: 1.2em;
+    color: #FFF;
+    margin: 0px;
+
 }
 
 .editorAndHistoryWrapper {
@@ -132,54 +132,54 @@ overflow-x: hidden;
 }
 
 a {
-	cursor: pointer;
+    cursor: pointer;
 }
-	
+
 .navbar-default {
-	background-color: #001F3F;
+    background-color: #001F3F;
 }
 
 .navbar {
-	height: 75px;
-	border-radius: 0px;
-	margin-bottom: 0px;
+    height: 75px;
+    border-radius: 0px;
+    margin-bottom: 0px;
 }
 
 .navbar-default .navbar-nav>li>a {
-	color: #FFF;
+    color: #FFF;
 }
 
 .navbar-default .navbar-nav>li>a:hover {
-	text-decoration: underline;
-	color: #FFF;
+    text-decoration: underline;
+    color: #FFF;
 }
 
 .navbar-nav>li {
-	margin-left: 1em;
+    margin-left: 1em;
 }
 
 .mathStep {
-	font-size: 120%;
-	padding: 5px 0px 10px 0px;
+    font-size: 120%;
+    padding: 5px 0px 10px 0px;
 }
 
 .mathStepTitle {
-	float: left;
-	width: 125px;
-	font-weight: bold;
-	font-size: 25px;
-	color: #CCC;
-	padding-left: 10px;
+    float: left;
+    width: 125px;
+    font-weight: bold;
+    font-size: 25px;
+    color: #CCC;
+    padding-left: 10px;
 }
 
 .mathStepAnnotation {
-	padding-left: 125px;
+    padding-left: 125px;
 }
 
 .pointer {
-	cursor:pointer;
+    cursor:pointer;
 }
-	
+
 .mathEditor .ML__mathlive {
    display: block;
    transform-origin: top left;
@@ -197,7 +197,7 @@ a {
 }
 
 .mathWorkArea {
-	 
+
 }
 
 .myWorkArea {
@@ -237,116 +237,116 @@ a {
 }
 
 .btn-huge{
-	width: 300px;
-	height: 150px;
+    width: 300px;
+    height: 150px;
     margin: 0px auto;
     vertical-align: middle;
-	white-space: normal;
-	border: 1px solid #CCC;
+    white-space: normal;
+    border: 1px solid #CCC;
 }
 
 .btn-mic {
-	border: 0px;
-	background-color: #FFF;
-	padding: 0px;
-	margin-top: 2px;
+    border: 0px;
+    background-color: #FFF;
+    padding: 0px;
+    margin-top: 2px;
 }
 
 .form-control {
-	border: 0px;
-	box-shadow: none;
-	transition: none;
-	display: inline;
-	border-radius: 0px;
+    border: 0px;
+    box-shadow: none;
+    transition: none;
+    display: inline;
+    border-radius: 0px;
 }
 
 .btn-default {
-	background-color: #fafafa;
+    background-color: #fafafa;
 }
 
 .btn-delete {
-	background-color: #f0f0f0;
-	background-image: url(../images/delete.png);
+    background-color: #f0f0f0;
+    background-image: url(../images/delete.png);
 }
 
 .btn-delete:active {
-	background-image: url(../images/delete.png)!important;
+    background-image: url(../images/delete.png)!important;
 }
 
 .btn-undo {
-	background-color: #f0f0f0;
-	background-image: url(../images/undo.png);
+    background-color: #f0f0f0;
+    background-image: url(../images/undo.png);
 }
 
 .btn-undo:active {
-	background-image: url(../images/undo.png)!important;
+    background-image: url(../images/undo.png)!important;
 }
 
 .btn-background {
-	background-repeat: no-repeat;
-	background-position: center;
-	background-size: 80%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 80%;
 }
 
 .btn-facility {
-	background-color: #f6ff5d;
+    background-color: #f6ff5d;
 }
 
 .btn-operator {
-	background-color: #ffd35c;
+    background-color: #ffd35c;
 }
 
 .btn-notation {
-	background-color: #00ff9a;
+    background-color: #00ff9a;
 }
 
 .btn-symbol {
-	background-color: #a479ff;
+    background-color: #a479ff;
 }
 
 #addStep:disabled {
-	background: #5896e16e;
+    background: #5896e16e;
 }
 
  .modalAreaHeading {
-	 color:#001F3F;
-	 font-style: italic;
-	 font-size: 22px;
-	 float: left;
-	 font-weight: bold;
+     color:#001F3F;
+     font-style: italic;
+     font-size: 22px;
+     float: left;
+     font-weight: bold;
  }
  
  @keyframes pulse_animation {
-	0% { transform: scale(1); }
-	30% { transform: scale(1); }
-	40% { transform: scale(1.08); }
-	50% { transform: scale(1); }
-	60% { transform: scale(1); }
-	70% { transform: scale(1.05); }
-	80% { transform: scale(1); }
-	100% { transform: scale(1); }
+    0% { transform: scale(1); }
+    30% { transform: scale(1); }
+    40% { transform: scale(1.08); }
+    50% { transform: scale(1); }
+    60% { transform: scale(1); }
+    70% { transform: scale(1.05); }
+    80% { transform: scale(1); }
+    100% { transform: scale(1); }
 }
 
 .pulse {
-	animation-name: pulse_animation;
-	animation-duration: 5000ms;
-	transform-origin:70% 70%;
-	animation-iteration-count: infinite;
-	animation-timing-function: linear;
+    animation-name: pulse_animation;
+    animation-duration: 5000ms;
+    transform-origin:70% 70%;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
 }
 
 pulse.off {
-	animation-name: none;	
+    animation-name: none;
 }
 
 /* the whole modal */
  .introjs-overlay {
-	opacity: 0.2 !important; /* opacity set in style on element, so need to override */
+    opacity: 0.2 !important; /* opacity set in style on element, so need to override */
 }
  
 /* used on *both* the element being referenced and the instructions/buttons element */
 .introjs-helperLayer {
-	border: 1px solid rgba(255,255,255,1);
+    border: 1px solid rgba(255,255,255,1);
 }
 
 /* used on the element being referenced -- want more transparency */
@@ -355,7 +355,7 @@ pulse.off {
 }
 
 .introjs-fixedTooltip {
-	background-color: rgba(0, 150, 255, 0.2);
+    background-color: rgba(0, 150, 255, 0.2);
 }
 
 /* instructions, progress, and buttons */
@@ -391,13 +391,13 @@ pulse.off {
 }
 
 .stepHeader {
-	font-weight: bold;
-	float: left;
+    font-weight: bold;
+    float: left;
 }
 
 .mathPalette {
-	float: left;
-	padding-right: 25px;
+    float: left;
+    padding-right: 25px;
 /* 	margin-right: 10px; */
 }
  
