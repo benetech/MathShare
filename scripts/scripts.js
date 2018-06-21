@@ -54,12 +54,14 @@ function ShowWorkArea(show) {
 		$('#MainWorkArea').show(); 
 		$('#MySteps').focus();
 		$('#footer').hide();
+		$('.mainWrapper').addClass('paperSheet');
 	} else {
 		$('#topNavigation').show();
 		$('#LeftNavigation').show();
 		$("#LeftNavigation li:first").focus();
 		$('#MainWorkArea').hide();    
 		$('#footer').show();
+		$('.mainWrapper').removeClass('paperSheet');
 	}
 }
 
