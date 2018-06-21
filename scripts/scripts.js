@@ -493,15 +493,17 @@ function AddStep() {
 // Delete the currently active area and make the last step active...
 // Or, put another way...
 // Copy the contents of the last step/row into the active area and delete that step/row
+// @param {clearAll} informs if delete is a part of clearing all steps process
 // @return {nothing} No return value
-function DeleteActiveMath() {
+function DeleteActiveMath(clearAll) {
     // nothing to do if there are no steps
     if (!$('.mathStep:last'))
         return;
 
     UndoDeleteStack.push(
         { latex: TheActiveMathField.latex(),
-            annotation: $('#mathAnnotation').val()
+            annotation: $('#mathAnnotation').val(),
+            clearAll: clearAll
         });
     $('#undoDelete').show();
 
@@ -539,8 +541,17 @@ function UndoDeleteStep() {
 
     TheActiveMathField.focus();
 
-    if (UndoDeleteStack.length > 0 && stackEntry.annotation == '(cleanup)') {
+    if (UndoDeleteStack.length > 0 && (stackEntry.annotation == '(cleanup)' || stackEntry.clearAll)) {
         UndoDeleteStep();
+    }
+}
+
+function clearAllSteps() {
+    if ($('.mathStep').length > 0) {
+        DeleteActiveMath();
+    }
+    while ($('.mathStep').length > 1) {
+        DeleteActiveMath(true);
     }
 }
 
