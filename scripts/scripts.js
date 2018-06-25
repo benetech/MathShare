@@ -1097,6 +1097,9 @@ function MathLivePasteFromButton(element) {
     TheActiveMathField.perform(['insert', insertionString,
                 {insertionMode: 'replaceSelection',
                  selectionMode: 'placeholder'}]);
+    $("#mathAnnotationHeader").focus();
+    $('#mathEditorActive').height(TheActiveMathField.element.scrollHeight);
+    $('#mathAnnotation').height(TheActiveMathField.element.scrollHeight);
     TheActiveMathField.focus();
 }
 
