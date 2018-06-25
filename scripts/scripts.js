@@ -525,7 +525,7 @@ function NewRowOrRowsAfterCleanup(mathContent) {
 function UpdateRowAfterCleanup(mathContent, mathStepNumber) {
     
     let cleanedUp = CleanUpCrossouts(mathContent);
-    if (mathContent!=cleanedUp) {
+    if (mathContent !== cleanedUp) {
         UpdateMathEditorRow(cleanedUp, mathStepNumber, false);
         //UpdateMathEditorRow(cleanedUp, mathStepNumber + 1, true); TODO: add cleanup update support
     } else {
