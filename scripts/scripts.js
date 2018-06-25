@@ -518,8 +518,10 @@ function DeleteActiveMath(clearAll) {
     lastStep.detach();
 
     // read trash button to previous step
-    $('.mathStep:last .trashButtonContainer').html('<div style="float:right;"><button class="btn btn-delete btn-background paletteButton" data-toggle="tooltip"' +
-    'onclick="DeleteActiveMath()" style="margin-bottom: 5px;"><span class="sr-only" id="deleteButton">delete xxx step</span></button></div>');
+    if ($('.mathStep').length > 1) {
+        $('.mathStep:last .trashButtonContainer').html('<div style="float:right;"><button class="btn btn-delete btn-background paletteButton" data-toggle="tooltip"' +
+        'onclick="DeleteActiveMath()" style="margin-bottom: 5px;"><span class="sr-only" id="deleteButton">delete xxx step</span></button></div>');
+    }
 
     TheActiveMathField.focus();
     if (lastStep.data('annotation') == "(cleanup)") {
@@ -547,7 +549,7 @@ function UndoDeleteStep() {
 }
 
 function clearAllSteps() {
-    if ($('.mathStep').length > 0) {
+    if ($('.mathStep').length > 1) {
         DeleteActiveMath();
     }
     while ($('.mathStep').length > 1) {
