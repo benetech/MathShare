@@ -161,6 +161,8 @@ a {
 .mathStep {
     font-size: 120%;
     padding: 5px 0px 10px 0px;
+    opacity: 0.65;
+    transition: all 1s;
 }
 
 .mathStepTitle {
@@ -204,9 +206,11 @@ a {
   z-index: 1;
   display: grid;
   border-radius: 12px;
-  margin-left: 10px;
-  margin-right: 10px;
+  margin-top: 10px;
+  margin-bottom: 50px;
   background-color: #add8e6bf;
+  transition: all 1s;
+  opacity: 1;
 }
 
 .paperSheet {
@@ -267,10 +271,35 @@ a {
 .btn-delete {
     background-color: #f0f0f0;
     background-image: url(../images/delete.png);
+    opacity: 0.6;
+    margin: 0px 5px;
+    transition: all 0.3s;
 }
 
 .btn-delete:active {
     background-image: url(../images/delete.png)!important;
+}
+
+.btn-delete:hover {
+    opacity: 1.0;
+    transition: all 0.3s;
+}
+
+.btn-edit {
+    background-color: #f0f0f0;
+    background-image: url(../images/pencil.png);
+    margin: 0px 5px;
+    opacity: 0.3;
+    transition: all 0.3s;
+}
+
+.btn-edit:hover {
+    opacity: 1.0;
+    transition: all 0.3s;
+}
+
+.btn-edit:active {
+    background-image: url(../images/pencil.png)!important;
 }
 
 .btn-undo {
@@ -400,6 +429,14 @@ pulse.off {
     padding-right: 25px;
 /* 	margin-right: 10px; */
 }
- 
- 
+
+#MySteps {
+    padding-left:25px; 
+    padding-right:25px;
+}
+
+ #EditorArea {
+    padding-left:25px; 
+    padding-right:25px;
+ }
 
