@@ -309,10 +309,13 @@ function PopulateEditorModal(buttonElement, dataObj) {
         for (let i = 0; i < historyObj.length; i++) {
 
             let showTrash = false;
-            let showEdit = false;
+            showEdit = false;
+            if (i > 0) {
+                showEdit = true;
+            }
+
             if (i == historyObj.length - 1 && historyObj.length > 1) {
                 showTrash = true;
-                showEdit = true;
             }
             htmlHistory += HTMLForRow(i + 1, historyObj[i].equation, historyObj[i].annotation, showTrash, showEdit, historyObj[i].annotation === '(cleanup)');
             }
@@ -501,6 +504,7 @@ function ExitUpdate() {
     TheActiveMathField.latex($('.mathStep:last').data('equation'));
     $('#mathAnnotation').val('');
     TheActiveMathField.focus();
+    $('.problemFooter').show();
 }
 // Creates one or two rows (two if 'mathContent' contains cross outs)
 // @param {mathContent} latex for new active area after being cleaned.
@@ -606,6 +610,7 @@ function EditMathStep(stepNumber) {
     editor = $('.myWorkArea');
     editor.detach();
     mathStep.after(editor);
+    $('.problemFooter').hide();    
 }
 
 function UndoDeleteStep() {

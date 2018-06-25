@@ -430,13 +430,18 @@ pulse.off {
 /* 	margin-right: 10px; */
 }
 
+.editorButton {
+    margin-left: auto;
+    margin-right: 5px;
+    display: block;
+}
+
 #MySteps {
     padding-left:25px; 
     padding-right:25px;
 }
 
- #EditorArea {
+#EditorArea {
     padding-left:25px; 
     padding-right:25px;
- }
-
+}

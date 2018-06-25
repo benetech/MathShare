@@ -309,24 +309,24 @@
                                         title="Undo Last Delete" onclick="UndoDeleteStep()" style="margin-bottom: 5px;"></button>
                                 <br>
                                 <h3 class="sr-only">Clean up and add new step</h3>
-                                <button id='addStep' class="btn btn-primary pointer" data-toggle="tooltip"
+                                <button id='addStep' class="btn btn-primary pointer editorButton" data-toggle="tooltip"
                                         title="Clean up the cross outs and start a new step (⌨: shift+enter)"
                                         onclick="AddStep();"
-                                        style="margin-top: 11px;" data-step="3"
+                                        data-step="3"
                                         data-intro="Clean-up your work and start a new step."><i
                                         class="fa fa-plus"></i> Add Step
                                 </button>
                                 <div hidden id="updateControls">     
-                                    <button id='updateStep' class="btn btn-success pointer" data-toggle="tooltip"
+                                    <button id='updateStep' class="btn btn-success pointer editorButton" data-toggle="tooltip"
                                         title="Update the step (⌨: shift+enter)"
-                                        style="margin-top: 11px;" data-step="3"
+                                        data-step="3"
                                         data-intro="Update the step."><i
                                         class="fa fa-pencil"></i> Update Step
                                     </button>                         
                                     <br/>
-                                    <button id='cancelEdit' class="btn btn-default pointer" data-toggle="tooltip"
+                                    <button id='cancelEdit' class="btn btn-default pointer editorButton" data-toggle="tooltip"
                                         title="Cancel edit" onclick="ExitUpdate();"
-                                        style="margin-top: 11px;" data-step="3"
+                                        data-step="3"
                                         data-intro="Cancel edit."><i
                                         class="fa fa-ban" ></i> Cancel edit
                                     </button>                        
