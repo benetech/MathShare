@@ -128,7 +128,7 @@ function OrdinalSuffix(i) {
 }
 
 // build a row of history
-function HTMLForRow(stepNumber, math, annotation, showTrash, cleanup) {
+function HTMLForRow(stepNumber, math, annotation, showTrash, showEdit, cleanup) {
     let html = '<div class="row mathStep" data-step="'+stepNumber+'" data-equation="'+math+'" data-annotation="'+annotation+'">';
     html += '<div class="col-md-1">';
     html +=   '<span role="heading" aria-level="3">';
@@ -150,7 +150,12 @@ function HTMLForRow(stepNumber, math, annotation, showTrash, cleanup) {
     html +=    '<span class="' +
                     (annotation == '(cleanup)' ? 'grayedOutCleanup' : 'staticMath') + '">' +annotation + '</span>';
     html += '</div>';
-    html +=  '<div class="col-md-1 trashButtonContainer" style="text-align: right; float:right;">';
+    html +=  '<div class="col-md-1 rowControlButtonsContainer" style="text-align: right; float:right;">';
+    if (showEdit) {
+        html +=  '<button class="btn btn-edit btn-background paletteButton" data-toggle="tooltip" title="Edit this Step" onclick="EditMathStep('+ stepNumber + ')" style="margin-bottom: 5px;">' +
+                        '<span class="SROnly">Edit ' + OrdinalSuffix(stepNumber) +' step</span>' +
+            '</button>';
+    }
     if (showTrash) {
         html +=  '<button class="btn btn-delete btn-background paletteButton" data-toggle="tooltip" title="Delete this Step" onclick="DeleteActiveMath()" style="margin-bottom: 5px;">' +
                         '<span class="SROnly">Delete ' + OrdinalSuffix(stepNumber) +' step</span>' +
@@ -304,10 +309,15 @@ function PopulateEditorModal(buttonElement, dataObj) {
         for (let i = 0; i < historyObj.length; i++) {
 
             let showTrash = false;
-            if (i==historyObj.length-1 && historyObj.length>1) {
+            showEdit = false;
+            if (i > 0) {
+                showEdit = true;
+            }
+
+            if (i == historyObj.length - 1 && historyObj.length > 1) {
                 showTrash = true;
             }
-            htmlHistory += HTMLForRow(i+1, historyObj[i].equation, historyObj[i].annotation, showTrash, historyObj[i].annotation == '(cleanup)');
+            htmlHistory += HTMLForRow(i + 1, historyObj[i].equation, historyObj[i].annotation, showTrash, showEdit, historyObj[i].annotation === '(cleanup)');
             }
         //3 BUILD HTML TITLE
             let htmlTitle = originalProblemAnnotation;
@@ -442,13 +452,13 @@ function NewMathEditorRow(mathContent, cleanup) {
     let mathStepNumber = $('.mathStep:last').data('step');
     let mathStepNewNumber = mathStepNumber ? mathStepNumber+1 : 1;	// worry about no steps yet
 
-    let result = HTMLForRow(mathStepNewNumber, mathStepEquation, mathStepAnnotation, true, cleanup)
+    let result = HTMLForRow(mathStepNewNumber, mathStepEquation, mathStepAnnotation, true, true, cleanup)
 
     //remove previous trash button if necessary
         //get the current step
         //subtract 1 from the current step
         //select the previousStep
-    $('.mathStep:last .trashButtonContainer').empty();
+    $('.mathStep:last .btn-delete').hide();
 
 
     $('.mathHistory').append( result );
@@ -462,13 +472,47 @@ function NewMathEditorRow(mathContent, cleanup) {
 
     //MathLive.renderMathInDocument();
 }
+
+function UpdateMathEditorRow(mathContent, mathStepNumber, cleanup) {
+
+    index = mathStepNumber - 1;
+    annotation = cleanup ? '(cleanup)' : $('#mathAnnotation').val();
+
+    mathStep = $('.mathStep:eq('+ index +')');
+    mathStep.data('equation', TheActiveMathField.latex());
+    mathStep.data('annotation', annotation);
+    mathStep.attr('data-equation', TheActiveMathField.latex());
+    mathStep.attr('data-annotation', annotation);
+
+    mathStepFields = $('.staticMath', '.mathStep:eq('+ index +')');
+    mathStepFields.first()[0].textContent = '$$' + TheActiveMathField.latex() + '$$';
+    mathStepFields.last()[0].textContent = cleanup ? '(cleanup)' : $('#mathAnnotation').val();
+    MathLive.renderMathInElement(mathStep[0]);
+
+    // set the new active math and clear the annotation
+    TheActiveMathField.latex(mathContent);
+    $('#mathAnnotation').val('');
+}
+
+function ExitUpdate() {
+    $('#addStep').show();
+    $('#updateControls').hide();
+    editor = $('.myWorkArea');
+    editor.detach();
+    workArea = $('#EditorArea')
+    workArea.append(editor);
+    TheActiveMathField.latex($('.mathStep:last').data('equation'));
+    $('#mathAnnotation').val('');
+    TheActiveMathField.focus();
+    $('.problemFooter').show();
+}
 // Creates one or two rows (two if 'mathContent' contains cross outs)
 // @param {mathContent} latex for new active area after being cleaned.
 // @return {nothing} No return value
 function NewRowOrRowsAfterCleanup(mathContent) {
     let cleanedUp = CleanUpCrossouts(mathContent);
-    if ( mathContent!=cleanedUp ) {
-        NewMathEditorRow(cleanedUp, false);
+    if (mathContent !== cleanedUp) {
+        NewMathEditorRow(cleanedUp, false);        
         NewMathEditorRow(cleanedUp, true);
     } else {
         NewMathEditorRow(cleanedUp, false);
@@ -476,6 +520,17 @@ function NewRowOrRowsAfterCleanup(mathContent) {
 
     let mathStepNumber = $('.mathStep:last').data('step');
     $('#mathEditorActive').find('span[aria-live]')[0].textContent = "added step " + mathStepNumber;
+}
+
+function UpdateRowAfterCleanup(mathContent, mathStepNumber) {
+    
+    let cleanedUp = CleanUpCrossouts(mathContent);
+    if (mathContent !== cleanedUp) {
+        UpdateMathEditorRow(cleanedUp, mathStepNumber, false);
+        //UpdateMathEditorRow(cleanedUp, mathStepNumber + 1, true); TODO: add cleanup update support
+    } else {
+        UpdateMathEditorRow(cleanedUp, mathStepNumber, false);
+    }  
 }
 
 function AddStep() {
@@ -487,6 +542,17 @@ function AddStep() {
     }
     NewRowOrRowsAfterCleanup(TheActiveMathField.latex());
     TheActiveMathField.focus();
+}
+
+function UpdateStep(stepNumber) {
+    if (!$('#mathAnnotation').val()) {
+        $('#mathAnnotation').focus();
+        alert("Please provide a reason.");
+        $('#mathAnnotation').focus();
+        return;
+    }
+    UpdateRowAfterCleanup(TheActiveMathField.latex(), stepNumber);
+    ExitUpdate();
 }
 
 //***************************************************************************************************************************************************
@@ -518,15 +584,36 @@ function DeleteActiveMath(clearAll) {
     lastStep.detach();
 
     // read trash button to previous step
-    if ($('.mathStep').length > 1) {
-        $('.mathStep:last .trashButtonContainer').html('<div style="float:right;"><button class="btn btn-delete btn-background paletteButton" data-toggle="tooltip"' +
-        'onclick="DeleteActiveMath()" style="margin-bottom: 5px;"><span class="sr-only" id="deleteButton">delete xxx step</span></button></div>');
+    if ($('.mathStep').length > 1) {    
+        $('.mathStep:last .btn-delete').show();
     }
 
     TheActiveMathField.focus();
     if (lastStep.data('annotation') == "(cleanup)") {
-        DeleteActiveMath()
+        DeleteActiveMath();
     }
+    $('.mathStep:last .btn-edit').show();
+    $('#addStep').show();
+    $('#updateControls').hide();
+}
+
+function EditMathStep(stepNumber) {
+    // nothing to do if there are no steps
+    index = stepNumber - 1;
+    let mathStep = $('.mathStep:eq('+ index +')');
+    TheActiveMathField.latex(mathStep.data('equation'));
+    $('#mathAnnotation').val(mathStep.data('annotation'));
+    $('#updateControls').removeAttr('hidden');
+    $('#updateStep').unbind();
+    $('#updateStep').click(function(){
+        UpdateStep(stepNumber);
+    });    
+    $('#addStep').hide();
+    $('#updateControls').show();
+    editor = $('.myWorkArea');
+    editor.detach();
+    mathStep.after(editor);
+    $('.problemFooter').hide();    
 }
 
 function UndoDeleteStep() {
@@ -1189,7 +1276,11 @@ function HandleKeyDown(event)
     }
 
     if (event.shiftKey && event.key==='Enter' && $('#mathAnnotation').val() !== '') {
-        NewRowOrRowsAfterCleanup(TheActiveMathField.latex());
+        if ($('#updateStep').is(":visible")) {
+            $('#updateStep').click();
+        } else {
+            NewRowOrRowsAfterCleanup(TheActiveMathField.latex());
+        }        
         return false;
     }
 
