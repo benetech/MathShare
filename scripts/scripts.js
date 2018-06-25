@@ -147,8 +147,8 @@ function HTMLForRow(stepNumber, math, annotation, showTrash, cleanup) {
     html += '<div class="col-md-5">';
     html +=    '<span class="sr-only"  role="heading" aria-level="4">reason:</span>';
     // for screen readers, we want some content for empty annotations so they know they are on the field
-    html +=    '<span class="staticMath' +
-                    (annotation ? '' : ' sr-only') + '">'+(annotation ? annotation : 'no reason given')+'</span>';
+    html +=    '<span class="' +
+                    (annotation == '(cleanup)' ? 'grayedOutCleanup' : 'staticMath') + '">' +annotation + '</span>';
     html += '</div>';
     html +=  '<div class="col-md-1 trashButtonContainer" style="text-align: right; float:right;">';
     if (showTrash) {
