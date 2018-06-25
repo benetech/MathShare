@@ -147,8 +147,8 @@ function HTMLForRow(stepNumber, math, annotation, showTrash, showEdit, cleanup) 
     html += '<div class="col-md-5">';
     html +=    '<span class="sr-only"  role="heading" aria-level="4">reason:</span>';
     // for screen readers, we want some content for empty annotations so they know they are on the field
-    html +=    '<span class="staticMath' +
-                    (annotation ? '' : ' sr-only') + '">'+(annotation ? annotation : 'no reason given')+'</span>';
+    html +=    '<span class="' +
+                    (annotation == '(cleanup)' ? 'grayedOutCleanup' : 'staticMath') + '">' +annotation + '</span>';
     html += '</div>';
     html +=  '<div class="col-md-1 rowControlButtonsContainer" style="text-align: right; float:right;">';
     if (showEdit) {
@@ -584,7 +584,10 @@ function DeleteActiveMath(clearAll) {
     lastStep.detach();
 
     // read trash button to previous step
-    $('.mathStep:last .btn-delete').show();
+    if ($('.mathStep').length > 1) {    
+        $('.mathStep:last .btn-delete').show();
+    }
+    
     TheActiveMathField.focus();
     if (lastStep.data('annotation') == "(cleanup)") {
         DeleteActiveMath();
@@ -633,7 +636,7 @@ function UndoDeleteStep() {
 }
 
 function clearAllSteps() {
-    if ($('.mathStep').length > 0) {
+    if ($('.mathStep').length > 1) {
         DeleteActiveMath();
     }
     while ($('.mathStep').length > 1) {

@@ -28,7 +28,7 @@ html, body {
 overflow-x: hidden;
   overflow-y: auto;
   flex: 0 0 100%;
-  background-color: #FFFFF;
+  background-color: #FFFFFF;
   border-right: 1px solid #CCC;
 }
 
@@ -160,9 +160,14 @@ a {
 
 .mathStep {
     font-size: 120%;
+    margin-left: 75px;
     padding: 5px 0px 10px 0px;
     opacity: 0.65;
     transition: all 1s;
+}
+
+.myStepsHeader {
+    margin-left: 105px;
 }
 
 .mathStepTitle {
@@ -429,6 +434,10 @@ pulse.off {
     padding-right: 25px;
 /* 	margin-right: 10px; */
 }
+ 
+.grayedOutCleanup {
+    color:#727272;
+} 
 
 .editorButton {
     margin-left: auto;
