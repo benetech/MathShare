@@ -587,7 +587,7 @@ function DeleteActiveMath(clearAll) {
     if ($('.mathStep').length > 1) {    
         $('.mathStep:last .btn-delete').show();
     }
-    
+
     TheActiveMathField.focus();
     if (lastStep.data('annotation') == "(cleanup)") {
         DeleteActiveMath();
