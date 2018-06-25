@@ -160,7 +160,12 @@ a {
 
 .mathStep {
     font-size: 120%;
+    margin-left: 75px;
     padding: 5px 0px 10px 0px;
+}
+
+.myStepsHeader {
+    margin-left: 105px;
 }
 
 .mathStepTitle {
