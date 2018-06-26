@@ -168,14 +168,14 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row" style=" padding-top: 10px;">
-                            <div class="col-lg-10">
+                        <div class="d-flex flex-nowrap justify-content-between pt-2">
+                            <div class="col-lg-10 d-flex flex-nowrap">
                                 <h3 class="sr-only">math input buttons</h3>
                                 <h4 class="sr-only">cross out and calc buttons</h4>
-                                <div class="mathPalette" role="list">
-                    <span role="listitem"><button class="staticMath btn btn-facility paletteButton" data-toggle="tooltip"
-                                                title="Cross out (⌨: shift+delete)"
-                                                onclick="MathLivePasteFromButton(this); GoogleAnalytics('Cross Out');">$$\enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{\blacksquare}$$</button></span>
+                                <div class="mathPalette order-1" role="list">
+                                    <span role="listitem"><button class="staticMath btn btn-facility paletteButton" data-toggle="tooltip"
+                                            title="Cross out (⌨: shift+delete)"
+                                            onclick="MathLivePasteFromButton(this); GoogleAnalytics('Cross Out');">$$\enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{\blacksquare}$$</button></span>
                                     <span role="listitem"><button class="staticMath btn btn-facility paletteButton"
                                                                 data-toggle="tooltip"
                                                                 title="Cross out & replace (⌨: shift+ctrl+delete)"
@@ -193,8 +193,8 @@
                                     <span role="listitem">Edit</span>
                                 </div>
                                 <h4 class="sr-only">Operator buttons</h4>
-                                <div class="mathPalette" role="list">
-                    <span role="listitem"><button class="staticMath btn btn-operator paletteButton" data-toggle="tooltip"
+                                <div class="mathPalette order-2" role="list">
+                                    <span role="listitem"><button class="staticMath btn btn-operator paletteButton" data-toggle="tooltip"
                                                 title="Dot times (⌨: \cdot⏎)"
                                                 onclick="MathLivePasteFromButton(this)">$$\cdot$$</button></span>
                                     <span role="listitem"><button class="staticMath btn btn-operator paletteButton"
@@ -231,7 +231,7 @@
                                     <span role="listitem">Operators</span>
                                 </div>
                                 <h4 class="sr-only">Fraction and other notation buttons</h4>
-                                <div class="mathPalette" role="list">
+                                <div class="mathPalette order-3" role="list">
                     <span role="listitem"><button class="staticMath btn btn-notation paletteButton" data-toggle="tooltip"
                                                 title="Fraction (⌨: /)" onclick="MathLivePasteFromButton(this)">$$\frac{\blacksquare}{\square}$$</button></span>
                                     <span role="listitem"><button class="staticMath btn btn-notation paletteButton"
@@ -272,7 +272,7 @@
                                     <span role="listitem">Notations</span>
                                 </div>
                                 <h4 class="sr-only">Additional symbols buttons</h4>
-                                <div class="mathPalette" role="list">
+                                <div class="mathPalette order-4" role="list">
                     <span role="listitem"><button class="staticMath btn btn-symbol paletteButton" data-toggle="tooltip"
                                                 title="Triangle (⌨: \triangle⏎)" onclick="MathLivePasteFromButton(this)">$$\triangle$$</button></span>
                                     <span role="listitem"><button class="staticMath btn btn-symbol paletteButton"
@@ -305,7 +305,7 @@
                                     <span role="listitem">Geometry</span>
                                 </div>
                             </div>
-                            <div class="col-lg-2" style="text-align: right;">
+                            <div>
                                 <button class="btn btn-undo btn-background paletteButton" id="undoDelete" data-toggle="tooltip"
                                         title="Undo Last Delete" onclick="UndoDeleteStep()" style="margin-bottom: 5px;"></button>
                                 <br>
