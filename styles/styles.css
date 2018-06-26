@@ -203,6 +203,14 @@ a {
    -ms-transform: scale(1.15, 1.15);
 }
 
+#workArea {
+    border: 1px solid #CCC;
+    border-radius: 5px;
+    background-color: #FFF;
+    min-height: 100px;
+    width: inherit;
+}
+
 .mathWorkArea {
 
 }
@@ -216,6 +224,7 @@ a {
   background-color: #add8e6bf;
   transition: all 1s;
   opacity: 1;
+  min-width: 800px;
 }
 
 .paperSheet {
@@ -430,7 +439,6 @@ pulse.off {
 }
 
 .mathPalette {
-    float: left;
     padding-right: 25px;
 /* 	margin-right: 10px; */
 }
