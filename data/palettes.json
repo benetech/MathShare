@@ -81,7 +81,7 @@
     {
         "screenReadersTitle": "Fraction and other notation buttons",
         "label": "Notations",
-        "commonClass": "taticMath btn btn-notation paletteButton",
+        "commonClass": "staticMath btn btn-notation paletteButton",
         "commonOnclick": "MathLivePasteFromButton(this)",
         "buttonsRows": [
             [
