@@ -90,11 +90,16 @@ function RenderMathEditor() {
                 // Esc key moves to the next field
                 if (key !== 'Esc') {
                     return true;
-                }
+                }          
                 $("#mathAnnotationHeader").focus();
                 $('#mathEditorActive').find('span[aria-live]')[0].textContent = "after application";
                 return false;
-            }
+            },
+        onContentDidChange: function() {
+            $("#mathAnnotationHeader").focus();
+            $('#mathAnnotation').height(TheActiveMathField.element.scrollHeight + TheActiveMathField.element.offsetTop);
+            TheActiveMathField.focus();
+        }
                  // onSelectionDidChange: UpdatePalette
         }
     );
@@ -1097,9 +1102,6 @@ function MathLivePasteFromButton(element) {
     TheActiveMathField.perform(['insert', insertionString,
                 {insertionMode: 'replaceSelection',
                  selectionMode: 'placeholder'}]);
-    $("#mathAnnotationHeader").focus();
-    $('#mathEditorActive').height(TheActiveMathField.element.scrollHeight);
-    $('#mathAnnotation').height(TheActiveMathField.element.scrollHeight);
     TheActiveMathField.focus();
 }
 
