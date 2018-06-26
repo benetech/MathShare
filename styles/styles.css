@@ -453,6 +453,10 @@ pulse.off {
     display: block;
 }
 
+.ML__fieldcontainer {
+    width: 50px;
+}
+
 #MySteps {
     padding-left:25px; 
     padding-right:25px;
@@ -473,8 +477,4 @@ pulse.off {
     flex-grow: 200;
     padding: 5px;
     height: 100px;
-}
-
-.ML__fieldcontainer {
-    width: 50px;
 }
