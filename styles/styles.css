@@ -478,3 +478,11 @@ pulse.off {
     padding: 5px;
     height: 100px;
 }
+
+#mathAnnotation {
+    width: 280px; 
+    height: 118px; 
+    margin-top: 1px; 
+    margin-bottom: -6px; 
+    border-left: 1px solid #CCC;
+}
