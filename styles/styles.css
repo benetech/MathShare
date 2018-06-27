@@ -4,6 +4,13 @@ html, body {
   background-color: #f0f0f0;
 }
 
+/* Crossout lines properties */
+svg > line {
+    stroke: green;
+    stroke-linecap: round;
+    stroke-width: 2;
+}
+
 /* FLEX LAYOUT  */
 .mainWrapper {
   height: 100%;
