@@ -6,7 +6,7 @@ html, body {
 
 /* Crossout lines properties */
 svg > line {
-    stroke: green;
+    stroke: blue;
     stroke-linecap: round;
     stroke-width: 2;
 }
