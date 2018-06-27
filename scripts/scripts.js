@@ -41,10 +41,17 @@ $(document).ready(function(){
                 var file = $('#fileid').get(0).files[0];
                 readBlob();
         });
+    InitScratchPad();
     ShowWorkArea(false);
 
     $('#undoDelete').hide();
 });
+
+function InitScratchPad() {
+    Painterro({
+        id: "scratch-pad-containter"
+    }).show();
+}
 
 function ShowWorkArea(show) {
     // shows either the work area or the question area
