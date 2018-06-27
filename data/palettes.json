@@ -1,0 +1,177 @@
+[
+    {
+        "screenReadersTitle": "cross out and calc buttons",
+        "label": "Edit",
+        "commonClass": "staticMath btn btn-facility paletteButton",
+        "buttonsRows": [
+            [
+                {
+                    "title": "Cross out (⌨: shift+delete)",
+                    "additionalOnclick": "MathLivePasteFromButton(this); GoogleAnalytics('Cross Out');",
+                    "value": "$$\\enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{\\blacksquare}$$"
+                },
+                {
+                    "title": "Cross out & replace (⌨: shift+ctrl+delete)",
+                    "additionalOnclick": "MathLivePasteFromButton(this); GoogleAnalytics('Cross Out & Replace');",
+                    "value": "$$ \\enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{\\blacksquare}^{\\square} $$"
+                }
+            ],
+            [
+                {
+                    "title": "stack below (⌨: ctrl+enter)",
+                    "additionalOnclick": "MathLivePasteFromButton(this); GoogleAnalytics('stack below');",
+                    "value": "$$ \\begin{array}{r} \\blacksquare \\\\ \\square\\end{array}$$"
+                }
+            ],
+            [
+                {
+                    "title": "Calculate (⌨: ctrl+=)",
+                    "additionalOnclick": "CalculateAndReplace(this); GoogleAnalytics('Calculate');",
+                    "value": "Calc"
+                }
+            ]
+        ]
+    },
+    {
+        "screenReadersTitle": "Operator buttons",
+        "label": "Operators",
+        "commonClass": "staticMath btn btn-operator paletteButton",
+        "commonOnclick": "MathLivePasteFromButton(this)",
+        "buttonsRows": [
+            [
+                {
+                    "title": "Dot times (⌨: \\cdot⏎)",
+                    "value": "$$\\cdot$$"
+                },
+                {
+                    "title": "Times (⌨: xx)",
+                    "value": "$$\\times$$"
+                },
+                {
+                    "title": "Division (⌨: \\div⏎)",
+                    "value": "$$\\div$$"
+                }
+            ],
+            [
+                {
+                    "title": "Plus minus (⌨: +-)",
+                    "value": "$$\\pm$$"
+                },
+                {
+                    "title": "Less than or equal  (⌨: <=)",
+                    "value": "$$\\leq$$"
+                },
+                {
+                    "title": "Greater than or equal  (⌨: >=)",
+                    "value": "$$\\geq$$"
+                }
+            ],
+            [
+                {
+                    "title": "Not equal (⌨: !=)",
+                    "value": "$$\\neq$$"
+                },
+                {
+                    "title": "Is equal to (⌨: ?=)",
+                    "value": "$$\\overset{?}{=}$$"
+                }
+            ]
+        ]
+    },
+    {
+        "screenReadersTitle": "Fraction and other notation buttons",
+        "label": "Notations",
+        "commonClass": "staticMath btn btn-notation paletteButton",
+        "commonOnclick": "MathLivePasteFromButton(this)",
+        "buttonsRows": [
+            [
+                {
+                    "title": "Fraction (⌨: /)",
+                    "value": "$$\\frac{\\blacksquare}{\\square}$$"
+                },
+                {
+                    "title": "Superscript (⌨: ^)",
+                    "value": "$${\\blacksquare}^{\\square}$$"
+                },
+                {
+                    "title": "Subscript (⌨: _)",
+                    "value": "$${\\blacksquare}_{\\square}$$"
+                }
+            ],
+            [
+                {
+                    "title": "Square root (⌨: sqrt)",
+                    "value": "$$\\sqrt{\\blacksquare}$$"
+                },
+                {
+                    "title": "General root(⌨: \\sqrt[n])",
+                    "value": "$$\\sqrt[{\\square}]{\\blacksquare}$$"
+                },
+                {
+                    "title": "Parentheses",
+                    "value": "$$\\Bigl{(}\\blacksquare\\Bigr{)}$$"
+                }
+            ],
+            [
+                {
+                    "title": "Square brackets",
+                    "value": "$$\\Bigl{[}\\blacksquare\\Bigr{]}$$"
+                },
+                {
+                    "title": "Absolute value",
+                    "value": "$$\\Bigl{|}\\blacksquare\\Bigr{|}$$"
+                },
+                {
+                    "title": "Floor",
+                    "value": "$$\\Bigl{\\lfloor}\\blacksquare\\Bigr{\\rfloor}$$"
+                },
+                {
+                    "title": "Ceiling",
+                    "value": "$$\\Bigl{\\lceil}\\blacksquare\\Bigr{\\rceil}$$"
+                }
+            ]
+        ]
+    },
+    {
+        "screenReadersTitle": "Additional symbols buttons",
+        "label": "Geometry",
+        "commonClass": "staticMath btn btn-symbol paletteButton",
+        "commonOnclick": "MathLivePasteFromButton(this)",
+        "buttonsRows": [
+            [
+                {
+                    "title": "Triangle (⌨: \\triangle⏎)",
+                    "value": "$$\\triangle$$"
+                },
+                {
+                    "title": "Angle (⌨: \\angle⏎)",
+                    "value": "$$\\angle$$"
+                },
+                {
+                    "title": "Congruent (⌨: \\cong⏎)",
+                    "value": "$$\\cong$$"
+                }
+            ],
+            [
+                {
+                    "title": "Perpendicular (⌨: \\perp⏎)",
+                    "value": "$$\\perp$$"
+                },
+                {
+                    "title": "Parallel (⌨: \\parallel⏎)",
+                    "value": "$$\\parallel$$"
+                },
+                {
+                    "title": "Degree (⌨: \\degree⏎)",
+                    "value": "$$\\degree$$"
+                }
+            ],
+            [
+                {
+                    "title": "Pi (⌨: pi⏎)",
+                    "value": "$$\\pi$$"
+                }
+            ]
+        ]
+    }
+]
