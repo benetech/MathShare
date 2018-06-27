@@ -41,16 +41,6 @@
     </script>
 </head>
 <body lang=EN-US>
-<script>
-$(document).ready(function(){
-    Painterro({
-        id: "scratch-pad-containter",
-        defaultTool: 'brush',
-        hiddenTools: ['select', 'crop', 'pixelize', 'rotate', 'resize', 'settings', 'close'] 
-    }).show();
-});
-</script>
-<div id="scratch-pad-containter" style="z-index: 100; width: 50%; height: 50%; position:absolute;"></div>
 <div class="mainWrapper">
     <div id="topNavigation" class="header">
         <!-- BEGIN TOP HEADER/NAVIGATION -->
@@ -207,6 +197,10 @@ $(document).ready(function(){
                                     </button>                        
                                 </div>
                             </div>
+                        </div>
+
+                        <div class="d-flex flex-nowrap justify-content-between pt-2">
+                            <div id="scratch-pad-containter" class="order-0" style="z-index: 100; position: relative; width: 100%; height: 300px;"></div>
                         </div>
                     </div>
 

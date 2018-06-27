@@ -49,7 +49,9 @@ $(document).ready(function(){
 
 function InitScratchPad() {
     Painterro({
-        id: "scratch-pad-containter"
+        id: "scratch-pad-containter",
+        defaultTool: 'brush',
+        hiddenTools: ['select', 'crop', 'pixelize', 'rotate', 'resize', 'settings', 'close'] 
     }).show();
 }
 
