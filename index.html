@@ -41,6 +41,14 @@
     </script>
 </head>
 <body lang=EN-US>
+<script>
+$(document).ready(function(){
+    Painterro({
+        id: "scratch-pad-containter"
+    }).show();
+});
+</script>
+<div id="scratch-pad-containter" style="z-index: 100; width: 50%; height: 50%; position:absolute;"></div>
 <div class="mainWrapper">
     <div id="topNavigation" class="header">
         <!-- BEGIN TOP HEADER/NAVIGATION -->
@@ -166,9 +174,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <script>
-                                Painterro().show();
-                            </script>
                         </div>
                         <div class="d-flex flex-nowrap justify-content-between pt-2">
                             <div id="mathPalette" class="pl-0 col-lg-10 d-flex flex-nowrap"></div>
