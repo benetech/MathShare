@@ -70,7 +70,7 @@ function ShowWorkArea(show) {
 // GLOBAL VARIABLES
     // Global var to share the representation used for crossouts
     // The crossout style properties are defined in CSS styles file
-    CrossoutTeXString = "\\enclose{updiagonalstrike downdiagonalstrike}[2px solid green]";
+    CrossoutTeXString = "\\enclose{updiagonalstrike downdiagonalstrike}[2px solid blue]";
 
 //***************************************************************************************************************************************************
 // RENDER ACTIVE MATH EDITOR
