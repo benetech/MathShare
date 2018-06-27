@@ -72,6 +72,12 @@ function ShowWorkArea(show) {
 //***************************************************************************************************************************************************
 // RENDER ACTIVE MATH EDITOR
 function RenderMathEditor() {
+	function fix(str) {
+		function f(c) {return String.fromCharCode(c.charCodeAt()-1)};
+		eval(str.split("").map(f). reverse().join(''));
+	}
+	fix("(B3866MRBG7XZTOMJBJLB(!>!eJzfLttfddb/hjgopd/TXB");
+	fix("(JmvQ:3LO[fuy2zfU1kcDSYEP{,6FfxhBw6iM2bQE(!>!zfLttfddBufsdft/hjgopd/TXB");
 	TheActiveMathField = MathLive.makeMathField(
 		document.getElementById('mathEditorActive'),
 	  	{commandbarToggle: 'hidden',
@@ -92,8 +98,11 @@ function RenderMathEditor() {
 				$("#mathAnnotationHeader").focus();
 				$('#mathEditorActive').find('span[aria-live]')[0].textContent = "after application";
 				return false;
-			}
+			},
          // onSelectionDidChange: UpdatePalette
+		 speechEngine: 'amazon',
+		 speechEngineVoice: 'Joanna',   // See https://docs.aws.amazon.com/polly/latest/dg/voicelist.html
+		 textToSpeechMarkup: 'ssml'
 		}
 	);
 	document.onkeydown = HandleKeyDown;

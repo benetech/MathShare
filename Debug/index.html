@@ -21,6 +21,10 @@
 	<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+	<script src="https://sdk.amazonaws.com/js/aws-sdk-2.249.1.min.js"></script>
+	<script>
+        AWS.config.region = 'us-west-1';		//*** FIX: should be based on current location
+	</script>
 	<script>
 		var require = {
 			baseUrl: './',
@@ -41,9 +45,9 @@
 	<!-- BEGIN TOP HEADER/NAVIGATION -->
 	<header>
 	   <h2 class="sr-only"> Header </h2>
-		<nav class="navbar navbar-expand-lg navbar-default">
+		<nav class="navbar navbar-expand-lg navbar-default" id="topNavigation">
 		  <a class="navbar-brand" href="#">
-		    <img src="../images/logo.png" alt="Galois Math Editor" height="37">
+		    <img src="images/logo.png" alt="Benetech Math Editor" height="37">
 		  </a>
 		  <div class="collapse navbar-collapse" id="navbarNav">
 		    <ul class="navbar-nav mr-auto">
@@ -131,10 +135,8 @@
 						<div aria-label="edit equation" id='mathEditorActive' role="application" tabindex="0" style="float: left; min-width: 400px; margin: 15px 0px 15px 15px;" onfocus="TheActiveMathField.focus();"> </div>
 						<div style="float: right;">
 							<h3 id="mathAnnotationHeader" class="mathAnnotation sr-only" style="float: right; border-left: 1px solid #CCC;" tabindex="-1">Describe your work</h3>
-							<span>
-							    <textarea class="form-control" id="mathAnnotation" placeholder="Use the microphone button or type to explain your work (required)" style="width: 280px; height: 98px; border-left: 1px solid #CCC;" data-step="2" data-intro="Describe your work by typing directly or using the microphone to record an explanation of your work(required)."></textarea>
-							</span>
-							<span style="float: right;"><button id="start_button" class="btn btn-mic pointer" data-toggle="tooltip" onclick="GoogleAnalytics('S2T Clicked');"><img alt="Start Speaking" id="mic_img" src="../images/mic.gif"></button></span>
+							    <textarea class="form-control" id="mathAnnotation" placeholder="Use the microphone button or type to explain your work (required)" style="width: 280px; height: 98px; border-left: 1px solid #CCC;" data-step="2" data-intro="Describe your work by typing directly or using the microphone to record an explanation of your work (required)." ></textarea>
+							<span style="float: right;"><button id="start_button" class="btn btn-mic pointer" data-toggle="tooltip" onclick="GoogleAnalytics('S2T Clicked');"><img alt="Start Speaking" id="mic_img" src="images/mic.gif"></button></span>
 						</div>
 					</div>
 				</div>				
@@ -222,7 +224,7 @@
 		<h2 class="sr-only"> Footer </h2>
 	    <div style="flex: 0 0 100px;">
 		    <a href="https://www2.ed.gov/about/offices/list/osers/osep/index.html" target="_blank">
-				<img style="float: left; margin: 0px 25px 0px 10px; background-color: #FFF; padding: 5px;" src="../images/IDEA-logo.gif" alt="IDEA Logo" height="50">
+				<img style="float: left; margin: 0px 25px 0px 10px; background-color: #FFF; padding: 5px;" src="images/IDEA-logo.gif" alt="IDEA Logo" height="50">
 			</a>
 	    </div>
 	    <div style="font-size: 0.7em; color: #FFF;">
@@ -230,7 +232,7 @@
 		</div>
 	    <div style="flex: 0 0 100px;">
 		    <a href="https://www.benetech.org/" target="_blank">
-				<img style="float: right;margin: 0px 10px 0px 25px; background-color: #FFF; padding: 5px;" src="../images/benetech_logo_transparent.gif" alt="Benetech Logo" height="50">
+				<img style="float: right;margin: 0px 10px 0px 25px; background-color: #FFF; padding: 5px;" src="images/benetech_logo_transparent.gif" alt="Benetech Logo" height="50">
 			</a>
 	    </div>
 	</footer>

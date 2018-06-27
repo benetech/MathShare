@@ -14,8 +14,11 @@ define(['mathlive/mathlive'],
 							'%': '\\%',			// make it easy to type %
 							'*': '\\times',		// what most people want
 							'?=': '\\overset{?}{=}'	// is equal to
-						  }
+						  },
          //onSelectionDidChange: UpdatePalette
+		 speechEngine: 'amazon',
+		 speechEngineVoice: 'Joanna',   // See https://docs.aws.amazon.com/polly/latest/dg/voicelist.html
+		 textToSpeechMarkup: 'ssml'
 		}
 	  );
 	  document.onkeydown = HandleKeyDown;
