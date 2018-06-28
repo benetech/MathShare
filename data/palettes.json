@@ -9,7 +9,7 @@
                     "id": "crossOutBtn",
                     "title": "Cross out",
                     "additionalOnclick": "MathLivePasteFromButton(this); GoogleAnalytics('Cross Out');",
-                    "value": "$$\\enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{\\blacksquare}$$",
+                    "value": "$$\\enclose{updiagonalstrike downdiagonalstrike}[2px solid blue]{\\blacksquare}$$",
                     "keys":
                     [
                         "Shift",
@@ -20,7 +20,7 @@
                     "id": "crossOutAndReplaceBtn",
                     "title": "Cross out & replace",
                     "additionalOnclick": "MathLivePasteFromButton(this); GoogleAnalytics('Cross Out & Replace');",
-                    "value": "$$ \\enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{\\blacksquare}^{\\square} $$",
+                    "value": "$$ \\enclose{updiagonalstrike downdiagonalstrike}[2px solid blue]{\\blacksquare}^{\\square} $$",
                     "keys":
                     [
                         "Shift",
@@ -44,7 +44,7 @@
             ],
             [
                 {
-                    "id": "CalculateBtn",
+                    "id": "calculateBtn",
                     "title": "Calculate",
                     "additionalOnclick": "CalculateAndReplace(this); GoogleAnalytics('Calculate');",
                     "value": "Calc",
@@ -205,7 +205,7 @@
                     "value": "$$\\perp$$"
                 },
                 {
-                    "id": "ParallelBtn",
+                    "id": "parallelBtn",
                     "title": "Parallel (⌨: \\parallel⏎)",
                     "value": "$$\\parallel$$"
                 },
