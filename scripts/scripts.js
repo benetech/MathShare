@@ -58,6 +58,17 @@ function InitScratchPad() {
     $('#scratch-pad-button').click(function() {
         $('#scratch-pad-containter').slideToggle("fast");
     });
+
+    padPallete = $('#scratch-pad-containter-bar > div > span').first();
+    padPallete.append('<button id="clear-button" type="button" class="fa fa-trash ptro-icon-btn ptro-color-control"></button>');
+    $('#clear-button').click(function() {
+        ClearScrachPad();
+    });
+
+}
+
+function ClearScrachPad() {
+    $('.ptro-settings-widget-wrapper button.ptro-clear').click();
 }
 
 function ShowWorkArea(show) {
