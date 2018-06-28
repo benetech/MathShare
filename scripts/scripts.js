@@ -1262,54 +1262,65 @@ function UpdatePalette(mathField) {
     }
 }
 
+function initializeKeyShortcuts(palettes) {
+    var keyShortcuts = new Map();
+    palettes.forEach(function(palette) {
+        palette.buttonsRows.forEach(function(buttonsRow) {
+            buttonsRow.forEach(function(button) {
+                if (button.keys) {
+                    keyShortcuts.set(buildMapKey(button.keys), button.id);
+                }
+            });
+        });
+    });
+    sessionStorage.keyShortcuts = JSON.stringify(Array.from(keyShortcuts.entries()));
+}
+
+function buildMapKey(keys) {
+    keys.sort();
+    return mapKey = keys.join('');
+}
+
 //***************************************************************************************************************************************************
 function HandleKeyDown(event)
 {
-    if (event.shiftKey && (event.key==='Delete' || event.key==='Backspace')) {
-        if ( TheActiveMathField.selectionIsCollapsed() ) {
-            // if an insertion cursor, extend the selection unless we are at an edge
-            if ( TheActiveMathField.selectionAtStart() && event.key==='Backspace' )
-                return false;
-            if ( TheActiveMathField.selectionAtEnd() && event.key==='Delete' )
-                return false;
+    var keyShortcuts = new Map(JSON.parse(sessionStorage.keyShortcuts));
+    if (event.shiftKey && TheActiveMathField.selectionIsCollapsed()) {
+        // if an insertion cursor, extend the selection unless we are at an edge
+        if (event.key === 'Backspace' && !TheActiveMathField.selectionAtStart()) {
+            TheActiveMathField.perform('extendToPreviousChar');
 
-            TheActiveMathField.perform(event.key=="Delete" ? 'extendToNextChar' : 'extendToPreviousChar');
+        } else if (event.key === 'Delete' && !TheActiveMathField.selectionAtEnd()) {
+            TheActiveMathField.perform('extendToNextChar');
         }
-
-        let selection = CleanUpCrossouts( TheActiveMathField.selectedText('latex'), {erase:true} );
-        let insertionString = CrossoutTeXString + "{" + selection + "}";
-        if (event.ctrlKey) // cross out and replace
-            insertionString += '^{#?}';
-        TheActiveMathField.perform(['insert', insertionString,
-                                        {insertionMode: 'replaceSelection',
-                                     selectionMode: event.ctrlKey ? 'placeholder' : 'item'}]);
-        TheActiveMathField.focus();
-        return false;
     }
-
-    if (event.shiftKey && event.key==='Enter' && $('#mathAnnotation').val() !== '') {
+    if (event.shiftKey && event.key === 'Enter' && $('#mathAnnotation').val() !== '') {
         if ($('#updateStep').is(":visible")) {
             $('#updateStep').click();
         } else {
             NewRowOrRowsAfterCleanup(TheActiveMathField.latex());
-        }        
-        return false;
+        }
     }
 
-    if (event.ctrlKey && event.key==='=' && !event.shiftKey) {
-        CalculateAndReplace(TheActiveMathField);
-        return false;
+    var keys = [];
+    if (event.shiftKey) {
+        keys.push("Shift");
     }
-
-    return true;
+    if (event.ctrlKey) {
+        keys.push("Ctrl");
+    }
+    keys.push(event.key);
+    var id = keyShortcuts.get(buildMapKey(keys));
+    if (id) {
+        $("#" + id).click();
+    }
 }
 
-function GoogleAnalytics(var1) {
+function GoogleAnalytics(action) {
     ga('send', {
         hitType: 'event',
         eventCategory: 'Editor',
-        eventAction: var1,
+        eventAction: action,
         eventLabel: ''
     });
-    console.log('GA Logged: '+var1);
 }
