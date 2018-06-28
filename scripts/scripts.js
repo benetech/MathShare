@@ -51,8 +51,13 @@ function InitScratchPad() {
     Painterro({
         id: "scratch-pad-containter",
         defaultTool: 'brush',
-        hiddenTools: ['select', 'crop', 'pixelize', 'rotate', 'resize', 'settings', 'close'] 
+        hiddenTools: ['crop', 'pixelize', 'rotate', 'resize', 'settings', 'close'],
+        defaultSize: 'fill',
     }).show();
+    $('#scratch-pad-containter').hide();
+    $('#scratch-pad-button').click(function() {
+        $('#scratch-pad-containter').slideToggle("fast");
+    });
 }
 
 function ShowWorkArea(show) {
@@ -514,7 +519,7 @@ function ExitUpdate() {
     TheActiveMathField.latex($('.mathStep:last').data('equation'));
     $('#mathAnnotation').val('');
     TheActiveMathField.focus();
-    $('.problemFooter').show();
+    $('#control-buttons').show();
 }
 // Creates one or two rows (two if 'mathContent' contains cross outs)
 // @param {mathContent} latex for new active area after being cleaned.
@@ -623,7 +628,7 @@ function EditMathStep(stepNumber) {
     editor = $('.myWorkArea');
     editor.detach();
     mathStep.after(editor);
-    $('.problemFooter').hide();    
+    $('#control-buttons').hide();    
 }
 
 function UndoDeleteStep() {
