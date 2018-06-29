@@ -57,19 +57,28 @@ function InitScratchPad() {
     ScratchPadPainterro.show();
     $('#scratch-pad-containter').hide();
     $('#scratch-pad-button').click(function() {
-        $('#scratch-pad-containter').slideToggle("fast");
+        $('#scratch-pad-containter').slideToggle("fast", function() {
+            if ($("#scratch-pad-containter").is(":visible") === true) {
+                ScratchPadPainterro.adjustSizeFull();
+            }
+        });
     });
 
     padPallete = $('#scratch-pad-containter-bar > div > span').first();
     padPallete.append('<button id="clear-button" type="button" class="ptro-icon-btn ptro-color-control" title="Clear the scratch pad"><i class="ptro-icon ptro-icon-close"></i></button>');
     $('#clear-button').click(function() {
-        ClearScrachPad();
+        ClearAndResizeScrachPad();
     });
 
 }
 
-function ClearScrachPad() {
+function ClearAndResizeScrachPad() {
     ScratchPadPainterro.clear();
+}
+
+function ClearScrachPad() {
+    ScratchPadPainterro.clearBackground();
+    ScratchPadPainterro.worklog.clean = true; // it is because Painterro displays a modal if we want to replace an existing ScratchPad content
 }
 
 function ShowWorkArea(show) {
@@ -499,7 +508,7 @@ function NewMathEditorRow(mathContent, cleanup) {
     $('#mathAnnotation').val('');
 
     SetScratchPadContentData(mathStepNewNumber, ScratchPadPainterro.imageSaver.asDataURL())
-    ScratchPadPainterro.clear();
+    ClearScrachPad();
     //MathLive.renderMathInDocument();
 }
 
@@ -532,12 +541,11 @@ function SetScratchPadContentData(stepNumber, newContent) {
 
 function GetScratchPadContentData(stepNumber) {
     let mathStep = $('.mathStep:eq('+ (stepNumber - 1) +')');
-    let content = mathStep.data('scratch-pad');
-    return content;
+    return mathStep.data('scratch-pad');
 }
 
 function ApplyScratchPadContent(content) {
-    ScratchPadPainterro.clear();
+    ClearScrachPad();
     ScratchPadPainterro.show(content);
 }
 
