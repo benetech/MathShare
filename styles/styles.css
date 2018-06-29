@@ -26,7 +26,7 @@ svg > line {
   flex: 0 0 50px;
 }
 
-/* Note:  the 'hidden' value for overflow-x is due to a bootstrap bug in "row" that causes the 
+/* Note:  the 'hidden' value for overflow-x is due to a bootstrap bug in "row" that causes the
  *   horizontal scrollbars to appear:  https://github.com/twbs/bootstrap/issues/8959
  * The work around mentioned near the bottom of that thread (adding class="container-fluid")
  *   didn't work.
@@ -498,6 +498,10 @@ pulse.off {
     flex-grow: 200;
 }
 
+#mathButtons {
+    width: 330px;
+}
+
 .btn-scratch {
     background-color: white;
     background-image: url(../images/scratch.png);
@@ -509,4 +513,10 @@ pulse.off {
 
 .ptro-icon-btn {
     transition: all 0.5s;
+}
+
+#scratch-pad-containter {
+    position: relative;
+    height: 300px;
+    width: 100%;
 }
