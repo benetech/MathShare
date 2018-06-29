@@ -130,7 +130,7 @@ function InitScratchPad() {
             activeControl: 'rgba(230,230,230,1)',
             inputText: 'black'
         }
-        
+
     });
     ScratchPadPainterro.show();
     $('#scratch-pad-containter').hide();
@@ -142,13 +142,13 @@ function InitScratchPad() {
         });
     });
 
-    padPallete = $('#scratch-pad-containter-bar > div > span').first();   
+    padPallete = $('#scratch-pad-containter-bar > div > span').first();
     padPallete.append('<button id="clear-button" type="button" class="ptro-icon-btn ptro-color-control" title="Clear the scratch pad"><i class="ptro-icon ptro-icon-close"></i></button>');
     $('#clear-button').click(function() {
         ClearAndResizeScrachPad();
     });
     $('.ptro-icon-btn').css('border-radius','.25rem');
-    $('.ptro-bordered-btn').css('border-radius','.5rem');   
+    $('.ptro-bordered-btn').css('border-radius','.5rem');
     $('.ptro-info').hide();
 }
 
@@ -473,12 +473,14 @@ function PopulateEditorModal(buttonElement, dataObj) {
         // Problem changed -- ask for confirmation before discarding
         if (confirm("Any work on this problem will NOT be saved")) {
             ShowWorkArea(false);
+            ClearScrachPad();
             return true;
         }
         return false;
     });
         $('#BtnSave').click(function() {
             SaveProblem(buttonElement);
+            ClearScrachPad();
         });
 
     //8 Hide/show parts of page
@@ -1136,7 +1138,7 @@ function ReplaceTeXCommands(str, replacements) {
 
 //***************************************************************************************************************************************************
 // Remove crossouts (without considering replacement) from a string
-//    where crossout is \enclose{updiagonalstrike downdiagonalstrike}[..]{...}
+//    whe   re crossout is \enclose{updiagonalstrike downdiagonalstrike}[..]{...}
 // @param {string} The LaTeX string to be cleaned
 // @param {object} [optional] {erase: boolean [false]} -- either delete the crossout or erase the crossout (leave contents)
 // @return {string} The string with the crossouts removed

@@ -20,13 +20,13 @@ svg > line {
 }
 
 .contentWrapper {
-  display: contents;  
+  display: contents;
 }
 .header, .footer {
   flex: 0 0 50px;
 }
 
-/* Note:  the 'hidden' value for overflow-x is due to a bootstrap bug in "row" that causes the 
+/* Note:  the 'hidden' value for overflow-x is due to a bootstrap bug in "row" that causes the
  *   horizontal scrollbars to appear:  https://github.com/twbs/bootstrap/issues/8959
  * The work around mentioned near the bottom of that thread (adding class="container-fluid")
  *   didn't work.
@@ -365,7 +365,7 @@ a {
      float: left;
      font-weight: bold;
  }
- 
+
  @keyframes pulse_animation {
     0% { transform: scale(1); }
     30% { transform: scale(1); }
@@ -393,7 +393,7 @@ pulse.off {
  .introjs-overlay {
     opacity: 0.2 !important; /* opacity set in style on element, so need to override */
 }
- 
+
 /* used on *both* the element being referenced and the instructions/buttons element */
 .introjs-helperLayer {
     border: 1px solid rgba(255,255,255,1);
@@ -449,10 +449,10 @@ pulse.off {
     padding-right: 25px;
 /* 	margin-right: 10px; */
 }
- 
+
 .grayedOutCleanup {
     color:#727272;
-} 
+}
 
 .editorButton {
     margin-left: auto;
@@ -465,19 +465,19 @@ pulse.off {
 }
 
 #MySteps {
-    padding-left:25px; 
+    padding-left:25px;
     padding-right:25px;
 }
 
 #EditorArea {
-    padding-left:25px; 
+    padding-left:25px;
     padding-right:25px;
 }
 
 #mathEditorActive {
-    float: left; 
-    min-width: 400px; 
-    margin: 10px; 
+    float: left;
+    min-width: 400px;
+    margin: 10px;
     overflow-y: hidden;
     overflow-x: auto;
     display: inline-block;
@@ -487,10 +487,10 @@ pulse.off {
 }
 
 #mathAnnotation {
-    width: 280px; 
-    height: 118px; 
-    margin-top: 1px; 
-    margin-bottom: -6px; 
+    width: 280px;
+    height: 118px;
+    margin-top: 1px;
+    margin-bottom: -6px;
     border-left: 1px solid #CCC;
 }
 
