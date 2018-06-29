@@ -86,6 +86,7 @@ function ShowWorkArea(show) {
     // Global var to share the representation used for crossouts
     // The crossout style properties are defined in CSS styles file
     CrossoutTeXString = "\\enclose{updiagonalstrike downdiagonalstrike}[2px solid blue]";
+    UpdateMathFieldMode = false;
 
 //***************************************************************************************************************************************************
 // RENDER ACTIVE MATH EDITOR
@@ -475,7 +476,7 @@ function NewMathEditorRow(mathContent, cleanup) {
         //subtract 1 from the current step
         //select the previousStep
     $('.mathStep:last .btn-delete').hide();
-    
+
 
     $('.mathHistory').append( result );
     ScrollHistoryToBottom();
@@ -486,7 +487,7 @@ function NewMathEditorRow(mathContent, cleanup) {
     TheActiveMathField.latex(mathContent);
     $('#mathAnnotation').val('');
 
-    SetScratchPadContentData(mathStepNewNumber, ScratchPadPainterro.imageSaver.asDataURL()) 
+    SetScratchPadContentData(mathStepNewNumber, ScratchPadPainterro.imageSaver.asDataURL())
     ScratchPadPainterro.clear();
     //MathLive.renderMathInDocument();
 }
@@ -516,7 +517,6 @@ function UpdateMathEditorRow(mathContent, mathStepNumber, cleanup) {
 function SetScratchPadContentData(stepNumber, newContent) {
     let mathStep = $('.mathStep:eq('+ (stepNumber - 1) +')');
     mathStep.data('scratch-pad', newContent);
-    mathStep.attr('data-scratch-pad', newContent);
 }
 
 function GetScratchPadContentData(stepNumber) {
@@ -525,19 +525,28 @@ function GetScratchPadContentData(stepNumber) {
     return content;
 }
 
+function ApplyScratchPadContent(content) {
+    ScratchPadPainterro.clear();
+    ScratchPadPainterro.show(content);
+}
+
 function ExitUpdate() {
     $('#addStep').show();
     $('#updateControls').hide();
-    editor = $('.myWorkArea');
+    let editor = $('.myWorkArea');
     editor.detach();
     workArea = $('#EditorArea')
     workArea.append(editor);
-    TheActiveMathField.latex($('.mathStep:last').data('equation'));
-    $('#mathAnnotation').val('');
+
+    let latestMathStepData = $("#latestMathStepData");
+    TheActiveMathField.latex(latestMathStepData.data('equation'));
+    $('#mathAnnotation').val(latestMathStepData.data('annotation'));
+    ApplyScratchPadContent(latestMathStepData.data('scratch-pad'));
+    latestMathStepData.detach();
+
     TheActiveMathField.focus();
     $('#control-buttons').show();
-
-    ScratchPadPainterro.clear();
+    UpdateMathFieldMode = false;
 }
 // Creates one or two rows (two if 'mathContent' contains cross outs)
 // @param {mathContent} latex for new active area after being cleaned.
@@ -632,8 +641,18 @@ function DeleteActiveMath(clearAll) {
 
 function EditMathStep(stepNumber) {
     // nothing to do if there are no steps
-    index = stepNumber - 1;
+    let index = stepNumber - 1;
     let mathStep = $('.mathStep:eq('+ index +')');
+
+    if (UpdateMathFieldMode === false) {
+        let latestMathStepData = $('<div/>', {
+            id: "latestMathStepData",
+        }).hide().appendTo('#MathHistory');
+        latestMathStepData.data('equation', TheActiveMathField.latex());
+        latestMathStepData.data('annotation', $('#mathAnnotation').val());
+        latestMathStepData.data('scratch-pad', ScratchPadPainterro.imageSaver.asDataURL());
+    }
+
     TheActiveMathField.latex(mathStep.data('equation'));
     $('#mathAnnotation').val(mathStep.data('annotation'));
     $('#updateControls').removeAttr('hidden');
@@ -643,13 +662,13 @@ function EditMathStep(stepNumber) {
     });
     $('#addStep').hide();
     $('#updateControls').show();
-    editor = $('.myWorkArea');
+    let editor = $('.myWorkArea');
     editor.detach();
     mathStep.after(editor);
-    $('#control-buttons').hide();    
+    $('#control-buttons').hide();
 
-    ScratchPadPainterro.clear();
-    ScratchPadPainterro.show(GetScratchPadContentData(stepNumber));
+    ApplyScratchPadContent(GetScratchPadContentData(stepNumber));
+    UpdateMathFieldMode = true;
 }
 
 function UndoDeleteStep() {
