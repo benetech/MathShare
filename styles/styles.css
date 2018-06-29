@@ -497,3 +497,12 @@ pulse.off {
 #mathPalette {
     flex-grow: 200;
 }
+
+.btn-scratch {
+    background-color: white;
+    background-image: url(../images/scratch.png);
+}
+
+.btn-scratch:active {
+    background-image: url(../images/scratch.png)!important;
+}
