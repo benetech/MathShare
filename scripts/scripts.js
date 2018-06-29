@@ -51,7 +51,7 @@ function InitScratchPad() {
     ScratchPadPainterro = Painterro({
         id: "scratch-pad-containter",
         defaultTool: 'brush',
-        hiddenTools: ['crop', 'pixelize', 'rotate', 'resize', 'settings', 'close'],
+        hiddenTools: ['crop', 'pixelize', 'rotate', 'resize', 'settings', 'close', 'save'],
         defaultSize: 'fill'
     });
     ScratchPadPainterro.show();
