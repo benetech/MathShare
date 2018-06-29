@@ -49,10 +49,88 @@ $(document).ready(function(){
 
 function InitScratchPad() {
     ScratchPadPainterro = Painterro({
+        translation: {
+            name: 'en',
+            strings: {
+                lineColor: 'Line color: ',
+                lineColorFull: 'Line color',
+                fillColor: 'Fill color: ',
+                fillColorFull: 'Fill color',
+                alpha: 'Alpha value',
+                alphaFull: 'Alpha value',
+                lineWidth: 'Line width: ',
+                lineWidthFull: 'Line width',
+                eraserWidth: 'Eraser width: ',
+                eraserWidthFull: 'Eraser width',
+                textColor: 'Text color: ',
+                textColorFull: 'Text color',
+                fontSize: 'Font size: ',
+                fontSizeFull: 'Font size',
+                fontStrokeSize: 'Stroke width: ',
+                fontStrokeSizeFull: 'Stroke width',
+                fontStyle: 'Font style: ',
+                fontStyleFull: 'Font style',
+                fontName: 'Font name: ',
+                fontNameFull: 'Font name',
+                textStrokeColor: 'Stroke color: ',
+                textStrokeColorFull: 'Stroke color',
+                apply: 'Apply',
+                cancel: 'Cancel',
+                close: 'Close',
+                clear: 'Clear',
+                width: 'Width',
+                height: 'Height',
+                keepRatio: 'Keep width/height ratio',
+                fillPageWith: 'Fill page with current background color',
+                pixelSize: 'P',
+                pixelSizeFull: 'Pixel size',
+                resizeScale: 'Scale',
+                resizeResize: 'Resize',
+                backgroundColor: 'Page background color',
+                pixelizePixelSize: 'Pixelize pixel size',
+                wrongPixelSizeValue: 'Wrong pixel size. You can enter e.g. "20%" which mean pixel size will be 1/5 of ' +
+                    'the selected area side, or "4" means 4 px',
+                tools: {
+                  crop: 'Crop image to selected area',
+                  pixelize: 'Pixelize selected area',
+                  rect: 'Draw rectangle',
+                  ellipse: 'Draw ellipse',
+                  line: 'Draw line',
+                  rotate: 'Rotate image',
+                  save: 'Save image',
+                  load: 'Load image',
+                  text: 'Put text',
+                  brush: 'Brush',
+                  resize: 'Resize or scale',
+                  open: 'Open image',
+                  select: 'Select area',
+                  close: 'Close Painterro',
+                  eraser: 'Eraser',
+                  settings: 'Settings',
+                },
+                pasteOptions: {
+                  fit: 'Replace all',
+                  extend_down: 'Extend down',
+                  extend_right: 'Extend right',
+                  over: 'Paste over',
+                  how_to_paste: 'How to paste?',
+                },
+            }
+        },
         id: "scratch-pad-containter",
         defaultTool: 'brush',
         hiddenTools: ['crop', 'pixelize', 'rotate', 'resize', 'settings', 'close', 'save'],
-        defaultSize: 'fill'
+        defaultSize: 'fill',
+        availableLineWidths: [1,2,4,8,16],
+        availableEraserWidths: [1,2,4,8,16,64],
+        availableFontSizes: [1,2,4,8,16],
+        colorScheme: {
+            main: 'rgba(0,98,217,0.6)',
+            control: 'white',
+            activeControl: 'rgba(230,230,230,1)',
+            inputText: 'black'
+        }
+        
     });
     ScratchPadPainterro.show();
     $('#scratch-pad-containter').hide();
@@ -64,12 +142,14 @@ function InitScratchPad() {
         });
     });
 
-    padPallete = $('#scratch-pad-containter-bar > div > span').first();
+    padPallete = $('#scratch-pad-containter-bar > div > span').first();   
     padPallete.append('<button id="clear-button" type="button" class="ptro-icon-btn ptro-color-control" title="Clear the scratch pad"><i class="ptro-icon ptro-icon-close"></i></button>');
     $('#clear-button').click(function() {
         ClearAndResizeScrachPad();
     });
-
+    $('.ptro-icon-btn').css('border-radius','.25rem');
+    $('.ptro-bordered-btn').css('border-radius','.5rem');   
+    $('.ptro-info').hide();
 }
 
 function ClearAndResizeScrachPad() {
