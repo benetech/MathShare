@@ -231,7 +231,7 @@ a {
   background-color: #add8e6bf;
   transition: all 1s;
   opacity: 1;
-  min-width: 800px;
+  min-width: 940px;
 }
 
 .paperSheet {
@@ -496,4 +496,13 @@ pulse.off {
 
 #mathPalette {
     flex-grow: 200;
+}
+
+.btn-scratch {
+    background-color: white;
+    background-image: url(../images/scratch.png);
+}
+
+.btn-scratch:active {
+    background-image: url(../images/scratch.png)!important;
 }

@@ -51,7 +51,7 @@ function InitScratchPad() {
     ScratchPadPainterro = Painterro({
         id: "scratch-pad-containter",
         defaultTool: 'brush',
-        hiddenTools: ['crop', 'pixelize', 'rotate', 'resize', 'settings', 'close'],
+        hiddenTools: ['crop', 'pixelize', 'rotate', 'resize', 'settings', 'close', 'save'],
         defaultSize: 'fill'
     });
     ScratchPadPainterro.show();
@@ -59,6 +59,17 @@ function InitScratchPad() {
     $('#scratch-pad-button').click(function() {
         $('#scratch-pad-containter').slideToggle("fast");
     });
+
+    padPallete = $('#scratch-pad-containter-bar > div > span').first();
+    padPallete.append('<button id="clear-button" type="button" class="ptro-icon-btn ptro-color-control" title="Clear the scratch pad"><i class="ptro-icon ptro-icon-close"></i></button>');
+    $('#clear-button').click(function() {
+        ClearScrachPad();
+    });
+
+}
+
+function ClearScrachPad() {
+    ScratchPadPainterro.clear();
 }
 
 function ShowWorkArea(show) {
