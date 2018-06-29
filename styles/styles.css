@@ -506,3 +506,7 @@ pulse.off {
 .btn-scratch:active {
     background-image: url(../images/scratch.png)!important;
 }
+
+.ptro-icon-btn {
+    transition: all 0.5s;
+}
