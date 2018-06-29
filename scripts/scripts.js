@@ -497,7 +497,8 @@ function NewMathEditorRow(mathContent, cleanup) {
     TheActiveMathField.latex(mathContent);
     $('#mathAnnotation').val('');
 
-    SetScratchPadContentData(mathStepNumber, ScratchPadPainterro.imageSaver.asDataURL())
+    SetScratchPadContentData(mathStepNewNumber, ScratchPadPainterro.imageSaver.asDataURL()) 
+    ScratchPadPainterro.clear();
     //MathLive.renderMathInDocument();
 }
 
@@ -506,12 +507,12 @@ function UpdateMathEditorRow(mathContent, mathStepNumber, cleanup) {
     index = mathStepNumber - 1;
     annotation = cleanup ? '(cleanup)' : $('#mathAnnotation').val();
 
-    mathStep = $('.mathStep:eq('+ index +')');
+    let mathStep = $('.mathStep:eq('+ index +')');
     mathStep.data('equation', TheActiveMathField.latex());
     mathStep.data('annotation', annotation);
     mathStep.attr('data-equation', TheActiveMathField.latex());
     mathStep.attr('data-annotation', annotation);
-    SetScratchPadContentData(index, ScratchPadPainterro.imageSaver.asDataURL())
+    SetScratchPadContentData(mathStepNumber, ScratchPadPainterro.imageSaver.asDataURL())
 
     mathStepFields = $('.staticMath', '.mathStep:eq('+ index +')');
     mathStepFields.first()[0].textContent = '$$' + TheActiveMathField.latex() + '$$';
@@ -524,9 +525,15 @@ function UpdateMathEditorRow(mathContent, mathStepNumber, cleanup) {
 }
 
 function SetScratchPadContentData(stepNumber, newContent) {
-    mathStep = $('.mathStep:eq('+ stepNumber +')');
+    let mathStep = $('.mathStep:eq('+ (stepNumber - 1) +')');
     mathStep.data('scratch-pad', newContent);
     mathStep.attr('data-scratch-pad', newContent);
+}
+
+function GetScratchPadContentData(stepNumber) {
+    let mathStep = $('.mathStep:eq('+ (stepNumber - 1) +')');
+    let content = mathStep.data('scratch-pad');
+    return content;
 }
 
 function ExitUpdate() {
@@ -540,6 +547,8 @@ function ExitUpdate() {
     $('#mathAnnotation').val('');
     TheActiveMathField.focus();
     $('#control-buttons').show();
+
+    ScratchPadPainterro.clear();
 }
 // Creates one or two rows (two if 'mathContent' contains cross outs)
 // @param {mathContent} latex for new active area after being cleaned.
@@ -649,6 +658,9 @@ function EditMathStep(stepNumber) {
     editor.detach();
     mathStep.after(editor);
     $('#control-buttons').hide();    
+
+    ScratchPadPainterro.clear();
+    ScratchPadPainterro.show(GetScratchPadContentData(stepNumber));
 }
 
 function UndoDeleteStep() {
