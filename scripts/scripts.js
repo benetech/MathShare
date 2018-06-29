@@ -61,7 +61,7 @@ function InitScratchPad() {
     });
 
     padPallete = $('#scratch-pad-containter-bar > div > span').first();
-    padPallete.append('<button id="clear-button" type="button" class="fa fa-trash ptro-icon-btn ptro-color-control"></button>');
+    padPallete.append('<button id="clear-button" type="button" class="ptro-icon-btn ptro-color-control" title="Clear the scratch pad"><i class="ptro-icon ptro-icon-close"></i></button>');
     $('#clear-button').click(function() {
         ClearScrachPad();
     });
@@ -69,7 +69,7 @@ function InitScratchPad() {
 }
 
 function ClearScrachPad() {
-    $('.ptro-settings-widget-wrapper button.ptro-clear').click();
+    ScratchPadPainterro.clear();
 }
 
 function ShowWorkArea(show) {
