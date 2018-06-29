@@ -26,7 +26,7 @@ svg > line {
   flex: 0 0 50px;
 }
 
-/* Note:  the 'hidden' value for overflow-x is due to a bootstrap bug in "row" that causes the
+/* Note:  the 'hidden' value for overflow-x is due to a bootstrap bug in "row" that causes the 
  *   horizontal scrollbars to appear:  https://github.com/twbs/bootstrap/issues/8959
  * The work around mentioned near the bottom of that thread (adding class="container-fluid")
  *   didn't work.

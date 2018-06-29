@@ -158,6 +158,7 @@ function ClearAndResizeScrachPad() {
 
 function ClearScrachPad() {
     ScratchPadPainterro.clearBackground();
+    ScratchPadPainterro.worklog.current = null;
     ScratchPadPainterro.worklog.clean = true; // it is because Painterro displays a modal if we want to replace an existing ScratchPad content
 }
 
@@ -1138,7 +1139,7 @@ function ReplaceTeXCommands(str, replacements) {
 
 //***************************************************************************************************************************************************
 // Remove crossouts (without considering replacement) from a string
-//    whe   re crossout is \enclose{updiagonalstrike downdiagonalstrike}[..]{...}
+//    where crossout is \enclose{updiagonalstrike downdiagonalstrike}[..]{...}
 // @param {string} The LaTeX string to be cleaned
 // @param {object} [optional] {erase: boolean [false]} -- either delete the crossout or erase the crossout (leave contents)
 // @return {string} The string with the crossouts removed
