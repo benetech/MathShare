@@ -1,6 +1,7 @@
 function initializeMathPalette() {
     $.getJSON( "../data/palettes.json", function(palettes) {
         $('#mathPalette').html(buildMathPalette(palettes));
+        initializeKeyShortcuts(palettes);
     });
 }
 
@@ -37,9 +38,11 @@ function buildButtonsRow(buttonsRow, commonClass, commonOnclick) {
     buttonsRow.forEach(function(button) {
         var buttonClass = concatAttribute(commonClass, button.additionalClass);
         var onClick = concatAttribute(commonOnclick, button.additionalOnclick);
+        var title = buildButtonTitle(button.title, button.keys);
         result += "<span role=\"listitem\">"
-            + "<button class=\"" + buttonClass + "\" data-toggle=\"tooltip\" "
-            + "title=\"" + button.title + "\" "
+            + "<button id=\"" + button.id + "\" "
+            + "class=\"" + buttonClass + "\" data-toggle=\"tooltip\" "
+            + "title=\"" + title + "\" "
             + "onclick=\"" + onClick + "\">"
             + button.value + "</button></span> ";
     });
@@ -54,4 +57,14 @@ function concatAttribute(firstPart, secondPart) {
 
 function buildButtonsListFooter(label) {
     return "<span role=\"listitem\">" + label + "</span></div>";
+}
+
+function buildButtonTitle(title, keys) {
+    var keyShortcut = "";
+    if (keys) {
+        keyShortcut += " (⌨: ";
+        keyShortcut += keys.join("+");
+        keyShortcut += ")";
+    }
+    return title + keyShortcut;
 }
