@@ -35,10 +35,9 @@
     <script src="data/example01.js"></script>
     <script src="scripts/painterro-0.2.65.min.js"></script>
     <script>
-    $(document).ready(function() {
-       ReadFileInitiate('data/data01.js');
-    })
-
+        $(document).ready(function() {
+            ReadFileInitiate('data/data01.js');
+        })
     </script>
 </head>
 <body lang=EN-US>
@@ -122,8 +121,7 @@
                 <div class="row" data-step="4"
                      data-intro="Review your work. The trash icon also allows you to delete and rework a prior step.">
                     <div class="col-lg-12">
-                        <div class="mathHistory container-fluid" style="color: #001F3F; opacity: 1;" id="MathHistory">
-                        </div>
+                        <div class="mathHistory container-fluid" style="color: #001F3F; opacity: 1;" id="MathHistory"></div>
                     </div>
                 </div>
             </div>
@@ -194,7 +192,7 @@
                                             title="Update the step (⌨: shift+enter)"
                                             data-step="3"
                                             data-intro="Update the step.">
-                                            <span class="fa fa-pencil"></span> 
+                                            <span class="fa fa-pencil"></span>
                                             Update Step
                                         </button>
                                         <br/>
@@ -203,7 +201,7 @@
                                             title="Cancel edit" onclick="ExitUpdate();"
                                             data-step="3"
                                             data-intro="Cancel edit.">
-                                            <span class="fa fa-ban" ></span> 
+                                            <span class="fa fa-ban"></span>
                                             Cancel edit
                                         </button>
                                     </div>
@@ -229,7 +227,7 @@
                                         Done
                                 </button>
                                 <button class="btn btn-default pointer" id="BtnClearAll" onclick="clearAllSteps()">
-                                    <span class="fa fa-times-circle"></span> 
+                                    <span class="fa fa-times-circle"></span>
                                     Clear all
                                 </button>
                             </div>
