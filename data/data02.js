@@ -1,12 +1,5 @@
 {
-    "metadata": {
-        "title": "Mixed Problems",
-        "palettes": [
-                "Edit",
-                "Operators",
-                "Notations"
-            ]
-    },
+    "metadata": { "title": "Mixed Problems" },
 	"problems": [
 		{
 			"metadata": {
