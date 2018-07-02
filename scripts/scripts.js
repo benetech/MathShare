@@ -54,7 +54,7 @@ function InitScratchPad() {
     $('#scratch-pad-containter').hide();
     $('#scratch-pad-button').click(function() {
         $('#scratch-pad-containter').slideToggle("fast", function() {
-            if ($("#scratch-pad-containter").is(":visible") === true) {
+            if ($("#scratch-pad-containter").is(":visible")) {
                 ScratchPadPainterro.adjustSizeFull();
             }
         });
