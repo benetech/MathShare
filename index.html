@@ -185,24 +185,26 @@
                                             title="Clean up the cross outs and start a new step (⌨: shift+enter)"
                                             onclick="AddStep();"
                                             data-step="3"
-                                            data-intro="Clean-up your work and start a new step."><i
-                                            class="fa fa-plus"></i> Add Step
+                                            data-intro="Clean-up your work and start a new step.">
+                                            <span class="fa fa-plus"></span> Add Step
                                     </button>
                                     <div hidden id="updateControls">
                                         <h3 class="sr-only">Update the step</h3>
                                         <button id='updateStep' class="btn btn-success pointer editorButton" data-toggle="tooltip"
                                             title="Update the step (⌨: shift+enter)"
                                             data-step="3"
-                                            data-intro="Update the step."><i
-                                            class="fa fa-pencil"></i> Update Step
+                                            data-intro="Update the step.">
+                                            <span class="fa fa-pencil"></span> 
+                                            Update Step
                                         </button>
                                         <br/>
                                         <h3 class="sr-only">Cancel edit</h3>
                                         <button id='cancelEdit' class="btn btn-default pointer editorButton" data-toggle="tooltip"
                                             title="Cancel edit" onclick="ExitUpdate();"
                                             data-step="3"
-                                            data-intro="Cancel edit."><i
-                                            class="fa fa-ban" ></i> Cancel edit
+                                            data-intro="Cancel edit.">
+                                            <span class="fa fa-ban" ></span> 
+                                            Cancel edit
                                         </button>
                                     </div>
                                 </div>
@@ -222,10 +224,13 @@
                                 </button>
                                 <button class="btn btn-default pointer" id="BtnSave" data-step="5"
                                         data-intro="Save your work or close out to try again from the beginning."
-                                        onclick="GoogleAnalytics('Save');"><i class="fa fa-thumbs-up"></i> Done
+                                        onclick="GoogleAnalytics('Save');">
+                                        <span class="fa fa-thumbs-up"></span>
+                                        Done
                                 </button>
-                                <button class="btn btn-default pointer" id="BtnClearAll" onclick="clearAllSteps()"><i class="fa fa-times-circle"></i> Clear
-                                    all
+                                <button class="btn btn-default pointer" id="BtnClearAll" onclick="clearAllSteps()">
+                                    <span class="fa fa-times-circle"></span> 
+                                    Clear all
                                 </button>
                             </div>
                         </div>

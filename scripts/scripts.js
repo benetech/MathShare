@@ -65,8 +65,8 @@ function InitScratchPad() {
     $('#clear-button').click(function() {
         ClearAndResizeScrachPad();
     });
-    $('.ptro-icon-btn').css('border-radius','.25rem');
-    $('.ptro-bordered-btn').css('border-radius','.5rem');
+    $('.ptro-icon-btn').css('border-radius', '.25rem');
+    $('.ptro-bordered-btn').css('border-radius', '.5rem');
     $('.ptro-info').hide();
 }
 
@@ -77,7 +77,8 @@ function ClearAndResizeScrachPad() {
 function ClearScrachPad() {
     ScratchPadPainterro.clearBackground();
     ScratchPadPainterro.worklog.current = null;
-    ScratchPadPainterro.worklog.clean = true; // it is because Painterro displays a modal if we want to replace an existing ScratchPad content
+    // it is because Painterro displays a modal if we want to replace an existing ScratchPad content
+    ScratchPadPainterro.worklog.clean = true;
 }
 
 function ShowWorkArea(show) {
