@@ -1,4 +1,4 @@
-function initializeMathPalette() {
+function initializeMathPalettes() {
     $.getJSON( "../data/palettes.json", function(palettes) {
         $('#mathPalette').html(buildMathPalette(palettes));
         initializeKeyShortcuts(palettes);
@@ -8,9 +8,17 @@ function initializeMathPalette() {
 function buildMathPalette(palettes) {
     var result = "<h3 class=\"sr-only\">math input buttons</h3>";
     palettes.forEach(function(palette, order) {
-        result += buildTitleForScreenReaders(palette.screenReadersTitle) + buildButtonsList(palette, order + 1);
+        if (paletteIsAllowed(palette)) {
+            result += buildButtonsList(palette, order + 1);
+        }
     });
     return result;
+}
+
+function paletteIsAllowed(palette) {
+    var metadata = JSON.parse($("#ContentWrapper").attr("data-galois-metadata"));
+    var allowedPalettes = metadata.palettes;
+    return !allowedPalettes || allowedPalettes.includes(palette.label);
 }
 
 function buildTitleForScreenReaders(title) {

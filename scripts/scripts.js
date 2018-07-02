@@ -202,8 +202,6 @@ function HTMLForRow(stepNumber, math, annotation, showTrash, showEdit, cleanup) 
     return html;
 }
 
-
-
 // Read data file and build a section containing links to open the editor on them
 // This is asynchronous, so the funcitonality is broken into two parts
 function ReadFileInitiate(fileName) {
@@ -254,7 +252,6 @@ function ReadFileInitiate(fileName) {
 
 // Finish reading the file now that the data is available
 function ReadFileFinish(data) {
-    //console.log("ReadFileFinish");
     document.getElementById("ContentWrapper").setAttribute(
             "data-galois-metadata",
             JSON.stringify(data.metadata)
@@ -262,6 +259,7 @@ function ReadFileFinish(data) {
     $('#ProblemList').empty();
     $('#ProblemList').html(PopulateMainPage(data));
 
+    initializeMathPalettes();
     MathLive.renderMathInDocument();
 }
 
@@ -316,18 +314,18 @@ function SetAndOpenEditorModel(buttonElement, dataObj) {
 
 // POPULATE EDITOR WINDOW
 function PopulateEditorModal(buttonElement, dataObj) {
-
     $(".leftNavigation li").removeClass("leftNavigationBackgroundActive");
 
     $(buttonElement).addClass("leftNavigationBackgroundActive");
         //1 Clear existing info in modal
             ClearEditorModal();
+
         //2 Get all variables from js objects
             let originalProblemTitle = dataObj.metadata.title;
             let originalProblemVariable = dataObj.metadata.variableName;
             let originalProblemEquation = dataObj.originalProblem.equation;
 
-            let originalProblemEquationHTML = '<span class="staticMath problemTitle">$$'+originalProblemEquation+'$$</span>';
+            let originalProblemEquationHTML = '<span class="staticMath problemTitle">$$' + originalProblemEquation + '$$</span>';
             let originalProblemAnnotation = dataObj.originalProblem.annotation;
             let currentEditorEquation = dataObj.currentEditor.equation;
             let currentEditorAnnotation = dataObj.currentEditor.annotation;
@@ -356,7 +354,8 @@ function PopulateEditorModal(buttonElement, dataObj) {
             }
             htmlHistory += HTMLForRow(i + 1, historyObj[i].equation, historyObj[i].annotation, showTrash, showEdit, historyObj[i].annotation === '(cleanup)');
             }
-        //3 BUILD HTML TITLE
+
+        //4 BUILD HTML TITLE
             let htmlTitle = originalProblemAnnotation;
         if (dataObj.originalProblem.equation) {
             htmlTitle += ': ';
@@ -365,26 +364,27 @@ function PopulateEditorModal(buttonElement, dataObj) {
                 htmlTitle = ''+originalProblemTitle+'';
             }
 
-        //4 POPULATE HTML
+        //5 POPULATE HTML
             $('#ProblemTitle').html(htmlTitle);
             $('#ProblemMath').html(originalProblemEquationHTML);	// shouldn't be part of title
-            $('#ProblemTitle').data('title', originalProblemTitle );
-            $('#ProblemTitle').data('equation', originalProblemEquation );
-            $('#ProblemTitle').data('annotation', originalProblemAnnotation );
+            $('#ProblemTitle').data('title', originalProblemTitle);
+            $('#ProblemTitle').data('equation', originalProblemEquation);
+            $('#ProblemTitle').data('annotation', originalProblemAnnotation);
 
             $('#MathHistory').html(htmlHistory);
             $('#mathEditorActive').html(currentEditorEquation);
             $('#mathAnnotation').val(currentEditorAnnotation);
-        //5 SCROLL TO BOTTOM OF HISTORY
+
+        //6 SCROLL TO BOTTOM OF HISTORY
             ScrollHistoryToBottom();
 
-        //5 RUN RENDER MATH
+        //7 RUN RENDER MATH
             MathLive.renderMathInDocument();
 
-        //6 RENDER MATH EDITOR
+        //8 RENDER MATH EDITOR
             RenderMathEditor();
 
-        //7 Wire up DISCARD & SAVE btns
+        //9 Wire up DISCARD & SAVE btns
     $('#BtnDiscard').click(function() {
         if (ProblemIsUnchanged(buttonElement)) {
             ShowWorkArea(false);
@@ -403,7 +403,7 @@ function PopulateEditorModal(buttonElement, dataObj) {
             ClearScrachPad();
         });
 
-    //8 Hide/show parts of page
+    //10 Hide/show parts of page
     ShowWorkArea(true);
 }
 
