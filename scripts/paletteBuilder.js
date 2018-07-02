@@ -1,8 +1,6 @@
 function initializeMathPalettes() {
-    $.getJSON( "../data/palettes.json", function(palettes) {
-        $('#mathPalette').html(buildMathPalette(palettes));
-        initializeKeyShortcuts(palettes);
-    });
+    $('#mathPalette').html(buildMathPalette(palettes));
+    initializeKeyShortcuts(palettes);
 }
 
 function buildMathPalette(palettes) {

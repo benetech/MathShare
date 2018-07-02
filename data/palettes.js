@@ -1,4 +1,4 @@
-[
+var palettes = [
     {
         "screenReadersTitle": "cross out and calc buttons",
         "label": "Edit",
