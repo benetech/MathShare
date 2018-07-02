@@ -41,10 +41,45 @@ $(document).ready(function(){
                 var file = $('#fileid').get(0).files[0];
                 readBlob();
         });
+    InitScratchPad();
     ShowWorkArea(false);
 
     $('#undoDelete').hide();
 });
+
+function InitScratchPad() {
+    ScratchPadPainterro = Painterro(painterroConfiguration);
+
+    ScratchPadPainterro.show();
+    $('#scratch-pad-containter').hide();
+    $('#scratch-pad-button').click(function() {
+        $('#scratch-pad-containter').slideToggle("fast", function() {
+            if ($("#scratch-pad-containter").is(":visible")) {
+                ScratchPadPainterro.adjustSizeFull();
+            }
+        });
+    });
+
+    padPallete = $('#scratch-pad-containter-bar > div > span').first();
+    padPallete.append('<button id="clear-button" type="button" class="ptro-icon-btn ptro-color-control" title="Clear the scratch pad"><i class="ptro-icon ptro-icon-close"></i></button>');
+    $('#clear-button').click(function() {
+        ClearAndResizeScrachPad();
+    });
+    $('.ptro-icon-btn').css('border-radius', '.25rem');
+    $('.ptro-bordered-btn').css('border-radius', '.5rem');
+    $('.ptro-info').hide();
+}
+
+function ClearAndResizeScrachPad() {
+    ScratchPadPainterro.clear();
+}
+
+function ClearScrachPad() {
+    ScratchPadPainterro.clearBackground();
+    ScratchPadPainterro.worklog.current = null;
+    // it is because Painterro displays a modal if we want to replace an existing ScratchPad content
+    ScratchPadPainterro.worklog.clean = true;
+}
 
 function ShowWorkArea(show) {
     // shows either the work area or the question area
@@ -71,6 +106,7 @@ function ShowWorkArea(show) {
     // Global var to share the representation used for crossouts
     // The crossout style properties are defined in CSS styles file
     CrossoutTeXString = "\\enclose{updiagonalstrike downdiagonalstrike}[2px solid blue]";
+    UpdateMathFieldMode = false;
 
 //***************************************************************************************************************************************************
 // RENDER ACTIVE MATH EDITOR
@@ -232,7 +268,7 @@ function ReadFileEmpty() {
 }
 
 // Create all the problems on the main page
-// Data for each problem is stored into the argument of the 'onclick' function		
+// Data for each problem is stored into the argument of the 'onclick' function
 function PopulateMainPage(data) {
     let functionToCall = 'SetAndOpenEditorModel(this, example01); ' +
                          'document.getElementById("MySteps").focus(); ';
@@ -274,7 +310,7 @@ function PopulateMainPage(data) {
 function SetAndOpenEditorModel(buttonElement, dataObj) {
     PopulateEditorModal(buttonElement, dataObj);
     //MathLive.renderMathInDocument();
-}	
+}
 
 // POPULATE EDITOR WINDOW
 function PopulateEditorModal(buttonElement, dataObj) {
@@ -357,12 +393,14 @@ function PopulateEditorModal(buttonElement, dataObj) {
         // Problem changed -- ask for confirmation before discarding
         if (confirm("Any work on this problem will NOT be saved")) {
             ShowWorkArea(false);
+            ClearScrachPad();
             return true;
         }
         return false;
     });
         $('#BtnSave').click(function() {
             SaveProblem(buttonElement);
+            ClearScrachPad();
         });
 
     //10 Hide/show parts of page
@@ -440,7 +478,7 @@ function ProblemIsUnchanged(buttonElement) {
     let currentState = JSON.stringify(GetProblemData(buttonElement));
     let previousState = buttonElement.getAttribute('onclick');
     return previousState.includes(currentState);
-}	
+}
 
 //***************************************************************************************************************************************************
 // CREATE NEW HISTORY ROW FROM CURRENT CONTENT
@@ -471,6 +509,8 @@ function NewMathEditorRow(mathContent, cleanup) {
     TheActiveMathField.latex(mathContent);
     $('#mathAnnotation').val('');
 
+    SetScratchPadContentData(mathStepNewNumber, ScratchPadPainterro.imageSaver.asDataURL())
+    ClearScrachPad();
     //MathLive.renderMathInDocument();
 }
 
@@ -479,11 +519,12 @@ function UpdateMathEditorRow(mathContent, mathStepNumber, cleanup) {
     index = mathStepNumber - 1;
     annotation = cleanup ? '(cleanup)' : $('#mathAnnotation').val();
 
-    mathStep = $('.mathStep:eq('+ index +')');
+    let mathStep = $('.mathStep:eq('+ index +')');
     mathStep.data('equation', TheActiveMathField.latex());
     mathStep.data('annotation', annotation);
     mathStep.attr('data-equation', TheActiveMathField.latex());
     mathStep.attr('data-annotation', annotation);
+    SetScratchPadContentData(mathStepNumber, ScratchPadPainterro.imageSaver.asDataURL())
 
     mathStepFields = $('.staticMath', '.mathStep:eq('+ index +')');
     mathStepFields.first()[0].textContent = '$$' + TheActiveMathField.latex() + '$$';
@@ -495,17 +536,38 @@ function UpdateMathEditorRow(mathContent, mathStepNumber, cleanup) {
     $('#mathAnnotation').val('');
 }
 
+function SetScratchPadContentData(stepNumber, newContent) {
+    let mathStep = $('.mathStep:eq('+ (stepNumber - 1) +')');
+    mathStep.data('scratch-pad', newContent);
+}
+
+function GetScratchPadContentData(stepNumber) {
+    let mathStep = $('.mathStep:eq('+ (stepNumber - 1) +')');
+    return mathStep.data('scratch-pad');
+}
+
+function ApplyScratchPadContent(content) {
+    ClearScrachPad();
+    ScratchPadPainterro.show(content);
+}
+
 function ExitUpdate() {
     $('#addStep').show();
     $('#updateControls').hide();
-    editor = $('.myWorkArea');
+    let editor = $('.myWorkArea');
     editor.detach();
     workArea = $('#EditorArea')
     workArea.append(editor);
-    TheActiveMathField.latex($('.mathStep:last').data('equation'));
-    $('#mathAnnotation').val('');
+
+    let latestMathStepData = $("#latestMathStepData");
+    TheActiveMathField.latex(latestMathStepData.data('equation'));
+    $('#mathAnnotation').val(latestMathStepData.data('annotation'));
+    ApplyScratchPadContent(latestMathStepData.data('scratch-pad'));
+    latestMathStepData.detach();
+
     TheActiveMathField.focus();
-    $('.problemFooter').show();
+    $('#control-buttons').show();
+    UpdateMathFieldMode = false;
 }
 // Creates one or two rows (two if 'mathContent' contains cross outs)
 // @param {mathContent} latex for new active area after being cleaned.
@@ -513,7 +575,7 @@ function ExitUpdate() {
 function NewRowOrRowsAfterCleanup(mathContent) {
     let cleanedUp = CleanUpCrossouts(mathContent);
     if (mathContent !== cleanedUp) {
-        NewMathEditorRow(cleanedUp, false);        
+        NewMathEditorRow(cleanedUp, false);
         NewMathEditorRow(cleanedUp, true);
     } else {
         NewMathEditorRow(cleanedUp, false);
@@ -524,14 +586,13 @@ function NewRowOrRowsAfterCleanup(mathContent) {
 }
 
 function UpdateRowAfterCleanup(mathContent, mathStepNumber) {
-    
     let cleanedUp = CleanUpCrossouts(mathContent);
     if (mathContent !== cleanedUp) {
         UpdateMathEditorRow(cleanedUp, mathStepNumber, false);
         //UpdateMathEditorRow(cleanedUp, mathStepNumber + 1, true); TODO: add cleanup update support
     } else {
         UpdateMathEditorRow(cleanedUp, mathStepNumber, false);
-    }  
+    }
 }
 
 function AddStep() {
@@ -585,7 +646,7 @@ function DeleteActiveMath(clearAll) {
     lastStep.detach();
 
     // read trash button to previous step
-    if ($('.mathStep').length > 1) {    
+    if ($('.mathStep').length > 1) {
         $('.mathStep:last .btn-delete').show();
     }
 
@@ -600,21 +661,34 @@ function DeleteActiveMath(clearAll) {
 
 function EditMathStep(stepNumber) {
     // nothing to do if there are no steps
-    index = stepNumber - 1;
+    let index = stepNumber - 1;
     let mathStep = $('.mathStep:eq('+ index +')');
+
+    if (UpdateMathFieldMode === false) {
+        let latestMathStepData = $('<div/>', {
+            id: "latestMathStepData",
+        }).hide().appendTo('#MathHistory');
+        latestMathStepData.data('equation', TheActiveMathField.latex());
+        latestMathStepData.data('annotation', $('#mathAnnotation').val());
+        latestMathStepData.data('scratch-pad', ScratchPadPainterro.imageSaver.asDataURL());
+    }
+
     TheActiveMathField.latex(mathStep.data('equation'));
     $('#mathAnnotation').val(mathStep.data('annotation'));
     $('#updateControls').removeAttr('hidden');
     $('#updateStep').unbind();
     $('#updateStep').click(function(){
         UpdateStep(stepNumber);
-    });    
+    });
     $('#addStep').hide();
     $('#updateControls').show();
-    editor = $('.myWorkArea');
+    let editor = $('.myWorkArea');
     editor.detach();
     mathStep.after(editor);
-    $('.problemFooter').hide();    
+    $('#control-buttons').hide();
+
+    ApplyScratchPadContent(GetScratchPadContentData(stepNumber));
+    UpdateMathFieldMode = true;
 }
 
 function UndoDeleteStep() {
@@ -652,7 +726,7 @@ function clearAllSteps() {
 // A TeX command has the rough syntax
 //    \name {required arg} [optional arg]
 // where there can be any number of required or optional args in any order.
-// Note:  required args are single 
+// Note:  required args are single
 // To accomodate this, we use the a the global TeXCommands which is a dictionary with the following
 // structure:
 //    name: string
@@ -760,8 +834,8 @@ const TeXCommands = {
 };
 
 
-// ReplaceTeXCommands is NOT a real TeX parser and it just does enough to grab 
-// meaningful TeX substrings from a string 
+// ReplaceTeXCommands is NOT a real TeX parser and it just does enough to grab
+// meaningful TeX substrings from a string
 // @param {string} string to search
 // @param {int} the optional starting point to search (default: 0)
 // @param {dictionary} commands to match and what to replace them with. The form of the dictionary is:
@@ -781,7 +855,7 @@ const TeXCommands = {
 //					(e.g, for \sqrt{2}, it is missing the index, a default could be "2")
 //					There should one entry for each optional arg. If there are none, "" is used
 //		If 'replace pattern' is empty or no pattern matches, the command and its args will be deleted.
-// @return {string} a string where TeX commands in 'replacements' dict are replaced 
+// @return {string} a string where TeX commands in 'replacements' dict are replaced
 //					with 'replacement' if the 'match' is true
 // @throws {string} if {}s or []s don't match
 function ReplaceTeXCommands(str, replacements) {
