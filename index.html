@@ -168,7 +168,7 @@
                             </div>
                         </div>
                         <div class="d-flex flex-nowrap justify-content-between pt-2">
-                            <div id="mathPalette" class="pl-0 d-flex flex-nowrap" ></div>
+                            <div id="mathPalette" class="pl-0 d-flex flex-nowrap"></div>
                             <div id="mathButtons" class="d-flex flex-nowrap justify-content-between">
                                 <div>
                                     <br>
@@ -188,6 +188,7 @@
                                             class="fa fa-plus"></i> Add Step
                                     </button>
                                     <div hidden id="updateControls">
+                                        <h3 class="sr-only">Update the step</h3>
                                         <button id='updateStep' class="btn btn-success pointer editorButton" data-toggle="tooltip"
                                             title="Update the step (⌨: shift+enter)"
                                             data-step="3"
@@ -195,6 +196,7 @@
                                             class="fa fa-pencil"></i> Update Step
                                         </button>
                                         <br/>
+                                        <h3 class="sr-only">Cancel edit</h3>
                                         <button id='cancelEdit' class="btn btn-default pointer editorButton" data-toggle="tooltip"
                                             title="Cancel edit" onclick="ExitUpdate();"
                                             data-step="3"

@@ -132,8 +132,8 @@ function InitScratchPad() {
             activeControl: 'rgba(230,230,230,1)',
             inputText: 'black'
         }
-
     });
+
     ScratchPadPainterro.show();
     $('#scratch-pad-containter').hide();
     $('#scratch-pad-button').click(function() {
@@ -669,7 +669,6 @@ function NewRowOrRowsAfterCleanup(mathContent) {
 }
 
 function UpdateRowAfterCleanup(mathContent, mathStepNumber) {
-
     let cleanedUp = CleanUpCrossouts(mathContent);
     if (mathContent !== cleanedUp) {
         UpdateMathEditorRow(cleanedUp, mathStepNumber, false);
