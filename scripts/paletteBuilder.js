@@ -44,7 +44,8 @@ function buildButtonsRow(buttonsRow, commonClass, commonOnclick) {
             + "class=\"" + buttonClass + "\" data-toggle=\"tooltip\" "
             + "title=\"" + title + "\" "
             + "onclick=\"" + onClick + "\">"
-            + button.value + "</button></span> ";
+            + button.value + "</button>"
+            + "<span class=\"sr-only\">" + title + "</span></span> ";
     });
     return result;
 }
