@@ -84,14 +84,14 @@ function ClearScrachPad() {
 function ShowWorkArea(show) {
     // shows either the work area or the question area
     if (show) {
-        moveEditorBelowSpecificStep(getNumberOfSteps())
+        MoveEditorBelowSpecificStep(GetNumberOfSteps())
         $('#topNavigationWrapper').hide();
         $('#LeftNavigation').hide();
         $('#MySteps').focus();
         $('#footer').hide();
         $('.mainWrapper').addClass('paperSheet');
     } else {
-        moveEditorToItsContainer();
+        MoveEditorToItsContainer();
         $('#topNavigationWrapper').show();
         $('#LeftNavigation').show();
         $("#LeftNavigation li:first").focus();
@@ -100,11 +100,11 @@ function ShowWorkArea(show) {
     }
 }
 
-function getNumberOfSteps() {
+function GetNumberOfSteps() {
     return $('.mathStep').length;
 }
 
-function moveEditorBelowSpecificStep(stepNumber) {
+function MoveEditorBelowSpecificStep(stepNumber) {
     var index = stepNumber - 1;
     var mathStep = $('.mathStep:eq('+ index +')');
     var workArea = $('.myWorkArea');
@@ -112,7 +112,7 @@ function moveEditorBelowSpecificStep(stepNumber) {
     mathStep.after(workArea);
 }
 
-function moveEditorToItsContainer() {
+function MoveEditorToItsContainer() {
     var workArea = $('.myWorkArea');
     workArea.detach();
     $('#MainWorkArea').append(workArea);
@@ -528,6 +528,7 @@ function NewMathEditorRow(mathContent, cleanup) {
 
     SetScratchPadContentData(mathStepNewNumber, ScratchPadPainterro.imageSaver.asDataURL())
     ClearScrachPad();
+    MoveEditorBelowSpecificStep(mathStepNewNumber);
     //MathLive.renderMathInDocument();
 }
 
@@ -573,7 +574,7 @@ function ExitUpdate() {
     $('#updateControls').hide();
     let editor = $('.myWorkArea');
     editor.detach();
-    mathHistory = $('#MathHistory')
+    mathHistory = $('#MathHistory');
     mathHistory.append(editor);
 
     let latestMathStepData = $("#latestMathStepData");
@@ -700,7 +701,7 @@ function EditMathStep(stepNumber) {
     $('#addStep').hide();
     $('#updateControls').show();
 
-    moveEditorBelowSpecificStep(stepNumber);
+    MoveEditorBelowSpecificStep(stepNumber);
     $('#control-buttons').hide();
 
     ApplyScratchPadContent(GetScratchPadContentData(stepNumber));
