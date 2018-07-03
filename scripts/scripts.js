@@ -84,10 +84,7 @@ function ClearScrachPad() {
 function ShowWorkArea(show) {
     // shows either the work area or the question area
     if (show) {
-        var workArea = $('.myWorkArea');
-        workArea.detach();
-        $('#MathHistory').append(workArea);
-
+        moveEditorBelowSpecificStep(getNumberOfSteps())
         $('#topNavigationWrapper').hide();
         $('#LeftNavigation').hide();
         $('#MySteps').focus();
@@ -106,6 +103,17 @@ function ShowWorkArea(show) {
     }
 }
 
+function getNumberOfSteps() {
+    return $('.mathStep').length;
+}
+
+function moveEditorBelowSpecificStep(stepNumber) {
+    var index = stepNumber - 1;
+    var mathStep = $('.mathStep:eq('+ index +')');
+    var workArea = $('.myWorkArea');
+    workArea.detach();
+    mathStep.after(workArea);
+}
 
 //***************************************************************************************************************************************************
 // GLOBAL VARIABLES
@@ -562,8 +570,8 @@ function ExitUpdate() {
     $('#updateControls').hide();
     let editor = $('.myWorkArea');
     editor.detach();
-    workArea = $('#EditorArea')
-    workArea.append(editor);
+    mathHistory = $('#MathHistory')
+    mathHistory.append(editor);
 
     let latestMathStepData = $("#latestMathStepData");
     TheActiveMathField.latex(latestMathStepData.data('equation'));
@@ -688,9 +696,8 @@ function EditMathStep(stepNumber) {
     });
     $('#addStep').hide();
     $('#updateControls').show();
-    let editor = $('.myWorkArea');
-    editor.detach();
-    mathStep.after(editor);
+
+    moveEditorBelowSpecificStep(stepNumber);
     $('#control-buttons').hide();
 
     ApplyScratchPadContent(GetScratchPadContentData(stepNumber));
