@@ -6,5 +6,4 @@ npm i html-webpack-plugin -D
 npm i webpack-dev-server -D
 npm i css-loader style-loader -D
 
-
 If you now run npm run start you should see localhost:8080 open up in your default browser. Everytime you make changes, it will refresh the page.
