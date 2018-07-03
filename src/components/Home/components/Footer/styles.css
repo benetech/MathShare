@@ -1,0 +1,35 @@
+.footer {
+    flex: 0 0 50px;
+    margin-bottom: 10px; 
+    background-color: #001F3F; 
+    border-top: 10px solid #001F3F; 
+    display: flex; 
+    border-bottom: 10px solid #001F3F;
+  }
+
+.EdGov {
+    flex: 0 0 100px;
+  }
+
+.EdGovImg {
+    float: left; 
+    margin: 0px 25px 0px 10px; 
+    background-color: #FFF; 
+    padding: 5px;
+  }
+
+.FooterText {
+    font-size: 0.7em; 
+    color: #FFF;  
+}
+
+.Benetech {
+    flex: 0 0 100px;
+}
+
+.BenetechImg {
+    float: right;
+    margin: 0px 10px 0px 25px; 
+    background-color: #FFF; 
+    padding: 5px;
+}

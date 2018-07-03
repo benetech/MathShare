@@ -1,0 +1,9 @@
+/* style to use if only the screen reader user should hear this */
+.SROnly {
+    clip: rect(1px, 1px, 1px, 1px);
+    position: absolute !important;
+    white-space: nowrap;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+  }
