@@ -84,17 +84,23 @@ function ClearScrachPad() {
 function ShowWorkArea(show) {
     // shows either the work area or the question area
     if (show) {
+        var workArea = $('.myWorkArea');
+        workArea.detach();
+        $('#MathHistory').append(workArea);
+
         $('#topNavigationWrapper').hide();
         $('#LeftNavigation').hide();
-        $('#MainWorkArea').show();
         $('#MySteps').focus();
         $('#footer').hide();
         $('.mainWrapper').addClass('paperSheet');
     } else {
+        var workArea = $('.myWorkArea');
+        workArea.detach();
+        $('#MainWorkArea').append(workArea);
+
         $('#topNavigationWrapper').show();
         $('#LeftNavigation').show();
         $("#LeftNavigation li:first").focus();
-        $('#MainWorkArea').hide();
         $('#footer').show();
         $('.mainWrapper').removeClass('paperSheet');
     }
