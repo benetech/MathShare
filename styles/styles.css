@@ -114,7 +114,7 @@ overflow-x: hidden;
 
 .editorAndHistoryWrapper {
   width: 100%;
-overflow-x: hidden;
+  overflow-x: hidden;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -127,10 +127,11 @@ overflow-x: hidden;
 }
 
 .historyWrapper {
-overflow-x: hidden;
+  overflow-x: hidden;
   overflow-y: auto;
   padding-left: 10px;
   padding-right: 10px;
+  min-height: 65px;
 }
 
 #historyWorkSeparator {
