@@ -1,13 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import MainPageFooter from './components/Home/components/Footer/index.js';
 
-const Index = () => {
-  return ( 
-        <div>
-          Hello
-        </div>
-  );
-};
+ReactDOM.render(<MainPageFooter />, document.getElementById("footerTestPlaceHolder"));
 
 function readBlob(opt_startByte, opt_stopByte) {
   var files = $('#fileid').get(0).files;
@@ -1398,6 +1393,3 @@ ga('send', {
   eventLabel: ''
 });
 }
-
-
-//ReactDOM.render(<Index />, document.getElementById("topNavigation"));
