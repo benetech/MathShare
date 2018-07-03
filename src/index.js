@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import MainPageFooter from './components/Home/components/Footer/index.js';
 
-ReactDOM.render(<MainPageFooter />, document.getElementById("footerTestPlaceHolder"));
+ReactDOM.render(<MainPageFooter/>, document.getElementById("footerPlaceHolder"));
 
 function readBlob(opt_startByte, opt_stopByte) {
   var files = $('#fileid').get(0).files;
