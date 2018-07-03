@@ -469,7 +469,7 @@ function SaveProblem(buttonElement) {
     buttonElement.setAttribute('onclick', 'SetAndOpenEditorModel(this, ' + JSON.stringify(GetProblemData(buttonElement)) +')');
 
     DisplayMessage(SUCCESS_MESSAGE, 'Success:', 'Problem saved.');
-    ShowWorkArea(false);   
+    ShowWorkArea(false);
 }
 
 function ProblemIsUnchanged(buttonElement) {
@@ -595,7 +595,7 @@ function UpdateRowAfterCleanup(mathContent, mathStepNumber) {
 
 function AddStep() {
     if (!$('#mathAnnotation').val()) {
-        DisplayMessage(WARNING_MESSAGE, 'Warning:', 'Please provide a description of your work.');        
+        DisplayMessage(WARNING_MESSAGE, 'Warning:', 'Please provide a description of your work.');
         $('#mathAnnotation').focus();
         return;
     }
@@ -605,7 +605,7 @@ function AddStep() {
 
 function UpdateStep(stepNumber) {
     if (!$('#mathAnnotation').val()) {
-        DisplayMessage(WARNING_MESSAGE, 'Warning:', 'Please provide a description of your work.');        
+        DisplayMessage(WARNING_MESSAGE, 'Warning:', 'Please provide a description of your work.');
         $('#mathAnnotation').focus();
         return;
     }
@@ -617,11 +617,11 @@ function UpdateStep(stepNumber) {
 function DisplayMessage(type, title, message) {
     $('.alertContainer').append(
         '<div class="alert alert-' + type + ' alert-dismissible">' +
-            '<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>' + 
-            '<strong>' + title + ' </strong>' + message + 
+            '<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>' +
+            '<strong>' + title + ' </strong>' + message +
         '</div>'
-    ); 
-    $('.alert:last').delay(4000).fadeOut('slow');    
+    );
+    $('.alert:last').delay(4000).fadeOut('slow');
 }
 
 //***************************************************************************************************************************************************
@@ -689,12 +689,17 @@ function EditMathStep(stepNumber) {
     });
     $('#addStep').hide();
     $('#updateControls').show();
-    let editor = $('.myWorkArea');
+    var editor = $('.myWorkArea');
     editor.detach();
     mathStep.after(editor);
     $('#control-buttons').hide();
 
-    ApplyScratchPadContent(GetScratchPadContentData(stepNumber));
+    var content = GetScratchPadContentData(stepNumber);
+    if (content) {
+        ApplyScratchPadContent(content);
+    } else {
+        ClearScrachPad();
+    }
     UpdateMathFieldMode = true;
 }
 
