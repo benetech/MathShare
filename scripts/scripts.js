@@ -3,7 +3,7 @@ function readBlob(opt_startByte, opt_stopByte) {
         console.log('files:'+file);
         //var files = document.getElementById('files').files;
         if (!files.length) {
-            DisplayMessage('warning', 'Warning:', 'Please select a file.');
+            DisplayMessage(WARNING_MESSAGE, 'Warning:', 'Please select a file.');
             return;
         }
 
@@ -468,7 +468,7 @@ function SaveProblem(buttonElement) {
     // warning: 'problem' uses ""s, so we need to use ''s below
     buttonElement.setAttribute('onclick', 'SetAndOpenEditorModel(this, ' + JSON.stringify(GetProblemData(buttonElement)) +')');
 
-    DisplayMessage('success', 'Success:', 'Problem saved.');
+    DisplayMessage(SUCCESS_MESSAGE, 'Success:', 'Problem saved.');
     ShowWorkArea(false);   
 }
 
@@ -595,7 +595,7 @@ function UpdateRowAfterCleanup(mathContent, mathStepNumber) {
 
 function AddStep() {
     if (!$('#mathAnnotation').val()) {
-        DisplayMessage('warning', 'Warning:', 'Please provide a description of your work.');        
+        DisplayMessage(WARNING_MESSAGE, 'Warning:', 'Please provide a description of your work.');        
         $('#mathAnnotation').focus();
         return;
     }
@@ -605,13 +605,13 @@ function AddStep() {
 
 function UpdateStep(stepNumber) {
     if (!$('#mathAnnotation').val()) {
-        DisplayMessage('warning', 'Warning:', 'Please provide a description of your work.');        
+        DisplayMessage(WARNING_MESSAGE, 'Warning:', 'Please provide a description of your work.');        
         $('#mathAnnotation').focus();
         return;
     }
     UpdateRowAfterCleanup(TheActiveMathField.latex(), stepNumber);
     ExitUpdate();
-    DisplayMessage('success', 'Success:', 'The step has been updated.');
+    DisplayMessage(SUCCESS_MESSAGE, 'Success:', 'The step has been updated.');
 }
 
 function DisplayMessage(type, title, message) {
@@ -665,7 +665,7 @@ function DeleteActiveMath(clearAll) {
     $('.mathStep:last .btn-edit').show();
     $('#addStep').show();
     $('#updateControls').hide();
-    DisplayMessage('warning', 'Info:', 'The last step has been deleted.');
+    DisplayMessage(WARNING_MESSAGE, 'Info:', 'The last step has been deleted.');
 }
 
 function EditMathStep(stepNumber) {
@@ -1223,14 +1223,14 @@ function CalculateAndReplace(element) {
     }
 
     if ( TheActiveMathField.selectionIsCollapsed() ) {
-        DisplayMessage('warning', 'Warning:', 'You must select an arithmetic expression for calculation.');
+        DisplayMessage(WARNING_MESSAGE, 'Warning:', 'You must select an arithmetic expression for calculation.');
         return;
     }
 
     let selection = TheActiveMathField.selectedText('latex');
     let result = DoCalculation( CleanUpCrossouts(selection) );
     if (result==="") {
-        DisplayMessage('warning', 'Warning:', 'Selection must contain only numbers and operators.');
+        DisplayMessage(WARNING_MESSAGE, 'Warning:', 'Selection must contain only numbers and operators.');
         return;
     }
 
