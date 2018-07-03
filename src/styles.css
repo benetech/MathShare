@@ -1,5 +1,5 @@
 /* style to use if only the screen reader user should hear this */
-.SROnly {
+.sROnly {
     clip: rect(1px, 1px, 1px, 1px);
     position: absolute !important;
     white-space: nowrap;
