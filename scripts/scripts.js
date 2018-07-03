@@ -91,10 +91,7 @@ function ShowWorkArea(show) {
         $('#footer').hide();
         $('.mainWrapper').addClass('paperSheet');
     } else {
-        var workArea = $('.myWorkArea');
-        workArea.detach();
-        $('#MainWorkArea').append(workArea);
-
+        moveEditorToItsContainer();
         $('#topNavigationWrapper').show();
         $('#LeftNavigation').show();
         $("#LeftNavigation li:first").focus();
@@ -113,6 +110,12 @@ function moveEditorBelowSpecificStep(stepNumber) {
     var workArea = $('.myWorkArea');
     workArea.detach();
     mathStep.after(workArea);
+}
+
+function moveEditorToItsContainer() {
+    var workArea = $('.myWorkArea');
+    workArea.detach();
+    $('#MainWorkArea').append(workArea);
 }
 
 //***************************************************************************************************************************************************
