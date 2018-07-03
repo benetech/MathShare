@@ -84,7 +84,7 @@ function ClearScrachPad() {
 function ShowWorkArea(show) {
     // shows either the work area or the question area
     if (show) {
-        MoveEditorBelowSpecificStep(GetNumberOfSteps())
+        MoveEditorBelowSpecificStep(GetNumberOfSteps());
         $('#topNavigationWrapper').hide();
         $('#LeftNavigation').hide();
         $('#MySteps').focus();
