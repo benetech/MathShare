@@ -615,7 +615,6 @@ function UpdateStep(stepNumber) {
 }
 
 function DisplayMessage(type, title, message) {
-    //available types: 'info', success', 'warning', 'danger'
     $('.alertContainer').append(
         '<div class="alert alert-' + type + ' alert-dismissible">' +
             '<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>' + 
