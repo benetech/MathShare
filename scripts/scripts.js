@@ -664,7 +664,6 @@ function DeleteActiveMath(clearAll) {
     $('.mathStep:last .btn-edit').show();
     $('#addStep').show();
     $('#updateControls').hide();
-    DisplayMessage(WARNING_MESSAGE, 'Info:', 'The last step has been deleted.');
 }
 
 function EditMathStep(stepNumber) {
