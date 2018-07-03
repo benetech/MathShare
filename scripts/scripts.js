@@ -84,14 +84,14 @@ function ClearScrachPad() {
 function ShowWorkArea(show) {
     // shows either the work area or the question area
     if (show) {
-        $('#topNavigation').hide();
+        $('#topNavigationWrapper').hide();
         $('#LeftNavigation').hide();
         $('#MainWorkArea').show();
         $('#MySteps').focus();
         $('#footer').hide();
         $('.mainWrapper').addClass('paperSheet');
     } else {
-        $('#topNavigation').show();
+        $('#topNavigationWrapper').show();
         $('#LeftNavigation').show();
         $("#LeftNavigation li:first").focus();
         $('#MainWorkArea').hide();
@@ -595,7 +595,7 @@ function UpdateRowAfterCleanup(mathContent, mathStepNumber) {
 
 function AddStep() {
     if (!$('#mathAnnotation').val()) {
-        DisplayMessage('warning', 'Warning:', 'Please explain your work');        
+        DisplayMessage('warning', 'Warning:', 'Please provide a description of your work.');        
         $('#mathAnnotation').focus();
         return;
     }
@@ -605,7 +605,7 @@ function AddStep() {
 
 function UpdateStep(stepNumber) {
     if (!$('#mathAnnotation').val()) {
-        DisplayMessage('warning', 'Warning:', 'Please explain your work');        
+        DisplayMessage('warning', 'Warning:', 'Please provide a description of your work.');        
         $('#mathAnnotation').focus();
         return;
     }

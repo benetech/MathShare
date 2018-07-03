@@ -44,7 +44,7 @@
 <body lang=EN-US>
 <div class="mainWrapper">
     <div class="alertContainer"></div>
-    <div id="topNavigation" class="header">
+    <div id="topNavigationWrapper" class="header" role="heading" aria-level="1">
         <!-- BEGIN TOP HEADER/NAVIGATION -->
         <header>
             <h2 class="sr-only"> Header </h2>
@@ -123,7 +123,7 @@
                 <div class="row" data-step="4"
                      data-intro="Review your work. The trash icon also allows you to delete and rework a prior step.">
                     <div class="col-lg-12">
-                        <div class="mathHistory container-fluid" style="color: #001F3F; opacity: 1;" id="MathHistory"></div>
+                        <div class="mathHistory container-fluid" style="color: #001F3F; opacity: 1;" id="MathHistory" role="heading" aria-level="2"></div>
                     </div>
                 </div>
             </div>
@@ -138,7 +138,7 @@
                     </div>
 
                     <div class="editorWrapper">
-                        <div class="mathWorkArea">
+                        <div class="mathWorkArea" role="heading" aria-level="2">
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div id="workArea" class="mathEditor d-flex flex-nowrap justify-content-between"
@@ -146,17 +146,20 @@
                                         data-position="top"
                                         data-intro="Type or edit the equation using your keyboard and the math keys below. Try using the cross out, replace, and calc buttons to help show your work.">
                                         <h3 class="sr-only">Math editor</h3>
-                                        <div aria-label="edit equation" id='mathEditorActive' role="application" tabindex="0"
+                                        <section aria-label="edit equation" id='mathEditorActive' tabindex="0"
                                             class="order-1"
-                                            onfocus="TheActiveMathField.focus();"></div>
-                                        <div class="order-2">
+                                            onfocus="TheActiveMathField.focus();"
+                                            role="heading" 
+                                            aria-label="type math here"></section>
+                                        <div class="order-2" role="heading" aria-level="3">
                                             <h3 id="mathAnnotationHeader" class="mathAnnotation sr-only"
                                                 style="border-left: 1px solid #CCC;" tabindex="-1">Describe your
                                                 work</h3>
                                             <textarea class="form-control" id="mathAnnotation"
                                                     placeholder="Use the microphone button or type to explain your work (required)"
                                                     data-step="2"
-                                                    data-intro="Describe your work by typing directly or using the microphone to record an explanation of your work (required)."></textarea>
+                                                    data-intro="Describe your work by typing directly or using the microphone to record an explanation of your work (required)."
+                                                    aria-label="Use the microphone button or type to explain your work (required)"></textarea>
                                             <span style="float: right;"><button id="start_button" class="btn btn-mic pointer"
                                                                                 data-toggle="tooltip"
                                                                                 onclick="GoogleAnalytics('S2T Clicked');"><img
