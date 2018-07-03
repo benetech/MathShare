@@ -210,6 +210,10 @@ a {
    -ms-transform: scale(1.15, 1.15);
 }
 
+#MainWorkArea {
+    z-index: 0;
+}
+
 #workArea {
     border: 1px solid #CCC;
     border-radius: 5px;
