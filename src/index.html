@@ -30,6 +30,7 @@
                 crossorigin="anonymous"></script>
         <script src="lib/mathlivedist/mathlive.js"></script>
         <script src="data/painterroConfiguration.js"></script>
+        <script src="data/messageTypes.js"></script>
         <script src="scripts/scripts.js"></script>
         <script src="scripts/paletteBuilder.js"></script>
         <script src="data/example01.js"></script>
@@ -43,7 +44,8 @@
     </head>
 <body lang=EN-US>
 <div class="mainWrapper">
-    <div id="topNavigation" class="header">
+    <div class="alertContainer"></div>
+    <div id="topNavigationWrapper" class="header" role="heading" aria-level="1">
         <!-- BEGIN TOP HEADER/NAVIGATION -->
         <header>
             <h2 class="sr-only"> Header </h2>
@@ -111,11 +113,10 @@
                 <div class="row" data-step="4"
                      data-intro="Review your work. The trash icon also allows you to delete and rework a prior step.">
                     <div class="col-lg-12">
-                        <div class="mathHistory container-fluid" style="color: #001F3F; opacity: 1;" id="MathHistory">
+                        <div class="mathHistory container-fluid" style="color: #001F3F; opacity: 1;" id="MathHistory" role="heading" aria-level="2"></div>
                         </div>
                     </div>
                 </div>
-            </div>
             <div id="EditorArea">
                 <div class="myWorkArea">
                     <div id="historyWorkSeparator">
@@ -127,7 +128,7 @@
                     </div>
 
                     <div class="editorWrapper">
-                        <div class="mathWorkArea">
+                        <div class="mathWorkArea" role="heading" aria-level="2">
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div id="workArea" class="mathEditor d-flex flex-nowrap justify-content-between"
@@ -135,17 +136,20 @@
                                         data-position="top"
                                         data-intro="Type or edit the equation using your keyboard and the math keys below. Try using the cross out, replace, and calc buttons to help show your work.">
                                         <h3 class="sr-only">Math editor</h3>
-                                        <div aria-label="edit equation" id='mathEditorActive' role="application" tabindex="0"
+                                        <section aria-label="edit equation" id='mathEditorActive' tabindex="0"
                                             class="order-1"
-                                            onfocus="TheActiveMathField.focus();"></div>
-                                        <div class="order-2">
+                                            onfocus="TheActiveMathField.focus();"
+                                            role="heading" 
+                                            aria-label="type math here"></section>
+                                        <div class="order-2" role="heading" aria-level="3">
                                             <h3 id="mathAnnotationHeader" class="mathAnnotation sr-only"
                                                 style="border-left: 1px solid #CCC;" tabindex="-1">Describe your
                                                 work</h3>
                                             <textarea class="form-control" id="mathAnnotation"
                                                     placeholder="Use the microphone button or type to explain your work (required)"
                                                     data-step="2"
-                                                    data-intro="Describe your work by typing directly or using the microphone to record an explanation of your work (required)."></textarea>
+                                                    data-intro="Describe your work by typing directly or using the microphone to record an explanation of your work (required)."
+                                                    aria-label="Use the microphone button or type to explain your work (required)"></textarea>
                                             <span style="float: right;"><button id="start_button" class="btn btn-mic pointer"
                                                                                 data-toggle="tooltip"
                                                                                 onclick="GoogleAnalytics('S2T Clicked');"><img
@@ -158,9 +162,15 @@
                             </div>
                         </div>
                         <div class="d-flex flex-nowrap justify-content-between pt-2">
-                            <div id="mathPalette" class="pl-0 col-lg-10 d-flex flex-nowrap"></div>
+                            <div id="mathPalette" class="pl-0 d-flex flex-nowrap"></div>
+                            <div id="editorButtons" class="d-flex flex-nowrap justify-content-between">
                             <div>
-                                <button class="btn btn-undo btn-background paletteButton" id="undoDelete" data-toggle="tooltip"
+                                    <br>
+                                    <button id="scratch-pad-button" class="btn btn-default btn-scratch btn-background paletteButton" data-toggle="tooltip" title="Display/hide sketch pad">
+                                    </button>
+                                </div>
+                            <div>
+                                    <button class="btn btn-undo btn-background paletteButton pull-right" id="undoDelete" data-toggle="tooltip"
                                         title="Undo Last Delete" onclick="UndoDeleteStep()" style="margin-bottom: 5px;"></button>
                                 <br>
                                 <h3 class="sr-only">Clean up and add new step</h3>
@@ -168,41 +178,52 @@
                                         title="Clean up the cross outs and start a new step (⌨: shift+enter)"
                                         onclick="AddStep();"
                                         data-step="3"
-                                        data-intro="Clean-up your work and start a new step."><i
-                                        class="fa fa-plus"></i> Add Step
+                                            data-intro="Clean-up your work and start a new step.">
+                                            <span class="fa fa-plus"></span> Add Step
                                 </button>
                                 <div hidden id="updateControls">     
+                                        <h3 class="sr-only">Update the step</h3>
                                     <button id='updateStep' class="btn btn-success pointer editorButton" data-toggle="tooltip"
                                         title="Update the step (⌨: shift+enter)"
                                         data-step="3"
-                                        data-intro="Update the step."><i
-                                        class="fa fa-pencil"></i> Update Step
+                                            data-intro="Update the step.">
+                                            <span class="fa fa-pencil"></span>
+                                            Update Step
                                     </button>                         
                                     <br/>
+                                        <h3 class="sr-only">Cancel edit</h3>
                                     <button id='cancelEdit' class="btn btn-default pointer editorButton" data-toggle="tooltip"
                                         title="Cancel edit" onclick="ExitUpdate();"
                                         data-step="3"
-                                        data-intro="Cancel edit."><i
-                                        class="fa fa-ban" ></i> Cancel edit
+                                            data-intro="Cancel edit.">
+                                            <span class="fa fa-ban"></span>
+                                            Cancel edit
                                     </button>                        
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                        <div class="d-flex flex-nowrap justify-content-between pt-2">
+                            <div id="scratch-pad-containter" class="order-0"></div>
                         </div>
                     </div>
 
                     <div class="problemFooter">
                         <div></div>
                         <div class="row">
-                            <div class="col-lg-12" style="text-align:right;">
+                            <div id="control-buttons" class="col-lg-12 text-right">
                                 <button class="btn btn-default pointer" id="BtnDiscard" onclick="GoogleAnalytics('Discard');">
                                     Discard
                                 </button>
                                 <button class="btn btn-default pointer" id="BtnSave" data-step="5"
                                         data-intro="Save your work or close out to try again from the beginning."
-                                        onclick="GoogleAnalytics('Save');"><i class="fa fa-thumbs-up"></i> Done
+                                        onclick="GoogleAnalytics('Save');">
+                                        <span class="fa fa-thumbs-up"></span>
+                                        Done
                                 </button>
-                                <button class="btn btn-default pointer" id="BtnClearAll" onclick="clearAllSteps()"><i class="fa fa-times-circle"></i> Clear
-                                    all
+                                <button class="btn btn-default pointer" id="BtnClearAll" onclick="clearAllSteps()">
+                                    <span class="fa fa-times-circle"></span>
+                                    Clear all
                                 </button>
                             </div>
                         </div>
@@ -226,7 +247,6 @@
         $('[data-toggle="tooltip"]').tooltip();
     });
     <!-- MATHLIVE INITIALIZATION RENDER SCRIPT -->
-    initializeMathPalette();
     RenderMathEditor();
     MathLive.renderMathInDocument();
     SetAndOpenEditorModel(this, example01);
