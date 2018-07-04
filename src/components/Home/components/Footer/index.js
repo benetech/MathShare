@@ -1,6 +1,6 @@
 import React from "react";
 import footer from './styles.css';
-import styles from '../../../../styles.css';
+import styles from '../../../../styles/styles.css';
 
 export default class MainPageFooter extends React.Component {
     render() {

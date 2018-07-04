@@ -7,3 +7,7 @@
     width: 1px;
     overflow: hidden;
   }
+
+.pointer {
+    cursor: pointer;
+}
