@@ -1,0 +1,22 @@
+.title {
+    font-size: 1.2em;
+    color: #FFF;
+    margin: 0px;
+}
+
+.header {
+    z-index: 1;
+    flex: 0 0 60px;
+    background-color: #0062d9;
+    padding: 5px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.btnContainer {
+    white-space: nowrap;
+}
+
+.btn {
+    margin-right: 5px;
+}

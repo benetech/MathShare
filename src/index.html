@@ -100,18 +100,7 @@
             <div id="ProblemList"></div> <!-- place for list of problems -->
         </nav>
         <main id="MainWorkArea" class="editorAndHistoryWrapper">
-            <div class="problemHeader">
-                <div>
-                    <span class="problemTitle" id="ProblemTitle" role="heading" aria-level="1">Problem title</span>
-                    <span class="problemTitle" id="ProblemMath">Problem</span>
-                </div>
-                <div style="white-space: nowrap;">
-                    <button aria-hidden='true'
-                            onclick="introJs().setOption('tooltipClass', 'introjs-helperLayer').start(); GoogleAnalytics('Tour');"
-                            type="button" class="btn btn-default pointer" style="margin-right: 5px;">Help
-                    </button>
-                </div>
-            </div>
+            <div id="problemHeaderPlaceHolder"></div>
             <div style="flex: 0 0 50px; padding: 10px 0px 0px 10px;">
                 <h2 id="MySteps" tabindex="-1">
                     <span class="modalAreaHeading myStepsHeader" aria-hidden="true">My Steps</span>
@@ -226,8 +215,7 @@
     </div>
 
     <!-- BEGIN FOOTER -->
-    <div id="footerPlaceHolder">
-    </div>
+    <div id="footerPlaceHolder"></div>
     <!-- END FOOTER -->
 
 </div>
