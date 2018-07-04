@@ -4,7 +4,7 @@ import MainPageFooter from './components/Home/components/Footer';
 import ProblemHeader from './components/Editor/components/ProblemHeader';
 
 ReactDOM.render(<MainPageFooter/>, document.getElementById("footerPlaceHolder"));
-ReactDOM.render(<ProblemHeader/>, document.getElementById("problemHeaderPlaceHolder"));
+ReactDOM.render(<ProblemHeader title="Problem title" math="Problem"/>, document.getElementById("problemHeaderPlaceHolder"));
 
 function readBlob(opt_startByte, opt_stopByte) {
   var files = $('#fileid').get(0).files;
