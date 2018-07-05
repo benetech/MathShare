@@ -623,7 +623,7 @@ function AddStep() {
         return;
     }
     NewRowOrRowsAfterCleanup(TheActiveMathField.latex());
-    TheActiveMathField.focus();   
+    TheActiveMathField.focus();
 }
 
 function UpdateStep(stepNumber) {
