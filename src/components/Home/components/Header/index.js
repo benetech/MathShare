@@ -11,14 +11,14 @@ export default class MainPageHeader extends React.Component {
             <div id="topNavigationWrapper" className={header.header} role="heading" aria-level="1">
                 <header>
                     <h2 className={styles.sROnly}> Header </h2>            
-                    <nav  className={
+                    <nav className={
                         classNames({
-                                [header.navbar]: true,
-                                [bootstrap['navbar-expand-lg']]: true,
-                                [bootstrap.navbar]: true
-                            })
-                        } 
-                        id="topNavigation">
+                            [header.navbar]: true,
+                            [bootstrap['navbar-expand-lg']]: true,
+                            [bootstrap.navbar]: true
+                        })
+                    } 
+                    id="topNavigation">
                         <a className={bootstrap['navbar-brand']} href="#">
                             <img src="images/logo.png" alt="Benetech Math Editor" height="37"/>
                         </a>
@@ -46,11 +46,11 @@ export default class MainPageHeader extends React.Component {
                                     }>Getting Started</a>
                                 </li>
                                 <li className={
-                                        classNames({
-                                            [bootstrap['nav-item']]: true,
-                                            [bootstrap.dropdown]: true
-                                        })
-                                    }>
+                                    classNames({
+                                        [bootstrap['nav-item']]: true,
+                                        [bootstrap.dropdown]: true
+                                    })
+                                }>
                                     <a className={
                                         classNames({
                                             [bootstrap['nav-link']]: true,
