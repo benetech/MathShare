@@ -10,8 +10,8 @@ export default class ProblemHeader extends React.Component {
         return (
             <div className={problem.header}>
                 <div>
-                    <span id="ProblemTitle" className={problem.title} role="heading" aria-level="1">Problem title</span>
-                    <span id="ProblemMath" className={problem.title}>Problem</span>
+                    <span id="ProblemTitle" className={problem.title} role="heading" aria-level="1">{this.props.title}</span>
+                    <span id="ProblemMath" className={problem.title}>{this.props.math}</span>
                 </div>
                 <div className={problem.btnContainer}>
                     <button aria-hidden='true'
