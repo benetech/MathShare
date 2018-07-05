@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import MainPageFooter from './components/Home/components/Footer';
 import MainPageHeader from './components/Home/components/Header';
+import MainPageFooter from './components/Home/components/Footer';
 import ProblemHeader from './components/Editor/components/ProblemHeader';
 
 ReactDOM.render(<MainPageHeader/>, document.getElementById("headerPlaceHolder"));

@@ -1,5 +1,3 @@
-@import '~bootstrap/dist/css/bootstrap.min.css';
-
 .header {
     flex: 0 0 50px;
   }
@@ -14,10 +12,10 @@
 .feedback {
     font-size: 1.2em; 
     padding-top: 3px;
-  }
+}
 
 .pointer {
-    cursor:pointer;
+    cursor: pointer;
 }
 
 .navItem>li>a {

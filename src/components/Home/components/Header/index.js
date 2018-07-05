@@ -1,21 +1,21 @@
 import React from "react";
+import FontAwesome from "react-fontawesome";
 import classNames from "classnames";
 import header from './styles.css';
 import styles from '../../../../styles/styles.css';
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
-import FontAwesome from "react-fontawesome";
 
 export default class MainPageHeader extends React.Component {
     render() {
-      return (
-        <div id="topNavigationWrapper" className={header.header} role="heading" aria-level="1">
-            <header>
-                <h2 className={styles.sROnly}> Header </h2>            
-                <nav  className={
-                            classNames({
+        return (
+            <div id="topNavigationWrapper" className={header.header} role="heading" aria-level="1">
+                <header>
+                    <h2 className={styles.sROnly}> Header </h2>            
+                    <nav  className={
+                        classNames({
                                 [header.navbar]: true,
                                 [bootstrap['navbar-expand-lg']]: true,
-                                [bootstrap.navbar]: true,
+                                [bootstrap.navbar]: true
                             })
                         } 
                         id="topNavigation">
@@ -27,34 +27,34 @@ export default class MainPageHeader extends React.Component {
                             <ul className={
                                 classNames({
                                     [bootstrap['navbar-nav']]: true,
-                                    [bootstrap['mr-auto']]: true,
+                                    [bootstrap['mr-auto']]: true
                                 })
-                            }  >
+                            }>
                             </ul>
                             <ul className={
                                 classNames({
                                     [bootstrap['navbar-nav']]: true,
-                                    [header.navItem]: true,
+                                    [header.navItem]: true
                                 })
-                            } >
+                            }>
                                 <li className={bootstrap['nav_item']}>
                                     <a className={
                                         classNames({
                                             [bootstrap['nav-link']]: true,
-                                            [header.pointer]: true,
+                                            [header.pointer]: true
                                         })
                                     }>Getting Started</a>
                                 </li>
                                 <li className={
                                         classNames({
                                             [bootstrap['nav-item']]: true,
-                                            [bootstrap.dropdown]: true,
+                                            [bootstrap.dropdown]: true
                                         })
                                     }>
                                     <a className={
                                         classNames({
                                             [bootstrap['nav-link']]: true,
-                                            [bootstrap['dropdown-toggle']]: true,
+                                            [bootstrap['dropdown-toggle']]: true
                                         })
                                     }
                                     data-toggle="dropdown" href="#" role="button"
@@ -86,8 +86,8 @@ export default class MainPageHeader extends React.Component {
                             </ul>
                         </div>
                     </nav>
-            </header>
-        </div>
-      );
-  }
+                </header>
+            </div>
+        );
+    }
 }
