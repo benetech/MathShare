@@ -16,14 +16,7 @@ export default class ProblemHeader extends React.Component {
                 <div className={problem.btnContainer}>
                     <button aria-hidden='true'
                         //TODO: onclick="introJs().setOption('tooltipClass', 'introjs-helperLayer').start(); GoogleAnalytics('Tour');"
-                        className={
-                            classNames({
-                                [bootstrap.btn]: true,
-                                [styles.pointer]: true,
-                                [buttons.default]: true,
-                                [problem.btn]: true
-                            })
-                        }
+                        className={classNames(bootstrap.btn, styles.pointer, buttons.default, problem.btn)}
                         type="button">
                         Help
                     </button>

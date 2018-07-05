@@ -4,11 +4,13 @@ import MainPageHeader from './components/Home/components/Header';
 import NavigationHeader from './components/Home/components/Navigation/Header';
 import MainPageFooter from './components/Home/components/Footer';
 import ProblemHeader from './components/Editor/components/ProblemHeader';
+import MathPalette from './components/Editor/components/MathPalette';
 
 ReactDOM.render(<MainPageHeader/>, document.getElementById("headerPlaceHolder"));
 ReactDOM.render(<NavigationHeader/>, document.getElementById("navigationHeaderPlaceholder"));
 ReactDOM.render(<MainPageFooter/>, document.getElementById("footerPlaceHolder"));
 ReactDOM.render(<ProblemHeader title="Problem title" math="Problem"/>, document.getElementById("problemHeaderPlaceHolder"));
+ReactDOM.render(<MathPalette/>, document.getElementById("mathPalettePlaceHolder"));
 
 function readBlob(opt_startByte, opt_stopByte) {
     var files = $('#fileid').get(0).files;
@@ -53,7 +55,7 @@ $(document).ready(function(){
             var file = $('#fileid').get(0).files[0];
             readBlob();
     });
-InitScratchPad();
+//TODO InitScratchPad();
 ShowWorkArea(false);
 
 $('#undoDelete').hide();

@@ -2,7 +2,7 @@ var palettes = [
     {
         "screenReadersTitle": "cross out and calc buttons",
         "label": "Edit",
-        "commonClass": "staticMath btn btn-facility paletteButton",
+        "commonClass": "btn btn-facility paletteButton",
         "buttonsRows": [
             [
                 {
@@ -60,7 +60,7 @@ var palettes = [
     {
         "screenReadersTitle": "Operator buttons",
         "label": "Operators",
-        "commonClass": "staticMath btn btn-operator paletteButton",
+        "commonClass": "btn btn-operator paletteButton",
         "commonOnclick": "MathLivePasteFromButton(this)",
         "buttonsRows": [
             [
@@ -114,7 +114,7 @@ var palettes = [
     {
         "screenReadersTitle": "Fraction and other notation buttons",
         "label": "Notations",
-        "commonClass": "staticMath btn btn-notation paletteButton",
+        "commonClass": "btn btn-notation paletteButton",
         "commonOnclick": "MathLivePasteFromButton(this)",
         "buttonsRows": [
             [
@@ -178,7 +178,7 @@ var palettes = [
     {
         "screenReadersTitle": "Additional symbols buttons",
         "label": "Geometry",
-        "commonClass": "staticMath btn btn-symbol paletteButton",
+        "commonClass": "btn btn-symbol paletteButton",
         "commonOnclick": "MathLivePasteFromButton(this)",
         "buttonsRows": [
             [
