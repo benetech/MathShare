@@ -1,10 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import MainPageHeader from './components/Home/components/Header';
+import NavigationHeader from './components/Home/components/Navigation/Header';
 import MainPageFooter from './components/Home/components/Footer';
 import ProblemHeader from './components/Editor/components/ProblemHeader';
 
 ReactDOM.render(<MainPageHeader/>, document.getElementById("headerPlaceHolder"));
+ReactDOM.render(<NavigationHeader/>, document.getElementById("navigationHeaderPlaceholder"));
 ReactDOM.render(<MainPageFooter/>, document.getElementById("footerPlaceHolder"));
 ReactDOM.render(<ProblemHeader title="Problem title" math="Problem"/>, document.getElementById("problemHeaderPlaceHolder"));
 
