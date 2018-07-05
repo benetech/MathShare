@@ -1,43 +1,47 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import MainPageHeader from './components/Home/components/Header';
+import NavigationHeader from './components/Home/components/Navigation/Header';
 import MainPageFooter from './components/Home/components/Footer';
 import ProblemHeader from './components/Editor/components/ProblemHeader';
 
+ReactDOM.render(<MainPageHeader/>, document.getElementById("headerPlaceHolder"));
+ReactDOM.render(<NavigationHeader/>, document.getElementById("navigationHeaderPlaceholder"));
 ReactDOM.render(<MainPageFooter/>, document.getElementById("footerPlaceHolder"));
-ReactDOM.render(<ProblemHeader/>, document.getElementById("problemHeaderPlaceHolder"));
+ReactDOM.render(<ProblemHeader title="Problem title" math="Problem"/>, document.getElementById("problemHeaderPlaceHolder"));
 
 function readBlob(opt_startByte, opt_stopByte) {
-  var files = $('#fileid').get(0).files;
-  console.log('files:'+file);
-  //var files = document.getElementById('files').files;
-  if (!files.length) {
-      alert('Please select a file!');
-      return;
-  }
+    var files = $('#fileid').get(0).files;
+    console.log('files:'+file);
+    //var files = document.getElementById('files').files;
+    if (!files.length) {
+        DisplayMessage(WARNING_MESSAGE, 'Warning:', 'Please select a file.');
+        return;
+    }
 
-  var file = files[0];
-  console.log('file:'+file);
-  var start = parseInt(opt_startByte) || 0;
-  console.log('start:'+start);
-  var stop = parseInt(opt_stopByte) || file.size - 1;
-  console.log('stop:'+stop);
+    var file = files[0];
+    console.log('file:'+file);
+    var start = parseInt(opt_startByte) || 0;
+    console.log('start:'+start);
+    var stop = parseInt(opt_stopByte) || file.size - 1;
+    console.log('stop:'+stop);
 
-  var reader = new FileReader();
+    var reader = new FileReader();
 
-  // If we use onloadend, we need to check the readyState.
-  reader.onloadend = function(evt) {
-      if (evt.target.readyState == FileReader.DONE) { // DONE == 2
-          var uploadedString = evt.target.result;
-  var parsedUploadedString = JSON.parse(uploadedString);
-  console.log(parsedUploadedString);
+    // If we use onloadend, we need to check the readyState.
+    reader.onloadend = function(evt) {
+        if (evt.target.readyState == FileReader.DONE) { // DONE == 2
+            var uploadedString = evt.target.result;
+    var parsedUploadedString = JSON.parse(uploadedString);
+    console.log(parsedUploadedString);
 
-  ReadFileFinish(parsedUploadedString);
+    ReadFileFinish(parsedUploadedString);
 
-      }
-  };
+        }
+    };
 
-  var blob = file.slice(start, stop + 1);
-  reader.readAsBinaryString(blob);
+    var blob = file.slice(start, stop + 1);
+    reader.readAsBinaryString(blob);
 }
 
 function OpenFileUpload() {
@@ -45,10 +49,10 @@ document.getElementById('fileid').click();
 }
 
 $(document).ready(function(){
-  $('input[type="file"]').change(function(){
-          var file = $('#fileid').get(0).files[0];
-          readBlob();
-  });
+    $('input[type="file"]').change(function(){
+            var file = $('#fileid').get(0).files[0];
+            readBlob();
+    });
 InitScratchPad();
 ShowWorkArea(false);
 
@@ -61,17 +65,17 @@ ScratchPadPainterro = Painterro(painterroConfiguration);
 ScratchPadPainterro.show();
 $('#scratch-pad-containter').hide();
 $('#scratch-pad-button').click(function() {
-  $('#scratch-pad-containter').slideToggle("fast", function() {
-      if ($("#scratch-pad-containter").is(":visible")) {
-          ScratchPadPainterro.adjustSizeFull();
-      }
-  });
+    $('#scratch-pad-containter').slideToggle("fast", function() {
+        if ($("#scratch-pad-containter").is(":visible")) {
+            ScratchPadPainterro.adjustSizeFull();
+        }
+    });
 });
 
 padPallete = $('#scratch-pad-containter-bar > div > span').first();
 padPallete.append('<button id="clear-button" type="button" class="ptro-icon-btn ptro-color-control" title="Clear the scratch pad"><i class="ptro-icon ptro-icon-close"></i></button>');
 $('#clear-button').click(function() {
-  ClearAndResizeScrachPad();
+    ClearAndResizeScrachPad();
 });
 $('.ptro-icon-btn').css('border-radius', '.25rem');
 $('.ptro-bordered-btn').css('border-radius', '.5rem');
@@ -92,22 +96,39 @@ ScratchPadPainterro.worklog.clean = true;
 function ShowWorkArea(show) {
 // shows either the work area or the question area
 if (show) {
-  $('#topNavigation').hide();
-  $('#LeftNavigation').hide();
-  $('#MainWorkArea').show();
-  $('#MySteps').focus();
-  $('#footer').hide();
-  $('.mainWrapper').addClass('paperSheet');
+    MoveEditorBelowSpecificStep(GetNumberOfSteps());
+    $('#topNavigationWrapper').hide();
+    $('#LeftNavigation').hide();
+    $('#MySteps').focus();
+    $('#footer').hide();
+    $('.mainWrapper').addClass('paperSheet');
 } else {
-  $('#topNavigation').show();
-  $('#LeftNavigation').show();
-  $("#LeftNavigation li:first").focus();
-  $('#MainWorkArea').hide();
-  $('#footer').show();
-  $('.mainWrapper').removeClass('paperSheet');
+    MoveEditorToItsContainer();
+    $('#topNavigationWrapper').show();
+    $('#LeftNavigation').show();
+    $("#LeftNavigation li:first").focus();
+    $('#footer').show();
+    $('.mainWrapper').removeClass('paperSheet');
 }
 }
 
+function GetNumberOfSteps() {
+return $('.mathStep').length;
+}
+
+function MoveEditorBelowSpecificStep(stepNumber) {
+var index = stepNumber - 1;
+var mathStep = $('.mathStep:eq('+ index +')');
+var workArea = $('.myWorkArea');
+workArea.detach();
+mathStep.after(workArea);
+}
+
+function MoveEditorToItsContainer() {
+var workArea = $('.myWorkArea');
+workArea.detach();
+$('#MainWorkArea').append(workArea);
+}
 
 //***************************************************************************************************************************************************
 // GLOBAL VARIABLES
@@ -120,28 +141,28 @@ UpdateMathFieldMode = false;
 // RENDER ACTIVE MATH EDITOR
 function RenderMathEditor() {
 TheActiveMathField = MathLive.makeMathField(
-  document.getElementById('mathEditorActive'),
-      {commandbarToggle: 'hidden',
-   overrideDefaultInlineShortcuts: false,
-   inlineShortcuts: { '>-': '>-',			// override builtin shortcut (\succ)
-                      '<-': '<-',			// override builtin shortcut (\leftarrow)
-                      '<=': '\\leq',		// use more familiar ≤
-                      '>=': '\\geq',		// use more familar ≥
-                      '*': '\\times',		// what most people want
-                      '?=': '\\overset{?}{=}'	// is equal to
-                      },
-   onMoveOutOf:	function(mathField, dir) { return false; },	// don't wrap around
-   onKeystroke:	function(key, event) {
-          // Esc key moves to the next field
-          if (key !== 'Esc') {
-              return true;
-          }
-          $("#mathAnnotationHeader").focus();
-          $('#mathEditorActive').find('span[aria-live]')[0].textContent = "after application";
-          return false;
-      }
-           // onSelectionDidChange: UpdatePalette
-  }
+    document.getElementById('mathEditorActive'),
+        {commandbarToggle: 'hidden',
+     overrideDefaultInlineShortcuts: false,
+     inlineShortcuts: { '>-': '>-',			// override builtin shortcut (\succ)
+                        '<-': '<-',			// override builtin shortcut (\leftarrow)
+                        '<=': '\\leq',		// use more familiar ≤
+                        '>=': '\\geq',		// use more familar ≥
+                        '*': '\\times',		// what most people want
+                        '?=': '\\overset{?}{=}'	// is equal to
+                        },
+     onMoveOutOf:	function(mathField, dir) { return false; },	// don't wrap around
+     onKeystroke:	function(key, event) {
+            // Esc key moves to the next field
+            if (key !== 'Esc') {
+                return true;
+            }
+            $("#mathAnnotationHeader").focus();
+            $('#mathEditorActive').find('span[aria-live]')[0].textContent = "after application";
+            return false;
+        }
+             // onSelectionDidChange: UpdatePalette
+    }
 );
 document.onkeydown = HandleKeyDown;
 }
@@ -158,18 +179,18 @@ As an exception to the above rules, all the "teen" numbers ending with 11, 12 or
 th is used for all other numbers (e.g. 9th, pronounced ninth).
 **/
 function OrdinalSuffix(i) {
-  var j = i % 10,
-          k = i % 100;
-  if (j == 1 && k != 11) {
-          return i + "st";
-  }
-  if (j == 2 && k != 12) {
-          return i + "nd";
-  }
-  if (j == 3 && k != 13) {
-          return i + "rd";
-  }
-  return i + "th";
+    var j = i % 10,
+            k = i % 100;
+    if (j == 1 && k != 11) {
+            return i + "st";
+    }
+    if (j == 2 && k != 12) {
+            return i + "nd";
+    }
+    if (j == 3 && k != 13) {
+            return i + "rd";
+    }
+    return i + "th";
 }
 
 // build a row of history
@@ -178,10 +199,10 @@ let html = '<div class="row mathStep" data-step="'+stepNumber+'" data-equation="
 html += '<div class="col-md-1">';
 html +=   '<span role="heading" aria-level="3">';
 if (cleanup) {
-  html += '<span class="SROnly">' + OrdinalSuffix(stepNumber) +' step, after cleanup</span>';
+    html += '<span class="SROnly">' + OrdinalSuffix(stepNumber) +' step, after cleanup</span>';
 } else {
-  html += '<span class="SROnly">' + OrdinalSuffix(stepNumber) +' step</span>';
-  html += '<span class="stepHeader" aria-hidden="true">Step '+stepNumber+':</span>';
+    html += '<span class="SROnly">' + OrdinalSuffix(stepNumber) +' step</span>';
+    html += '<span class="stepHeader" aria-hidden="true">Step '+stepNumber+':</span>';
 }
 html +=   '</span>';
 html += '</div>';
@@ -193,18 +214,18 @@ html += '<div class="col-md-5">';
 html +=    '<span class="sr-only"  role="heading" aria-level="4">reason:</span>';
 // for screen readers, we want some content for empty annotations so they know they are on the field
 html +=    '<span class="' +
-              (annotation == '(cleanup)' ? 'grayedOutCleanup' : 'staticMath') + '">' +annotation + '</span>';
+                (annotation == '(cleanup)' ? 'grayedOutCleanup' : 'staticMath') + '">' +annotation + '</span>';
 html += '</div>';
 html +=  '<div class="col-md-1 rowControlButtonsContainer" style="text-align: right; float:right;">';
 if (showEdit) {
-  html +=  '<button class="btn btn-edit btn-background paletteButton" data-toggle="tooltip" title="Edit this Step" onclick="EditMathStep('+ stepNumber + ')" style="margin-bottom: 5px;">' +
-                  '<span class="SROnly">Edit ' + OrdinalSuffix(stepNumber) +' step</span>' +
-      '</button>';
+    html +=  '<button class="btn btn-edit btn-background paletteButton" data-toggle="tooltip" title="Edit this Step" onclick="EditMathStep('+ stepNumber + ')" style="margin-bottom: 5px;">' +
+                    '<span class="SROnly">Edit ' + OrdinalSuffix(stepNumber) +' step</span>' +
+        '</button>';
 }
 if (showTrash) {
-  html +=  '<button class="btn btn-delete btn-background paletteButton" data-toggle="tooltip" title="Delete this Step" onclick="DeleteActiveMath()" style="margin-bottom: 5px;">' +
-                  '<span class="SROnly">Delete ' + OrdinalSuffix(stepNumber) +' step</span>' +
-      '</button>';
+    html +=  '<button class="btn btn-delete btn-background paletteButton" data-toggle="tooltip" title="Delete this Step" onclick="DeleteActiveMath()" style="margin-bottom: 5px;">' +
+                    '<span class="SROnly">Delete ' + OrdinalSuffix(stepNumber) +' step</span>' +
+        '</button>';
 }
 html += '</div></div>';
 return html;
@@ -216,54 +237,54 @@ function ReadFileInitiate(fileName) {
 //console.log("ReadFileInitiate: main");
 $.getJSON( fileName, function(data) {ReadFileFinish(data)} )
 .fail( function(data) {
-  // fall back sample data -- useful for testing with local files which can't be read
-  //console.log("ReadFileInitiate: always");
-  ReadFileFinish({
-      "metadata": { "title": "Fallback on read failure" },
-      "problems": [
-          {"metadata": {"title":"Local Prob 1 (testing mathlive in annotation $$\\pi$$)"},
-           "originalProblem": {"equation":"3(-\\frac{1}{6})(-\\frac{2}{5})","annotation":" (testing mathlive in annotation $$\\alpha$$)LOCAL Find the product"},
-           "currentEditor": {"equation":"3(-\\frac{1}{6})(-\\frac{2}{5})","annotation":""},
-           "history": [{"equation":"3(-\\frac{1}{6})(-\\frac{2}{5})","annotation":"Find the product"}]},
-          {"metadata": {"title":"Local Prob 2"},
-           "originalProblem": {"equation":"-\\frac{2}{5}(-\\frac{1}{2})(-\\frac{5}{6})", "annotation":"LOCAL Find the product"},
-           "currentEditor": {"equation":"-\\frac{2}{5}(-\\frac{1}{2})(-\\frac{5}{6})",    "annotation":""},
-           "history": [{"equation":"-\\frac{2}{5}(-\\frac{1}{2})(-\\frac{5}{6})",    "annotation":"LOCAL Find the product"}]},
-          {"metadata": {"title":"Local Prob 3"},
-           "originalProblem": {"equation":"\\frac{55}{\\frac{1}{2}}",    "annotation":"LOCAL Find the quotient"},
-           "currentEditor": {"equation":"\\frac{55}{\\frac{1}{2}}",    "annotation":""},
-           "history": [{"equation":"\\frac{55}{\\frac{1}{2}}",    "annotation":"LOCAL Find the quotient"}]},
-          {"metadata": {"title":"Local Prob 4"},
-           "originalProblem": {"equation":"\\frac{3}{10}\\div (\\frac{5}{8})",    "annotation":"LOCAL Find the quotient"},
-           "currentEditor": {"equation":"\\frac{3}{10}\\div (\\frac{5}{8})",    "annotation":""},
-           "history": [{"equation":"\\frac{3}{10}\\div (\\frac{5}{8})",    "annotation":"LOCAL Find the quotient"}]},
-          {"metadata": {"title":"Local Prob 5"},
-           "originalProblem": {"equation":"",    "annotation":"LOCAL Sarah works at a coffee shop. Her weekly salary is $325 and she earns 11.5% commission on sales. How much does she make if she sells $2800 in merchandise?"},
-           "currentEditor": {"equation":"",    "annotation":""},
-           "history": [{"equation":"",    "annotation":"LOCAL Sarah works at a coffee shop. Her weekly salary is $325 and she earns 11.5% commission on sales. How much does she make if she sells $2800 in merchandise?"}]},
-          { "metadata": {"title":"Local Prob 6"},
-           "originalProblem": {"equation":"7x-13=1",    "annotation":"LOCAL Solve for x"},
-           "currentEditor": {"equation":"7x-13=1",    "annotation":""},
-           "history": [{"equation":"7x-13=1",    "annotation":"LOCAL Solve for x"}]},
-          {"metadata": {"title":"Local Prob 7"},
-           "originalProblem": {"equation":"\\frac{b}{9}-34\\leq -36",    "annotation":"LOCAL Solve the inequality"},
-           "currentEditor": {"equation":"\\frac{b}{9}-34\\leq -36",    "annotation":""},
-           "history": [{"equation":"\\frac{b}{9}-34\\leq -36",    "annotation":"LOCAL Solve the inequality"}]},
-          {"metadata": {"title":"LOCAL Try your own problem",},
-           "originalProblem": {"equation":"", "annotation":"LOCAL Try your own problem"},
-           "currentEditor": {},
-           "history": [{}]}
-      ]
-  })
+    // fall back sample data -- useful for testing with local files which can't be read
+    //console.log("ReadFileInitiate: always");
+    ReadFileFinish({
+        "metadata": { "title": "Fallback on read failure" },
+        "problems": [
+            {"metadata": {"title":"Local Prob 1 (testing mathlive in annotation $$\\pi$$)"},
+             "originalProblem": {"equation":"3(-\\frac{1}{6})(-\\frac{2}{5})","annotation":" (testing mathlive in annotation $$\\alpha$$)LOCAL Find the product"},
+             "currentEditor": {"equation":"3(-\\frac{1}{6})(-\\frac{2}{5})","annotation":""},
+             "history": [{"equation":"3(-\\frac{1}{6})(-\\frac{2}{5})","annotation":"Find the product"}]},
+            {"metadata": {"title":"Local Prob 2"},
+             "originalProblem": {"equation":"-\\frac{2}{5}(-\\frac{1}{2})(-\\frac{5}{6})", "annotation":"LOCAL Find the product"},
+             "currentEditor": {"equation":"-\\frac{2}{5}(-\\frac{1}{2})(-\\frac{5}{6})",    "annotation":""},
+             "history": [{"equation":"-\\frac{2}{5}(-\\frac{1}{2})(-\\frac{5}{6})",    "annotation":"LOCAL Find the product"}]},
+            {"metadata": {"title":"Local Prob 3"},
+             "originalProblem": {"equation":"\\frac{55}{\\frac{1}{2}}",    "annotation":"LOCAL Find the quotient"},
+             "currentEditor": {"equation":"\\frac{55}{\\frac{1}{2}}",    "annotation":""},
+             "history": [{"equation":"\\frac{55}{\\frac{1}{2}}",    "annotation":"LOCAL Find the quotient"}]},
+            {"metadata": {"title":"Local Prob 4"},
+             "originalProblem": {"equation":"\\frac{3}{10}\\div (\\frac{5}{8})",    "annotation":"LOCAL Find the quotient"},
+             "currentEditor": {"equation":"\\frac{3}{10}\\div (\\frac{5}{8})",    "annotation":""},
+             "history": [{"equation":"\\frac{3}{10}\\div (\\frac{5}{8})",    "annotation":"LOCAL Find the quotient"}]},
+            {"metadata": {"title":"Local Prob 5"},
+             "originalProblem": {"equation":"",    "annotation":"LOCAL Sarah works at a coffee shop. Her weekly salary is $325 and she earns 11.5% commission on sales. How much does she make if she sells $2800 in merchandise?"},
+             "currentEditor": {"equation":"",    "annotation":""},
+             "history": [{"equation":"",    "annotation":"LOCAL Sarah works at a coffee shop. Her weekly salary is $325 and she earns 11.5% commission on sales. How much does she make if she sells $2800 in merchandise?"}]},
+            { "metadata": {"title":"Local Prob 6"},
+             "originalProblem": {"equation":"7x-13=1",    "annotation":"LOCAL Solve for x"},
+             "currentEditor": {"equation":"7x-13=1",    "annotation":""},
+             "history": [{"equation":"7x-13=1",    "annotation":"LOCAL Solve for x"}]},
+            {"metadata": {"title":"Local Prob 7"},
+             "originalProblem": {"equation":"\\frac{b}{9}-34\\leq -36",    "annotation":"LOCAL Solve the inequality"},
+             "currentEditor": {"equation":"\\frac{b}{9}-34\\leq -36",    "annotation":""},
+             "history": [{"equation":"\\frac{b}{9}-34\\leq -36",    "annotation":"LOCAL Solve the inequality"}]},
+            {"metadata": {"title":"LOCAL Try your own problem",},
+             "originalProblem": {"equation":"", "annotation":"LOCAL Try your own problem"},
+             "currentEditor": {},
+             "history": [{}]}
+        ]
+    })
 });
 }
 
 // Finish reading the file now that the data is available
 function ReadFileFinish(data) {
 document.getElementById("ContentWrapper").setAttribute(
-      "data-galois-metadata",
-      JSON.stringify(data.metadata)
-  );
+        "data-galois-metadata",
+        JSON.stringify(data.metadata)
+    );
 $('#ProblemList').empty();
 $('#ProblemList').html(PopulateMainPage(data));
 
@@ -279,33 +300,33 @@ $('#something').empty();
 // Data for each problem is stored into the argument of the 'onclick' function
 function PopulateMainPage(data) {
 let functionToCall = 'SetAndOpenEditorModel(this, example01); ' +
-                   'document.getElementById("MySteps").focus(); ';
+                     'document.getElementById("MySteps").focus(); ';
 let eventHandlers = 'onclick=\'' +functionToCall+ '\' onkeypress=\'' +functionToCall+ '\'';
 let html = '<ul class="row" aria-labelled-by="LeftNavigationHeader">';
 html +=
-      '<li class="col-md-4 text-center" style="list-style: none; margin-bottom: 20px;" ' + eventHandlers + '>' +
-          '<span class="btn btn-default btn-huge navItemButton"> ' +
-              '<button class="navItemButton">' +
-                   '<span class="problemAnnotation">Getting Started</span>' +
-              '</button> ' +
-              '<span class="problemEquation">Click here to see an example problem and learn how to use the editor</span>' +
-          '</span>' +
-      '</li>';
+        '<li class="col-md-4 text-center" style="list-style: none; margin-bottom: 20px;" ' + eventHandlers + '>' +
+            '<span class="btn btn-default btn-huge navItemButton"> ' +
+                '<button class="navItemButton">' +
+                     '<span class="problemAnnotation">Getting Started</span>' +
+                '</button> ' +
+                '<span class="problemEquation">Click here to see an example problem and learn how to use the editor</span>' +
+            '</span>' +
+        '</li>';
 let problemData = data.problems;
 for (let i=0; i< problemData.length; i++) {
-  let problem = problemData[i].originalProblem;
-  functionToCall = 'SetAndOpenEditorModel(this, ' + JSON.stringify(problemData[i]) + '); ' +
-                   'document.getElementById("MySteps").focus();';
-  eventHandlers = 'onclick=\'' +functionToCall+ '\' onkeypress=\'' +functionToCall+ '\'';
-  html +=
-      '<li class="col-md-4 text-center" style="list-style: none; margin-bottom: 20px;" ' + eventHandlers + '>' +
-          '<span class="btn btn-default btn-huge navItemButton"> ' +
-              '<button class="navItemButton">' +
-                  '<span class="problemAnnotation">' +(i+1) + '. ' + problem.annotation + '</span>' +
-              '</button>' +
-              '<span  class="problemEquation staticMath">$$' + problem.equation + '$$</span>' +
-          '</span>' +
-      '</li>';
+    let problem = problemData[i].originalProblem;
+    functionToCall = 'SetAndOpenEditorModel(this, ' + JSON.stringify(problemData[i]) + '); ' +
+                     'document.getElementById("MySteps").focus();';
+    eventHandlers = 'onclick=\'' +functionToCall+ '\' onkeypress=\'' +functionToCall+ '\'';
+    html +=
+        '<li class="col-md-4 text-center" style="list-style: none; margin-bottom: 20px;" ' + eventHandlers + '>' +
+            '<span class="btn btn-default btn-huge navItemButton"> ' +
+                '<button class="navItemButton">' +
+                    '<span class="problemAnnotation">' +(i+1) + '. ' + problem.annotation + '</span>' +
+                '</button>' +
+                '<span  class="problemEquation staticMath">$$' + problem.equation + '$$</span>' +
+            '</span>' +
+        '</li>';
 };
 html += '</ul>';
 let node = document.createDocumentFragment();
@@ -325,91 +346,91 @@ function PopulateEditorModal(buttonElement, dataObj) {
 $(".leftNavigation li").removeClass("leftNavigationBackgroundActive");
 
 $(buttonElement).addClass("leftNavigationBackgroundActive");
-  //1 Clear existing info in modal
-      ClearEditorModal();
+    //1 Clear existing info in modal
+        ClearEditorModal();
 
-  //2 Get all variables from js objects
-      let originalProblemTitle = dataObj.metadata.title;
-      let originalProblemVariable = dataObj.metadata.variableName;
-      let originalProblemEquation = dataObj.originalProblem.equation;
+    //2 Get all variables from js objects
+        let originalProblemTitle = dataObj.metadata.title;
+        let originalProblemVariable = dataObj.metadata.variableName;
+        let originalProblemEquation = dataObj.originalProblem.equation;
 
-      let originalProblemEquationHTML = '<span class="staticMath problemTitle">$$' + originalProblemEquation + '$$</span>';
-      let originalProblemAnnotation = dataObj.originalProblem.annotation;
-      let currentEditorEquation = dataObj.currentEditor.equation;
-      let currentEditorAnnotation = dataObj.currentEditor.annotation;
-      let historyObj = dataObj.history;
+        let originalProblemEquationHTML = '<span class="staticMath problemTitle">$$' + originalProblemEquation + '$$</span>';
+        let originalProblemAnnotation = dataObj.originalProblem.annotation;
+        let currentEditorEquation = dataObj.currentEditor.equation;
+        let currentEditorAnnotation = dataObj.currentEditor.annotation;
+        let historyObj = dataObj.history;
 
-      if (originalProblemVariable=="newEditor") {
-          originalProblemEquation = "";
-          originalProblemAnnotation = "";
-          currentEditorEquation = "";
-          currentEditorAnnotation = "";
-          historyObj = "";
-      }
+        if (originalProblemVariable=="newEditor") {
+            originalProblemEquation = "";
+            originalProblemAnnotation = "";
+            currentEditorEquation = "";
+            currentEditorAnnotation = "";
+            historyObj = "";
+        }
 
-  //3 Build HTML HISTORY
-      let htmlHistory = '';
-  for (let i = 0; i < historyObj.length; i++) {
+    //3 Build HTML HISTORY
+        let htmlHistory = '';
+    for (let i = 0; i < historyObj.length; i++) {
 
-      let showTrash = false;
-      showEdit = false;
-      if (i > 0) {
-          showEdit = true;
-      }
+        let showTrash = false;
+        showEdit = false;
+        if (i > 0) {
+            showEdit = true;
+        }
 
-      if (i == historyObj.length - 1 && historyObj.length > 1) {
-          showTrash = true;
-      }
-      htmlHistory += HTMLForRow(i + 1, historyObj[i].equation, historyObj[i].annotation, showTrash, showEdit, historyObj[i].annotation === '(cleanup)');
-      }
+        if (i == historyObj.length - 1 && historyObj.length > 1) {
+            showTrash = true;
+        }
+        htmlHistory += HTMLForRow(i + 1, historyObj[i].equation, historyObj[i].annotation, showTrash, showEdit, historyObj[i].annotation === '(cleanup)');
+        }
 
-  //4 BUILD HTML TITLE
-      let htmlTitle = originalProblemAnnotation;
-  if (dataObj.originalProblem.equation) {
-      htmlTitle += ': ';
-  }
-      if (originalProblemVariable=="newEditor") {
-          htmlTitle = ''+originalProblemTitle+'';
-      }
+    //4 BUILD HTML TITLE
+        let htmlTitle = originalProblemAnnotation;
+    if (dataObj.originalProblem.equation) {
+        htmlTitle += ': ';
+    }
+        if (originalProblemVariable=="newEditor") {
+            htmlTitle = ''+originalProblemTitle+'';
+        }
 
-  //5 POPULATE HTML
-      $('#ProblemTitle').html(htmlTitle);
-      $('#ProblemMath').html(originalProblemEquationHTML);	// shouldn't be part of title
-      $('#ProblemTitle').data('title', originalProblemTitle);
-      $('#ProblemTitle').data('equation', originalProblemEquation);
-      $('#ProblemTitle').data('annotation', originalProblemAnnotation);
+    //5 POPULATE HTML
+        $('#ProblemTitle').html(htmlTitle);
+        $('#ProblemMath').html(originalProblemEquationHTML);	// shouldn't be part of title
+        $('#ProblemTitle').data('title', originalProblemTitle);
+        $('#ProblemTitle').data('equation', originalProblemEquation);
+        $('#ProblemTitle').data('annotation', originalProblemAnnotation);
 
-      $('#MathHistory').html(htmlHistory);
-      $('#mathEditorActive').html(currentEditorEquation);
-      $('#mathAnnotation').val(currentEditorAnnotation);
+        $('#MathHistory').html(htmlHistory);
+        $('#mathEditorActive').html(currentEditorEquation);
+        $('#mathAnnotation').val(currentEditorAnnotation);
 
-  //6 SCROLL TO BOTTOM OF HISTORY
-      ScrollHistoryToBottom();
+    //6 SCROLL TO BOTTOM OF HISTORY
+        ScrollHistoryToBottom();
 
-  //7 RUN RENDER MATH
-      MathLive.renderMathInDocument();
+    //7 RUN RENDER MATH
+        MathLive.renderMathInDocument();
 
-  //8 RENDER MATH EDITOR
-      RenderMathEditor();
+    //8 RENDER MATH EDITOR
+        RenderMathEditor();
 
-  //9 Wire up DISCARD & SAVE btns
+    //9 Wire up DISCARD & SAVE btns
 $('#BtnDiscard').click(function() {
-  if (ProblemIsUnchanged(buttonElement)) {
-      ShowWorkArea(false);
-      return true;
-  }
-  // Problem changed -- ask for confirmation before discarding
-  if (confirm("Any work on this problem will NOT be saved")) {
-      ShowWorkArea(false);
-      ClearScrachPad();
-      return true;
-  }
-  return false;
+    if (ProblemIsUnchanged(buttonElement)) {
+        ShowWorkArea(false);
+        return true;
+    }
+    // Problem changed -- ask for confirmation before discarding
+    if (confirm("Any work on this problem will NOT be saved")) {
+        ShowWorkArea(false);
+        ClearScrachPad();
+        return true;
+    }
+    return false;
 });
-  $('#BtnSave').click(function() {
-      SaveProblem(buttonElement);
-      ClearScrachPad();
-  });
+    $('#BtnSave').click(function() {
+        SaveProblem(buttonElement);
+        ClearScrachPad();
+    });
 
 //10 Hide/show parts of page
 ShowWorkArea(true);
@@ -425,26 +446,26 @@ $('.historyWrapper').animate({ scrollTop: $('.historyWrapper')[0].scrollHeight},
 var UndoDeleteStack = [];			// objects on the stack have fields 'latex' and 'annotation'
 function ClearEditorModal() {
 //1. Clear Title
-       $('#ProblemTitle').html('');
+         $('#ProblemTitle').html('');
 
 //2. Clear History
-       $('#MathHistory').html('');
+         $('#MathHistory').html('');
 
 //3. Clear Editor
-       $('#mathEditorActive').html('');
+         $('#mathEditorActive').html('');
 
 //4. Clear Annotation
-   $('#mathAnnotation').val('');
+     $('#mathAnnotation').val('');
 
 //5. Unwire Discard & Save Buttons
-  $('#BtnDiscard').unbind('click');
-  $('#BtnSave').unbind('click');
+    $('#BtnDiscard').unbind('click');
+    $('#BtnSave').unbind('click');
 
 //6. Hide Undo Button
-  $('#undoDelete').hide();
+    $('#undoDelete').hide();
 
 //7. Reset UndoDeleteStack
-  UndoDeleteStack = [];
+    UndoDeleteStack = [];
 }
 
 //***************************************************************************************************************************************************
@@ -452,22 +473,22 @@ function ClearEditorModal() {
 function GetProblemData() {
 // returns the problem state associated with the work area
 let originalProblemTitle = $('#ProblemTitle').data('title');
-  let originalProblemEquation = $('#ProblemTitle').data('equation');
-  let originalProblemAnnotation = $('#ProblemTitle').data('annotation');
-  let currentEditorEquation = TheActiveMathField.latex();
-  let currentEditorAnnotation = $('#mathAnnotation').val();
+    let originalProblemEquation = $('#ProblemTitle').data('equation');
+    let originalProblemAnnotation = $('#ProblemTitle').data('annotation');
+    let currentEditorEquation = TheActiveMathField.latex();
+    let currentEditorAnnotation = $('#mathAnnotation').val();
 
-  let mathStep = $('.mathStep');
+    let mathStep = $('.mathStep');
 let history_array = [];
 
 $.each(mathStep, function (index, item) {
-      history_array.push( {equation: $(item).data('equation'), annotation: $(item).data('annotation')} );
+        history_array.push( {equation: $(item).data('equation'), annotation: $(item).data('annotation')} );
 });
 problem = {
-  "metadata": {"title": originalProblemTitle},
-  "originalProblem": {"equation":originalProblemEquation, "annotation":originalProblemAnnotation},
-  "currentEditor": {"equation":currentEditorEquation, "annotation":currentEditorAnnotation},
-  "history": history_array
+    "metadata": {"title": originalProblemTitle},
+    "originalProblem": {"equation":originalProblemEquation, "annotation":originalProblemAnnotation},
+    "currentEditor": {"equation":currentEditorEquation, "annotation":currentEditorAnnotation},
+    "history": history_array
 };
 return problem;
 }
@@ -476,10 +497,8 @@ function SaveProblem(buttonElement) {
 // warning: 'problem' uses ""s, so we need to use ''s below
 buttonElement.setAttribute('onclick', 'SetAndOpenEditorModel(this, ' + JSON.stringify(GetProblemData(buttonElement)) +')');
 
-alert("Problem Saved!");
-
+DisplayMessage(SUCCESS_MESSAGE, 'Success:', 'Problem saved.');
 ShowWorkArea(false);
-
 }
 
 function ProblemIsUnchanged(buttonElement) {
@@ -502,9 +521,9 @@ let mathStepNewNumber = mathStepNumber ? mathStepNumber+1 : 1;	// worry about no
 let result = HTMLForRow(mathStepNewNumber, mathStepEquation, mathStepAnnotation, true, true, cleanup)
 
 //remove previous trash button if necessary
-  //get the current step
-  //subtract 1 from the current step
-  //select the previousStep
+    //get the current step
+    //subtract 1 from the current step
+    //select the previousStep
 $('.mathStep:last .btn-delete').hide();
 
 
@@ -519,6 +538,7 @@ $('#mathAnnotation').val('');
 
 SetScratchPadContentData(mathStepNewNumber, ScratchPadPainterro.imageSaver.asDataURL())
 ClearScrachPad();
+MoveEditorBelowSpecificStep(mathStepNewNumber);
 //MathLive.renderMathInDocument();
 }
 
@@ -564,8 +584,8 @@ $('#addStep').show();
 $('#updateControls').hide();
 let editor = $('.myWorkArea');
 editor.detach();
-workArea = $('#EditorArea')
-workArea.append(editor);
+mathHistory = $('#MathHistory');
+mathHistory.append(editor);
 
 let latestMathStepData = $("#latestMathStepData");
 TheActiveMathField.latex(latestMathStepData.data('equation'));
@@ -583,10 +603,10 @@ UpdateMathFieldMode = false;
 function NewRowOrRowsAfterCleanup(mathContent) {
 let cleanedUp = CleanUpCrossouts(mathContent);
 if (mathContent !== cleanedUp) {
-  NewMathEditorRow(cleanedUp, false);
-  NewMathEditorRow(cleanedUp, true);
+    NewMathEditorRow(cleanedUp, false);
+    NewMathEditorRow(cleanedUp, true);
 } else {
-  NewMathEditorRow(cleanedUp, false);
+    NewMathEditorRow(cleanedUp, false);
 }
 
 let mathStepNumber = $('.mathStep:last').data('step');
@@ -596,19 +616,18 @@ $('#mathEditorActive').find('span[aria-live]')[0].textContent = "added step " + 
 function UpdateRowAfterCleanup(mathContent, mathStepNumber) {
 let cleanedUp = CleanUpCrossouts(mathContent);
 if (mathContent !== cleanedUp) {
-  UpdateMathEditorRow(cleanedUp, mathStepNumber, false);
-  //UpdateMathEditorRow(cleanedUp, mathStepNumber + 1, true); TODO: add cleanup update support
+    UpdateMathEditorRow(cleanedUp, mathStepNumber, false);
+    //UpdateMathEditorRow(cleanedUp, mathStepNumber + 1, true); TODO: add cleanup update support
 } else {
-  UpdateMathEditorRow(cleanedUp, mathStepNumber, false);
+    UpdateMathEditorRow(cleanedUp, mathStepNumber, false);
 }
 }
 
 function AddStep() {
 if (!$('#mathAnnotation').val()) {
-  $('#mathAnnotation').focus();
-  alert("Please provide a reason.");
-  $('#mathAnnotation').focus();
-  return;
+    DisplayMessage(WARNING_MESSAGE, 'Warning:', 'Please provide a description of your work.');
+    $('#mathAnnotation').focus();
+    return;
 }
 NewRowOrRowsAfterCleanup(TheActiveMathField.latex());
 TheActiveMathField.focus();
@@ -616,13 +635,23 @@ TheActiveMathField.focus();
 
 function UpdateStep(stepNumber) {
 if (!$('#mathAnnotation').val()) {
-  $('#mathAnnotation').focus();
-  alert("Please provide a reason.");
-  $('#mathAnnotation').focus();
-  return;
+    DisplayMessage(WARNING_MESSAGE, 'Warning:', 'Please provide a description of your work.');
+    $('#mathAnnotation').focus();
+    return;
 }
 UpdateRowAfterCleanup(TheActiveMathField.latex(), stepNumber);
 ExitUpdate();
+DisplayMessage(SUCCESS_MESSAGE, 'Success:', 'The step has been updated.');
+}
+
+function DisplayMessage(type, title, message) {
+$('.alertContainer').append(
+    '<div class="alert alert-' + type + ' alert-dismissible">' +
+        '<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>' +
+        '<strong>' + title + ' </strong>' + message +
+    '</div>'
+);
+$('.alert:last').delay(4000).fadeOut('slow');
 }
 
 //***************************************************************************************************************************************************
@@ -634,13 +663,13 @@ ExitUpdate();
 function DeleteActiveMath(clearAll) {
 // nothing to do if there are no steps
 if (!$('.mathStep:last'))
-  return;
+    return;
 
 UndoDeleteStack.push(
-  { latex: TheActiveMathField.latex(),
-      annotation: $('#mathAnnotation').val(),
-      clearAll: clearAll
-  });
+    { latex: TheActiveMathField.latex(),
+        annotation: $('#mathAnnotation').val(),
+        clearAll: clearAll
+    });
 $('#undoDelete').show();
 
 // get the contents of the last row/step
@@ -655,12 +684,12 @@ lastStep.detach();
 
 // read trash button to previous step
 if ($('.mathStep').length > 1) {
-  $('.mathStep:last .btn-delete').show();
+    $('.mathStep:last .btn-delete').show();
 }
 
 TheActiveMathField.focus();
 if (lastStep.data('annotation') == "(cleanup)") {
-  DeleteActiveMath();
+    DeleteActiveMath();
 }
 $('.mathStep:last .btn-edit').show();
 $('#addStep').show();
@@ -673,12 +702,12 @@ let index = stepNumber - 1;
 let mathStep = $('.mathStep:eq('+ index +')');
 
 if (UpdateMathFieldMode === false) {
-  let latestMathStepData = $('<div/>', {
-      id: "latestMathStepData",
-  }).hide().appendTo('#MathHistory');
-  latestMathStepData.data('equation', TheActiveMathField.latex());
-  latestMathStepData.data('annotation', $('#mathAnnotation').val());
-  latestMathStepData.data('scratch-pad', ScratchPadPainterro.imageSaver.asDataURL());
+    let latestMathStepData = $('<div/>', {
+        id: "latestMathStepData",
+    }).hide().appendTo('#MathHistory');
+    latestMathStepData.data('equation', TheActiveMathField.latex());
+    latestMathStepData.data('annotation', $('#mathAnnotation').val());
+    latestMathStepData.data('scratch-pad', ScratchPadPainterro.imageSaver.asDataURL());
 }
 
 TheActiveMathField.latex(mathStep.data('equation'));
@@ -686,26 +715,30 @@ $('#mathAnnotation').val(mathStep.data('annotation'));
 $('#updateControls').removeAttr('hidden');
 $('#updateStep').unbind();
 $('#updateStep').click(function(){
-  UpdateStep(stepNumber);
+    UpdateStep(stepNumber);
 });
 $('#addStep').hide();
 $('#updateControls').show();
-let editor = $('.myWorkArea');
-editor.detach();
-mathStep.after(editor);
+
+MoveEditorBelowSpecificStep(stepNumber);
 $('#control-buttons').hide();
 
-ApplyScratchPadContent(GetScratchPadContentData(stepNumber));
+var content = GetScratchPadContentData(stepNumber);
+if (content) {
+    ApplyScratchPadContent(content);
+} else {
+    ClearScrachPad();
+}
 UpdateMathFieldMode = true;
 }
 
 function UndoDeleteStep() {
 stackEntry = UndoDeleteStack.pop();
 if (stackEntry===undefined)
-  return;	// shouldn't happen because button is disabled
+    return;	// shouldn't happen because button is disabled
 
 if (UndoDeleteStack.length===0)
-  $('#undoDelete').hide();
+    $('#undoDelete').hide();
 
 var cleanup = $('#mathAnnotation').val() == '(cleanup)';
 NewMathEditorRow( stackEntry.latex , cleanup)
@@ -714,16 +747,16 @@ $('#mathAnnotation').val( stackEntry.annotation );
 TheActiveMathField.focus();
 
 if (UndoDeleteStack.length > 0 && (stackEntry.annotation == '(cleanup)' || stackEntry.clearAll)) {
-  UndoDeleteStep();
+    UndoDeleteStep();
 }
 }
 
 function clearAllSteps() {
 if ($('.mathStep').length > 1) {
-  DeleteActiveMath();
+    DeleteActiveMath();
 }
 while ($('.mathStep').length > 1) {
-  DeleteActiveMath(true);
+    DeleteActiveMath(true);
 }
 }
 
@@ -868,48 +901,48 @@ const TeXCommands = {
 // @throws {string} if {}s or []s don't match
 function ReplaceTeXCommands(str, replacements) {
 function stackTop(parseStack) {
-  return parseStack[parseStack.length-1];
+    return parseStack[parseStack.length-1];
 }
 
 function MatchAndReplace(topOfStack, str, i) {
-  // For each pattern, see if the first arg in that pattern matches the TeX arg.
-  //	 matches: do the replacement, remove that first arg (already matched)
-  //   doesn't match: remove the pattern from the array (don't add to new array)
-  // Because elements are removed and we don't want undefined elements, we build a new array
-  let texArg = str.slice(topOfStack.iArgStart, i);
-  let newPatterns = [];		// patterns that matched with their replacements
-  topOfStack.patterns.forEach( function(pattern) {
-      // if the reg exp is "", it matches anything, so we need to deal with that case
-      let firstPattern = pattern.match[0];
-      if ( (firstPattern.length===0 && texArg.length===0) ||
-           (firstPattern.length>0 && new RegExp(pattern.match[0]).test(texArg)) ) {
-          newPatterns.push( {
-              match: pattern.match.slice(1),
-              replacement: pattern.replacement.replace(
-                              new RegExp('\\$'+topOfStack.iArg, 'g'),
-                              texArg)
-          } );
-      }
-  } );
-  topOfStack.patterns = newPatterns;
+    // For each pattern, see if the first arg in that pattern matches the TeX arg.
+    //	 matches: do the replacement, remove that first arg (already matched)
+    //   doesn't match: remove the pattern from the array (don't add to new array)
+    // Because elements are removed and we don't want undefined elements, we build a new array
+    let texArg = str.slice(topOfStack.iArgStart, i);
+    let newPatterns = [];		// patterns that matched with their replacements
+    topOfStack.patterns.forEach( function(pattern) {
+        // if the reg exp is "", it matches anything, so we need to deal with that case
+        let firstPattern = pattern.match[0];
+        if ( (firstPattern.length===0 && texArg.length===0) ||
+             (firstPattern.length>0 && new RegExp(pattern.match[0]).test(texArg)) ) {
+            newPatterns.push( {
+                match: pattern.match.slice(1),
+                replacement: pattern.replacement.replace(
+                                new RegExp('\\$'+topOfStack.iArg, 'g'),
+                                texArg)
+            } );
+        }
+    } );
+    topOfStack.patterns = newPatterns;
 }
 
 function ReplaceInStr(top, str, i) {
-  if ( top.patterns.length>0 ) {
-      let replacement = top.patterns[0].replacement;
-      if (replacement[0]==='`' && replacement[replacement.length-1]==='`') {
-          // if eval fails, don't want `` in replacement
-          replacement = replacement.slice(1,-1);
-          // evaluate the contents
-          let evalResult = DoCalculation(replacement);
-          if (evalResult!=="") {
-              replacement = evalResult==0 ? "" : evalResult;	// don't show '0'
-          }
-      }
-      str = str.substring(0, top.iCommandStart) + replacement + str.substring(i+1);
-      i = top.iCommandStart + replacement.length - 1;
-  }
-  return [str, i]
+    if ( top.patterns.length>0 ) {
+        let replacement = top.patterns[0].replacement;
+        if (replacement[0]==='`' && replacement[replacement.length-1]==='`') {
+            // if eval fails, don't want `` in replacement
+            replacement = replacement.slice(1,-1);
+            // evaluate the contents
+            let evalResult = DoCalculation(replacement);
+            if (evalResult!=="") {
+                replacement = evalResult==0 ? "" : evalResult;	// don't show '0'
+            }
+        }
+        str = str.substring(0, top.iCommandStart) + replacement + str.substring(i+1);
+        i = top.iCommandStart + replacement.length - 1;
+    }
+    return [str, i]
 }
 
 let braceCount = 0;								// changed when processing command args ({}s)
@@ -922,141 +955,141 @@ let expectingOpen = false;						// parsing command args--next ch should be { or 
 // When arguments match the patterns inside of the brackets and all args processed,
 //   replace that part of the string with the filled-in replacement and pop the stack
 while( i<str.length ) {
-  // FIX: if (expectingOpen) grab next non-whitespace char (mathlive always adds {}s???
-  if ( parseStack.length===0 ) {
-      // optimization...
-      // not processing a TeX command, so no need to worry about {} or [] -- skip to command
-      let iBackSlash = str.indexOf('\\', i);
-      if ( iBackSlash===-1) {
-          i = str.length;							// no more commands, we're done
-          break;
-      }
-      if (iBackSlash+1<str.length && str[iBackSlash+1]!=='\\') { // avoid escaped '\'
-          i = iBackSlash;
-      } else {
-          i = iBackSlash+2;	// after escaped '\'
-      }
-  }
+    // FIX: if (expectingOpen) grab next non-whitespace char (mathlive always adds {}s???
+    if ( parseStack.length===0 ) {
+        // optimization...
+        // not processing a TeX command, so no need to worry about {} or [] -- skip to command
+        let iBackSlash = str.indexOf('\\', i);
+        if ( iBackSlash===-1) {
+            i = str.length;							// no more commands, we're done
+            break;
+        }
+        if (iBackSlash+1<str.length && str[iBackSlash+1]!=='\\') { // avoid escaped '\'
+            i = iBackSlash;
+        } else {
+            i = iBackSlash+2;	// after escaped '\'
+        }
+    }
 
-  // Note: we can only have {} and [] at this point if we are in a command
-  switch (str.charAt(i)) {
-  case '{': {
-      // check to see if there should have been an optional arg and do replacement if so
-      let top = stackTop(parseStack);
-      if ( braceCount===top.nestingLevel && !top.args[top.iArg] ) {
-          let defaultValue = top.defaultValues.shift() || "";
-          // substitute in default value into replacement for each pattern/replacement
-          top.patterns.forEach(
-              function(pattern) {
-                  pattern.replacement = pattern.replacement.replace(
-                                          new RegExp('\\$'+top.iArg, 'g'),
-                                          defaultValue);
-              } );
-          top.iArg++;
-      }
-      if ( braceCount===top.nestingLevel )
-          top.iArgStart = i+1;
-      expectingOpen = false;
-      braceCount++;
-      break;
-  }
-  case '[': {
-      // note: optional args can't be nested
-      let top = stackTop(parseStack);
-      if ( braceCount===top.nestingLevel )
-          top.iArgStart = i+1;
-      expectingOpen = false;
-      break;
-  }
-  case '}':
-      braceCount--;
-  case ']': {
-      let top = stackTop(parseStack);
-      if ( braceCount>top.nestingLevel )
-          break;
-      if ( braceCount<top.nestingLevel )
-          throw ("Bad TeX syntax: extra '}' found");
+    // Note: we can only have {} and [] at this point if we are in a command
+    switch (str.charAt(i)) {
+    case '{': {
+        // check to see if there should have been an optional arg and do replacement if so
+        let top = stackTop(parseStack);
+        if ( braceCount===top.nestingLevel && !top.args[top.iArg] ) {
+            let defaultValue = top.defaultValues.shift() || "";
+            // substitute in default value into replacement for each pattern/replacement
+            top.patterns.forEach(
+                function(pattern) {
+                    pattern.replacement = pattern.replacement.replace(
+                                            new RegExp('\\$'+top.iArg, 'g'),
+                                            defaultValue);
+                } );
+            top.iArg++;
+        }
+        if ( braceCount===top.nestingLevel )
+            top.iArgStart = i+1;
+        expectingOpen = false;
+        braceCount++;
+        break;
+    }
+    case '[': {
+        // note: optional args can't be nested
+        let top = stackTop(parseStack);
+        if ( braceCount===top.nestingLevel )
+            top.iArgStart = i+1;
+        expectingOpen = false;
+        break;
+    }
+    case '}':
+        braceCount--;
+    case ']': {
+        let top = stackTop(parseStack);
+        if ( braceCount>top.nestingLevel )
+            break;
+        if ( braceCount<top.nestingLevel )
+            throw ("Bad TeX syntax: extra '}' found");
 
-      // back to balanced -- do replacement
-      if ( str.charAt(i)===']' ) {
-          if ( top.args[top.iArg] )					// true if required arg ({...})
-              throw ("Bad TeX syntax: expected '{arg}' but found '[arg]'");
-      }
+        // back to balanced -- do replacement
+        if ( str.charAt(i)===']' ) {
+            if ( top.args[top.iArg] )					// true if required arg ({...})
+                throw ("Bad TeX syntax: expected '{arg}' but found '[arg]'");
+        }
 
-      MatchAndReplace(top, str, i);
-      top.iArg++;
-      if (top.iArg==top.args.length) {
-          // processed all the args, done with command
-          [str, i] = ReplaceInStr(top, str, i);
-          // else if no match do nothing
-          parseStack.pop();
-      } else if (top.isBegin && top.iArg+1===top.args.length) {
-          top.iArgStart = i+1;
-      }
-      break;
-  }
-  case '\\': {
-      // get command name
-      let iNameStart=i+1;
-      if (str.charAt(iNameStart)==='\\') {
-          i++;
-          break;	// escaped '\'
-      }
-      let iNameEnd = iNameStart;
-      for( let ch=str.charAt(iNameEnd); /[a-zA-Z]/.test(ch); iNameEnd++ ) // skip letters
-          ch = str.charAt(iNameEnd);
-      if ( iNameEnd>iNameStart )
-          iNameEnd--;								// back up to end of name
-      // note: loop might exit immediately for escaped chars, but the following still works
-      let commandName = str.slice(iNameStart, iNameEnd);
-      const commandArgs = TeXCommands[commandName];// see if it is a TeX command with args
+        MatchAndReplace(top, str, i);
+        top.iArg++;
+        if (top.iArg==top.args.length) {
+            // processed all the args, done with command
+            [str, i] = ReplaceInStr(top, str, i);
+            // else if no match do nothing
+            parseStack.pop();
+        } else if (top.isBegin && top.iArg+1===top.args.length) {
+            top.iArgStart = i+1;
+        }
+        break;
+    }
+    case '\\': {
+        // get command name
+        let iNameStart=i+1;
+        if (str.charAt(iNameStart)==='\\') {
+            i++;
+            break;	// escaped '\'
+        }
+        let iNameEnd = iNameStart;
+        for( let ch=str.charAt(iNameEnd); /[a-zA-Z]/.test(ch); iNameEnd++ ) // skip letters
+            ch = str.charAt(iNameEnd);
+        if ( iNameEnd>iNameStart )
+            iNameEnd--;								// back up to end of name
+        // note: loop might exit immediately for escaped chars, but the following still works
+        let commandName = str.slice(iNameStart, iNameEnd);
+        const commandArgs = TeXCommands[commandName];// see if it is a TeX command with args
 
-      if (commandName=="end" && parseStack.length>0) {
-          // matching begin/end pair (hopefully) -- process contents of \begin as if it were an arg
-          let top = stackTop(parseStack);
-          if (!top.isBegin) {
-              throw ("Bad TeX syntax: \\end found without matching \\begin");
-          }
-          MatchAndReplace(top, str, i);
+        if (commandName=="end" && parseStack.length>0) {
+            // matching begin/end pair (hopefully) -- process contents of \begin as if it were an arg
+            let top = stackTop(parseStack);
+            if (!top.isBegin) {
+                throw ("Bad TeX syntax: \\end found without matching \\begin");
+            }
+            MatchAndReplace(top, str, i);
 
-          let iEndOfEnd = str.indexOf('}', i+1);	// wipe out all of \begin...\end{arg}
-          [str, i] = ReplaceInStr(top, str, iEndOfEnd);
-          parseStack.pop();
-          commandName = '';						// processed \end
-      } else {
-          i = iNameEnd-1;
-      }
-      if (!commandArgs)
-          break;									// search some more
+            let iEndOfEnd = str.indexOf('}', i+1);	// wipe out all of \begin...\end{arg}
+            [str, i] = ReplaceInStr(top, str, iEndOfEnd);
+            parseStack.pop();
+            commandName = '';						// processed \end
+        } else {
+            i = iNameEnd-1;
+        }
+        if (!commandArgs)
+            break;									// search some more
 
 
-      let actions = replacements[commandName];
-      if (actions) {
-          // found a command we care about -- push on stack so args get handled
-          if ( typeof actions.patterns ==="undefined" || typeof actions.patterns==="string" ) {
-              // simple case -> general case w/'match anything' for all args
-              actions.patterns = [ {
-                  match: Array(commandArgs.length).fill('.*'),
-                  replacement: actions.patterns}];
-          }
-          parseStack.push( {args: commandArgs,
-                              iCommandStart: iNameEnd-1-commandName.length,
-                              iArg: 0,
-                              nestingLevel: braceCount,
-                              defaultValues: actions.defaults || [],
-                              patterns: actions.patterns,
-                              iArgStart: iNameEnd+1,
-                              isBegin: commandName==="begin"
-                           } );
-          expectingOpen = true;
-      }
-      break;
-  }
-  default:										// normal char
-      break;
-  }
+        let actions = replacements[commandName];
+        if (actions) {
+            // found a command we care about -- push on stack so args get handled
+            if ( typeof actions.patterns ==="undefined" || typeof actions.patterns==="string" ) {
+                // simple case -> general case w/'match anything' for all args
+                actions.patterns = [ {
+                    match: Array(commandArgs.length).fill('.*'),
+                    replacement: actions.patterns}];
+            }
+            parseStack.push( {args: commandArgs,
+                                iCommandStart: iNameEnd-1-commandName.length,
+                                iArg: 0,
+                                nestingLevel: braceCount,
+                                defaultValues: actions.defaults || [],
+                                patterns: actions.patterns,
+                                iArgStart: iNameEnd+1,
+                                isBegin: commandName==="begin"
+                             } );
+            expectingOpen = true;
+        }
+        break;
+    }
+    default:										// normal char
+        break;
+    }
 
-  i++;
+    i++;
 }
 
 return str;
@@ -1084,48 +1117,48 @@ function CleanUpCrossouts(latexStr, options) {
 options = options || {erase:false};
 let result;
 if (options.erase) {
-  result = ReplaceTeXCommands( latexStr, { "enclose": {patterns: "$2"} } );
+    result = ReplaceTeXCommands( latexStr, { "enclose": {patterns: "$2"} } );
 } else {									 // delete
-  const replaceChar = '\uFFFD';			// temporary replacement char -- can't be in latexStr
-  const notReplaceChar = '[^'+replaceChar+']+';
-  result = ReplaceTeXCommands( latexStr,{ "enclose": {patterns: replaceChar} } );
+    const replaceChar = '\uFFFD';			// temporary replacement char -- can't be in latexStr
+    const notReplaceChar = '[^'+replaceChar+']+';
+    result = ReplaceTeXCommands( latexStr,{ "enclose": {patterns: replaceChar} } );
 
-  // if there are any cross out patterns that use sub/superscripts for replacements, fix them
-  result = result.replace( new RegExp(replaceChar+'(\\^|_)?', 'g'), "" );
+    // if there are any cross out patterns that use sub/superscripts for replacements, fix them
+    result = result.replace( new RegExp(replaceChar+'(\\^|_)?', 'g'), "" );
 
-  // elmininate extra level of '{}'s which messes up other matches -- comes from {replaceChar} -> {}
-  result = result.replace( new RegExp('{{}}', 'g'), "{}" );
+    // elmininate extra level of '{}'s which messes up other matches -- comes from {replaceChar} -> {}
+    result = result.replace( new RegExp('{{}}', 'g'), "{}" );
 
 
-  // now do the same for underset, overset, and clean up fractions
-  result = ReplaceTeXCommands( result,
-                  {
-                      "underset": {patterns: [
-                              {match: [".*", replaceChar], replacement: "{$0}"}
-                              ] },
-                      "overset": {patterns: [{match: [".*", replaceChar], replacement: "{$0}"}]},
-                      "frac": {patterns: [
-                              {match: ["", ""], replacement: "\\frac{1}{1}"},
-                              {match: ["", ".+"], replacement: "\\frac{1}{$1}"},
-                              {match: [".+", ""], replacement: "\\frac{$0}{1}"}
-                              ] },
-                      // used for "stacks"
-                      "begin": {patterns: [
-                              {match: ["array", "r", /*"^(\\+|-)?\\d*\\.?\\d* \\\\\\\\ (\\+|-)?\\d*\\.?\\d*$"*/".*"], replacement: "`$2`"}
-                              ] },
-                      "end": {patterns: [{match: ["array"], replacement: ""}] }
-                  } );
+    // now do the same for underset, overset, and clean up fractions
+    result = ReplaceTeXCommands( result,
+                    {
+                        "underset": {patterns: [
+                                {match: [".*", replaceChar], replacement: "{$0}"}
+                                ] },
+                        "overset": {patterns: [{match: [".*", replaceChar], replacement: "{$0}"}]},
+                        "frac": {patterns: [
+                                {match: ["", ""], replacement: "\\frac{1}{1}"},
+                                {match: ["", ".+"], replacement: "\\frac{1}{$1}"},
+                                {match: [".+", ""], replacement: "\\frac{$0}{1}"}
+                                ] },
+                        // used for "stacks"
+                        "begin": {patterns: [
+                                {match: ["array", "r", /*"^(\\+|-)?\\d*\\.?\\d* \\\\\\\\ (\\+|-)?\\d*\\.?\\d*$"*/".*"], replacement: "`$2`"}
+                                ] },
+                        "end": {patterns: [{match: ["array"], replacement: ""}] }
+                    } );
 }
 
 return result;
 
 /** FIX: Not handling these yet
 let prescriptsRE = new RegExp(
-  "\\\\,\\{\\}(?:\\^|_)([^\\{]|[a-z]+|\\{.+?\\})" + CrossoutRegExpPattern,
-  "g");
+    "\\\\,\\{\\}(?:\\^|_)([^\\{]|[a-z]+|\\{.+?\\})" + CrossoutRegExpPattern,
+    "g");
 prescriptsRE = new RegExp(
-  "\\\\,\\{\\}(?:\\^|_)([^\\{]|[a-z]+|\\{.+?\\})" + CrossoutRegExpPattern,
-  "g");
+    "\\\\,\\{\\}(?:\\^|_)([^\\{]|[a-z]+|\\{.+?\\})" + CrossoutRegExpPattern,
+    "g");
 latexStr = latexStr.replace(prescriptsRE, "$1");
 return latexStr.replace(new RegExp(CrossoutRegExpPattern, "g"), "");
 **/
@@ -1142,15 +1175,15 @@ function DoCalculation(latex) {
 // Return either the calculated result (as a string) or an empty string if can't calculate
 // Start by converting various character points into one set
 let expr = latex.replace(/\\times/g, '*')
-           .replace(/\\cdot/g, '*')
-           .replace(/\\div/g, '/')
-           .replace(/−/g, '-') // U2212 -> ASCII minus
-           .replace(/\^/g, '**');
+             .replace(/\\cdot/g, '*')
+             .replace(/\\div/g, '/')
+             .replace(/−/g, '-') // U2212 -> ASCII minus
+             .replace(/\^/g, '**');
 
 // now deal with the ones that are TeX commands
 expr = ReplaceTeXCommands( expr, { "frac": {patterns: "(($0)/($1))"},
-                                   "sqrt": {patterns: "(($1)**(1/($0)))" , defaults: ["2"]}
-                               } );
+                                     "sqrt": {patterns: "(($1)**(1/($0)))" , defaults: ["2"]}
+                                 } );
 
 // replace any {}s with ()s -- e.g, deals with 3^{4+5)
 expr = expr.replace(/\{/g, '(').replace(/\}/g, ")");
@@ -1164,19 +1197,19 @@ expr = expr.replace(/\\\\/g,  " + ");
 
 // make sure there are numbers AND operators
 if ( !(/[\d.]/.test(expr) && /[+\-*/@]/.test(expr)) ) {
-  return "";
+    return "";
 }
 // avoid security issues, etc., and rule out letters, etc, that can be part of JS program
 if ( /[a-zA-Z<=>]/.test(expr) ) {
-  return "";
+    return "";
 }
 
 try {
-  let result = eval(expr);
-  let rounded = Math.round(result);
-  return Math.abs(result-rounded)<1e-15 ? rounded : result;
+    let result = eval(expr);
+    let rounded = Math.round(result);
+    return Math.abs(result-rounded)<1e-15 ? rounded : result;
 } catch(e) {
-  return "";
+    return "";
 }
 }
 
@@ -1184,59 +1217,61 @@ try {
 function CalculateAndReplace(element) {
 
 let doCalculation = function(latex) {
-  // Return either the calculated result (as a string) or an empty string if can't calculate
-  // Start by converting various character points into one set
-  let expr = latex.replace(/\\times/g, '*')
-               .replace(/\\cdot/g, '*')
-               .replace(/\\div/g, '/')
-               .replace(/\^/g, '**');
+    // Return either the calculated result (as a string) or an empty string if can't calculate
+    // Start by converting various character points into one set
+    let expr = latex.replace(/\\times/g, '*')
+                 .replace(/\\cdot/g, '*')
+                 .replace(/\\div/g, '/')
+                 .replace(/\^/g, '**');
 
-  // now deal with the ones that are TeX commands
-  expr = ReplaceTeXCommands( expr, { "frac": {patterns: "(($0)/($1))"},
-                                       "sqrt": {patterns: "(($1)**(1/($0)))" , defaults: ["2"]}
-                                   } );
+    // now deal with the ones that are TeX commands
+    expr = ReplaceTeXCommands( expr, { "frac": {patterns: "(($0)/($1))"},
+                                         "sqrt": {patterns: "(($1)**(1/($0)))" , defaults: ["2"]}
+                                     } );
 
-  // replace any {}s with ()s -- e.g, deals with 3^{4+5)
-  expr = expr.replace(/\{/g, '(').replace(/\}/g, ")");
+    // replace any {}s with ()s -- e.g, deals with 3^{4+5)
+    expr = expr.replace(/\{/g, '(').replace(/\}/g, ")");
 
-  // handle implied multiplication -- two cases (...)(...) and number (...) are common
-  // note that fractions and roots have been converted to have parens around them
-  expr = expr.replace(/\)\(/g, ")*(").replace(/(\d)\(/g, "$1*(")
+    // handle implied multiplication -- two cases (...)(...) and number (...) are common
+    // note that fractions and roots have been converted to have parens around them
+    expr = expr.replace(/\)\(/g, ")*(").replace(/(\d)\(/g, "$1*(")
 
-  // make sure there are numbers AND operators
-  if ( !(/[\d.]/.test(expr) && /[+\-*/@]/.test(expr)) ) {
-      return "";
-  }
-  // avoid security issues, etc., and rule out letters, etc, that can be part of JS program
-  if ( /[a-zA-Z<=>]/.test(expr) ) {
-      return "";
-  }
+    // make sure there are numbers AND operators
+    if ( !(/[\d.]/.test(expr) && /[+\-*/@]/.test(expr)) ) {
+        return "";
+    }
+    // avoid security issues, etc., and rule out letters, etc, that can be part of JS program
+    if ( /[a-zA-Z<=>]/.test(expr) ) {
+        return "";
+    }
 
-  try {
-      let result = eval(expr);
-      let rounded = Math.round(result);
-      return Math.abs(result-rounded)<1e-15 ? rounded : result;
-  } catch(e) {
-      return "";
-  }
+    try {
+        let result = eval(expr);
+        let rounded = Math.round(result);
+        return Math.abs(result-rounded)<1e-15 ? rounded : result;
+    } catch(e) {
+        return "";
+    }
 }
 
 if ( TheActiveMathField.selectionIsCollapsed() ) {
-  return alert( "You must select an arithmetic expression for calculation." );
+    DisplayMessage(WARNING_MESSAGE, 'Warning:', 'You must select an arithmetic expression for calculation.');
+    return;
 }
 
 let selection = TheActiveMathField.selectedText('latex');
 let result = DoCalculation( CleanUpCrossouts(selection) );
 if (result==="") {
-  return alert( "Selection must contain only numbers and operators.");
+    DisplayMessage(WARNING_MESSAGE, 'Warning:', 'Selection must contain only numbers and operators.');
+    return;
 }
 
 // leave crossouts in selection so it is clearer what was the input to the calculation
 let insertionString = CrossoutTeXString + "{" + selection + "}" + result;
 
 TheActiveMathField.perform(['insert', insertionString,
-          {insertionMode: 'replaceSelection',
-           selectionMode: 'after'}]);
+            {insertionMode: 'replaceSelection',
+             selectionMode: 'after'}]);
 TheActiveMathField.focus();
 }
 
@@ -1247,26 +1282,26 @@ TheActiveMathField.focus();
 // @return {nothing} No return value
 function MathLivePasteFromButton(element) {
 // Button contents as a string
-  let insertionString = MathLive.getOriginalContent(element).
-  replace(/\$\$/g,'').
-  replace('\\blacksquare','#0').
-  replace('\\square','#?').
-  trim();
+    let insertionString = MathLive.getOriginalContent(element).
+    replace(/\$\$/g,'').
+    replace('\\blacksquare','#0').
+    replace('\\square','#?').
+    trim();
 
 if ( !TheActiveMathField.selectionIsCollapsed() ) {
-  let erasedInsertionString = CleanUpCrossouts( insertionString, {erase:true} );
-  if ( erasedInsertionString!==insertionString ) {
-      // the insertionString contains a cross out, erase all crossout in the selection
-      let selection = CleanUpCrossouts( TheActiveMathField.selectedText('latex'), {erase:true} );
+    let erasedInsertionString = CleanUpCrossouts( insertionString, {erase:true} );
+    if ( erasedInsertionString!==insertionString ) {
+        // the insertionString contains a cross out, erase all crossout in the selection
+        let selection = CleanUpCrossouts( TheActiveMathField.selectedText('latex'), {erase:true} );
 
-  // stick the modified selection into the black square (#0) in the insertionString
-      insertionString = insertionString.replace(/#0/, selection);
-  }
+    // stick the modified selection into the black square (#0) in the insertionString
+        insertionString = insertionString.replace(/#0/, selection);
+    }
 }
 
 TheActiveMathField.perform(['insert', insertionString,
-          {insertionMode: 'replaceSelection',
-           selectionMode: 'placeholder'}]);
+            {insertionMode: 'replaceSelection',
+             selectionMode: 'placeholder'}]);
 $("#mathAnnotationHeader").focus();
 $('#mathEditorActive').height(TheActiveMathField.element.scrollHeight);
 $('#mathAnnotation').height(TheActiveMathField.element.scrollHeight);
@@ -1281,10 +1316,10 @@ TheActiveMathField.focus();
 // @return {bool} true if handled, otherwise false
 function MathLivePasteFromButtonKeyDown(event, element) {
 if (event.key == "Enter") {
-  MathLivePasteFromButton(element);
-  return false;
+    MathLivePasteFromButton(element);
+    return false;
 } else
-  return true;
+    return true;
 }
 
 //***************************************************************************************************************************************************
@@ -1293,56 +1328,56 @@ if (event.key == "Enter") {
 // @param mathField -- the active math editor called on 'onSelectionDidChange'
 function UpdatePalette(mathField) {
 if (mathField.mathlist) {
-  let origSelection = mathField.selectedText('latex')
-  let cleanedSelection = CleanUpCrossouts( origSelection, {erase:true} );	// selection without crossouts (pre-compute)
+    let origSelection = mathField.selectedText('latex')
+    let cleanedSelection = CleanUpCrossouts( origSelection, {erase:true} );	// selection without crossouts (pre-compute)
 
-  // probably only one palette, but future-proof and handle all
-  // for every button in all the palettes...
-  //   substitute in the latex for the black square and use that for the rendering
-  // this could be more efficient by not making a change if the selection didn't change,
-  //   but this seems efficient enough. It could be that mathlive already does this optimization
-  // Note: the original value remains stored in a data attr and that value works
-  //   regardless of the selection because the 'insert' command replaces the selection
-  let templates = $('.paletteButton');
-  for (let iTemplate=0; iTemplate<templates.length; iTemplate++) {
-      let elem = templates[iTemplate];
-      const mathstyle = elem.getAttribute('data-' + /*options.namespace +(*/ 'mathstyle') || 'displaystyle';
-      try {
-          let newContents = MathLive.getOriginalContent(elem);
-          if (!newContents)
-              continue;
-          newContents = newContents.replace(/\$\$/g,'')	// remove $$'s
+    // probably only one palette, but future-proof and handle all
+    // for every button in all the palettes...
+    //   substitute in the latex for the black square and use that for the rendering
+    // this could be more efficient by not making a change if the selection didn't change,
+    //   but this seems efficient enough. It could be that mathlive already does this optimization
+    // Note: the original value remains stored in a data attr and that value works
+    //   regardless of the selection because the 'insert' command replaces the selection
+    let templates = $('.paletteButton');
+    for (let iTemplate=0; iTemplate<templates.length; iTemplate++) {
+        let elem = templates[iTemplate];
+        const mathstyle = elem.getAttribute('data-' + /*options.namespace +(*/ 'mathstyle') || 'displaystyle';
+        try {
+            let newContents = MathLive.getOriginalContent(elem);
+            if (!newContents)
+                continue;
+            newContents = newContents.replace(/\$\$/g,'')	// remove $$'s
 
-          if (origSelection) {
-              // we have latex for the selection, so substitute it in
-              // if both have cross outs, remove them from the selection
-              // this matches the behavior on activation
-              let selection = newContents.includes(CrossoutTeXString) ? cleanedSelection : origSelection;
-              newContents = newContents.replace('\\blacksquare', selection);
-          }
-          elem.innerHTML = MathLive.latexToMarkup(newContents, mathstyle);
-      } catch (e) {
-          console.error(
-              "Could not parse'" +
-              MathLive.getOriginalContent(elem).
-                  replace(/\$\$/g,'').
-                  replace('\\blacksquare',selection) + "'"
-          );
-      }
-  }
+            if (origSelection) {
+                // we have latex for the selection, so substitute it in
+                // if both have cross outs, remove them from the selection
+                // this matches the behavior on activation
+                let selection = newContents.includes(CrossoutTeXString) ? cleanedSelection : origSelection;
+                newContents = newContents.replace('\\blacksquare', selection);
+            }
+            elem.innerHTML = MathLive.latexToMarkup(newContents, mathstyle);
+        } catch (e) {
+            console.error(
+                "Could not parse'" +
+                MathLive.getOriginalContent(elem).
+                    replace(/\$\$/g,'').
+                    replace('\\blacksquare',selection) + "'"
+            );
+        }
+    }
 }
 }
 
 function initializeKeyShortcuts(palettes) {
 var keyShortcuts = new Map();
 palettes.forEach(function(palette) {
-  palette.buttonsRows.forEach(function(buttonsRow) {
-      buttonsRow.forEach(function(button) {
-          if (button.keys) {
-              keyShortcuts.set(buildMapKey(button.keys), button.id);
-          }
-      });
-  });
+    palette.buttonsRows.forEach(function(buttonsRow) {
+        buttonsRow.forEach(function(button) {
+            if (button.keys) {
+                keyShortcuts.set(buildMapKey(button.keys), button.id);
+            }
+        });
+    });
 });
 sessionStorage.keyShortcuts = JSON.stringify(Array.from(keyShortcuts.entries()));
 }
@@ -1357,41 +1392,41 @@ function HandleKeyDown(event)
 {
 var keyShortcuts = new Map(JSON.parse(sessionStorage.keyShortcuts));
 if (event.shiftKey && TheActiveMathField.selectionIsCollapsed()) {
-  // if an insertion cursor, extend the selection unless we are at an edge
-  if (event.key === 'Backspace' && !TheActiveMathField.selectionAtStart()) {
-      TheActiveMathField.perform('extendToPreviousChar');
+    // if an insertion cursor, extend the selection unless we are at an edge
+    if (event.key === 'Backspace' && !TheActiveMathField.selectionAtStart()) {
+        TheActiveMathField.perform('extendToPreviousChar');
 
-  } else if (event.key === 'Delete' && !TheActiveMathField.selectionAtEnd()) {
-      TheActiveMathField.perform('extendToNextChar');
-  }
+    } else if (event.key === 'Delete' && !TheActiveMathField.selectionAtEnd()) {
+        TheActiveMathField.perform('extendToNextChar');
+    }
 }
 if (event.shiftKey && event.key === 'Enter' && $('#mathAnnotation').val() !== '') {
-  if ($('#updateStep').is(":visible")) {
-      $('#updateStep').click();
-  } else {
-      NewRowOrRowsAfterCleanup(TheActiveMathField.latex());
-  }
+    if ($('#updateStep').is(":visible")) {
+        $('#updateStep').click();
+    } else {
+        NewRowOrRowsAfterCleanup(TheActiveMathField.latex());
+    }
 }
 
 var keys = [];
 if (event.shiftKey) {
-  keys.push("Shift");
+    keys.push("Shift");
 }
 if (event.ctrlKey) {
-  keys.push("Ctrl");
+    keys.push("Ctrl");
 }
 keys.push(event.key);
 var id = keyShortcuts.get(buildMapKey(keys));
 if (id) {
-  $("#" + id).click();
+    $("#" + id).click();
 }
 }
 
 function GoogleAnalytics(action) {
 ga('send', {
-  hitType: 'event',
-  eventCategory: 'Editor',
-  eventAction: action,
-  eventLabel: ''
+    hitType: 'event',
+    eventCategory: 'Editor',
+    eventAction: action,
+    eventLabel: ''
 });
 }

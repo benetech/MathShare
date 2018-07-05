@@ -114,7 +114,7 @@ overflow-x: hidden;
 
 .editorAndHistoryWrapper {
   width: 100%;
-overflow-x: hidden;
+  overflow-x: hidden;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -127,10 +127,11 @@ overflow-x: hidden;
 }
 
 .historyWrapper {
-overflow-x: hidden;
+  overflow-x: hidden;
   overflow-y: auto;
   padding-left: 10px;
   padding-right: 10px;
+  min-height: 65px;
 }
 
 #historyWorkSeparator {
@@ -210,6 +211,10 @@ a {
    -ms-transform: scale(1.15, 1.15);
 }
 
+#MainWorkArea {
+    z-index: 0;
+}
+
 #workArea {
     border: 1px solid #CCC;
     border-radius: 5px;
@@ -227,7 +232,7 @@ a {
   display: grid;
   border-radius: 12px;
   margin-top: 10px;
-  margin-bottom: 50px;
+  margin-bottom: 20px;
   background-color: #add8e6bf;
   transition: all 1s;
   opacity: 1;
@@ -514,4 +519,15 @@ pulse.off {
     position: relative;
     height: 300px;
     width: 100%;
+}
+
+.alertContainer {
+    position: absolute; 
+    margin-left: auto; 
+    margin-right: auto; 
+    left: 0;
+    right: 0;
+    z-index: 100; 
+    top: 2.5%; 
+    width: 30%;
 }

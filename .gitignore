@@ -1,5 +1,8 @@
 # VSCode
 .vscode/
 
+# InteliJ
+.idea/
+
 # npm
 node_modules/
