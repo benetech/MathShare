@@ -3,7 +3,7 @@ function readBlob(opt_startByte, opt_stopByte) {
         console.log('files:'+file);
         //var files = document.getElementById('files').files;
         if (!files.length) {
-            alert('Please select a file!');
+            DisplayMessage(WARNING_MESSAGE, 'Warning:', 'Please select a file.');
             return;
         }
 
@@ -84,22 +84,39 @@ function ClearScrachPad() {
 function ShowWorkArea(show) {
     // shows either the work area or the question area
     if (show) {
-        $('#topNavigation').hide();
+        MoveEditorBelowSpecificStep(GetNumberOfSteps());
+        $('#topNavigationWrapper').hide();
         $('#LeftNavigation').hide();
-        $('#MainWorkArea').show();
         $('#MySteps').focus();
         $('#footer').hide();
         $('.mainWrapper').addClass('paperSheet');
     } else {
-        $('#topNavigation').show();
+        MoveEditorToItsContainer();
+        $('#topNavigationWrapper').show();
         $('#LeftNavigation').show();
         $("#LeftNavigation li:first").focus();
-        $('#MainWorkArea').hide();
         $('#footer').show();
         $('.mainWrapper').removeClass('paperSheet');
     }
 }
 
+function GetNumberOfSteps() {
+    return $('.mathStep').length;
+}
+
+function MoveEditorBelowSpecificStep(stepNumber) {
+    var index = stepNumber - 1;
+    var mathStep = $('.mathStep:eq('+ index +')');
+    var workArea = $('.myWorkArea');
+    workArea.detach();
+    mathStep.after(workArea);
+}
+
+function MoveEditorToItsContainer() {
+    var workArea = $('.myWorkArea');
+    workArea.detach();
+    $('#MainWorkArea').append(workArea);
+}
 
 //***************************************************************************************************************************************************
 // GLOBAL VARIABLES
@@ -468,10 +485,8 @@ function SaveProblem(buttonElement) {
     // warning: 'problem' uses ""s, so we need to use ''s below
     buttonElement.setAttribute('onclick', 'SetAndOpenEditorModel(this, ' + JSON.stringify(GetProblemData(buttonElement)) +')');
 
-    alert("Problem Saved!");
-
+    DisplayMessage(SUCCESS_MESSAGE, 'Success:', 'Problem saved.');
     ShowWorkArea(false);
-
 }
 
 function ProblemIsUnchanged(buttonElement) {
@@ -511,6 +526,7 @@ function NewMathEditorRow(mathContent, cleanup) {
 
     SetScratchPadContentData(mathStepNewNumber, ScratchPadPainterro.imageSaver.asDataURL())
     ClearScrachPad();
+    MoveEditorBelowSpecificStep(mathStepNewNumber);
     //MathLive.renderMathInDocument();
 }
 
@@ -556,8 +572,8 @@ function ExitUpdate() {
     $('#updateControls').hide();
     let editor = $('.myWorkArea');
     editor.detach();
-    workArea = $('#EditorArea')
-    workArea.append(editor);
+    mathHistory = $('#MathHistory');
+    mathHistory.append(editor);
 
     let latestMathStepData = $("#latestMathStepData");
     TheActiveMathField.latex(latestMathStepData.data('equation'));
@@ -597,8 +613,7 @@ function UpdateRowAfterCleanup(mathContent, mathStepNumber) {
 
 function AddStep() {
     if (!$('#mathAnnotation').val()) {
-        $('#mathAnnotation').focus();
-        alert("Please provide a reason.");
+        DisplayMessage(WARNING_MESSAGE, 'Warning:', 'Please provide a description of your work.');
         $('#mathAnnotation').focus();
         return;
     }
@@ -608,13 +623,23 @@ function AddStep() {
 
 function UpdateStep(stepNumber) {
     if (!$('#mathAnnotation').val()) {
-        $('#mathAnnotation').focus();
-        alert("Please provide a reason.");
+        DisplayMessage(WARNING_MESSAGE, 'Warning:', 'Please provide a description of your work.');
         $('#mathAnnotation').focus();
         return;
     }
     UpdateRowAfterCleanup(TheActiveMathField.latex(), stepNumber);
     ExitUpdate();
+    DisplayMessage(SUCCESS_MESSAGE, 'Success:', 'The step has been updated.');
+}
+
+function DisplayMessage(type, title, message) {
+    $('.alertContainer').append(
+        '<div class="alert alert-' + type + ' alert-dismissible">' +
+            '<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>' +
+            '<strong>' + title + ' </strong>' + message +
+        '</div>'
+    );
+    $('.alert:last').delay(4000).fadeOut('slow');
 }
 
 //***************************************************************************************************************************************************
@@ -682,12 +707,16 @@ function EditMathStep(stepNumber) {
     });
     $('#addStep').hide();
     $('#updateControls').show();
-    let editor = $('.myWorkArea');
-    editor.detach();
-    mathStep.after(editor);
+
+    MoveEditorBelowSpecificStep(stepNumber);
     $('#control-buttons').hide();
 
-    ApplyScratchPadContent(GetScratchPadContentData(stepNumber));
+    var content = GetScratchPadContentData(stepNumber);
+    if (content) {
+        ApplyScratchPadContent(content);
+    } else {
+        ClearScrachPad();
+    }
     UpdateMathFieldMode = true;
 }
 
@@ -1214,13 +1243,15 @@ function CalculateAndReplace(element) {
     }
 
     if ( TheActiveMathField.selectionIsCollapsed() ) {
-        return alert( "You must select an arithmetic expression for calculation." );
+        DisplayMessage(WARNING_MESSAGE, 'Warning:', 'You must select an arithmetic expression for calculation.');
+        return;
     }
 
     let selection = TheActiveMathField.selectedText('latex');
     let result = DoCalculation( CleanUpCrossouts(selection) );
     if (result==="") {
-        return alert( "Selection must contain only numbers and operators.");
+        DisplayMessage(WARNING_MESSAGE, 'Warning:', 'Selection must contain only numbers and operators.');
+        return;
     }
 
     // leave crossouts in selection so it is clearer what was the input to the calculation
