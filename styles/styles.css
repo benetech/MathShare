@@ -233,14 +233,14 @@ a {
   border-radius: 12px;
   margin-top: 10px;
   margin-bottom: 20px;
-  background-color: #add8e6bf;
+  background-color: rgba(173, 216, 230, 0.75);
   transition: all 1s;
   opacity: 1;
   min-width: 940px;
 }
 
 .paperSheet {
-  background: -webkit-linear-gradient(top, #add8e6a1 0%, #FFF 8%) 0;
+  background: -webkit-linear-gradient(top, rgba(173, 216, 230, 0.63) 0%, #FFF 8%) 0;
   -webkit-background-size: 100% 40px;
 }
 
@@ -254,7 +254,7 @@ a {
   bottom: 0;
   border-left: 1px solid;
   border-right: 2px solid;
-  border-color: #ff6666a1;
+  border-color: rgba(255, 102, 102, 0.63);
 }
 
 .paletteButton {
@@ -530,4 +530,20 @@ pulse.off {
     z-index: 100; 
     top: 2.5%; 
     width: 30%;
+}
+
+/* Additional styles for Microsoft Edge */
+@supports (-ms-ime-align: auto) {
+    #LeftNavigation {
+        position: absolute; 
+        top: 75px;
+    }
+
+    #MainBody {
+        background-color: white;
+    }
+
+    #mathAnnotation {
+        resize: both;
+    }
 }

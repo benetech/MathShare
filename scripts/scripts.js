@@ -44,7 +44,10 @@ $(document).ready(function(){
     InitScratchPad();
     ShowWorkArea(false);
 
-    $('#undoDelete').hide();
+    $('#undoDelete').hide();   
+    $('[data-toggle="tooltip"]').on('click', function () {
+        $(this).tooltip('hide');
+    }) 
 });
 
 function InitScratchPad() {
@@ -90,6 +93,7 @@ function ShowWorkArea(show) {
         $('#MySteps').focus();
         $('#footer').hide();
         $('.mainWrapper').addClass('paperSheet');
+        $('#MainWorkArea').show();
     } else {
         MoveEditorToItsContainer();
         $('#topNavigationWrapper').show();
@@ -97,6 +101,7 @@ function ShowWorkArea(show) {
         $("#LeftNavigation li:first").focus();
         $('#footer').show();
         $('.mainWrapper').removeClass('paperSheet');
+        $('#MainWorkArea').hide();
     }
 }
 
@@ -618,7 +623,7 @@ function AddStep() {
         return;
     }
     NewRowOrRowsAfterCleanup(TheActiveMathField.latex());
-    TheActiveMathField.focus();
+    TheActiveMathField.focus();   
 }
 
 function UpdateStep(stepNumber) {
