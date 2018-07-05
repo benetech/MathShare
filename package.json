@@ -34,6 +34,7 @@
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
     "bootstrap": "^4.1.1",
-    "classnames": "^2.2.6"
+    "classnames": "^2.2.6",
+    "react-fontawesome": "^1.6.1"
   }
 }

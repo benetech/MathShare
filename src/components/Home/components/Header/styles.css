@@ -1,0 +1,26 @@
+@import '~bootstrap/dist/css/bootstrap.min.css';
+
+.header {
+    flex: 0 0 50px;
+  }
+
+.navbar {
+    height: 75px;
+    border-radius: 0px;
+    margin-bottom: 0px;
+    background-color: #001F3F;
+  }
+
+.feedback {
+    font-size: 1.2em; 
+    padding-top: 3px;
+  }
+
+.pointer {
+    cursor:pointer;
+}
+
+.navItem>li>a {
+    color: #FFF !important;
+    margin-left: 1em;
+}
