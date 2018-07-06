@@ -3,12 +3,12 @@ import classNames from "classnames";
 import styles from '../../../../../styles/styles.css';
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 
-export default class MainPageFooter extends React.Component {
+export default class NavigationHeader extends React.Component {
     render() {
         return (
             <div>
                 <h2 id="LeftNavigationHeader" className={styles.sROnly}> Problems to solve </h2>
-                <div class="row">
+                <div className={bootstrap.row}>
                     <div className={
                         classNames({
                             [bootstrap['col-lg-12']]: true,
