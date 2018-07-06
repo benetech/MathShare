@@ -1,0 +1,41 @@
+.header {
+    font-weight: bold;
+    float: left;
+}
+
+.btn {
+    margin-bottom: 5px;
+}
+
+.step {
+    font-size: 120%;
+    margin-left: 75px;
+    padding: 5px 0px 10px 0px;
+    opacity: 0.65;
+    transition: all 1s;
+}
+
+.cleanup {
+    color:rgb(114, 114, 114);
+}
+
+.btnContainer {
+    text-align: right;
+    float:right
+}
+
+.btnEdit {
+    background-color: rgb(240, 240, 240);
+    background-image: url(/images/pencil.png);
+    margin: 0px 5px;
+    opacity: 0.3;
+    transition: all 0.3s;
+}
+
+.btnDelete {
+    background-color: rgb(240, 240, 240);
+    background-image: url(/images/delete.png);
+    opacity: 0.6;
+    margin: 0px 5px;
+    transition: all 0.3s;
+}
