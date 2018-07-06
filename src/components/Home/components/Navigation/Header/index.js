@@ -9,12 +9,7 @@ export default class NavigationHeader extends React.Component {
             <div>
                 <h2 id="LeftNavigationHeader" className={styles.sROnly}> Problems to solve </h2>
                 <div className={bootstrap.row}>
-                    <div className={
-                        classNames({
-                            [bootstrap['col-lg-12']]: true,
-                            [bootstrap['text-center']]: true
-                        })
-                    }>
+                    <div className={classNames(bootstrap['col-lg-12'], bootstrap['text-center'])}>
                         <h2>Select a problem and try out Benetech's Math Editor (alpha)!</h2>
                         <br/><br/>
                     </div>

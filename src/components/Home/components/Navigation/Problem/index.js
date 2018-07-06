@@ -7,23 +7,9 @@ import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 export default class Problem extends React.Component {
     render() {
         return (
-            <li className={
-                classNames({
-                    [bootstrap['col-md-4']]: true,
-                    [bootstrap['text-center']]: true,
-                    [problem.problem]: true
-                })}>
-                <span className={
-                    classNames({
-                        [bootstrap.btn]: true,
-                        [styles['btn-default']]: true,
-                        [styles['btn-huge']]: true,
-                    })}>
-                    <button className={
-                        classNames({
-                            [problem.navItemButton]: true,
-                            [problem.colorInherit]: true
-                        })}>
+            <li className={classNames(bootstrap['col-md-4'], bootstrap['text-center'], problem.problem)}>
+                <span className={classNames(bootstrap.btn, styles['btn-default'], styles['btn-huge'])}>
+                    <button className={classNames(problem.navItemButton, problem.colorInherit)}>
                          <span className={problem.problemAnnotation}> {this.props.annotation} </span>
                     </button>
                     <span className={problem.problemEquation}> {this.props.equation} </span>
