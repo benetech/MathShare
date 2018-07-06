@@ -11,55 +11,28 @@ export default class MainPageHeader extends React.Component {
             <div id="topNavigationWrapper" className={header.header} role="heading" aria-level="1">
                 <header>
                     <h2 className={styles.sROnly}> Header </h2>            
-                    <nav className={
-                        classNames({
-                            [header.navbar]: true,
-                            [bootstrap['navbar-expand-lg']]: true,
-                            [bootstrap.navbar]: true
-                        })
-                    } 
+                    <nav className={classNames(header.navbar, bootstrap['navbar-expand-lg'], bootstrap.navbar)} 
                     id="topNavigation">
                         <a className={bootstrap['navbar-brand']} href="#">
                             <img src="images/logo.png" alt="Benetech Math Editor" height="37"/>
                         </a>
                         <div className={bootstrap['navbar-collapse']}
                         id="navbarNav">
-                            <ul className={
-                                classNames({
-                                    [bootstrap['navbar-nav']]: true,
-                                    [bootstrap['mr-auto']]: true
-                                })
-                            }>
+                            <ul className={classNames(bootstrap['navbar-nav'], bootstrap['mr-auto'])}>
                             </ul>
-                            <ul className={
-                                classNames({
-                                    [bootstrap['navbar-nav']]: true,
-                                    [header.navItem]: true
-                                })
-                            }>
+                            <ul className={classNames(bootstrap['navbar-nav'], header.navItem)}>
                                 <li className={bootstrap['nav_item']}>
-                                    <a className={
-                                        classNames({
-                                            [bootstrap['nav-link']]: true,
-                                            [header.pointer]: true
-                                        })
-                                    }>Getting Started</a>
+                                    <a className={classNames(bootstrap['nav-link'], header.pointer)}>
+                                        Getting Started
+                                    </a>
                                 </li>
-                                <li className={
-                                    classNames({
-                                        [bootstrap['nav-item']]: true,
-                                        [bootstrap.dropdown]: true
-                                    })
-                                }>
-                                    <a className={
-                                        classNames({
-                                            [bootstrap['nav-link']]: true,
-                                            [bootstrap['dropdown-toggle']]: true
-                                        })
-                                    }
+                                <li className={classNames(bootstrap['nav-item'], [bootstrap.dropdown])}>
+                                    <a className={classNames(bootstrap['nav-link'], bootstrap['dropdown-toggle'])} 
                                     data-toggle="dropdown" href="#" role="button"
                                     aria-haspopup="true"
-                                    aria-expanded="false">Problem Sets</a>
+                                    aria-expanded="false">
+                                        Problem Sets
+                                    </a>
                                     <div className={bootstrap['dropdown-menu']} role="list" aria-label="Problem Sets">
                                         <a className={bootstrap['dropdown-menu']}>Problem Set 01</a>
                                         <a className={bootstrap['dropdown-menu']}>Problem Set 02</a>
