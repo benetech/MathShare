@@ -5,6 +5,8 @@ import NavigationHeader from './components/Home/components/Navigation/Header';
 import NavigationProblems from './components/Home/components/Navigation/Problems';
 import MainPageFooter from './components/Home/components/Footer';
 import ProblemHeader from './components/Editor/components/ProblemHeader';
+import MyStepsHeader from './components/Editor/components/MySteps/components/MyStepsHeader';
+import MyStepsList from './components/Editor/components/MySteps/components/MyStepsList';
 import MathPalette from './components/Editor/components/MathPalette';
 
 ReactDOM.render(<MainPageHeader/>, document.getElementById("headerPlaceHolder"));
@@ -12,6 +14,8 @@ ReactDOM.render(<NavigationHeader/>, document.getElementById("navigationHeaderPl
 ReactDOM.render(<NavigationProblems/>, document.getElementById("ProblemListPlaceholder"));
 ReactDOM.render(<MainPageFooter/>, document.getElementById("footerPlaceHolder"));
 ReactDOM.render(<ProblemHeader title="Problem title" math="Problem"/>, document.getElementById("problemHeaderPlaceHolder"));
+ReactDOM.render(<MyStepsHeader/>, document.getElementById("myStepsHeaderPlaceHolder"));
+ReactDOM.render(<MyStepsList/>, document.getElementById("myStepsListPlaceHolder"));
 ReactDOM.render(<MathPalette/>, document.getElementById("mathPalettePlaceHolder"));
 
 function readBlob(opt_startByte, opt_stopByte) {

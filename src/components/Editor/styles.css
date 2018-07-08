@@ -1,0 +1,16 @@
+
+.modalAreaHeading {
+    color: #001F3F;
+    font-style: italic;
+    font-size: 22px;
+    float: left;
+    font-weight: bold;
+}
+
+.historyWrapper {
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding-left: 10px;
+    padding-right: 10px;
+    min-height: 65px;
+}
