@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import MathButtonsGroup from './components/MathButtonsGroup';
 import classNames from "classnames";
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
-import styles from '../../../../styles/styles.css';
+import styles from '../../../../../../styles/styles.css';
 
 export default class MathPalette extends Component {
     render() {

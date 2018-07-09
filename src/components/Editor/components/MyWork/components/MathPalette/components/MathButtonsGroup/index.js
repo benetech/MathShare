@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import MathButtonsRow from './components/MathButtonsRow';
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
-import buttons from '../../../../../../styles/buttons.css';
+import buttons from '../../../../../../../../styles/buttons.css';
 
 export default class MathButtonsGroup extends Component {
     render() {

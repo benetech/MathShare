@@ -8,6 +8,7 @@ import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 export default class MyWorkEditorArea extends Component {
     render() {
         return (
+            <div role="heading" aria-level="2">
                 <div className={bootstrap.row}>
                     <div className={bootstrap['col-lg-12']}>
                         <div id="workArea"
@@ -89,6 +90,7 @@ export default class MyWorkEditorArea extends Component {
                         </div>
                     </div>
                 </div>
+            </div>
         );
     }
 }
