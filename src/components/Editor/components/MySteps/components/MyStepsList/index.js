@@ -1,11 +1,11 @@
-import React from "react";
+import React, {Component} from "react";
 import Step from "./components/Step";
 import classNames from "classnames";
 import myStepsList from './styles.css';
 import mySteps from '../../../../styles.css';
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 
-export default class MyStepsList extends React.Component {
+export default class MyStepsList extends Component {
     render() {
         return (
             <div id="HistoryWrapper" className={mySteps.historyWrapper}>

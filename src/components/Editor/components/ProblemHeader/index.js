@@ -1,11 +1,11 @@
-import React from "react";
+import React, {Component} from "react";
 import classNames from "classnames";
 import problem from './styles.css';
 import styles from '../../../../styles/styles.css';
 import buttons from '../../../../styles/buttons.css';
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 
-export default class ProblemHeader extends React.Component {
+export default class ProblemHeader extends Component {
     render() {
         return (
             <div className={problem.header}>

@@ -1,10 +1,10 @@
-import React from "react";
+import React, {Component} from "react";
 import classNames from "classnames";
 import problem from './styles.css';
 import styles from '../../../../../styles/styles.css';
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 
-export default class Problem extends React.Component {
+export default class Problem extends Component {
     render() {
         return (
             <li className={classNames(bootstrap['col-md-4'], bootstrap['text-center'], problem.problem)}>

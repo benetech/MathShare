@@ -1,10 +1,10 @@
-import React from "react";
+import React, {Component} from "react";
 import classNames from "classnames";
 import header from './styles.css';
 import mySteps from '../../../../styles.css';
 import styles from '../../../../../../styles/styles.css';
 
-export default class MyStepsHeader extends React.Component {
+export default class MyStepsHeader extends Component {
     render() {
         return (
             <div>

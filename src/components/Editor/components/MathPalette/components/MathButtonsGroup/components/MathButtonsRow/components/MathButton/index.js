@@ -1,9 +1,9 @@
-import React from "react";
+import React, {Component} from "react";
 import classNames from "classnames";
 import mathButton from './styles.css';
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 
-export default class MathButton extends React.Component {
+export default class MathButton extends Component {
     render() {
         //TODO var onClick = concatAttribute(this.props.commonOnclick, this.props.additionalOnclick);
         var title = buildButtonTitle(this.props.button.title, this.props.button.keys);

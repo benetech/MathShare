@@ -1,11 +1,11 @@
-import React from "react";
+import React, {Component} from "react";
 import classNames from "classnames";
 import step from './styles.css';
 import styles from '../../../../../../../../styles/styles.css';
 import buttons from '../../../../../../../../styles/buttons.css';
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 
-export default class MyStepsHeader extends React.Component {
+export default class MyStepsHeader extends Component {
     render() {
         var reason = buildReason(this.props);
         var editBtn = buildEditBtn(this.props);
