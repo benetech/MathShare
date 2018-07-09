@@ -27,7 +27,7 @@
 }
 
 .undo {
-    background-color: #f0f0f0;
+    background-color: rgb(240, 240, 240);
     background-image: url(/images/undo.png);
 }
 
@@ -36,6 +36,13 @@
 }
 
 .scratch {
-    background-color: white;
+    background-color: rgb(255, 255, 255);
     background-image: url(/images/scratch.png);
+}
+
+.mic {
+    border: 0px;
+    background-color: rgb(255, 255, 255);
+    padding: 0px;
+    margin-top: 2px;
 }
