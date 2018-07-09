@@ -49,44 +49,18 @@
     <div class="contentWrapper" id="ContentWrapper">
         <nav id="LeftNavigation" class="leftNavigation" aria-labelledby="LeftNavigationHeader">
             <div id="navigationHeaderPlaceholder"></div>
-            <div id="ProblemListPlaceholder"></div> 
-            <div id="ProblemList"></div> <!-- place for list of problems -->
+            <div id="ProblemListPlaceholder"></div>
+            <div id="ProblemList"></div>
         </nav>
-        <main id="MainWorkArea" class="editorAndHistoryWrapper">
-            <div id="problemHeaderPlaceHolder"></div>
-            <div id="myStepsHeaderPlaceHolder" style="flex: 0 0 50px; padding: 10px 0px 0px 10px;"></div>
-            <div id="myStepsListPlaceHolder"></div>
-
-            <!-- TODO: This will be replaced by mySteps place holders-->
-            <div style="flex: 0 0 50px; padding: 10px 0px 0px 10px;">
-                <h2 id="MySteps" tabindex="-1">
-                    <span class="modalAreaHeading myStepsHeader" aria-hidden="true">My Steps</span>
-                    <span class="sr-only ">My Steps</span>
-                </h2>
-            </div>
-            <div class="historyWrapper">
-                <div class="row" data-step="4"
-                     data-intro="Review your work. The trash icon also allows you to delete and rework a prior step.">
-                    <div class="col-lg-12">
-                        <div class="mathHistory container-fluid" style="color: #001F3F; opacity: 1;" id="MathHistory" role="heading" aria-level="2"></div>
-                        </div>
-                    </div>
-            </div>
-            <!-- TODO: This will be replaced by mySteps place holders-->
-
-
-        <!--TODO: Remove it -->
-        <div hidden id="mathEditorActive"></div>
-        <!--TODO: Remove it -->
-
-        <div id="myWorkPlaceHolder"></div>
-        </main>
+        <div id="editorPlaceHolder"></div>
     </div>
 
-    <!-- BEGIN FOOTER -->
-    <div id="footerPlaceHolder"></div>
-    <!-- END FOOTER -->
+    <!--TODO: Remove it -->
+    <div hidden class="historyWrapper"></div>
+    <div hidden id="mathEditorActive"></div>
+    <!--TODO: Remove it -->
 
+    <div id="footerPlaceHolder"></div>
 </div>
 
 <script>
