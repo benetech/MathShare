@@ -8,6 +8,8 @@ import ProblemHeader from './components/Editor/components/ProblemHeader';
 import MyStepsHeader from './components/Editor/components/MySteps/components/MyStepsHeader';
 import MyStepsList from './components/Editor/components/MySteps/components/MyStepsList';
 import MathPalette from './components/Editor/components/MathPalette';
+import MyWorkFooter from './components/Editor/components/MyWork/components/MyWorkFooter';
+import MyWorkEditorButtons from './components/Editor/components/MyWork/components/MyWorkEditorButtons';
 
 ReactDOM.render(<MainPageHeader/>, document.getElementById("headerPlaceHolder"));
 ReactDOM.render(<NavigationHeader/>, document.getElementById("navigationHeaderPlaceholder"));
@@ -17,6 +19,8 @@ ReactDOM.render(<ProblemHeader title="Problem title" math="Problem"/>, document.
 ReactDOM.render(<MyStepsHeader/>, document.getElementById("myStepsHeaderPlaceHolder"));
 ReactDOM.render(<MyStepsList/>, document.getElementById("myStepsListPlaceHolder"));
 ReactDOM.render(<MathPalette/>, document.getElementById("mathPalettePlaceHolder"));
+ReactDOM.render(<MyWorkFooter/>, document.getElementById("problemFooterPlaceHolder"));
+ReactDOM.render(<MyWorkEditorButtons/>, document.getElementById("editorButtonsPlaceHolder"));
 
 function readBlob(opt_startByte, opt_stopByte) {
     var files = $('#fileid').get(0).files;

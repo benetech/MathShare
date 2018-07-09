@@ -21,3 +21,21 @@
     display: flex;
     margin-right: 25px;
 }
+
+.withRightMargin {
+    margin-right: 5px;
+}
+
+.undo {
+    background-color: #f0f0f0;
+    background-image: url(/images/undo.png);
+}
+
+.undo:active {
+    background-image: url(/images/undo.png)!important;
+}
+
+.scratch {
+    background-color: white;
+    background-image: url(/images/scratch.png);
+}
