@@ -22,3 +22,26 @@
     flex-direction: column;
     justify-content: space-between;
 }
+
+.mainWrapper {
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+.alertContainer {
+    position: absolute; 
+    margin-left: auto; 
+    margin-right: auto; 
+    left: 0;
+    right: 0;
+    z-index: 100; 
+    top: 2.5%; 
+    width: 30%;
+}
+
+.contentWrapper {
+    display: contents;
+}
+

@@ -1,14 +1,19 @@
 import React, {Component} from "react";
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 import NavigationProblem from '../Problem';
+import { Link } from 'react-router-dom'
+import ProblemApi from '../../../../../api'
+
 
 export default class Problems extends Component {
     render() {
         return (
             <ul className={bootstrap.row}>
-               <NavigationProblem annotation="Getting Started" equation="Click here to see an example problem and learn how to use the editor" />
-               <NavigationProblem annotation="Sarah works at a coffee shop. Her weekly salary is $325 and she earns 11.5% commission on sales. How much does she make if she sells $2800 in merchandise?" equation="" />
-               <NavigationProblem annotation="Solve for x" equation="7x-13=1" />
+                {ProblemApi.all().map(p => (
+                    <Link to={`/problem/${p.number}`} key={p.number}>
+                        <NavigationProblem annotation={`${p.annotation}`} equation={`${p.equation}`}/>
+                    </Link>
+                ))}
             </ul>
         );
     }

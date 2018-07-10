@@ -41,7 +41,7 @@ $(document).ready(function(){
                 var file = $('#fileid').get(0).files[0];
                 readBlob();
         });
-    InitScratchPad();
+    //InitScratchPad();
     ShowWorkArea(false);
 
     $('#undoDelete').hide();   

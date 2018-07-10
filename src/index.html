@@ -15,19 +15,9 @@
         <link rel="icon" type="image/png" href="images/favicon.png"/>
         <link rel="stylesheet" href="lib/mathlivedist/mathlive.core.css" type="text/css">
         <link rel="stylesheet" href="lib/mathlivedist/mathlive.css" type="text/css">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"
-                integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
         <link rel="stylesheet" href="lib/intro/minified/introjs.min.css" type="text/css">
         <link rel="stylesheet" href="styles/styles.css" type="text/css">
         <link rel="stylesheet" href="lib/font-awesome/css/font-awesome.min.css" type="text/css">
-        <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-                crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"
-                integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh"
-                crossorigin="anonymous"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"
-                integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
-                crossorigin="anonymous"></script>
         <script src="lib/mathlivedist/mathlive.js"></script>
         <script src="data/painterroConfiguration.js"></script>
         <script src="data/messageTypes.js"></script>
@@ -35,45 +25,10 @@
         <script src="scripts/paletteBuilder.js"></script>
         <script src="data/example01.js"></script>
         <script src="data/palettes.js"></script>
-        <script src="scripts/painterro-0.2.65.min.js"></script>
-        <script>
-            $(document).ready(function() {
-                ReadFileInitiate('data/data01.js');
-            })
-        </script>
     </head>
 <body lang=EN-US>
-<div class="mainWrapper">
-    <div class="alertContainer"></div>
-    <div id="headerPlaceHolder"></div>
-    <div class="contentWrapper" id="ContentWrapper">
-        <nav id="LeftNavigation" class="leftNavigation" aria-labelledby="LeftNavigationHeader">
-            <div id="navigationHeaderPlaceholder"></div>
-            <div id="ProblemListPlaceholder"></div>
-            <div id="ProblemList"></div>
-        </nav>
-        <div id="editorPlaceHolder"></div>
-    </div>
+<div id="root"/>
 
-    <!--TODO: Remove it -->
-    <div hidden class="historyWrapper"></div>
-    <div hidden id="mathEditorActive"></div>
-    <!--TODO: Remove it -->
-
-    <div id="footerPlaceHolder"></div>
-</div>
-
-<script>
-    <!-- Initialize JQuery tooltip code -->
-    $(document).ready(function(){
-        $('[data-toggle="tooltip"]').tooltip();
-    });
-    <!-- MATHLIVE INITIALIZATION RENDER SCRIPT -->
-    RenderMathEditor();
-    MathLive.renderMathInDocument();
-    SetAndOpenEditorModel(this, example01);
-    $("#LeftNavigation li:first").focus();
-</script>
 <script src="scripts/speech2text.js"></script>
 <script src="lib/intro/minified/intro.min.js"></script>
 

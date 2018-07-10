@@ -23,7 +23,7 @@ export default class MainPageHeader extends Component {
                             <ul className={classNames(bootstrap['navbar-nav'], header.navItem)}>
                                 <li className={bootstrap['nav_item']}>
                                     <a className={classNames(bootstrap['nav-link'], header.pointer)}>
-                                        Getting Started
+                                        Getting Started gfgfdgdfgdf
                                     </a>
                                 </li>
                                 <li className={classNames(bootstrap['nav-item'], [bootstrap.dropdown])}>
@@ -34,10 +34,10 @@ export default class MainPageHeader extends Component {
                                         Problem Sets
                                     </a>
                                     <div className={bootstrap['dropdown-menu']} role="list" aria-label="Problem Sets">
-                                        <a className={bootstrap['dropdown-menu']}>Problem Set 01</a>
-                                        <a className={bootstrap['dropdown-menu']}>Problem Set 02</a>
-                                        <a className={bootstrap['dropdown-menu']}>Problem Set 03</a>
-                                        <a className={bootstrap['dropdown-menu']}>Upload</a>
+                                        <a className={bootstrap['dropdown-item']}>Problem Set 01</a>
+                                        <a className={bootstrap['dropdown-item']}>Problem Set 02</a>
+                                        <a className={bootstrap['dropdown-item']}>Problem Set 03</a>
+                                        <a className={bootstrap['dropdown-item']}>Upload</a>
                                         <input id='fileid' type='file' hidden/>
                                     </div>
                                 </li>
@@ -60,7 +60,7 @@ export default class MainPageHeader extends Component {
                         </div>
                     </nav>
                 </header>
-            </div>
+        </div>
         );
     }
 }
