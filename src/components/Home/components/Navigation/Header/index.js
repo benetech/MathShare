@@ -1,9 +1,9 @@
-import React from "react";
+import React, {Component} from "react";
 import classNames from "classnames";
 import styles from '../../../../../styles/styles.css';
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 
-export default class NavigationHeader extends React.Component {
+export default class NavigationHeader extends Component {
     render() {
         return (
             <div>

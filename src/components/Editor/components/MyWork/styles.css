@@ -1,0 +1,31 @@
+.editorArea {
+    padding-left:25px;
+    padding-right:25px;
+}
+
+.myWorkArea {
+    z-index: 1;
+    display: grid;
+    border-radius: 12px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    background-color: rgba(173, 216, 230, 0.749);
+    transition: all 1s;
+    opacity: 1;
+    min-width: 940px;
+}
+
+.historyWorkSeparator {
+    flex: 0 0 50px;
+    padding-left: 10px;
+}
+
+.marginTop {
+    margin-top: 8px;
+}
+
+.editorWrapper {
+    flex: 0 0 200px;
+    padding-left: 10px;
+    padding-right: 10px;
+}

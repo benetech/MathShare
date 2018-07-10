@@ -1,8 +1,8 @@
-import React from "react";
+import React, {Component} from "react";
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 import NavigationProblem from '../Problem';
 
-export default class Problems extends React.Component {
+export default class Problems extends Component {
     render() {
         return (
             <ul className={bootstrap.row}>

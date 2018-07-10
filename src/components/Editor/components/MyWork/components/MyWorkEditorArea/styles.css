@@ -1,0 +1,39 @@
+.editor {
+    display: block;
+    transform-origin: top left;
+    transform: scale(1.6, 1.6);
+    -webkit-transform: scale(1.6, 1.6);
+    -ms-transform: scale(1.6, 1.6);
+ }
+
+ .annotation {
+    width: 280px;
+    height: 118px;
+    margin-top: 1px;
+    margin-bottom: -6px;
+    border-left: 1px solid rgb(204, 204, 204);
+}
+
+.annotationHeader {
+    border-left: 1px solid rgb(204, 204, 204);
+}
+
+.formControl {
+    border: 0px;
+    box-shadow: none;
+    transition: none;
+    display: inline;
+    border-radius: 0px;
+}
+
+.floatRight {
+    float: right;
+}
+
+.workArea {
+    border: 1px solid rgb(204, 204, 204);
+    border-radius: 5px;
+    background-color: rgb(255, 255, 255);
+    min-height: 100px;
+    width: inherit;
+}

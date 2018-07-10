@@ -1,9 +1,9 @@
-import React from "react";
+import React, {Component} from "react";
 import MathButtonsRow from './components/MathButtonsRow';
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
-import buttons from '../../../../../../styles/buttons.css';
+import buttons from '../../../../../../../../styles/buttons.css';
 
-export default class MathButtonsGroup extends React.Component {
+export default class MathButtonsGroup extends Component {
     render() {
         var rows = this.props.palette.buttonsRows.map((buttonsRow, i) =>
             <div key={i} className={buttons.row}>

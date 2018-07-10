@@ -1,11 +1,11 @@
-import React from "react";
+import React, {Component} from "react";
 import FontAwesome from "react-fontawesome";
 import classNames from "classnames";
 import header from './styles.css';
 import styles from '../../../../styles/styles.css';
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 
-export default class MainPageHeader extends React.Component {
+export default class MainPageHeader extends Component {
     render() {
         return (
             <div id="topNavigationWrapper" className={header.header} role="heading" aria-level="1">

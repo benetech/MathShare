@@ -1,0 +1,6 @@
+.footer {
+    flex: 0 0 50px;
+    padding: 5px;
+    display: flex;
+    justify-content: space-between;
+}

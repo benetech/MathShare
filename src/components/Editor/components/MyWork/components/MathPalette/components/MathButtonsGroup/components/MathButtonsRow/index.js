@@ -1,7 +1,7 @@
-import React from "react";
+import React, {Component} from "react";
 import MathButton from './components/MathButton';
 
-export default class MathButtonsRow extends React.Component {
+export default class MathButtonsRow extends Component {
     render() {
         return (
             this.props.buttonsRow.map((button, i) =>
