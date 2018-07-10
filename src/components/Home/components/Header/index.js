@@ -23,7 +23,7 @@ export default class MainPageHeader extends Component {
                             <ul className={classNames(bootstrap['navbar-nav'], header.navItem)}>
                                 <li className={bootstrap['nav_item']}>
                                     <a className={classNames(bootstrap['nav-link'], header.pointer)}>
-                                        Getting Started gfgfdgdfgdf
+                                        Getting Started
                                     </a>
                                 </li>
                                 <li className={classNames(bootstrap['nav-item'], [bootstrap.dropdown])}>
