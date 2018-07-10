@@ -1,9 +1,25 @@
 import React, { Component } from "react";
 import FontAwesome from "react-fontawesome";
 import classNames from "classnames";
-import buttons from '../../../../../../styles/buttons.css';
+import styles from './styles.css';
 
-export default class MyWorkControlBtn extends Component {
+export default class Button extends Component {
+
+    buildClassNames() {
+        var additionalStyles = [];
+        if (this.props.additionalStyles) {
+            additionalStyles = this.props.additionalStyles.map(
+                style => {
+                    return styles[style]
+                }
+            )
+        }
+        return classNames(
+            this.props.className,
+            additionalStyles
+        )
+    }
+
     render() {
         var span;
         if (this.props.icon) {
@@ -16,12 +32,9 @@ export default class MyWorkControlBtn extends Component {
         return (
             <button
                 id={this.props.id}
-                className={
-                    classNames(
-                        this.props.className,
-                        { [buttons.withRightMargin]: this.props.withRightMargin }
-                    )
-                }
+                className={this.buildClassNames()}
+                aria-hidden={this.props.ariaHidden}
+                type={this.props.type}
                 title={this.props.title}
                 data-step={this.props.intro}
                 data-intro={this.props.step}

@@ -11,16 +11,3 @@
 .pointer {
     cursor: pointer;
 }
-
-.btn-huge {
-    width: 300px;
-    height: 150px;
-    margin: 0px auto;
-    vertical-align: middle;
-    white-space: normal !important;
-    border: 1px solid #CCC !important;
-}
-
-.btn-default {
-    background-color: #fafafa;
-}

@@ -1,8 +1,8 @@
 import React, { Component } from "react";
+import Button from '../../.././../../Button';
 import classNames from "classnames";
 import editorArea from './styles.css';
 import styles from '../../../../../../styles/styles.css';
-import buttons from '../../../../../../styles/buttons.css';
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 
 export default class MyWorkEditorArea extends Component {
@@ -33,7 +33,7 @@ export default class MyWorkEditorArea extends Component {
                                 className={bootstrap['order-1']}
                                 role="heading"
                                 aria-label="type math here"
-                                //TODO onfocus="TheActiveMathField.focus();"
+                            //TODO onfocus="TheActiveMathField.focus();"
                             ></section>
                             <div
                                 className={bootstrap['order-1']}
@@ -67,24 +67,25 @@ export default class MyWorkEditorArea extends Component {
                                     aria-label="Use the microphone button or type to explain your work (required)">
                                 </textarea>
                                 <span className={editorArea.floatRight}>
-                                    <button 
+                                    <Button
                                         id="start_button"
                                         className={
                                             classNames(
                                                 bootstrap.btn,
-                                                buttons.mic,
                                                 styles.pointer
                                             )
                                         }
+                                        additionalStyles={['mic']}
                                         data-toggle="tooltip"
-                                        //TODO onclick="GoogleAnalytics('S2T Clicked');"
-                                    >
-                                    <img 
-                                        alt="Start Speaking"
-                                        id="mic_img"
-                                        src="images/mic.gif"
+                                        content={
+                                            <img 
+                                                id="mic_img"
+                                                alt="Start Speaking"
+                                                src="images/mic.gif"
+                                            />
+                                        }
+                                    //TODO onclick="GoogleAnalytics('S2T Clicked');"
                                     />
-                                    </button>
                                 </span>
                             </div>
                         </div>

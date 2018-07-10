@@ -1,22 +1,83 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
+import Button from '../../../../../../../../components/Button';
 import classNames from "classnames";
 import step from './styles.css';
 import styles from '../../../../../../../../styles/styles.css';
-import buttons from '../../../../../../../../styles/buttons.css';
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 
 export default class MyStepsHeader extends Component {
-    render() {
-        var reason = buildReason(this.props);
-        var editBtn = buildEditBtn(this.props);
-        var trashBtn = buildTrashBtn(this.props);
 
+
+    buildReason() {
+        if (this.props.cleanup) {
+            return (<span className={styles.sROnly}> {OrdinalSuffix(this.props.stepNumber)} step, after cleanup</span>);
+        } else {
+            return (
+                <div>
+                    <span className={styles.sROnly}> {OrdinalSuffix(this.props.stepNumber)} step</span>
+                    <span className={step.header} aria-hidden="true">Step {this.props.stepNumber}:</span>
+                </div>
+            );
+        }
+    }
+
+    buildEditBtn() {
+        if (this.props.showEdit) {
+            return (
+                <Button
+                    className={
+                        classNames(
+                            bootstrap.btn,
+                            step.btnEdit,
+                            step.btn
+                        )
+                    }
+                    additionalStyles={['background', 'palette']}
+                    data-toggle="tooltip"
+                    title="Edit this Step"
+                    content={
+                        <span className={styles.sROnly}>
+                            Edit {OrdinalSuffix(this.props.stepNumber)} step
+                        </span>
+                    }
+                //TODO onclick="EditMathStep('+ stepNumber + ')"
+                />
+            );
+        }
+    }
+
+    buildTrashBtn() {
+        if (this.props.showTrash) {
+            return (
+                <Button
+                    className={
+                        classNames(
+                            bootstrap.btn,
+                            step.btnDelete,
+                            step.btn
+                        )
+                    }
+                    additionalStyles={['background', 'palette']}
+                    data-toggle="tooltip"
+                    title="Delete this Step"
+                    content={
+                        <span className={styles.sROnly}>
+                            Delete {OrdinalSuffix(this.props.stepNumber)} step
+                        </span>
+                    }
+                //TODO onclick="DeleteActiveMath()"
+                />
+            );
+        }
+    }
+
+    render() {
         return (
             <div className={classNames(bootstrap.row, step.step)} data-step={this.props.stepNumber}
                 data-equation={this.props.math} data-annotation={this.props.annotation}>
                 <div className={bootstrap['col-md-1']}>
                     <span role="heading" aria-level="3">
-                        {reason}
+                        {this.buildReason()}
                     </span>
                 </div>
                 <div className={bootstrap['col-md-5']}>
@@ -30,8 +91,8 @@ export default class MyStepsHeader extends Component {
                     })}> {this.props.annotation} </span>
                 </div>
                 <div className={classNames(bootstrap['col-md-1'], step.btnContainer)}>
-                    {editBtn}
-                    {trashBtn}
+                    {this.buildEditBtn()}
+                    {this.buildTrashBtn()}
                 </div>
             </div>
 
@@ -39,41 +100,3 @@ export default class MyStepsHeader extends Component {
     }
 }
 
-function buildReason(props) {
-    if (props.cleanup) {
-        return (<span className={styles.sROnly}> {OrdinalSuffix(props.stepNumber)} step, after cleanup</span>);
-    } else {
-        return (
-            <div>
-                <span className={styles.sROnly}> {OrdinalSuffix(props.stepNumber)} step</span>
-                <span className={step.header} aria-hidden="true">Step {props.stepNumber}:</span>
-            </div>
-        );
-    }
-}
-
-function buildEditBtn(props) {
-    if (props.showEdit) {
-        return (
-            <button className={classNames(bootstrap.btn, step.btnEdit, buttons.background, buttons.palette, step.btn)}
-                data-toggle="tooltip" title="Edit this Step"
-            //onclick="EditMathStep('+ stepNumber + ')"
-            >
-                <span className={styles.sROnly}>Edit {OrdinalSuffix(props.stepNumber)} step</span>
-            </button>
-        );
-    }
-}
-
-function buildTrashBtn(props) {
-    if (props.showTrash) {
-        return (
-            <button className={classNames(bootstrap.btn, step.btnDelete, buttons.background, buttons.palette, step.btn)}
-                data-toggle="tooltip" title="Delete this Step"
-            //onclick="DeleteActiveMath()"
-            >
-                <span className={styles.sROnly}>Delete {OrdinalSuffix(props.stepNumber)} step</span>
-            </button>
-        );
-    }
-}

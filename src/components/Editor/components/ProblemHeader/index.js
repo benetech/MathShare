@@ -1,8 +1,8 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
+import Button from '../../../../components/Button';
 import classNames from "classnames";
 import problem from './styles.css';
 import styles from '../../../../styles/styles.css';
-import buttons from '../../../../styles/buttons.css';
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 
 export default class ProblemHeader extends Component {
@@ -14,12 +14,15 @@ export default class ProblemHeader extends Component {
                     <span id="ProblemMath" className={problem.title}>{this.props.math}</span>
                 </div>
                 <div className={problem.btnContainer}>
-                    <button aria-hidden='true'
-                        //TODO: onclick="introJs().setOption('tooltipClass', 'introjs-helperLayer').start(); GoogleAnalytics('Tour');"
-                        className={classNames(bootstrap.btn, styles.pointer, buttons.default, problem.btn)}
-                        type="button">
-                        Help
-                    </button>
+                    <Button
+                        id="BtnSave"
+                        className={classNames(bootstrap.btn, styles.pointer, problem.btn)}
+                        additionalStyles={['default']}
+                        ariaHidden="true"
+                        type="button"
+                        content="Help"
+                    //TODO: onclick="introJs().setOption('tooltipClass', 'introjs-helperLayer').start(); GoogleAnalytics('Tour');"
+                    />
                 </div>
             </div>
         );

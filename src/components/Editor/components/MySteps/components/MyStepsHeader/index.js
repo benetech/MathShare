@@ -7,7 +7,7 @@ import styles from '../../../../../../styles/styles.css';
 export default class MyStepsHeader extends Component {
     render() {
         return (
-            <div>
+            <div className={header.container}>
                 <h2 id="MySteps" tabIndex="-1">
                     <span className={classNames(mySteps.modalAreaHeading, header.title)} aria-hidden="true">
                         My Steps

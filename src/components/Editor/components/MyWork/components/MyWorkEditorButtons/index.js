@@ -1,9 +1,8 @@
 import React, { Component } from "react";
-import MyWorkControlBtn from "../MyWorkControlBtn"
+import Button from "../../../../../../components/Button"
 import classNames from "classnames";
 import editorButtons from './styles.css';
 import styles from '../../../../../../styles/styles.css';
-import buttons from '../../../../../../styles/buttons.css';
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 
 export default class MyWorkEditorButtons extends Component {
@@ -21,30 +20,34 @@ export default class MyWorkEditorButtons extends Component {
             >
                 <div>
                     <br />
-                    <MyWorkControlBtn
+                    <Button
                         id="scratch-pad-button"
                         className={[
                             bootstrap.btn,
-                            buttons.scratch,
-                            buttons.default,
-                            buttons.background,
-                            buttons.palette,
                             editorButtons.withBottomMargin
+                        ]}
+                        additionalStyles={[
+                            'scratch',
+                            'default',
+                            'background',
+                            'palette'
                         ]}
                         toggle="tooltip"
                         title="Display/hide sketch pad"
                     />
                 </div>
                 <div>
-                    <MyWorkControlBtn
+                    <Button
                         id="undoDelete"
                         className={[
                             bootstrap.btn,
                             bootstrap['pull-right'],
-                            buttons.undo,
-                            buttons.background,
-                            buttons.palette,
                             editorButtons.withBottomMargin
+                        ]}
+                        additionalStyles={[
+                            'undo',
+                            'background',
+                            'palette'
                         ]}
                         toggle="tooltip"
                         title="Undo Last Delete"
@@ -52,7 +55,7 @@ export default class MyWorkEditorButtons extends Component {
                     />
                     <br />
                     <h3 className={styles.sROnly}>Clean up and add new step</h3>
-                    <MyWorkControlBtn
+                    <Button
                         id="addStep"
                         className={[
                             bootstrap.btn,
@@ -70,7 +73,7 @@ export default class MyWorkEditorButtons extends Component {
                     />
                     <div hidden id="updateControls">
                         <h3 className={styles.sROnly}>Update the step</h3>
-                        <MyWorkControlBtn
+                        <Button
                             id="updateStep"
                             className={[
                                 bootstrap.btn,
@@ -87,14 +90,14 @@ export default class MyWorkEditorButtons extends Component {
                         />
                         <br />
                         <h3 className={styles.sROnly}>Cancel edit</h3>
-                        <MyWorkControlBtn
+                        <Button
                             id="cancelEdit"
                             className={[
                                 bootstrap.btn,
-                                buttons.default,
                                 styles.pointer,
                                 editorButtons.editorBtn
                             ]}
+                            additionalStyles={['default']}
                             toggle="tooltip"
                             title="Cancel edit"
                             content=" Cancel edit"

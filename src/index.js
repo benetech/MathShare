@@ -4,19 +4,13 @@ import MainPageHeader from './components/Home/components/Header';
 import NavigationHeader from './components/Home/components/Navigation/Header';
 import NavigationProblems from './components/Home/components/Navigation/Problems';
 import MainPageFooter from './components/Home/components/Footer';
-import ProblemHeader from './components/Editor/components/ProblemHeader';
-import MyStepsHeader from './components/Editor/components/MySteps/components/MyStepsHeader';
-import MyStepsList from './components/Editor/components/MySteps/components/MyStepsList';
-import MyWork from './components/Editor/components/MyWork';
+import Editor from './components/Editor';
 
-ReactDOM.render(<MainPageHeader/>, document.getElementById("headerPlaceHolder"));
-ReactDOM.render(<NavigationHeader/>, document.getElementById("navigationHeaderPlaceholder"));
-ReactDOM.render(<NavigationProblems/>, document.getElementById("ProblemListPlaceholder"));
-ReactDOM.render(<MainPageFooter/>, document.getElementById("footerPlaceHolder"));
-ReactDOM.render(<ProblemHeader title="Problem title" math="Problem"/>, document.getElementById("problemHeaderPlaceHolder"));
-ReactDOM.render(<MyStepsHeader/>, document.getElementById("myStepsHeaderPlaceHolder"));
-ReactDOM.render(<MyStepsList/>, document.getElementById("myStepsListPlaceHolder"));
-ReactDOM.render(<MyWork/>, document.getElementById("myWorkPlaceHolder"));
+ReactDOM.render(<MainPageHeader />, document.getElementById("headerPlaceHolder"));
+ReactDOM.render(<NavigationHeader />, document.getElementById("navigationHeaderPlaceholder"));
+ReactDOM.render(<NavigationProblems />, document.getElementById("ProblemListPlaceholder"));
+ReactDOM.render(<MainPageFooter />, document.getElementById("footerPlaceHolder"));
+ReactDOM.render(<Editor />, document.getElementById("editorPlaceHolder"));
 
 function readBlob(opt_startByte, opt_stopByte) {
     var files = $('#fileid').get(0).files;

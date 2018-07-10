@@ -1,6 +1,6 @@
 
 .modalAreaHeading {
-    color: #001F3F;
+    color: rgb(0, 31, 63);
     font-style: italic;
     font-size: 22px;
     float: left;
@@ -13,4 +13,12 @@
     padding-left: 10px;
     padding-right: 10px;
     min-height: 65px;
+}
+
+.editorAndHistoryWrapper {
+    width: 100%;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }

@@ -1,16 +1,14 @@
 import React, { Component } from "react";
-import MyWorkControlBtn from "../MyWorkControlBtn"
+import Button from "../../../../../../components/Button";
 import classNames from "classnames";
 import footer from './styles.css';
 import styles from '../../../../../../styles/styles.css';
-import buttons from '../../../../../../styles/buttons.css';
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 
 export default class MyWorkFooter extends Component {
     render() {
         const btnClassNames = [
             bootstrap.btn,
-            buttons.default,
             styles.pointer
         ];
 
@@ -27,26 +25,27 @@ export default class MyWorkFooter extends Component {
                             )
                         }
                     >
-                        <MyWorkControlBtn
+                        <Button
                             id="BtnDiscard"
                             className={btnClassNames}
+                            additionalStyles={['withRightMargin', 'default']}
                             content="Discard"
-                            withRightMargin
                         //TODO onclick="GoogleAnalytics('Discard');"
                         />
-                        <MyWorkControlBtn
+                        <Button
                             id="BtnSave"
                             className={btnClassNames}
                             content=" Done"
-                            withRightMargin
+                            additionalStyles={['withRightMargin', 'default']}
                             step="5"
                             intro="Save your work or close out to try again from the beginning."
                             icon="thumbs-up"
                         //TODO onclick="GoogleAnalytics('Save');"
                         />
-                        <MyWorkControlBtn
+                        <Button
                             id="BtnClearAll"
                             className={btnClassNames}
+                            additionalStyles={['default']}
                             content=" Clear all"
                             icon="times-circle"
                         //TODO onclick="clearAllSteps();"
