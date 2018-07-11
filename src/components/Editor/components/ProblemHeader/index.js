@@ -7,10 +7,11 @@ import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 
 export default class ProblemHeader extends Component {
     render() {
+        const title = this.props.title + ": ";
         return (
             <div className={problem.header}>
                 <div>
-                    <span id="ProblemTitle" className={problem.title} role="heading" aria-level="1">{this.props.title}</span>
+                    <span id="ProblemTitle" className={problem.title} role="heading" aria-level="1">{title}</span>
                     <span id="ProblemMath" className={problem.title}>{this.props.math}</span>
                 </div>
                 <div className={problem.btnContainer}>

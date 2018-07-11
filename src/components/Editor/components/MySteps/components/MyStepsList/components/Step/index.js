@@ -5,16 +5,29 @@ import step from './styles.css';
 import styles from '../../../../../../../../styles/styles.css';
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 
-export default class MyStepsHeader extends Component {
-
+export default class Step extends Component {
+    OrdinalSuffix(i) {
+        var j = i % 10,
+                k = i % 100;
+        if (j == 1 && k != 11) {
+                return i + "st";
+        }
+        if (j == 2 && k != 12) {
+                return i + "nd";
+        }
+        if (j == 3 && k != 13) {
+                return i + "rd";
+        }
+        return i + "th";
+    }
 
     buildReason() {
         if (this.props.cleanup) {
-            return (<span className={styles.sROnly}> {OrdinalSuffix(this.props.stepNumber)} step, after cleanup</span>);
+            return (<span className={styles.sROnly}> {this.OrdinalSuffix(this.props.stepNumber)} step, after cleanup</span>);
         } else {
             return (
                 <div>
-                    <span className={styles.sROnly}> {OrdinalSuffix(this.props.stepNumber)} step</span>
+                    <span className={styles.sROnly}> {this.OrdinalSuffix(this.props.stepNumber)} step</span>
                     <span className={step.header} aria-hidden="true">Step {this.props.stepNumber}:</span>
                 </div>
             );
@@ -37,7 +50,7 @@ export default class MyStepsHeader extends Component {
                     title="Edit this Step"
                     content={
                         <span className={styles.sROnly}>
-                            Edit {OrdinalSuffix(this.props.stepNumber)} step
+                            Edit {this.OrdinalSuffix(this.props.stepNumber)} step
                         </span>
                     }
                 //TODO onclick="EditMathStep('+ stepNumber + ')"
@@ -62,7 +75,7 @@ export default class MyStepsHeader extends Component {
                     title="Delete this Step"
                     content={
                         <span className={styles.sROnly}>
-                            Delete {OrdinalSuffix(this.props.stepNumber)} step
+                            Delete {this.OrdinalSuffix(this.props.stepNumber)} step
                         </span>
                     }
                 //TODO onclick="DeleteActiveMath()"
@@ -99,4 +112,3 @@ export default class MyStepsHeader extends Component {
         );
     }
 }
-
