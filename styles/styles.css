@@ -211,10 +211,6 @@ a {
    -ms-transform: scale(1.15, 1.15);
 }
 
-#MainWorkArea {
-    z-index: 0;
-}
-
 #workArea {
     border: 1px solid #CCC;
     border-radius: 5px;
@@ -522,20 +518,20 @@ pulse.off {
 }
 
 .alertContainer {
-    position: absolute; 
-    margin-left: auto; 
-    margin-right: auto; 
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
     left: 0;
     right: 0;
-    z-index: 100; 
-    top: 2.5%; 
+    z-index: 100;
+    top: 2.5%;
     width: 30%;
 }
 
 /* Additional styles for Microsoft Edge */
 @supports (-ms-ime-align: auto) {
     #LeftNavigation {
-        position: absolute; 
+        position: absolute;
         top: 75px;
     }
 
