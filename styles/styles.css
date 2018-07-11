@@ -13,10 +13,11 @@ svg > line {
 
 /* FLEX LAYOUT  */
 .mainWrapper {
-  height: 100%;
+  min-height: 100%;
   display: flex;
   justify-content: space-between;
   flex-direction: column;
+  position: relative;
 }
 
 .contentWrapper {
