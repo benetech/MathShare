@@ -11,15 +11,6 @@ svg > line {
     stroke-width: 2;
 }
 
-/* FLEX LAYOUT  */
-.mainWrapper {
-  min-height: 100%;
-  display: flex;
-  justify-content: space-between;
-  flex-direction: column;
-  position: relative;
-}
-
 .contentWrapper {
   display: contents;
 }
@@ -547,4 +538,17 @@ pulse.off {
     #mathAnnotation {
         resize: both;
     }
+
+    .mainWrapper {
+        min-height: 100%;
+        position: relative;
+    }
 }
+
+/* Additional styles for other browsers (Chrome, Firefox, Safari...) */
+@supports not (-ms-ime-align: auto) {
+    .mainWrapper {
+        height: 100%;
+    }
+}
+
