@@ -5,8 +5,7 @@ import editorButtons from './styles.css';
 import styles from '../../../../../../styles/styles.css';
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 import Painterro from 'painterro'
-import painterroConfiguration from './painterroConfiguration.js'
-
+import painterroConfiguration from './painterroConfiguration.json'
 
 export default class MyWorkEditorButtons extends Component {    
     

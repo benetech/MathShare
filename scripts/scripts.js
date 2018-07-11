@@ -50,7 +50,7 @@ $(document).ready(function(){
     }) 
 });
 
-function InitScratchPad() {
+/*function InitScratchPad() {
     ScratchPadPainterro = Painterro(painterroConfiguration);
 
     ScratchPadPainterro.show();
@@ -75,7 +75,7 @@ function InitScratchPad() {
 
 function ClearAndResizeScrachPad() {
     ScratchPadPainterro.clear();
-}
+}*/
 
 function ClearScrachPad() {
     ScratchPadPainterro.clearBackground();
