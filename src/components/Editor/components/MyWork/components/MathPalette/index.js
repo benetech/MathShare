@@ -5,8 +5,24 @@ import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 import styles from '../../../../../../styles/styles.css';
 
 export default class MathPalette extends Component {
+    initializeKeyShortcuts(palettes) {
+        /*TODO:
+        var keyShortcuts = new Map();
+        palettes.forEach(function(palette) {
+            palette.buttonsRows.forEach(function(buttonsRow) {
+                buttonsRow.forEach(function(button) {
+                    if (button.keys) {
+                        keyShortcuts.set(buildMapKey(button.keys), button.id);
+                    }
+                });
+            });
+        });
+        sessionStorage.keyShortcuts = JSON.stringify(Array.from(keyShortcuts.entries()));
+        */
+    }
+
     render() {
-        initializeKeyShortcuts(palettes);
+        this.initializeKeyShortcuts(palettes);
         //TODO: Include only allowed palettes
         var mathPalette = palettes.map((palette, i) =>
             <MathButtonsGroup key={i} order={"order-" + (i + 1)} palette={palette} />
