@@ -7,16 +7,16 @@
                 "title": "Problem 1"
             },
             "originalProblem": {
-                "equation": "3(-\\frac{1}{6})(-\\frac{2}{5})",
+                "equation": "$$3(-\\frac{1}{6})(-\\frac{2}{5})$$",
                 "annotation": "Find the product"
             },
             "currentEditor": {
-                "equation": "3(-\\frac{1}{6})(-\\frac{2}{5})",
+                "equation": "$$3(-\\frac{1}{6})(-\\frac{2}{5})$$",
                 "annotation": ""
             },
             "history": [
                 {
-                    "equation": "3(-\\frac{1}{6})(-\\frac{2}{5})",
+                    "equation": "$$3(-\\frac{1}{6})(-\\frac{2}{5})$$",
                     "annotation": "Find the product"
                 }
             ]
@@ -27,16 +27,16 @@
                 "title": "Problem 2"
             },
             "originalProblem": {
-                "equation": "-\\frac{2}{5}(-\\frac{1}{2})(-\\frac{5}{6})",
+                "equation": "$$-\\frac{2}{5}(-\\frac{1}{2})(-\\frac{5}{6})$$",
                 "annotation": "Find the product"
             },
             "currentEditor": {
-                "equation": "-\\frac{2}{5}(-\\frac{1}{2})(-\\frac{5}{6})",
+                "equation": "$$-\\frac{2}{5}(-\\frac{1}{2})(-\\frac{5}{6})$$",
                 "annotation": ""
             },
             "history": [
                 {
-                    "equation": "-\\frac{2}{5}(-\\frac{1}{2})(-\\frac{5}{6})",
+                    "equation": "$$-\\frac{2}{5}(-\\frac{1}{2})(-\\frac{5}{6})$$",
                     "annotation": "Find the product"
                 }
             ]
@@ -47,16 +47,16 @@
                 "title": "Problem 3"
             },
             "originalProblem": {
-                "equation": "\\frac{55}{\\frac{1}{2}}",
+                "equation": "$$\\frac{55}{\\frac{1}{2}}$$",
                 "annotation": "Find the quotient"
             },
             "currentEditor": {
-                "equation": "\\frac{55}{\\frac{1}{2}}",
+                "equation": "$$\\frac{55}{\\frac{1}{2}}$$",
                 "annotation": ""
             },
             "history": [
                 {
-                    "equation": "\\frac{55}{\\frac{1}{2}}",
+                    "equation": "$$\\frac{55}{\\frac{1}{2}}$$",
                     "annotation": "Find the quotient"
                 }
             ]
@@ -67,16 +67,16 @@
                 "title": "Problem 4"
             },
             "originalProblem": {
-                "equation": "\\frac{3}{10}\\div (\\frac{5}{8})",
+                "equation": "$$\\frac{3}{10}\\div (\\frac{5}{8})$$",
                 "annotation": "Find the quotient"
             },
             "currentEditor": {
-                "equation": "\\frac{3}{10}\\div (\\frac{5}{8})",
+                "equation": "$$\\frac{3}{10}\\div (\\frac{5}{8})$$",
                 "annotation": ""
             },
             "history": [
                 {
-                    "equation": "\\frac{3}{10}\\div (\\frac{5}{8})",
+                    "equation": "$$\\frac{3}{10}\\div (\\frac{5}{8})$$",
                     "annotation": "Find the quotient"
                 }
             ]
@@ -107,16 +107,16 @@
                 "title": "Problem 6"
             },
             "originalProblem": {
-                "equation": "7x-13=1",
+                "equation": "$$7x-13=1$$",
                 "annotation": "Solve for x"
             },
             "currentEditor": {
-                "equation": "7x-13=1",
+                "equation": "$$7x-13=1$$",
                 "annotation": ""
             },
             "history": [
                 {
-                    "equation": "7x-13=1",
+                    "equation": "$$7x-13=1$$",
                     "annotation": "Solve for x"
                 }
             ]
@@ -127,16 +127,16 @@
                 "title": "Problem 7"
             },
             "originalProblem": {
-                "equation": "\\frac{b}{9}-34\\leq -36",
+                "equation": "$$\\frac{b}{9}-34\\leq -36$$",
                 "annotation": "Solve the inequality"
             },
             "currentEditor": {
-                "equation": "\\frac{b}{9}-34\\leq -36",
+                "equation": "$$\\frac{b}{9}-34\\leq -36$$",
                 "annotation": ""
             },
             "history": [
                 {
-                    "equation": "\\frac{b}{9}-34\\leq -36",
+                    "equation": "$$\\frac{b}{9}-34\\leq -36$$",
                     "annotation": "Solve the inequality"
                 }
             ]

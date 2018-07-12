@@ -4,6 +4,7 @@ import classNames from "classnames";
 import problem from './styles.css';
 import buttons from '../../../../../components/Button/styles.css';
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
+import mathLive from 'mathlive';
 
 export default class Problem extends Component {
     constructor(props) {
@@ -19,6 +20,10 @@ export default class Problem extends Component {
 
     buildAnnotation() {
         return (this.state.number + 1) + ". " + this.state.annotation;
+    }
+
+    componentDidMount() {
+        mathLive.renderMathInDocument();
     }
 
     render() {
