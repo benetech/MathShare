@@ -4,8 +4,13 @@ import classNames from "classnames";
 import problem from './styles.css';
 import styles from '../../../../styles/styles.css';
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
+import mathLive from 'mathlive';
 
 export default class ProblemHeader extends Component {
+    componentDidMount() {
+        mathLive.renderMathInDocument();
+    }
+
     render() {
         const title = this.props.title + ": ";
         return (

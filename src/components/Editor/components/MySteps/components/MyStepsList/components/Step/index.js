@@ -4,6 +4,7 @@ import classNames from "classnames";
 import step from './styles.css';
 import styles from '../../../../../../../../styles/styles.css';
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
+import mathLive from 'mathlive';
 
 export default class Step extends Component {
     OrdinalSuffix(i) {
@@ -84,6 +85,10 @@ export default class Step extends Component {
         }
     }
 
+    componentDidMount() {
+        mathLive.renderMathInDocument();
+    }
+
     render() {
         return (
             <div className={classNames(bootstrap.row, step.step)} data-step={this.props.stepNumber}
@@ -95,7 +100,7 @@ export default class Step extends Component {
                 </div>
                 <div className={bootstrap['col-md-5']}>
                     <span className={styles.sROnly}> math: </span>
-                    <span className="staticMath" >$${this.props.math}$$</span>
+                    <span className="staticMath" >{this.props.math}</span>
                 </div>
                 <div className="col-md-5">
                     <span className={styles.sROnly} role="heading" aria-level="4">reason:</span>

@@ -34,6 +34,7 @@
     "bootstrap": "^4.1.1",
     "classnames": "^2.2.6",
     "jquery": "^3.3.1",
+    "mathlive": "git+https://git@github.com/arnog/mathlive.git",
     "painterro": "^0.2.65",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
