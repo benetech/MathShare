@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import FontAwesome from "react-fontawesome";
 import classNames from "classnames";
 import styles from './styles.css';
-import mathlive from 'mathlive';
+import mathLive from 'mathlive';
 
 export default class Button extends Component {
     buildClassNames() {
@@ -21,7 +21,7 @@ export default class Button extends Component {
     }
 
     componentDidMount() {
-        mathlive.renderMathInDocument();
+        mathLive.renderMathInDocument();
     }
 
     render() {

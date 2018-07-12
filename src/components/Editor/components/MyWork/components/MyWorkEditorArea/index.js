@@ -4,8 +4,35 @@ import classNames from "classnames";
 import editorArea from './styles.css';
 import styles from '../../../../../../styles/styles.css';
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
+import mathLive from 'mathlive';
 
 export default class MyWorkEditorArea extends Component {
+    componentDidMount() {
+        this.refs.mathEditorActive.onFocus = this.focusOnMathField();
+    }
+
+    focusOnMathField() {
+        mathLive.makeMathField(
+            this.refs.mathEditorActive,
+            {
+                commandbarToggle: 'hidden',
+                overrideDefaultInlineShortcuts: false,
+                inlineShortcuts:
+                    {
+                        '>-': '>-',			    // override builtin shortcut (\succ)
+                        '<-': '<-',			    // override builtin shortcut (\leftarrow)
+                        '<=': '\\leq',          // use more familiar ≤
+                        '>=': '\\geq',          // use more familar ≥
+                        '$': '\\$',			    // make it easy to type $
+                        '%': '\\%',			    // make it easy to type %
+                        '*': '\\times',		    // what most people want
+                        '?=': '\\overset{?}{=}'	// is equal to
+                    }
+                    //onSelectionDidChange: UpdatePalette
+            }
+        ).focus();
+    }
+
     render() {
         return (
             <div role="heading" aria-level="2">
@@ -29,11 +56,11 @@ export default class MyWorkEditorArea extends Component {
                             <section
                                 aria-label="edit equation"
                                 id='mathEditorActive'
+                                ref="mathEditorActive"
                                 tabIndex="0"
                                 className={bootstrap['order-1']}
                                 role="heading"
                                 aria-label="type math here"
-                            //TODO onfocus="TheActiveMathField.focus();"
                             ></section>
                             <div
                                 className={bootstrap['order-1']}
@@ -78,10 +105,10 @@ export default class MyWorkEditorArea extends Component {
                                         additionalStyles={['mic']}
                                         data-toggle="tooltip"
                                         content={
-                                            <img 
+                                            <img
                                                 id="mic_img"
                                                 alt="Start Speaking"
-                                                src="images/mic.gif"
+                                                src="/images/mic.gif"
                                             />
                                         }
                                     //TODO onclick="GoogleAnalytics('S2T Clicked');"
