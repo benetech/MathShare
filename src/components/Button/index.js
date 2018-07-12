@@ -43,7 +43,7 @@ export default class Button extends Component {
                 data-step={this.props.intro}
                 data-intro={this.props.step}
                 data-toggle={this.props.toggle}
-            //TODO onclick="GoogleAnalytics('Save');"
+                onClick={this.props.onClick}
             >
                 {span}
                 {this.props.content}
