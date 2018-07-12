@@ -8,11 +8,17 @@ import editor from './styles.css';
 export default class Editor extends Component {
     constructor(props) {
         super(props);
+        this.id = this.props.match.params.number;
         this.state = {
-            math: props.problem.originalProblem.equation,
-            title: props.problem.originalProblem.annotation,
-            steps: props.problem.history
+            math: this.getProblemById(props.problems, this.id).originalProblem.equation,
+            title: this.getProblemById(props.problems, this.id).originalProblem.annotation,
+            steps: this.getProblemById(props.problems, this.id).history
         };
+    }
+
+    getProblemById(problems, id) {
+        const isProblem = p => p.metadata.id === id;
+        return problems.find(isProblem);
     }
 
     render() {
