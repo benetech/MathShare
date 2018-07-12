@@ -4,9 +4,17 @@ import classNames from "classnames";
 import header from './styles.css';
 import styles from '../../../../styles/styles.css';
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
+import { withRouter } from 'react-router-dom'
 
 export default class MainPageHeader extends Component {
+    
     render() {
+        const Button = withRouter(({ history }) => (
+            <a className={classNames(bootstrap['nav-link'], header.pointer)} onClick={() => { history.push('/problem/example') }}>
+            Getting Started
+            </a>
+          ))
+
         return (
             <div id="topNavigationWrapper" className={header.header} role="heading" aria-level="1">
                 <header>
@@ -22,9 +30,7 @@ export default class MainPageHeader extends Component {
                             </ul>
                             <ul className={classNames(bootstrap['navbar-nav'], header.navItem)}>
                                 <li className={bootstrap['nav_item']}>
-                                    <a className={classNames(bootstrap['nav-link'], header.pointer)}>
-                                        Getting Started
-                                    </a>
+                                    <Button/>
                                 </li>
                                 <li className={classNames(bootstrap['nav-item'], [bootstrap.dropdown])}>
                                     <a className={classNames(bootstrap['nav-link'], bootstrap['dropdown-toggle'])} 
