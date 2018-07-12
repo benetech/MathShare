@@ -102,7 +102,7 @@ export default class Step extends Component {
                     <span className={styles.sROnly}> math: </span>
                     <span className="staticMath" >{this.props.math}</span>
                 </div>
-                <div className="col-md-5">
+                <div className={bootstrap['col-md-5']}>
                     <span className={styles.sROnly} role="heading" aria-level="4">reason:</span>
                     <span className={classNames({
                         [step.annotation]: this.props.annotation == "cleanup"

@@ -23,6 +23,16 @@
     justify-content: space-between;
 }
 
+.mainWorkWrapper {
+    height: 100%;
+    background-color: #fff; 
+    background-image: 
+    linear-gradient(90deg, transparent 99px, rgba(255, 102, 102, 0.63) 99px, rgba(255, 102, 102, 0.63) 101px, transparent 101px),
+    linear-gradient(90deg, transparent 92px, rgba(255, 102, 102, 0.63) 92px, rgba(255, 102, 102, 0.63) 93px, transparent 93px),
+    linear-gradient(rgba(173, 216, 230, 0.63) 0% .15em, transparent .1em);
+    background-size: 100% 2.6em;
+}
+
 .mainWrapper {
     height: 100%;
     display: flex;

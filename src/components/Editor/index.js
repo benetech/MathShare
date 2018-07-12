@@ -23,12 +23,14 @@ export default class Editor extends Component {
 
     render() {
         return (
-            <main id="MainWorkArea" className={editor.editorAndHistoryWrapper}>
-                <ProblemHeader math={this.state.math} title={this.state.title} />
-                <MyStepsHeader />
-                <MyStepsList steps={this.state.steps} />
-                <MyWork />
-            </main>
+            <div id="MainWorkWrapper" className={editor.mainWorkWrapper}>
+                <main id="MainWorkArea" className={editor.editorAndHistoryWrapper}>
+                    <ProblemHeader math={this.state.math} title={this.state.title} />
+                    <MyStepsHeader />
+                    <MyStepsList steps={this.state.steps} />
+                    <MyWork />
+                </main>
+            </div>
         );
     }
 }
