@@ -13,16 +13,12 @@ export default class Problems extends Component {
 
     render() {
         const problems = this.state.problems.map((problem, i) =>
-            <Link to={`/problem/${problem.metadata.id}`} key={problem.metadata.id}>
-                <NavigationProblem key={i} problem={problem} number={i} />
-            </Link>
+            <NavigationProblem key={i} problem={problem} number={i} id={problem.metadata.id}/>
         );
 
         return (
             <ul className={bootstrap.row}>
-                <Link to={`/problem/example`} key="example">
-                    <NavigationProblem example />
-                </Link>
+                    <NavigationProblem example id='example1'/>
                 {problems}
             </ul>
         );
