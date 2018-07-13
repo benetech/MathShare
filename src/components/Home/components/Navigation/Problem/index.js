@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { withRouter } from 'react-router-dom'
 import Button from '../../.././../Button';
 import classNames from "classnames";
 import problem from './styles.css';
@@ -36,7 +37,7 @@ export default class Problem extends Component {
             annotation = this.buildAnnotation();
             equation = this.state.equation;
         }
-        return (
+        const NavItem = withRouter(({ history }) => (
             <li
                 className={
                     classNames(
@@ -45,6 +46,7 @@ export default class Problem extends Component {
                         problem.problem
                     )
                 }
+                onClick={() => {history.push('/problem/' + this.props.id)}}
             >
                 <span
                     className={
@@ -67,6 +69,7 @@ export default class Problem extends Component {
                     <span className={problem.problemEquation}>{equation}</span>
                 </span>
             </li>
-        );
+        ))
+        return <NavItem/>
     }
 }

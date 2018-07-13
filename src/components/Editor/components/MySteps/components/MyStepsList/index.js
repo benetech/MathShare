@@ -14,15 +14,24 @@ export default class MyStepsList extends Component {
     }
 
     render() {
-        const steps = this.state.steps.map( (step, i) =>
-            <Step
+        const steps = this.state.steps.map( (step, i) => {
+            var showTrash = false;
+            var showEdit = false;
+            if (i > 0) {
+                showEdit = true;
+            }
+
+            if (i == this.state.steps.length - 1 && this.state.steps.length > 1) {
+                showTrash = true;
+            }
+            return <Step
                 key={i}
-                stepNumber={step.number}
-                math={step.math}
+                stepNumber={i}
+                math={step.equation}
                 annotation={step.annotation}
-                showEdit={step.showEdit}
-                showTrash={step.showTrash}
-            />
+                showEdit={showEdit}
+                showTrash={showTrash}/>
+            }
         );
 
         return (
