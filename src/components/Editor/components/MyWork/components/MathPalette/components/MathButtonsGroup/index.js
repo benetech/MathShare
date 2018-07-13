@@ -7,7 +7,11 @@ export default class MathButtonsGroup extends Component {
     render() {
         var rows = this.props.palette.buttonsRows.map((buttonsRow, i) =>
             <div key={i} className={buttonsGroup.row}>
-                <MathButtonsRow buttonsRow={buttonsRow} palette={this.props.palette}/>
+                <MathButtonsRow
+                    buttonsRow={buttonsRow}
+                    palette={this.props.palette}
+                    theActiveMathField={this.props.theActiveMathField}
+                />
                 <br/>
             </div>
         );

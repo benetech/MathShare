@@ -8,11 +8,13 @@ import mathLive from 'mathlive';
 
 export default class MyWorkEditorArea extends Component {
     componentDidMount() {
-        this.refs.mathEditorActive.onFocus = this.focusOnMathField();
+        var mathField = this.getMathField();
+        this.props.activateMathField(mathField);
+        this.refs.mathEditorActive.onFocus = mathField.focus();
     }
 
-    focusOnMathField() {
-        mathLive.makeMathField(
+    getMathField() {
+        return mathLive.makeMathField(
             this.refs.mathEditorActive,
             {
                 commandbarToggle: 'hidden',
@@ -30,7 +32,7 @@ export default class MyWorkEditorArea extends Component {
                     }
                     //onSelectionDidChange: UpdatePalette
             }
-        ).focus();
+        );
     }
 
     render() {

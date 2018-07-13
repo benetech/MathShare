@@ -5,7 +5,12 @@ export default class MathButtonsRow extends Component {
     render() {
         return (
             this.props.buttonsRow.map((button, i) =>
-                <MathButton key={i} button={button} palette={this.props.palette}/>
+                <MathButton
+                    key={i}
+                    button={button}
+                    palette={this.props.palette}
+                    theActiveMathField={this.props.theActiveMathField}
+                />
             )
         );
     }
