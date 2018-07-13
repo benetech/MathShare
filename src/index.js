@@ -7,6 +7,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.js';
 import dataSet from './data/data01.json';
 
 render((
+/* TODO: dataset should be state so we can change it on the run */
   <HashRouter>
     <App dataSet={dataSet} />
   </HashRouter>
