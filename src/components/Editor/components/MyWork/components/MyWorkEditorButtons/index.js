@@ -8,14 +8,12 @@ import Painterro from 'painterro'
 import painterroConfiguration from './painterroConfiguration.json'
 
 export default class MyWorkEditorButtons extends Component {    
-    
     constructor(props) {
         super(props);
         this.scratchPadPainterro;
     }
 
     handleClick(scratchPadPainterro) {
-        console.log('The link was clicked.');
         $('#scratch-pad-containter').slideToggle("fast", function() {
             if ($("#scratch-pad-containter").is(":visible")) {
                 scratchPadPainterro.adjustSizeFull();
