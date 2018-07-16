@@ -9,10 +9,12 @@ export default class Editor extends Component {
     constructor(props) {
         super(props);
         this.id = this.props.match.params.number;
+        var problem = this.getProblemById(props.problems, this.id);
         this.state = {
-            math: this.getProblemById(props.problems, this.id).originalProblem.equation,
-            title: this.getProblemById(props.problems, this.id).originalProblem.annotation,
-            steps: this.getProblemById(props.problems, this.id).history
+            math: problem.originalProblem.equation,
+            title: problem.originalProblem.annotation,
+            steps: problem.history,
+            allowedPalettes: this.props.allowedPalettes
         };
     }
 
@@ -28,7 +30,7 @@ export default class Editor extends Component {
                     <ProblemHeader math={this.state.math} title={this.state.title} />
                     <MyStepsHeader />
                     <MyStepsList steps={this.state.steps} />
-                    <MyWork />
+                    <MyWork allowedPalettes={this.state.allowedPalettes} />
                 </main>
             </div>
         );
