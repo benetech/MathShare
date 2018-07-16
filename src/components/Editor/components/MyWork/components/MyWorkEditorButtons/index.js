@@ -99,7 +99,7 @@ export default class MyWorkEditorButtons extends Component {
                         id="addStep"
                         className={[
                             bootstrap.btn,
-                            bootstrap['btn-success'],
+                            bootstrap['btn-primary'],
                             styles.pointer,
                             editorButtons.editorBtn
                         ]}
