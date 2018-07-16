@@ -50,8 +50,11 @@ export default class MyWork extends Component {
                                 )
                             }
                         >
-                            <MathPalette theActiveMathField={this.state.theActiveMathField} />
-                            <MyWorkEditorButtons className="d-flex flex-nowrap justify-content-between"/>
+                            <MathPalette
+                                theActiveMathField={this.state.theActiveMathField}
+                                allowedPalettes={this.props.allowedPalettes}
+                            />
+                            <MyWorkEditorButtons />
                         </div>
                         <div
                             className={

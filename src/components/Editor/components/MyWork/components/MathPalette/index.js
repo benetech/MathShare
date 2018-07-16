@@ -24,8 +24,9 @@ export default class MathPalette extends Component {
 
     render() {
         this.initializeKeyShortcuts(palettes);
-        //TODO: Include only allowed palettes
-        var mathPalette = palettes.map((palette, i) =>
+        var allowedPalettes = palettes.filter(palette => 
+            (!this.props.allowedPalettes || this.props.allowedPalettes.includes(palette.label)));
+        var mathPalette = allowedPalettes.map((palette, i) =>
             <MathButtonsGroup
                 key={i}
                 order={"order-" + (i + 1)}

@@ -19,7 +19,8 @@ export default class App extends Component {
         return (
             <Switch>
                 <Route exact path='/' render={p => <Home dataSet={this.props.dataSet} />} />
-                <Route exact path='/problem/:number' render={p => <Editor {...p} problems={data} />} />
+                <Route exact path='/problem/:number' render={p =>
+                    <Editor {...p} problems={data} allowedPalettes={this.props.dataSet.metadata.allowedPalettes} />} />
             </Switch>
         )
     }
