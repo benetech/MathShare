@@ -4,7 +4,7 @@ import classNames from "classnames";
 import problem from './styles.css';
 import styles from '../../../../styles/styles.css';
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
-import mathLive from '../../../../../lib/mathlivedist/mathlive.js';
+import mathLive from '../../../../lib/mathlivedist/mathlive.js';
 
 export default class ProblemHeader extends Component {
     componentDidMount() {
