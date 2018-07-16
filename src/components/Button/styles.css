@@ -23,16 +23,16 @@
 
 .undo {
     background-color: rgb(240, 240, 240);
-    background-image: url(/images/undo.png);
+    background-image: url(/src/images/undo.png);
 }
 
 .undo:active {
-    background-image: url(/images/undo.png)!important;
+    background-image: url(/src/images/undo.png)!important;
 }
 
 .scratch {
     background-color: rgb(255, 255, 255);
-    background-image: url(/images/scratch.png);
+    background-image: url(/src/images/scratch.png);
 }
 
 .mic {

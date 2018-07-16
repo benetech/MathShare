@@ -4,9 +4,17 @@ import classNames from "classnames";
 import header from './styles.css';
 import styles from '../../../../styles/styles.css';
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
+import { withRouter } from 'react-router-dom'
 
 export default class MainPageHeader extends Component {
+    
     render() {
+        const Button = withRouter(({ history }) => (
+            <a className={classNames(bootstrap['nav-link'], header.pointer)} onClick={() => { history.push('/problem/example') }}>
+            Getting Started
+            </a>
+          ))
+
         return (
             <div id="topNavigationWrapper" className={header.header} role="heading" aria-level="1">
                 <header>
@@ -14,7 +22,7 @@ export default class MainPageHeader extends Component {
                     <nav className={classNames(header.navbar, bootstrap['navbar-expand-lg'], bootstrap.navbar)} 
                     id="topNavigation">
                         <a className={bootstrap['navbar-brand']} href="#">
-                            <img src="images/logo.png" alt="Benetech Math Editor" height="37"/>
+                            <img src="src/images/logo.png" alt="Benetech Math Editor" height="37"/>
                         </a>
                         <div className={bootstrap['navbar-collapse']}
                         id="navbarNav">
@@ -22,9 +30,7 @@ export default class MainPageHeader extends Component {
                             </ul>
                             <ul className={classNames(bootstrap['navbar-nav'], header.navItem)}>
                                 <li className={bootstrap['nav_item']}>
-                                    <a className={classNames(bootstrap['nav-link'], header.pointer)}>
-                                        Getting Started
-                                    </a>
+                                    <Button/>
                                 </li>
                                 <li className={classNames(bootstrap['nav-item'], [bootstrap.dropdown])}>
                                     <a className={classNames(bootstrap['nav-link'], bootstrap['dropdown-toggle'])} 
@@ -34,10 +40,10 @@ export default class MainPageHeader extends Component {
                                         Problem Sets
                                     </a>
                                     <div className={bootstrap['dropdown-menu']} role="list" aria-label="Problem Sets">
-                                        <a className={bootstrap['dropdown-menu']}>Problem Set 01</a>
-                                        <a className={bootstrap['dropdown-menu']}>Problem Set 02</a>
-                                        <a className={bootstrap['dropdown-menu']}>Problem Set 03</a>
-                                        <a className={bootstrap['dropdown-menu']}>Upload</a>
+                                        <a className={bootstrap['dropdown-item']}>Problem Set 01</a>
+                                        <a className={bootstrap['dropdown-item']}>Problem Set 02</a>
+                                        <a className={bootstrap['dropdown-item']}>Problem Set 03</a>
+                                        <a className={bootstrap['dropdown-item']}>Upload</a>
                                         <input id='fileid' type='file' hidden/>
                                     </div>
                                 </li>
@@ -60,7 +66,7 @@ export default class MainPageHeader extends Component {
                         </div>
                     </nav>
                 </header>
-            </div>
+        </div>
         );
     }
 }

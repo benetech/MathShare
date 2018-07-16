@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import FontAwesome from "react-fontawesome";
 import classNames from "classnames";
 import styles from './styles.css';
+import mathLive from '../../../lib/mathlivedist/mathlive.js';
 
 export default class Button extends Component {
-
     buildClassNames() {
         var additionalStyles = [];
         if (this.props.additionalStyles) {
@@ -18,6 +18,10 @@ export default class Button extends Component {
             this.props.className,
             additionalStyles
         )
+    }
+
+    componentDidMount() {
+        mathLive.renderMathInDocument();
     }
 
     render() {
@@ -39,7 +43,7 @@ export default class Button extends Component {
                 data-step={this.props.intro}
                 data-intro={this.props.step}
                 data-toggle={this.props.toggle}
-            //TODO onclick="GoogleAnalytics('Save');"
+                onClick={this.props.onClick}
             >
                 {span}
                 {this.props.content}

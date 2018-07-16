@@ -4,8 +4,47 @@ import classNames from "classnames";
 import editorButtons from './styles.css';
 import styles from '../../../../../../styles/styles.css';
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
+import Painterro from 'painterro'
+import painterroConfiguration from './painterroConfiguration.json'
 
-export default class MyWorkEditorButtons extends Component {
+export default class MyWorkEditorButtons extends Component {    
+    constructor(props) {
+        super(props);
+        this.scratchPadPainterro;
+    }
+
+    handleClick(scratchPadPainterro) {
+        $('#scratch-pad-containter').slideToggle("fast", function() {
+            if ($("#scratch-pad-containter").is(":visible")) {
+                scratchPadPainterro.adjustSizeFull();
+            }
+        });
+    }
+
+    InitScratchPad() {
+        this.scratchPadPainterro = Painterro(painterroConfiguration);
+        
+        this.scratchPadPainterro.show();
+        $('#scratch-pad-containter').hide();
+        
+        $('#scratch-pad-containter-bar > div > span').first()
+        .append('<button id="clear-button" type="button" class="ptro-icon-btn ptro-color-control" title="Clear the scratch pad"><i class="ptro-icon ptro-icon-close"></i></button>');
+        $('#clear-button').click( () =>
+            this.ClearAndResizeScrachPad(this.scratchPadPainterro)
+        );
+        $('.ptro-icon-btn').css('border-radius', '.25rem');
+        $('.ptro-bordered-btn').css('border-radius', '.5rem');
+        $('.ptro-info').hide();
+    }
+        
+    ClearAndResizeScrachPad(scratchPadPainterro) {
+        scratchPadPainterro.clear();
+    }
+
+    componentDidMount() {
+        this.InitScratchPad();
+    }
+
     render() {
         return (
             <div
@@ -34,6 +73,7 @@ export default class MyWorkEditorButtons extends Component {
                         ]}
                         toggle="tooltip"
                         title="Display/hide sketch pad"
+                        onClick={() => this.handleClick(this.scratchPadPainterro)}
                     />
                 </div>
                 <div>

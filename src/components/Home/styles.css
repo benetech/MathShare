@@ -1,0 +1,18 @@
+.mainWrapper {
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+.leftNavigation {
+    overflow-x: hidden;
+    overflow-y: auto;
+    flex: 0 0 100%;
+    background-color: #FFFFFF;
+    border-right: 1px solid #CCC;
+}
+
+.contentWrapper {
+    display: contents;
+}    

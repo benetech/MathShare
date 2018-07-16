@@ -1,4 +1,4 @@
-var palettes = [
+[
     {
         "screenReadersTitle": "cross out and calc buttons",
         "label": "Edit",
@@ -8,7 +8,10 @@ var palettes = [
                 {
                     "id": "crossOutBtn",
                     "title": "Cross out",
-                    "additionalOnclick": "MathLivePasteFromButton(this); GoogleAnalytics('Cross Out');",
+                    "additionalOnclick": [
+                        "MathLivePasteFromButton",
+                        "GoogleAnalytics"
+                    ],
                     "value": "$$\\enclose{updiagonalstrike downdiagonalstrike}[2px solid blue]{\\blacksquare}$$",
                     "keys":
                     [
@@ -19,7 +22,10 @@ var palettes = [
                 {
                     "id": "crossOutAndReplaceBtn",
                     "title": "Cross out & replace",
-                    "additionalOnclick": "MathLivePasteFromButton(this); GoogleAnalytics('Cross Out & Replace');",
+                    "additionalOnclick": [
+                        "MathLivePasteFromButton",
+                        "GoogleAnalytics"
+                    ],
                     "value": "$$ \\enclose{updiagonalstrike downdiagonalstrike}[2px solid blue]{\\blacksquare}^{\\square} $$",
                     "keys":
                     [
@@ -33,7 +39,10 @@ var palettes = [
                 {
                     "id": "stackBelowBtn",
                     "title": "stack below",
-                    "additionalOnclick": "MathLivePasteFromButton(this); GoogleAnalytics('stack below');",
+                    "additionalOnclick": [
+                        "MathLivePasteFromButton",
+                        "GoogleAnalytics"
+                    ],
                     "value": "$$ \\begin{array}{r} \\blacksquare \\\\ \\square\\end{array}$$",
                     "keys":
                     [
@@ -46,7 +55,10 @@ var palettes = [
                 {
                     "id": "calculateBtn",
                     "title": "Calculate",
-                    "additionalOnclick": "CalculateAndReplace(this); GoogleAnalytics('Calculate');",
+                    "additionalOnclick": [
+                        "CalculateAndReplace",
+                        "GoogleAnalytics"
+                    ],
                     "value": "Calc",
                     "keys":
                     [
@@ -61,7 +73,7 @@ var palettes = [
         "screenReadersTitle": "Operator buttons",
         "label": "Operators",
         "commonClass": "btn btn-operator paletteButton",
-        "commonOnclick": "MathLivePasteFromButton(this)",
+        "commonOnclick": ["MathLivePasteFromButton"],
         "buttonsRows": [
             [
                 {
@@ -115,7 +127,7 @@ var palettes = [
         "screenReadersTitle": "Fraction and other notation buttons",
         "label": "Notations",
         "commonClass": "btn btn-notation paletteButton",
-        "commonOnclick": "MathLivePasteFromButton(this)",
+        "commonOnclick": ["MathLivePasteFromButton"],
         "buttonsRows": [
             [
                 {
@@ -179,7 +191,7 @@ var palettes = [
         "screenReadersTitle": "Additional symbols buttons",
         "label": "Geometry",
         "commonClass": "btn btn-symbol paletteButton",
-        "commonOnclick": "MathLivePasteFromButton(this)",
+        "commonOnclick": ["MathLivePasteFromButton"],
         "buttonsRows": [
             [
                 {

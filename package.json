@@ -31,10 +31,13 @@
     "webpack-dev-server": "^3.1.4"
   },
   "dependencies": {
-    "react": "^16.4.1",
-    "react-dom": "^16.4.1",
     "bootstrap": "^4.1.1",
     "classnames": "^2.2.6",
-    "react-fontawesome": "^1.6.1"
+    "jquery": "^3.3.1",
+    "painterro": "^0.2.65",
+    "react": "^16.4.1",
+    "react-dom": "^16.4.1",
+    "react-fontawesome": "^1.6.1",
+    "react-router-dom": "^4.3.1"
   }
 }
