@@ -11,3 +11,9 @@
 .pointer {
     cursor: pointer;
 }
+
+html, body {
+    height: 100%;
+    margin: 0;
+    background-color: rgb(240, 240, 240);
+}

@@ -4,7 +4,7 @@ import classNames from "classnames";
 import editorArea from './styles.css';
 import styles from '../../../../../../styles/styles.css';
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
-import mathLive from 'mathlive';
+import mathLive from '../../../../../../../lib/mathlivedist/mathlive.js';
 
 export default class MyWorkEditorArea extends Component {
     componentDidMount() {
@@ -110,7 +110,7 @@ export default class MyWorkEditorArea extends Component {
                                             <img
                                                 id="mic_img"
                                                 alt="Start Speaking"
-                                                src="/images/mic.gif"
+                                                src="src/images/mic.gif"
                                             />
                                         }
                                     //TODO onclick="GoogleAnalytics('S2T Clicked');"

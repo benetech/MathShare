@@ -22,7 +22,7 @@ export default class MainPageHeader extends Component {
                     <nav className={classNames(header.navbar, bootstrap['navbar-expand-lg'], bootstrap.navbar)} 
                     id="topNavigation">
                         <a className={bootstrap['navbar-brand']} href="#">
-                            <img src="images/logo.png" alt="Benetech Math Editor" height="37"/>
+                            <img src="src/images/logo.png" alt="Benetech Math Editor" height="37"/>
                         </a>
                         <div className={bootstrap['navbar-collapse']}
                         id="navbarNav">
