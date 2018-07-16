@@ -37,3 +37,15 @@
     min-height: 100px;
     width: inherit;
 }
+
+.mathEditorActive {
+    float: left;
+    min-width: 400px;
+    margin: 10px;
+    overflow-y: hidden;
+    overflow-x: auto;
+    display: inline-block;
+    flex-grow: 200;
+    padding: 5px;
+    height: 100px;
+}
