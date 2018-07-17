@@ -52,12 +52,3 @@ export default class MathPalette extends Component {
         );
     }
 }
-
-/*
-function paletteIsAllowed(palette) {
-    var metadata = JSON.parse($("#ContentWrapper").attr("data-galois-metadata"));
-    var allowedPalettes = metadata.palettes;
-    var allowedPalettes;
-    return !allowedPalettes || allowedPalettes.includes(palette.label);
-}
-*/
