@@ -39,7 +39,8 @@ export default class MyWork extends Component {
                         </h2>
                     </div>
                     <div className={myWork.editorWrapper}>
-                        <MyWorkEditorArea activateMathField={theActiveMathField => this.setState({theActiveMathField})} />
+                        <MyWorkEditorArea activateMathField={theActiveMathField => this.setState({theActiveMathField})}
+                            lastStepEquation={this.props.lastStepEquation} />
                         <div
                             className={
                                 classNames(
