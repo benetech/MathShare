@@ -11,7 +11,6 @@ export default class MyWorkEditorArea extends Component {
         var mathField = this.getMathField();
         this.props.activateMathField(mathField);
         this.refs.mathEditorActive.onFocus = mathField.focus();
-        mathField.insert(this.props.lastStepEquation);
     }
 
     getMathField() {

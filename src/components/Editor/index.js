@@ -30,10 +30,7 @@ export default class Editor extends Component {
                     <ProblemHeader math={this.state.math} title={this.state.title} />
                     <MyStepsHeader />
                     <MyStepsList steps={this.state.steps} />
-                    <MyWork
-                        allowedPalettes={this.state.allowedPalettes}
-                        lastStepEquation={this.state.steps[this.state.steps.length -1].equation}
-                    />
+                    <MyWork allowedPalettes={this.state.allowedPalettes} />
                 </main>
             </div>
         );
