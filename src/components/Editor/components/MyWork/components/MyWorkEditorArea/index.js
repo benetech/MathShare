@@ -61,10 +61,7 @@ export default class MyWorkEditorArea extends Component {
                                 id='mathEditorActive'
                                 ref="mathEditorActive"
                                 tabIndex="0"
-                                className={
-                                    classNames(
-                                        bootstrap['order-1'],
-                                        editorArea.mathEditorActive)}
+                                className={classNames(bootstrap['order-1'], editorArea.mathEditorActive)}
                                 role="heading"
                                 aria-label="type math here"
                             ></section>
