@@ -51,13 +51,5 @@
 @supports (-ms-ime-align: auto) {
     .annotation {
         resize: both;
-        margin-bottom: -3px;
-    }
-}
-
-/* Additional styles for Mozilla Firefox */
-@-moz-document url-prefix() {
-    .annotation {
-        margin-bottom: -3px;
     }
 }
