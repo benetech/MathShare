@@ -24,13 +24,22 @@ export default class Editor extends Component {
     }
 
     render() {
+        var myWork;
+        var myStepsList;
+        var problemHeaderTitle = this.state.title;
+        if (this.id != "newEditor") {
+            myWork = <MyWork allowedPalettes={this.state.allowedPalettes} />;
+            myStepsList = <MyStepsList steps={this.state.steps} />;
+            problemHeaderTitle += ": ";
+        }
+
         return (
             <div id="MainWorkWrapper" className={editor.mainWorkWrapper}>
                 <main id="MainWorkArea" className={editor.editorAndHistoryWrapper}>
-                    <ProblemHeader math={this.state.math} title={this.state.title} />
+                    <ProblemHeader math={this.state.math} title={problemHeaderTitle} />
                     <MyStepsHeader />
-                    <MyStepsList steps={this.state.steps} />
-                    <MyWork allowedPalettes={this.state.allowedPalettes} />
+                    {myStepsList}
+                    {myWork}
                 </main>
             </div>
         );
