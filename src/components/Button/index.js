@@ -5,6 +5,14 @@ import styles from './styles.css';
 import mathLive from '../../lib/mathlivedist/mathlive.js';
 
 export default class Button extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            content: this.props.content
+        }
+
+    }
+
     buildClassNames() {
         var additionalStyles = [];
         if (this.props.additionalStyles) {
@@ -18,6 +26,12 @@ export default class Button extends Component {
             this.props.className,
             additionalStyles
         )
+    }
+
+    componentDidUpdate() {
+        if (this.props.content != this.state.content) {
+            this.setState({ content: this.props.content });
+        }
     }
 
     componentDidMount() {
@@ -46,7 +60,7 @@ export default class Button extends Component {
                 onClick={this.props.onClick}
             >
                 {span}
-                {this.props.content}
+                {this.state.content}
             </button>
         );
     }
