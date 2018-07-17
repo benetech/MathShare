@@ -65,7 +65,7 @@ export default class MyWorkEditorArea extends Component {
                                 aria-label="type math here"
                             ></section>
                             <div
-                                className={bootstrap['order-1']}
+                                className={bootstrap['order-2']}
                                 role="heading"
                                 aria-level="3"
                             >
@@ -85,8 +85,8 @@ export default class MyWorkEditorArea extends Component {
                                     id="mathAnnotation" 
                                     className={
                                         classNames(
+                                            bootstrap['form-control'],
                                             editorArea.annotation,
-                                            editorArea.formControl
                                         )
                                     }
                                     placeholder="Use the microphone button or type to explain your work (required)"
