@@ -7,6 +7,11 @@
  }
 
  .annotation {
+    border: 0px;
+    box-shadow: none;
+    transition: none;
+    display: inline;
+    border-radius: 0px;
     width: 280px;
     height: 118px;
     margin-top: 1px;
@@ -16,14 +21,6 @@
 
 .annotationHeader {
     border-left: 1px solid rgb(204, 204, 204);
-}
-
-.formControl {
-    border: 0px;
-    box-shadow: none;
-    transition: none;
-    display: inline;
-    border-radius: 0px;
 }
 
 .floatRight {
@@ -36,4 +33,19 @@
     background-color: rgb(255, 255, 255);
     min-height: 100px;
     width: inherit;
+}
+
+/* Additional styles for Microsoft Edge */
+@supports (-ms-ime-align: auto) {
+    .annotation {
+        resize: both;
+        margin-bottom: -3px;
+    }
+}
+
+/* Additional styles for Mozilla Firefox */
+@-moz-document url-prefix() {
+    .annotation {
+        margin-bottom: -3px;
+    }
 }
