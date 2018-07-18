@@ -118,10 +118,10 @@ export default class MathButton extends Component {
             trim();
 
         if (!theActiveMathField.selectionIsCollapsed()) {
-            let erasedInsertionString = CleanUpCrossouts(insertionString, { erase: true });
+            let erasedInsertionString = this.constructor.CleanUpCrossouts(insertionString, { erase: true });
             if (erasedInsertionString !== insertionString) {
                 // the insertionString contains a cross out, erase all crossout in the selection
-                let selection = CleanUpCrossouts(theActiveMathField.selectedText('latex'), { erase: true });
+                let selection = this.constructor.CleanUpCrossouts(theActiveMathField.selectedText('latex'), { erase: true });
 
                 // stick the modified selection into the black square (#0) in the insertionString
                 insertionString = insertionString.replace(/#0/, selection);
@@ -186,7 +186,7 @@ export default class MathButton extends Component {
         }
 
         let selection = theActiveMathField.selectedText('latex');
-        let result = DoCalculation(CleanUpCrossouts(selection));
+        let result = DoCalculation(this.constructor.CleanUpCrossouts(selection));
         if (result === "") {
             NotificationManager.warning('Selection must contain only numbers and operators', 'Warning');
             return;
@@ -201,6 +201,80 @@ export default class MathButton extends Component {
                 selectionMode: 'after'
             }]);
         theActiveMathField.focus();
+    }
+
+    //***************************************************************************************************************************************************
+    // Remove crossouts (without considering replacement) from a string
+    //    where crossout is \enclose{updiagonalstrike downdiagonalstrike}[..]{...}
+    // @param {string} The LaTeX string to be cleaned
+    // @param {object} [optional] {erase: boolean [false]} -- either delete the crossout or erase the crossout (leave contents)
+    // @return {string} The string with the crossouts removed
+    static CleanUpCrossouts(latexStr, options) {
+        // FIX: a proper "compass adornment" feature for MathLive doesn't exist yet.
+        // Right now, code looks for:
+        //   crossout^replacement
+        //   crossout_replacement
+        //   \overset{replacement}{crossout}
+        //   \underset{replacement}{crossout}
+        // where crossout is \enclose{updiagonalstrike downdiagonalstrike}[..]{...}
+        // This is missing compass points NW, W, SW, E
+        // If a replacement pattern isn't found, the crossout is removed
+        // FIX: this would be easier/less error prone if we use MathML (not yet implemented)
+        // FIX: there are  places where whitespace is legal but not checked (eg, around optional '^')
+        options = options || { erase: false };
+        let result;
+        if (options.erase) {
+            result = ReplaceTeXCommands(latexStr, { "enclose": { patterns: "$2" } });
+        } else { // delete
+            const replaceChar = '\uFFFD'; // temporary replacement char -- can't be in latexStr
+            const notReplaceChar = '[^' + replaceChar + ']+';
+            result = ReplaceTeXCommands(latexStr, { "enclose": { patterns: replaceChar } });
+
+            // if there are any cross out patterns that use sub/superscripts for replacements, fix them
+            result = result.replace(new RegExp(replaceChar + '(\\^|_)?', 'g'), "");
+
+            // elmininate extra level of '{}'s which messes up other matches -- comes from {replaceChar} -> {}
+            result = result.replace(new RegExp('{{}}', 'g'), "{}");
+
+
+            // now do the same for underset, overset, and clean up fractions
+            result = ReplaceTeXCommands(result,
+                {
+                    "underset": {
+                        patterns: [
+                            { match: [".*", replaceChar], replacement: "{$0}" }
+                        ]
+                    },
+                    "overset": { patterns: [{ match: [".*", replaceChar], replacement: "{$0}" }] },
+                    "frac": {
+                        patterns: [
+                            { match: ["", ""], replacement: "\\frac{1}{1}" },
+                            { match: ["", ".+"], replacement: "\\frac{1}{$1}" },
+                            { match: [".+", ""], replacement: "\\frac{$0}{1}" }
+                        ]
+                    },
+                    // used for "stacks"
+                    "begin": {
+                        patterns: [
+                            { match: ["array", "r", /*"^(\\+|-)?\\d*\\.?\\d* \\\\\\\\ (\\+|-)?\\d*\\.?\\d*$"*/".*"], replacement: "`$2`" }
+                        ]
+                    },
+                    "end": { patterns: [{ match: ["array"], replacement: "" }] }
+                });
+        }
+
+        return result;
+
+        /** FIX: Not handling these yet
+            let prescriptsRE = new RegExp(
+                "\\\\,\\{\\}(?:\\^|_)([^\\{]|[a-z]+|\\{.+?\\})" + CrossoutRegExpPattern,
+                "g");
+            prescriptsRE = new RegExp(
+                "\\\\,\\{\\}(?:\\^|_)([^\\{]|[a-z]+|\\{.+?\\})" + CrossoutRegExpPattern,
+                "g");
+            latexStr = latexStr.replace(prescriptsRE, "$1");
+            return latexStr.replace(new RegExp(CrossoutRegExpPattern, "g"), "");
+        **/
     }
 }
 
@@ -484,78 +558,4 @@ function ReplaceTeXCommands(str, replacements) {
     }
 
     return str;
-}
-
-//***************************************************************************************************************************************************
-// Remove crossouts (without considering replacement) from a string
-//    where crossout is \enclose{updiagonalstrike downdiagonalstrike}[..]{...}
-// @param {string} The LaTeX string to be cleaned
-// @param {object} [optional] {erase: boolean [false]} -- either delete the crossout or erase the crossout (leave contents)
-// @return {string} The string with the crossouts removed
-function CleanUpCrossouts(latexStr, options) {
-    // FIX: a proper "compass adornment" feature for MathLive doesn't exist yet.
-    // Right now, code looks for:
-    //   crossout^replacement
-    //   crossout_replacement
-    //   \overset{replacement}{crossout}
-    //   \underset{replacement}{crossout}
-    // where crossout is \enclose{updiagonalstrike downdiagonalstrike}[..]{...}
-    // This is missing compass points NW, W, SW, E
-    // If a replacement pattern isn't found, the crossout is removed
-    // FIX: this would be easier/less error prone if we use MathML (not yet implemented)
-    // FIX: there are  places where whitespace is legal but not checked (eg, around optional '^')
-    options = options || { erase: false };
-    let result;
-    if (options.erase) {
-        result = ReplaceTeXCommands(latexStr, { "enclose": { patterns: "$2" } });
-    } else { // delete
-        const replaceChar = '\uFFFD'; // temporary replacement char -- can't be in latexStr
-        const notReplaceChar = '[^' + replaceChar + ']+';
-        result = ReplaceTeXCommands(latexStr, { "enclose": { patterns: replaceChar } });
-
-        // if there are any cross out patterns that use sub/superscripts for replacements, fix them
-        result = result.replace(new RegExp(replaceChar + '(\\^|_)?', 'g'), "");
-
-        // elmininate extra level of '{}'s which messes up other matches -- comes from {replaceChar} -> {}
-        result = result.replace(new RegExp('{{}}', 'g'), "{}");
-
-
-        // now do the same for underset, overset, and clean up fractions
-        result = ReplaceTeXCommands(result,
-            {
-                "underset": {
-                    patterns: [
-                        { match: [".*", replaceChar], replacement: "{$0}" }
-                    ]
-                },
-                "overset": { patterns: [{ match: [".*", replaceChar], replacement: "{$0}" }] },
-                "frac": {
-                    patterns: [
-                        { match: ["", ""], replacement: "\\frac{1}{1}" },
-                        { match: ["", ".+"], replacement: "\\frac{1}{$1}" },
-                        { match: [".+", ""], replacement: "\\frac{$0}{1}" }
-                    ]
-                },
-                // used for "stacks"
-                "begin": {
-                    patterns: [
-                        { match: ["array", "r", /*"^(\\+|-)?\\d*\\.?\\d* \\\\\\\\ (\\+|-)?\\d*\\.?\\d*$"*/".*"], replacement: "`$2`" }
-                    ]
-                },
-                "end": { patterns: [{ match: ["array"], replacement: "" }] }
-            });
-    }
-
-    return result;
-
-    /** FIX: Not handling these yet
-        let prescriptsRE = new RegExp(
-            "\\\\,\\{\\}(?:\\^|_)([^\\{]|[a-z]+|\\{.+?\\})" + CrossoutRegExpPattern,
-            "g");
-        prescriptsRE = new RegExp(
-            "\\\\,\\{\\}(?:\\^|_)([^\\{]|[a-z]+|\\{.+?\\})" + CrossoutRegExpPattern,
-            "g");
-        latexStr = latexStr.replace(prescriptsRE, "$1");
-        return latexStr.replace(new RegExp(CrossoutRegExpPattern, "g"), "");
-    **/
 }

@@ -12,9 +12,6 @@ import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 export default class MyWork extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            theActiveMathField: null
-        };
     }
 
     render() {
@@ -39,7 +36,7 @@ export default class MyWork extends Component {
                         </h2>
                     </div>
                     <div className={myWork.editorWrapper}>
-                        <MyWorkEditorArea activateMathField={theActiveMathField => this.setState({theActiveMathField})} />
+                        <MyWorkEditorArea activateMathField={this.props.activateMathField} lastMathEquation={this.props.lastMathEquation}/>
                         <div
                             className={
                                 classNames(
@@ -50,11 +47,8 @@ export default class MyWork extends Component {
                                 )
                             }
                         >
-                            <MathPalette
-                                theActiveMathField={this.state.theActiveMathField}
-                                allowedPalettes={this.props.allowedPalettes}
-                            />
-                            <MyWorkEditorButtons />
+                            <MathPalette theActiveMathField={this.props.theActiveMathField} allowedPalettes={this.props.allowedPalettes}/>
+                            <MyWorkEditorButtons className="d-flex flex-nowrap justify-content-between" addStepCallback={this.props.addStepCallback} undoDeleteStepCallback={this.props.undoDeleteStepCallback} />
                         </div>
                         <div
                             className={

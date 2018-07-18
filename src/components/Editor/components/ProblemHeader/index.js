@@ -4,7 +4,7 @@ import classNames from "classnames";
 import problem from './styles.css';
 import styles from '../../../../styles/styles.css';
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
-import mathLive from '../../../../lib/mathlivedist/mathlive.js';
+import mathLive from '../../../../../src/lib/mathlivedist/mathlive.js';
 
 export default class ProblemHeader extends Component {
     componentDidMount() {
@@ -12,12 +12,12 @@ export default class ProblemHeader extends Component {
     }
 
     render() {
-        const title = this.props.title + ": ";
+        const title = this.props.title;
         return (
             <div className={problem.header}>
                 <div>
                     <span id="ProblemTitle" className={problem.title} role="heading" aria-level="1">{title}</span>
-                    <span id="ProblemMath" className={problem.title}>{this.props.math}</span>
+                    <span id="ProblemMath" className={problem.title}>{"$$" + this.props.math + "$$"}</span>
                 </div>
                 <div className={problem.btnContainer}>
                     <Button
