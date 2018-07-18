@@ -26,7 +26,7 @@
 
 .btnEdit {
     background-color: rgb(240, 240, 240);
-    background-image: url(/images/pencil.png);
+    background-image: url(/src/images/pencil.png);
     margin: 0px 5px;
     opacity: 0.3;
     transition: all 0.3s;
@@ -34,8 +34,12 @@
 
 .btnDelete {
     background-color: rgb(240, 240, 240);
-    background-image: url(/images/delete.png);
+    background-image: url(/src/images/delete.png);
     opacity: 0.6;
     margin: 0px 5px;
     transition: all 0.3s;
+}
+
+.cleanUpAnnotation {
+    color:#727272;
 }
