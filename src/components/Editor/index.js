@@ -7,7 +7,6 @@ import editor from './styles.css';
 import MathButton from './components/MyWork/components/MathPalette/components/MathButtonsGroup/components/MathButtonsRow/components/MathButton';
 
 export default class Editor extends Component {
-
     constructor(props) {
         super(props);
         this.id = this.props.match.params.number;
@@ -34,10 +33,10 @@ export default class Editor extends Component {
 
         if (stackEntry === undefined)
             return;	// shouldn't happen because button is disabled
-    
+
         if (newStack.length === 0)
             $('#undoDelete').hide();
-    
+
         let updatedMathField = this.state.theActiveMathField;
         updatedMathField.latex(stackEntry.latex);
         this.setState({theActiveMathField: updatedMathField});
@@ -90,7 +89,7 @@ export default class Editor extends Component {
         $('.mathStep:last .btn-edit').show();
         $('#addStep').show();
         $('#updateControls').hide();
-       
+
     }
 
     addStep(undoing) {
@@ -116,14 +115,31 @@ export default class Editor extends Component {
     }
 
     render() {
+        var myWork;
+        var myStepsList;
+        var problemHeaderTitle = this.state.title;
+        if (this.id != "newEditor") {
+            myWork = <MyWork
+                allowedPalettes={this.state.allowedPalettes}
+                activateMathField={theActiveMathField => this.setState({theActiveMathField})}
+                theActiveMathField={this.state.theActiveMathField}
+                addStepCallback={this.addStep}
+                undoDeleteStepCallback={this.undoDeleteStep}
+                lastMathEquation={this.state.steps[this.state.steps.length - 1].equation} />;
+            myStepsList = <MyStepsList
+                steps={this.state.steps}
+                deleteStepCallback={this.deleteStep}
+                editStepCallback={this.editStep} />;
+            problemHeaderTitle += ": ";
+        }
+
         return (
             <div id="MainWorkWrapper" className={editor.mainWorkWrapper}>
                 <main id="MainWorkArea" className={editor.editorAndHistoryWrapper}>
-                    <ProblemHeader math={this.state.math} title={this.state.title} />
+                    <ProblemHeader math={this.state.math} title={problemHeaderTitle} />
                     <MyStepsHeader />
-                    <MyStepsList steps={this.state.steps} deleteStepCallback={this.deleteStep} editStepCallback={this.editStep} />
-                    <MyWork allowedPalettes={this.state.allowedPalettes} activateMathField={theActiveMathField => this.setState({theActiveMathField})} theActiveMathField={this.state.theActiveMathField} 
-                        addStepCallback={this.addStep} undoDeleteStepCallback={this.undoDeleteStep} lastMathEquation={this.state.steps[this.state.steps.length - 1].equation}/>
+                    {myStepsList}
+                    {myWork}
                 </main>
             </div>
         );

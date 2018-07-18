@@ -12,7 +12,7 @@ export default class ProblemHeader extends Component {
     }
 
     render() {
-        const title = this.props.title + ": ";
+        const title = this.props.title;
         return (
             <div className={problem.header}>
                 <div>
