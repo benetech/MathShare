@@ -35,7 +35,7 @@ export default class Problem extends Component {
             equation = "Click here to see an example problem and learn how to use the editor";
         } else {
             annotation = this.buildAnnotation();
-            equation = this.state.equation;
+            equation = "$$" + this.state.equation + "$$";
         }
         const NavItem = withRouter(({ history }) => (
             <li
