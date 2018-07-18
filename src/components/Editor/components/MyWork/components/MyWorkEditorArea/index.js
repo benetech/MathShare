@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Button from '../../.././../../Button';
+import SpeechToTextButton from "./components/SpeechToTextButton";
 import classNames from "classnames";
 import editorArea from './styles.css';
 import styles from '../../../../../../styles/styles.css';
@@ -7,6 +7,13 @@ import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 import mathLive from '../../../../../../../src/lib/mathlivedist/mathlive.js';
 
 export default class MyWorkEditorArea extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            textAreaValue: "",
+        }
+    }
+
     componentDidMount() {
         var mathField = this.getMathField();
         mathField.latex(this.props.lastMathEquation);
@@ -58,7 +65,7 @@ export default class MyWorkEditorArea extends Component {
                             <h3 className={styles.sROnly}>Math editor</h3>
                             <section
                                 aria-label="edit equation"
-                                id='mathEditorActive'
+                                id="mathEditorActive"
                                 ref="mathEditorActive"
                                 tabIndex="0"
                                 className={classNames(bootstrap['order-1'], editorArea.mathEditorActive)}
@@ -83,7 +90,8 @@ export default class MyWorkEditorArea extends Component {
                                     Describe your work
                                 </h3>
                                 <textarea
-                                    id="mathAnnotation" 
+                                    id="mathAnnotation"
+                                    ref="mathAnnotation"
                                     className={
                                         classNames(
                                             bootstrap['form-control'],
@@ -94,29 +102,12 @@ export default class MyWorkEditorArea extends Component {
                                     data-step="2"
                                     data-intro="Describe your work by typing directly 
                                         or using the microphone to record an explanation of your work (required)."
-                                    aria-label="Use the microphone button or type to explain your work (required)">
+                                    aria-label="Use the microphone button or type to explain your work (required)"
+                                    value={this.state.textAreaValue}>
                                 </textarea>
-                                <span className={editorArea.floatRight}>
-                                    <Button
-                                        id="start_button"
-                                        className={
-                                            classNames(
-                                                bootstrap.btn,
-                                                styles.pointer
-                                            )
-                                        }
-                                        additionalStyles={['mic']}
-                                        data-toggle="tooltip"
-                                        content={
-                                            <img
-                                                id="mic_img"
-                                                alt="Start Speaking"
-                                                src="src/images/mic.gif"
-                                            />
-                                        }
-                                    //TODO onclick="GoogleAnalytics('S2T Clicked');"
-                                    />
-                                </span>
+                                <SpeechToTextButton
+                                    textAreaValue={this.state.textAreaValue}
+                                    setTextAreaValue={value => this.setState({textAreaValue: value})} />
                             </div>
                         </div>
                     </div>

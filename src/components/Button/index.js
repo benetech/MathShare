@@ -7,7 +7,10 @@ import mathLive from '../../../src/lib/mathlivedist/mathlive.js';
 export default class Button extends Component {
     constructor(props) {
         super(props);
-        this.handleOnClick = this.handleOnClick.bind(this);
+        this.state = {
+            content: this.props.content
+        }
+
     }
 
     buildClassNames() {
@@ -25,12 +28,14 @@ export default class Button extends Component {
         )
     }
 
-    componentDidMount() {
-        mathLive.renderMathInDocument();
+    componentDidUpdate() {
+        if (this.props.content != this.state.content) {
+            this.setState({ content: this.props.content });
+        }
     }
 
-    handleOnClick() {
-        this.props.onClick();
+    componentDidMount() {
+        mathLive.renderMathInDocument();
     }
 
     render() {
@@ -52,10 +57,10 @@ export default class Button extends Component {
                 data-step={this.props.intro}
                 data-intro={this.props.step}
                 data-toggle={this.props.toggle}
-                onClick={this.handleOnClick}
-                >
+                onClick={this.props.onClick}
+            >
                 {span}
-                {this.props.content}
+                {this.state.content}
             </button>
         );
     }
