@@ -4,11 +4,12 @@ import classNames from "classnames";
 import editorArea from './styles.css';
 import styles from '../../../../../../styles/styles.css';
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
-import mathLive from '../../../../../../lib/mathlivedist/mathlive.js';
+import mathLive from '../../../../../../../src/lib/mathlivedist/mathlive.js';
 
 export default class MyWorkEditorArea extends Component {
     componentDidMount() {
         var mathField = this.getMathField();
+        mathField.latex(this.props.lastMathEquation);
         this.props.activateMathField(mathField);
         this.refs.mathEditorActive.onFocus = mathField.focus();
     }
