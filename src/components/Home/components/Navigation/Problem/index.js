@@ -65,6 +65,7 @@ export default class Problem extends Component {
                             )
                         }
                         content={<span className={problem.problemAnnotation}>{annotation}</span>}
+                        onClick={() => {history.push('/problem/' + this.props.id)}}
                     />
                     <span className={problem.problemEquation}>{equation}</span>
                 </span>

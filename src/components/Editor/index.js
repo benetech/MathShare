@@ -4,7 +4,7 @@ import MyStepsHeader from './components/MySteps/components/MyStepsHeader';
 import MyStepsList from './components/MySteps/components/MyStepsList';
 import MyWork from './components/MyWork';
 import editor from './styles.css';
-import mathButton from './components/MyWork/components/MathPalette/components/MathButtonsGroup/components/MathButtonsRow/components/MathButton';
+import MathButton from './components/MyWork/components/MathPalette/components/MathButtonsGroup/components/MathButtonsRow/components/MathButton';
 
 export default class Editor extends Component {
 
@@ -97,7 +97,7 @@ export default class Editor extends Component {
         let newSteps = this.state.steps;
         let mathContent = this.state.theActiveMathField.latex();
         newSteps.push({"equation":  mathContent , "annotation": $('#mathAnnotation').val()});
-        let cleanedUp = mathButton.CleanUpCrossouts(mathContent);
+        let cleanedUp = MathButton.CleanUpCrossouts(mathContent);
         if (!undoing) {
             if (mathContent !== cleanedUp) {
                 newSteps.push({"equation":  cleanedUp , "annotation": "(cleanup)"});
