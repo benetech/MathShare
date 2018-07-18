@@ -4,6 +4,7 @@ import MyStepsHeader from './components/MySteps/components/MyStepsHeader';
 import MyStepsList from './components/MySteps/components/MyStepsList';
 import MyWork from './components/MyWork';
 import editor from './styles.css';
+import { NotificationContainer } from 'react-notifications';
 
 export default class Editor extends Component {
     constructor(props) {
@@ -26,6 +27,7 @@ export default class Editor extends Component {
     render() {
         return (
             <div id="MainWorkWrapper" className={editor.mainWorkWrapper}>
+                <NotificationContainer/>
                 <main id="MainWorkArea" className={editor.editorAndHistoryWrapper}>
                     <ProblemHeader math={this.state.math} title={this.state.title} />
                     <MyStepsHeader />

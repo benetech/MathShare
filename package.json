@@ -38,6 +38,7 @@
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
     "react-fontawesome": "^1.6.1",
+    "react-notifications": "^1.4.3",
     "react-router-dom": "^4.3.1"
   }
 }

@@ -4,6 +4,8 @@ import classNames from "classnames";
 import mathButton from './styles.css';
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 import teXCommands from './teXCommands.json'
+import {NotificationManager} from 'react-notifications';
+
 //***************************************************************************************************************************************************
 // TeX commands
 // The following list is taken from http://mathlive.io/sprint15/reference.html?frequency=0
@@ -179,14 +181,14 @@ export default class MathButton extends Component {
         }
 
         if (theActiveMathField.selectionIsCollapsed()) {
-            //TODO DisplayMessage(WARNING_MESSAGE, 'Warning:', 'You must select an arithmetic expression for calculation.');
+            NotificationManager.warning('You must select an arithmetic expression for calculation', 'Warning');
             return;
         }
 
         let selection = theActiveMathField.selectedText('latex');
         let result = DoCalculation(CleanUpCrossouts(selection));
         if (result === "") {
-            //TODO DisplayMessage(WARNING_MESSAGE, 'Warning:', 'Selection must contain only numbers and operators.');
+            NotificationManager.warning('Selection must contain only numbers and operators', 'Warning');
             return;
         }
 
