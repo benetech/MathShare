@@ -33,7 +33,7 @@ export default class Step extends Component {
     }
 
     buildReason() {
-        if (this.props.cleanup) {
+        if (this.props.annotation == "(cleanup)") {
             return (<span className={styles.sROnly}> {this.OrdinalSuffix(this.props.stepNumber)} step, after cleanup</span>);
         } else {
             return (
@@ -89,7 +89,7 @@ export default class Step extends Component {
                             Delete {this.OrdinalSuffix(this.props.stepNumber)} step
                         </span>
                     }
-                //TODO onclick="DeleteActiveMath()"
+                    onClick={this.props.deleteStepCallback}
                 />
             );
         }
@@ -110,12 +110,12 @@ export default class Step extends Component {
                 </div>
                 <div className={bootstrap['col-md-5']}>
                     <span className={styles.sROnly}> math: </span>
-                    <span className="staticMath" >{this.props.math}</span>
+                    <span className="staticMath" >{"$$" + this.props.math + "$$"}</span>
                 </div>
                 <div className={bootstrap['col-md-5']}>
                     <span className={styles.sROnly} role="heading" aria-level="4">reason:</span>
                     <span className={classNames({
-                        [step.annotation]: this.props.annotation == "cleanup"
+                        [step.cleanUpAnnotation]: this.props.annotation === "(cleanup)"
                     })}> {this.props.annotation} </span>
                 </div>
                 <div className={classNames(bootstrap['col-md-1'], step.btnContainer)}>

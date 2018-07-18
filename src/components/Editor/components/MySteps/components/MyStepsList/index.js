@@ -14,6 +14,7 @@ export default class MyStepsList extends Component {
     }
 
     render() {
+        var counter = 0;
         const steps = this.state.steps.map( (step, i) => {
             var showTrash = false;
             var showEdit = false;
@@ -26,11 +27,12 @@ export default class MyStepsList extends Component {
             }
             return <Step
                 key={i}
-                stepNumber={i}
+                stepNumber={step.annotation==="(cleanup)" ? counter : counter++}
                 math={step.equation}
                 annotation={step.annotation}
                 showEdit={showEdit}
-                showTrash={showTrash}/>
+                showTrash={showTrash}
+                deleteStepCallback={this.props.deleteStepCallback}/>
             }
         );
 

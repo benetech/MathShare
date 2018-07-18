@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 import NavigationProblem from '../Problem';
-import { Link } from 'react-router-dom'
 
 export default class Problems extends Component {
     constructor(props) {
@@ -12,8 +11,10 @@ export default class Problems extends Component {
     }
 
     render() {
-        const problems = this.state.problems.map((problem, i) =>
+        const problems = this.state.problems.map((problem, i) => {
+            return problem.metadata.id !== 'example1' ?
             <NavigationProblem key={i} problem={problem} number={i} id={problem.metadata.id}/>
+            : null}
         );
 
         return (

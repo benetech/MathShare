@@ -100,7 +100,7 @@ export default class MyWorkEditorButtons extends Component {
                             ]}
                             toggle="tooltip"
                             title="Undo Last Delete"
-                        //TODO onclick=UndoDeleteStep();
+                            onClick={this.props.undoDeleteStepCallback}
                         />
                         <br />
                         <h3 className={styles.sROnly}>Clean up and add new step</h3>
@@ -118,8 +118,8 @@ export default class MyWorkEditorButtons extends Component {
                             step="3"
                             intro="Clean-up your work and start a new step."
                             icon="plus"
-                        //TODO onclick="AddStep();"
-                        />
+                            onClick={this.props.addStepCallback}
+                            />
                         <div hidden id="updateControls">
                             <h3 className={styles.sROnly}>Update the step</h3>
                             <Button
