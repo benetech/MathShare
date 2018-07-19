@@ -3,6 +3,7 @@ import Home from './Home'
 import Editor from './Editor'
 import { Switch, Route } from 'react-router-dom'
 import example from '../data/example01.json';
+import ReactGA from 'react-ga';
 
 export default class App extends Component {
     
@@ -12,6 +13,7 @@ export default class App extends Component {
     }
 
     render() {
+        ReactGA.initialize(GA_ACCOUNT_ID);
         var data = this.props.dataSet.problems;
         if (this.getProblemById(data, 'example1') == undefined) {
             data.push(example);
