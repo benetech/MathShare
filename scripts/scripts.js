@@ -76,13 +76,6 @@ function MoveEditorToItsContainer() {
 }
 
 //***************************************************************************************************************************************************
-// GLOBAL VARIABLES
-    // Global var to share the representation used for crossouts
-    // The crossout style properties are defined in CSS styles file
-    CrossoutTeXString = "\\enclose{updiagonalstrike downdiagonalstrike}[2px solid blue]";
-    UpdateMathFieldMode = false;
-
-//***************************************************************************************************************************************************
 // RENDER ACTIVE MATH EDITOR
 function RenderMathEditor() {
     TheActiveMathField = MathLive.makeMathField(
@@ -501,72 +494,5 @@ function clearAllSteps() {
     }
     while ($('.mathStep').length > 1) {
         DeleteActiveMath(true);
-    }
-}
-
-//***************************************************************************************************************************************************
-// Call paste function if someone hits enter over palette entry
-// Important for accessibility
-// @param {event} key event that triggered this function
-// @return {bool} true if handled, otherwise false
-function MathLivePasteFromButtonKeyDown(event, element) {
-    if (event.key == "Enter") {
-        MathLivePasteFromButton(element);
-        return false;
-    } else
-        return true;
-}
-
-function initializeKeyShortcuts(palettes) {
-    var keyShortcuts = new Map();
-    palettes.forEach(function(palette) {
-        palette.buttonsRows.forEach(function(buttonsRow) {
-            buttonsRow.forEach(function(button) {
-                if (button.keys) {
-                    keyShortcuts.set(buildMapKey(button.keys), button.id);
-                }
-            });
-        });
-    });
-    sessionStorage.keyShortcuts = JSON.stringify(Array.from(keyShortcuts.entries()));
-}
-
-function buildMapKey(keys) {
-    keys.sort();
-    return mapKey = keys.join('');
-}
-
-//***************************************************************************************************************************************************
-function HandleKeyDown(event)
-{
-    var keyShortcuts = new Map(JSON.parse(sessionStorage.keyShortcuts));
-    if (event.shiftKey && TheActiveMathField.selectionIsCollapsed()) {
-        // if an insertion cursor, extend the selection unless we are at an edge
-        if (event.key === 'Backspace' && !TheActiveMathField.selectionAtStart()) {
-            TheActiveMathField.perform('extendToPreviousChar');
-
-        } else if (event.key === 'Delete' && !TheActiveMathField.selectionAtEnd()) {
-            TheActiveMathField.perform('extendToNextChar');
-        }
-    }
-    if (event.shiftKey && event.key === 'Enter' && $('#mathAnnotation').val() !== '') {
-        if ($('#updateStep').is(":visible")) {
-            $('#updateStep').click();
-        } else {
-            NewRowOrRowsAfterCleanup(TheActiveMathField.latex());
-        }
-    }
-
-    var keys = [];
-    if (event.shiftKey) {
-        keys.push("Shift");
-    }
-    if (event.ctrlKey) {
-        keys.push("Ctrl");
-    }
-    keys.push(event.key);
-    var id = keyShortcuts.get(buildMapKey(keys));
-    if (id) {
-        $("#" + id).click();
     }
 }

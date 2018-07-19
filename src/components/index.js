@@ -6,7 +6,6 @@ import example from '../data/example01.json';
 import ReactGA from 'react-ga';
 
 export default class App extends Component {
-    
     getProblemById(problems, id) {
         const isProblem = p => p.metadata.id === id;
         return problems.find(isProblem);
