@@ -5,6 +5,7 @@ import mathButton from './styles.css';
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 import teXCommands from './teXCommands.json'
 import {NotificationManager} from 'react-notifications';
+import googleAnalytics from '../../../../../../../../../../../../scripts/googleAnalytics';
 
 //***************************************************************************************************************************************************
 // TeX commands
@@ -40,7 +41,7 @@ export default class MathButton extends Component {
                 this.MathLivePasteFromButton();
             }
             if (ids.includes("GoogleAnalytics")) {
-                GoogleAnalytics(this.props.button.title)
+                googleAnalytics(this.props.button.title);
             }
             if (ids.includes("CalculateAndReplace")) {
                 this.CalculateAndReplace();
@@ -276,16 +277,6 @@ export default class MathButton extends Component {
             return latexStr.replace(new RegExp(CrossoutRegExpPattern, "g"), "");
         **/
     }
-}
-
-function GoogleAnalytics(action) {
-    //TODO: Google Analitics - probably should be available to other components
-    /*ga('send', {
-        hitType: 'event',
-        eventCategory: 'Editor',
-        eventAction: action,
-        eventLabel: ''
-    });*/
 }
 
 //***************************************************************************************************************************************************

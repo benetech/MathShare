@@ -5,6 +5,7 @@ import editorArea from '../../styles.css';
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 import styles from '../../../../../../styles.css';
 import {NotificationManager} from 'react-notifications';
+import googleAnalytics from '../../../../../../../../scripts/googleAnalytics';
 
 const SPEECH_RECOGNITION_ERROR = "Speech recognition is supported only for Google Chrome";
 
@@ -28,6 +29,7 @@ export default class SpeechToTextButton extends Component {
     }
 
     speechToText() {
+        googleAnalytics('S2T Clicked');
         if (!this.recognition) {
             NotificationManager.info(SPEECH_RECOGNITION_ERROR, 'Info');
             console.log(SPEECH_RECOGNITION_ERROR);
@@ -69,7 +71,6 @@ export default class SpeechToTextButton extends Component {
                         />
                     }
                     onClick={this.speechToText.bind(this)}
-                //TODO onclick="GoogleAnalytics('S2T Clicked');"
                 />
             </span>
         );
