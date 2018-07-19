@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import Button from "../../../../../../components/Button";
+import Button from "../../../../../../../../components/Button";
 import classNames from "classnames";
 import footer from './styles.css';
-import styles from '../../../../../../styles/styles.css';
+import styles from '../../../../../../../../styles/styles.css';
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 import googleAnalytics from '../../../../../../scripts/googleAnalytics';
 

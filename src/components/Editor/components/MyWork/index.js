@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import MyWorkEditorArea from './components/MyWorkEditorArea';
 import MathPalette from './components/MathPalette';
 import MyWorkEditorButtons from './components/MyWorkEditorButtons';
-import MyWorkFooter from './components/MyWorkFooter';
 import classNames from "classnames";
 import myWork from './styles.css';
 import editor from '../../styles.css';
@@ -63,7 +62,6 @@ export default class MyWork extends Component {
                             <div id="scratch-pad-containter" className={bootstrap['order-0']}></div>
                         </div>
                     </div>
-                    <MyWorkFooter/>
                 </div>
             </div>
         );
