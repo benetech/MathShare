@@ -398,16 +398,6 @@ function UpdateStep(stepNumber) {
     DisplayMessage(SUCCESS_MESSAGE, 'Success:', 'The step has been updated.');
 }
 
-function DisplayMessage(type, title, message) {
-    $('.alertContainer').append(
-        '<div class="alert alert-' + type + ' alert-dismissible">' +
-            '<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>' +
-            '<strong>' + title + ' </strong>' + message +
-        '</div>'
-    );
-    $('.alert:last').delay(4000).fadeOut('slow');
-}
-
 //***************************************************************************************************************************************************
 // Delete the currently active area and make the last step active...
 // Or, put another way...

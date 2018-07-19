@@ -4,19 +4,35 @@ import classNames from "classnames";
 import editorArea from '../../styles.css';
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 import styles from '../../../../../../styles.css';
+import {NotificationManager} from 'react-notifications';
+
+const SPEECH_RECOGNITION_ERROR = "Speech recognition is supported only for Google Chrome";
 
 export default class SpeechToTextButton extends Component {
     constructor(props) {
         super(props);
+
+        var micImage = "src/images/mic.gif";
+        try {
+            this.recognition = initializeRecognition(this);
+        } catch (e) {
+            micImage = "src/images/mic-slash.gif"
+            console.log(SPEECH_RECOGNITION_ERROR);
+        }
+
+        this.spokens = [];
         this.state = {
             micEnabled: false,
-            imageSrc: "src/images/mic.gif"
+            imageSrc: micImage
         }
-        this.spokens = [];
-        this.recognition = initializeRecognition(this);
     }
 
     speechToText() {
+        if (!this.recognition) {
+            NotificationManager.info(SPEECH_RECOGNITION_ERROR, 'Info');
+            console.log(SPEECH_RECOGNITION_ERROR);
+            return;
+        }
         if (this.state.micEnabled) {
             this.recognition.stop();
             this.setState({

@@ -103,7 +103,9 @@ export default class MyWorkEditorArea extends Component {
                                     data-intro="Describe your work by typing directly 
                                         or using the microphone to record an explanation of your work (required)."
                                     aria-label="Use the microphone button or type to explain your work (required)"
-                                    value={this.state.textAreaValue}>
+                                    value={this.state.textAreaValue}
+                                    onChange={e => this.setState({ textAreaValue : e.target.value })}
+                                    >
                                 </textarea>
                                 <SpeechToTextButton
                                     textAreaValue={this.state.textAreaValue}
