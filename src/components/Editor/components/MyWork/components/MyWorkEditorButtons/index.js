@@ -5,6 +5,7 @@ import editorButtons from './styles.css';
 import styles from '../../../../../../styles/styles.css';
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 import Painterro from 'painterro'
+import MyWorkFooter from './components/MyWorkFooter'
 import painterroConfiguration from './painterroConfiguration.json'
 
 export default class MyWorkEditorButtons extends Component {
@@ -158,6 +159,7 @@ export default class MyWorkEditorButtons extends Component {
                         </div>
                     </div>
                 </div>
+                <MyWorkFooter/>
             </div>
         );
     }
