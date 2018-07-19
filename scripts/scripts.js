@@ -580,12 +580,3 @@ function HandleKeyDown(event)
         $("#" + id).click();
     }
 }
-
-function GoogleAnalytics(action) {
-    ga('send', {
-        hitType: 'event',
-        eventCategory: 'Editor',
-        eventAction: action,
-        eventLabel: ''
-    });
-}

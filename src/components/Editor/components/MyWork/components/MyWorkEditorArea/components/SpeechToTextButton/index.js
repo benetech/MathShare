@@ -4,6 +4,7 @@ import classNames from "classnames";
 import editorArea from '../../styles.css';
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 import styles from '../../../../../../styles.css';
+import googleAnalytics from '../../../../../../../../scripts/googleAnalytics';
 
 export default class SpeechToTextButton extends Component {
     constructor(props) {
@@ -17,6 +18,7 @@ export default class SpeechToTextButton extends Component {
     }
 
     speechToText() {
+        googleAnalytics('S2T Clicked');
         if (this.state.micEnabled) {
             this.recognition.stop();
             this.setState({
@@ -53,7 +55,6 @@ export default class SpeechToTextButton extends Component {
                         />
                     }
                     onClick={this.speechToText.bind(this)}
-                //TODO onclick="GoogleAnalytics('S2T Clicked');"
                 />
             </span>
         );

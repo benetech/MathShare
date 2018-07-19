@@ -4,8 +4,17 @@ import classNames from "classnames";
 import footer from './styles.css';
 import styles from '../../../../../../styles/styles.css';
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
+import googleAnalytics from '../../../../../../scripts/googleAnalytics';
 
 export default class MyWorkFooter extends Component {
+    discard() {
+        googleAnalytics('Discard');
+    }
+
+    save() {
+        googleAnalytics('Save');
+    }
+
     render() {
         const btnClassNames = [
             bootstrap.btn,
@@ -30,7 +39,7 @@ export default class MyWorkFooter extends Component {
                             className={btnClassNames}
                             additionalStyles={['withRightMargin', 'default']}
                             content="Discard"
-                        //TODO onclick="GoogleAnalytics('Discard');"
+                            onClick={this.discard}
                         />
                         <Button
                             id="BtnSave"
@@ -40,7 +49,7 @@ export default class MyWorkFooter extends Component {
                             step="5"
                             intro="Save your work or close out to try again from the beginning."
                             icon="thumbs-up"
-                        //TODO onclick="GoogleAnalytics('Save');"
+                            onClick={this.save}
                         />
                         <Button
                             id="BtnClearAll"
