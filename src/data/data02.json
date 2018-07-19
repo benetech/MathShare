@@ -3,6 +3,7 @@
 	"problems": [
 		{
 			"metadata": {
+                "id": "1",
 				"title": "Problem 1"
 			},
 			"originalProblem": {
@@ -22,6 +23,7 @@
 		},
 		{
 			"metadata": {
+                "id": "2",
 				"title": "Problem 2"
 			},
 			"originalProblem": {
@@ -41,6 +43,7 @@
 		},
 		{
 			"metadata": {
+                "id": "3",
 				"title": "Problem 3"
 			},
 			"originalProblem": {
@@ -60,6 +63,7 @@
 		},
 		{
 			"metadata": {
+                "id": "4",
 				"title": "Problem 4"
 			},
 			"originalProblem": {
@@ -79,6 +83,7 @@
 		},
 		{
 			"metadata": {
+                "id": "5",
 				"title": "Problem 5"
 			},
 			"originalProblem": {
@@ -98,6 +103,7 @@
 		},
 		{
 			"metadata": {
+                "id": "6",
 				"title": "Problem 6"
 			},
 			"originalProblem": {
@@ -117,6 +123,7 @@
 		},
 		{
 			"metadata": {
+                "id": "7",
 				"title": "Problem 7"
 			},
 			"originalProblem": {

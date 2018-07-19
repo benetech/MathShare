@@ -8,19 +8,8 @@ import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 import mathLive from '../../../../../lib/mathlivedist/mathlive.js';
 
 export default class Problem extends Component {
-    constructor(props) {
-        super(props);
-        if (!props.example) {
-            this.state = {
-                annotation: props.problem.originalProblem.annotation,
-                equation: props.problem.originalProblem.equation,
-                number: props.number
-            };
-        }
-    }
-
     buildAnnotation() {
-        return (this.state.number + 1) + ". " + this.state.annotation;
+        return (this.props.number + 1) + ". " + this.props.problem.annotation;
     }
 
     componentDidMount() {
@@ -35,7 +24,7 @@ export default class Problem extends Component {
             equation = "Click here to see an example problem and learn how to use the editor";
         } else {
             annotation = this.buildAnnotation();
-            equation = "$$" + this.state.equation + "$$";
+            equation = "$$" + this.props.problem.equation + "$$";
         }
         const NavItem = withRouter(({ history }) => (
             <li

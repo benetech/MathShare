@@ -36,6 +36,7 @@
     "jquery": "^3.3.1",
     "painterro": "^0.2.65",
     "react": "^16.4.1",
+    "react-bootstrap": "^0.32.1",
     "react-dom": "^16.4.1",
     "react-fontawesome": "^1.6.1",
     "react-ga": "^2.5.3",
