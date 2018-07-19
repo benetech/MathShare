@@ -29,3 +29,9 @@
     padding-left: 10px;
     padding-right: 10px;
 }
+
+.scratchPadContainter {
+    position: relative;
+    height: 300px;
+    width: 100%;
+}
