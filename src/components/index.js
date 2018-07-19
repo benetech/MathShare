@@ -5,7 +5,6 @@ import { Switch, Route } from 'react-router-dom'
 import example from '../data/example01.json';
 
 export default class App extends Component {
-    
     getProblemById(problems, id) {
         const isProblem = p => p.metadata.id === id;
         return problems.find(isProblem);

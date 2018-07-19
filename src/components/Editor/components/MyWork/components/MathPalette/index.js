@@ -8,25 +8,23 @@ import palettes from './palettes.json';
 
 export default class MathPalette extends Component {
     initializeKeyShortcuts(palettes) {
-        /*TODO:
         var keyShortcuts = new Map();
         palettes.forEach(function(palette) {
             palette.buttonsRows.forEach(function(buttonsRow) {
                 buttonsRow.forEach(function(button) {
                     if (button.keys) {
-                        keyShortcuts.set(buildMapKey(button.keys), button.id);
+                        keyShortcuts.set(button.keys.sort().join(''), button.id);
                     }
                 });
             });
         });
         sessionStorage.keyShortcuts = JSON.stringify(Array.from(keyShortcuts.entries()));
-        */
     }
 
     render() {
-        this.initializeKeyShortcuts(palettes);
         var allowedPalettes = palettes.filter(palette => 
             (!this.props.allowedPalettes || this.props.allowedPalettes.includes(palette.label)));
+        this.initializeKeyShortcuts(allowedPalettes);
         var mathPalette = allowedPalettes.map((palette, i) =>
             <MathButtonsGroup
                 key={i}

@@ -517,25 +517,6 @@ function MathLivePasteFromButtonKeyDown(event, element) {
         return true;
 }
 
-function initializeKeyShortcuts(palettes) {
-    var keyShortcuts = new Map();
-    palettes.forEach(function(palette) {
-        palette.buttonsRows.forEach(function(buttonsRow) {
-            buttonsRow.forEach(function(button) {
-                if (button.keys) {
-                    keyShortcuts.set(buildMapKey(button.keys), button.id);
-                }
-            });
-        });
-    });
-    sessionStorage.keyShortcuts = JSON.stringify(Array.from(keyShortcuts.entries()));
-}
-
-function buildMapKey(keys) {
-    keys.sort();
-    return mapKey = keys.join('');
-}
-
 //***************************************************************************************************************************************************
 function HandleKeyDown(event)
 {
