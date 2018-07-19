@@ -4,7 +4,7 @@ import classNames from "classnames";
 import footer from './styles.css';
 import styles from '../../../../../../../../styles/styles.css';
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
-import googleAnalytics from '../../../../../../scripts/googleAnalytics';
+import googleAnalytics from '../../../../../../../../scripts/googleAnalytics';
 
 export default class MyWorkFooter extends Component {
     discard() {
