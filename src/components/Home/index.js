@@ -11,11 +11,11 @@ export default class Home extends Component {
         return (
             <div className={home.mainWrapper}>
                 <NotificationContainer/>
-                <MainPageHeader />
+                <MainPageHeader changeDataSet={id => this.props.changeDataSet(id)} />
                 <div className={home.contentWrapper} id="ContentWrapper">
                     <nav id="LeftNavigation" className={home.leftNavigation} aria-labelledby="LeftNavigationHeader">
                         <NavigationHeader />
-                        <NavigationProblems dataSet={this.props.dataSet} />
+                        <NavigationProblems problems={this.props.problems} />
                     </nav>
                 </div>
                 <MainPageFooter />

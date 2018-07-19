@@ -10,13 +10,13 @@ import { NotificationContainer } from 'react-notifications';
 export default class Editor extends Component {
     constructor(props) {
         super(props);
-        this.id = this.props.match.params.number;
+        this.id = props.match.params.number;
         var problem = this.getProblemById(props.problems, this.id);
         this.state = {
             math: problem.originalProblem.equation,
             title: problem.originalProblem.annotation,
             steps: problem.history,
-            allowedPalettes: this.props.allowedPalettes,
+            allowedPalettes: props.allowedPalettes,
             theActiveMathField: null,
             undoDeleteStack: [],
             updateMathFieldMode: false

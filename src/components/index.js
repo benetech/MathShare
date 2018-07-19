@@ -6,6 +6,13 @@ import example from '../data/example01.json';
 import ReactGA from 'react-ga';
 
 export default class App extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            dataSet: props.dataSets[0]
+        }
+    }
+
     getProblemById(problems, id) {
         const isProblem = p => p.metadata.id === id;
         return problems.find(isProblem);
@@ -13,15 +20,16 @@ export default class App extends Component {
 
     render() {
         ReactGA.initialize(GA_ACCOUNT_ID);
-        var data = this.props.dataSet.problems;
-        if (this.getProblemById(data, 'example1') == undefined) {
+        var data = this.state.dataSet.problems;
+        if (!this.getProblemById(data, 'example')) {
             data.push(example);
         }
         return (
             <Switch>
-                <Route exact path='/' render={p => <Home dataSet={this.props.dataSet} />} />
+                <Route exact path='/' render={p => <Home {...p} problems={data}
+                    changeDataSet={id => this.setState({dataSet: this.props.dataSets[id]})} />} />
                 <Route exact path='/problem/:number' render={p =>
-                    <Editor {...p} problems={data} allowedPalettes={this.props.dataSet.metadata.allowedPalettes} />} />
+                    <Editor {...p} problems={data} allowedPalettes={this.state.dataSet.metadata.allowedPalettes} />} />
             </Switch>
         )
     }
