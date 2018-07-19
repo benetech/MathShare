@@ -59,7 +59,14 @@ export default class MyWork extends Component {
                                 )
                             }
                         >
-                            <div id="scratch-pad-containter" className={bootstrap['order-0']}></div>
+                            <div id="scratch-pad-containter" 
+                                className={
+                                    classNames(
+                                        bootstrap['order-0'],
+                                        myWork.scratchPadContainter
+                                    )
+                                }
+                            />
                         </div>
                     </div>
                 </div>

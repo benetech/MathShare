@@ -92,7 +92,7 @@ export default class MathButton extends Component {
         return (
             <span role="listitem">
                 <Button
-                    id={this.props.id}
+                    id={this.props.button.id}
                     className={this.buildClassNames()}
                     data-toggle="tooltip"
                     title={title}

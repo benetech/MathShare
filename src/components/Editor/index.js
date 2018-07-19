@@ -27,6 +27,10 @@ export default class Editor extends Component {
         this.undoDeleteStep = this.undoDeleteStep.bind(this);
     }
 
+    componentDidMount() {
+        document.onkeydown = HandleKeyDown.bind(this);
+    }
+
     undoDeleteStep() {
         var newStack = this.state.undoDeleteStack;
         var stackEntry = newStack.pop();
@@ -145,5 +149,39 @@ export default class Editor extends Component {
                 </main>
             </div>
         );
+    }
+}
+
+function HandleKeyDown(event)
+{
+    var keyShortcuts = new Map(JSON.parse(sessionStorage.keyShortcuts));
+    if (event.shiftKey && this.state.theActiveMathField.selectionIsCollapsed()) {
+        // if an insertion cursor, extend the selection unless we are at an edge
+        if (event.key === 'Backspace' && !this.state.theActiveMathField.selectionAtStart()) {
+            this.state.theActiveMathField.perform('extendToPreviousChar');
+
+        } else if (event.key === 'Delete' && !this.state.theActiveMathField.selectionAtEnd()) {
+            this.state.theActiveMathField.perform('extendToNextChar');
+        }
+    }
+    if (event.shiftKey && event.key === 'Enter' && $('#mathAnnotation').val() !== '') {
+        if ($('#updateStep').is(":visible")) {
+            $('#updateStep').click();
+        } else {
+            NewRowOrRowsAfterCleanup(this.state.theActiveMathField.latex());
+        }
+    }
+
+    var keys = [];
+    if (event.shiftKey) {
+        keys.push("Shift");
+    }
+    if (event.ctrlKey) {
+        keys.push("Ctrl");
+    }
+    keys.push(event.key);
+    var id = keyShortcuts.get(keys.sort().join(''));
+    if (id) {
+        $("#" + id).click();
     }
 }

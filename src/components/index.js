@@ -12,7 +12,7 @@ export default class App extends Component {
             dataSet: props.dataSets[0]
         }
     }
-    
+
     getProblemById(problems, id) {
         const isProblem = p => p.metadata.id === id;
         return problems.find(isProblem);
