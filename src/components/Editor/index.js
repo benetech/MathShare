@@ -5,8 +5,8 @@ import MyStepsList from './components/MySteps/components/MyStepsList';
 import MyWork from './components/MyWork';
 import MathButton from './components/MyWork/components/MathPalette/components/MathButtonsGroup/components/MathButtonsRow/components/MathButton';
 import editor from './styles.css';
-
 import { NotificationContainer } from 'react-notifications';
+
 export default class Editor extends Component {
     constructor(props) {
         super(props);
@@ -140,7 +140,7 @@ export default class Editor extends Component {
 
         return (
             <div id="MainWorkWrapper" className={editor.mainWorkWrapper}>
-                <NotificationContainer/>
+                <NotificationContainer />
                 <main id="MainWorkArea" className={editor.editorAndHistoryWrapper}>
                     <ProblemHeader math={this.state.math} title={problemHeaderTitle} />
                     <MyStepsHeader />

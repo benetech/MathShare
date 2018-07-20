@@ -4,8 +4,8 @@ import classNames from "classnames";
 import mathButton from './styles.css';
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 import teXCommands from './teXCommands.json'
-import { NotificationManager } from 'react-notifications';
 import googleAnalytics from '../../../../../../../../../../../../scripts/googleAnalytics';
+import createAlert from '../../../../../../../../../../../../scripts/alert';
 
 //***************************************************************************************************************************************************
 // TeX commands
@@ -182,14 +182,14 @@ export default class MathButton extends Component {
         }
 
         if (theActiveMathField.selectionIsCollapsed()) {
-            NotificationManager.warning('You must select an arithmetic expression for calculation', 'Warning');
+            createAlert('warning', 'You must select an arithmetic expression for calculation', 'Warning');
             return;
         }
 
         let selection = theActiveMathField.selectedText('latex');
         let result = DoCalculation(this.constructor.CleanUpCrossouts(selection));
         if (result === "") {
-            NotificationManager.warning('Selection must contain only numbers and operators', 'Warning');
+            createAlert('warning', 'Selection must contain only numbers and operators', 'Warning');
             return;
         }
 
