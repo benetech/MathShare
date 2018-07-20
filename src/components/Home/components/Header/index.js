@@ -6,6 +6,7 @@ import styles from '../../../../styles/styles.css';
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 import { withRouter } from 'react-router-dom';
 import { Dropdown, MenuItem } from 'react-bootstrap';
+import { NotificationManager } from 'react-notifications';
 
 export default class MainPageHeader extends Component {
     render() {
@@ -43,8 +44,8 @@ export default class MainPageHeader extends Component {
                                         <MenuItem onClick={e => this.props.changeDataSet(0)}>Problem Set 01</MenuItem>
                                         <MenuItem onClick={e => this.props.changeDataSet(1)}>Problem Set 02</MenuItem>
                                         <MenuItem onClick={e => this.props.changeDataSet(2)}>Problem Set 03</MenuItem>
-                                        <MenuItem onClick={this.uploadProblemSet}>Upload</MenuItem>
-                                        <input id='fileid' type='file' hidden />
+                                        <MenuItem onClick={uploadProblemSet.bind(this)}>Upload</MenuItem>
+                                        <input ref='fileid' type='file' hidden onChange={readBlob.bind(this)} />
                                     </Dropdown.Menu>
                                 </li>
                                 <li className={bootstrap['nav-item']}>
@@ -69,4 +70,40 @@ export default class MainPageHeader extends Component {
             </div>
         );
     }
+}
+
+function uploadProblemSet() {
+    this.refs.fileid.click();
+}
+
+function readBlob(opt_startByte, opt_stopByte) {
+    var files = this.refs.fileid.files;
+    console.log(files);
+    if (!files.length) {
+        NotificationManager.warning('Please select a file', 'Warning');
+        return;
+    }
+
+    var file = files[0];
+    console.log('file:');
+    console.log(file);
+    var start = parseInt(opt_startByte) || 0;
+    console.log('start:' + start);
+    var stop = parseInt(opt_stopByte) || file.size - 1;
+    console.log('stop:' + stop);
+
+    var reader = new FileReader();
+
+    // If we use onloadend, we need to check the readyState.
+    reader.onloadend = function (evt) {
+        if (evt.target.readyState == FileReader.DONE) { // DONE == 2
+            var uploadedString = evt.target.result;
+            var parsedUploadedString = JSON.parse(uploadedString);
+            console.log(parsedUploadedString);
+            ReadFileFinish(parsedUploadedString);
+        }
+    };
+
+    var blob = file.slice(start, stop + 1);
+    reader.readAsBinaryString(blob);
 }

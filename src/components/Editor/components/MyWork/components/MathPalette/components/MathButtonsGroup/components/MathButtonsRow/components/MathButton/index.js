@@ -4,7 +4,7 @@ import classNames from "classnames";
 import mathButton from './styles.css';
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 import teXCommands from './teXCommands.json'
-import {NotificationManager} from 'react-notifications';
+import { NotificationManager } from 'react-notifications';
 import googleAnalytics from '../../../../../../../../../../../../scripts/googleAnalytics';
 
 //***************************************************************************************************************************************************
