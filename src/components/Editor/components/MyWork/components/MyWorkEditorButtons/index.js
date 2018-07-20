@@ -7,6 +7,7 @@ import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 import Painterro from 'painterro'
 import MyWorkFooter from './components/MyWorkFooter'
 import painterroConfiguration from './painterroConfiguration.json'
+import createAlert from '../../../../../../scripts/alert';
 
 export default class MyWorkEditorButtons extends Component {
     constructor(props) {
@@ -16,7 +17,7 @@ export default class MyWorkEditorButtons extends Component {
 
     handleClick(scratchPadPainterro) {
         $('#scratch-pad-containter').slideToggle("fast", function () {
-            if ($("#scratch-pad-containter").is(":visible")) {
+            if (scratchPadPainterro && $("#scratch-pad-containter").is(":visible")) {
                 scratchPadPainterro.adjustSizeFull();
             }
         });
@@ -43,7 +44,11 @@ export default class MyWorkEditorButtons extends Component {
     }
 
     componentDidMount() {
-        this.InitScratchPad();
+        try {
+            this.InitScratchPad();
+        } catch(e) {
+            createAlert("warning", "Sketchpad library wasn't loaded properly", "Warning");
+        }
     }
 
     render() {
