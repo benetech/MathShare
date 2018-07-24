@@ -4,7 +4,7 @@ import classNames from "classnames";
 import editorButtons from './styles.css';
 import styles from '../../../../../../styles/styles.css';
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
-import Painterro from 'painterro'
+import Painterro from '../../../../../../lib/painterro/painterro.commonjs2'
 import MyWorkFooter from './components/MyWorkFooter'
 import painterroConfiguration from './painterroConfiguration.json'
 import createAlert from '../../../../../../scripts/alert';
