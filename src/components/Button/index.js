@@ -2,7 +2,9 @@ import React, { Component } from "react";
 import FontAwesome from "react-fontawesome";
 import classNames from "classnames";
 import styles from './styles.css';
-import mathLive from '../../../src/lib/mathlivedist/mathlive.js';
+
+const mathLive = DEBUG_MODE ? require('../../../mathlive/src/mathlive.js')
+    : require('../../../src/lib/mathlivedist/mathlive.js');
 
 export default class Button extends Component {
     constructor(props) {

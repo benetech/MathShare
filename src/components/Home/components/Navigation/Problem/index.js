@@ -5,7 +5,9 @@ import classNames from "classnames";
 import problem from './styles.css';
 import buttons from '../../../../../components/Button/styles.css';
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
-import mathLive from '../../../../../lib/mathlivedist/mathlive.js';
+
+const mathLive = DEBUG_MODE ? require('../../../../../../mathlive/src/mathlive.js')
+    : require('../../../../../lib/mathlivedist/mathlive.js');
 
 export default class Problem extends Component {
     buildAnnotation() {

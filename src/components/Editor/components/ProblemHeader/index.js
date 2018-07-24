@@ -4,8 +4,10 @@ import classNames from "classnames";
 import problem from './styles.css';
 import styles from '../../../../styles/styles.css';
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
-import mathLive from '../../../../../src/lib/mathlivedist/mathlive.js';
 import googleAnalytics from '../../../../scripts/googleAnalytics';
+
+const mathLive = DEBUG_MODE ? require('../../../../../mathlive/src/mathlive.js')
+    : require('../../../../../src/lib/mathlivedist/mathlive.js');
 
 export default class ProblemHeader extends Component {
     componentDidMount() {
