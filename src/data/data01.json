@@ -1,5 +1,7 @@
 {
-    "metadata": { "title": "Mixed Problems" },
+    "metadata": {
+        "title": "Mixed Problems"
+    },
     "problems": [
         {
             "metadata": {
@@ -147,9 +149,14 @@
                 "title": "Try your own problem",
                 "variableName": "newEditor"
             },
-            "originalProblem": { "equation": "", "annotation": "Try your own problem" },
+            "originalProblem": {
+                "equation": "",
+                "annotation": "Try your own problem"
+            },
             "currentEditor": {},
-            "history": [{}]
+            "history": [
+                {}
+            ]
         }
     ]
 }
