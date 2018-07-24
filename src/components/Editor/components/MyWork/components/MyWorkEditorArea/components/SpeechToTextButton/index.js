@@ -13,11 +13,11 @@ export default class SpeechToTextButton extends Component {
     constructor(props) {
         super(props);
 
-        var micImage = "src/images/mic.gif";
+        var micImage = "/src/images/mic.gif";
         try {
             this.recognition = initializeRecognition(this);
         } catch (e) {
-            micImage = "src/images/mic-slash.gif"
+            micImage = "/src/images/mic-slash.gif"
             console.log(SPEECH_RECOGNITION_ERROR);
         }
 
@@ -39,13 +39,13 @@ export default class SpeechToTextButton extends Component {
             this.recognition.stop();
             this.setState({
                 micEnabled: false,
-                imageSrc: "src/images/mic.gif"
+                imageSrc: "/src/images/mic.gif"
             });
         } else {
             this.recognition.start();
             this.setState({
                 micEnabled: true,
-                imageSrc: "src/images/mic-animate.gif"
+                imageSrc: "/src/images/mic-animate.gif"
             });
         }
     }
