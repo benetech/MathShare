@@ -4,16 +4,8 @@ import classNames from "classnames";
 import footer from './styles.css';
 import styles from '../../../../../../../../styles/styles.css';
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
-import googleAnalytics from '../../../../../../../../scripts/googleAnalytics';
 
 export default class MyWorkFooter extends Component {
-    discard() {
-        googleAnalytics('Discard');
-    }
-
-    save() {
-        googleAnalytics('Save');
-    }
 
     render() {
         const btnClassNames = [
@@ -22,7 +14,7 @@ export default class MyWorkFooter extends Component {
         ];
 
         return (
-            <div className={footer.footer}>
+            <div className={footer.footer} style={this.props.hide ? {display: 'none'} : {}}>
                 <div></div>
                 <div className={bootstrap.row}>
                     <div
@@ -39,7 +31,7 @@ export default class MyWorkFooter extends Component {
                             className={btnClassNames}
                             additionalStyles={['withRightMargin', 'default']}
                             content="Discard"
-                            onClick={this.discard}
+                            onClick={this.props.discardCallback}
                         />
                         <Button
                             id="BtnSave"
@@ -49,7 +41,7 @@ export default class MyWorkFooter extends Component {
                             step="5"
                             intro="Save your work or close out to try again from the beginning."
                             icon="thumbs-up"
-                            onClick={this.save}
+                            onClick={this.props.doneCallback}
                         />
                         <Button
                             id="BtnClearAll"
@@ -57,7 +49,7 @@ export default class MyWorkFooter extends Component {
                             additionalStyles={['default']}
                             content=" Clear all"
                             icon="times-circle"
-                        //TODO onclick="clearAllSteps();"
+                            onClick={this.props.deleteStepsCallback}
                         />
                     </div>
                 </div>

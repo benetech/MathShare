@@ -35,7 +35,8 @@ export default class MyWork extends Component {
                         </h2>
                     </div>
                     <div className={myWork.editorWrapper}>
-                        <MyWorkEditorArea activateMathField={this.props.activateMathField} lastMathEquation={this.props.lastMathEquation}/>
+                        <MyWorkEditorArea activateMathField={this.props.activateMathField} lastMathEquation={this.props.lastMathEquation}
+                            textAreaChanged={this.props.textAreaChanged} textAreaValue={this.props.textAreaValue}/>
                         <div
                             className={
                                 classNames(
@@ -47,7 +48,10 @@ export default class MyWork extends Component {
                             }
                         >
                             <MathPalette theActiveMathField={this.props.theActiveMathField} allowedPalettes={this.props.allowedPalettes}/>
-                            <MyWorkEditorButtons className="d-flex flex-nowrap justify-content-between" addStepCallback={this.props.addStepCallback} undoDeleteStepCallback={this.props.undoDeleteStepCallback} />
+                            <MyWorkEditorButtons className="d-flex flex-nowrap justify-content-between" addStepCallback={this.props.addStepCallback} 
+                                undoDeleteStepCallback={this.props.undoDeleteStepCallback}  cancelEditCallback={this.props.cancelEditCallback}
+                                deleteStepsCallback={this.props.deleteStepsCallback} discardCallback={this.props.discardCallback}
+                                doneCallback={this.props.doneCallback} editing={this.props.editing}/>
                         </div>
                         <div
                             className={
@@ -71,6 +75,6 @@ export default class MyWork extends Component {
                     </div>
                 </div>
             </div>
-        );
+        );   
     }
 }

@@ -118,6 +118,7 @@ export default class MyWorkEditorButtons extends Component {
                                 styles.pointer,
                                 editorButtons.editorBtn
                             ]}
+                            hide={this.props.editing}
                             toggle="tooltip"
                             title="Clean up the cross outs and start a new step (⌨: shift+enter)"
                             content=" Add Step"
@@ -126,7 +127,7 @@ export default class MyWorkEditorButtons extends Component {
                             icon="plus"
                             onClick={this.props.addStepCallback}
                             />
-                        <div hidden id="updateControls">
+                        <div id="updateControls" style={this.props.editing ? {} : {display: 'none'}} >
                             <h3 className={styles.sROnly}>Update the step</h3>
                             <Button
                                 id="updateStep"
@@ -159,12 +160,13 @@ export default class MyWorkEditorButtons extends Component {
                                 step="3"
                                 intro="Cancel edit."
                                 icon="ban"
-                            //TODO onclick="ExitUpdate();"
+                                onClick={this.props.cancelEditCallback}
                             />
                         </div>
                     </div>
                 </div>
-                <MyWorkFooter/>
+                <MyWorkFooter deleteStepsCallback={this.props.deleteStepsCallback} discardCallback={this.props.discardCallback}
+                    doneCallback={this.props.doneCallback} hide={this.props.editing}/>
             </div>
         );
     }
