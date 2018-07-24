@@ -7,6 +7,21 @@ const htmlWebpackPlugin = new HtmlWebPackPlugin({
 });
 
 module.exports = env => {
+    var debug = (env && env.debug);
+    var plugins = [
+        htmlWebpackPlugin,
+        new webpack.ProvidePlugin({
+            $: "jquery",
+            jQuery: "jquery",
+            "window.jQuery": "jquery"
+        }),
+        new webpack.DefinePlugin({
+            DEBUG_MODE: debug
+        })
+    ];
+    if (!debug) {
+        plugins.push(new webpack.IgnorePlugin(/mathlive\/src\/mathlive.js/));
+    }
     return {
         module: {
             rules: [
@@ -37,16 +52,6 @@ module.exports = env => {
                 }
             ]
         },
-        plugins: [
-            htmlWebpackPlugin,
-            new webpack.ProvidePlugin({
-                $: "jquery",
-                jQuery: "jquery",
-                "window.jQuery": "jquery"
-            }),
-            new webpack.DefinePlugin({
-                DEBUG_MODE: (env && env.debug)
-            })
-        ]
+        plugins: plugins
     }
 };
