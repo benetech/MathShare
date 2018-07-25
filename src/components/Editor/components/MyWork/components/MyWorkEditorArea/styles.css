@@ -33,18 +33,18 @@
     background-color: rgb(255, 255, 255);
     min-height: 100px;
     width: inherit;
+    height: 122px;
 }
 
 .mathEditorActive {
     float: left;
     min-width: 400px;
     margin: 10px;
-    overflow-y: hidden;
+    overflow-y: auto;
     overflow-x: auto;
     display: inline-block;
     flex-grow: 200;
     padding: 5px;
-    height: 100px;
 }
 
 /* Additional styles for Microsoft Edge */
