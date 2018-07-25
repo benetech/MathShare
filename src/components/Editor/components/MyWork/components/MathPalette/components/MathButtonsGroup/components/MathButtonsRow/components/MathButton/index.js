@@ -135,8 +135,6 @@ export default class MathButton extends Component {
                 selectionMode: 'placeholder'
             }]);
         $("#mathAnnotationHeader").focus();
-        $('#mathEditorActive').height(theActiveMathField.element.scrollHeight);
-        $('#mathAnnotation').height(theActiveMathField.element.scrollHeight);
         theActiveMathField.focus();
     }
 
