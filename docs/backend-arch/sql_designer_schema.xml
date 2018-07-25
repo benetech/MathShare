@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- SQL XML created by WWW SQL Designer, https://github.com/ondras/wwwsqldesigner/ -->
+<!-- Active URL: http://ondras.zarovi.cz/sql/demo/?keyword=default -->
+<sql>
+    <datatypes db="mysql">
+        <group color="rgb(238,238,170)" label="Numeric">
+            <type label="Integer" quote="" sql="INTEGER" length="0"/>
+            <type label="TINYINT" quote="" sql="TINYINT" length="0"/>
+            <type label="SMALLINT" quote="" sql="SMALLINT" length="0"/>
+            <type label="MEDIUMINT" quote="" sql="MEDIUMINT" length="0"/>
+            <type label="INT" quote="" sql="INT" length="0"/>
+            <type label="BIGINT" quote="" sql="BIGINT" length="0"/>
+            <type label="Decimal" quote="" sql="DECIMAL" length="1" re="DEC"/>
+            <type label="Single precision" quote="" sql="FLOAT" length="0"/>
+            <type label="Double precision" quote="" sql="DOUBLE" length="0" re="DOUBLE"/>
+        </group>
+
+        <group color="rgb(255,200,200)" label="Character">
+            <type label="Char" quote="'" sql="CHAR" length="1"/>
+            <type label="Varchar" quote="'" sql="VARCHAR" length="1"/>
+            <type label="Text" quote="'" sql="MEDIUMTEXT" length="0" re="TEXT"/>
+            <type label="Binary" quote="'" sql="BINARY" length="1"/>
+            <type label="Varbinary" quote="'" sql="VARBINARY" length="1"/>
+            <type label="BLOB" quote="'" sql="BLOB" length="0" re="BLOB"/>
+        </group>
+
+        <group color="rgb(200,255,200)" label="Date &amp; Time">
+            <type label="Date" quote="'" sql="DATE" length="0"/>
+            <type label="Time" quote="'" sql="TIME" length="0"/>
+            <type label="Datetime" quote="'" sql="DATETIME" length="0"/>
+            <type label="Year" quote="" sql="YEAR" length="0"/>
+            <type label="Timestamp" quote="'" sql="TIMESTAMP" length="0"/>
+        </group>
+
+        <group color="rgb(200,200,255)" label="Miscellaneous">
+            <type label="ENUM" quote="" sql="ENUM" length="1"/>
+            <type label="SET" quote="" sql="SET" length="1"/>
+            <type label="Bit" quote="" sql="bit" length="0"/>
+        </group>
+    </datatypes><table x="612" y="216" name="problem_set">
+    <row name="id" null="1" autoincrement="1">
+        <datatype>INTEGER</datatype>
+        <default>NULL</default></row>
+    <row name="edit_url" null="1" autoincrement="0">
+        <datatype>VARCHAR</datatype>
+        <default>NULL</default></row>
+    <row name="date_created" null="1" autoincrement="0">
+        <datatype>DATETIME</datatype>
+        <default>NULL</default></row>
+    <row name="date_modified" null="1" autoincrement="0">
+        <datatype>DATETIME</datatype>
+        <default>NULL</default></row>
+    <key type="PRIMARY" name="">
+        <part>id</part>
+    </key>
+</table>
+    <table x="1073" y="199" name="problem">
+        <row name="id" null="1" autoincrement="1">
+            <datatype>INTEGER</datatype>
+            <default>NULL</default></row>
+        <row name="problem_set_id" null="1" autoincrement="0">
+            <datatype>INTEGER</datatype>
+            <default>NULL</default><relation table="problem_set_revision" row="id" />
+        </row>
+        <row name="replaced_by" null="1" autoincrement="0">
+            <datatype>INTEGER</datatype>
+            <default>NULL</default><relation table="problem" row="id" />
+        </row>
+        <row name="problem_text" null="1" autoincrement="0">
+            <datatype>MEDIUMTEXT</datatype>
+            <default>NULL</default></row>
+        <row name="date_created" null="1" autoincrement="0">
+            <datatype>DATETIME</datatype>
+            <default>NULL</default></row>
+        <key type="PRIMARY" name="">
+            <part>id</part>
+        </key>
+    </table>
+    <table x="1432" y="448" name="solution_revision">
+        <row name="id" null="1" autoincrement="1">
+            <datatype>INTEGER</datatype>
+            <default>NULL</default></row>
+        <row name="problem_solution_id" null="1" autoincrement="0">
+            <datatype>INTEGER</datatype>
+            <default>NULL</default><relation table="problem_solution" row="id" />
+        </row>
+        <row name="date_created" null="1" autoincrement="0">
+            <datatype>DATETIME</datatype>
+            <default>NULL</default></row>
+        <row name="replaced_by" null="1" autoincrement="0">
+            <datatype>INTEGER</datatype>
+            <default>NULL</default><relation table="solution_revision" row="id" />
+        </row>
+        <row name="share_url" null="1" autoincrement="0">
+            <datatype>VARCHAR</datatype>
+            <default>NULL</default></row>
+        <key type="PRIMARY" name="">
+            <part>id</part>
+        </key>
+    </table>
+    <table x="1731" y="202" name="solution_step">
+        <row name="id" null="1" autoincrement="1">
+            <datatype>INTEGER</datatype>
+            <default>NULL</default></row>
+        <row name="explanation" null="1" autoincrement="0">
+            <datatype>MEDIUMTEXT</datatype>
+            <default>NULL</default></row>
+        <row name="step_value" null="1" autoincrement="0">
+            <datatype>VARCHAR</datatype>
+            <default>NULL</default></row>
+        <row name="solution_id" null="1" autoincrement="0">
+            <datatype>INTEGER</datatype>
+            <default>NULL</default><relation table="solution_revision" row="id" />
+        </row>
+        <row name="date_modified" null="1" autoincrement="0">
+            <datatype>DATETIME</datatype>
+            <default>NULL</default></row>
+        <row name="replaced_by" null="1" autoincrement="0">
+            <datatype>INTEGER</datatype>
+            <default>NULL</default><relation table="solution_step" row="id" />
+        </row>
+        <row name="deleted" null="1" autoincrement="0">
+            <datatype>bit</datatype>
+            <default>NULL</default></row>
+        <key type="PRIMARY" name="">
+            <part>id</part>
+        </key>
+    </table>
+    <table x="1716" y="66" name="scratchpad">
+        <row name="id" null="1" autoincrement="1">
+            <datatype>INTEGER</datatype>
+            <default>NULL</default></row>
+        <row name="step_id" null="1" autoincrement="0">
+            <datatype>INTEGER</datatype>
+            <default>NULL</default><relation table="solution_step" row="id" />
+        </row>
+        <row name="content" null="1" autoincrement="0">
+            <datatype>BLOB</datatype>
+            <default>NULL</default></row>
+        <row name="date_modified" null="1" autoincrement="0">
+            <datatype>DATETIME</datatype>
+            <default>NULL</default></row>
+        <key type="PRIMARY" name="">
+            <part>id</part>
+        </key>
+    </table>
+    <table x="1321" y="196" name="problem_solution">
+        <row name="id" null="1" autoincrement="1">
+            <datatype>INTEGER</datatype>
+            <default>NULL</default></row>
+        <row name="problem_id" null="1" autoincrement="0">
+            <datatype>INTEGER</datatype>
+            <default>NULL</default><relation table="problem" row="id" />
+        </row>
+        <row name="edit_url" null="1" autoincrement="0">
+            <datatype>VARCHAR</datatype>
+            <default>NULL</default></row>
+        <row name="date_created" null="1" autoincrement="0">
+            <datatype>DATETIME</datatype>
+            <default>NULL</default></row>
+        <row name="date_modified" null="1" autoincrement="0">
+            <datatype>DATETIME</datatype>
+            <default>NULL</default></row>
+        <key type="PRIMARY" name="">
+            <part>id</part>
+        </key>
+    </table>
+    <table x="842" y="466" name="problem_set_revision">
+        <row name="id" null="1" autoincrement="1">
+            <datatype>INTEGER</datatype>
+            <default>NULL</default></row>
+        <row name="problem_set_id" null="1" autoincrement="0">
+            <datatype>INTEGER</datatype>
+            <default>NULL</default><relation table="problem_set" row="id" />
+        </row>
+        <row name="replaced_by" null="1" autoincrement="0">
+            <datatype>INTEGER</datatype>
+            <default>NULL</default><relation table="problem_set_revision" row="id" />
+        </row>
+        <row name="share_url" null="1" autoincrement="0">
+            <datatype>VARCHAR</datatype>
+            <default>NULL</default></row>
+        <row name="date_created" null="1" autoincrement="0">
+            <datatype>DATETIME</datatype>
+            <default>NULL</default></row>
+        <key type="PRIMARY" name="">
+            <part>id</part>
+        </key>
+    </table>
+</sql>
+
+
+
+
+
