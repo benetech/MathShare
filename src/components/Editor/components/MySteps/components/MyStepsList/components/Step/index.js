@@ -66,7 +66,7 @@ export default class Step extends Component {
                             Edit {this.OrdinalSuffix(this.props.stepNumber)} step
                         </span>
                     }
-                //TODO onclick="EditMathStep('+ stepNumber + ')"
+                    onClick={() => this.props.editStepCallback(this.props.exposedKey)}
                 />
             );
         }
@@ -91,7 +91,7 @@ export default class Step extends Component {
                             Delete {this.OrdinalSuffix(this.props.stepNumber)} step
                         </span>
                     }
-                    onClick={this.props.deleteStepCallback}
+                    onClick={() => this.props.deleteStepCallback(false)}
                 />
             );
         }
@@ -103,7 +103,7 @@ export default class Step extends Component {
 
     render() {
         return (
-            <div className={classNames(bootstrap.row, step.step)} data-step={this.props.stepNumber}
+            <div id="mathStep" className={classNames(bootstrap.row, step.step)} data-step={this.props.stepNumber}
                 data-equation={this.props.math} data-annotation={this.props.annotation}>
                 <div className={bootstrap['col-md-1']}>
                     <span role="heading" aria-level="3">

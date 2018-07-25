@@ -3,6 +3,7 @@ import Step from "./components/Step";
 import classNames from "classnames";
 import myStepsList from './styles.css';
 import mySteps from '../../../../styles.css';
+import MyWork from '../../../../components/MyWork';
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 
 export default class MyStepsList extends Component {
@@ -14,8 +15,8 @@ export default class MyStepsList extends Component {
     }
 
     render() {
-        var counter = 0;
-        const steps = this.state.steps.map( (step, i) => {
+        var counter = 1;
+        let steps = this.state.steps.map( (step, i) => {
             var showTrash = false;
             var showEdit = false;
             if (i > 0) {
@@ -25,16 +26,36 @@ export default class MyStepsList extends Component {
             if (i == this.state.steps.length - 1 && this.state.steps.length > 1) {
                 showTrash = true;
             }
+          
             return <Step
-                key={i}
-                stepNumber={step.annotation==="(cleanup)" ? counter : counter++}
-                math={step.equation}
-                annotation={step.annotation}
-                showEdit={showEdit}
-                showTrash={showTrash}
-                deleteStepCallback={this.props.deleteStepCallback}/>
+                    key={i}
+                    exposedKey={i}
+                    stepNumber={step.annotation==="(cleanup)" ? counter : counter++}
+                    math={step.equation}
+                    annotation={step.annotation}
+                    showEdit={showEdit}
+                    showTrash={showTrash}
+                    deleteStepCallback={this.props.deleteStepCallback}
+                    editStepCallback={this.props.editStepCallback}/>  
             }
         );
+
+        steps.splice(this.props.editorPosition + 1, 0, 
+            <MyWork
+                key={"editor"}
+                allowedPalettes={this.props.allowedPalettes}
+                activateMathField={this.props.activateMathField}
+                theActiveMathField={this.props.theActiveMathField}
+                textAreaChanged={this.props.textAreaChanged}
+                textAreaValue={this.props.textAreaValue}
+                addStepCallback={this.props.addStepCallback}
+                undoDeleteStepCallback={this.props.undoDeleteStepCallback}
+                lastMathEquation={this.props.lastMathEquation} 
+                deleteStepsCallback={this.props.deleteStepsCallback}
+                cancelEditCallback={this.props.cancelEditCallback}
+                editing={this.props.editing}
+                history={this.props.history}/>
+        )
 
         return (
             <div id="HistoryWrapper" className={mySteps.historyWrapper}>

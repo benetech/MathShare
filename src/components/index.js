@@ -4,6 +4,8 @@ import Editor from './Editor'
 import { Switch, Route } from 'react-router-dom'
 import example from '../data/example01.json';
 import ReactGA from 'react-ga';
+const mathLive = DEBUG_MODE ? require('../../mathlive/src/mathlive.js')
+    : require('../lib/mathlivedist/mathlive.js');
 
 export default class App extends Component {
     constructor(props) {
@@ -27,7 +29,9 @@ export default class App extends Component {
         return (
             <Switch>
                 <Route exact path='/' render={p => <Home {...p} problems={data}
-                    changeDataSet={id => this.setState({dataSet: this.props.dataSets[id]})} />} />
+                    changeDataSet={id => {this.setState({dataSet: this.props.dataSets[id]},
+                    mathLive.renderMathInDocument());
+                }} />} />
                 <Route exact path='/problem/:number' render={p =>
                     <Editor {...p} problems={data} allowedPalettes={this.state.dataSet.metadata.allowedPalettes} />} />
             </Switch>

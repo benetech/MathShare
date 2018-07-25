@@ -9,12 +9,6 @@ const mathLive = DEBUG_MODE ? require('../../../../../../../mathlive/src/mathliv
     : require('../../../../../../../src/lib/mathlivedist/mathlive.js');
 
 export default class MyWorkEditorArea extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            textAreaValue: "",
-        }
-    }
 
     componentDidMount() {
         var mathField = this.getMathField();
@@ -105,13 +99,11 @@ export default class MyWorkEditorArea extends Component {
                                     data-intro="Describe your work by typing directly 
                                         or using the microphone to record an explanation of your work (required)."
                                     aria-label="Use the microphone button or type to explain your work (required)"
-                                    value={this.state.textAreaValue}
-                                    onChange={e => this.setState({ textAreaValue : e.target.value })}
+                                    value={this.props.textAreaValue}
+                                    onChange={this.props.textAreaChanged}
                                     >
                                 </textarea>
-                                <SpeechToTextButton
-                                    textAreaValue={this.state.textAreaValue}
-                                    setTextAreaValue={value => this.setState({textAreaValue: value})} />
+                                <SpeechToTextButton/>
                             </div>
                         </div>
                     </div>

@@ -3,9 +3,6 @@ import FontAwesome from "react-fontawesome";
 import classNames from "classnames";
 import styles from './styles.css';
 
-const mathLive = DEBUG_MODE ? require('../../../mathlive/src/mathlive.js')
-    : require('../../../src/lib/mathlivedist/mathlive.js');
-
 export default class Button extends Component {
     constructor(props) {
         super(props);
@@ -36,10 +33,6 @@ export default class Button extends Component {
         }
     }
 
-    componentDidMount() {
-        mathLive.renderMathInDocument();
-    }
-
     render() {
         var span;
         if (this.props.icon) {
@@ -60,6 +53,7 @@ export default class Button extends Component {
                 data-intro={this.props.step}
                 data-toggle={this.props.toggle}
                 onClick={this.props.onClick}
+                style={this.props.hide ? {display: 'none'} : {}}
             >
                 {span}
                 {this.state.content}

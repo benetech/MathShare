@@ -7,12 +7,23 @@ import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 import googleAnalytics from '../../../../../../../../scripts/googleAnalytics';
 
 export default class MyWorkFooter extends Component {
-    discard() {
-        googleAnalytics('Discard');
+    constructor(props) {
+        super(props);
+      
+        this.discard = this.discard.bind(this);
+        this.saveSolution = this.saveSolution.bind(this);
     }
 
-    save() {
+    discard() {
+        if (confirm("Any work on this problem will NOT be saved")) {
+            this.props.history.goBack()
+            googleAnalytics('Discard');
+        }
+    }
+
+    saveSolution() {
         googleAnalytics('Save');
+        this.props.history.goBack()
     }
 
     render() {
@@ -22,7 +33,7 @@ export default class MyWorkFooter extends Component {
         ];
 
         return (
-            <div className={footer.footer}>
+            <div className={footer.footer} style={this.props.hide ? {display: 'none'} : {}}>
                 <div></div>
                 <div className={bootstrap.row}>
                     <div
@@ -49,7 +60,7 @@ export default class MyWorkFooter extends Component {
                             step="5"
                             intro="Save your work or close out to try again from the beginning."
                             icon="thumbs-up"
-                            onClick={this.save}
+                            onClick={this.saveSolution}
                         />
                         <Button
                             id="BtnClearAll"
@@ -57,7 +68,7 @@ export default class MyWorkFooter extends Component {
                             additionalStyles={['default']}
                             content=" Clear all"
                             icon="times-circle"
-                        //TODO onclick="clearAllSteps();"
+                            onClick={this.props.deleteStepsCallback}
                         />
                     </div>
                 </div>
