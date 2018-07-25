@@ -10,7 +10,7 @@ export default class MyStepsList extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            steps: props.steps,
+            steps: props.steps
         };
     }
 
@@ -53,9 +53,8 @@ export default class MyStepsList extends Component {
                 lastMathEquation={this.props.lastMathEquation} 
                 deleteStepsCallback={this.props.deleteStepsCallback}
                 cancelEditCallback={this.props.cancelEditCallback}
-                discardCallback={this.props.discardCallback}
-                doneCallback={this.props.doneCallback}
-                editing={this.props.editing}/>
+                editing={this.props.editing}
+                history={this.props.history}/>
         )
 
         return (

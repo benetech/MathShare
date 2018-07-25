@@ -4,9 +4,9 @@ import MyStepsHeader from './components/MySteps/components/MyStepsHeader';
 import MyStepsList from './components/MySteps/components/MyStepsList';
 import MathButton from './components/MyWork/components/MathPalette/components/MathButtonsGroup/components/MathButtonsRow/components/MathButton';
 import editor from './styles.css';
-import {NotificationManager, NotificationContainer} from 'react-notifications';
+import {NotificationContainer} from 'react-notifications';
 import mathLive from '../../../src/lib/mathlivedist/mathlive.js';
-import googleAnalytics from '../../scripts/googleAnalytics';
+import createAlert from '../../scripts/alert';
 
 export default class Editor extends Component {
     constructor(props) {
@@ -31,31 +31,17 @@ export default class Editor extends Component {
         this.undoDeleteStep = this.undoDeleteStep.bind(this);
         this.deleteSteps = this.deleteSteps.bind(this);
         this.editStep = this.editStep.bind(this);
-        this.discard = this.discard.bind(this);
-        this.saveSolution = this.saveSolution.bind(this);
         this.updateStep = this.updateStep.bind(this);
         this.exitUpdate = this.exitUpdate.bind(this);
         this.textAreaChanged = this.textAreaChanged.bind(this);
     }
 
-    textAreaChanged(text) {
-        this.setState({textAreaValue : text});
+    textAreaChanged(event) {
+        this.setState({textAreaValue : event.target.value});
     }
 
     componentDidMount() {
         $('#undoDelete').hide();
-    }
-
-    discard() {
-        if (confirm("Any work on this problem will NOT be saved")) {
-            this.props.history.goBack()
-            googleAnalytics('Discard');
-        }
-    }
-
-    saveSolution() {
-        googleAnalytics('Save');
-        this.props.history.goBack()
     }
 
     editStep(stepNumber) {
@@ -93,7 +79,6 @@ export default class Editor extends Component {
         }
     }
 
-
     //TODO: lift sratchpadpainterro up to here from my workeditorbuttons so we can use it
     clearScrachPad() {
        // ScratchPadPainterro.clearBackground();
@@ -119,17 +104,16 @@ export default class Editor extends Component {
 
     updateStep(index) {
         if (this.state.textAreaValue === '') {
-            NotificationManager.warning('Please provide a description of your work.', 'Warning');
+            createAlert('warning', 'Please provide a description of your work.', 'Warning');
             $('#mathAnnotation').focus();
             return;
         }
         console.log(this.state.theActiveMathField.latex())
         this.updateRowAfterCleanup(this.state.theActiveMathField.latex(), index);
         this.exitUpdate(index);
-        NotificationManager.success('The step has been updated.', 'Success');
+        createAlert('success', 'The step has been updated.', 'Success');
     }
 
-    
     updateRowAfterCleanup(mathContent, mathStepNumber) {
         let cleanedUp = MathButton.CleanUpCrossouts(mathContent);
         if (mathContent !== cleanedUp) {
@@ -208,8 +192,7 @@ export default class Editor extends Component {
         }
     }
 
-    
-    deleteStep(clear) {
+    deleteStep(clearAll) {
         // nothing to do if there are no steps
         if (!$('.mathStep:last')) {
             return;
@@ -230,7 +213,7 @@ export default class Editor extends Component {
         newStack.push(
             { latex: updatedMathField.latex(),
                 annotation: lastStep.annotation,
-                clearAll: clear
+                clearAll: clearAll
             });
         $('#undoDelete').show();
         this.setState({undoDeleteStack: newStack});
@@ -263,7 +246,7 @@ export default class Editor extends Component {
 
     addStep(undoing) {
         if (this.state.textAreaValue === "") {
-            NotificationManager.warning('Please provide a description of your work.', 'Warning');
+            createAlert('warning', 'Please provide a description of your work.', 'Warning');
             $('#mathAnnotation').focus();
             return;
         }
@@ -309,10 +292,9 @@ export default class Editor extends Component {
                 lastMathEquation={this.state.steps[this.state.steps.length - 1].equation} 
                 deleteStepsCallback={this.deleteSteps}
                 cancelEditCallback={this.exitUpdate}
-                discardCallback={this.discard}
-                doneCallback={this.saveSolution}
                 editorPosition={this.state.editorPosition}
-                editing={this.state.editing} />;
+                editing={this.state.editing}
+                history={this.props.history} />;
             problemHeaderTitle += ": ";
         }
 

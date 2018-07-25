@@ -50,8 +50,7 @@ export default class MyWork extends Component {
                             <MathPalette theActiveMathField={this.props.theActiveMathField} allowedPalettes={this.props.allowedPalettes}/>
                             <MyWorkEditorButtons className="d-flex flex-nowrap justify-content-between" addStepCallback={this.props.addStepCallback} 
                                 undoDeleteStepCallback={this.props.undoDeleteStepCallback}  cancelEditCallback={this.props.cancelEditCallback}
-                                deleteStepsCallback={this.props.deleteStepsCallback} discardCallback={this.props.discardCallback}
-                                doneCallback={this.props.doneCallback} editing={this.props.editing}/>
+                                deleteStepsCallback={this.props.deleteStepsCallback} editing={this.props.editing} history={this.props.history}/>
                         </div>
                         <div
                             className={
@@ -75,6 +74,6 @@ export default class MyWork extends Component {
                     </div>
                 </div>
             </div>
-        );   
+        );
     }
 }

@@ -165,8 +165,7 @@ export default class MyWorkEditorButtons extends Component {
                         </div>
                     </div>
                 </div>
-                <MyWorkFooter deleteStepsCallback={this.props.deleteStepsCallback} discardCallback={this.props.discardCallback}
-                    doneCallback={this.props.doneCallback} hide={this.props.editing}/>
+                <MyWorkFooter deleteStepsCallback={this.props.deleteStepsCallback} hide={this.props.editing} history={this.props.history}/>
             </div>
         );
     }
