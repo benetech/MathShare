@@ -49,7 +49,7 @@ export default class MyStepsList extends Component {
                 textAreaChanged={this.props.textAreaChanged}
                 textAreaValue={this.props.textAreaValue}
                 addStepCallback={this.props.addStepCallback}
-                undoDeleteStepCallback={this.props.undoDeleteStepCallback}
+                undoLastActionCallback={this.props.undoLastActionCallback}
                 lastMathEquation={this.props.lastMathEquation} 
                 deleteStepsCallback={this.props.deleteStepsCallback}
                 cancelEditCallback={this.props.cancelEditCallback}

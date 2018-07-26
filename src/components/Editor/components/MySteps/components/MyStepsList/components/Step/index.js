@@ -91,7 +91,7 @@ export default class Step extends Component {
                             Delete {this.OrdinalSuffix(this.props.stepNumber)} step
                         </span>
                     }
-                    onClick={() => this.props.deleteStepCallback(false)}
+                    onClick={() => this.props.deleteStepCallback(false, true)}
                 />
             );
         }

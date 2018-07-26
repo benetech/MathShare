@@ -21,14 +21,14 @@ export default class Editor extends Component {
             allowedPalettes: props.allowedPalettes,
             theActiveMathField: null,
             textAreaValue: "",
-            undoDeleteStack: [],
+            actionsStack: [],
             updateMathFieldMode: false,
             editing: false
         };
 
         this.addStep = this.addStep.bind(this);
         this.deleteStep = this.deleteStep.bind(this);
-        this.undoDeleteStep = this.undoDeleteStep.bind(this);
+        this.undoLastAction = this.undoLastAction.bind(this);
         this.deleteSteps = this.deleteSteps.bind(this);
         this.editStep = this.editStep.bind(this);
         this.updateStep = this.updateStep.bind(this);
@@ -108,9 +108,12 @@ export default class Editor extends Component {
             $('#mathAnnotation').focus();
             return;
         }
-        console.log(this.state.theActiveMathField.latex())
+        let mathStep = $($("#MathHistory").children()[index]);
+        let oldAnnotation = mathStep.data('annotation');
+        let oldEquation = mathStep.data('equation');
+
         this.updateRowAfterCleanup(this.state.theActiveMathField.latex(), index);
-        this.exitUpdate(index);
+        this.exitUpdate(oldEquation, oldAnnotation, index);
         createAlert('success', 'The step has been updated.', 'Success');
     }
 
@@ -138,7 +141,7 @@ export default class Editor extends Component {
         this.setState({editorPosition: stepNumber});
     }
 
-    exitUpdate() {
+    exitUpdate(oldEquation, oldAnnotation, index) {
         let latestMathStepData = $("#latestMathStepData");
         let updatedMathField = this.state.theActiveMathField;
         updatedMathField.latex(latestMathStepData.data('equation'));
@@ -147,6 +150,17 @@ export default class Editor extends Component {
             textAreaValue: latestMathStepData.data('annotation'),
             editorPosition: this.state.steps.length - 1,
             editing: false});
+
+        var newStack = this.state.actionsStack;
+        newStack.push(
+            {   type: "edit",
+                latex: oldEquation,
+                annotation: oldAnnotation,
+                clearAll: false,
+                index: index
+            });
+        $('#undoDelete').show();
+        this.setState({actionsStack: newStack});
 
         //applyScratchPadContent(latestMathStepData.data('scratch-pad'));
         latestMathStepData.detach();
@@ -163,36 +177,59 @@ export default class Editor extends Component {
         this.el.scrollIntoView({ behavior: 'smooth' });
     }
 
-    undoDeleteStep() {
-        this.addStep(true)
-
-        var newStack = this.state.undoDeleteStack;
-        newStack.pop();
-        var stackEntry = newStack[newStack.length - 1];
-
-        this.setState({undoDeleteStack: newStack});
-
-        if (stackEntry === undefined) {
+    undoLastAction() {
+        var newStack = this.state.actionsStack;
+        var stackEntry = newStack.pop();
+        this.setState({actionsStack: newStack});
+        if (newStack.length < 1) {
             $('#undoDelete').hide();
-            return;
         }
+        switch(stackEntry.type) {
+            case "delete":
+                this.undoDelete(stackEntry);
+                break;
+            case "add":
+                this.undoAdd();
+                break;
+            case "edit":
+                this.undoEdit(stackEntry);
+                break;
+            default:
+                throw "Unsupported action type";
+        }
+    }
 
+    undoDelete(stackEntry) {
         let updatedMathField = this.state.theActiveMathField;
         updatedMathField.latex(stackEntry.latex);
         this.setState({
             theActiveMathField: updatedMathField,
             textAreaValue: stackEntry.annotation},
-            () => this.shouldDeleteNextStep(stackEntry)
+            () => { this.addStep(true);
+                    if (stackEntry.clearAll) {
+                        this.undoLastAction();
+                    }
+            }
         );
     }
 
-    shouldDeleteNextStep(stackEntry) {
-        if (this.state.undoDeleteStack.length >= 0 && (stackEntry.annotation == '(cleanup)' || stackEntry.clearAll == true)) {
-            this.undoDeleteStep();
-        }
+    undoEdit(stackEntry) {
+        let updatedMathField = this.state.theActiveMathField;
+        updatedMathField.latex(stackEntry.latex);
+        this.setState({
+            theActiveMathField: updatedMathField,
+            textAreaValue: stackEntry.annotation},
+            () => {
+                this.updateMathEditorRow(stackEntry.latex, stackEntry.index, false)
+            }
+        );
     }
 
-    deleteStep(clearAll) {
+    undoAdd() {
+        this.deleteStep(false, false);
+    }
+
+    deleteStep(clearAll, addToHistory) {
         // nothing to do if there are no steps
         if (!$('.mathStep:last')) {
             return;
@@ -209,14 +246,17 @@ export default class Editor extends Component {
             textAreaValue: lastStep.annotation
         });
 
-        var newStack = this.state.undoDeleteStack;
-        newStack.push(
-            { latex: updatedMathField.latex(),
-                annotation: lastStep.annotation,
-                clearAll: clearAll
-            });
-        $('#undoDelete').show();
-        this.setState({undoDeleteStack: newStack});
+        if (addToHistory) {
+            var newStack = this.state.actionsStack;
+            newStack.push(
+                {    type: "delete",
+                    latex: updatedMathField.latex(),
+                    annotation: lastStep.annotation,
+                    clearAll: clearAll
+                });
+            $('#undoDelete').show();
+            this.setState({actionsStack: newStack});
+        }
 
         // ok to delete last row now...
         let newSteps = this.state.steps;
@@ -230,7 +270,11 @@ export default class Editor extends Component {
 
         this.state.theActiveMathField.focus();
         if (lastStep.annotation === "(cleanup)") {
-            this.deleteStep();
+            if(addToHistory) {
+                this.deleteStep(true, addToHistory);
+            } else {
+                this.undoLastAction();
+            }
         }
         $('.mathStep:last .btn-edit').show();
         $('#addStep').show();
@@ -239,8 +283,9 @@ export default class Editor extends Component {
     }
 
     deleteSteps() {
+        this.deleteStep(false, true);
         while (this.state.steps.length > 1) {
-            this.deleteStep(true);
+            this.deleteStep(true, true);
         };
     }
 
@@ -252,14 +297,37 @@ export default class Editor extends Component {
         }
         let newSteps = this.state.steps;
         let mathContent = this.state.theActiveMathField.latex();
-        newSteps.push({"equation":  mathContent , "annotation": this.state.textAreaValue});
-        let cleanedUp = MathButton.CleanUpCrossouts(mathContent);
+        let annotation = this.state.textAreaValue;
+        newSteps.push({"equation":  mathContent , "annotation": annotation});
+        var newStack = this.state.actionsStack;
 
+        let cleanedUp = MathButton.CleanUpCrossouts(mathContent);
         if (mathContent !== cleanedUp && typeof(undoing) != typeof(true)) {
-            newSteps.push({"equation":  cleanedUp , "annotation": "(cleanup)"});
+            newStack.push(
+            {   type: "add",
+                latex: mathContent,
+                annotation: annotation,
+                clearAll: true
+            });
+            newSteps.push({"equation": cleanedUp, "annotation": "(cleanup)"});
+            newStack.push(
+            {   type: "add",
+                latex: cleanedUp,
+                annotation: "(cleanup)",
+                clearAll: true
+            });
+        } else if (undoing != true){
+            newStack.push(
+            {   type: "add",
+                latex: mathContent,
+                annotation: annotation,
+                clearAll: false
+            });
         }
         let updatedMathField = this.state.theActiveMathField;
         updatedMathField.latex(cleanedUp);
+        $('#undoDelete').show();
+        this.setState({actionsStack: newStack});
         this.setState({editorPosition: newSteps.length - 1, steps: newSteps,
             theActiveMathField: updatedMathField,
             textAreaValue: ""});
@@ -288,7 +356,7 @@ export default class Editor extends Component {
                 textAreaChanged={this.textAreaChanged}
                 textAreaValue={this.state.textAreaValue}
                 addStepCallback={this.addStep}
-                undoDeleteStepCallback={this.undoDeleteStep}
+                undoLastActionCallback={this.undoLastAction}
                 lastMathEquation={this.state.steps[this.state.steps.length - 1].equation} 
                 deleteStepsCallback={this.deleteSteps}
                 cancelEditCallback={this.exitUpdate}
