@@ -110,11 +110,11 @@ export default class Step extends Component {
                         {this.buildReason()}
                     </span>
                 </div>
-                <div className={bootstrap['col-md-5']}>
+                <div className={classNames(bootstrap['col-md-5'], step.annotationEquation)}>
                     <span className={styles.sROnly}> math: </span>
                     <span className="staticMath" >{"$$" + this.props.math + "$$"}</span>
                 </div>
-                <div className={bootstrap['col-md-5']}>
+                <div className={classNames(bootstrap['col-md-5'], step.annotationEquation)}>
                     <span className={styles.sROnly} role="heading" aria-level="4">reason:</span>
                     <span className={classNames({
                         [step.cleanUpAnnotation]: this.props.annotation === "(cleanup)"

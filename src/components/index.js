@@ -11,7 +11,8 @@ export default class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            dataSet: props.dataSets[0]
+            dataSet: props.dataSets[0],
+            saved: false
         }
     }
 
@@ -31,9 +32,10 @@ export default class App extends Component {
                 <Route exact path='/' render={p => <Home {...p} problems={data}
                     changeDataSet={id => {this.setState({dataSet: this.props.dataSets[id]},
                     mathLive.renderMathInDocument());
-                }} />} />
+                }} saved={this.state.saved} dialogDisplayed={()=>this.setState({saved: false})}/>} />
                 <Route exact path='/problem/:number' render={p =>
-                    <Editor {...p} problems={data} allowedPalettes={this.state.dataSet.metadata.allowedPalettes} />} />
+                    <Editor {...p} problems={data} allowedPalettes={this.state.dataSet.metadata.allowedPalettes}
+                        savedProblem={()=>this.setState({saved: true})} />} />
             </Switch>
         )
     }

@@ -44,6 +44,7 @@ export default class MyWorkEditorButtons extends Component {
     }
 
     componentDidMount() {
+        $('#undoDelete').hide();
         try {
             this.InitScratchPad();
         } catch(e) {
@@ -165,7 +166,8 @@ export default class MyWorkEditorButtons extends Component {
                         </div>
                     </div>
                 </div>
-                <MyWorkFooter deleteStepsCallback={this.props.deleteStepsCallback} hide={this.props.editing} history={this.props.history}/>
+                <MyWorkFooter deleteStepsCallback={this.props.deleteStepsCallback} hide={this.props.editing} history={this.props.history}
+                    savedProblem={() => this.props.savedProblem()}/>
             </div>
         );
     }

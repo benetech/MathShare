@@ -24,6 +24,7 @@ export default class MyWorkFooter extends Component {
     saveSolution() {
         googleAnalytics('Save');
         this.props.history.goBack()
+        this.props.savedProblem();
     }
 
     render() {

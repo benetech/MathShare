@@ -174,7 +174,7 @@ export default class Editor extends Component {
     }
 
     scrollToBottom() {
-        this.el.scrollIntoView({ behavior: 'smooth' });
+        document.querySelector("#MainWorkWrapper").scrollTo(0,document.querySelector("#MainWorkWrapper").scrollHeight);
     }
 
     undoLastAction() {
@@ -287,6 +287,7 @@ export default class Editor extends Component {
         while (this.state.steps.length > 1) {
             this.deleteStep(true, true);
         };
+        this.setState({textAreaValue: ""});
     }
 
     addStep(undoing) {
@@ -362,7 +363,8 @@ export default class Editor extends Component {
                 cancelEditCallback={this.exitUpdate}
                 editorPosition={this.state.editorPosition}
                 editing={this.state.editing}
-                history={this.props.history} />;
+                history={this.props.history} 
+                savedProblem={this.props.savedProblem}/>;
             problemHeaderTitle += ": ";
         }
 
@@ -373,7 +375,7 @@ export default class Editor extends Component {
                     <ProblemHeader math={this.state.math} title={problemHeaderTitle} />
                     <MyStepsHeader />
                     {myStepsList}
-                    <div ref={el => { this.el = el; }} />
+                    <div ref={el => { this.el = el; }} style={{height: 50}}/>
                 </main>
             </div>
         );
@@ -393,11 +395,16 @@ function HandleKeyDown(event)
         }
     }
     if (event.shiftKey && event.key === 'Enter' && $('#mathAnnotation').val() !== '') {
+        event.preventDefault();
         if ($('#updateStep').is(":visible")) {
             $('#updateStep').click();
         } else {
-            NewRowOrRowsAfterCleanup(this.state.theActiveMathField.latex());
+            this.addStep(false);
         }
+    }
+    if (event.shiftKey && event.key === 'Backspace' && this.state.actionsStack.length > 0) {
+        event.preventDefault();
+        this.undoLastAction();
     }
 
     var keys = [];
