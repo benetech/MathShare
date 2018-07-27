@@ -41,7 +41,7 @@ export default class Editor extends Component {
     }
 
     componentDidMount() {
-        $('#undoDelete').hide();
+        $('#undoAction').hide();
     }
 
     editStep(stepNumber) {
@@ -159,7 +159,7 @@ export default class Editor extends Component {
                 clearAll: false,
                 index: index
             });
-        $('#undoDelete').show();
+        $('#undoAction').show();
         this.setState({actionsStack: newStack});
 
         //applyScratchPadContent(latestMathStepData.data('scratch-pad'));
@@ -182,11 +182,11 @@ export default class Editor extends Component {
         var stackEntry = newStack.pop();
         this.setState({actionsStack: newStack});
         if (newStack.length < 1) {
-            $('#undoDelete').hide();
+            $('#undoAction').hide();
         }
         switch(stackEntry.type) {
             case "delete":
-                this.undoDelete(stackEntry);
+                this.undoAction(stackEntry);
                 break;
             case "add":
                 this.undoAdd();
@@ -199,7 +199,7 @@ export default class Editor extends Component {
         }
     }
 
-    undoDelete(stackEntry) {
+    undoAction(stackEntry) {
         let updatedMathField = this.state.theActiveMathField;
         updatedMathField.latex(stackEntry.latex);
         this.setState({
@@ -254,7 +254,7 @@ export default class Editor extends Component {
                     annotation: lastStep.annotation,
                     clearAll: clearAll
                 });
-            $('#undoDelete').show();
+            $('#undoAction').show();
             this.setState({actionsStack: newStack});
         }
 
@@ -327,7 +327,7 @@ export default class Editor extends Component {
         }
         let updatedMathField = this.state.theActiveMathField;
         updatedMathField.latex(cleanedUp);
-        $('#undoDelete').show();
+        $('#undoAction').show();
         this.setState({actionsStack: newStack});
         this.setState({editorPosition: newSteps.length - 1, steps: newSteps,
             theActiveMathField: updatedMathField,
