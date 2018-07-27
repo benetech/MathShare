@@ -5,6 +5,7 @@ import problem from './styles.css';
 import styles from '../../../../styles/styles.css';
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 import googleAnalytics from '../../../../scripts/googleAnalytics';
+import introJs from 'intro.js'
 
 const mathLive = DEBUG_MODE ? require('../../../../../mathlive/src/mathlive.js')
     : require('../../../../../src/lib/mathlivedist/mathlive.js');
@@ -15,6 +16,7 @@ export default class ProblemHeader extends Component {
     }
 
     tour() {
+        introJs().setOption('tooltipClass', 'introjs-helperLayer').start();
         googleAnalytics('Tour');
     }
 
