@@ -54,7 +54,8 @@ export default class MyStepsList extends Component {
                 deleteStepsCallback={this.props.deleteStepsCallback}
                 cancelEditCallback={this.props.cancelEditCallback}
                 editing={this.props.editing}
-                history={this.props.history}/>
+                history={this.props.history}
+                savedProblem={this.props.savedProblem}/>
         )
 
         return (

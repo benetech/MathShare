@@ -5,8 +5,16 @@ import NavigationProblems from './components/Navigation/Problems';
 import MainPageFooter from './components/Footer';
 import home from './styles.css';
 import { NotificationContainer } from 'react-notifications';
+import createAlert from '../../scripts/alert';
 
 export default class Home extends Component {
+
+    componentDidMount() {
+        if(this.props.saved) {
+            createAlert('success', 'Problem saved.', 'Success');
+            this.props.dialogDisplayed();
+        }
+    }
     render() {
         return (
             <div className={home.mainWrapper}>

@@ -19,9 +19,15 @@
     color:rgb(114, 114, 114);
 }
 
+.annotationEquation {
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 3px;
+}
+
 .btnContainer {
     text-align: right;
-    float:right
+    display: inline-block;
 }
 
 .btnEdit {
