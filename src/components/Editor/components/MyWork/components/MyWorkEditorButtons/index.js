@@ -44,7 +44,7 @@ export default class MyWorkEditorButtons extends Component {
     }
 
     componentDidMount() {
-        $('#undoDelete').hide();
+        $('#undoAction').hide();
         try {
             this.InitScratchPad();
         } catch(e) {
@@ -94,7 +94,7 @@ export default class MyWorkEditorButtons extends Component {
                     </div>
                     <div>
                         <Button
-                            id="undoDelete"
+                            id="undoAction"
                             className={[
                                 bootstrap.btn,
                                 editorButtons.floatRight,
@@ -106,7 +106,7 @@ export default class MyWorkEditorButtons extends Component {
                                 'palette'
                             ]}
                             toggle="tooltip"
-                            title="Undo Last Action"
+                            title="Undo Last Action (⌨: shift+backspace)"
                             onClick={this.props.undoLastActionCallback}
                         />
                         <br />
