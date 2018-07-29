@@ -4,6 +4,7 @@ import classNames from "classnames";
 import step from './styles.css';
 import styles from '../../../../../../../../styles/styles.css';
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
+import Locales from '../../../../../../../../strings'
 
 const mathLive = DEBUG_MODE ? require('../../../../../../../../../mathlive/src/mathlive.js')
     : require('../../../../../../../../lib/mathlivedist/mathlive.js');
@@ -20,28 +21,30 @@ export default class Step extends Component {
     th is used for all other numbers (e.g. 9th, pronounced ninth).
     **/
     OrdinalSuffix(i) {
-        var j = i % 10,
-            k = i % 100;
-        if (j == 1 && k != 11) {
-            return i + "st";
+        if(Locales.strings.getLanguage() === 'en') {
+            var j = i % 10,
+                k = i % 100;
+            if (j == 1 && k != 11) {
+                return i + "st";
+            }
+            if (j == 2 && k != 12) {
+                return i + "nd";
+            }
+            if (j == 3 && k != 13) {
+                return i + "rd";
+            }
+            return i + "th";
         }
-        if (j == 2 && k != 12) {
-            return i + "nd";
-        }
-        if (j == 3 && k != 13) {
-            return i + "rd";
-        }
-        return i + "th";
     }
 
     buildReason() {
-        if (this.props.annotation == "(cleanup)") {
-            return (<span className={styles.sROnly}> {this.OrdinalSuffix(this.props.stepNumber)} step, after cleanup</span>);
+        if (this.props.annotation == Locales.strings.cleanup) {
+            return (<span className={styles.sROnly}> {this.OrdinalSuffix(this.props.stepNumber)} {Locales.strings.step_after_cleanup}</span>);
         } else {
             return (
                 <div>
-                    <span className={styles.sROnly}> {this.OrdinalSuffix(this.props.stepNumber)} step</span>
-                    <span className={step.header} aria-hidden="true">Step {this.props.stepNumber}:</span>
+                    <span className={styles.sROnly}> {this.OrdinalSuffix(this.props.stepNumber)} {Locales.strings.step}</span>
+                    <span className={step.header} aria-hidden="true">{Locales.strings.step} {this.props.stepNumber}:</span>
                 </div>
             );
         }
@@ -60,10 +63,10 @@ export default class Step extends Component {
                     }
                     additionalStyles={['background', 'palette']}
                     data-toggle="tooltip"
-                    title="Edit this Step"
+                    title={Locales.strings.edit_this_step}
                     content={
                         <span className={styles.sROnly}>
-                            Edit {this.OrdinalSuffix(this.props.stepNumber)} step
+                            {Locales.strings.edit} {this.OrdinalSuffix(this.props.stepNumber)} {Locales.strings.step}
                         </span>
                     }
                     onClick={() => this.props.editStepCallback(this.props.exposedKey)}
@@ -85,10 +88,10 @@ export default class Step extends Component {
                     }
                     additionalStyles={['background', 'palette']}
                     data-toggle="tooltip"
-                    title="Delete this Step"
+                    title={Locales.strings.delete_this_step}
                     content={
                         <span className={styles.sROnly}>
-                            Delete {this.OrdinalSuffix(this.props.stepNumber)} step
+                            {Locales.strings.delete} {this.OrdinalSuffix(this.props.stepNumber)} {Locales.strings.step}
                         </span>
                     }
                     onClick={() => this.props.deleteStepCallback(false, true)}
@@ -111,11 +114,11 @@ export default class Step extends Component {
                     </span>
                 </div>
                 <div className={classNames(bootstrap['col-md-5'], step.annotationEquation)}>
-                    <span className={styles.sROnly}> math: </span>
+                    <span className={styles.sROnly}> {Locales.strings.math}: </span>
                     <span className="staticMath" >{"$$" + this.props.math + "$$"}</span>
                 </div>
                 <div className={classNames(bootstrap['col-md-5'], step.annotationEquation)}>
-                    <span className={styles.sROnly} role="heading" aria-level="4">reason:</span>
+                    <span className={styles.sROnly} role="heading" aria-level="4">{Locales.strings.reason}:</span>
                     <span className={classNames({
                         [step.cleanUpAnnotation]: this.props.annotation === "(cleanup)"
                     })}> {this.props.annotation} </span>

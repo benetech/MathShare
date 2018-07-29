@@ -8,6 +8,7 @@ import Painterro from '../../../../../../lib/painterro/painterro.commonjs2'
 import MyWorkFooter from './components/MyWorkFooter'
 import painterroConfiguration from './painterroConfiguration.json'
 import createAlert from '../../../../../../scripts/alert';
+import Locales from '../../../../../../strings'
 
 export default class MyWorkEditorButtons extends Component {
     constructor(props) {
@@ -30,7 +31,7 @@ export default class MyWorkEditorButtons extends Component {
         $('#scratch-pad-containter').hide();
 
         $('#scratch-pad-containter-bar > div > span').first()
-            .append('<button id="clear-button" type="button" class="ptro-icon-btn ptro-color-control" title="Clear the scratch pad"><i class="ptro-icon ptro-icon-close"></i></button>');
+            .append('<button id="clear-button" type="button" class="ptro-icon-btn ptro-color-control" title='+ Locales.strings.clear_scratchpad + '><i class="ptro-icon ptro-icon-close"></i></button>');
         $('#clear-button').click(() =>
             this.ClearAndResizeScrachPad(this.scratchPadPainterro)
         );
@@ -48,7 +49,7 @@ export default class MyWorkEditorButtons extends Component {
         try {
             this.InitScratchPad();
         } catch(e) {
-            createAlert("warning", "Sketchpad library wasn't loaded properly", "Warning");
+            createAlert("warning", Locales.strings.sketchpad_loading_warning, "Warning");
         }
     }
 
@@ -88,7 +89,7 @@ export default class MyWorkEditorButtons extends Component {
                                 'palette'
                             ]}
                             toggle="tooltip"
-                            title="Display/hide sketch pad"
+                            title={Locales.strings.display_hide_sketchpad}
                             onClick={() => this.handleClick(this.scratchPadPainterro)}
                         />
                     </div>
@@ -106,11 +107,11 @@ export default class MyWorkEditorButtons extends Component {
                                 'palette'
                             ]}
                             toggle="tooltip"
-                            title="Undo Last Action (⌨: shift+backspace)"
+                            title={Locales.strings.undo_last_action}
                             onClick={this.props.undoLastActionCallback}
                         />
                         <br />
-                        <h3 className={styles.sROnly}>Clean up and add new step</h3>
+                        <h3 className={styles.sROnly}>{Locales.strings.clean_up_and_add_step}</h3>
                         <Button
                             id="addStep"
                             className={[
@@ -121,10 +122,10 @@ export default class MyWorkEditorButtons extends Component {
                             ]}
                             hide={this.props.editing}
                             toggle="tooltip"
-                            title="Clean up the cross outs and start a new step (⌨: shift+enter)"
-                            content=" Add Step"
+                            title={Locales.strings.clean_up_button_title}
+                            content={Locales.strings.add_step}
                             step="3"
-                            intro="Clean-up your work and start a new step."
+                            intro={Locales.strings.add_step_intro}
                             icon="plus"
                             onClick={this.props.addStepCallback}
                             />
@@ -139,10 +140,10 @@ export default class MyWorkEditorButtons extends Component {
                                     editorButtons.editorBtn
                                 ]}
                                 toggle="tooltip"
-                                title="Update the step (⌨: shift+enter)"
-                                content=" Update Step"
+                                title={Locales.strings.update_step_button_title}
+                                content={Locales.strings.update_step}
                                 step="3"
-                                intro="Update the step."
+                                intro={Locales.strings.update_step_intro}
                                 icon="pencil"
                             />
                             <br />
@@ -156,10 +157,10 @@ export default class MyWorkEditorButtons extends Component {
                                 ]}
                                 additionalStyles={['default']}
                                 toggle="tooltip"
-                                title="Cancel edit"
-                                content=" Cancel edit"
+                                title={Locales.strings.cancel_edit_button_title}
+                                content={Locales.strings.cancel_edit_step}
                                 step="3"
-                                intro="Cancel edit."
+                                intro={Locales.strings.cancel_edit_step_intro}
                                 icon="ban"
                                 onClick={this.props.cancelEditCallback}
                             />
