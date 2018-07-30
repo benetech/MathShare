@@ -1,0 +1,55 @@
+.editor {
+    display: block;
+    transform-origin: top left;
+    transform: scale(1.6, 1.6);
+    -webkit-transform: scale(1.6, 1.6);
+    -ms-transform: scale(1.6, 1.6);
+ }
+
+ .annotation {
+    border: 0px;
+    box-shadow: none;
+    transition: none;
+    display: inline;
+    border-radius: 0px;
+    width: 280px;
+    height: 118px;
+    margin-top: 1px;
+    margin-bottom: -6px;
+    border-left: 1px solid rgb(204, 204, 204);
+}
+
+.annotationHeader {
+    border-left: 1px solid rgb(204, 204, 204);
+}
+
+.floatRight {
+    float: right;
+}
+
+.workArea {
+    border: 1px solid rgb(204, 204, 204);
+    border-radius: 5px;
+    background-color: rgb(255, 255, 255);
+    min-height: 100px;
+    width: inherit;
+    height: 122px;
+}
+
+.mathEditorActive {
+    float: left;
+    min-width: 400px;
+    margin: 10px;
+    overflow-y: auto;
+    overflow-x: auto;
+    display: inline-block;
+    flex-grow: 200;
+    padding: 5px;
+}
+
+/* Additional styles for Microsoft Edge */
+@supports (-ms-ime-align: auto) {
+    .annotation {
+        resize: both;
+    }
+}

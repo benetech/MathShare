@@ -1,0 +1,58 @@
+
+.modalAreaHeading {
+    color: rgb(0, 31, 63);
+    font-style: italic;
+    font-size: 22px;
+    float: left;
+    font-weight: bold;
+}
+
+.historyWrapper {
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding-left: 10px;
+    padding-right: 10px;
+    min-height: 65px;
+}
+
+.editorAndHistoryWrapper {
+    width: 100%;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.mainWorkWrapper {
+    min-height: 100%;
+    overflow: auto;
+    background-color: #fff; 
+    background-image: 
+    linear-gradient(90deg, transparent 99px, rgba(255, 102, 102, 0.63) 99px, rgba(255, 102, 102, 0.63) 101px, transparent 101px),
+    linear-gradient(90deg, transparent 92px, rgba(255, 102, 102, 0.63) 92px, rgba(255, 102, 102, 0.63) 93px, transparent 93px),
+    linear-gradient(rgba(173, 216, 230, 0.63) 0% .15em, transparent .1em);
+    background-size: 100% 2.6em;
+}
+
+.mainWrapper {
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+.alertContainer {
+    position: absolute; 
+    margin-left: auto; 
+    margin-right: auto; 
+    left: 0;
+    right: 0;
+    z-index: 100; 
+    top: 2.5%; 
+    width: 30%;
+}
+
+.contentWrapper {
+    display: contents;
+}
+

@@ -1,0 +1,28 @@
+/* style to use if only the screen reader user should hear this */
+.sROnly {
+    clip: rect(1px, 1px, 1px, 1px);
+    position: absolute !important;
+    white-space: nowrap;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+  }
+
+.pointer {
+    cursor: pointer;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    font-size: 16px;
+    background-color: rgb(240, 240, 240);
+}
+
+#workArea .ML__mathlive {
+    display: block;
+    transform-origin: top left;
+    transform: scale(1.6, 1.6);
+    -webkit-transform: scale(1.6, 1.6);
+    -ms-transform: scale(1.6, 1.6);
+}
