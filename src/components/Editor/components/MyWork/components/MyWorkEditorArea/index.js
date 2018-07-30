@@ -4,6 +4,7 @@ import classNames from "classnames";
 import editorArea from './styles.css';
 import styles from '../../../../../../styles/styles.css';
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
+import Locales from '../../../../../../strings'
 
 const mathLive = DEBUG_MODE ? require('../../../../../../../mathlive/src/mathlive.js')
     : require('../../../../../../../src/lib/mathlivedist/mathlive.js');
@@ -55,18 +56,17 @@ export default class MyWorkEditorArea extends Component {
                             }
                             data-step="1"
                             data-position="top"
-                            data-intro="Type or edit the equation using your keyboard and the math keys below. 
-                                Try using the cross out, replace, and calc buttons to help show your work."
+                            data-intro={Locales.strings.work_area_intro}
                         >
-                            <h3 className={styles.sROnly}>Math editor</h3>
+                            <h3 className={styles.sROnly}>{Locales.strings.math_editor}</h3>
                             <section
-                                aria-label="edit equation"
+                                aria-label={Locales.strings.edit_equation}
                                 id="mathEditorActive"
                                 ref="mathEditorActive"
                                 tabIndex="0"
                                 className={classNames(bootstrap['order-1'], editorArea.mathEditorActive)}
                                 role="heading"
-                                aria-label="type math here"
+                                aria-label={Locales.strings.type_math_here}
                             ></section>
                             <div
                                 className={bootstrap['order-2']}
@@ -94,11 +94,10 @@ export default class MyWorkEditorArea extends Component {
                                             editorArea.annotation,
                                         )
                                     }
-                                    placeholder="Use the microphone button or type to explain your work (required)"
+                                    placeholder={Locales.strings.tts_hint}
                                     data-step="2"
-                                    data-intro="Describe your work by typing directly 
-                                        or using the microphone to record an explanation of your work (required)."
-                                    aria-label="Use the microphone button or type to explain your work (required)"
+                                    data-intro={Locales.strings.tts_intro}
+                                    aria-label={Locales.strings.tts_hint}
                                     value={this.props.textAreaValue}
                                     onChange={this.props.textAreaChanged}
                                     >

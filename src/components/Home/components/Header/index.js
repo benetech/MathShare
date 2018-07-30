@@ -7,6 +7,7 @@ import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 import { withRouter } from 'react-router-dom';
 import { Dropdown, MenuItem } from 'react-bootstrap';
 import { NotificationManager } from 'react-notifications';
+import Locales from '../../../../strings'
 
 export default class MainPageHeader extends Component {
     render() {
@@ -19,7 +20,7 @@ export default class MainPageHeader extends Component {
         return (
             <div id="topNavigationWrapper" className={header.header} role="heading" aria-level="1">
                 <header>
-                    <h2 className={styles.sROnly}> Header </h2>
+                    <h2 className={styles.sROnly}>{Locales.strings.header}</h2>
                     <nav className={classNames(header.navbar, bootstrap['navbar-expand-lg'], bootstrap.navbar)}
                         id="topNavigation">
                         <a className={bootstrap['navbar-brand']} href="#">
@@ -38,18 +39,18 @@ export default class MainPageHeader extends Component {
                                         data-toggle="dropdown" href="#" role="button"
                                         aria-haspopup="true"
                                         aria-expanded="false">
-                                        Problem Sets
+                                        {Locales.strings.problem_sets}
                                     </a>
                                     <Dropdown.Menu role="list" aria-label="Problem Sets">
-                                        <MenuItem onClick={e => this.props.changeDataSet(0)}>Problem Set 01</MenuItem>
-                                        <MenuItem onClick={e => this.props.changeDataSet(1)}>Problem Set 02</MenuItem>
-                                        <MenuItem onClick={e => this.props.changeDataSet(2)}>Problem Set 03</MenuItem>
-                                        <MenuItem onClick={uploadProblemSet.bind(this)}>Upload</MenuItem>
+                                        <MenuItem onClick={e => this.props.changeDataSet(0)}>{Locales.strings.problem_set_1}</MenuItem>
+                                        <MenuItem onClick={e => this.props.changeDataSet(1)}>{Locales.strings.problem_set_2}</MenuItem>
+                                        <MenuItem onClick={e => this.props.changeDataSet(2)}>{Locales.strings.problem_set_3}</MenuItem>
+                                        <MenuItem onClick={uploadProblemSet.bind(this)}>{Locales.strings.upload}</MenuItem>
                                         <input ref='fileid' type='file' hidden onChange={readBlob.bind(this)} />
                                     </Dropdown.Menu>
                                 </li>
                                 <li className={bootstrap['nav-item']}>
-                                    <a className={bootstrap['nav-link']} href="mailto:info@diagramcenter.org">Contact Us</a>
+                                    <a className={bootstrap['nav-link']} href="mailto:info@diagramcenter.org">{Locales.strings.contact_us}</a>
                                 </li>
                                 <li className={bootstrap['nav-item']}>
                                     <a href="http://www.surveygizmo.com/s3/4048161/Benetech-s-Math-Editor-Online-Feedback"
@@ -60,7 +61,7 @@ export default class MainPageHeader extends Component {
                                             name='arrow-circle-right'
                                             style={{ textShadow: '0 1px 0 rgba(0, 0, 0, 0.1)' }}
                                         />
-                                        &nbsp;Provide Feedback
+                                        &nbsp;{Locales.strings.provide_feedback}
                                     </a>
                                 </li>
                             </ul>
@@ -80,7 +81,7 @@ function readBlob(opt_startByte, opt_stopByte) {
     var files = this.refs.fileid.files;
     console.log(files);
     if (!files.length) {
-        NotificationManager.warning('Please select a file', 'Warning');
+        NotificationManager.warning(Locales.strings.upload_no_file_warning, 'Warning');
         return;
     }
 

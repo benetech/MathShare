@@ -6,8 +6,7 @@ import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 import styles from '../../../../../../styles.css';
 import googleAnalytics from '../../../../../../../../scripts/googleAnalytics';
 import createAlert from '../../../../../../../../scripts/alert';
-
-const SPEECH_RECOGNITION_ERROR = "Speech recognition is supported only for Google Chrome";
+import Locales from '../../../../../../../../strings'
 
 export default class SpeechToTextButton extends Component {
     constructor(props) {
@@ -18,7 +17,7 @@ export default class SpeechToTextButton extends Component {
             this.recognition = initializeRecognition(this);
         } catch (e) {
             micImage = "/src/images/mic-slash.gif"
-            console.log(SPEECH_RECOGNITION_ERROR);
+            console.log(Locales.strings.speech_recongition_error);
         }
 
         this.spokens = [];
@@ -31,8 +30,8 @@ export default class SpeechToTextButton extends Component {
     speechToText() {
         googleAnalytics('S2T Clicked');
         if (!this.recognition) {
-            createAlert('info', SPEECH_RECOGNITION_ERROR, 'Info');
-            console.log(SPEECH_RECOGNITION_ERROR);
+            createAlert('info', Locales.strings.speech_recongition_error, 'Info');
+            console.log(Locales.strings.speech_recongition_error);
             return;
         }
         if (this.state.micEnabled) {
@@ -66,7 +65,7 @@ export default class SpeechToTextButton extends Component {
                     content={
                         <img
                             id="mic_img"
-                            alt="Start Speaking"
+                            alt={Locales.strings.start_speaking}
                             src={this.state.imageSrc}
                         />
                     }

@@ -5,6 +5,7 @@ import myStepsList from './styles.css';
 import mySteps from '../../../../styles.css';
 import MyWork from '../../../../components/MyWork';
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
+import Locales from '../../../../../../strings'
 
 export default class MyStepsList extends Component {
     constructor(props) {
@@ -30,7 +31,7 @@ export default class MyStepsList extends Component {
             return <Step
                     key={i}
                     exposedKey={i}
-                    stepNumber={step.annotation==="(cleanup)" ? counter : counter++}
+                    stepNumber={step.annotation===Locales.strings.cleanup ? counter : counter++}
                     math={step.equation}
                     annotation={step.annotation}
                     showEdit={showEdit}
@@ -61,7 +62,7 @@ export default class MyStepsList extends Component {
         return (
             <div id="HistoryWrapper" className={mySteps.historyWrapper}>
                 <div className={bootstrap.row} data-step="4"
-                     data-intro="Review your work. The trash icon also allows you to delete and rework a prior step.">
+                     data-intro={Locales.strings.history_data_intro}>
                     <div className={bootstrap['col-lg-12']}>
                         <div
                             id="MathHistory"

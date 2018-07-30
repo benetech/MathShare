@@ -5,6 +5,7 @@ import classNames from "classnames";
 import problem from './styles.css';
 import buttons from '../../../../../components/Button/styles.css';
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
+import Locales from '../../../../../strings'
 
 const mathLive = DEBUG_MODE ? require('../../../../../../mathlive/src/mathlive.js')
     : require('../../../../../lib/mathlivedist/mathlive.js');
@@ -22,8 +23,8 @@ export default class Problem extends Component {
         var annotation;
         var equation;
         if (this.props.example) {
-            annotation = "Getting Started";
-            equation = "Click here to see an example problem and learn how to use the editor";
+            annotation = Locales.strings.getting_started_title;
+            equation = Locales.strings.getting_started_equation;
         } else {
             annotation = this.buildAnnotation();
             equation = "$$" + this.props.problem.equation + "$$";

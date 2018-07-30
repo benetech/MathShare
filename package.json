@@ -44,6 +44,7 @@
     "react-dom": "^16.4.1",
     "react-fontawesome": "^1.6.1",
     "react-ga": "^2.5.3",
+    "react-localization": "^1.0.10",
     "react-notifications": "^1.4.3",
     "react-router-dom": "^4.3.1"
   }

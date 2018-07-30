@@ -5,6 +5,7 @@ import footer from './styles.css';
 import styles from '../../../../../../../../styles/styles.css';
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 import googleAnalytics from '../../../../../../../../scripts/googleAnalytics';
+import Locales from '../../../../../../../../strings'
 
 export default class MyWorkFooter extends Component {
     constructor(props) {
@@ -15,7 +16,7 @@ export default class MyWorkFooter extends Component {
     }
 
     discard() {
-        if (confirm("Any work on this problem will NOT be saved")) {
+        if (confirm(Locales.strings.confirm_discard)) {
             this.props.history.goBack()
             googleAnalytics('Discard');
         }
@@ -50,16 +51,16 @@ export default class MyWorkFooter extends Component {
                             id="BtnDiscard"
                             className={btnClassNames}
                             additionalStyles={['withRightMargin', 'default']}
-                            content="Discard"
+                            content={Locales.strings.discard}
                             onClick={this.discard}
                         />
                         <Button
                             id="BtnSave"
                             className={btnClassNames}
-                            content=" Done"
+                            content={Locales.strings.done}
                             additionalStyles={['withRightMargin', 'default']}
                             step="5"
-                            intro="Save your work or close out to try again from the beginning."
+                            intro={Locales.strings.save_intro}
                             icon="thumbs-up"
                             onClick={this.saveSolution}
                         />
@@ -67,7 +68,7 @@ export default class MyWorkFooter extends Component {
                             id="BtnClearAll"
                             className={btnClassNames}
                             additionalStyles={['default']}
-                            content=" Clear all"
+                            content={Locales.strings.clear_all}
                             icon="times-circle"
                             onClick={this.props.deleteStepsCallback}
                         />

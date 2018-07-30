@@ -7,6 +7,7 @@ import myWork from './styles.css';
 import editor from '../../styles.css';
 import styles from '../../../../styles/styles.css';
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
+import Locales from '../../../../strings'
 
 export default class MyWork extends Component {
     constructor(props) {
@@ -28,10 +29,10 @@ export default class MyWork extends Component {
                                 }
                                 aria-hidden="true"
                             >
-                                My Work
+                                {Locales.strings.my_work}
                             </span>
                             <br/>
-                            <span className={styles.sROnly}>My Work</span>
+                            <span className={styles.sROnly}>{Locales.strings.my_work}</span>
                         </h2>
                     </div>
                     <div className={myWork.editorWrapper}>

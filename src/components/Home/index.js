@@ -6,12 +6,13 @@ import MainPageFooter from './components/Footer';
 import home from './styles.css';
 import { NotificationContainer } from 'react-notifications';
 import createAlert from '../../scripts/alert';
+import Locales from '../../strings'
 
 export default class Home extends Component {
 
     componentDidMount() {
         if(this.props.saved) {
-            createAlert('success', 'Problem saved.', 'Success');
+            createAlert('success', Locales.strings.problem_saved_success_message, 'Success');
             this.props.dialogDisplayed();
         }
     }

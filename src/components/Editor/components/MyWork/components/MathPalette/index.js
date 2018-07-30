@@ -5,6 +5,7 @@ import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 import styles from '../../../../../../styles/styles.css';
 import paletteStyle from './styles.css';
 import palettes from './palettes.json';
+import Locales from '../../../../../../strings'
 
 export default class MathPalette extends Component {
     initializeKeyShortcuts(palettes) {
@@ -44,7 +45,7 @@ export default class MathPalette extends Component {
                     )
                 }
             >
-                <h3 className={styles.sROnly}>math input buttons</h3>
+                <h3 className={styles.sROnly}>{Locales.strings.math_input_buttons}</h3>
                 {mathPalette}
             </div>
         );

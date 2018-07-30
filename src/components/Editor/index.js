@@ -7,6 +7,7 @@ import editor from './styles.css';
 import {NotificationContainer} from 'react-notifications';
 import mathLive from '../../../src/lib/mathlivedist/mathlive.js';
 import createAlert from '../../scripts/alert';
+import Locales from '../../strings'
 
 export default class Editor extends Component {
     constructor(props) {
@@ -104,7 +105,7 @@ export default class Editor extends Component {
 
     updateStep(index) {
         if (this.state.textAreaValue === '') {
-            createAlert('warning', 'Please provide a description of your work.', 'Warning');
+            createAlert('warning', Locales.strings.no_description_warning, 'Warning');
             $('#mathAnnotation').focus();
             return;
         }
@@ -114,7 +115,7 @@ export default class Editor extends Component {
 
         this.updateRowAfterCleanup(this.state.theActiveMathField.latex(), index);
         this.exitUpdate(oldEquation, oldAnnotation, index);
-        createAlert('success', 'The step has been updated.', 'Success');
+        createAlert('success', Locales.strings.successfull_update_message, 'Success');
     }
 
     updateRowAfterCleanup(mathContent, mathStepNumber) {
@@ -130,10 +131,10 @@ export default class Editor extends Component {
     updateMathEditorRow(mathContent, mathStepNumber, cleanup) {
         let updatedHistory = this.state.steps;
         updatedHistory[mathStepNumber].equation = mathContent;
-        updatedHistory[mathStepNumber].annotation = cleanup ? '(cleanup)' : this.state.textAreaValue;
+        updatedHistory[mathStepNumber].annotation = cleanup ? Locales.strings.cleanup : this.state.textAreaValue;
         this.setState({steps : updatedHistory})
         $($("#MathHistory").children()[mathStepNumber]).data('equation', mathContent);
-        $($("#MathHistory").children()[mathStepNumber]).data('annotation', cleanup ? '(cleanup)' : this.state.textAreaValue);
+        $($("#MathHistory").children()[mathStepNumber]).data('annotation', cleanup ? Locales.strings.cleanup : this.state.textAreaValue);
         mathLive.renderMathInDocument();
     }
 
@@ -292,7 +293,7 @@ export default class Editor extends Component {
 
     addStep(undoing) {
         if (this.state.textAreaValue === "") {
-            createAlert('warning', 'Please provide a description of your work.', 'Warning');
+            createAlert('warning', Locales.strings.no_description_warning, 'Warning');
             $('#mathAnnotation').focus();
             return;
         }
@@ -310,11 +311,11 @@ export default class Editor extends Component {
                 annotation: annotation,
                 clearAll: true
             });
-            newSteps.push({"equation": cleanedUp, "annotation": "(cleanup)"});
+            newSteps.push({"equation": cleanedUp, "annotation": Locales.strings.cleanup});
             newStack.push(
             {   type: "add",
                 latex: cleanedUp,
-                annotation: "(cleanup)",
+                annotation: Locales.strings.cleanup,
                 clearAll: true
             });
         } else if (undoing != true){

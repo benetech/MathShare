@@ -6,6 +6,7 @@ import styles from '../../../../styles/styles.css';
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 import googleAnalytics from '../../../../scripts/googleAnalytics';
 import introJs from 'intro.js'
+import Locales from '../../../../strings'
 
 const mathLive = DEBUG_MODE ? require('../../../../../mathlive/src/mathlive.js')
     : require('../../../../../src/lib/mathlivedist/mathlive.js');
@@ -34,7 +35,7 @@ export default class ProblemHeader extends Component {
                         additionalStyles={['default']}
                         ariaHidden="true"
                         type="button"
-                        content="Help"
+                        content={Locales.strings.help}
                         onClick={this.tour}
                     //TODO: onclick="introJs().setOption('tooltipClass', 'introjs-helperLayer').start();"
                     />
