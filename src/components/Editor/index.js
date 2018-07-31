@@ -37,8 +37,8 @@ export default class Editor extends Component {
         this.textAreaChanged = this.textAreaChanged.bind(this);
     }
 
-    textAreaChanged(event) {
-        this.setState({textAreaValue : event.target.value});
+    textAreaChanged(text) {
+        this.setState({textAreaValue : text});
     }
 
     componentDidMount() {
