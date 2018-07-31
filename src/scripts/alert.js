@@ -17,5 +17,4 @@ export default function createAlert(type, message, title) {
             NotificationManager.error(message, title, ALERT_DELAY_MS);
             break;
       }
-    $(".notification-container").attr("tabindex", -1).focus();
 }
