@@ -99,10 +99,11 @@ export default class MyWorkEditorArea extends Component {
                                     data-intro={Locales.strings.tts_intro}
                                     aria-label={Locales.strings.tts_hint}
                                     value={this.props.textAreaValue}
-                                    onChange={this.props.textAreaChanged}
+                                    onChange={value => this.props.textAreaChanged(value.target.value)}
                                     >
                                 </textarea>
-                                <SpeechToTextButton/>
+                                <SpeechToTextButton textAreaValue={this.props.textAreaValue}
+                                    setTextAreaValue={value => this.props.textAreaChanged(value)} />
                             </div>
                         </div>
                     </div>
