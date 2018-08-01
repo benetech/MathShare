@@ -284,11 +284,13 @@ export default class Editor extends Component {
     }
 
     deleteSteps() {
-        this.deleteStep(false, true);
-        while (this.state.steps.length > 1) {
-            this.deleteStep(true, true);
-        };
-        this.setState({textAreaValue: ""});
+        if (this.state.steps.length > 1) {
+            this.deleteStep(false, true);
+            while (this.state.steps.length > 1) {
+                this.deleteStep(true, true);
+            };
+            this.setState({textAreaValue: ""});
+        }
     }
 
     addStep(undoing) {
