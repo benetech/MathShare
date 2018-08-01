@@ -47,7 +47,7 @@ export default class Editor extends Component {
 
     editStep(stepNumber) {
         // nothing to do if there are no steps
-        let mathStep = $($("#MathHistory").children()[stepNumber]);
+        let mathStep = $($("#MathHistory").children("#mathStep")[stepNumber]);
     
         if (this.state.updateMathFieldMode === false) {
             $('<div/>', {
@@ -109,7 +109,7 @@ export default class Editor extends Component {
             $('#mathAnnotation').focus();
             return;
         }
-        let mathStep = $($("#MathHistory").children()[index]);
+        let mathStep = $($("#MathHistory").children("#mathStep")[index]);
         let oldAnnotation = mathStep.data('annotation');
         let oldEquation = mathStep.data('equation');
 
@@ -133,8 +133,8 @@ export default class Editor extends Component {
         updatedHistory[mathStepNumber].equation = mathContent;
         updatedHistory[mathStepNumber].annotation = cleanup ? Locales.strings.cleanup : this.state.textAreaValue;
         this.setState({steps : updatedHistory})
-        $($("#MathHistory").children()[mathStepNumber]).data('equation', mathContent);
-        $($("#MathHistory").children()[mathStepNumber]).data('annotation', cleanup ? Locales.strings.cleanup : this.state.textAreaValue);
+        $($("#MathHistory").children("#mathStep")[mathStepNumber]).data('equation', mathContent);
+        $($("#MathHistory").children("#mathStep")[mathStepNumber]).data('annotation', cleanup ? Locales.strings.cleanup : this.state.textAreaValue);
         mathLive.renderMathInDocument();
     }
 
