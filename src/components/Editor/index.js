@@ -106,7 +106,9 @@ export default class Editor extends Component {
     updateStep(index) {
         if (this.state.textAreaValue === '') {
             createAlert('warning', Locales.strings.no_description_warning, 'Warning');
-            $('#mathAnnotation').focus();
+            setTimeout(function(){
+                $('#mathAnnotation').focus();
+            },6000);
             return;
         }
         let mathStep = $($("#MathHistory").children("#mathStep")[index]);
@@ -296,7 +298,9 @@ export default class Editor extends Component {
     addStep(undoing) {
         if (this.state.textAreaValue === "") {
             createAlert('warning', Locales.strings.no_description_warning, 'Warning');
-            $('#mathAnnotation').focus();
+            setTimeout(function(){
+                $('#mathAnnotation').focus();
+            },6000);
             return;
         }
         let newSteps = this.state.steps;
