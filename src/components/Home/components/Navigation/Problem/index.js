@@ -12,7 +12,7 @@ const mathLive = DEBUG_MODE ? require('../../../../../../mathlive/src/mathlive.j
 
 export default class Problem extends Component {
     buildAnnotation() {
-        return (this.props.number + 1) + ". " + this.props.problem.annotation;
+        return (this.props.number + 1) + ". " + this.props.problem.title;
     }
 
     componentDidMount() {
@@ -27,7 +27,7 @@ export default class Problem extends Component {
             equation = Locales.strings.getting_started_equation;
         } else {
             annotation = this.buildAnnotation();
-            equation = "$$" + this.props.problem.equation + "$$";
+            equation = "$$" + this.props.problem.text + "$$";
         }
         const NavItem = withRouter(({ history }) => (
             <li
@@ -38,7 +38,7 @@ export default class Problem extends Component {
                         problem.problem
                     )
                 }
-                onClick={() => {history.push('/problem/' + this.props.id)}}
+                onClick={() => {history.push('/problem/' + this.props.problem.id)}}
             >
                 <span
                     className={
@@ -57,12 +57,12 @@ export default class Problem extends Component {
                             )
                         }
                         content={<span className={problem.problemAnnotation}>{annotation}</span>}
-                        onClick={() => {history.push('/problem/' + this.props.id)}}
+                        onClick={() => {history.push('/problem/' + this.props.problem.id)}}
                     />
                     <span className={problem.problemEquation}>{equation}</span>
                 </span>
             </li>
         ))
-        return <NavItem/>
+        return <NavItem />
     }
 }

@@ -52,7 +52,8 @@ export default class MyWork extends Component {
                             <MyWorkEditorButtons className="d-flex flex-nowrap justify-content-between" addStepCallback={this.props.addStepCallback} 
                                 undoLastActionCallback={this.props.undoLastActionCallback}  cancelEditCallback={this.props.cancelEditCallback}
                                 deleteStepsCallback={this.props.deleteStepsCallback} editing={this.props.editing} history={this.props.history}
-                                savedProblem={this.props.savedProblem}/>
+                                savedProblem={this.props.savedProblem}
+                                problem={this.props.problem} />
                         </div>
                         <div
                             className={
