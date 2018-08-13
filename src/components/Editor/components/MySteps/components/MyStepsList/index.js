@@ -11,7 +11,7 @@ export default class MyStepsList extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            steps: props.steps
+            steps: props.solution.steps
         };
     }
 
@@ -56,7 +56,8 @@ export default class MyStepsList extends Component {
                 cancelEditCallback={this.props.cancelEditCallback}
                 editing={this.props.editing}
                 history={this.props.history}
-                savedProblem={this.props.savedProblem} />
+                savedProblem={this.props.savedProblem}
+                solution={this.props.solution} />
         )
 
         return (
@@ -73,8 +74,7 @@ export default class MyStepsList extends Component {
                                 )
                             }
                             role="heading"
-                            aria-level="2"
-                        >
+                            aria-level="2">
                             {steps}
                         </div>
                     </div>

@@ -13,16 +13,16 @@ export default class Editor extends Component {
     constructor(props) {
         super(props);
         this.id = props.match.params.number;
-        var problem = this.getProblemById(props.problems, this.id);
         this.state = {
-            math: problem.text,
-            title: problem.title,
-            steps: [ //TODO: Load all steps if there are any
-                {
-                    stepValue: problem.text,
-                    explaination: problem.title
-                }
-            ],
+            solution: {
+                problem: this.props.problem,
+                steps: [ //TODO: Load all steps if there are any
+                    {
+                        stepValue: this.props.problem.text,
+                        explaination: this.props.problem.title
+                    }
+                ]
+            },
             editorPosition: 0, //TODO: problem.history.length - 1,
             allowedPalettes: props.allowedPalettes,
             theActiveMathField: null,
@@ -136,7 +136,7 @@ export default class Editor extends Component {
     }
 
     updateMathEditorRow(mathContent, mathStepNumber, cleanup) {
-        let updatedHistory = this.state.steps;
+        let updatedHistory = this.state.solution.steps;
         updatedHistory[mathStepNumber].equation = mathContent;
         updatedHistory[mathStepNumber].annotation = cleanup ? Locales.strings.cleanup : this.state.textAreaValue;
         this.setState({steps : updatedHistory})
@@ -156,7 +156,7 @@ export default class Editor extends Component {
         this.setState({
             theActiveMathField: updatedMathField,
             textAreaValue: latestMathStepData.data('annotation'),
-            editorPosition: this.state.steps.length - 1,
+            editorPosition: this.state.solution.steps.length - 1,
             editing: false});
 
         var newStack = this.state.actionsStack;
@@ -244,7 +244,7 @@ export default class Editor extends Component {
         }
 
         // get the contents of the last row/step
-        let lastStep = this.state.steps[this.state.steps.length - 1];
+        let lastStep = this.state.solution.steps[this.state.solution.steps.length - 1];
 
         // put the contents of the last row/step into the active/current line
         let updatedMathField = this.state.theActiveMathField;
@@ -267,7 +267,7 @@ export default class Editor extends Component {
         }
 
         // ok to delete last row now...
-        let newSteps = this.state.steps;
+        let newSteps = this.state.solution.steps;
         newSteps.pop();
         this.setState({steps: newSteps});
 
@@ -287,13 +287,13 @@ export default class Editor extends Component {
         $('.mathStep:last .btn-edit').show();
         $('#addStep').show();
         $('#updateControls').hide();
-        this.setState({editorPosition: this.state.steps.length - 1 });
+        this.setState({editorPosition: this.state.solution.steps.length - 1 });
     }
 
     deleteSteps() {
-        if (this.state.steps.length > 1) {
+        if (this.state.solution.steps.length > 1) {
             this.deleteStep(false, true);
-            while (this.state.steps.length > 1) {
+            while (this.state.solution.steps.length > 1) {
                 this.deleteStep(true, true);
             };
             this.setState({textAreaValue: ""});
@@ -308,7 +308,7 @@ export default class Editor extends Component {
             },6000);
             return;
         }
-        let newSteps = this.state.steps;
+        let newSteps = this.state.solution.steps;
         let mathContent = this.state.theActiveMathField.latex();
         let annotation = this.state.textAreaValue;
         newSteps.push({"equation":  mathContent , "annotation": annotation});
@@ -350,17 +350,12 @@ export default class Editor extends Component {
         this.scrollToBottom();
     }
 
-    getProblemById(problems, id) {
-        const isProblem = p => p.id == id;
-        return problems.find(isProblem);
-    }
-
     render() {
         var myStepsList;
-        var problemHeaderTitle = this.state.title;
+        var problemHeaderTitle = this.state.solution.problem.title;
         if (this.id != "newEditor") {
             myStepsList = <MyStepsList
-                steps={this.state.steps}
+                solution={this.state.solution}
                 deleteStepCallback={this.deleteStep}
                 editStepCallback={this.editStep}
                 allowedPalettes={this.state.allowedPalettes}
@@ -370,7 +365,7 @@ export default class Editor extends Component {
                 textAreaValue={this.state.textAreaValue}
                 addStepCallback={this.addStep}
                 undoLastActionCallback={this.undoLastAction}
-                lastMathEquation={this.state.steps[this.state.steps.length - 1].stepValue} 
+                lastMathEquation={this.state.solution.steps[this.state.solution.steps.length - 1].stepValue} 
                 deleteStepsCallback={this.deleteSteps}
                 cancelEditCallback={this.exitUpdate}
                 editorPosition={this.state.editorPosition}
@@ -384,7 +379,7 @@ export default class Editor extends Component {
             <div id="MainWorkWrapper" className={editor.mainWorkWrapper}>
                 <NotificationContainer />
                 <main id="MainWorkArea" className={editor.editorAndHistoryWrapper}>
-                    <ProblemHeader math={this.state.math} title={problemHeaderTitle} />
+                    <ProblemHeader math={this.state.solution.problem.text} title={problemHeaderTitle} />
                     <MyStepsHeader />
                     {myStepsList}
                     <div ref={el => { this.el = el; }} style={{height: 50}}/>

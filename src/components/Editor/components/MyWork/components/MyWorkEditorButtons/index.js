@@ -172,7 +172,7 @@ export default class MyWorkEditorButtons extends Component {
                     hide={this.props.editing}
                     history={this.props.history}
                     savedProblem={() => this.props.savedProblem()}
-                    problem={this.props.problem} />
+                    solution={this.props.solution} />
             </div>
         );
     }
