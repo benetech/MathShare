@@ -52,6 +52,9 @@ module.exports = env => {
                 }
             ]
         },
+        devServer: {
+            port: 3000
+        },
         plugins: plugins
     }
 };

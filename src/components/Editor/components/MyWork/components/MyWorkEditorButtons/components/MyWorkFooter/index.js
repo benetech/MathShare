@@ -6,6 +6,8 @@ import styles from '../../../../../../../../styles/styles.css';
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 import googleAnalytics from '../../../../../../../../scripts/googleAnalytics';
 import Locales from '../../../../../../../../strings'
+import axios from 'axios';
+import config from '../../../../../../../../../package.json';
 
 export default class MyWorkFooter extends Component {
     constructor(props) {
@@ -24,6 +26,17 @@ export default class MyWorkFooter extends Component {
 
     saveSolution() {
         googleAnalytics('Save');
+        /*TODO: 
+        var solution = {
+            problem: this.props.problem,
+            steps: []
+        };
+        axios.post(`${config.serverUrl}/solution/new`, solution)
+            .then(function(response) {
+                this.props.history.goBack()
+                this.props.savedProblem();
+            }
+        )*/
         this.props.history.goBack()
         this.props.savedProblem();
     }

@@ -15,10 +15,15 @@ export default class Editor extends Component {
         this.id = props.match.params.number;
         var problem = this.getProblemById(props.problems, this.id);
         this.state = {
-            math: problem.originalProblem.equation,
-            title: problem.originalProblem.annotation,
-            steps: problem.history,
-            editorPosition: problem.history.length - 1,
+            math: problem.text,
+            title: problem.title,
+            steps: [ //TODO: Load all steps if there are any
+                {
+                    stepValue: problem.text,
+                    explaination: problem.title
+                }
+            ],
+            editorPosition: 0, //TODO: problem.history.length - 1,
             allowedPalettes: props.allowedPalettes,
             theActiveMathField: null,
             textAreaValue: "",
@@ -346,7 +351,7 @@ export default class Editor extends Component {
     }
 
     getProblemById(problems, id) {
-        const isProblem = p => p.metadata.id === id;
+        const isProblem = p => p.id == id;
         return problems.find(isProblem);
     }
 
@@ -365,13 +370,13 @@ export default class Editor extends Component {
                 textAreaValue={this.state.textAreaValue}
                 addStepCallback={this.addStep}
                 undoLastActionCallback={this.undoLastAction}
-                lastMathEquation={this.state.steps[this.state.steps.length - 1].equation} 
+                lastMathEquation={this.state.steps[this.state.steps.length - 1].stepValue} 
                 deleteStepsCallback={this.deleteSteps}
                 cancelEditCallback={this.exitUpdate}
                 editorPosition={this.state.editorPosition}
                 editing={this.state.editing}
-                history={this.props.history} 
-                savedProblem={this.props.savedProblem}/>;
+                history={this.props.history}
+                savedProblem={this.props.savedProblem} />;
             problemHeaderTitle += ": ";
         }
 
