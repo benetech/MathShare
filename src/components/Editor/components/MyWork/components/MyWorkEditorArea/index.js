@@ -10,7 +10,6 @@ const mathLive = DEBUG_MODE ? require('../../../../../../../mathlive/src/mathliv
     : require('../../../../../../../src/lib/mathlivedist/mathlive.js');
 
 export default class MyWorkEditorArea extends Component {
-
     componentDidMount() {
         var mathField = this.getMathField();
         mathField.latex(this.props.lastMathEquation);
