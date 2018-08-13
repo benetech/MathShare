@@ -11,12 +11,30 @@ const mathLive = DEBUG_MODE ? require('../../../../../../mathlive/src/mathlive.j
     : require('../../../../../lib/mathlivedist/mathlive.js');
 
 export default class Problem extends Component {
+    constructor(props) {
+        super(props);
+
+        this.createNewSolution = this.createNewSolution.bind(this);
+    }
+
     buildAnnotation() {
         return (this.props.number + 1) + ". " + this.props.problem.title;
     }
 
     componentDidMount() {
         mathLive.renderMathInDocument();
+    }
+
+    createNewSolution(history) {
+        var solution = {
+            problem: {
+                problemSetRevisionShareCode: this.props.problem.problemSetRevisionShareCode,
+                text: this.props.problem.text,
+                title: this.props.problem.title
+            },
+            steps: []
+        }
+        this.props.createNewSolution(history, solution);
     }
 
     render() {
@@ -38,7 +56,7 @@ export default class Problem extends Component {
                         problem.problem
                     )
                 }
-                onClick={() => {history.push('/problem/' + this.props.problem.id)}}
+                onClick={() => this.createNewSolution(history)}
             >
                 <span
                     className={
@@ -57,7 +75,7 @@ export default class Problem extends Component {
                             )
                         }
                         content={<span className={problem.problemAnnotation}>{annotation}</span>}
-                        onClick={() => {history.push('/problem/' + this.props.problem.id)}}
+                        onClick={() => this.createNewSolution(history)}
                     />
                     <span className={problem.problemEquation}>{equation}</span>
                 </span>

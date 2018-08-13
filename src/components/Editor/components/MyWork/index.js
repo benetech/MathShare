@@ -27,8 +27,7 @@ export default class MyWork extends Component {
                                         myWork.marginTop
                                     )
                                 }
-                                aria-hidden="true"
-                            >
+                                aria-hidden="true">
                                 {Locales.strings.my_work}
                             </span>
                             <br/>
@@ -53,7 +52,7 @@ export default class MyWork extends Component {
                                 undoLastActionCallback={this.props.undoLastActionCallback}  cancelEditCallback={this.props.cancelEditCallback}
                                 deleteStepsCallback={this.props.deleteStepsCallback} editing={this.props.editing} history={this.props.history}
                                 savedProblem={this.props.savedProblem}
-                                problem={this.props.problem} />
+                                solution={this.props.solution} />
                         </div>
                         <div
                             className={

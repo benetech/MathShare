@@ -37,7 +37,7 @@ export default class Home extends Component {
                 <div className={home.contentWrapper} id="ContentWrapper">
                     <nav id="LeftNavigation" className={home.leftNavigation} aria-labelledby="LeftNavigationHeader">
                         <NavigationHeader />
-                        <NavigationProblems problems={this.props.problems} />
+                        <NavigationProblems problems={this.props.problems} createNewSolution={this.props.createNewSolution} />
                     </nav>
                 </div>
                 <MainPageFooter />
