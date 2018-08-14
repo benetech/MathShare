@@ -23,7 +23,7 @@ export default class Editor extends Component {
                 steps: [
                     {
                         stepValue: "",
-                        explaination: Locales.strings.loading
+                        explanation: Locales.strings.loading
                     }
                 ],
                 editCode: null
@@ -50,14 +50,23 @@ export default class Editor extends Component {
     componentDidMount() {
         axios.get(`${config.serverUrl}/solution/view/${this.props.match.params.code}`)
             .then(response => {
+                console.log(response.data.steps.length);
                 var solution = {
                     problem: response.data.problem,
                     steps: response.data.steps,
                     editCode: response.data.editCode
                 }
-                this.setState({solution});
+                let field = this.state.theActiveMathField;
+                field.latex(response.data.steps[response.data.steps.length - 1].stepValue);
+                this.setState({
+                    solution,                     
+                    editorPosition: response.data.steps.length -1,
+                    theActiveMathField: field
+                });
             })
         $('#undoAction').hide();
+        this.scrollToBottom();
+        //todo: write last step to editor
         document.onkeydown = HandleKeyDown.bind(this);
     }
 
@@ -322,7 +331,7 @@ export default class Editor extends Component {
         let newSteps = this.state.solution.steps;
         let mathContent = this.state.theActiveMathField.latex();
         let annotation = this.state.textAreaValue;
-        newSteps.push({"stepValue": mathContent , "explaination": annotation});
+        newSteps.push({"stepValue": mathContent , "explanation": annotation});
         var newStack = this.state.actionsStack;
 
         let cleanedUp = MathButton.CleanUpCrossouts(mathContent);
@@ -333,7 +342,7 @@ export default class Editor extends Component {
                 annotation: annotation,
                 clearAll: true
             });
-            newSteps.push({"stepValue": cleanedUp, "explaination": Locales.strings.cleanup});
+            newSteps.push({"stepValue": cleanedUp, "explanation": Locales.strings.cleanup});
             newStack.push(
             {   type: "add",
                 latex: cleanedUp,

@@ -26,7 +26,7 @@ export default class MyStepsList extends Component {
                     exposedKey={i}
                     stepNumber={step.annotation===Locales.strings.cleanup ? counter : counter++}
                     math={step.stepValue}
-                    annotation={step.explaination}
+                    annotation={step.explanation}
                     showEdit={showEdit}
                     showTrash={showTrash}
                     deleteStepCallback={this.props.deleteStepCallback}
