@@ -54,7 +54,7 @@ export default class Editor extends Component {
                 var solution = {
                     problem: response.data.problem,
                     steps: response.data.steps,
-                    editCode: response.data.editCode,
+                    editCode: response.data.editCode
                 }
                 let field = this.state.theActiveMathField;
                 field.latex(response.data.steps[response.data.steps.length - 1].stepValue);
