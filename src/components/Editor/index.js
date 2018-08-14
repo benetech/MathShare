@@ -320,7 +320,7 @@ export default class Editor extends Component {
         let newSteps = this.state.solution.steps;
         let mathContent = this.state.theActiveMathField.latex();
         let annotation = this.state.textAreaValue;
-        newSteps.push({"equation":  mathContent , "annotation": annotation});
+        newSteps.push({"stepValue": mathContent , "explaination": annotation});
         var newStack = this.state.actionsStack;
 
         let cleanedUp = MathButton.CleanUpCrossouts(mathContent);
@@ -331,7 +331,7 @@ export default class Editor extends Component {
                 annotation: annotation,
                 clearAll: true
             });
-            newSteps.push({"equation": cleanedUp, "annotation": Locales.strings.cleanup});
+            newSteps.push({"stepValue": cleanedUp, "explaination": Locales.strings.cleanup});
             newStack.push(
             {   type: "add",
                 latex: cleanedUp,
@@ -350,10 +350,12 @@ export default class Editor extends Component {
         updatedMathField.latex(cleanedUp);
         $('#undoAction').show();
         this.setState({actionsStack: newStack});
-        this.setState({editorPosition: newSteps.length - 1, steps: newSteps,
+        var solution = this.state.solution;
+        solution.steps = newSteps;
+        this.setState({editorPosition: newSteps.length - 1, solution: solution,
             theActiveMathField: updatedMathField,
             textAreaValue: ""});
-
+            
       //  this.setScratchPadContentData(mathStepNewNumber, ScratchPadPainterro.imageSaver.asDataURL())
       //  this.clearScrachPad();
         this.scrollToBottom();
