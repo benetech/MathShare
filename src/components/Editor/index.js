@@ -7,23 +7,27 @@ import editor from './styles.css';
 import {NotificationContainer} from 'react-notifications';
 import mathLive from '../../../src/lib/mathlivedist/mathlive.js';
 import createAlert from '../../scripts/alert';
-import Locales from '../../strings'
+import Locales from '../../strings';
+import axios from 'axios';
+import config from '../../../package.json';
 
 export default class Editor extends Component {
     constructor(props) {
         super(props);
-        this.id = props.match.params.number;
         this.state = {
             solution: {
-                problem: this.props.problem,
-                steps: [ //TODO: Load all steps if there are any
+                problem: {
+                    title: Locales.strings.loading,
+                    text: Locales.strings.loading
+                },
+                steps: [
                     {
-                        stepValue: this.props.problem.text,
-                        explaination: this.props.problem.title
+                        stepValue: "",
+                        explaination: Locales.strings.loading
                     }
                 ]
             },
-            editorPosition: 0, //TODO: problem.history.length - 1,
+            editorPosition: 0,
             allowedPalettes: props.allowedPalettes,
             theActiveMathField: null,
             textAreaValue: "",
@@ -42,12 +46,21 @@ export default class Editor extends Component {
         this.textAreaChanged = this.textAreaChanged.bind(this);
     }
 
-    textAreaChanged(text) {
-        this.setState({textAreaValue : text});
+    componentDidMount() {
+        axios.get(`${config.serverUrl}/solution/view/${this.props.match.params.code}`)
+            .then(response => {
+                var solution = {
+                    problem: response.data.problem,
+                    steps: response.data.steps
+                }
+                this.setState({solution});
+            })
+        $('#undoAction').hide();
+        document.onkeydown = HandleKeyDown.bind(this);
     }
 
-    componentDidMount() {
-        $('#undoAction').hide();
+    textAreaChanged(text) {
+        this.setState({textAreaValue : text});
     }
 
     editStep(stepNumber) {
@@ -175,10 +188,6 @@ export default class Editor extends Component {
     
         this.state.theActiveMathField.focus();
         this.setState({updateMathFieldMode : false});
-    }
-
-    componentDidMount() {
-        document.onkeydown = HandleKeyDown.bind(this);
     }
 
     scrollToBottom() {
@@ -311,7 +320,7 @@ export default class Editor extends Component {
         let newSteps = this.state.solution.steps;
         let mathContent = this.state.theActiveMathField.latex();
         let annotation = this.state.textAreaValue;
-        newSteps.push({"equation":  mathContent , "annotation": annotation});
+        newSteps.push({"stepValue": mathContent , "explaination": annotation});
         var newStack = this.state.actionsStack;
 
         let cleanedUp = MathButton.CleanUpCrossouts(mathContent);
@@ -322,7 +331,7 @@ export default class Editor extends Component {
                 annotation: annotation,
                 clearAll: true
             });
-            newSteps.push({"equation": cleanedUp, "annotation": Locales.strings.cleanup});
+            newSteps.push({"stepValue": cleanedUp, "explaination": Locales.strings.cleanup});
             newStack.push(
             {   type: "add",
                 latex: cleanedUp,
@@ -341,10 +350,12 @@ export default class Editor extends Component {
         updatedMathField.latex(cleanedUp);
         $('#undoAction').show();
         this.setState({actionsStack: newStack});
-        this.setState({editorPosition: newSteps.length - 1, steps: newSteps,
+        var solution = this.state.solution;
+        solution.steps = newSteps;
+        this.setState({editorPosition: newSteps.length - 1, solution: solution,
             theActiveMathField: updatedMathField,
             textAreaValue: ""});
-
+            
       //  this.setScratchPadContentData(mathStepNewNumber, ScratchPadPainterro.imageSaver.asDataURL())
       //  this.clearScrachPad();
         this.scrollToBottom();
@@ -353,7 +364,7 @@ export default class Editor extends Component {
     render() {
         var myStepsList;
         var problemHeaderTitle = this.state.solution.problem.title;
-        if (this.id != "newEditor") {
+        if (this.props.match.params.code != "newEditor") {
             myStepsList = <MyStepsList
                 solution={this.state.solution}
                 deleteStepCallback={this.deleteStep}
@@ -365,7 +376,6 @@ export default class Editor extends Component {
                 textAreaValue={this.state.textAreaValue}
                 addStepCallback={this.addStep}
                 undoLastActionCallback={this.undoLastAction}
-                lastMathEquation={this.state.solution.steps[this.state.solution.steps.length - 1].stepValue} 
                 deleteStepsCallback={this.deleteSteps}
                 cancelEditCallback={this.exitUpdate}
                 editorPosition={this.state.editorPosition}

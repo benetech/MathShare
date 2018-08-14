@@ -5,7 +5,9 @@ import classNames from "classnames";
 import problem from './styles.css';
 import buttons from '../../../../../components/Button/styles.css';
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
-import Locales from '../../../../../strings'
+import Locales from '../../../../../strings';
+import config from '../../../../../../package.json';
+import axios from 'axios';
 
 const mathLive = DEBUG_MODE ? require('../../../../../../mathlive/src/mathlive.js')
     : require('../../../../../lib/mathlivedist/mathlive.js');
@@ -32,9 +34,17 @@ export default class Problem extends Component {
                 text: this.props.problem.text,
                 title: this.props.problem.title
             },
-            steps: []
+            steps: [
+                {
+                    stepValue: this.props.problem.text,
+                    explaination: this.props.problem.title
+                }
+            ]
         }
-        this.props.createNewSolution(history, solution);
+        axios.post(`${config.serverUrl}/solution/new`, solution)
+            .then(response => {
+                history.push('/problem/view/' + response.data.shareCode);
+            })
     }
 
     render() {

@@ -8,23 +8,16 @@ import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 import Locales from '../../../../../../strings'
 
 export default class MyStepsList extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            steps: props.solution.steps
-        };
-    }
-
     render() {
         var counter = 1;
-        let steps = this.state.steps.map( (step, i) => {
+        let steps = this.props.solution.steps.map( (step, i) => {
             var showTrash = false;
             var showEdit = false;
             if (i > 0) {
                 showEdit = true;
             }
 
-            if (i == this.state.steps.length - 1 && this.state.steps.length > 1) {
+            if (i == this.props.solution.steps.length - 1 && this.props.solution.steps.length > 1) {
                 showTrash = true;
             }
           
@@ -51,7 +44,7 @@ export default class MyStepsList extends Component {
                 textAreaValue={this.props.textAreaValue}
                 addStepCallback={this.props.addStepCallback}
                 undoLastActionCallback={this.props.undoLastActionCallback}
-                lastMathEquation={this.props.lastMathEquation} 
+                lastMathEquation={this.props.solution.steps[this.props.solution.steps.length - 1].stepValue} 
                 deleteStepsCallback={this.props.deleteStepsCallback}
                 cancelEditCallback={this.props.cancelEditCallback}
                 editing={this.props.editing}

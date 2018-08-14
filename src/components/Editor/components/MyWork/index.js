@@ -10,10 +10,6 @@ import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 import Locales from '../../../../strings'
 
 export default class MyWork extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         return (
             <div id="EditorArea" className={myWork.editorArea}>
