@@ -17,6 +17,7 @@ html, body {
     margin: 0;
     font-size: 16px;
     background-color: rgb(240, 240, 240);
+    overflow: hidden;
 }
 
 #workArea .ML__mathlive {
