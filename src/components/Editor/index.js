@@ -18,14 +18,15 @@ export default class Editor extends Component {
             solution: {
                 problem: {
                     title: Locales.strings.loading,
-                    text: Locales.strings.loading
+                    text: Locales.strings.loading,
                 },
                 steps: [
                     {
                         stepValue: "",
                         explaination: Locales.strings.loading
                     }
-                ]
+                ],
+                editCode: null
             },
             editorPosition: 0,
             allowedPalettes: props.allowedPalettes,
@@ -51,7 +52,8 @@ export default class Editor extends Component {
             .then(response => {
                 var solution = {
                     problem: response.data.problem,
-                    steps: response.data.steps
+                    steps: response.data.steps,
+                    editCode: response.data.editCode
                 }
                 this.setState({solution});
             })
