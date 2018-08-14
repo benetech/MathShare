@@ -26,6 +26,7 @@ export default class MyWorkFooter extends Component {
 
     saveSolution() {
         googleAnalytics('Save');
+        console.log(this.props.solution);
         axios.put(`${config.serverUrl}/solution/`, this.props.solution)
             .then(response => {
                 console.log("Created, share code: ", response.data.shareCode);

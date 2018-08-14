@@ -37,7 +37,7 @@ export default class Problem extends Component {
             steps: [
                 {
                     stepValue: this.props.problem.text,
-                    explaination: this.props.problem.title
+                    explanation: this.props.problem.title
                 }
             ]
         }
