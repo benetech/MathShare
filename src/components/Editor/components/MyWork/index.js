@@ -10,10 +10,6 @@ import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 import Locales from '../../../../strings'
 
 export default class MyWork extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         return (
             <div id="EditorArea" className={myWork.editorArea}>
@@ -27,8 +23,7 @@ export default class MyWork extends Component {
                                         myWork.marginTop
                                     )
                                 }
-                                aria-hidden="true"
-                            >
+                                aria-hidden="true">
                                 {Locales.strings.my_work}
                             </span>
                             <br/>
@@ -52,7 +47,8 @@ export default class MyWork extends Component {
                             <MyWorkEditorButtons className="d-flex flex-nowrap justify-content-between" addStepCallback={this.props.addStepCallback} 
                                 undoLastActionCallback={this.props.undoLastActionCallback}  cancelEditCallback={this.props.cancelEditCallback}
                                 deleteStepsCallback={this.props.deleteStepsCallback} editing={this.props.editing} history={this.props.history}
-                                savedProblem={this.props.savedProblem}/>
+                                savedProblem={this.props.savedProblem}
+                                solution={this.props.solution} />
                         </div>
                         <div
                             className={

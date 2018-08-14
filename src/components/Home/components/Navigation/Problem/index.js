@@ -5,18 +5,46 @@ import classNames from "classnames";
 import problem from './styles.css';
 import buttons from '../../../../../components/Button/styles.css';
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
-import Locales from '../../../../../strings'
+import Locales from '../../../../../strings';
+import config from '../../../../../../package.json';
+import axios from 'axios';
 
 const mathLive = DEBUG_MODE ? require('../../../../../../mathlive/src/mathlive.js')
     : require('../../../../../lib/mathlivedist/mathlive.js');
 
 export default class Problem extends Component {
+    constructor(props) {
+        super(props);
+
+        this.createNewSolution = this.createNewSolution.bind(this);
+    }
+
     buildAnnotation() {
-        return (this.props.number + 1) + ". " + this.props.problem.annotation;
+        return (this.props.number + 1) + ". " + this.props.problem.title;
     }
 
     componentDidMount() {
         mathLive.renderMathInDocument();
+    }
+
+    createNewSolution(history) {
+        var solution = {
+            problem: {
+                problemSetRevisionShareCode: this.props.problem.problemSetRevisionShareCode,
+                text: this.props.problem.text,
+                title: this.props.problem.title
+            },
+            steps: [
+                {
+                    stepValue: this.props.problem.text,
+                    explaination: this.props.problem.title
+                }
+            ]
+        }
+        axios.post(`${config.serverUrl}/solution/new`, solution)
+            .then(response => {
+                history.push('/problem/view/' + response.data.shareCode);
+            })
     }
 
     render() {
@@ -27,7 +55,7 @@ export default class Problem extends Component {
             equation = Locales.strings.getting_started_equation;
         } else {
             annotation = this.buildAnnotation();
-            equation = "$$" + this.props.problem.equation + "$$";
+            equation = "$$" + this.props.problem.text + "$$";
         }
         const NavItem = withRouter(({ history }) => (
             <li
@@ -38,7 +66,7 @@ export default class Problem extends Component {
                         problem.problem
                     )
                 }
-                onClick={() => {history.push('/problem/' + this.props.id)}}
+                onClick={() => this.createNewSolution(history)}
             >
                 <span
                     className={
@@ -57,12 +85,12 @@ export default class Problem extends Component {
                             )
                         }
                         content={<span className={problem.problemAnnotation}>{annotation}</span>}
-                        onClick={() => {history.push('/problem/' + this.props.id)}}
+                        onClick={() => this.createNewSolution(history)}
                     />
                     <span className={problem.problemEquation}>{equation}</span>
                 </span>
             </li>
         ))
-        return <NavItem/>
+        return <NavItem />
     }
 }

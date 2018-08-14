@@ -8,23 +8,16 @@ import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 import Locales from '../../../../../../strings'
 
 export default class MyStepsList extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            steps: props.steps
-        };
-    }
-
     render() {
         var counter = 1;
-        let steps = this.state.steps.map( (step, i) => {
+        let steps = this.props.solution.steps.map( (step, i) => {
             var showTrash = false;
             var showEdit = false;
             if (i > 0) {
                 showEdit = true;
             }
 
-            if (i == this.state.steps.length - 1 && this.state.steps.length > 1) {
+            if (i == this.props.solution.steps.length - 1 && this.props.solution.steps.length > 1) {
                 showTrash = true;
             }
           
@@ -32,8 +25,8 @@ export default class MyStepsList extends Component {
                     key={i}
                     exposedKey={i}
                     stepNumber={step.annotation===Locales.strings.cleanup ? counter : counter++}
-                    math={step.equation}
-                    annotation={step.annotation}
+                    math={step.stepValue}
+                    annotation={step.explaination}
                     showEdit={showEdit}
                     showTrash={showTrash}
                     deleteStepCallback={this.props.deleteStepCallback}
@@ -51,12 +44,13 @@ export default class MyStepsList extends Component {
                 textAreaValue={this.props.textAreaValue}
                 addStepCallback={this.props.addStepCallback}
                 undoLastActionCallback={this.props.undoLastActionCallback}
-                lastMathEquation={this.props.lastMathEquation} 
+                lastMathEquation={this.props.solution.steps[this.props.solution.steps.length - 1].stepValue} 
                 deleteStepsCallback={this.props.deleteStepsCallback}
                 cancelEditCallback={this.props.cancelEditCallback}
                 editing={this.props.editing}
                 history={this.props.history}
-                savedProblem={this.props.savedProblem}/>
+                savedProblem={this.props.savedProblem}
+                solution={this.props.solution} />
         )
 
         return (
@@ -73,8 +67,7 @@ export default class MyStepsList extends Component {
                                 )
                             }
                             role="heading"
-                            aria-level="2"
-                        >
+                            aria-level="2">
                             {steps}
                         </div>
                     </div>
