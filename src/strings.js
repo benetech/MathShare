@@ -5,7 +5,8 @@ class Locales {
     constructor() {
         this.strings = new LocalizedStrings({
         en:{
-            my_steps:"My Steps",
+            my_steps: "My Steps",
+            steps: "Steps",
             step: "Step",
             step_after_cleanup: "step, after cleanup",
             cleanup: "(cleanup)",
@@ -25,6 +26,8 @@ class Locales {
             type_math_here: "type math here",
             tts_hint: "Use the microphone button or type to explain your work (required)",
             tts_intro: "Describe your work by typing directly \nor using the microphone to record an explanation of your work (required).",
+            tts_hint_add_problem: "Use the microphone button or type to add problem title (required)",
+            tts_intro_add_problem: "Describe problem titlw by typing directly \nor using the microphone to record a title of problem (required).",
             confirm_discard: "Any work on this problem will NOT be saved",
             discard: "Discard",
             done: " Done",
@@ -47,6 +50,7 @@ class Locales {
             my_work: "My Work",
             help: "Help",
             no_description_warning: "Please provide a description of your work.",
+            no_problem_title_warning: "Please provide a problem title.",
             successfull_update_message: "The step has been updated.",
             problems_to_solve: " Problems to solve ",
             select_a_problem: "Select a problem and try out Benetech's Math Editor (alpha)!",
@@ -68,7 +72,23 @@ class Locales {
             is_a: " is a ",
             benetech: "Benetech",
             footer_description: "initiative supported by the U.S. Department of Education, Office of Special Education Programs (Cooperative Agreement #H327B100001). Opinions expressed herein are those of the authors and do not necessarily represent the position of the U.S. Department of Education. Poet™ is a trademark of Beneficent Technology, Inc. This website is copyright © 2012-2017, Beneficent Technology, Inc.",
-            loading: "Loading..."
+            loading: "Loading...",
+            share: "Share",
+            copy: " Copy",
+            close: " Close",
+            add_problem_title: "Add new Problem",
+            add_problem: " Add Problem",
+            add_problem_equation: "+",
+            save: "Save",
+            save_button: " Save",
+            edit_link_label: "Edit Url: ",
+            cancel: " Cancel",
+            new_problem: " New Problem",
+            add_problems: " Add problem(s) to set",
+            hash: "#",
+            equation: "Equation",
+            annotation: "Annotation",
+            share_link: "Share Link: "
         },
         es: {
         }

@@ -14,7 +14,6 @@ export default class App extends Component {
             dataSet: {
                 problems: []
             },
-            saved: false,
             problem: {}
         }
     }
@@ -28,11 +27,8 @@ export default class App extends Component {
         ReactGA.initialize(GA_ACCOUNT_ID);
         return (
             <Switch>
-                <Route exact path='/set/view/:code' render={p => <Home {...p}
-                    saved={this.state.saved}
-                    dialogDisplayed={()=>this.setState({saved: false})} />} />
-                <Route exact path='/problem/view/:code' render={p => <Editor {...p}
-                    savedProblem={()=>this.setState({saved: true})} />} />
+                <Route exact path='/set/:action/:code' render={p => <Home {...p}/> } />
+                <Route exact path='/problem/:action/:code' render={p => <Editor {...p}/> } />
                 <Route exact path='/' render={p => <Index {...p} />} />
             </Switch>
         )

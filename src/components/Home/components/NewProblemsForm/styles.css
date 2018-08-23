@@ -1,0 +1,26 @@
+.container {
+    width: 1100px;
+    height: 700px;
+    background: #dadada;
+    padding: 5px;
+    overflow: auto;
+}
+
+.row, .header {
+    display: flex;
+    justify-content: space-around;
+    margin: 5px;
+}
+
+.row {
+    background: #ffffff;
+}
+
+.cell {
+    flex: 1;
+}
+
+.cell,
+.ordinal {
+    margin: 10px;
+}

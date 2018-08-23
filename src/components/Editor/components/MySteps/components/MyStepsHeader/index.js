@@ -7,11 +7,12 @@ import Locales from '../../../../../../strings.js'
 
 export default class MyStepsHeader extends Component {
     render() {
+        var title = this.props.readOnly ? Locales.strings.steps : Locales.strings.my_steps;
         return (
             <div className={header.container}>
                 <h2 id="MySteps" tabIndex="-1">
                     <span className={classNames(mySteps.modalAreaHeading, header.title)} aria-hidden="true">
-                        {Locales.strings.my_steps}
+                        {title}
                     </span>
                     <span className={styles.sROnly}>{Locales.strings.my_steps}</span>
                 </h2>

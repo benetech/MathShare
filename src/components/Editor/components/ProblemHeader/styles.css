@@ -8,15 +8,30 @@
     z-index: 1;
     flex: 0 0 60px;
     background-color: rgb(0, 98, 217);
-    padding: 5px;
+    padding-top: 10px;
     display: flex;
-    justify-content: space-between;
 }
 
 .btnContainer {
     white-space: nowrap;
+    margin-left: auto
+}
+
+.backBtnContainer {
+    white-space: nowrap;
+    margin-right: 5px;
+    margin-left: 5px;
 }
 
 .btn {
     margin-right: 5px;
+}
+
+.editLink {
+    margin-right: 5px;
+    min-width: 400px;
+}
+
+.editLinkLabel {
+    color: #FFF;
 }

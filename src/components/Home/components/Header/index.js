@@ -8,14 +8,32 @@ import { withRouter } from 'react-router-dom';
 import { Dropdown, MenuItem } from 'react-bootstrap';
 import { NotificationManager } from 'react-notifications';
 import Locales from '../../../../strings'
+import axios from 'axios';
+import config from '../../../../../package.json';
 
 export default class MainPageHeader extends Component {
     render() {
-        const Button = withRouter(({ history }) => (
+        const GettingStartedButton = withRouter(({ history }) => (
             <a className={classNames(bootstrap['nav-link'], header.pointer)} onClick={() => { history.push('/problem/example') }}>
-                Getting Started
+                {Locales.strings.getting_started_title}
             </a>
         ))
+
+        const Button = this.props.editing ? 
+            <a className={classNames(bootstrap['nav-link'], header.pointer)} onClick={this.props.shareCallback}>
+                {Locales.strings.share}
+            </a>
+            : 
+            <a className={classNames(bootstrap['nav-link'], header.pointer)} onClick={() => { 
+                axios.get(`${config.serverUrl}/set/default`)
+                    .then(response => {
+                        this.props.history.push(`/set/edit/${response.data}`);
+                        axios.get(`${config.serverUrl}/set/edit/${response.data}`)
+                    })
+                }}>
+                {Locales.strings.edit}
+            </a>
+        
 
         return (
             <div id="topNavigationWrapper" className={header.header} role="heading" aria-level="1">
@@ -32,7 +50,10 @@ export default class MainPageHeader extends Component {
                             </ul>
                             <ul className={classNames(bootstrap['navbar-nav'], header.navItem)}>
                                 <li className={bootstrap['nav_item']}>
-                                    <Button />
+                                    <GettingStartedButton />
+                                </li>
+                                <li className={bootstrap['nav_item']}>
+                                    {Button}
                                 </li>
                                 <li className={classNames(bootstrap['nav-item'], [bootstrap.dropdown])}>
                                     <a className={classNames(bootstrap['nav-link'], bootstrap['dropdown-toggle'])}

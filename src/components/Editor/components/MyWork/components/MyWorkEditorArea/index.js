@@ -40,6 +40,8 @@ export default class MyWorkEditorArea extends Component {
     }
 
     render() {
+        var tts_hint = this.props.addingProblem ? Locales.strings.tts_hint_add_problem : Locales.strings.tts_hint;
+        var tts_intro = this.props.addingProblem ? Locales.strings.tts_intro_add_problem : Locales.strings.tts_intro;
         return (
             <div role="heading" aria-level="2">
                 <div className={bootstrap.row}>
@@ -93,10 +95,10 @@ export default class MyWorkEditorArea extends Component {
                                             editorArea.annotation,
                                         )
                                     }
-                                    placeholder={Locales.strings.tts_hint}
+                                    placeholder={tts_hint}
                                     data-step="2"
-                                    data-intro={Locales.strings.tts_intro}
-                                    aria-label={Locales.strings.tts_hint}
+                                    data-intro={tts_intro}
+                                    aria-label={tts_hint}
                                     value={this.props.textAreaValue}
                                     onChange={value => this.props.textAreaChanged(value.target.value)}
                                     >
