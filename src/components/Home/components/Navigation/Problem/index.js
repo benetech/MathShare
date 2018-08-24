@@ -51,7 +51,6 @@ export default class Problem extends Component {
         }
         axios.post(`${config.serverUrl}/solution/new`, solution)
             .then(response => {
-                console.log(response.data)
                 history.push('/problem/edit/' + response.data.editCode);
             })
     }
@@ -80,6 +79,7 @@ export default class Problem extends Component {
         />
         : null;
         var removeButton = this.props.showRemove ?  
+        
         <FontAwesome
             id={"trash" + this.props.number}
             className={

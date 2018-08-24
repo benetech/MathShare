@@ -19,7 +19,7 @@ export default class MainPageHeader extends Component {
             </a>
         ))
 
-        const Button = this.props.editing ? 
+        const button = this.props.editing ? 
             <a className={classNames(bootstrap['nav-link'], header.pointer)} onClick={this.props.shareCallback}>
                 {Locales.strings.share}
             </a>
@@ -53,7 +53,7 @@ export default class MainPageHeader extends Component {
                                     <GettingStartedButton />
                                 </li>
                                 <li className={bootstrap['nav_item']}>
-                                    {Button}
+                                    {button}
                                 </li>
                                 <li className={classNames(bootstrap['nav-item'], [bootstrap.dropdown])}>
                                     <a className={classNames(bootstrap['nav-link'], bootstrap['dropdown-toggle'])}

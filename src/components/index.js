@@ -18,11 +18,6 @@ export default class App extends Component {
         }
     }
 
-    getProblemById(problems, id) {
-        const isProblem = p => p.id === id;
-        return problems.find(isProblem);
-    }
-
     render() {
         ReactGA.initialize(GA_ACCOUNT_ID);
         return (

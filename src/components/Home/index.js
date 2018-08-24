@@ -78,10 +78,10 @@ export default class Home extends Component {
 
     addProblem() {
         if (this.state.textAreaValue === "") {
-            createAlert('warning', Locales.strings.no_problem_title_warning, 'Warning');
+            createAlert('warning', Locales.strings.no_problem_title_warning, Locales.strings.warning);
             setTimeout(function(){
                 $('#mathAnnotation').focus();
-            },6000);
+            }, 6000);
             return;
         }
         let newProblems = this.state.tempProblems;
@@ -125,7 +125,6 @@ export default class Home extends Component {
                 tempProblems: [],
                 modalActive: false
             });
-            console.log(response.data);
         });
         
     }
@@ -144,7 +143,6 @@ export default class Home extends Component {
                 tempProblems: [],
                 modalActive: false
             });
-            console.log(response.data);
         });
 
         setTimeout(function() { 

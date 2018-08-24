@@ -386,11 +386,6 @@ export default class Editor extends Component {
         this.scrollToBottom();
     }
 
-    getProblemById(problems, id) {
-        const isProblem = p => p.metadata.id === id;
-        return problems.find(isProblem);
-    }
-
     getApplicationNode() {
         return document.getElementById('root');
     };
@@ -411,7 +406,7 @@ export default class Editor extends Component {
         axios.put(`${config.serverUrl}/solution/`, this.state.solution)
             .then(response => {
                 this.setState({editLink: config.serverUrl + '/problem/edit/' + this.state.solution.editCode})
-                createAlert('success', Locales.strings.problem_saved_success_message, 'Success');
+                createAlert('success', Locales.strings.problem_saved_success_message, Locales.strings.success);
             }
         )
     };

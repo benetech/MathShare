@@ -1,5 +1,5 @@
 .modal {
-    background: #fff;
+    background: rgb(255, 255, 255);
     outline: 0;
     min-width: 250px;
     max-width: 500px;
@@ -13,7 +13,7 @@
 }
 
 .modalHeader {
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid rgb(238, 238, 238);
 }
 
 .modalTitle {
@@ -21,7 +21,7 @@
 }
 
 .modalFooter {
-    border-top: 1px solid #eee;
+    border-top: 1px solid rgb(238, 238, 238);
     text-align: right;
 }
 

@@ -27,32 +27,29 @@ export default class MyWorkFooter extends Component {
             styles.pointer
         ];
 
-        var leftButton = this.props.addingProblem ? 
-        <Button
+        var saveButton = <Button
             id="BtnSave"
             className={btnClassNames}
             additionalStyles={['withRightMargin', 'default']}
             content={Locales.strings.save_button}
             onClick={this.props.saveCallback}
-        /> :
-        <Button
+        /> 
+        var discardButton = <Button
             id="BtnDiscard"
             className={btnClassNames}
             additionalStyles={['withRightMargin', 'default']}
             content={Locales.strings.discard}
             onClick={this.discard}
         />
-
-        var rightButton = this.props.addingProblem ?
-        <Button
+        var cancelButton = <Button
             id="BtnCancel"
             className={btnClassNames}
             additionalStyles={['default']}
             content={Locales.strings.cancel}
             icon="times-circle"
             onClick={this.props.cancelCallback}
-        /> :
-        <Button
+        /> 
+        var clearAllButton = <Button
             id="BtnClearAll"
             className={btnClassNames}
             additionalStyles={['default']}
@@ -74,8 +71,8 @@ export default class MyWorkFooter extends Component {
                             )
                         }
                     >
-                        {leftButton}
-                        {rightButton}
+                        {this.props.addingProblem ? saveButton : discardButton}
+                        {this.props.addingProblem ? cancelButton : clearAllButton}
                     </div>
                 </div>
             </div>

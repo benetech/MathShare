@@ -14,7 +14,7 @@
 
 .btnContainer {
     white-space: nowrap;
-    margin-left: auto
+    margin-left: auto;
 }
 
 .backBtnContainer {
@@ -33,5 +33,5 @@
 }
 
 .editLinkLabel {
-    color: #FFF;
+    color: rgb(255, 255, 255);
 }
