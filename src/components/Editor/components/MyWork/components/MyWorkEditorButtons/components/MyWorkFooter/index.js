@@ -33,7 +33,7 @@ export default class MyWorkFooter extends Component {
             additionalStyles={['withRightMargin', 'default']}
             content={Locales.strings.save_button}
             onClick={this.props.saveCallback}
-        /> 
+        />
         var discardButton = <Button
             id="BtnDiscard"
             className={btnClassNames}
@@ -48,7 +48,7 @@ export default class MyWorkFooter extends Component {
             content={Locales.strings.cancel}
             icon="times-circle"
             onClick={this.props.cancelCallback}
-        /> 
+        />
         var clearAllButton = <Button
             id="BtnClearAll"
             className={btnClassNames}

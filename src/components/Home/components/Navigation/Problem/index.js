@@ -11,7 +11,8 @@ import axios from 'axios';
 import FontAwesome from "react-fontawesome";
 
 const mathLive = DEBUG_MODE ? require('../../../../../../mathlive/src/mathlive.js')
-    : require('../../../../../lib/mathlivedist/mathlive.js');
+: require('../../../../../lib/mathlivedist/mathlive.js');
+const problemTextDisplayLength = 40;
 
 export default class Problem extends Component {
     constructor(props) {
@@ -22,6 +23,14 @@ export default class Problem extends Component {
 
     buildAnnotation() {
         return (this.props.number + 1) + ". " + this.props.problem.title;
+    }
+
+    buildProblemText() {
+        var text = this.props.problem.text;
+        if (text.length > problemTextDisplayLength) {
+            text = text.slice(0, problemTextDisplayLength) + "...";
+        }
+        return "$$" + text + "$$";
     }
 
     componentDidMount() {
@@ -65,7 +74,7 @@ export default class Problem extends Component {
             equation = Locales.strings.add_problem_title;
         } else {
             annotation = this.buildAnnotation();
-            equation = "$$" + this.props.problem.text + "$$";
+            equation = this.buildProblemText();
         }
         var plusButton = this.props.addNew ? 
         <FontAwesome
