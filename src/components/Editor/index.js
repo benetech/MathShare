@@ -5,11 +5,15 @@ import MyStepsList from './components/MySteps/components/MyStepsList';
 import MathButton from './components/MyWork/components/MathPalette/components/MathButtonsGroup/components/MathButtonsRow/components/MathButton';
 import editor from './styles.css';
 import {NotificationContainer} from 'react-notifications';
-import mathLive from '../../../src/lib/mathlivedist/mathlive.js';
 import createAlert from '../../scripts/alert';
 import Locales from '../../strings';
 import axios from 'axios';
 import config from '../../../package.json';
+import ShareModal from '../ShareModal';
+import googleAnalytics from '../../scripts/googleAnalytics';
+
+const mathLive = DEBUG_MODE ? require('../../../mathlive/src/mathlive.js')
+    : require('../../lib/mathlivedist/mathlive.js');
 
 export default class Editor extends Component {
     constructor(props) {
@@ -34,7 +38,11 @@ export default class Editor extends Component {
             textAreaValue: "",
             actionsStack: [],
             updateMathFieldMode: false,
-            editing: false
+            editing: false,
+            modalActive: false,
+            shareLink: "http:mathshare.com/exampleShareLink/1",
+            editLink: "Not saved yet.",
+            readOnly: false
         };
 
         this.addStep = this.addStep.bind(this);
@@ -45,10 +53,15 @@ export default class Editor extends Component {
         this.updateStep = this.updateStep.bind(this);
         this.exitUpdate = this.exitUpdate.bind(this);
         this.textAreaChanged = this.textAreaChanged.bind(this);
+        this.getApplicationNode = this.getApplicationNode.bind(this);
+        this.shareProblem = this.shareProblem.bind(this);
+        this.saveProblem = this.saveProblem.bind(this);
+        this.deactivateModal = this.deactivateModal.bind(this);
+        this.goBack = this.goBack.bind(this);
     }
 
     componentDidMount() {
-        axios.get(`${config.serverUrl}/solution/view/${this.props.match.params.code}`)
+        axios.get(`${config.serverUrl}/solution//${this.props.match.params.action}/${this.props.match.params.code}`)
             .then(response => {
                 console.log(response.data.steps.length);
                 var solution = {
@@ -61,7 +74,8 @@ export default class Editor extends Component {
                 this.setState({
                     solution,                     
                     editorPosition: response.data.steps.length -1,
-                    theActiveMathField: field
+                    theActiveMathField: field,
+                    readOnly: this.props.match.params.action == 'view'
                 });
             })
         $('#undoAction').hide();
@@ -372,10 +386,44 @@ export default class Editor extends Component {
         this.scrollToBottom();
     }
 
+    getApplicationNode() {
+        return document.getElementById('root');
+    };
+
+    shareProblem() {
+        axios.put(`${config.serverUrl}/solution/`, this.state.solution)
+        .then(response => {
+            this.setState({ 
+                shareLink: config.serverUrl + '/problem/view/' + response.data.shareCode,
+                modalActive: true 
+            });
+        }
+        )
+    };
+
+    saveProblem() {
+        googleAnalytics('Save');
+        axios.put(`${config.serverUrl}/solution/`, this.state.solution)
+            .then(response => {
+                this.setState({editLink: config.serverUrl + '/problem/edit/' + this.state.solution.editCode})
+                createAlert('success', Locales.strings.problem_saved_success_message, Locales.strings.success);
+            }
+        )
+    };
+
+    goBack() {
+        this.props.history.goBack()
+    }
+
+    deactivateModal() {
+        this.setState({ modalActive: false });
+    };
+
     render() {
+        const modal = this.state.modalActive ? <ShareModal shareLink={this.state.shareLink} deactivateModal={this.deactivateModal}/> : null;
+
         var myStepsList;
         var problemHeaderTitle = this.state.solution.problem.title;
-        if (this.props.match.params.code != "newEditor") {
             myStepsList = <MyStepsList
                 solution={this.state.solution}
                 deleteStepCallback={this.deleteStep}
@@ -391,17 +439,19 @@ export default class Editor extends Component {
                 cancelEditCallback={this.exitUpdate}
                 editorPosition={this.state.editorPosition}
                 editing={this.state.editing}
-                history={this.props.history}
-                savedProblem={this.props.savedProblem} />;
+                history={this.props.history} 
+                newProblem = {this.id === "newEditor"}
+                readOnly={this.state.readOnly}/>
             problemHeaderTitle += ": ";
-        }
 
         return (
             <div id="MainWorkWrapper" className={editor.mainWorkWrapper}>
                 <NotificationContainer />
                 <main id="MainWorkArea" className={editor.editorAndHistoryWrapper}>
-                    <ProblemHeader math={this.state.solution.problem.text} title={problemHeaderTitle} />
-                    <MyStepsHeader />
+                    {modal}
+                    <ProblemHeader math={this.state.solution.problem.text} title={problemHeaderTitle} shareProblem={this.shareProblem} 
+                        saveProblem={this.saveProblem} readOnly={this.state.readOnly} editLink={this.state.editLink} goBack={this.goBack}/>
+                    <MyStepsHeader readOnly={this.state.readOnly} />
                     {myStepsList}
                     <div ref={el => { this.el = el; }} style={{height: 50}}/>
                 </main>

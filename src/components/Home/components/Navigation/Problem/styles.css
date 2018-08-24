@@ -3,13 +3,16 @@
     margin-bottom: 20px;
 }
 
+.annotation {
+    width: 90%;
+}
+
 .navItemButton {
     cursor:pointer;
     border: none;
     text-align: left;
     text-decoration: none;
     display: inline-block;
-    width: 100%;
 }
 
 .colorInherit {
@@ -25,7 +28,25 @@
 
 
 .problemEquation {
-    display: block;
+    display: inline-flex;
     text-align: center;
     padding-left: 15px;
+    min-height: 60px;
+    align-items: center;
+}
+
+.trashIcon {
+    position: absolute;
+    left: -4%;
+    bottom: -7%;
+}
+
+.plusIcon {
+    position: absolute;
+    left: 95%;
+    bottom: -7%;
+}
+
+.navSpan {
+    position: relative
 }
