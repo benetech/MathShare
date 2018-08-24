@@ -8,6 +8,7 @@ import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 import Locales from '../../../../../strings';
 import config from '../../../../../../package.json';
 import axios from 'axios';
+import FontAwesome from "react-fontawesome";
 
 const mathLive = DEBUG_MODE ? require('../../../../../../mathlive/src/mathlive.js')
     : require('../../../../../lib/mathlivedist/mathlive.js');
@@ -25,6 +26,13 @@ export default class Problem extends Component {
 
     componentDidMount() {
         mathLive.renderMathInDocument();
+        var id = "#trash" + this.props.number;
+        var number = this.props.number;
+        let call = this.props.deleteCallback;
+        $(id).click(function(e) {
+            call(number);
+            e.stopImmediatePropagation();
+         });
     }
 
     createNewSolution(history) {
@@ -43,7 +51,7 @@ export default class Problem extends Component {
         }
         axios.post(`${config.serverUrl}/solution/new`, solution)
             .then(response => {
-                history.push('/problem/view/' + response.data.shareCode);
+                history.push('/problem/edit/' + response.data.editCode);
             })
     }
 
@@ -53,10 +61,36 @@ export default class Problem extends Component {
         if (this.props.example) {
             annotation = Locales.strings.getting_started_title;
             equation = Locales.strings.getting_started_equation;
+        } else if (this.props.addNew) {
+            equation = Locales.strings.add_problem_title;
         } else {
             annotation = this.buildAnnotation();
             equation = "$$" + this.props.problem.text + "$$";
         }
+        var plusButton = this.props.addNew ? 
+        <FontAwesome
+            className={
+                classNames(
+                    problem.plusIcon,
+                    'fa-2x'
+                )
+            }
+            name='plus-circle'
+        />
+        : null;
+        var removeButton = this.props.showRemove ?  
+        
+        <FontAwesome
+            id={"trash" + this.props.number}
+            className={
+                classNames(
+                    problem.trashIcon,
+                    'fa-2x'
+                )
+            }
+            name='trash'
+        />
+        : null;
         const NavItem = withRouter(({ history }) => (
             <li
                 className={
@@ -66,14 +100,15 @@ export default class Problem extends Component {
                         problem.problem
                     )
                 }
-                onClick={() => this.createNewSolution(history)}
+                onClick={() => this.props.addNew ? this.props.activateModal() : this.createNewSolution(history)}
             >
                 <span
                     className={
                         classNames(
                             bootstrap.btn,
                             buttons.default,
-                            buttons.huge
+                            buttons.huge,
+                            problem.navSpan
                         )
                     }
                 >
@@ -81,12 +116,15 @@ export default class Problem extends Component {
                         className={
                             classNames(
                                 problem.navItemButton,
+                                problem.annotation,
                                 problem.colorInherit
                             )
                         }
                         content={<span className={problem.problemAnnotation}>{annotation}</span>}
-                        onClick={() => this.createNewSolution(history)}
+                        onClick={() => this.props.addNew ? this.props.activateModal() : this.createNewSolution(history)}
                     />
+                    {removeButton}
+                    {plusButton}
                     <span className={problem.problemEquation}>{equation}</span>
                 </span>
             </li>

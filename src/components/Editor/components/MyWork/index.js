@@ -11,6 +11,7 @@ import Locales from '../../../../strings'
 
 export default class MyWork extends Component {
     render() {
+        var title = this.props.addingProblem ? Locales.strings.add_problems : Locales.strings.my_work;
         return (
             <div id="EditorArea" className={myWork.editorArea}>
                 <div className={myWork.myWorkArea}>
@@ -24,7 +25,7 @@ export default class MyWork extends Component {
                                     )
                                 }
                                 aria-hidden="true">
-                                {Locales.strings.my_work}
+                                {title}
                             </span>
                             <br/>
                             <span className={styles.sROnly}>{Locales.strings.my_work}</span>
@@ -32,7 +33,7 @@ export default class MyWork extends Component {
                     </div>
                     <div className={myWork.editorWrapper}>
                         <MyWorkEditorArea activateMathField={this.props.activateMathField} lastMathEquation={this.props.lastMathEquation}
-                            textAreaChanged={this.props.textAreaChanged} textAreaValue={this.props.textAreaValue}/>
+                            textAreaChanged={this.props.textAreaChanged} textAreaValue={this.props.textAreaValue} addingProblem={this.props.addingProblem}/>
                         <div
                             className={
                                 classNames(
@@ -47,8 +48,8 @@ export default class MyWork extends Component {
                             <MyWorkEditorButtons className="d-flex flex-nowrap justify-content-between" addStepCallback={this.props.addStepCallback} 
                                 undoLastActionCallback={this.props.undoLastActionCallback}  cancelEditCallback={this.props.cancelEditCallback}
                                 deleteStepsCallback={this.props.deleteStepsCallback} editing={this.props.editing} history={this.props.history}
-                                savedProblem={this.props.savedProblem}
-                                solution={this.props.solution} />
+                                solution={this.props.solution} addingProblem={this.props.addingProblem}  cancelCallback={this.props.cancelCallback}
+                                saveCallback={this.props.saveCallback}/>
                         </div>
                         <div
                             className={

@@ -6,15 +6,12 @@ import styles from '../../../../../../../../styles/styles.css';
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 import googleAnalytics from '../../../../../../../../scripts/googleAnalytics';
 import Locales from '../../../../../../../../strings'
-import config from '../../../../../../../../../package.json';
-import axios from 'axios';
 
 export default class MyWorkFooter extends Component {
     constructor(props) {
         super(props);
       
         this.discard = this.discard.bind(this);
-        this.saveSolution = this.saveSolution.bind(this);
     }
 
     discard() {
@@ -24,23 +21,42 @@ export default class MyWorkFooter extends Component {
         }
     }
 
-    saveSolution() {
-        googleAnalytics('Save');
-        console.log(this.props.solution);
-        axios.put(`${config.serverUrl}/solution/`, this.props.solution)
-            .then(response => {
-                console.log("Created, share code: ", response.data.shareCode);
-                this.props.history.goBack()
-                this.props.savedProblem();
-            }
-        )
-    }
-
     render() {
         const btnClassNames = [
             bootstrap.btn,
             styles.pointer
         ];
+
+        var saveButton = <Button
+            id="BtnSave"
+            className={btnClassNames}
+            additionalStyles={['withRightMargin', 'default']}
+            content={Locales.strings.save_button}
+            onClick={this.props.saveCallback}
+        /> 
+        var discardButton = <Button
+            id="BtnDiscard"
+            className={btnClassNames}
+            additionalStyles={['withRightMargin', 'default']}
+            content={Locales.strings.discard}
+            onClick={this.discard}
+        />
+        var cancelButton = <Button
+            id="BtnCancel"
+            className={btnClassNames}
+            additionalStyles={['default']}
+            content={Locales.strings.cancel}
+            icon="times-circle"
+            onClick={this.props.cancelCallback}
+        /> 
+        var clearAllButton = <Button
+            id="BtnClearAll"
+            className={btnClassNames}
+            additionalStyles={['default']}
+            content={Locales.strings.clear_all}
+            icon="times-circle"
+            onClick={this.props.deleteStepsCallback}
+        />
 
         return (
             <div className={footer.footer} style={this.props.hide ? {display: 'none'} : {}}>
@@ -55,31 +71,8 @@ export default class MyWorkFooter extends Component {
                             )
                         }
                     >
-                        <Button
-                            id="BtnDiscard"
-                            className={btnClassNames}
-                            additionalStyles={['withRightMargin', 'default']}
-                            content={Locales.strings.discard}
-                            onClick={this.discard}
-                        />
-                        <Button
-                            id="BtnSave"
-                            className={btnClassNames}
-                            content={Locales.strings.done}
-                            additionalStyles={['withRightMargin', 'default']}
-                            step="5"
-                            intro={Locales.strings.save_intro}
-                            icon="thumbs-up"
-                            onClick={this.saveSolution}
-                        />
-                        <Button
-                            id="BtnClearAll"
-                            className={btnClassNames}
-                            additionalStyles={['default']}
-                            content={Locales.strings.clear_all}
-                            icon="times-circle"
-                            onClick={this.props.deleteStepsCallback}
-                        />
+                        {this.props.addingProblem ? saveButton : discardButton}
+                        {this.props.addingProblem ? cancelButton : clearAllButton}
                     </div>
                 </div>
             </div>

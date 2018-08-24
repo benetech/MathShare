@@ -13,11 +13,11 @@ export default class MyStepsList extends Component {
         let steps = this.props.solution.steps.map( (step, i) => {
             var showTrash = false;
             var showEdit = false;
-            if (i > 0) {
+            if (i > 0 && !this.props.readOnly) {
                 showEdit = true;
             }
 
-            if (i == this.props.solution.steps.length - 1 && this.props.solution.steps.length > 1) {
+            if (i == this.props.solution.steps.length - 1 && this.props.solution.steps.length > 1 && !this.props.readOnly) {
                 showTrash = true;
             }
           
@@ -33,25 +33,25 @@ export default class MyStepsList extends Component {
                     editStepCallback={this.props.editStepCallback}/>  
             }
         );
-
-        steps.splice(this.props.editorPosition + 1, 0, 
-            <MyWork
-                key={"editor"}
-                allowedPalettes={this.props.allowedPalettes}
-                activateMathField={this.props.activateMathField}
-                theActiveMathField={this.props.theActiveMathField}
-                textAreaChanged={this.props.textAreaChanged}
-                textAreaValue={this.props.textAreaValue}
-                addStepCallback={this.props.addStepCallback}
-                undoLastActionCallback={this.props.undoLastActionCallback}
-                lastMathEquation={this.props.solution.steps[this.props.solution.steps.length - 1].stepValue} 
-                deleteStepsCallback={this.props.deleteStepsCallback}
-                cancelEditCallback={this.props.cancelEditCallback}
-                editing={this.props.editing}
-                history={this.props.history}
-                savedProblem={this.props.savedProblem}
-                solution={this.props.solution} />
-        )
+        if (!this.props.readOnly) {
+            steps.splice(this.props.editorPosition + 1, 0, 
+                <MyWork
+                    key={"editor"}
+                    allowedPalettes={this.props.allowedPalettes}
+                    activateMathField={this.props.activateMathField}
+                    theActiveMathField={this.props.theActiveMathField}
+                    textAreaChanged={this.props.textAreaChanged}
+                    textAreaValue={this.props.textAreaValue}
+                    addStepCallback={this.props.addStepCallback}
+                    undoLastActionCallback={this.props.undoLastActionCallback}
+                    lastMathEquation={this.props.solution.steps[this.props.solution.steps.length - 1].stepValue} 
+                    deleteStepsCallback={this.props.deleteStepsCallback}
+                    cancelEditCallback={this.props.cancelEditCallback}
+                    editing={this.props.editing}
+                    history={this.props.history}
+                    solution={this.props.solution} />
+            )
+        }
 
         return (
             <div id="HistoryWrapper" className={mySteps.historyWrapper}>

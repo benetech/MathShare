@@ -54,6 +54,7 @@ export default class MyWorkEditorButtons extends Component {
     }
 
     render() {
+        var addLabel = this.props.addingProblem ? Locales.strings.add_problem : Locales.strings.add_step;
         return (
             <div
                 id="editorButtons"
@@ -123,14 +124,14 @@ export default class MyWorkEditorButtons extends Component {
                             hide={this.props.editing}
                             toggle="tooltip"
                             title={Locales.strings.clean_up_button_title}
-                            content={Locales.strings.add_step}
+                            content={addLabel}
                             step="3"
                             intro={Locales.strings.add_step_intro}
                             icon="plus"
                             onClick={this.props.addStepCallback}
                             />
                         <div id="updateControls" style={this.props.editing ? {} : {display: 'none'}} >
-                            <h3 className={styles.sROnly}>Update the step</h3>
+                            <h3 className={styles.sROnly}>{Locales.strings.update_step_intro}</h3>
                             <Button
                                 id="updateStep"
                                 className={[
@@ -147,7 +148,7 @@ export default class MyWorkEditorButtons extends Component {
                                 icon="pencil"
                             />
                             <br />
-                            <h3 className={styles.sROnly}>Cancel edit</h3>
+                            <h3 className={styles.sROnly}>{Locales.strings.cancel_edit_step}</h3>
                             <Button
                                 id="cancelEdit"
                                 className={[
@@ -171,8 +172,10 @@ export default class MyWorkEditorButtons extends Component {
                     deleteStepsCallback={this.props.deleteStepsCallback}
                     hide={this.props.editing}
                     history={this.props.history}
-                    savedProblem={() => this.props.savedProblem()}
-                    solution={this.props.solution} />
+                    solution={this.props.solution}
+                    addingProblem={this.props.addingProblem}
+                    cancelCallback={this.props.cancelCallback}
+                    saveCallback={this.props.saveCallback} />
             </div>
         );
     }
