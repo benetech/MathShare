@@ -10,7 +10,8 @@ import config from '../../../../../../package.json';
 import axios from 'axios';
 
 const mathLive = DEBUG_MODE ? require('../../../../../../mathlive/src/mathlive.js')
-    : require('../../../../../lib/mathlivedist/mathlive.js');
+: require('../../../../../lib/mathlivedist/mathlive.js');
+const problemTextDisplayLength = 40;
 
 export default class Problem extends Component {
     constructor(props) {
@@ -21,6 +22,14 @@ export default class Problem extends Component {
 
     buildAnnotation() {
         return (this.props.number + 1) + ". " + this.props.problem.title;
+    }
+
+    buildProblemText() {
+        var text = this.props.problem.text;
+        if (text.length > problemTextDisplayLength) {
+            text = text.slice(0, problemTextDisplayLength) + "...";
+        }
+        return "$$" + text + "$$";
     }
 
     componentDidMount() {
@@ -55,7 +64,7 @@ export default class Problem extends Component {
             equation = Locales.strings.getting_started_equation;
         } else {
             annotation = this.buildAnnotation();
-            equation = "$$" + this.props.problem.text + "$$";
+            equation = this.buildProblemText();
         }
         const NavItem = withRouter(({ history }) => (
             <li
