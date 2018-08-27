@@ -57,10 +57,8 @@ export default class ProblemHeader extends Component {
                         icon="arrow-left"
                         onClick={this.props.goBack}/>
                 </div>
-                <div>
-                    <span id="ProblemTitle" className={problem.title} role="heading" aria-level="1">{title}</span>
-                    <span id="ProblemMath" className={problem.title}>{"$$" + this.props.math + "$$"}</span>
-                </div>
+                <span id="ProblemTitle" className={problem.title} role="heading" aria-level="1">{title}</span>
+                <span id="ProblemMath" className={problem.title}>{"$$" + this.props.math + "$$"}</span>
                 {editOnlyControls}
             </div>
         );
