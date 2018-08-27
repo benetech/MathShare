@@ -52,7 +52,6 @@ export default class Home extends Component {
                         editCode: response.data.editCode,
                         sharecode: response.data.shareCode
                     }});
-                console.log(response.data);
             });
     }
 
