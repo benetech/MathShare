@@ -13,6 +13,7 @@ import FontAwesome from "react-fontawesome";
 const mathLive = DEBUG_MODE ? require('../../../../../../mathlive/src/mathlive.js')
 : require('../../../../../lib/mathlivedist/mathlive.js');
 const problemTextDisplayLength = 40;
+const problemMathDisplayLength = 30;
 
 export default class Problem extends Component {
     constructor(props) {
@@ -27,10 +28,31 @@ export default class Problem extends Component {
 
     buildProblemText() {
         var text = this.props.problem.text;
-        if (text.length > problemTextDisplayLength) {
-            text = text.slice(0, problemTextDisplayLength) + "...";
+        if (text.includes("\\frac")) {
+            text = this.buildComplexProblemText();
+        } else {
+            if (text.length > problemTextDisplayLength) {
+                text = text.slice(0, problemTextDisplayLength) + "...";
+            }
         }
         return "$$" + text + "$$";
+    }
+
+    buildComplexProblemText() {
+        var text = this.props.problem.text;
+        var equationParts = text.split("{");
+        var result = "";
+        equationParts.forEach(function(part) {
+            if (part.length > problemMathDisplayLength) {
+                result += "{" + part.slice(0, problemMathDisplayLength) + "...}";
+            } else {
+                if (part.includes("}")) {
+                    result += "{";
+                }
+                result +=  part;
+            }
+        });
+        return result;
     }
 
     componentDidMount() {
