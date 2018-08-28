@@ -37,6 +37,7 @@ export default class Button extends Component {
         var span;
         if (this.props.icon) {
             span = <FontAwesome
+                size={this.props.iconSize ? this.props.iconSize : "lg"}
                 className='super-crazy-colors'
                 name={this.props.icon}
             />

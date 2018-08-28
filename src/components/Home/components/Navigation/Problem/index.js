@@ -9,6 +9,7 @@ import Locales from '../../../../../strings';
 import config from '../../../../../../package.json';
 import axios from 'axios';
 import FontAwesome from "react-fontawesome";
+import showImage from '../../../../../scripts/showImage.js';
 
 const mathLive = DEBUG_MODE ? require('../../../../../../mathlive/src/mathlive.js')
 : require('../../../../../lib/mathlivedist/mathlive.js');
@@ -20,6 +21,8 @@ export default class Problem extends Component {
         super(props);
 
         this.createNewSolution = this.createNewSolution.bind(this);
+        this.onTrashClick = this.onTrashClick.bind(this);
+        this.onImgClick = this.onImgClick.bind(this);
     }
 
     buildAnnotation() {
@@ -57,13 +60,16 @@ export default class Problem extends Component {
 
     componentDidMount() {
         mathLive.renderMathInDocument();
-        var id = "#trash" + this.props.number;
-        var number = this.props.number;
-        let call = this.props.deleteCallback;
-        $(id).click(function(e) {
-            call(number);
-            e.stopImmediatePropagation();
-         });
+    }
+
+    onTrashClick(e) {
+        this.props.deleteCallback(this.props.number);
+        e.stopPropagation();
+    }
+
+    onImgClick(e) {
+        showImage(this.props.problem.scratchpad);
+        e.stopPropagation();
     }
 
     createNewSolution(history) {
@@ -98,6 +104,20 @@ export default class Problem extends Component {
             annotation = this.buildAnnotation();
             equation = this.buildProblemText();
         }
+
+        var imgButton = (this.props.problem && this.props.problem.scratchpad) ? 
+        <FontAwesome
+            className={
+                classNames(
+                    problem.imgIcon,
+                    'fa-2x'
+                )
+            }
+            onClick={this.onImgClick}
+            name='image'
+        />
+        : null;
+
         var plusButton = this.props.addNew ? 
         <FontAwesome
             className={
@@ -109,19 +129,20 @@ export default class Problem extends Component {
             name='plus-circle'
         />
         : null;
-        var removeButton = this.props.showRemove ?  
         
+        var removeButton = this.props.showRemove ?  
         <FontAwesome
-            id={"trash" + this.props.number}
             className={
                 classNames(
                     problem.trashIcon,
                     'fa-2x'
                 )
             }
+            onClick={this.onTrashClick}
             name='trash'
         />
         : null;
+
         const NavItem = withRouter(({ history }) => (
             <li
                 className={
@@ -131,7 +152,6 @@ export default class Problem extends Component {
                         problem.problem
                     )
                 }
-                onClick={() => this.props.addNew ? this.props.activateModal() : this.createNewSolution(history)}
             >
                 <span
                     className={
@@ -142,6 +162,7 @@ export default class Problem extends Component {
                             problem.navSpan
                         )
                     }
+                    onClick={() => this.props.addNew ? this.props.activateModal() : this.createNewSolution(history)}
                 >
                     <Button
                         className={
@@ -152,8 +173,8 @@ export default class Problem extends Component {
                             )
                         }
                         content={<span className={problem.problemAnnotation}>{annotation}</span>}
-                        onClick={() => this.props.addNew ? this.props.activateModal() : this.createNewSolution(history)}
                     />
+                    {imgButton}
                     {removeButton}
                     {plusButton}
                     <span className={problem.problemEquation}>{equation}</span>

@@ -24,3 +24,8 @@
 .ordinal {
     margin: 10px;
 }
+
+.image {
+    float: right;
+    cursor: pointer;
+}

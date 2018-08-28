@@ -65,7 +65,7 @@ export default class Home extends Component {
 
     activateModal() {
         this.setState({ modalActive: true });
-    }; 
+    };
 
     deactivateShareModal() {
         this.setState({ shareModalActive: false });
@@ -75,7 +75,7 @@ export default class Home extends Component {
         this.setState({ shareModalActive: true });
     };
 
-    addProblem() {
+    addProblem(imageData) {
         if (this.state.textAreaValue === "") {
             createAlert('warning', Locales.strings.no_problem_title_warning, Locales.strings.warning);
             setTimeout(function(){
@@ -86,8 +86,7 @@ export default class Home extends Component {
         let newProblems = this.state.tempProblems;
         let mathContent = this.state.theActiveMathField.latex();
         let annotation = this.state.textAreaValue;
-        newProblems.push({"text": mathContent , "title": annotation});
-
+        newProblems.push({"text": mathContent , "title": annotation, "scratchpad": imageData});
         
         let updatedMathField = this.state.theActiveMathField;
         updatedMathField.latex("$$$$");
@@ -111,7 +110,6 @@ export default class Home extends Component {
     saveProblems() {
         var oldSet = this.state.set;
         oldSet.problems = oldSet.problems.concat(this.state.tempProblems);
-        console.log(oldSet.problems);
 
         axios.put(`${config.serverUrl}/set/`, oldSet)
         .then(response => {
@@ -163,7 +161,7 @@ export default class Home extends Component {
             addProblemCallback={this.addProblem}
             problems={this.state.tempProblems}
             cancelCallback={this.deactivateModal}
-            saveCallback={this.saveProblems}/>
+            saveCallback={this.saveProblems} />
         : null;
 
         return (

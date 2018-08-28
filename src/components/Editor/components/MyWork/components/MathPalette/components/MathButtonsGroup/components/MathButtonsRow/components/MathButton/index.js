@@ -3,7 +3,7 @@ import Button from '../../.././../../../../../../../../Button';
 import classNames from "classnames";
 import mathButton from './styles.css';
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
-import teXCommands from './teXCommands.json'
+import teXCommands from './teXCommands.json';
 import googleAnalytics from '../../../../../../../../../../../../scripts/googleAnalytics';
 import createAlert from '../../../../../../../../../../../../scripts/alert';
 

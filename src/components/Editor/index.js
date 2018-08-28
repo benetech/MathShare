@@ -4,7 +4,7 @@ import MyStepsHeader from './components/MySteps/components/MyStepsHeader';
 import MyStepsList from './components/MySteps/components/MyStepsList';
 import MathButton from './components/MyWork/components/MathPalette/components/MathButtonsGroup/components/MathButtonsRow/components/MathButton';
 import editor from './styles.css';
-import {NotificationContainer} from 'react-notifications';
+import { NotificationContainer } from 'react-notifications';
 import createAlert from '../../scripts/alert';
 import Locales from '../../strings';
 import axios from 'axios';
@@ -75,7 +75,6 @@ export default class Editor extends Component {
     componentDidMount() {
         axios.get(`${config.serverUrl}/solution//${this.props.match.params.action}/${this.props.match.params.code}`)
             .then(response => {
-                console.log(response.data.steps.length);
                 var solution = {
                     problem: response.data.problem,
                     steps: response.data.steps,
@@ -93,7 +92,7 @@ export default class Editor extends Component {
             })
         $('#undoAction').hide();
         this.scrollToBottom();
-        //todo: write last step to editor
+
         document.onkeydown = HandleKeyDown.bind(this);
     }
 
@@ -134,29 +133,6 @@ export default class Editor extends Component {
         } else {
             this.clearScrachPad();
         }
-    }
-
-    //TODO: lift sratchpadpainterro up to here from my workeditorbuttons so we can use it
-    clearScrachPad() {
-       // ScratchPadPainterro.clearBackground();
-       // ScratchPadPainterro.worklog.current = null;
-        // it is because Painterro displays a modal if we want to replace an existing ScratchPad content
-       // ScratchPadPainterro.worklog.clean = true;
-    }
-
-    setScratchPadContentData(stepNumber, newContent) {
-       // let mathStep = $('.mathStep:eq('+ (stepNumber - 1) +')');
-       // mathStep.data('scratch-pad', newContent);
-    }
-    
-    getScratchPadContentData(stepNumber) {
-        //let mathStep = $('.mathStep:eq('+ (stepNumber - 1) +')');
-        //return mathStep.data('scratch-pad');
-    }
-    
-    applyScratchPadContent(content) {
-       // ClearScrachPad();
-        //ScratchPadPainterro.show(content);
     }
 
     updateStep(index) {
@@ -231,7 +207,7 @@ export default class Editor extends Component {
     }
 
     scrollToBottom() {
-        document.querySelector("#MainWorkWrapper").scrollTo(0,document.querySelector("#MainWorkWrapper").scrollHeight);
+        document.querySelector("#MainWorkWrapper").scrollTo(0, document.querySelector("#MainWorkWrapper").scrollHeight);
     }
 
     undoLastAction() {
@@ -499,7 +475,7 @@ export default class Editor extends Component {
                 editing={this.state.editing}
                 history={this.props.history} 
                 newProblem = {this.id === "newEditor"}
-                readOnly={this.state.readOnly}/>
+                readOnly={this.state.readOnly} />
             problemHeaderTitle += ": ";
 
         return (
@@ -508,8 +484,8 @@ export default class Editor extends Component {
                 <main id="MainWorkArea" className={editor.editorAndHistoryWrapper}>
                     {confirmationModal}
                     {modal}
-                    <ProblemHeader math={this.state.solution.problem.text} title={problemHeaderTitle} shareProblem={this.shareProblem} 
-                        saveProblem={this.saveProblem} readOnly={this.state.readOnly} editLink={this.state.editLink} goBack={this.goBack}/>
+                    <ProblemHeader math={this.state.solution.problem.text} title={problemHeaderTitle} shareProblem={this.shareProblem} scratchpad={this.state.solution.problem.scratchpad}
+                        saveProblem={this.saveProblem} readOnly={this.state.readOnly} editLink={this.state.editLink} goBack={this.goBack} />
                     <MyStepsHeader readOnly={this.state.readOnly} />
                     {myStepsList}
                     <div ref={el => { this.el = el; }} style={{height: 50}}/>

@@ -47,6 +47,12 @@
     bottom: -7%;
 }
 
+.imgIcon {
+    position: absolute;
+    left: 93%;
+    top: -7%;
+}
+
 .navSpan {
     position: relative
 }

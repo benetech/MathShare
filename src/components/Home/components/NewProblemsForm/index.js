@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import AriaModal from "react-aria-modal";
-import Locales from '../../../../strings'
+import Locales from '../../../../strings';
 import styles from './styles.css';
-import MyWork from '../../../Editor/components/MyWork'
+import MyWork from '../../../Editor/components/MyWork';
+import FontAwesome from "react-fontawesome";
+import showImage from "../../../../scripts/showImage";
 
 const mathLive = DEBUG_MODE ? require('../../../../../mathlive/src/mathlive.js')
     : require('../../../../lib/mathlivedist/mathlive.js');
@@ -22,8 +24,22 @@ export default class NewProblemsForm extends Component {
         return document.getElementById('root');
     };
 
+    onImgClick(img) {
+        showImage(img);
+    }
+
     render() {
         let problems = this.props.problems.map( (problem, i) => {
+            const img = problem.scratchpad ? 
+            <div className={styles.image}>
+                <FontAwesome
+                    size="2x"
+                    className='super-crazy-colors'
+                    name="image"
+                    onClick={() => this.onImgClick(problem.scratchpad)}
+                />
+            </div> : null;
+            
             return <div className={styles.row}>
                 <div className={styles.ordinal}>
                         {i}.
@@ -33,6 +49,7 @@ export default class NewProblemsForm extends Component {
                 </div>
                 <div className={styles.cell}>
                     {problem.title}
+                    {img}
                 </div>
             </div>
         });
