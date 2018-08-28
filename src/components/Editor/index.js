@@ -11,6 +11,7 @@ import axios from 'axios';
 import config from '../../../package.json';
 import ShareModal from '../ShareModal';
 import googleAnalytics from '../../scripts/googleAnalytics';
+import ConfirmationModal from '../ConfirmationModal';
 
 const mathLive = DEBUG_MODE ? require('../../../mathlive/src/mathlive.js')
     : require('../../lib/mathlivedist/mathlive.js');
@@ -32,6 +33,12 @@ export default class Editor extends Component {
                 ],
                 editCode: null
             },
+            stepsFromLastSave: [
+                {
+                    stepValue: "",
+                    explanation: Locales.strings.loading
+                }
+            ],
             editorPosition: 0,
             allowedPalettes: props.allowedPalettes,
             theActiveMathField: null,
@@ -40,6 +47,7 @@ export default class Editor extends Component {
             updateMathFieldMode: false,
             editing: false,
             modalActive: false,
+            confirmationModalActive: false,
             shareLink: "http:mathshare.com/exampleShareLink/1",
             editLink: "Not saved yet.",
             readOnly: false
@@ -57,7 +65,11 @@ export default class Editor extends Component {
         this.shareProblem = this.shareProblem.bind(this);
         this.saveProblem = this.saveProblem.bind(this);
         this.deactivateModal = this.deactivateModal.bind(this);
+        this.deactivateConfirmationModal = this.deactivateConfirmationModal.bind(this);
+        this.activateConfirmationModal = this.activateConfirmationModal.bind(this);
         this.goBack = this.goBack.bind(this);
+        this.confirmationModalSaveCallback = this.confirmationModalSaveCallback.bind(this);
+        this.confirmationModalDiscardCallback = this.confirmationModalDiscardCallback.bind(this);
     }
 
     componentDidMount() {
@@ -75,7 +87,8 @@ export default class Editor extends Component {
                     solution,                     
                     editorPosition: response.data.steps.length -1,
                     theActiveMathField: field,
-                    readOnly: this.props.match.params.action == 'view'
+                    readOnly: this.props.match.params.action == 'view',
+                    stepsFromLastSave: JSON.parse(JSON.stringify(response.data.steps))
                 });
             })
         $('#undoAction').hide();
@@ -175,9 +188,11 @@ export default class Editor extends Component {
 
     updateMathEditorRow(mathContent, mathStepNumber, cleanup) {
         let updatedHistory = this.state.solution.steps;
-        updatedHistory[mathStepNumber].equation = mathContent;
-        updatedHistory[mathStepNumber].annotation = cleanup ? Locales.strings.cleanup : this.state.textAreaValue;
-        this.setState({steps : updatedHistory})
+        updatedHistory[mathStepNumber].stepValue = mathContent;
+        updatedHistory[mathStepNumber].explanation = cleanup ? Locales.strings.cleanup : this.state.textAreaValue;
+        let oldSolution = this.state.solution;
+        oldSolution.steps = updatedHistory;
+        this.setState({solution : oldSolution})
         $($("#MathHistory").children("#mathStep")[mathStepNumber]).data('equation', mathContent);
         $($("#MathHistory").children("#mathStep")[mathStepNumber]).data('annotation', cleanup ? Locales.strings.cleanup : this.state.textAreaValue);
         mathLive.renderMathInDocument();
@@ -405,22 +420,65 @@ export default class Editor extends Component {
         googleAnalytics('Save');
         axios.put(`${config.serverUrl}/solution/`, this.state.solution)
             .then(response => {
-                this.setState({editLink: config.serverUrl + '/problem/edit/' + this.state.solution.editCode})
+                this.setState({
+                    editLink: config.serverUrl + '/problem/edit/' + this.state.solution.editCode,
+                    stepsFromLastSave: JSON.parse(JSON.stringify(this.state.solution.steps))
+                })
                 createAlert('success', Locales.strings.problem_saved_success_message, Locales.strings.success);
             }
         )
     };
 
     goBack() {
-        this.props.history.goBack()
+        if(!this.compareStepArrays(this.state.solution.steps, this.state.stepsFromLastSave)) {
+            this.activateConfirmationModal();
+        } else {
+            this.props.history.goBack();
+        }
+    }
+
+    compareStepArrays(first, second) {
+        if(first.length != second.length) {
+            return false;
+        }
+        for(var i = 0; i < first.length; i++) {
+            if(first[i].stepValue != second[i].stepValue || first[i].explanation != second[i].explanation) {
+                return false;
+            }
+        }
+        return true;
     }
 
     deactivateModal() {
         this.setState({ modalActive: false });
     };
 
+    deactivateConfirmationModal() {
+        this.setState({ confirmationModalActive: false });
+    };
+
+    activateConfirmationModal() {
+        this.setState({ confirmationModalActive: true });
+    };
+
+    confirmationModalSaveCallback() {
+        this.deactivateConfirmationModal();
+        this.saveProblem();
+        this.props.history.goBack();
+    }
+
+    confirmationModalDiscardCallback() {
+        this.deactivateConfirmationModal();
+        this.props.history.goBack();
+    }
+
     render() {
         const modal = this.state.modalActive ? <ShareModal shareLink={this.state.shareLink} deactivateModal={this.deactivateModal}/> : null;
+
+        const confirmationModal = this.state.confirmationModalActive ? 
+        <ConfirmationModal discard={this.confirmationModalDiscardCallback} save={this.confirmationModalSaveCallback}
+            deactivateModal={this.deactivateConfirmationModal}/>
+        : null;
 
         var myStepsList;
         var problemHeaderTitle = this.state.solution.problem.title;
@@ -448,6 +506,7 @@ export default class Editor extends Component {
             <div id="MainWorkWrapper" className={editor.mainWorkWrapper}>
                 <NotificationContainer />
                 <main id="MainWorkArea" className={editor.editorAndHistoryWrapper}>
+                    {confirmationModal}
                     {modal}
                     <ProblemHeader math={this.state.solution.problem.text} title={problemHeaderTitle} shareProblem={this.shareProblem} 
                         saveProblem={this.saveProblem} readOnly={this.state.readOnly} editLink={this.state.editLink} goBack={this.goBack}/>

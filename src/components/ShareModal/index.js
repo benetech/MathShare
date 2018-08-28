@@ -6,7 +6,7 @@ import Button from '../Button';
 import classNames from "classnames";
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 
-export default class MainPageHeader extends Component {
+export default class ShareModal extends Component {
 
     copyShareLink() {
         var copyText = document.getElementById("shareLink");
@@ -18,7 +18,7 @@ export default class MainPageHeader extends Component {
         return (
             <AriaModal
                 titleId="shareModal"
-                onExit={this.deactivateModal}
+                onExit={this.props.deactivateModal}
                 getApplicationNode={this.getApplicationNode}
                 underlayStyle={{ paddingTop: '2em' }}
                 >

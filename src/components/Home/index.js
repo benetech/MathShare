@@ -63,16 +63,16 @@ export default class Home extends Component {
         this.setState({ modalActive: false });
     };
 
+    activateModal() {
+        this.setState({ modalActive: true });
+    }; 
+
     deactivateShareModal() {
         this.setState({ shareModalActive: false });
     };
 
     activateShareModal() {
         this.setState({ shareModalActive: true });
-    };
-
-    activateModal() {
-        this.setState({ modalActive: true });
     };
 
     addProblem() {

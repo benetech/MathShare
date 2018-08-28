@@ -28,8 +28,6 @@ class Locales {
             tts_intro: "Describe your work by typing directly \nor using the microphone to record an explanation of your work (required).",
             tts_hint_add_problem: "Use the microphone button or type to add problem title (required)",
             tts_intro_add_problem: "Describe problem titlw by typing directly \nor using the microphone to record a title of problem (required).",
-            confirm_discard: "Any work on this problem will NOT be saved",
-            discard: "Discard",
             done: " Done",
             clear_all: " Clear all",
             save_intro: "Save your work or close out to try again from the beginning.",
@@ -90,7 +88,10 @@ class Locales {
             hash: "#",
             equation: "Equation",
             annotation: "Annotation",
-            share_link: "Share Link: "
+            share_link: "Share Link: ",
+            confirmation_modal_unsaved_title: "You have unsaved changes, do you wish to save?",
+            discard_changes: " Discard Changes",
+            save_changes: " Save Changes"
         },
         es: {
         }
