@@ -5,7 +5,7 @@ import buttonsGroup from './styles.css';
 
 export default class MathButtonsGroup extends Component {
     render() {
-        const label = <span className={buttonsGroup.label} role="listitem">{this.props.palette.label}</span>;
+        const label = this.props.showLabel ? <span className={buttonsGroup.label} role="listitem">{this.props.palette.label}</span> : null;
         var rows = this.props.palette.buttonsRows.map((buttonsRow, i) =>
             <div key={i} role="list" className={buttonsGroup.row}>
                 <MathButtonsRow

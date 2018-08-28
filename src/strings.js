@@ -93,7 +93,9 @@ class Locales {
             share_link: "Share Link: ",
             confirmation_modal_unsaved_title: "You have unsaved changes, do you wish to save?",
             discard_changes: " Discard Changes",
-            save_changes: " Save Changes"
+            save_changes: " Save Changes",
+            choose_palettes_to_add_equations: "Please choose palettes that you will use to add equations",
+            next: "Next"
         },
         es: {
         }

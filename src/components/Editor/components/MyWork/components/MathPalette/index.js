@@ -4,7 +4,7 @@ import classNames from "classnames";
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 import styles from '../../../../../../styles/styles.css';
 import paletteStyle from './styles.css';
-import palettes from './palettes.json';
+import palettes from '../../../../../palettes.json';
 import Locales from '../../../../../../strings'
 
 export default class MathPalette extends Component {
@@ -32,6 +32,7 @@ export default class MathPalette extends Component {
                 order={"order-" + (i + 1)}
                 palette={palette}
                 theActiveMathField={this.props.theActiveMathField}
+                showLabel={true}
             />
         )
         return (

@@ -27,6 +27,10 @@
     margin-right: 5px;
 }
 
+.withHugeRightMargin {
+    margin-right: 20px;
+}
+
 .undo {
     background-color: rgb(240, 240, 240);
     background-image: url(/src/images/undo.png);
