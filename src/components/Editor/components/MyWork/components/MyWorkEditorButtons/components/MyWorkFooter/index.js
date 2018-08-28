@@ -8,18 +8,6 @@ import googleAnalytics from '../../../../../../../../scripts/googleAnalytics';
 import Locales from '../../../../../../../../strings'
 
 export default class MyWorkFooter extends Component {
-    constructor(props) {
-        super(props);
-      
-        this.discard = this.discard.bind(this);
-    }
-
-    discard() {
-        if (confirm(Locales.strings.confirm_discard)) {
-            this.props.history.goBack()
-            googleAnalytics('Discard');
-        }
-    }
 
     render() {
         const btnClassNames = [
@@ -33,13 +21,6 @@ export default class MyWorkFooter extends Component {
             additionalStyles={['withRightMargin', 'default']}
             content={Locales.strings.save_button}
             onClick={this.props.saveCallback}
-        />
-        var discardButton = <Button
-            id="BtnDiscard"
-            className={btnClassNames}
-            additionalStyles={['withRightMargin', 'default']}
-            content={Locales.strings.discard}
-            onClick={this.discard}
         />
         var cancelButton = <Button
             id="BtnCancel"
@@ -71,7 +52,7 @@ export default class MyWorkFooter extends Component {
                             )
                         }
                     >
-                        {this.props.addingProblem ? saveButton : discardButton}
+                        {this.props.addingProblem ? saveButton : null}
                         {this.props.addingProblem ? cancelButton : clearAllButton}
                     </div>
                 </div>
