@@ -464,7 +464,6 @@ export default class Editor extends Component {
     confirmationModalSaveCallback() {
         this.deactivateConfirmationModal();
         this.saveProblem();
-        this.props.history.goBack();
     }
 
     confirmationModalDiscardCallback() {
