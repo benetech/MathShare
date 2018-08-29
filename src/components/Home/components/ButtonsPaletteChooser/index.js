@@ -2,13 +2,11 @@ import React, { Component } from "react";
 import AriaModal from "react-aria-modal";
 import Locales from '../../../../strings'
 import styles from './styles.css';
-import MyWork from '../../../Editor/components/MyWork';
 import palettes from '../../../palettes.json';
 import MathButtonsGroup from '../../../Editor/components/MyWork/components/MathPalette/components/MathButtonsGroup';
 import Button from '../../../Button';
 import appStyles from '../../../../styles/styles.css';
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
-import _ from 'lodash'
 
 const mathLive = DEBUG_MODE ? require('../../../../../mathlive/src/mathlive.js')
     : require('../../../../lib/mathlivedist/mathlive.js');
@@ -41,7 +39,6 @@ export default class NewProblemsForm extends Component {
             oldPalettes.push(key)
             this.setState({chosenPalettes: oldPalettes});
         }
-        console.log(this.state.chosenPalettes)
     }
 
     render() {
