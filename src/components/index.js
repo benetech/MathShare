@@ -20,7 +20,7 @@ export default class App extends Component {
         ReactGA.initialize(GA_ACCOUNT_ID);
         return (
             <Switch>
-                <Route exact path='/set/:action/:code' render={p => <Home {...p}/> } />
+                <Route exact path='/problemSet/:action/:code' render={p => <Home {...p}/> } />
                 <Route exact path='/problem/:action/:code' render={p => <Editor {...p}/> } />
                 <Route exact path='/' render={p => <Index {...p} />} />
             </Switch>
