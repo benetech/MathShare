@@ -18,7 +18,15 @@ export default class ProblemHeader extends Component {
         this.onImgClick = this.onImgClick.bind(this);
     }
     
-    componentDidMount() {
+
+    shouldComponentUpdate(nextProps) { //this prevents unnecessary re-rendering and updates of the element
+        if(this.props.scratchpad === nextProps.scratchpad) {
+            return false;
+        }
+        return true;
+    }
+    
+    componentDidUpdate() {
         mathLive.renderMathInDocument();
     }
 
