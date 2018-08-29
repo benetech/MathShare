@@ -95,7 +95,9 @@ class Locales {
             discard_changes: " Discard Changes",
             save_changes: " Save Changes",
             choose_palettes_to_add_equations: "Please choose palettes that you will use to add equations",
-            next: "Next"
+            next: "Next",
+            confirmation_modal_sure_to_remove_problem: "Are you sure you want to delete this problem?",
+            yes: " Yes"
         },
         es: {
         }
