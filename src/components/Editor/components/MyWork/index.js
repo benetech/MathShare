@@ -126,7 +126,8 @@ export default class MyWork extends Component {
                                 undoLastActionCallback={this.props.undoLastActionCallback}  cancelEditCallback={this.props.cancelEditCallback}
                                 deleteStepsCallback={this.props.deleteStepsCallback} editing={this.props.editing} history={this.props.history}
                                 solution={this.props.solution} addingProblem={this.props.addingProblem} cancelCallback={this.props.cancelCallback}
-                                saveCallback={this.props.saveCallback} openScratchpad={this.openScratchpad} clearAndResizeScratchPad={this.clearAndResizeScratchPad} />
+                                saveCallback={this.props.saveCallback} openScratchpad={this.openScratchpad} clearAndResizeScratchPad={this.clearAndResizeScratchPad}
+                                textAreaValue={this.props.textAreaValue} />
                         </div>
                         <div
                             className={
