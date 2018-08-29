@@ -153,15 +153,15 @@ export default class Home extends Component {
         : null;
 
         const modal = this.state.modalActive
-        ? <NewProblemsForm deactivateModal={this.deactivateModal}
+        ? <NewProblemsForm 
+            deactivateModal={this.deactivateModal}
             activateMathField={theActiveMathField => this.setState({theActiveMathField})}
             theActiveMathField={this.state.theActiveMathField}
             textAreaChanged={this.textAreaChanged}
             textAreaValue={this.state.textAreaValue}
             addProblemCallback={this.addProblem}
             problems={this.state.tempProblems}
-            cancelCallback={this.deactivateModal}
-            saveCallback={this.saveProblems} />
+            saveCallback={this.saveProblems}/>
         : null;
 
         return (

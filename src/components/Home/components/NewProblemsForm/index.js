@@ -82,7 +82,7 @@ export default class NewProblemsForm extends Component {
                         textAreaChanged={this.props.textAreaChanged}
                         textAreaValue={this.props.textAreaValue}
                         addStepCallback={this.props.addProblemCallback}
-                        cancelCallback={this.props.cancelCallback}
+                        cancelCallback={this.props.deactivateModal}
                         saveCallback={this.props.saveCallback}
                         editing={false}
                         history={[]}

@@ -1,0 +1,38 @@
+.container {
+    width:600px;
+    background: rgb(218, 218, 218);
+    padding-bottom: 20px;
+}
+
+.paletteRow {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.paletteButtons {
+    flex: 4;
+    margin-left: 15px;
+}
+
+.paletteLabel {
+    flex: 4;
+}
+
+.checkBox {
+    flex: 1;
+    transform: scale(2);
+}
+
+.title {
+    display: flex;
+    padding: 20px;
+    background-color: rgb(0, 98, 217);
+    margin-bottom: 20px;
+    color: rgb(255, 255, 255);
+}
+
+.footer {
+    text-align: end;
+    margin-right: 20px;
+}
