@@ -89,6 +89,8 @@ class Locales {
             equation: "Equation",
             annotation: "Annotation",
             share_link: "Share Link: ",
+            problem_image: "Problem image",
+            share_link: "Share Link: ",
             confirmation_modal_unsaved_title: "You have unsaved changes, do you wish to save?",
             discard_changes: " Discard Changes",
             save_changes: " Save Changes"

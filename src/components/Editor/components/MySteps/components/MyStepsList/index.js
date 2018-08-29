@@ -5,7 +5,7 @@ import myStepsList from './styles.css';
 import mySteps from '../../../../styles.css';
 import MyWork from '../../../../components/MyWork';
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
-import Locales from '../../../../../../strings'
+import Locales from '../../../../../../strings';
 
 export default class MyStepsList extends Component {
     render() {
@@ -49,7 +49,8 @@ export default class MyStepsList extends Component {
                     cancelEditCallback={this.props.cancelEditCallback}
                     editing={this.props.editing}
                     history={this.props.history}
-                    solution={this.props.solution} />
+                    solution={this.props.solution}
+                    openScratchpad={this.props.openScratchpad} />
             )
         }
 

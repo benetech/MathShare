@@ -7,7 +7,7 @@ import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 import { withRouter } from 'react-router-dom';
 import { Dropdown, MenuItem } from 'react-bootstrap';
 import { NotificationManager } from 'react-notifications';
-import Locales from '../../../../strings'
+import Locales from '../../../../strings';
 import axios from 'axios';
 import config from '../../../../../package.json';
 

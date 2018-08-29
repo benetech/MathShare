@@ -1,56 +1,26 @@
 import React, { Component } from "react";
-import Button from "../../../../../../components/Button"
+import Button from "../../../../../../components/Button";
 import classNames from "classnames";
 import editorButtons from './styles.css';
 import styles from '../../../../../../styles/styles.css';
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
-import Painterro from '../../../../../../lib/painterro/painterro.commonjs2'
-import MyWorkFooter from './components/MyWorkFooter'
-import painterroConfiguration from './painterroConfiguration.json'
-import createAlert from '../../../../../../scripts/alert';
-import Locales from '../../../../../../strings'
+import MyWorkFooter from './components/MyWorkFooter';
+import Locales from '../../../../../../strings';
 
 export default class MyWorkEditorButtons extends Component {
     constructor(props) {
         super(props);
-        this.scratchPadPainterro;
-    }
 
-    handleClick(scratchPadPainterro) {
-        $('#scratch-pad-containter').slideToggle("fast", function () {
-            if (scratchPadPainterro && $("#scratch-pad-containter").is(":visible")) {
-                scratchPadPainterro.adjustSizeFull();
-            }
-        });
-    }
-
-    InitScratchPad() {
-        this.scratchPadPainterro = Painterro(painterroConfiguration);
-
-        this.scratchPadPainterro.show();
-        $('#scratch-pad-containter').hide();
-
-        $('#scratch-pad-containter-bar > div > span').first()
-            .append('<button id="clear-button" type="button" class="ptro-icon-btn ptro-color-control" title='+ Locales.strings.clear_scratchpad + '><i class="ptro-icon ptro-icon-close"></i></button>');
-        $('#clear-button').click(() =>
-            this.ClearAndResizeScrachPad(this.scratchPadPainterro)
-        );
-        $('.ptro-icon-btn').css('border-radius', '.25rem');
-        $('.ptro-bordered-btn').css('border-radius', '.5rem');
-        $('.ptro-info').hide();
-    }
-
-    ClearAndResizeScrachPad(scratchPadPainterro) {
-        scratchPadPainterro.clear();
+        this.addStep = this.addStep.bind(this);
     }
 
     componentDidMount() {
         $('#undoAction').hide();
-        try {
-            this.InitScratchPad();
-        } catch(e) {
-            createAlert("warning", Locales.strings.sketchpad_loading_warning, "Warning");
-        }
+    }
+
+    addStep() {
+        this.props.addStepCallback();
+        this.props.clearAndResizeScratchPad();
     }
 
     render() {
@@ -91,7 +61,7 @@ export default class MyWorkEditorButtons extends Component {
                             ]}
                             toggle="tooltip"
                             title={Locales.strings.display_hide_sketchpad}
-                            onClick={() => this.handleClick(this.scratchPadPainterro)}
+                            onClick={() => this.props.openScratchpad()}
                         />
                     </div>
                     <div>
@@ -128,7 +98,7 @@ export default class MyWorkEditorButtons extends Component {
                             step="3"
                             intro={Locales.strings.add_step_intro}
                             icon="plus"
-                            onClick={this.props.addStepCallback}
+                            onClick={() => this.addStep()}
                             />
                         <div id="updateControls" style={this.props.editing ? {} : {display: 'none'}} >
                             <h3 className={styles.sROnly}>{Locales.strings.update_step_intro}</h3>

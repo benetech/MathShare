@@ -1,11 +1,9 @@
-import React, { Component } from 'react'
-import Index from './Index'
-import Home from './Home'
-import Editor from './Editor'
-import { Switch, Route } from 'react-router-dom'
+import React, { Component } from 'react';
+import Index from './Index';
+import Home from './Home';
+import Editor from './Editor';
+import { Switch, Route } from 'react-router-dom';
 import ReactGA from 'react-ga';
-const mathLive = DEBUG_MODE ? require('../../mathlive/src/mathlive.js')
-    : require('../lib/mathlivedist/mathlive.js');
 
 export default class App extends Component {
     constructor(props) {

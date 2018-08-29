@@ -6,11 +6,18 @@ import styles from '../../../../styles/styles.css';
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 import googleAnalytics from '../../../../scripts/googleAnalytics';
 import Locales from '../../../../strings';
+import showImage from '../../../../scripts/showImage';
 
 const mathLive = DEBUG_MODE ? require('../../../../../mathlive/src/mathlive.js')
     : require('../../../../../src/lib/mathlivedist/mathlive.js');
 
 export default class ProblemHeader extends Component {    
+    constructor(props) {
+        super(props);
+
+        this.onImgClick = this.onImgClick.bind(this);
+    }
+    
     componentDidMount() {
         mathLive.renderMathInDocument();
     }
@@ -20,7 +27,23 @@ export default class ProblemHeader extends Component {
         googleAnalytics('Tour');
     }
 
+    onImgClick() {
+        showImage(this.props.scratchpad);
+    }
+
     render() {
+        var imgButton = this.props.scratchpad ?
+        <Button
+            className={classNames(bootstrap.btn, styles.pointer, problem.btn)}
+            additionalStyles={['image']}
+            ariaHidden="true"
+            type="button"
+            icon="image"
+            iconSize="2x"
+            onClick={this.onImgClick}
+        />
+        : null;
+
         const title = this.props.title;
         var editOnlyControls = this.props.readOnly ? null :
         <div className={problem.btnContainer}>
@@ -59,6 +82,7 @@ export default class ProblemHeader extends Component {
                 </div>
                 <span id="ProblemTitle" className={problem.title} role="heading" aria-level="1">{title}</span>
                 <span id="ProblemMath" className={problem.title}>{"$$" + this.props.math + "$$"}</span>
+                {imgButton}
                 {editOnlyControls}
             </div>
         );
