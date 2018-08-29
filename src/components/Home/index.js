@@ -44,7 +44,7 @@ export default class Home extends Component {
     }
 
     componentDidMount() {
-        axios.get(`${config.serverUrl}/set/${this.props.match.params.action}/${this.props.match.params.code}`)
+        axios.get(`${config.serverUrl}/problemSet/${this.props.match.params.action}/${this.props.match.params.code}`)
             .then(response => {
                 this.setState({
                     set: {
@@ -111,7 +111,7 @@ export default class Home extends Component {
         var oldSet = this.state.set;
         oldSet.problems = oldSet.problems.concat(this.state.tempProblems);
 
-        axios.put(`${config.serverUrl}/set/`, oldSet)
+        axios.put(`${config.serverUrl}/problemSet/`, oldSet)
         .then(response => {
             this.setState({
                 set: {
@@ -129,7 +129,7 @@ export default class Home extends Component {
     deleteProblem(index) {
         var oldSet = this.state.set;
         oldSet.problems.splice(index, 1);
-        axios.put(`${config.serverUrl}/set/`, oldSet)
+        axios.put(`${config.serverUrl}/problemSet/`, oldSet)
         .then(response => {
             this.setState({
                 set: {
@@ -149,7 +149,7 @@ export default class Home extends Component {
 
     render() {
         const shareModal = this.state.shareModalActive ? 
-        <ShareModal shareLink={config.serverUrl + '/set/view/' + this.state.set.sharecode} deactivateModal={this.deactivateShareModal}/>
+        <ShareModal shareLink={config.serverUrl + '/problemSet/view/' + this.state.set.sharecode} deactivateModal={this.deactivateShareModal}/>
         : null;
 
         const modal = this.state.modalActive

@@ -25,10 +25,10 @@ export default class MainPageHeader extends Component {
             </a>
             : 
             <a className={classNames(bootstrap['nav-link'], header.pointer)} onClick={() => { 
-                axios.get(`${config.serverUrl}/set/default`)
+                axios.get(`${config.serverUrl}/problemSet/default`)
                     .then(response => {
-                        this.props.history.push(`/set/edit/${response.data}`);
-                        axios.get(`${config.serverUrl}/set/edit/${response.data}`)
+                        this.props.history.push(`/problemSet/edit/${response.data}`);
+                        axios.get(`${config.serverUrl}/problemSet/edit/${response.data}`)
                     })
                 }}>
                 {Locales.strings.edit}

@@ -4,9 +4,9 @@ import axios from 'axios';
 
 export default class Index extends Component {
     componentDidMount() {
-        axios.get(`${config.serverUrl}/set/defaultRevision`)
+        axios.get(`${config.serverUrl}/problemSet/defaultRevision`)
             .then(response => {
-                this.props.history.push(`/set/view/${response.data}`);
+                this.props.history.push(`/problemSet/view/${response.data}`);
             });
     }
     
