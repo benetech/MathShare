@@ -27,8 +27,8 @@ export default class MainPageHeader extends Component {
             <a className={classNames(bootstrap['nav-link'], header.pointer)} onClick={() => { 
                 axios.get(`${config.serverUrl}/problemSet/default`)
                     .then(response => {
-                        this.props.history.push(`/problemSet/edit/${response.data}`);
-                        axios.get(`${config.serverUrl}/problemSet/edit/${response.data}`)
+                        this.props.history.push(`/problemSet/${response.data}`);
+                        axios.get(`${config.serverUrl}/problemSet/${response.data}`)
                     })
                 }}>
                 {Locales.strings.edit}

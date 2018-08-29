@@ -86,9 +86,9 @@ export default class Problem extends Component {
                 }
             ]
         }
-        axios.post(`${config.serverUrl}/solution/new`, solution)
+        axios.post(`${config.serverUrl}/solution/`, solution)
             .then(response => {
-                history.push('/problem/edit/' + response.data.editCode);
+                history.push('/problem/' + response.data.editCode);
             })
     }
 
