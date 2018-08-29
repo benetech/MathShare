@@ -330,7 +330,7 @@ export default class Editor extends Component {
             createAlert('warning', Locales.strings.no_description_warning, 'Warning');
             setTimeout(function(){
                 $('#mathAnnotation').focus();
-            },6000);
+            }, 6000);
             return;
         }
         let newSteps = this.state.solution.steps;

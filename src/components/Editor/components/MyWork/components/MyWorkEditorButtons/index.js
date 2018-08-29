@@ -20,7 +20,9 @@ export default class MyWorkEditorButtons extends Component {
 
     addStep() {
         this.props.addStepCallback();
-        this.props.clearAndResizeScratchPad();
+        if (this.props.textAreaValue != "") {
+            this.props.clearAndResizeScratchPad();
+        }
     }
 
     render() {
