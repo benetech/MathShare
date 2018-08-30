@@ -451,8 +451,9 @@ export default class Editor extends Component {
         const modal = this.state.modalActive ? <ShareModal shareLink={this.state.shareLink} deactivateModal={this.deactivateModal}/> : null;
 
         const confirmationModal = this.state.confirmationModalActive ? 
-        <ConfirmationModal discard={this.confirmationModalDiscardCallback} save={this.confirmationModalSaveCallback}
-            deactivateModal={this.deactivateConfirmationModal}/>
+        <ConfirmationModal redButtonCallback={this.confirmationModalDiscardCallback} greenButtonCallback={this.confirmationModalSaveCallback}
+            deactivateModal={this.deactivateConfirmationModal} title={Locales.strings.confirmation_modal_unsaved_title}
+            redButtonLabel={Locales.strings.discard_changes} greenButtonLabel={Locales.strings.save_changes}/>
         : null;
 
         var myStepsList;
