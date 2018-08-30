@@ -4,12 +4,10 @@ import axios from 'axios';
 
 export default class Index extends Component {
     componentDidMount() {
-        axios.get(`${config.serverUrl}/problemSet/default`)
-            .then(editResponse => {
-                axios.get(`${config.serverUrl}/problemSet/defaultRevision`).then(shareResponse => {
-                    this.props.history.push(`/problemSet/${editResponse.data}/revision/${shareResponse.data}`);
-                })
-            });
+        axios.get(`${config.serverUrl}/problemSet/defaultRevision`)
+            .then(response => {
+                this.props.history.push(`/problemSet/view/${response.data}`);
+        });
     }
     
     render() {

@@ -49,11 +49,13 @@ export default class Home extends Component {
 
     componentDidMount() {
         var path;
-        if(this.props.match.params.revision) {
-            path = `${config.serverUrl}/problemSet/${this.props.match.params.editCode}/revision/${this.props.match.params.shareCode}`
+        console.log(this.props.match.params.action)
+        if(this.props.match.params.action === "view") {
+            path = `${config.serverUrl}/problemSet/revision/${this.props.match.params.code}`
         } else {
-            path = `${config.serverUrl}/problemSet/${this.props.match.params.editCode}/`
+            path = `${config.serverUrl}/problemSet/${this.props.match.params.code}/`
         }
+        console.log(path)
         axios.get(path)
                 .then(response => {
                     this.setState({
@@ -174,7 +176,7 @@ export default class Home extends Component {
 
     render() {
         const shareModal = this.state.shareModalActive ? 
-        <ShareModal shareLink={config.serverUrl + '/problemSet/' + this.state.set.editCode + '/revision/' + this.state.set.sharecode} 
+        <ShareModal shareLink={config.serverUrl + '/problemSet/revision/' + this.state.set.sharecode} 
             deactivateModal={this.deactivateShareModal}/>
         : null;
 
@@ -200,12 +202,12 @@ export default class Home extends Component {
             <div className={home.mainWrapper}>
                 <NotificationContainer />
                 {shareModal}
-                <MainPageHeader editing={this.props.match.params.shareCode == undefined} history={this.props.history} shareCallback={this.activateShareModal}/>
+                <MainPageHeader editing={this.props.match.params.action=='edit'} history={this.props.history} shareCallback={this.activateShareModal}/>
                 <div className={home.contentWrapper} id="ContentWrapper">
                 {modal}
                     <nav id="LeftNavigation" className={home.leftNavigation} aria-labelledby="LeftNavigationHeader">
                         <NavigationHeader />
-                        <NavigationProblems problems={this.state.set.problems} editing={this.props.match.params.shareCode == undefined}
+                        <NavigationProblems problems={this.state.set.problems} editing={this.props.match.params.action=='edit'}
                             activateModal={this.activateModal} deleteCallback={this.deleteProblem}/>
                     </nav>
                 </div>

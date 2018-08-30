@@ -74,10 +74,10 @@ export default class Editor extends Component {
 
     componentDidMount() {
         var path;
-        if(this.props.match.params.revision) {
-            path = `${config.serverUrl}/solution/${this.props.match.params.editCode}/revision/${this.props.match.params.shareCode}`
+        if(this.props.match.params.action == "view") {
+            path = `${config.serverUrl}/solution/revision/${this.props.match.params.code}`
         } else {
-            path = `${config.serverUrl}/solution/${this.props.match.params.editCode}/`
+            path = `${config.serverUrl}/solution/${this.props.match.params.code}/`
         }
         axios.get(path)
             .then(response => {
@@ -92,7 +92,7 @@ export default class Editor extends Component {
                     solution,                     
                     editorPosition: response.data.steps.length -1,
                     theActiveMathField: field,
-                    readOnly: this.props.match.params.shareCode != undefined,
+                    readOnly: this.props.match.params.action == 'view',
                     stepsFromLastSave: JSON.parse(JSON.stringify(response.data.steps))
                 });
             })
@@ -391,7 +391,7 @@ export default class Editor extends Component {
         axios.put(`${config.serverUrl}/solution/${this.state.solution.editCode}`, this.state.solution)
         .then(response => {
             this.setState({ 
-                shareLink: config.serverUrl + '/problem/' + this.state.solution.editCode + '/revision/' + response.data.shareCode,
+                shareLink: config.serverUrl + '/problem/view/' + response.data.shareCode,
                 modalActive: true 
             });
         }
@@ -400,11 +400,10 @@ export default class Editor extends Component {
 
     saveProblem() {
         googleAnalytics('Save');
-        console.log(this.state.solution.editCode)
         axios.put(`${config.serverUrl}/solution/${this.state.solution.editCode}`, this.state.solution)
             .then(response => {
                 this.setState({
-                    editLink: config.serverUrl + '/problem/' + this.state.solution.editCode,
+                    editLink: config.serverUrl + '/problem/edit/' + this.state.solution.editCode,
                     stepsFromLastSave: JSON.parse(JSON.stringify(this.state.solution.steps))
                 })
                 createAlert('success', Locales.strings.problem_saved_success_message, Locales.strings.success);
