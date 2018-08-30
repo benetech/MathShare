@@ -20,7 +20,9 @@ export default class ProblemHeader extends Component {
     
 
     shouldComponentUpdate(nextProps) { //this prevents unnecessary re-rendering and updates of the element
-        return this.props.scratchpad !== nextProps.scratchpad;
+        return this.props.editLink !== nextProps.editLink || this.props.title !== nextProps.title 
+            || this.props.math !== nextProps.math;
+            
     }
     
     componentDidUpdate() {

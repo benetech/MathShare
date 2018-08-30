@@ -48,15 +48,21 @@ export default class Home extends Component {
     }
 
     componentDidMount() {
-        axios.get(`${config.serverUrl}/problemSet/${this.props.match.params.action}/${this.props.match.params.code}`)
-            .then(response => {
-                this.setState({
-                    set: {
-                        problems: response.data.problems,
-                        editCode: response.data.editCode,
-                        sharecode: response.data.shareCode
-                    }});
-            });
+        var path;
+        if (this.props.match.params.action === "view") {
+            path = `${config.serverUrl}/problemSet/revision/${this.props.match.params.code}`
+        } else {
+            path = `${config.serverUrl}/problemSet/${this.props.match.params.code}/`
+        }
+        axios.get(path)
+                .then(response => {
+                    this.setState({
+                        set: {
+                            problems: response.data.problems,
+                            editCode: response.data.editCode,
+                            sharecode: response.data.shareCode
+                        }});
+                });
     }
 
     textAreaChanged(text) {
@@ -84,6 +90,7 @@ export default class Home extends Component {
             confirmationModalActive: false, 
             problemToDeleteIndex: undefined
         });
+        mathLive.renderMathInDocument();
     };
 
     activateConfirmationModal(index) {
@@ -129,7 +136,7 @@ export default class Home extends Component {
         var oldSet = this.state.set;
         oldSet.problems = oldSet.problems.concat(this.state.tempProblems);
 
-        axios.put(`${config.serverUrl}/problemSet/`, oldSet)
+        axios.put(`${config.serverUrl}/problemSet/${this.state.set.editCode}`, oldSet)
         .then(response => {
             this.setState({
                 set: {
@@ -144,10 +151,10 @@ export default class Home extends Component {
         
     }
 
-    deleteProblem() {
+    deleteProblem(index) {
         var oldSet = this.state.set;
-        oldSet.problems.splice(this.state.problemToDeleteIndex, 1);
-        axios.put(`${config.serverUrl}/problemSet/`, oldSet)
+        oldSet.problems.splice(index, 1);
+        axios.put(`${config.serverUrl}/problemSet/${this.state.set.editCode}`, oldSet)
         .then(response => {
             this.setState({
                 set: {
@@ -168,7 +175,8 @@ export default class Home extends Component {
 
     render() {
         const shareModal = this.state.shareModalActive ? 
-        <ShareModal shareLink={config.serverUrl + '/problemSet/view/' + this.state.set.sharecode} deactivateModal={this.deactivateShareModal}/>
+        <ShareModal shareLink={config.serverUrl + '/problemSet/view/' + this.state.set.sharecode} 
+            deactivateModal={this.deactivateShareModal}/>
         : null;
 
         const confirmationModal = this.state.confirmationModalActive ? 
@@ -192,15 +200,15 @@ export default class Home extends Component {
         return (
             <div className={home.mainWrapper}>
                 <NotificationContainer />
-                {shareModal}
                 {confirmationModal}
+                {shareModal}
                 <MainPageHeader editing={this.props.match.params.action=='edit'} history={this.props.history} shareCallback={this.activateShareModal}/>
                 <div className={home.contentWrapper} id="ContentWrapper">
                 {modal}
                     <nav id="LeftNavigation" className={home.leftNavigation} aria-labelledby="LeftNavigationHeader">
                         <NavigationHeader />
-                        <NavigationProblems problems={this.state.set.problems} editing={this.props.match.params.action=='edit'} activateModal={this.activateModal}
-                            deleteCallback={this.activateConfirmationModal}/>
+                        <NavigationProblems problems={this.state.set.problems} editing={this.props.match.params.action=='edit'}
+                            activateModal={this.activateModal} deleteCallback={this.activateConfirmationModal}/>
                     </nav>
                 </div>
                 <MainPageFooter />

@@ -73,7 +73,13 @@ export default class Editor extends Component {
     }
 
     componentDidMount() {
-        axios.get(`${config.serverUrl}/solution//${this.props.match.params.action}/${this.props.match.params.code}`)
+        var path;
+        if (this.props.match.params.action == "view") {
+            path = `${config.serverUrl}/solution/revision/${this.props.match.params.code}`
+        } else {
+            path = `${config.serverUrl}/solution/${this.props.match.params.code}/`
+        }
+        axios.get(path)
             .then(response => {
                 var solution = {
                     problem: response.data.problem,
@@ -382,7 +388,7 @@ export default class Editor extends Component {
     };
 
     shareProblem() {
-        axios.put(`${config.serverUrl}/solution/`, this.state.solution)
+        axios.put(`${config.serverUrl}/solution/${this.state.solution.editCode}`, this.state.solution)
         .then(response => {
             this.setState({ 
                 shareLink: config.serverUrl + '/problem/view/' + response.data.shareCode,
@@ -394,7 +400,7 @@ export default class Editor extends Component {
 
     saveProblem() {
         googleAnalytics('Save');
-        axios.put(`${config.serverUrl}/solution/`, this.state.solution)
+        axios.put(`${config.serverUrl}/solution/${this.state.solution.editCode}`, this.state.solution)
             .then(response => {
                 this.setState({
                     editLink: config.serverUrl + '/problem/edit/' + this.state.solution.editCode,
@@ -484,8 +490,10 @@ export default class Editor extends Component {
                 <main id="MainWorkArea" className={editor.editorAndHistoryWrapper}>
                     {confirmationModal}
                     {modal}
-                    <ProblemHeader math={this.state.solution.problem.text} title={problemHeaderTitle} shareProblem={this.shareProblem} scratchpad={this.state.solution.problem.scratchpad}
-                        saveProblem={this.saveProblem} readOnly={this.state.readOnly} editLink={this.state.editLink} goBack={this.goBack} />
+                    <ProblemHeader math={JSON.parse(JSON.stringify(this.state.solution.problem.text))} title={problemHeaderTitle} 
+                        shareProblem={this.shareProblem} scratchpad={this.state.solution.problem.scratchpad}
+                        saveProblem={this.saveProblem} readOnly={this.state.readOnly} 
+                        editLink={JSON.parse(JSON.stringify(this.state.editLink))} goBack={this.goBack} />
                     <MyStepsHeader readOnly={this.state.readOnly} />
                     {myStepsList}
                     <div ref={el => { this.el = el; }} style={{height: 50}}/>
