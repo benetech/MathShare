@@ -5,6 +5,8 @@ import styles from './styles.css';
 import MyWork from '../../../Editor/components/MyWork';
 import FontAwesome from "react-fontawesome";
 import showImage from "../../../../scripts/showImage";
+import Button from "../../../../components/Button";
+import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 
 const mathLive = DEBUG_MODE ? require('../../../../../mathlive/src/mathlive.js')
     : require('../../../../lib/mathlivedist/mathlive.js');
@@ -29,20 +31,20 @@ export default class NewProblemsForm extends Component {
     }
 
     render() {
-        let problems = this.props.problems.map( (problem, i) => {
-            const img = problem.scratchpad ? 
-            <div className={styles.image}>
-                <FontAwesome
-                    size="2x"
-                    className='super-crazy-colors'
-                    name="image"
-                    onClick={() => this.onImgClick(problem.scratchpad)}
-                />
-            </div> : null;
-            
-            return <div className={styles.row}>
+        let problems = this.props.problems.map((problem, i) => {
+            const img = problem.scratchpad ?
+                <div className={styles.image}>
+                    <FontAwesome
+                        size="2x"
+                        className='super-crazy-colors'
+                        name="image"
+                        onClick={() => this.onImgClick(problem.scratchpad)}
+                    />
+                </div> : null;
+
+            return <div className={styles.row} key={i} >
                 <div className={styles.ordinal}>
-                        {i}.
+                    {i}.
                 </div>
                 <div className={styles.cell}>
                     {'$$' + problem.text + '$$'}
@@ -53,6 +55,7 @@ export default class NewProblemsForm extends Component {
                 </div>
             </div>
         });
+
         return (
             <AriaModal
                 id="modal"
@@ -72,7 +75,7 @@ export default class NewProblemsForm extends Component {
                         <h5 className={styles.cell}>
                             {Locales.strings.annotation}
                         </h5>
-                    </div>                
+                    </div>
                     {problems}
                     <MyWork
                         key={"editor"}
@@ -82,13 +85,27 @@ export default class NewProblemsForm extends Component {
                         textAreaChanged={this.props.textAreaChanged}
                         textAreaValue={this.props.textAreaValue}
                         addStepCallback={this.props.addProblemCallback}
-                        cancelCallback={this.props.deactivateModal}
-                        saveCallback={this.props.saveCallback}
                         editing={false}
                         history={[]}
                         solution={this.props.solution}
-                        addingProblem={true} />
-                    <div ref={el => { this.el = el; }} style={{height: 50}}/>
+                        addingProblem />
+                    <div ref={el => { this.el = el; }} className={styles.footer}>
+
+                        <Button
+                            className={bootstrap.btn}
+                            additionalStyles={['withRightMargin', 'default', 'right']}
+                            icon="save"
+                            content={Locales.strings.save}
+                            onClick={this.props.saveCallback}
+                        />
+                        <Button
+                            className={bootstrap.btn}
+                            additionalStyles={['withRightMargin', 'default', 'right']}
+                            content={Locales.strings.cancel}
+                            icon="times-circle"
+                            onClick={this.props.cancelCallback}
+                        />
+                    </div>
                 </div>
             </AriaModal>
         );

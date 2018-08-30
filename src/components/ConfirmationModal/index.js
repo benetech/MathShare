@@ -28,7 +28,7 @@ export default class ConfirmationModal extends Component {
                         className={classNames(bootstrap.btn, modalStyles.button, modalStyles.discardButton)}
                         ariaHidden="false"
                         type="button"
-                        icon="close"
+                        icon="times"
                         content={Locales.strings.discard_changes}
                         onClick={this.props.discard}/>
                     <Button

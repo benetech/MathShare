@@ -3,15 +3,12 @@
     float: left;
 }
 
-.btn {
-    margin-bottom: 5px;
-}
-
 .step {
     font-size: 120%;
     margin-left: 75px;
-    padding: 5px 0px 10px 0px;
+    padding: 5px 30px 10px 0px;
     opacity: 0.65;
+    margin-right: 0px;
     transition: all 1s;
 }
 
@@ -26,24 +23,26 @@
 }
 
 .btnContainer {
-    text-align: right;
-    display: inline-block;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.btn {
+    background-color: rgb(240, 240, 240);
+    transition: all 0.3s;
+}
+
+.clearAll {
+    height: 37px;
+    border: 1px solid rgb(204, 204, 204);
 }
 
 .btnEdit {
-    background-color: rgb(240, 240, 240);
     background-image: url(/src/images/pencil.png);
-    margin: 0px 5px;
-    opacity: 0.3;
-    transition: all 0.3s;
 }
 
 .btnDelete {
-    background-color: rgb(240, 240, 240);
     background-image: url(/src/images/delete.png);
-    opacity: 0.6;
-    margin: 0px 5px;
-    transition: all 0.3s;
 }
 
 .cleanUpAnnotation {

@@ -29,3 +29,8 @@
     float: right;
     cursor: pointer;
 }
+
+.footer {
+    height: 50;
+    padding-right: 20px;
+}

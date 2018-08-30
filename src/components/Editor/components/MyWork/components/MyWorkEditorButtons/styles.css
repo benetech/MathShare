@@ -1,16 +1,11 @@
-.editorBtn {
-    margin-left: auto;
-    display: block;
-}
-
 .withBottomMargin {
     margin-bottom: 5px;
 }
 
-.editorButtons {
-    width: 330px;
-}
-
 .floatRight {
     float: right;
+}
+
+.editorButtons {
+    width: 330px;
 }

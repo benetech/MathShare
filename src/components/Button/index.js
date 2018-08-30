@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import FontAwesome from "react-fontawesome";
 import classNames from "classnames";
 import styles from './styles.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export default class Button extends Component {
     constructor(props) {
@@ -36,11 +37,17 @@ export default class Button extends Component {
     render() {
         var span;
         if (this.props.icon) {
-            span = <FontAwesome
-                size={this.props.iconSize ? this.props.iconSize : "lg"}
-                className='super-crazy-colors'
-                name={this.props.icon}
-            />
+            span = this.props.fa5 ?
+                <FontAwesomeIcon
+                    size={this.props.iconSize ? this.props.iconSize : "lg"}
+                    className='super-crazy-colors'
+                    icon={this.props.icon}
+                /> :
+                <FontAwesome
+                    size={this.props.iconSize ? this.props.iconSize : "lg"}
+                    className='super-crazy-colors'
+                    name={this.props.icon}
+                />
         }
 
         return (
@@ -54,7 +61,7 @@ export default class Button extends Component {
                 data-intro={this.props.step}
                 data-toggle={this.props.toggle}
                 onClick={this.props.onClick}
-                style={this.props.hide ? {display: 'none'} : {}}
+                style={this.props.hide ? { display: 'none' } : {}}
             >
                 {span}
                 {this.state.content}

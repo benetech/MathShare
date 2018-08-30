@@ -3,7 +3,7 @@ import classNames from "classnames";
 import header from './styles.css';
 import mySteps from '../../../../styles.css';
 import styles from '../../../../../../styles/styles.css';
-import Locales from '../../../../../../strings.js'
+import Locales from '../../../../../../strings.js';
 
 export default class MyStepsHeader extends Component {
     render() {

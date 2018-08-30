@@ -4,58 +4,49 @@ import classNames from "classnames";
 import footer from './styles.css';
 import styles from '../../../../../../../../styles/styles.css';
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
-import googleAnalytics from '../../../../../../../../scripts/googleAnalytics';
-import Locales from '../../../../../../../../strings'
+import Locales from '../../../../../../../../strings';
 
 export default class MyWorkFooter extends Component {
 
     render() {
         const btnClassNames = [
             bootstrap.btn,
-            styles.pointer
+            styles.pointer,
+            footer.btn
         ];
 
-        var saveButton = <Button
-            id="BtnSave"
-            className={btnClassNames}
-            additionalStyles={['withRightMargin', 'default']}
-            content={Locales.strings.save_button}
-            onClick={this.props.saveCallback}
-        />
-        var cancelButton = <Button
-            id="BtnCancel"
-            className={btnClassNames}
-            additionalStyles={['default']}
-            content={Locales.strings.cancel}
-            icon="times-circle"
-            onClick={this.props.cancelCallback}
-        />
-        var clearAllButton = <Button
-            id="BtnClearAll"
-            className={btnClassNames}
-            additionalStyles={['default']}
-            content={Locales.strings.clear_all}
-            icon="times-circle"
-            onClick={this.props.deleteStepsCallback}
-        />
+        const undoButton = this.props.undoButton && !this.props.addingProblem ?
+            <Button
+                className={btnClassNames}
+                additionalStyles={['withRightMargin', 'undo']}
+                content={Locales.strings.undo}
+                icon="reply"
+                title={Locales.strings.undo_last_action}
+                onClick={this.props.undoLastActionCallback}
+            /> : null;
 
         return (
-            <div className={footer.footer} style={this.props.hide ? {display: 'none'} : {}}>
-                <div></div>
-                <div className={bootstrap.row}>
-                    <div
-                        id="control-buttons"
-                        className={
-                            classNames(
-                                bootstrap['col-lg-12'],
-                                bootstrap['text-right']
-                            )
-                        }
-                    >
-                        {this.props.addingProblem ? saveButton : null}
-                        {this.props.addingProblem ? cancelButton : clearAllButton}
-                    </div>
-                </div>
+            <div
+                id="control-buttons"
+                className={
+                    classNames(
+                        footer.footer
+                    )
+                }
+            >
+                {undoButton}
+                <Button
+                    className={btnClassNames}
+                    additionalStyles={['addStep']}
+                    hide={this.props.editing}
+                    toggle="tooltip"
+                    title={Locales.strings.clean_up_button_title}
+                    content={this.props.addLabel}
+                    step="3"
+                    intro={Locales.strings.add_step_intro}
+                    icon="plus"
+                    onClick={() => this.props.addStep()}
+                />
             </div>
         );
     }
