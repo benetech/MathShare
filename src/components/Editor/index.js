@@ -74,7 +74,7 @@ export default class Editor extends Component {
 
     componentDidMount() {
         var path;
-        if(this.props.match.params.action == "view") {
+        if (this.props.match.params.action == "view") {
             path = `${config.serverUrl}/solution/revision/${this.props.match.params.code}`
         } else {
             path = `${config.serverUrl}/solution/${this.props.match.params.code}/`
