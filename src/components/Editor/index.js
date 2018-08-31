@@ -133,20 +133,23 @@ export default class Editor extends Component {
             this.updateStep(stepNumber)
         );
         
+        /*
+        TODO: restore, while adding support for scratchpad on the backend
         var content = this.setScratchPadContentData(stepNumber);
         if (content) {
             this.applyScratchPadContent(content);
         } else {
             this.clearScrachPad();
-        }
+        }*/
     }
 
-    updateStep(index) {
+    updateStep() {
+        var index = this.state.editorPosition;
         if (this.state.textAreaValue === '') {
             createAlert('warning', Locales.strings.no_description_warning, 'Warning');
             setTimeout(function(){
                 $('#mathAnnotation').focus();
-            },6000);
+            }, 6000);
             return;
         }
         let mathStep = $($("#MathHistory").children("#mathStep")[index]);
@@ -479,6 +482,7 @@ export default class Editor extends Component {
                 cancelEditCallback={this.exitUpdate}
                 editorPosition={this.state.editorPosition}
                 editing={this.state.editing}
+                updateStepCallback={this.updateStep}
                 history={this.props.history} 
                 newProblem = {this.id === "newEditor"}
                 readOnly={this.state.readOnly} />
@@ -496,7 +500,7 @@ export default class Editor extends Component {
                         editLink={JSON.parse(JSON.stringify(this.state.editLink))} goBack={this.goBack} />
                     <MyStepsHeader readOnly={this.state.readOnly} />
                     {myStepsList}
-                    <div ref={el => { this.el = el; }} style={{height: 50}}/>
+                    <div ref={el => { this.el = el; }} style={{height: 50}} />
                 </main>
             </div>
         );

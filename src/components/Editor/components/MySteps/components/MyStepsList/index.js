@@ -48,6 +48,7 @@ export default class MyStepsList extends Component {
                     lastMathEquation={this.props.solution.steps[this.props.solution.steps.length - 1].stepValue} 
                     deleteStepsCallback={this.props.deleteStepsCallback}
                     cancelEditCallback={this.props.cancelEditCallback}
+                    updateStepCallback={this.props.updateStepCallback}
                     editing={this.props.editing}
                     history={this.props.history}
                     solution={this.props.solution}

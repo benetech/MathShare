@@ -30,6 +30,7 @@
 .btn {
     background-color: rgb(240, 240, 240);
     transition: all 0.3s;
+    flex-shrink: 0;
 }
 
 .clearAll {
