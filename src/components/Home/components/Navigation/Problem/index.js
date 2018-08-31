@@ -15,6 +15,7 @@ const mathLive = DEBUG_MODE ? require('../../../../../../mathlive/src/mathlive.j
 : require('../../../../../lib/mathlivedist/mathlive.js');
 const problemTextDisplayLength = 40;
 const problemMathDisplayLength = 30;
+const OPEN_TEXT_TAG = "\\text{";
 
 export default class Problem extends Component {
     constructor(props) {
@@ -26,7 +27,21 @@ export default class Problem extends Component {
     }
 
     buildAnnotation() {
-        return (this.props.number + 1) + ". " + this.props.problem.title;
+        var text = this.parseMathLive(this.props.problem.title);
+        return "$$" + OPEN_TEXT_TAG + (this.props.number + 1) + ". }" + text + "}$$";
+    }
+
+    parseMathLive(text) {
+        var result = OPEN_TEXT_TAG;
+        var textParts = text.split("$$");
+        textParts.forEach(function(part, i) {
+            if (i % 2) {
+                result += "}" + part + OPEN_TEXT_TAG;
+            } else {
+                result += part;
+            }
+        })
+        return result;
     }
 
     buildProblemText() {
