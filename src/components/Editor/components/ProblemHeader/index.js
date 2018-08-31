@@ -55,17 +55,19 @@ export default class ProblemHeader extends Component {
         var editOnlyControls = this.props.readOnly ? null :
         <div className={problem.btnContainer}>
                     <span className={problem.editLinkLabel}>{Locales.strings.edit_link_label}</span>
-                    <input type="text" value={this.props.editLink} className={problem.editLink}/>
+                    <input type="text" readOnly value={this.props.editLink} className={problem.editLink}/>
             <Button
                 className={classNames(bootstrap.btn, styles.pointer, problem.btn)}
                 additionalStyles={['default']}
                 type="button"
+                icon="share-alt"
                 content={Locales.strings.share}
                 onClick={this.props.shareProblem}/>
             <Button
                 className={classNames(bootstrap.btn, styles.pointer, problem.btn)}
                 additionalStyles={['default']}
                 type="button"
+                icon="save"
                 content={Locales.strings.save}
                 onClick={this.props.saveProblem}/>
             <Button
@@ -73,7 +75,7 @@ export default class ProblemHeader extends Component {
                 additionalStyles={['default']}
                 ariaHidden="true"
                 type="button"
-                content={Locales.strings.help}
+                icon="question"
                 onClick={this.tour}/>
         </div>
         return (

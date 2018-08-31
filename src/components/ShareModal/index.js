@@ -42,7 +42,7 @@ export default class ShareModal extends Component {
                         className={classNames(bootstrap.btn, bootstrap['btn-primary'])}
                         ariaHidden="false"
                         type="button"
-                        icon="close"
+                        icon="times"
                         content={Locales.strings.close}
                         onClick={this.props.deactivateModal}/>
                 </footer>

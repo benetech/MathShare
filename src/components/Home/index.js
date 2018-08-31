@@ -194,7 +194,8 @@ export default class Home extends Component {
             textAreaValue={this.state.textAreaValue}
             addProblemCallback={this.addProblem}
             problems={this.state.tempProblems}
-            saveCallback={this.saveProblems}/>
+            saveCallback={this.saveProblems}
+            cancelCallback={this.deactivateModal} />
         : null;
 
         return (

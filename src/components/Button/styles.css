@@ -27,22 +27,12 @@
     margin-right: 5px;
 }
 
+.withLeftMargin {
+    margin-left: 5px;
+}
+
 .withHugeRightMargin {
     margin-right: 20px;
-}
-
-.undo {
-    background-color: rgb(240, 240, 240);
-    background-image: url(/src/images/undo.png);
-}
-
-.undo:active {
-    background-image: url(/src/images/undo.png)!important;
-}
-
-.scratch {
-    background-color: rgb(255, 255, 255);
-    background-image: url(/src/images/scratch.png);
 }
 
 .mic {
@@ -61,6 +51,16 @@
     border: 1px solid rgb(204, 204, 204) !important;
 }
 
-.default {
-    background-color: rgb(250, 250, 250);
+.undo {
+    background-color: rgb(126, 126, 126);
+    color: rgb(255, 255, 255);
+}
+
+.addStep {
+    background-color: rgb(72, 204, 112);
+    color: rgb(255, 255, 255);
+}
+
+.right {
+    float: right;
 }

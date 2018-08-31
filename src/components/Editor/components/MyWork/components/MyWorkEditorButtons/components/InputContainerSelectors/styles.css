@@ -1,0 +1,34 @@
+.container {
+    position: relative;
+    display: block;
+    width: 70px;
+}
+
+.scratch {
+    bottom: 36px;
+}
+
+.symbols {
+    top: 36px;
+}
+
+.btn {
+    right: -4px;
+    position: absolute;
+    display: block;
+    width: 110px;
+    transform: rotate(270deg);
+    color: rgb(255, 255, 255);
+}
+
+.scratchActive {
+    background-color: rgb(0, 123, 255);
+}
+
+.symbolsActive {
+    background-color: rgb(72, 204, 112);
+}
+
+.disabled {
+    background-color: rgb(126, 126, 126);
+}

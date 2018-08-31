@@ -10,22 +10,27 @@ import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 import Locales from '../../../../strings';
 import Painterro from '../../../../lib/painterro/painterro.commonjs2';
 import painterroConfiguration from './painterroConfiguration.json';
-import createAlert from '../../../../scripts/alert';
+
+const mathLive = DEBUG_MODE ? require('../../../../../mathlive/src/mathlive.js')
+    : require('../../../../lib/mathlivedist/mathlive.js');
 
 export default class MyWork extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            isScratchpadUsed: false
+            isScratchpadUsed: false,
+            scratchpadMode: false
         }
 
         this.scratchPadPainterro;
 
         this.openScratchpad = this.openScratchpad.bind(this);
+        this.hideScratchpad = this.hideScratchpad.bind(this);
         this.addStep = this.addStep.bind(this);
         this.clearAndResizeScratchPad = this.clearAndResizeScratchPad.bind(this);
         this.scratchpadChangeHandler = this.scratchpadChangeHandler.bind(this);
+        this.InitScratchPad = this.InitScratchPad.bind(this);
     }
 
     clearScrachPad() {
@@ -33,14 +38,6 @@ export default class MyWork extends Component {
        this.scratchPadPainterro.worklog.current = null;
         // it is because Painterro displays a modal if we want to replace an existing ScratchPad content
        this.scratchPadPainterro.worklog.clean = true;
-    }
-
-    componentDidMount() {
-        try {
-            this.InitScratchPad();
-        } catch(e) {
-            createAlert("warning", Locales.strings.sketchpad_loading_warning, "Warning");
-        }
     }
 
     scratchpadChangeHandler() {
@@ -52,9 +49,7 @@ export default class MyWork extends Component {
     InitScratchPad() {
         painterroConfiguration.changeHandler = this.scratchpadChangeHandler;
         this.scratchPadPainterro = Painterro(painterroConfiguration);
-
         this.scratchPadPainterro.show();
-        $('#scratch-pad-containter').hide();
 
         $('#scratch-pad-containter-bar > div > span').first()
             .append('<button id="clear-button" type="button" class="ptro-icon-btn ptro-color-control" title='+ Locales.strings.clear_scratchpad + '><i class="ptro-icon ptro-icon-close"></i></button>');
@@ -64,6 +59,7 @@ export default class MyWork extends Component {
         $('.ptro-icon-btn').css('border-radius', '.25rem');
         $('.ptro-bordered-btn').css('border-radius', '.5rem');
         $('.ptro-info').hide();
+
         this.setState({isScratchpadUsed: false});
     }
 
@@ -75,11 +71,14 @@ export default class MyWork extends Component {
     }
 
     openScratchpad() {
-        $('#scratch-pad-containter').slideToggle("fast", function () {
-            if (this.scratchPadPainterro && $("#scratch-pad-containter").is(":visible")) {
-                this.scratchPadPainterro.adjustSizeFull();
-            }
-        });
+        this.setState({scratchpadMode: true});
+        $('#scratch-pad-containter').show();
+    }
+
+    hideScratchpad() {
+        this.setState({scratchpadMode: false});
+        $('#scratch-pad-containter').hide();
+        mathLive.renderMathInDocument();
     }
 
     addStep() {
@@ -109,7 +108,7 @@ export default class MyWork extends Component {
                     </div>
                     <div className={myWork.editorWrapper}>
                         <MyWorkEditorArea activateMathField={this.props.activateMathField} lastMathEquation={this.props.lastMathEquation}
-                            textAreaChanged={this.props.textAreaChanged} textAreaValue={this.props.textAreaValue} addingProblem={this.props.addingProblem}/>
+                            textAreaChanged={this.props.textAreaChanged} textAreaValue={this.props.textAreaValue} addingProblem={this.props.addingProblem} />
                         <div
                             className={
                                 classNames(
@@ -120,13 +119,14 @@ export default class MyWork extends Component {
                                 )
                             }
                         >
-                            <MathPalette theActiveMathField={this.props.theActiveMathField} allowedPalettes={this.props.allowedPalettes} addingProblem={this.props.addingProblem}/>
-                            <MyWorkEditorButtons className="d-flex flex-nowrap justify-content-between" addStepCallback={this.addStep} 
+                            <MathPalette theActiveMathField={this.props.theActiveMathField} allowedPalettes={this.props.allowedPalettes}
+                            scratchpadMode={this.state.scratchpadMode} InitScratchPad={this.InitScratchPad} addStepCallback={this.addStep} />
+                            <MyWorkEditorButtons className="d-flex flex-nowrap justify-content-between" addStepCallback={this.addStep}
                                 undoLastActionCallback={this.props.undoLastActionCallback}  cancelEditCallback={this.props.cancelEditCallback}
                                 deleteStepsCallback={this.props.deleteStepsCallback} editing={this.props.editing} history={this.props.history}
                                 solution={this.props.solution} addingProblem={this.props.addingProblem} cancelCallback={this.props.cancelCallback}
-                                saveCallback={this.props.saveCallback} openScratchpad={this.openScratchpad} clearAndResizeScratchPad={this.clearAndResizeScratchPad}
-                                textAreaValue={this.props.textAreaValue} />
+                                saveCallback={this.props.saveCallback} openScratchpad={this.openScratchpad} hideScratchpad={this.hideScratchpad} clearAndResizeScratchPad={this.clearAndResizeScratchPad}
+                                textAreaValue={this.props.textAreaValue} scratchpadMode={this.state.scratchpadMode} />
                         </div>
                         <div
                             className={
@@ -138,14 +138,6 @@ export default class MyWork extends Component {
                                 )
                             }
                         >
-                            <div id="scratch-pad-containter" 
-                                className={
-                                    classNames(
-                                        bootstrap['order-0'],
-                                        myWork.scratchPadContainter
-                                    )
-                                }
-                            />
                         </div>
                     </div>
                 </div>

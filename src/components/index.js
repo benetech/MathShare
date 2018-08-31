@@ -4,6 +4,9 @@ import Home from './Home';
 import Editor from './Editor';
 import { Switch, Route } from 'react-router-dom';
 import ReactGA from 'react-ga';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faSignature, faSquareRootAlt } 
+    from '@fortawesome/free-solid-svg-icons';
 
 export default class App extends Component {
     constructor(props) {
@@ -14,6 +17,12 @@ export default class App extends Component {
             },
             problem: {}
         }
+
+        this.initializeIcons();
+    }
+
+    initializeIcons() {
+        library.add(faSignature, faSquareRootAlt);
     }
 
     render() {

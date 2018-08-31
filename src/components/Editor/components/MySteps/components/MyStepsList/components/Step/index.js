@@ -21,7 +21,7 @@ export default class Step extends Component {
     th is used for all other numbers (e.g. 9th, pronounced ninth).
     **/
     OrdinalSuffix(i) {
-        if(Locales.strings.getLanguage() === 'en') {
+        if (Locales.strings.getLanguage() === 'en') {
             var j = i % 10,
                 k = i % 100;
             if (j == 1 && k != 11) {
@@ -86,7 +86,7 @@ export default class Step extends Component {
                             step.btn
                         )
                     }
-                    additionalStyles={['background', 'palette']}
+                    additionalStyles={['background', 'palette', 'withLeftMargin']}
                     data-toggle="tooltip"
                     title={Locales.strings.delete_this_step}
                     content={
@@ -105,6 +105,18 @@ export default class Step extends Component {
     }
 
     render() {
+        const clearAll = this.props.stepNumber == 1 ?
+            <Button
+                className={classNames([
+                    bootstrap.btn,
+                    step.clearAll,
+                    step.btn
+                ])}
+                content={Locales.strings.clear_all}
+                icon="times-circle"
+                onClick={this.props.deleteStepsCallback}
+            /> : null;
+
         return (
             <div id="mathStep" className={classNames(bootstrap.row, step.step)} data-step={this.props.stepNumber}
                 data-equation={this.props.math} data-annotation={this.props.annotation}>
@@ -124,6 +136,7 @@ export default class Step extends Component {
                     })}> {this.props.annotation} </span>
                 </div>
                 <div className={classNames(bootstrap['col-md-1'], step.btnContainer)}>
+                    {clearAll}
                     {this.buildEditBtn()}
                     {this.buildTrashBtn()}
                 </div>
