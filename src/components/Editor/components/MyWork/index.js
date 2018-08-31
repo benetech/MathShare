@@ -122,11 +122,11 @@ export default class MyWork extends Component {
                             <MathPalette theActiveMathField={this.props.theActiveMathField} allowedPalettes={this.props.allowedPalettes}
                             scratchpadMode={this.state.scratchpadMode} InitScratchPad={this.InitScratchPad} addStepCallback={this.addStep} />
                             <MyWorkEditorButtons className="d-flex flex-nowrap justify-content-between" addStepCallback={this.addStep}
-                                undoLastActionCallback={this.props.undoLastActionCallback}  cancelEditCallback={this.props.cancelEditCallback}
+                                undoLastActionCallback={this.props.undoLastActionCallback} cancelEditCallback={this.props.cancelEditCallback}
                                 deleteStepsCallback={this.props.deleteStepsCallback} editing={this.props.editing} history={this.props.history}
                                 solution={this.props.solution} addingProblem={this.props.addingProblem} cancelCallback={this.props.cancelCallback}
                                 saveCallback={this.props.saveCallback} openScratchpad={this.openScratchpad} hideScratchpad={this.hideScratchpad} clearAndResizeScratchPad={this.clearAndResizeScratchPad}
-                                textAreaValue={this.props.textAreaValue} scratchpadMode={this.state.scratchpadMode} />
+                                textAreaValue={this.props.textAreaValue} scratchpadMode={this.state.scratchpadMode} updateStepCallback={this.props.updateStepCallback} />
                         </div>
                         <div
                             className={

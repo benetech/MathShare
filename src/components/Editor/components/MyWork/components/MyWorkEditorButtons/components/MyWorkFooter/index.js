@@ -25,6 +25,41 @@ export default class MyWorkFooter extends Component {
                 onClick={this.props.undoLastActionCallback}
             /> : null;
 
+            const cancelButton =
+            <Button
+                    className={btnClassNames}
+                    additionalStyles={['withRightMargin', 'undo']}
+                    content={Locales.strings.cancel}
+                    icon="ban"
+                    title={Locales.strings.cancel_edit_step}
+                    onClick={this.props.cancelEditCallback}
+            />
+
+        const confirmButton = this.props.editing ? 
+        <Button	
+            className={btnClassNames}
+            additionalStyles={['addStep']}
+            toggle="tooltip"
+            title={Locales.strings.update_step_button_title}
+            content={Locales.strings.update_step}
+            step="3"
+            intro={Locales.strings.update_step_intro}
+            icon="pencil"
+            onClick={() => this.props.updateStepCallback()}
+        /> : 
+        <Button
+            className={btnClassNames}
+            additionalStyles={['addStep']}
+            hide={this.props.editing}
+            toggle="tooltip"
+            title={Locales.strings.clean_up_button_title}
+            content={this.props.addLabel}
+            step="3"
+            intro={Locales.strings.add_step_intro}
+            icon="plus"
+            onClick={() => this.props.addStep()}
+        />
+
         return (
             <div
                 id="control-buttons"
@@ -34,19 +69,8 @@ export default class MyWorkFooter extends Component {
                     )
                 }
             >
-                {undoButton}
-                <Button
-                    className={btnClassNames}
-                    additionalStyles={['addStep']}
-                    hide={this.props.editing}
-                    toggle="tooltip"
-                    title={Locales.strings.clean_up_button_title}
-                    content={this.props.addLabel}
-                    step="3"
-                    intro={Locales.strings.add_step_intro}
-                    icon="plus"
-                    onClick={() => this.props.addStep()}
-                />
+                {this.props.editing ? cancelButton : undoButton}
+                {confirmButton}
             </div>
         );
     }

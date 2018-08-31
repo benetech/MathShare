@@ -1,8 +1,6 @@
 import React, { Component } from "react";
-import Button from "../../../../../../components/Button";
 import classNames from "classnames";
 import editorButtons from './styles.css';
-import styles from '../../../../../../styles/styles.css';
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 import MyWorkFooter from './components/MyWorkFooter';
 import InputContainerSelectors from './components/InputContainerSelectors';
@@ -57,7 +55,10 @@ export default class MyWorkEditorButtons extends Component {
                 addLabel={addLabel}
                 addStep={this.addStep}
                 undoButton={true}
-                undoLastActionCallback={this.props.undoLastActionCallback} />
+                undoLastActionCallback={this.props.undoLastActionCallback}
+                cancelEditCallback={this.props.cancelEditCallback}
+                updateStepCallback={this.props.updateStepCallback}
+                editing={this.props.editing} />
             </div>
         );
     }
