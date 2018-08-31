@@ -28,7 +28,7 @@ export default class MainPageHeader extends Component {
                 axios.get(`${config.serverUrl}/problemSet/default`)
                     .then(response => {
                         this.props.history.push(`/problemSet/edit/${response.data}`);
-                        axios.get(`${config.serverUrl}/problemSet/edit/${response.data}`)
+                        axios.get(`${config.serverUrl}/problemSet/${response.data}`)
                     })
                 }}>
                 {Locales.strings.edit}

@@ -20,7 +20,7 @@ export default class ConfirmationModal extends Component {
                 <div id="demo-one-modal" className={modalStyles.modal}>
                 <div className={modalStyles.modalHeader}>
                     <h3>
-                        {Locales.strings.confirmation_modal_unsaved_title}
+                        {this.props.title}
                     </h3>
                 </div>
                 <footer className={modalStyles.modalFooter}>
@@ -29,16 +29,16 @@ export default class ConfirmationModal extends Component {
                         ariaHidden="false"
                         type="button"
                         icon="times"
-                        content={Locales.strings.discard_changes}
-                        onClick={this.props.discard}/>
+                        content={this.props.redButtonLabel}
+                        onClick={this.props.redButtonCallback}/>
                     <Button
                         id="deactivate"
                         className={classNames(bootstrap.btn, modalStyles.button, modalStyles.saveButton)}
                         ariaHidden="false"
                         type="button"
                         icon="save"
-                        content={Locales.strings.save_changes}
-                        onClick={this.props.save}/>
+                        content={this.props.greenButtonLabel}
+                        onClick={this.props.greenButtonCallback}/>
                 </footer>
                 </div>
             </AriaModal>

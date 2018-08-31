@@ -12,6 +12,7 @@ import config from '../../../package.json';
 import axios from 'axios';
 import NewProblemsForm from './components/NewProblemsForm';
 import ShareModal from '../ShareModal';
+import ConfirmationModal from '../ConfirmationModal';
 
 const mathLive = DEBUG_MODE ? require('../../../mathlive/src/mathlive.js')
     : require('../../lib/mathlivedist/mathlive.js');
@@ -27,6 +28,7 @@ export default class Home extends Component {
             },
             modalActive: false,
             shareModalActive: false,
+            confirmationModalActive: false,
             allowedPalettes: props.allowedPalettes,
             theActiveMathField: null,
             textAreaValue: "",
@@ -38,21 +40,29 @@ export default class Home extends Component {
         this.activateModal = this.activateModal.bind(this);
         this.deactivateShareModal = this.deactivateShareModal.bind(this);
         this.activateShareModal = this.activateShareModal.bind(this);
+        this.deactivateConfirmationModal = this.deactivateConfirmationModal.bind(this);
+        this.activateConfirmationModal = this.activateConfirmationModal.bind(this);
         this.addProblem = this.addProblem.bind(this);
         this.saveProblems = this.saveProblems.bind(this);
         this.deleteProblem = this.deleteProblem.bind(this);
     }
 
     componentDidMount() {
-        axios.get(`${config.serverUrl}/problemSet/${this.props.match.params.action}/${this.props.match.params.code}`)
-            .then(response => {
-                this.setState({
-                    set: {
-                        problems: response.data.problems,
-                        editCode: response.data.editCode,
-                        sharecode: response.data.shareCode
-                    }});
-            });
+        var path;
+        if (this.props.match.params.action === "view") {
+            path = `${config.serverUrl}/problemSet/revision/${this.props.match.params.code}`
+        } else {
+            path = `${config.serverUrl}/problemSet/${this.props.match.params.code}/`
+        }
+        axios.get(path)
+                .then(response => {
+                    this.setState({
+                        set: {
+                            problems: response.data.problems,
+                            editCode: response.data.editCode,
+                            sharecode: response.data.shareCode
+                        }});
+                });
     }
 
     textAreaChanged(text) {
@@ -73,6 +83,21 @@ export default class Home extends Component {
 
     activateShareModal() {
         this.setState({ shareModalActive: true });
+    };
+
+    deactivateConfirmationModal() {
+        this.setState({ 
+            confirmationModalActive: false, 
+            problemToDeleteIndex: undefined
+        });
+        mathLive.renderMathInDocument();
+    };
+
+    activateConfirmationModal(index) {
+        this.setState({ 
+            confirmationModalActive: true,
+            problemToDeleteIndex: index 
+        });
     };
 
     addProblem(imageData) {
@@ -111,7 +136,7 @@ export default class Home extends Component {
         var oldSet = this.state.set;
         oldSet.problems = oldSet.problems.concat(this.state.tempProblems);
 
-        axios.put(`${config.serverUrl}/problemSet/`, oldSet)
+        axios.put(`${config.serverUrl}/problemSet/${this.state.set.editCode}`, oldSet)
         .then(response => {
             this.setState({
                 set: {
@@ -129,7 +154,7 @@ export default class Home extends Component {
     deleteProblem(index) {
         var oldSet = this.state.set;
         oldSet.problems.splice(index, 1);
-        axios.put(`${config.serverUrl}/problemSet/`, oldSet)
+        axios.put(`${config.serverUrl}/problemSet/${this.state.set.editCode}`, oldSet)
         .then(response => {
             this.setState({
                 set: {
@@ -145,11 +170,19 @@ export default class Home extends Component {
         setTimeout(function() { 
             mathLive.renderMathInDocument();
         }.bind(this), 200)
+        this.deactivateConfirmationModal();
     }
 
     render() {
         const shareModal = this.state.shareModalActive ? 
-        <ShareModal shareLink={config.serverUrl + '/problemSet/view/' + this.state.set.sharecode} deactivateModal={this.deactivateShareModal}/>
+        <ShareModal shareLink={config.serverUrl + '/problemSet/view/' + this.state.set.sharecode} 
+            deactivateModal={this.deactivateShareModal}/>
+        : null;
+
+        const confirmationModal = this.state.confirmationModalActive ? 
+        <ConfirmationModal redButtonCallback={this.deactivateConfirmationModal} greenButtonCallback={this.deleteProblem}
+            deactivateModal={this.deactivateConfirmationModal} title={Locales.strings.confirmation_modal_sure_to_remove_problem}
+            redButtonLabel={Locales.strings.cancel} greenButtonLabel={Locales.strings.yes}/>
         : null;
 
         const modal = this.state.modalActive
@@ -161,20 +194,22 @@ export default class Home extends Component {
             textAreaValue={this.state.textAreaValue}
             addProblemCallback={this.addProblem}
             problems={this.state.tempProblems}
-            saveCallback={this.saveProblems}/>
+            saveCallback={this.saveProblems}
+            cancelCallback={this.deactivateModal} />
         : null;
 
         return (
             <div className={home.mainWrapper}>
                 <NotificationContainer />
+                {confirmationModal}
                 {shareModal}
                 <MainPageHeader editing={this.props.match.params.action=='edit'} history={this.props.history} shareCallback={this.activateShareModal}/>
                 <div className={home.contentWrapper} id="ContentWrapper">
                 {modal}
                     <nav id="LeftNavigation" className={home.leftNavigation} aria-labelledby="LeftNavigationHeader">
                         <NavigationHeader />
-                        <NavigationProblems problems={this.state.set.problems} editing={this.props.match.params.action=='edit'} activateModal={this.activateModal}
-                            deleteCallback={this.deleteProblem}/>
+                        <NavigationProblems problems={this.state.set.problems} editing={this.props.match.params.action=='edit'}
+                            activateModal={this.activateModal} deleteCallback={this.activateConfirmationModal}/>
                     </nav>
                 </div>
                 <MainPageFooter />

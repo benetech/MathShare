@@ -7,7 +7,7 @@ export default class Index extends Component {
         axios.get(`${config.serverUrl}/problemSet/defaultRevision`)
             .then(response => {
                 this.props.history.push(`/problemSet/view/${response.data}`);
-            });
+        });
     }
     
     render() {

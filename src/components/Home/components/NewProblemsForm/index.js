@@ -44,7 +44,7 @@ export default class NewProblemsForm extends Component {
 
             return <div className={styles.row} key={i} >
                 <div className={styles.ordinal}>
-                    {i}.
+                    {i + 1}.
                 </div>
                 <div className={styles.cell}>
                     {'$$' + problem.text + '$$'}
