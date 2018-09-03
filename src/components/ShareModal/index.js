@@ -27,7 +27,7 @@ export default class ShareModal extends Component {
                     <h3>
                         {Locales.strings.share_link}
                     </h3>
-                    <input type="text" value={this.props.shareLink} id="shareLink" className={editor.shareLink}/>
+                    <input type="text" readOnly value={this.props.shareLink} id="shareLink" className={editor.shareLink}/>
                 </div>
                 <footer className={editor.modalFooter}>
                     <Button

@@ -159,7 +159,7 @@ export default class Problem extends Component {
         : null;
 
         const NavItem = withRouter(({ history }) => (
-            <li
+            <div
                 className={
                     classNames(
                         bootstrap['col-md-4'],
@@ -194,7 +194,7 @@ export default class Problem extends Component {
                     {plusButton}
                     <span className={problem.problemEquation}>{equation}</span>
                 </span>
-            </li>
+            </div>
         ))
         return <NavItem />
     }
