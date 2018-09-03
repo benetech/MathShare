@@ -45,6 +45,7 @@ export default class Home extends Component {
         this.addProblem = this.addProblem.bind(this);
         this.saveProblems = this.saveProblems.bind(this);
         this.deleteProblem = this.deleteProblem.bind(this);
+        this.updatePositions = this.updatePositions.bind(this);
     }
 
     componentDidMount() {
@@ -173,6 +174,15 @@ export default class Home extends Component {
         this.deactivateConfirmationModal();
     }
 
+    updatePositions(problems) {
+        problems.forEach(function(problem, i) {
+            problem.position = i;
+        })
+        var set = this.state.set;
+        set.problems = problems;
+        this.setState({set});
+    }
+
     render() {
         const shareModal = this.state.shareModalActive ? 
         <ShareModal shareLink={config.serverUrl + '/problemSet/view/' + this.state.set.sharecode} 
@@ -209,7 +219,7 @@ export default class Home extends Component {
                     <nav id="LeftNavigation" className={home.leftNavigation} aria-labelledby="LeftNavigationHeader">
                         <NavigationHeader />
                         <NavigationProblems problems={this.state.set.problems} editing={this.props.match.params.action=='edit'}
-                            activateModal={this.activateModal} deleteCallback={this.activateConfirmationModal}/>
+                            activateModal={this.activateModal} deleteCallback={this.activateConfirmationModal} updatePositions={this.updatePositions} />
                     </nav>
                 </div>
                 <MainPageFooter />
