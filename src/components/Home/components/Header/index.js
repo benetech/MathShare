@@ -33,7 +33,10 @@ export default class MainPageHeader extends Component {
                 }}>
                 {Locales.strings.edit}
             </a>
-        
+
+         const addProblemSetButton = <a className={classNames(bootstrap['nav-link'], header.pointer)} onClick={this.props.addProblemSetCallback}>
+             {Locales.strings.add_problem_set}
+         </a>
 
         return (
             <div id="topNavigationWrapper" className={header.header} role="heading" aria-level="1">
@@ -51,6 +54,9 @@ export default class MainPageHeader extends Component {
                             <ul className={classNames(bootstrap['navbar-nav'], header.navItem)}>
                                 <li className={bootstrap['nav_item']}>
                                     <GettingStartedButton />
+                                </li>
+                                <li className={bootstrap['nav_item']}>
+                                    {addProblemSetButton}
                                 </li>
                                 <li className={bootstrap['nav_item']}>
                                     {button}

@@ -11,18 +11,19 @@ import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 const mathLive = DEBUG_MODE ? require('../../../../../mathlive/src/mathlive.js')
     : require('../../../../lib/mathlivedist/mathlive.js');
 
-export default class NewProblemsForm extends Component {
+export default class PaletteChooser extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            chosenPalettes: []
+            chosenPalettes: palettes.map(palette => palette.label)
         };
 
         this.handleChange = this.handleChange.bind(this);
     }
 
     componentDidMount() {
-        mathLive.renderMathInDocument();
+        $("input[type='checkbox']").prop("checked", true);
+         mathLive.renderMathInDocument();
     }
 
     getApplicationNode() {
@@ -82,18 +83,18 @@ export default class NewProblemsForm extends Component {
                     </form>
                     <div className={styles.footer}>
                     <Button
-                        id="BtnSave"
-                        className={btnClassNames}
-                        additionalStyles={['withHugeRightMargin', 'default']}
-                        content={Locales.strings.next}
-                        onClick={this.props.nextCallback}
-                    />
-                    <Button
                         id="BtnCancel"
                         className={btnClassNames}
-                        additionalStyles={['default']}
+                        additionalStyles={['withHugeRightMargin', 'default']}
                         content={Locales.strings.cancel}
                         onClick={this.props.cancelCallback}
+                    />
+                    <Button
+                        id="BtnSave"
+                        className={btnClassNames}
+                        additionalStyles={['default']}
+                        content={Locales.strings.next}
+                        onClick={() => {this.props.nextCallback(this.state.chosenPalettes)}}
                     />
                     </div>
                 </div>

@@ -86,7 +86,6 @@ export default class MyWork extends Component {
     }
 
     render() {
-        var title = this.props.addingProblem ? Locales.strings.add_problems : Locales.strings.my_work;
         return (
             <div id="EditorArea" className={myWork.editorArea}>
                 <div className={myWork.myWorkArea}>
@@ -100,7 +99,7 @@ export default class MyWork extends Component {
                                     )
                                 }
                                 aria-hidden="true">
-                                {title}
+                                {this.props.title}
                             </span>
                             <br/>
                             <span className={styles.sROnly}>{Locales.strings.my_work}</span>

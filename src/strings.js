@@ -47,6 +47,8 @@ class Locales {
             my_work: "My Work",
             no_description_warning: "Please provide a description of your work.",
             no_problem_title_warning: "Please provide a problem title.",
+            no_problem_equation_warning: "Please provide a problem equation.",
+            no_problem_equation_and_title_warning: "Please provide problem equation and problem title",
             warning: 'Warning',
             successfull_update_message: "The step has been updated.",
             problems_to_solve: " Problems to solve ",
@@ -81,10 +83,11 @@ class Locales {
             edit_link_label: "Edit Url: ",
             cancel: " Cancel",
             new_problem: " New Problem",
-            add_problems: " Add problem(s) to set",
+            add_problems: " Add problem(s) to Problem Set",
+            add_problems_new_set: " Add problem(s) to new Problem Set",
             hash: "#",
             equation: "Equation",
-            annotation: "Annotation",
+            title: "Title",
             share_link: "Share Link: ",
             problem_image: "Problem image",
             confirmation_modal_unsaved_title: "You have unsaved changes, do you wish to save?",
@@ -98,7 +101,10 @@ class Locales {
             symbols: " Symbols",
             switch_to_sketchpad: "Switch to the sketchpad view",
             switch_to_symbols: "Switch to the symbols view",
-            undo: " Undo"
+            undo: " Undo",
+            add_problem_set: " New Problem Set",
+            choose_palettes_title: "Select button palettes available for this problem set",
+            no_palettes_chosen_warning: "Please select at least one palette"
         },
         es: {
         }

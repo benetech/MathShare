@@ -93,7 +93,8 @@ export default class Editor extends Component {
                     editorPosition: response.data.steps.length -1,
                     theActiveMathField: field,
                     readOnly: this.props.match.params.action == 'view',
-                    stepsFromLastSave: JSON.parse(JSON.stringify(response.data.steps))
+                    stepsFromLastSave: JSON.parse(JSON.stringify(response.data.steps)),
+                    allowedPalettes: response.data.palettes
                 });
             })
         $('#undoAction').hide();
