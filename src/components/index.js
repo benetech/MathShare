@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Index from './Index';
+import Index from './PageIndex';
 import Home from './Home';
 import Editor from './Editor';
 import { Switch, Route } from 'react-router-dom';
