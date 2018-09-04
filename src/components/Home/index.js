@@ -27,13 +27,11 @@ export default class Home extends Component {
             activeModals: [],
             allowedPalettes: [],
             theActiveMathField: null,
-            textAreaValue: "",
             tempProblems: [],
             tempPalettes: [],
             newSetSharecode: ""
         }
 
-        this.textAreaChanged = this.textAreaChanged.bind(this);
         this.toggleModal = this.toggleModal.bind(this);
         this.addProblem = this.addProblem.bind(this);
         this.saveProblems = this.saveProblems.bind(this);
@@ -55,16 +53,26 @@ export default class Home extends Component {
         } else {
             path = `${config.serverUrl}/problemSet/${this.props.match.params.code}/`
         }
+
         axios.get(path)
             .then(response => {
+                var orderedProblems = this.orderProblems(response.data.problems);
                 this.setState({
                     set: {
-                        problems: response.data.problems,
+                        problems: orderedProblems,
                         editCode: response.data.editCode,
                         sharecode: response.data.shareCode
                     }
                 });
             });
+        mathLive.renderMathInDocument();
+    }
+
+    orderProblems(problems) {
+        return problems.map((problem, i) => {
+            problem.position = i;
+            return problem;
+        });
     }
 
     componentDidUpdate(prevProps, prevState) { //todo:change
@@ -74,12 +82,7 @@ export default class Home extends Component {
             mathLive.renderMathInDocument();
     }
 
-    textAreaChanged(text) {
-        this.setState({ textAreaValue: text });
-    }
-
     toggleModal(modal, index) {
-        console.log(modal)
         if (this.state.activeModals.indexOf(modal) != -1) {
             var oldModals = this.state.activeModals;
             oldModals = oldModals.filter(e => e !== modal);
@@ -99,9 +102,9 @@ export default class Home extends Component {
         }
     }
 
-    addProblem(imageData) {
+    addProblem(imageData, text) {
         var message;
-        if (this.state.textAreaValue === "") {
+        if (text === "") {
             if (this.state.theActiveMathField.latex() === "") {
                 message = Locales.strings.no_problem_equation_and_title_warning;
             } else {
@@ -121,14 +124,16 @@ export default class Home extends Component {
 
         let newProblems = this.state.tempProblems;
         let mathContent = this.state.theActiveMathField.latex();
-        let annotation = this.state.textAreaValue;
+        let annotation = text;
         newProblems.push({ "text": mathContent, "title": annotation, "scratchpad": imageData });
+        var set = this.state.set;
+        set.problems.push({"text": mathContent , "title": annotation, "scratchpad": imageData, "position": set.problems.length});
 
         let updatedMathField = this.state.theActiveMathField;
         updatedMathField.latex("$$$$");
         this.setState({
+            set: set,
             theActiveMathField: updatedMathField,
-            textAreaValue: "",
             tempProblems: newProblems
         });
 
@@ -143,9 +148,9 @@ export default class Home extends Component {
         document.querySelector("#container").scrollTo(0, document.querySelector("#container").scrollHeight); //TODO: fix this
     }
 
-    saveProblems() {
+    saveProblems(problems) {
         var oldSet = this.state.set;
-        oldSet.problems = oldSet.problems.concat(this.state.tempProblems);
+        oldSet.problems = problems;
 
         axios.put(`${config.serverUrl}/problemSet/${this.state.set.editCode}`, oldSet)
             .then(response => {
@@ -156,7 +161,7 @@ export default class Home extends Component {
                         sharecode: response.data.shareCode
                     },
                     tempProblems: [],
-                    modalActive: false
+                    activeModals: []
                 });
             });
 
@@ -179,8 +184,8 @@ export default class Home extends Component {
 
         setTimeout(function () {
             mathLive.renderMathInDocument();
-        }.bind(this), 200)
-        this.toggleModal(this.CONFIRMATION_MODAL);
+        }.bind(this), 200);
+        this.toggleModal(this.CONFIRMATION_MODAL, index);
     }
 
     updatePositions(problems) {
@@ -235,10 +240,8 @@ export default class Home extends Component {
                     newSetShareLink={config.serverUrl + '/problemSet/view/' + this.state.newSetSharecode}
                     activateMathField={theActiveMathField => this.setState({ theActiveMathField })}
                     theActiveMathField={this.state.theActiveMathField}
-                    textAreaChanged={this.textAreaChanged}
-                    textAreaValue={this.state.textAreaValue}
                     addProblemCallback={this.addProblem}
-                    problems={this.state.tempProblems}
+                    problems={this.state.set.problems}
                     saveProblemSet={this.saveProblemSet}
                     saveProblems={this.saveProblems} />
                 <div className={home.contentWrapper} id="ContentWrapper">

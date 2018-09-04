@@ -13,11 +13,14 @@
 }
 
 .row {
+    height: 58px;
     background: rgb(255, 255, 255);
 }
 
 .cell {
+    overflow: auto;
     flex: 1;
+    max-width: 500px;
 }
 
 .cell,
@@ -25,12 +28,32 @@
     margin: 10px;
 }
 
-.image {
+.rowControl {
+    width: 70px;
     float: right;
     cursor: pointer;
+    display: flex;
+    justify-content: flex-end;
 }
 
 .footer {
     height: 50;
     padding-right: 20px;
+}
+
+.positionButtons {
+    margin-top: 12px;
+    display: flex;
+    flex-direction: column;
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+.disabled {
+    color: rgb(192, 192, 192);
+    cursor: not-allowed;
+}
+
+.img {
+    margin: auto;
 }

@@ -65,6 +65,7 @@ export default class Problems extends Component {
         
         return (
             <SortableList
+                distance={5}
                 problems={this.state.problems}
                 onSortEnd={this.onSortEnd}
                 onSortStart={this.onSortStart}
