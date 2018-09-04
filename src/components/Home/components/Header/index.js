@@ -20,7 +20,7 @@ export default class MainPageHeader extends Component {
         ))
 
         const button = this.props.editing ? 
-            <a className={classNames(bootstrap['nav-link'], header.pointer)} onClick={this.props.shareCallback}>
+            <a className={classNames(bootstrap['nav-link'], header.pointer)} onClick={() => this.props.shareCallback("shareSet")}>
                 {Locales.strings.share}
             </a>
             : 
