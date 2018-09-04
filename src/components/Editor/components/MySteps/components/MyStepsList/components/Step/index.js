@@ -105,7 +105,7 @@ export default class Step extends Component {
     }
 
     render() {
-        const clearAll = this.props.stepNumber == 1 ?
+        const clearAll = this.props.stepNumber == 1 && !this.props.readOnly ?
             <Button
                 className={classNames([
                     bootstrap.btn,

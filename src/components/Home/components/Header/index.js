@@ -19,17 +19,19 @@ export default class MainPageHeader extends Component {
             </a>
         ))
 
+        const shareButton = this.props.editing ? 
+        <a className={classNames(bootstrap['nav-link'], header.pointer)} onClick={() => this.props.shareCallback(["shareSet"])}>
+            {Locales.strings.share}
+        </a>
+        : 
+        null
         const button = this.props.editing ? 
-            <a className={classNames(bootstrap['nav-link'], header.pointer)} onClick={() => this.props.shareCallback("shareSet")}>
-                {Locales.strings.share}
+            <a className={classNames(bootstrap['nav-link'], header.pointer)} onClick={this.props.finishEditing}>
+                {Locales.strings.finish_edit}
             </a>
             : 
             <a className={classNames(bootstrap['nav-link'], header.pointer)} onClick={() => { 
-                axios.get(`${config.serverUrl}/problemSet/default`)
-                    .then(response => {
-                        this.props.history.push(`/problemSet/edit/${response.data}`);
-                        axios.get(`${config.serverUrl}/problemSet/${response.data}`)
-                    })
+                    this.props.history.push(`/problemSet/edit/${this.props.editCode}`);
                 }}>
                 {Locales.strings.edit}
             </a>
@@ -57,6 +59,9 @@ export default class MainPageHeader extends Component {
                                 </li>
                                 <li className={bootstrap['nav_item']}>
                                     {addProblemSetButton}
+                                </li>
+                                <li className={bootstrap['nav_item']}>
+                                    {shareButton}
                                 </li>
                                 <li className={bootstrap['nav_item']}>
                                     {button}

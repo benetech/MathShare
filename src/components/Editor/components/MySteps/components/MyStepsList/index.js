@@ -31,7 +31,8 @@ export default class MyStepsList extends Component {
                     showTrash={showTrash}
                     deleteStepCallback={this.props.deleteStepCallback}
                     editStepCallback={this.props.editStepCallback}
-                    deleteStepsCallback={this.props.deleteStepsCallback} />  
+                    deleteStepsCallback={this.props.deleteStepsCallback}
+                    readOnly={this.props.readOnly} />  
             }
         );
         if (!this.props.readOnly) {

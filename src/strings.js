@@ -104,7 +104,8 @@ class Locales {
             undo: " Undo",
             add_problem_set: " New Problem Set",
             choose_palettes_title: "Select button palettes available for this problem set",
-            no_palettes_chosen_warning: "Please select at least one palette"
+            no_palettes_chosen_warning: "Please select at least one palette",
+            finish_edit: "Finish Edit"
         },
         es: {
         }
