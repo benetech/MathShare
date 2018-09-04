@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Index from './Index';
+import PageIndex from './PageIndex';
 import Home from './Home';
 import Editor from './Editor';
 import { Switch, Route } from 'react-router-dom';
@@ -31,7 +31,7 @@ export default class App extends Component {
             <Switch>
                 <Route exact path='/problemSet/:action/:code' render={p => <Home {...p}/> } />
                 <Route exact path='/problem/:action/:code' render={p => <Editor {...p}/> } />
-                <Route exact path='/' render={p => <Index {...p} />} />
+                <Route exact path='/' render={p => <PageIndex {...p} />} />
             </Switch>
         )
     }
