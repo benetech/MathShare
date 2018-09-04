@@ -10,9 +10,7 @@ import createAlert from '../../scripts/alert';
 import Locales from '../../strings'
 import config from '../../../package.json';
 import axios from 'axios';
-import NewProblemsForm from './components/NewProblemsForm';
-import ShareModal from '../ShareModal';
-import ConfirmationModal from '../ConfirmationModal';
+import ModalContainer from './components/ModalContainer';
 
 const mathLive = DEBUG_MODE ? require('../../../mathlive/src/mathlive.js')
     : require('../../lib/mathlivedist/mathlive.js');
@@ -26,26 +24,28 @@ export default class Home extends Component {
                 editCode: null,
                 sharecode: null
             },
-            modalActive: false,
-            shareModalActive: false,
-            confirmationModalActive: false,
-            allowedPalettes: props.allowedPalettes,
+            activeModals: [],
+            allowedPalettes: [],
             theActiveMathField: null,
             textAreaValue: "",
-            tempProblems: []
+            tempProblems: [],
+            tempPalettes: [],
+            newSetSharecode: ""
         }
-        
+
         this.textAreaChanged = this.textAreaChanged.bind(this);
-        this.deactivateModal = this.deactivateModal.bind(this);
-        this.activateModal = this.activateModal.bind(this);
-        this.deactivateShareModal = this.deactivateShareModal.bind(this);
-        this.activateShareModal = this.activateShareModal.bind(this);
-        this.deactivateConfirmationModal = this.deactivateConfirmationModal.bind(this);
-        this.activateConfirmationModal = this.activateConfirmationModal.bind(this);
+        this.toggleModal = this.toggleModal.bind(this);
         this.addProblem = this.addProblem.bind(this);
         this.saveProblems = this.saveProblems.bind(this);
         this.deleteProblem = this.deleteProblem.bind(this);
         this.updatePositions = this.updatePositions.bind(this);
+        this.addProblemSet = this.addProblemSet.bind(this);
+        this.progressToAddingProblems = this.progressToAddingProblems.bind(this);
+        this.saveProblemSet = this.saveProblemSet.bind(this);
+        this.CONFIRMATION_MODAL = "confirmation";
+        this.PALETTE_CHOOSER_MODAL = "paletteChooser";
+        this.ADD_PROBLEM_SET_MODAL = "addProblemSet";
+        this.SHARE_NEW_SET_MODAL = "shareNewSet";
     }
 
     componentDidMount() {
@@ -56,64 +56,74 @@ export default class Home extends Component {
             path = `${config.serverUrl}/problemSet/${this.props.match.params.code}/`
         }
         axios.get(path)
-                .then(response => {
-                    this.setState({
-                        set: {
-                            problems: response.data.problems,
-                            editCode: response.data.editCode,
-                            sharecode: response.data.shareCode
-                        }});
+            .then(response => {
+                this.setState({
+                    set: {
+                        problems: response.data.problems,
+                        editCode: response.data.editCode,
+                        sharecode: response.data.shareCode
+                    }
                 });
+            });
+    }
+
+    componentDidUpdate(prevProps, prevState) { //todo:change
+        if (this.state.set !== prevState.set || this.state.allowedPalettes !== prevState.allowedPalettes
+            || this.state.tempProblems !== prevState.tempProblems || this.state.tempPalettes !== prevState.tempPalettes
+            || this.state.newSetSharecode !== prevState.newSetSharecode || this.state.activeModals !== prevState.activeModals)
+            mathLive.renderMathInDocument();
     }
 
     textAreaChanged(text) {
-        this.setState({textAreaValue : text});
+        this.setState({ textAreaValue: text });
     }
 
-    deactivateModal() {
-        this.setState({ modalActive: false });
-    };
+    toggleModal(modal, index) {
+        console.log(modal)
+        if (this.state.activeModals.indexOf(modal) != -1) {
+            var oldModals = this.state.activeModals;
+            oldModals = oldModals.filter(e => e !== modal);
+            this.setState({ activeModals: oldModals });
+            if (modal == this.ADD_PROBLEM_SET_MODAL) {
+                this.setState({ tempProblems: [] });
+            } else if (modal == this.CONFIRMATION_MODAL) {
 
-    activateModal() {
-        this.setState({ modalActive: true });
-    };
-
-    deactivateShareModal() {
-        this.setState({ shareModalActive: false });
-    };
-
-    activateShareModal() {
-        this.setState({ shareModalActive: true });
-    };
-
-    deactivateConfirmationModal() {
-        this.setState({ 
-            confirmationModalActive: false, 
-            problemToDeleteIndex: undefined
-        });
-        mathLive.renderMathInDocument();
-    };
-
-    activateConfirmationModal(index) {
-        this.setState({ 
-            confirmationModalActive: true,
-            problemToDeleteIndex: index 
-        });
-    };
+            }
+        } else {
+            if (modal == this.CONFIRMATION_MODAL) {
+                this.setState({ problemToDeleteIndex: index });
+            }
+            var oldModals = this.state.activeModals;
+            oldModals.push(modal);
+            this.setState({ activeModals: oldModals });
+        }
+    }
 
     addProblem(imageData) {
+        var message;
         if (this.state.textAreaValue === "") {
-            createAlert('warning', Locales.strings.no_problem_title_warning, Locales.strings.warning);
-            setTimeout(function(){
+            if (this.state.theActiveMathField.latex() === "") {
+                message = Locales.strings.no_problem_equation_and_title_warning;
+            } else {
+                message = Locales.strings.no_problem_title_warning;
+            }
+        } else if (this.state.theActiveMathField.latex() === "") {
+            message = Locales.strings.no_problem_equation_warning;
+        }
+
+        if (message) {
+            createAlert('warning', message, Locales.strings.warning);
+            setTimeout(function () {
                 $('#mathAnnotation').focus();
             }, 6000);
             return;
         }
+
         let newProblems = this.state.tempProblems;
         let mathContent = this.state.theActiveMathField.latex();
         let annotation = this.state.textAreaValue;
-        newProblems.push({"text": mathContent , "title": annotation, "scratchpad": imageData});
-        
+        newProblems.push({ "text": mathContent, "title": annotation, "scratchpad": imageData });
+
         let updatedMathField = this.state.theActiveMathField;
         updatedMathField.latex("$$$$");
         this.setState({
@@ -123,14 +133,14 @@ export default class Home extends Component {
         });
 
         mathLive.renderMathInDocument();
-            
-      //  this.setScratchPadContentData(mathStepNewNumber, ScratchPadPainterro.imageSaver.asDataURL())
-      //  this.clearScrachPad();
+
+        //  this.setScratchPadContentData(mathStepNewNumber, ScratchPadPainterro.imageSaver.asDataURL())
+        //  this.clearScrachPad();
         this.scrollToBottom();
     }
 
     scrollToBottom() {
-        document.querySelector("#container").scrollTo(0, document.querySelector("#container").scrollHeight);
+        document.querySelector("#container").scrollTo(0, document.querySelector("#container").scrollHeight); //TODO: fix this
     }
 
     saveProblems() {
@@ -138,88 +148,104 @@ export default class Home extends Component {
         oldSet.problems = oldSet.problems.concat(this.state.tempProblems);
 
         axios.put(`${config.serverUrl}/problemSet/${this.state.set.editCode}`, oldSet)
-        .then(response => {
-            this.setState({
-                set: {
-                    problems: response.data.problems,
-                    editCode: response.data.editCode,
-                    sharecode: response.data.shareCode
-                },
-                tempProblems: [],
-                modalActive: false
+            .then(response => {
+                this.setState({
+                    set: {
+                        problems: response.data.problems,
+                        editCode: response.data.editCode,
+                        sharecode: response.data.shareCode
+                    },
+                    tempProblems: [],
+                    modalActive: false
+                });
             });
-        });
-        
+
     }
 
     deleteProblem(index) {
         var oldSet = this.state.set;
         oldSet.problems.splice(index, 1);
         axios.put(`${config.serverUrl}/problemSet/${this.state.set.editCode}`, oldSet)
-        .then(response => {
-            this.setState({
-                set: {
-                    problems: response.data.problems,
-                    editCode: response.data.editCode,
-                    sharecode: response.data.shareCode
-                },
-                tempProblems: [],
-                modalActive: false
+            .then(response => {
+                this.setState({
+                    set: {
+                        problems: response.data.problems,
+                        editCode: response.data.editCode,
+                        sharecode: response.data.shareCode
+                    },
+                    tempProblems: []
+                });
             });
-        });
 
-        setTimeout(function() { 
+        setTimeout(function () {
             mathLive.renderMathInDocument();
         }.bind(this), 200)
-        this.deactivateConfirmationModal();
+        this.toggleModal(this.CONFIRMATION_MODAL);
     }
 
     updatePositions(problems) {
-        problems.forEach(function(problem, i) {
+        problems.forEach(function (problem, i) {
             problem.position = i;
         })
         var set = this.state.set;
         set.problems = problems;
-        this.setState({set});
+        this.setState({ set });
+    }
+
+    addProblemSet() {
+        this.toggleModal(this.PALETTE_CHOOSER_MODAL);
+    }
+
+    progressToAddingProblems(palettes) {
+        if (palettes.length == 0) {
+            createAlert('warning', Locales.strings.no_palettes_chosen_warning, Locales.strings.warning);
+            return;
+        }
+        this.setState({ tempPalettes: palettes });
+        this.toggleModal(this.PALETTE_CHOOSER_MODAL);
+        this.toggleModal(this.ADD_PROBLEM_SET_MODAL);
+    }
+
+    saveProblemSet() {
+        var set = {
+            problems: this.state.tempProblems,
+            palettes: this.state.tempPalettes
+        };
+
+        axios.post(`${config.serverUrl}/problemSet/`, set)
+            .then(response => {
+                this.setState({
+                    tempProblems: [],
+                    newSetSharecode: response.data.shareCode
+                })
+            });
+        this.toggleModal(this.ADD_PROBLEM_SET_MODAL);
+        this.toggleModal(this.SHARE_NEW_SET_MODAL);
     }
 
     render() {
-        const shareModal = this.state.shareModalActive ? 
-        <ShareModal shareLink={config.serverUrl + '/problemSet/view/' + this.state.set.sharecode} 
-            deactivateModal={this.deactivateShareModal}/>
-        : null;
-
-        const confirmationModal = this.state.confirmationModalActive ? 
-        <ConfirmationModal redButtonCallback={this.deactivateConfirmationModal} greenButtonCallback={this.deleteProblem}
-            deactivateModal={this.deactivateConfirmationModal} title={Locales.strings.confirmation_modal_sure_to_remove_problem}
-            redButtonLabel={Locales.strings.cancel} greenButtonLabel={Locales.strings.yes}/>
-        : null;
-
-        const modal = this.state.modalActive
-        ? <NewProblemsForm 
-            deactivateModal={this.deactivateModal}
-            activateMathField={theActiveMathField => this.setState({theActiveMathField})}
-            theActiveMathField={this.state.theActiveMathField}
-            textAreaChanged={this.textAreaChanged}
-            textAreaValue={this.state.textAreaValue}
-            addProblemCallback={this.addProblem}
-            problems={this.state.tempProblems}
-            saveCallback={this.saveProblems}
-            cancelCallback={this.deactivateModal} />
-        : null;
-
         return (
             <div className={home.mainWrapper}>
                 <NotificationContainer />
-                {confirmationModal}
-                {shareModal}
-                <MainPageHeader editing={this.props.match.params.action=='edit'} history={this.props.history} shareCallback={this.activateShareModal}/>
+                <MainPageHeader editing={this.props.match.params.action == 'edit'} history={this.props.history} shareCallback={this.toggleModal}
+                    addProblemSetCallback={this.addProblemSet} />
+                <ModalContainer activeModals={this.state.activeModals} toggleModal={this.toggleModal}
+                    progressToAddingProblems={this.progressToAddingProblems} deleteProblem={this.deleteProblem}
+                    shareLink={config.serverUrl + '/problemSet/view/' + this.state.set.sharecode}
+                    newSetShareLink={config.serverUrl + '/problemSet/view/' + this.state.newSetSharecode}
+                    activateMathField={theActiveMathField => this.setState({ theActiveMathField })}
+                    theActiveMathField={this.state.theActiveMathField}
+                    textAreaChanged={this.textAreaChanged}
+                    textAreaValue={this.state.textAreaValue}
+                    addProblemCallback={this.addProblem}
+                    problems={this.state.tempProblems}
+                    saveProblemSet={this.saveProblemSet}
+                    saveProblems={this.saveProblems} />
                 <div className={home.contentWrapper} id="ContentWrapper">
-                {modal}
                     <nav id="LeftNavigation" className={home.leftNavigation} aria-labelledby="LeftNavigationHeader">
                         <NavigationHeader />
-                        <NavigationProblems problems={this.state.set.problems} editing={this.props.match.params.action=='edit'}
-                            activateModal={this.activateModal} deleteCallback={this.activateConfirmationModal} updatePositions={this.updatePositions} />
+                        <NavigationProblems problems={this.state.set.problems} editing={this.props.match.params.action == 'edit'}
+                            activateModal={this.toggleModal} deleteCallback={this.toggleModal} updatePositions={this.updatePositions} />
                     </nav>
                 </div>
                 <MainPageFooter />

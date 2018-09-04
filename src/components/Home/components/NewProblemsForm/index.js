@@ -73,7 +73,7 @@ export default class NewProblemsForm extends Component {
                             {Locales.strings.equation}
                         </h5>
                         <h5 className={styles.cell}>
-                            {Locales.strings.annotation}
+                            {Locales.strings.title}
                         </h5>
                     </div>
                     {problems}
