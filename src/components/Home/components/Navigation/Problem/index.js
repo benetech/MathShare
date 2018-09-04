@@ -78,7 +78,7 @@ export default class Problem extends Component {
     }
 
     onTrashClick(e) {
-        this.props.deleteCallback(this.props.number);
+        this.props.deleteCallback("confirmation", this.props.number);
         e.stopPropagation();
     }
 
@@ -177,7 +177,7 @@ export default class Problem extends Component {
                             problem.navSpan
                         )
                     }
-                    onClick={() => this.props.addNew ? this.props.activateModal() : this.createNewSolution(history)}
+                    onClick={() => this.props.addNew ? this.props.activateModal("addProblems") : this.createNewSolution(history)}
                 >
                     <Button
                         className={

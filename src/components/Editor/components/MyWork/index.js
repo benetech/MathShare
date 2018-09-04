@@ -82,7 +82,7 @@ export default class MyWork extends Component {
     }
 
     addStep() {
-        this.props.addStepCallback(this.state.isScratchpadUsed ? this.scratchPadPainterro.imageSaver.asDataURL() : null);
+        this.props.addStepCallback(this.state.isScratchpadUsed ? this.scratchPadPainterro.imageSaver.asDataURL() : null, this.props.textAreaValue);
     }
 
     render() {
