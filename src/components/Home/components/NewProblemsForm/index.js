@@ -22,7 +22,14 @@ export default class NewProblemsForm extends Component {
         };
 
         this.save = this.save.bind(this);
+        this.addStep = this.addStep.bind(this);
         this.textAreaChanged = this.textAreaChanged.bind(this);
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if(prevState.problems.length != this.state.problems.length) {
+            this.scrollToBottom();
+        }
     }
 
     componentWillReceiveProps(newProps) {
@@ -50,8 +57,17 @@ export default class NewProblemsForm extends Component {
         this.setState({ textAreaValue: text });
     }
 
+    scrollToBottom() {
+        document.querySelector("#container").scrollTo(0, document.querySelector("#container").scrollHeight); //TODO: fix this
+    }
+
     save() {
         this.props.saveCallback(this.state.problems);
+    }
+
+    addStep(imageData, text) {
+        this.textAreaChanged("");
+        this.props.addProblemCallback(imageData, text, this.state.problems.length);
     }
 
     render() {
@@ -130,13 +146,12 @@ export default class NewProblemsForm extends Component {
                         theActiveMathField={this.props.theActiveMathField}
                         textAreaChanged={this.textAreaChanged}
                         textAreaValue={this.state.textAreaValue}
-                        addStepCallback={this.props.addProblemCallback}
+                        addStepCallback={this.addStep}
                         editing={false}
                         history={[]}
                         solution={this.props.solution}
                         addingProblem />
-                    <div ref={el => { this.el = el; }} className={styles.footer}>
-
+                    <div className={styles.footer}>
                         <Button
                             className={bootstrap.btn}
                             additionalStyles={['withRightMargin', 'default', 'right']}

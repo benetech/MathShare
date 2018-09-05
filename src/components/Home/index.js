@@ -32,7 +32,7 @@ export default class Home extends Component {
             newSetSharecode: ""
         }
 
-        this.toggleModal = this.toggleModal.bind(this);
+        this.toggleModals = this.toggleModals.bind(this);
         this.addProblem = this.addProblem.bind(this);
         this.saveProblems = this.saveProblems.bind(this);
         this.deleteProblem = this.deleteProblem.bind(this);
@@ -40,9 +40,11 @@ export default class Home extends Component {
         this.addProblemSet = this.addProblemSet.bind(this);
         this.progressToAddingProblems = this.progressToAddingProblems.bind(this);
         this.saveProblemSet = this.saveProblemSet.bind(this);
+        this.finishEditing = this.finishEditing.bind(this);
         this.CONFIRMATION_MODAL = "confirmation";
         this.PALETTE_CHOOSER_MODAL = "paletteChooser";
         this.ADD_PROBLEM_SET_MODAL = "addProblemSet";
+        this.ADD_PROBLEMS_MODAL = "addProblems";
         this.SHARE_NEW_SET_MODAL = "shareNewSet";
     }
 
@@ -82,27 +84,31 @@ export default class Home extends Component {
             mathLive.renderMathInDocument();
     }
 
-    toggleModal(modal, index) {
-        if (this.state.activeModals.indexOf(modal) != -1) {
-            var oldModals = this.state.activeModals;
-            oldModals = oldModals.filter(e => e !== modal);
-            this.setState({ activeModals: oldModals });
-            if (modal == this.ADD_PROBLEM_SET_MODAL) {
-                this.setState({ tempProblems: [] });
-            } else if (modal == this.CONFIRMATION_MODAL) {
-
+    toggleModals(modals, index) {
+        var oldModals = this.state.activeModals;
+        console.log(modals)
+        for (var modal of modals) {
+            if (this.state.activeModals.indexOf(modal) != -1) {
+                console.log("disabling: ", modal)
+                oldModals = oldModals.filter(e => e !== modal);
+            } else {
+                console.log("enabling: ", modal)
+                if (modal == this.ADD_PROBLEM_SET_MODAL || modal == this.ADD_PROBLEMS_MODAL) {
+                    this.setState({
+                        tempProblems: []
+                    });
+                } else if (modal == this.CONFIRMATION_MODAL) {
+                    this.setState({
+                        problemToDeleteIndex: index
+                    });
+                }
+                oldModals.push(modal);
             }
-        } else {
-            if (modal == this.CONFIRMATION_MODAL) {
-                this.setState({ problemToDeleteIndex: index });
-            }
-            var oldModals = this.state.activeModals;
-            oldModals.push(modal);
-            this.setState({ activeModals: oldModals });
         }
+        this.setState({ activeModals: oldModals });
     }
 
-    addProblem(imageData, text) {
+    addProblem(imageData, text, index) {
         var message;
         if (text === "") {
             if (this.state.theActiveMathField.latex() === "") {
@@ -125,14 +131,11 @@ export default class Home extends Component {
         let newProblems = this.state.tempProblems;
         let mathContent = this.state.theActiveMathField.latex();
         let annotation = text;
-        newProblems.push({ "text": mathContent, "title": annotation, "scratchpad": imageData });
-        var set = this.state.set;
-        set.problems.push({"text": mathContent , "title": annotation, "scratchpad": imageData, "position": set.problems.length});
+        newProblems.push({ "text": mathContent, "title": annotation, "scratchpad": imageData, "position": index });
 
         let updatedMathField = this.state.theActiveMathField;
         updatedMathField.latex("$$$$");
         this.setState({
-            set: set,
             theActiveMathField: updatedMathField,
             tempProblems: newProblems
         });
@@ -185,7 +188,7 @@ export default class Home extends Component {
         setTimeout(function () {
             mathLive.renderMathInDocument();
         }.bind(this), 200);
-        this.toggleModal(this.CONFIRMATION_MODAL, index);
+        this.toggleModals([this.CONFIRMATION_MODAL], index);
     }
 
     updatePositions(problems) {
@@ -198,7 +201,7 @@ export default class Home extends Component {
     }
 
     addProblemSet() {
-        this.toggleModal(this.PALETTE_CHOOSER_MODAL);
+        this.toggleModals([this.PALETTE_CHOOSER_MODAL]);
     }
 
     progressToAddingProblems(palettes) {
@@ -207,8 +210,7 @@ export default class Home extends Component {
             return;
         }
         this.setState({ tempPalettes: palettes });
-        this.toggleModal(this.PALETTE_CHOOSER_MODAL);
-        this.toggleModal(this.ADD_PROBLEM_SET_MODAL);
+        this.toggleModals([this.PALETTE_CHOOSER_MODAL, this.ADD_PROBLEM_SET_MODAL]);
     }
 
     saveProblemSet() {
@@ -224,8 +226,11 @@ export default class Home extends Component {
                     newSetSharecode: response.data.shareCode
                 })
             });
-        this.toggleModal(this.ADD_PROBLEM_SET_MODAL);
-        this.toggleModal(this.SHARE_NEW_SET_MODAL);
+        this.toggleModals([this.ADD_PROBLEM_SET_MODAL, this.SHARE_NEW_SET_MODAL]);
+    }
+
+    finishEditing() {
+        this.props.history.push(`/problemSet/view/${this.state.set.sharecode}`);
     }
 
     render() {
@@ -233,8 +238,8 @@ export default class Home extends Component {
             <div className={home.mainWrapper}>
                 <NotificationContainer />
                 <MainPageHeader editing={this.props.match.params.action == 'edit'} history={this.props.history} shareCallback={this.toggleModal}
-                    addProblemSetCallback={this.addProblemSet} />
-                <ModalContainer activeModals={this.state.activeModals} toggleModal={this.toggleModal}
+                    addProblemSetCallback={this.addProblemSet} finishEditing={this.finishEditing} editCode={this.state.set.editCode}/>
+                <ModalContainer activeModals={this.state.activeModals} toggleModals={this.toggleModals}
                     progressToAddingProblems={this.progressToAddingProblems} deleteProblem={this.deleteProblem}
                     shareLink={config.serverUrl + '/problemSet/view/' + this.state.set.sharecode}
                     newSetShareLink={config.serverUrl + '/problemSet/view/' + this.state.newSetSharecode}
@@ -242,13 +247,14 @@ export default class Home extends Component {
                     theActiveMathField={this.state.theActiveMathField}
                     addProblemCallback={this.addProblem}
                     problems={this.state.set.problems}
+                    tempProblems={this.state.tempProblems}
                     saveProblemSet={this.saveProblemSet}
                     saveProblems={this.saveProblems} />
                 <div className={home.contentWrapper} id="ContentWrapper">
                     <nav id="LeftNavigation" className={home.leftNavigation} aria-labelledby="LeftNavigationHeader">
                         <NavigationHeader />
                         <NavigationProblems problems={this.state.set.problems} editing={this.props.match.params.action == 'edit'}
-                            activateModal={this.toggleModal} deleteCallback={this.toggleModal} updatePositions={this.updatePositions} />
+                            activateModals={this.toggleModals} deleteCallback={this.toggleModal} updatePositions={this.updatePositions} />
                     </nav>
                 </div>
                 <MainPageFooter />

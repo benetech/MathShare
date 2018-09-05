@@ -177,7 +177,7 @@ export default class Problem extends Component {
                             problem.navSpan
                         )
                     }
-                    onClick={() => this.props.addNew ? this.props.activateModal("addProblems") : this.createNewSolution(history)}
+                    onClick={() => this.props.addNew ? this.props.activateModals(["addProblems"]) : this.createNewSolution(history)}
                 >
                     <Button
                         className={

@@ -39,7 +39,7 @@ export default class Problems extends Component {
                     addNew={addNew}
                     showRemove={this.props.editing && (!example || !addNew)}
                     deleteCallback={this.props.deleteCallback}
-                    activateModal={addNew ? this.props.activateModal : undefined}
+                    activateModals={addNew ? this.props.activateModals : undefined}
                     />
             </div>
         );
