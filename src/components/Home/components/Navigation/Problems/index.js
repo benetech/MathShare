@@ -37,14 +37,12 @@ export default class Problems extends Component {
                     number={number}
                     example={example}
                     addNew={addNew}
-                    showRemove={this.props.editing && (!example || !addNew)}
-                    deleteCallback={this.props.deleteCallback}
-                    activateModals={addNew ? this.props.activateModals : undefined}
-                    />
+                    showRemove={this.props.editing && (!example && !addNew)}
+                    activateModals={this.props.activateModals} />
             </div>
         );
 
-        const exampleProblem = <SortableItem key={`item-example`} example index={0} disabled={true} />
+        const exampleProblem = <SortableItem key={`item-example`} example index={0} disabled={true}/>
 
         const newProblem =  this.props.editing ?
             <SortableItem key={`item-new`} addNew index={this.state.problems.length + 1} disabled={true} /> : null

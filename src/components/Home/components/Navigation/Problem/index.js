@@ -23,6 +23,7 @@ export default class Problem extends Component {
 
         this.createNewSolution = this.createNewSolution.bind(this);
         this.onTrashClick = this.onTrashClick.bind(this);
+        this.onEditClick = this.onEditClick.bind(this);
         this.onImgClick = this.onImgClick.bind(this);
     }
 
@@ -78,7 +79,12 @@ export default class Problem extends Component {
     }
 
     onTrashClick(e) {
-        this.props.deleteCallback("confirmation", this.props.number);
+        this.props.activateModals(["confirmation"], this.props.number);
+        e.stopPropagation();
+    }
+
+    onEditClick(e) {
+        this.props.activateModals(["editProblem"], this.props.number);
         e.stopPropagation();
     }
 
@@ -144,6 +150,19 @@ export default class Problem extends Component {
             name='plus-circle'
         />
         : null;
+
+        var editButton = this.props.showRemove ? 
+        <FontAwesome
+            className={
+                classNames(
+                    problem.editIcon,
+                    'fa-2x'
+                )
+            }
+            onClick={this.onEditClick}
+            name='edit'
+        />
+        : null;
         
         var removeButton = this.props.showRemove ?  
         <FontAwesome
@@ -192,6 +211,7 @@ export default class Problem extends Component {
                     {imgButton}
                     {removeButton}
                     {plusButton}
+                    {editButton}
                     <span className={problem.problemEquation}>{equation}</span>
                 </span>
             </div>

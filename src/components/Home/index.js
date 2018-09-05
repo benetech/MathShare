@@ -36,6 +36,7 @@ export default class Home extends Component {
         this.addProblem = this.addProblem.bind(this);
         this.saveProblems = this.saveProblems.bind(this);
         this.deleteProblem = this.deleteProblem.bind(this);
+        this.editProblem = this.editProblem.bind(this);
         this.updatePositions = this.updatePositions.bind(this);
         this.addProblemSet = this.addProblemSet.bind(this);
         this.progressToAddingProblems = this.progressToAddingProblems.bind(this);
@@ -46,6 +47,7 @@ export default class Home extends Component {
         this.ADD_PROBLEM_SET_MODAL = "addProblemSet";
         this.ADD_PROBLEMS_MODAL = "addProblems";
         this.SHARE_NEW_SET_MODAL = "shareNewSet";
+        this.EDIT_PROBLEM_MODAL = "editProblem";
     }
 
     componentDidMount() {
@@ -77,7 +79,7 @@ export default class Home extends Component {
         });
     }
 
-    componentDidUpdate(prevProps, prevState) { //todo:change
+    componentDidUpdate(prevProps, prevState) {
         if (this.state.set !== prevState.set || this.state.allowedPalettes !== prevState.allowedPalettes
             || this.state.tempProblems !== prevState.tempProblems || this.state.tempPalettes !== prevState.tempPalettes
             || this.state.newSetSharecode !== prevState.newSetSharecode || this.state.activeModals !== prevState.activeModals)
@@ -98,6 +100,11 @@ export default class Home extends Component {
                     this.setState({
                         problemToDeleteIndex: index
                     });
+                } else if (modal == this.EDIT_PROBLEM_MODAL) {
+                    this.setState({
+                        problemToEditIndex: index,
+                        problemToEdit: this.state.set.problems[index]
+                    });
                 }
                 oldModals.push(modal);
             }
@@ -105,7 +112,7 @@ export default class Home extends Component {
         this.setState({ activeModals: oldModals });
     }
 
-    addProblem(imageData, text, index) {
+    validateProblem(text) {
         var message;
         if (text === "") {
             if (this.state.theActiveMathField.latex() === "") {
@@ -122,18 +129,24 @@ export default class Home extends Component {
             setTimeout(function () {
                 $('#mathAnnotation').focus();
             }, 6000);
-            return;
+            return false;
         }
+        return true;
+    }
+
+    addProblem(imageData, text, index) {
+        if (!this.validateProblem(text)) {
+            return;
+        } 
 
         let newProblems = this.state.tempProblems;
-        let mathContent = this.state.theActiveMathField.latex();
+        let mathContent = this.state.theActiveMathField;
         let annotation = text;
-        newProblems.push({ "text": mathContent, "title": annotation, "scratchpad": imageData, "position": index });
+        newProblems.push({ "text": mathContent.latex(), "title": annotation, "scratchpad": imageData, "position": index });
 
-        let updatedMathField = this.state.theActiveMathField;
-        updatedMathField.latex("$$$$");
+        mathContent.latex("$$$$");
         this.setState({
-            theActiveMathField: updatedMathField,
+            theActiveMathField: mathContent,
             tempProblems: newProblems
         });
 
@@ -145,7 +158,7 @@ export default class Home extends Component {
     }
 
     scrollToBottom() {
-        document.querySelector("#container").scrollTo(0, document.querySelector("#container").scrollHeight); //TODO: fix this
+        document.querySelector("#container").scrollTo(0, document.querySelector("#container").scrollHeight);
     }
 
     saveProblems(problems) {
@@ -166,9 +179,9 @@ export default class Home extends Component {
             });
     }
 
-    deleteProblem(index) {
+    deleteProblem() {
         var oldSet = this.state.set;
-        oldSet.problems.splice(index, 1);
+        oldSet.problems.splice(this.state.problemToDeleteIndex, 1);
         axios.put(`${config.serverUrl}/problemSet/${this.state.set.editCode}`, oldSet)
             .then(response => {
                 this.setState({
@@ -184,7 +197,34 @@ export default class Home extends Component {
         setTimeout(function () {
             mathLive.renderMathInDocument();
         }.bind(this), 200);
-        this.toggleModals([this.CONFIRMATION_MODAL], index);
+        this.toggleModals([this.CONFIRMATION_MODAL]);
+    }
+
+    editProblem(imageData, title) {
+        if (!this.validateProblem(title)) {
+            return;
+        } 
+        var oldSet = this.state.set;
+        oldSet.problems[this.state.problemToEditIndex].title = title;
+        oldSet.problems[this.state.problemToEditIndex].scratchpad = imageData;
+        oldSet.problems[this.state.problemToEditIndex].text = this.state.theActiveMathField.latex();
+
+        axios.put(`${config.serverUrl}/problemSet/${this.state.set.editCode}`, oldSet)
+            .then(response => {
+                this.setState({
+                    set: {
+                        problems: response.data.problems,
+                        editCode: response.data.editCode,
+                        sharecode: response.data.shareCode
+                    },
+                    tempProblems: []
+                });
+            });
+
+        setTimeout(function () {
+            mathLive.renderMathInDocument();
+        }.bind(this), 200);
+        this.toggleModals([this.EDIT_PROBLEM_MODAL]);
     }
 
     updatePositions(problems) {
@@ -245,12 +285,14 @@ export default class Home extends Component {
                     problems={this.state.set.problems}
                     tempProblems={this.state.tempProblems}
                     saveProblemSet={this.saveProblemSet}
-                    saveProblems={this.saveProblems} />
+                    saveProblems={this.saveProblems}
+                    problemToEdit={this.state.problemToEdit}
+                    editProblemCallback={this.editProblem} />
                 <div className={home.contentWrapper} id="ContentWrapper">
                     <nav id="LeftNavigation" className={home.leftNavigation} aria-labelledby="LeftNavigationHeader">
                         <NavigationHeader />
                         <NavigationProblems problems={this.state.set.problems} editing={this.props.match.params.action == 'edit'}
-                            activateModals={this.toggleModals} deleteCallback={this.toggleModal} updatePositions={this.updatePositions} />
+                            activateModals={this.toggleModals} updatePositions={this.updatePositions} />
                     </nav>
                 </div>
                 <MainPageFooter />

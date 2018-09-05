@@ -41,6 +41,8 @@ class Locales {
             update_step_button_title: "Update the step (⌨: shift+enter)",
             update_step: " Update Step",
             update_step_intro: "Update the step.",
+            update_problem: " Update Problem",
+            update_problem_intro: "Update the problem.",
             cancel_edit_button_title: "Cancel edit",
             cancel_edit_step: " Cancel edit",
             cancel_edit_step_intro: "Cancel edit.",
@@ -105,7 +107,8 @@ class Locales {
             add_problem_set: " New Problem Set",
             choose_palettes_title: "Select button palettes available for this problem set",
             no_palettes_chosen_warning: "Please select at least one palette",
-            finish_edit: "Finish Edit"
+            finish_edit: "Finish Edit",
+            edit_problem: "Edit Problem"
         },
         es: {
         }
