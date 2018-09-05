@@ -90,7 +90,7 @@ export default class Editor extends Component {
                 field.latex(response.data.steps[response.data.steps.length - 1].stepValue);
                 this.setState({
                     solution,                     
-                    editorPosition: response.data.steps.length -1,
+                    editorPosition: this.countEditorPosition(response.data.steps),
                     theActiveMathField: field,
                     readOnly: this.props.match.params.action == 'view',
                     stepsFromLastSave: JSON.parse(JSON.stringify(response.data.steps)),
@@ -195,7 +195,7 @@ export default class Editor extends Component {
         this.setState({
             theActiveMathField: updatedMathField,
             textAreaValue: latestMathStepData.data('annotation'),
-            editorPosition: this.state.solution.steps.length - 1,
+            editorPosition: this.countEditorPosition(this.state.solution.steps),
             editing: false});
 
         var newStack = this.state.actionsStack;
@@ -291,19 +291,22 @@ export default class Editor extends Component {
 
         if (addToHistory) {
             var newStack = this.state.actionsStack;
-            newStack.push(
-                {    type: "delete",
-                    latex: updatedMathField.latex(),
-                    annotation: lastStep.annotation,
-                    clearAll: clearAll
-                });
+            newStack.push({
+                type: "delete",
+                latex: updatedMathField.latex(),
+                annotation: lastStep.annotation,
+                clearAll: clearAll
+            });
             $('#undoAction').show();
             this.setState({actionsStack: newStack});
         }
 
         // ok to delete last row now...
         let newSteps = this.state.solution.steps;
-        newSteps.pop();
+        var deletedStep = newSteps.pop();
+        if (deletedStep.cleanup) {
+            newSteps.pop();
+        }
         this.setState({steps: newSteps});
 
         // read trash button to previous step
@@ -322,7 +325,7 @@ export default class Editor extends Component {
         $('.mathStep:last .btn-edit').show();
         $('#addStep').show();
         $('#updateControls').hide();
-        this.setState({editorPosition: this.state.solution.steps.length - 1 });
+        this.setState({editorPosition: this.countEditorPosition(this.state.solution.steps)});
     }
 
     deleteSteps() {
@@ -333,6 +336,20 @@ export default class Editor extends Component {
             };
             this.setState({textAreaValue: ""});
         }
+    }
+
+    countCleanups(steps) {
+        var cleanups = 0;
+        steps.forEach(function(step) {
+            if (step.cleanup) {
+                cleanups++;
+            }
+        })
+        return cleanups;
+    }
+
+    countEditorPosition(steps) {
+        return steps.length + this.countCleanups(steps) - 1;
     }
 
     addStep(undoing) {
@@ -346,39 +363,27 @@ export default class Editor extends Component {
         let newSteps = this.state.solution.steps;
         let mathContent = this.state.theActiveMathField.latex();
         let annotation = this.state.textAreaValue;
-        newSteps.push({"stepValue": mathContent , "explanation": annotation});
+        var cleanedUp = MathButton.CleanUpCrossouts(mathContent);
+        let cleanup = cleanedUp != mathContent ? cleanedUp : null;
+        var step = {"stepValue": mathContent , "explanation": annotation, "cleanup": cleanup};
+        newSteps.push(step);
+ 
         var newStack = this.state.actionsStack;
-
-        let cleanedUp = MathButton.CleanUpCrossouts(mathContent);
-        if (mathContent !== cleanedUp && typeof(undoing) != typeof(true)) {
-            newStack.push(
-            {   type: "add",
-                latex: mathContent,
-                annotation: annotation,
-                clearAll: true
-            });
-            newSteps.push({"stepValue": cleanedUp, "explanation": Locales.strings.cleanup});
-            newStack.push(
-            {   type: "add",
-                latex: cleanedUp,
-                annotation: Locales.strings.cleanup,
-                clearAll: true
-            });
-        } else if (undoing != true){
-            newStack.push(
-            {   type: "add",
-                latex: mathContent,
-                annotation: annotation,
-                clearAll: false
-            });
-        }
+        newStack.push({
+            type: "add",
+            step: step,
+            clearAll: undoing
+        });
         let updatedMathField = this.state.theActiveMathField;
-        updatedMathField.latex(cleanedUp);
+        updatedMathField.latex(cleanup);
         $('#undoAction').show();
         this.setState({actionsStack: newStack});
+
         var solution = this.state.solution;
         solution.steps = newSteps;
-        this.setState({editorPosition: newSteps.length - 1, solution: solution,
+        this.setState({
+            editorPosition: this.countEditorPosition(newSteps),
+            solution: solution,
             theActiveMathField: updatedMathField,
             textAreaValue: ""});
             

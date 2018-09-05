@@ -38,7 +38,7 @@ export default class Step extends Component {
     }
 
     buildReason() {
-        if (this.props.annotation == Locales.strings.cleanup) {
+        if (this.props.cleanup) {
             return (<span className={styles.sROnly}> {this.OrdinalSuffix(this.props.stepNumber)} {Locales.strings.step_after_cleanup}</span>);
         } else {
             return (
@@ -69,14 +69,14 @@ export default class Step extends Component {
                             {Locales.strings.edit} {this.OrdinalSuffix(this.props.stepNumber)} {Locales.strings.step}
                         </span>
                     }
-                    onClick={() => this.props.editStepCallback(this.props.exposedKey)}
+                    onClick={() => this.props.editStepCallback(this.props.stepNumber)}
                 />
             );
         }
     }
 
     buildTrashBtn() {
-        if (this.props.showTrash) {
+        if (this.props.showTrash && !this.props.cleanup) {
             return (
                 <Button
                     className={
@@ -132,7 +132,7 @@ export default class Step extends Component {
                 <div className={classNames(bootstrap['col-md-5'], step.annotationEquation)}>
                     <span className={styles.sROnly} role="heading" aria-level="4">{Locales.strings.reason}:</span>
                     <span className={classNames({
-                        [step.cleanUpAnnotation]: this.props.annotation === "(cleanup)"
+                        [step.cleanUpAnnotation]: this.props.cleanup
                     })}> {this.props.annotation} </span>
                 </div>
                 <div className={classNames(bootstrap['col-md-1'], step.btnContainer)}>

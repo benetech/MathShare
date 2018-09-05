@@ -7,34 +7,50 @@ import MyWork from '../../../../components/MyWork';
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 import Locales from '../../../../../../strings';
 
-export default class MyStepsList extends Component {
-    render() {
-        var counter = 1;
-        let steps = this.props.solution.steps.map( (step, i) => {
-            var showTrash = false;
-            var showEdit = false;
-            if (i > 0 && !this.props.readOnly) {
-                showEdit = true;
-            }
+const CLEANUP_EXPLANATION = "(cleanup)";
 
-            if (i == this.props.solution.steps.length - 1 && this.props.solution.steps.length > 1 && !this.props.readOnly) {
-                showTrash = true;
+export default class MyStepsList extends Component {
+    constructor(props) {
+        super(props);
+
+        this.buildStep = this.buildStep.bind(this);
+    }
+
+    buildStep(i, value, explanation, isCleanup) {
+        var showTrash = false;
+        var showEdit = false;
+        if (i > 0 && !this.props.readOnly) {
+            showEdit = true;
+        }
+
+        if (i == this.props.solution.steps.length - 1 && this.props.solution.steps.length > 1 && !this.props.readOnly) {
+            showTrash = true;
+        }
+      
+        return <Step
+                key={`${isCleanup}-${i}`}
+                stepNumber={i + 1}
+                math={value}
+                annotation={explanation}
+                cleanup={isCleanup}
+                showEdit={showEdit && !isCleanup}
+                showTrash={showTrash && !isCleanup}
+                deleteStepCallback={this.props.deleteStepCallback}
+                editStepCallback={this.props.editStepCallback}
+                deleteStepsCallback={this.props.deleteStepsCallback}
+                readOnly={this.props.readOnly} />
+    }
+    
+    render() {
+        var steps = [];
+        var counter = 0;
+        this.props.solution.steps.forEach((step) => {
+            steps.push(this.buildStep(counter++, step.stepValue, step.explanation, false));
+            if (step.cleanup) {
+                steps.push(this.buildStep(counter, step.cleanup, CLEANUP_EXPLANATION, true));
             }
-          
-            return <Step
-                    key={i}
-                    exposedKey={i}
-                    stepNumber={step.annotation===Locales.strings.cleanup ? counter : counter++}
-                    math={step.stepValue}
-                    annotation={step.explanation}
-                    showEdit={showEdit}
-                    showTrash={showTrash}
-                    deleteStepCallback={this.props.deleteStepCallback}
-                    editStepCallback={this.props.editStepCallback}
-                    deleteStepsCallback={this.props.deleteStepsCallback}
-                    readOnly={this.props.readOnly} />  
-            }
-        );
+        });
+
         if (!this.props.readOnly) {
             steps.splice(this.props.editorPosition + 1, 0, 
                 <MyWork

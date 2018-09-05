@@ -18,7 +18,6 @@ export default class ProblemHeader extends Component {
         this.onImgClick = this.onImgClick.bind(this);
     }
     
-
     shouldComponentUpdate(nextProps) { //this prevents unnecessary re-rendering and updates of the element
         return this.props.editLink !== nextProps.editLink || this.props.title !== nextProps.title 
             || this.props.math !== nextProps.math;    
@@ -61,21 +60,21 @@ export default class ProblemHeader extends Component {
                 type="button"
                 icon="share-alt"
                 content={Locales.strings.share}
-                onClick={this.props.shareProblem}/>
+                onClick={this.props.shareProblem} />
             <Button
                 className={classNames(bootstrap.btn, styles.pointer, problem.btn)}
                 additionalStyles={['default']}
                 type="button"
                 icon="save"
                 content={Locales.strings.save}
-                onClick={this.props.saveProblem}/>
+                onClick={this.props.saveProblem} />
             <Button
                 className={classNames(bootstrap.btn, styles.pointer, problem.btn)}
                 additionalStyles={['default']}
                 ariaHidden="true"
                 type="button"
                 icon="question"
-                onClick={this.tour}/>
+                onClick={this.tour} />
         </div>
         return (
             <div className={problem.header}>
