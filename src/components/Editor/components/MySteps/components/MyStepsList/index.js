@@ -7,8 +7,6 @@ import MyWork from '../../../../components/MyWork';
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 import Locales from '../../../../../../strings';
 
-const CLEANUP_EXPLANATION = "(cleanup)";
-
 export default class MyStepsList extends Component {
     constructor(props) {
         super(props);
@@ -47,7 +45,7 @@ export default class MyStepsList extends Component {
         this.props.solution.steps.forEach((step) => {
             steps.push(this.buildStep(counter++, step.stepValue, step.explanation, false));
             if (step.cleanup) {
-                steps.push(this.buildStep(counter, step.cleanup, CLEANUP_EXPLANATION, true));
+                steps.push(this.buildStep(counter, step.cleanup, Locales.strings.cleanup, true));
             }
         });
 

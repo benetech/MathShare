@@ -109,21 +109,12 @@ export default class Editor extends Component {
 
     editStep(stepNumber) {
         // nothing to do if there are no steps
-        let mathStep = $($("#MathHistory").children("#mathStep")[stepNumber]);
-    
-        if (this.state.updateMathFieldMode === false) {
-            $('<div/>', {
-                id: "latestMathStepData",
-            }).hide().appendTo('#MathHistory');
-            $('#latestMathStepData').attr('data-equation', this.state.theActiveMathField.latex());
-            $('#latestMathStepData').attr('data-annotation', this.state.textAreaValue);
-            //latestMathStepData.data('scratch-pad', ScratchPadPainterro.imageSaver.asDataURL());
-        }
+        let mathStep = this.state.solution.steps[stepNumber - 1];
         let updatedMathField = this.state.theActiveMathField;
-        updatedMathField.latex(mathStep.data('equation'));
+        updatedMathField.latex(mathStep.stepValue);
         this.setState({
             theActiveMathField: updatedMathField,
-            textAreaValue: mathStep.data('annotation'),
+            textAreaValue: mathStep.explaination,
             editing: true,
             updateMathFieldMode : true},
             this.moveEditorBelowSpecificStep(stepNumber)
@@ -185,7 +176,9 @@ export default class Editor extends Component {
     }
 
     moveEditorBelowSpecificStep(stepNumber) {
-        this.setState({editorPosition: stepNumber});
+        var steps = this.state.solution.steps.slice();
+        var leftPartOfSteps = steps.splice(0, stepNumber);
+        this.setState({editorPosition: this.countEditorPosition(leftPartOfSteps)});
     }
 
     exitUpdate(oldEquation, oldAnnotation, index) {
