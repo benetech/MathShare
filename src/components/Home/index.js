@@ -86,13 +86,10 @@ export default class Home extends Component {
 
     toggleModals(modals, index) {
         var oldModals = this.state.activeModals;
-        console.log(modals)
         for (var modal of modals) {
             if (this.state.activeModals.indexOf(modal) != -1) {
-                console.log("disabling: ", modal)
                 oldModals = oldModals.filter(e => e !== modal);
             } else {
-                console.log("enabling: ", modal)
                 if (modal == this.ADD_PROBLEM_SET_MODAL || modal == this.ADD_PROBLEMS_MODAL) {
                     this.setState({
                         tempProblems: []
@@ -155,6 +152,7 @@ export default class Home extends Component {
         var oldSet = this.state.set;
         oldSet.problems = problems;
 
+        this.toggleModals(this.state.activeModals);
         axios.put(`${config.serverUrl}/problemSet/${this.state.set.editCode}`, oldSet)
             .then(response => {
                 this.setState({
@@ -163,11 +161,9 @@ export default class Home extends Component {
                         editCode: response.data.editCode,
                         sharecode: response.data.shareCode
                     },
-                    tempProblems: [],
-                    activeModals: []
+                    tempProblems: []
                 });
             });
-
     }
 
     deleteProblem(index) {
