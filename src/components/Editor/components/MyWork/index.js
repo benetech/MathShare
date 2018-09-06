@@ -134,7 +134,7 @@ export default class MyWork extends Component {
                         >
                             <MathPalette theActiveMathField={this.props.theActiveMathField} allowedPalettes={this.props.allowedPalettes}
                             scratchpadMode={this.state.scratchpadMode} InitScratchPad={this.InitScratchPad} addStepCallback={this.addStep} />
-                            <MyWorkEditorButtons className="d-flex flex-nowrap justify-content-between" addStepCallback={this.addStep}
+                            <MyWorkEditorButtons className="d-flex flex-nowrap justify-content-between" addStepCallback={this.addStep} showUndo={this.props.showUndo}
                                 undoLastActionCallback={this.props.undoLastActionCallback} cancelEditCallback={this.props.cancelEditCallback}
                                 deleteStepsCallback={this.props.deleteStepsCallback} editing={this.props.editing} history={this.props.history}
                                 solution={this.props.solution} addingProblem={this.props.addingProblem} cancelCallback={this.props.cancelCallback}
