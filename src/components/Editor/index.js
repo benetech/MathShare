@@ -483,7 +483,7 @@ export default class Editor extends Component {
             cancelEditCallback={this.exitUpdate}
             editorPosition={this.state.editorPosition}
             editing={this.state.editing}
-            updateStepCallback={this.updateStep}
+            updateCallback={this.updateStep}
             history={this.props.history}
             newProblem={this.id === "newEditor"}
             readOnly={this.state.readOnly} />
