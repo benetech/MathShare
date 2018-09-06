@@ -10,6 +10,7 @@ import config from '../../../../../../package.json';
 import axios from 'axios';
 import FontAwesome from "react-fontawesome";
 import showImage from '../../../../../scripts/showImage.js';
+import parseMathLive from '../../../../../scripts/parseMathLive.js';
 
 const mathLive = DEBUG_MODE ? require('../../../../../../mathlive/src/mathlive.js')
 : require('../../../../../lib/mathlivedist/mathlive.js');
@@ -28,22 +29,10 @@ export default class Problem extends Component {
     }
 
     buildAnnotation() {
-        var text = this.parseMathLive(this.props.problem.title);
+        var text = parseMathLive(this.props.problem.title);
         return "$$" + OPEN_TEXT_TAG + (this.props.number + 1) + ". }" + text + "}$$";
     }
 
-    parseMathLive(text) {
-        var result = OPEN_TEXT_TAG;
-        var textParts = text.split("$$");
-        textParts.forEach(function(part, i) {
-            if (i % 2) {
-                result += "}" + part + OPEN_TEXT_TAG;
-            } else {
-                result += part;
-            }
-        })
-        return result;
-    }
 
     buildProblemText() {
         var text = this.props.problem.text;
