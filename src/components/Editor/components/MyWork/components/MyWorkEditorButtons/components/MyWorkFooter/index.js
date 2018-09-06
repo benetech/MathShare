@@ -46,7 +46,7 @@ export default class MyWorkFooter extends Component {
                 step="3"
                 intro={Locales.strings.update_step_intro}
                 icon="pencil"
-                onClick={() => this.props.updateStepCallback()} />
+                onClick={() => this.props.updateCallback()} />
         } else if(this.props.editingProblem) {
             confirmButton =  <Button
                 className={btnClassNames}
