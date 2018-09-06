@@ -57,8 +57,9 @@ export default class MyWorkEditorButtons extends Component {
                 undoButton={true}
                 undoLastActionCallback={this.props.undoLastActionCallback}
                 cancelEditCallback={this.props.cancelEditCallback}
-                updateStepCallback={this.props.updateStepCallback}
-                editing={this.props.editing} />
+                updateCallback={this.props.updateCallback}
+                editing={this.props.editing}
+                editingProblem={this.props.editingProblem} />
             </div>
         );
     }

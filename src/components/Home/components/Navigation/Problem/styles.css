@@ -38,7 +38,7 @@
 
 .trashIcon {
     position: absolute;
-    left: -4%;
+    left: 96%;
     bottom: -7%;
 }
 
@@ -46,6 +46,12 @@
     position: absolute;
     left: 95%;
     bottom: -7%;
+}
+
+.editIcon {
+    position: absolute;
+    left: 83%;
+    bottom: -8%;
 }
 
 .imgIcon {

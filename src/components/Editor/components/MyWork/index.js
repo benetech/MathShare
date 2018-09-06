@@ -28,9 +28,11 @@ export default class MyWork extends Component {
         this.openScratchpad = this.openScratchpad.bind(this);
         this.hideScratchpad = this.hideScratchpad.bind(this);
         this.addStep = this.addStep.bind(this);
+        this.updateStep = this.updateStep.bind(this);
         this.clearAndResizeScratchPad = this.clearAndResizeScratchPad.bind(this);
         this.scratchpadChangeHandler = this.scratchpadChangeHandler.bind(this);
         this.InitScratchPad = this.InitScratchPad.bind(this);
+        this.displayScratchpadImage = this.displayScratchpadImage.bind(this);
     }
 
     clearScrachPad() {
@@ -63,6 +65,13 @@ export default class MyWork extends Component {
         this.setState({isScratchpadUsed: false});
     }
 
+    displayScratchpadImage() {
+        if(this.props.scratchpadContent) {
+            this.clearScrachPad();
+            this.scratchPadPainterro.show(this.props.scratchpadContent);
+        }
+    }
+
     clearAndResizeScratchPad() {
         if (this.state.isScratchpadUsed) {
             this.setState({isScratchpadUsed: false});
@@ -73,6 +82,7 @@ export default class MyWork extends Component {
     openScratchpad() {
         this.setState({scratchpadMode: true});
         $('#scratch-pad-containter').show();
+        this.displayScratchpadImage();
     }
 
     hideScratchpad() {
@@ -83,6 +93,10 @@ export default class MyWork extends Component {
 
     addStep() {
         this.props.addStepCallback(this.state.isScratchpadUsed ? this.scratchPadPainterro.imageSaver.asDataURL() : null, this.props.textAreaValue);
+    }
+
+    updateStep() {
+        this.props.updateCallback(this.state.isScratchpadUsed ? this.scratchPadPainterro.imageSaver.asDataURL() : null, this.props.textAreaValue);
     }
 
     render() {
@@ -125,7 +139,8 @@ export default class MyWork extends Component {
                                 deleteStepsCallback={this.props.deleteStepsCallback} editing={this.props.editing} history={this.props.history}
                                 solution={this.props.solution} addingProblem={this.props.addingProblem} cancelCallback={this.props.cancelCallback}
                                 saveCallback={this.props.saveCallback} openScratchpad={this.openScratchpad} hideScratchpad={this.hideScratchpad} clearAndResizeScratchPad={this.clearAndResizeScratchPad}
-                                textAreaValue={this.props.textAreaValue} scratchpadMode={this.state.scratchpadMode} updateStepCallback={this.props.updateStepCallback} />
+                                textAreaValue={this.props.textAreaValue} scratchpadMode={this.state.scratchpadMode} 
+                                updateCallback={this.updateStep} editingProblem={this.props.editingProblem}/>
                         </div>
                         <div
                             className={

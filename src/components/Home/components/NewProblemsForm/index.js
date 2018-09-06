@@ -22,6 +22,7 @@ export default class NewProblemsForm extends Component {
         };
 
         this.save = this.save.bind(this);
+        this.update = this.update.bind(this);
         this.addStep = this.addStep.bind(this);
         this.textAreaChanged = this.textAreaChanged.bind(this);
     }
@@ -33,7 +34,11 @@ export default class NewProblemsForm extends Component {
     }
 
     componentWillReceiveProps(newProps) {
-        this.setState({ problems: newProps.problems });
+        var text = newProps.editing ? newProps.problemToEdit.title : "";
+        this.setState({ 
+            textAreaValue: text,
+            problems: newProps.problems
+         });
     }
 
     getApplicationNode() {
@@ -58,15 +63,18 @@ export default class NewProblemsForm extends Component {
     }
 
     scrollToBottom() {
-        document.querySelector("#container").scrollTo(0, document.querySelector("#container").scrollHeight); //TODO: fix this
+        document.querySelector("#container").scrollTo(0, document.querySelector("#container").scrollHeight);
     }
 
     save() {
         this.props.saveCallback(this.state.problems);
     }
 
+    update(imageData, text) {
+        this.props.editProblemCallback(imageData, text);
+    }
+
     addStep(imageData, text) {
-        this.textAreaChanged("");
         this.props.addProblemCallback(imageData, text, this.state.problems.length);
     }
 
@@ -115,7 +123,31 @@ export default class NewProblemsForm extends Component {
                 </div>
             </div>
         });
+        var header = this.props.editing ? null :
+            <div className={styles.header}>
+                <h5 className={styles.ordinal}>
+                    {Locales.strings.hash}
+                </h5>
+                <h5 className={styles.cell}>
+                    {Locales.strings.equation}
+                </h5>
+                <h5 className={styles.cell}>
+                    {Locales.strings.title}
+                </h5>
+                <div className={styles.rowControl}>
+                </div>
+            </div>
+        var saveButton = this.props.editing ? null :
+            <Button
+                className={bootstrap.btn}
+                additionalStyles={['withRightMargin', 'default', 'right']}
+                icon="save"
+                content={Locales.strings.save}
+                onClick={this.save}
+            />
 
+        var lastMathEquation = this.props.editing ? this.props.problemToEdit.text : "";
+        var scratchpadContent = this.props.editing ? this.props.problemToEdit.scratchpad : null;
         return (
             <AriaModal
                 id="modal"
@@ -125,19 +157,7 @@ export default class NewProblemsForm extends Component {
                 underlayStyle={{ paddingTop: '2em' }}
             >
                 <div className={styles.container} id="container">
-                    <div className={styles.header}>
-                        <h5 className={styles.ordinal}>
-                            {Locales.strings.hash}
-                        </h5>
-                        <h5 className={styles.cell}>
-                            {Locales.strings.equation}
-                        </h5>
-                        <h5 className={styles.cell}>
-                            {Locales.strings.title}
-                        </h5>
-                        <div className={styles.rowControl}>
-                        </div>
-                    </div>
+                    {header}
                     {problems}
                     <MyWork
                         key={"editor"}
@@ -150,16 +170,16 @@ export default class NewProblemsForm extends Component {
                         editing={false}
                         history={[]}
                         solution={this.props.solution}
-                        addingProblem />
+                        addingProblem={this.props.addingProblem}
+                        editingProblem={this.props.editing}
+                        title={this.props.title}
+                        lastMathEquation={lastMathEquation}
+                        updateCallback={this.update}
+                        scratchpadContent={scratchpadContent} />
                     <div className={styles.footer}>
+                        {saveButton}
                         <Button
-                            className={bootstrap.btn}
-                            additionalStyles={['withRightMargin', 'default', 'right']}
-                            icon="save"
-                            content={Locales.strings.save}
-                            onClick={this.save}
-                        />
-                        <Button
+                            id='bottom'
                             className={bootstrap.btn}
                             additionalStyles={['withRightMargin', 'default', 'right']}
                             content={Locales.strings.cancel}
@@ -167,6 +187,7 @@ export default class NewProblemsForm extends Component {
                             onClick={this.props.cancelCallback}
                         />
                     </div>
+                    <div className={styles.footer}/>
                 </div>
             </AriaModal>
         );
