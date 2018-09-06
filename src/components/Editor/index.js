@@ -63,6 +63,7 @@ export default class Editor extends Component {
         this.stackAddAction = this.stackAddAction.bind(this);
         this.addNewStep = this.addNewStep.bind(this);
         this.addStep = this.addStep.bind(this);
+        this.restoreEditorPosition = this.restoreEditorPosition.bind(this);
         this.deleteStep = this.deleteStep.bind(this);
         this.undoLastAction = this.undoLastAction.bind(this);
         this.clearAll = this.clearAll.bind(this);
@@ -190,16 +191,8 @@ export default class Editor extends Component {
         this.setState({ editorPosition: this.countEditorPosition(leftPartOfSteps) });
     }
 
-    exitUpdate(oldEquation, oldExplanation, index) {
-        let latestMathStepData = $("#latestMathStepData");
-        let updatedMathField = this.state.theActiveMathField;
-        updatedMathField.latex(latestMathStepData.data('equation'));
-        this.setState({
-            theActiveMathField: updatedMathField,
-            textAreaValue: latestMathStepData.data('annotation'),
-            editorPosition: this.countEditorPosition(this.state.solution.steps),
-            editing: false
-        });
+    exitUpdate(oldEquation, oldExplanation, index) {        
+        this.restoreEditorPosition();
 
         var newStack = this.state.actionsStack;
         var oldStep = { "id": index, "equation": oldEquation, "explanation": oldExplanation };
@@ -207,13 +200,24 @@ export default class Editor extends Component {
             type: EDIT,
             step: oldStep
         });
-        this.setState({ actionsStack: newStack });
 
-        //applyScratchPadContent(latestMathStepData.data('scratch-pad'));
-        latestMathStepData.detach();
+        this.setState({
+            actionsStack: newStack,
+            updateMathFieldMode: false
+        });
+    }
 
+    restoreEditorPosition() {
+        let updatedMathField = this.state.theActiveMathField;
+        var lastStep = this.state.solution.steps[this.state.solution.steps.length -1];
+        updatedMathField.latex(lastStep.stepValue);
+        this.setState({
+            theActiveMathField: updatedMathField,
+            textAreaValue: "",
+            editorPosition: this.countEditorPosition(this.state.solution.steps),
+            editing: false
+        });
         this.state.theActiveMathField.focus();
-        this.setState({ updateMathFieldMode: false });
     }
 
     scrollToBottom() {
@@ -273,15 +277,14 @@ export default class Editor extends Component {
     }
 
     deleteStep(addToHistory) {
-        let lastStep = this.state.solution.steps[this.state.solution.steps.length - 1];
-        let updatedMathField = this.state.theActiveMathField;
-        updatedMathField.latex(lastStep.equation);
+        var steps = this.state.solution.steps;
+        var lastStep = steps[steps.length - 1];
 
         if (addToHistory) {
             this.stackDeleteAction(lastStep);
         }
-        this.deleteLastStep(updatedMathField);
-        this.state.theActiveMathField.focus();
+
+        this.deleteLastStep();
     }
 
     stackDeleteAction(step) {
@@ -293,18 +296,16 @@ export default class Editor extends Component {
         this.setState({ actionsStack });
     }
 
-    deleteLastStep(updatedMathField) {
+    deleteLastStep() {
         let newSteps = this.state.solution.steps;
         var deletedStep = newSteps.pop();
         if (deletedStep.cleanup) {
             newSteps.pop();
         }
         this.setState({
-            theActiveMathField: updatedMathField,
-            textAreaValue: "",
             steps: newSteps,
             editorPosition: this.countEditorPosition(this.state.solution.steps)
-        });
+        }, this.restoreEditorPosition);
     }
 
     clearAll() {
