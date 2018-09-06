@@ -54,7 +54,7 @@ export default class MyWork extends Component {
         this.scratchPadPainterro.show();
 
         $('#scratch-pad-containter-bar > div > span').first()
-            .append('<button id="clear-button" type="button" class="ptro-icon-btn ptro-color-control" title='+ Locales.strings.clear_scratchpad + '><i class="ptro-icon ptro-icon-close"></i></button>');
+            .append('<button id="clear-button" type="button" class="ptro-icon-btn ptro-color-control" title='+ Locales.strings.clear_sketchpad + '><i class="ptro-icon ptro-icon-close"></i></button>');
         $('#clear-button').click(() =>
             this.clearAndResizeScratchPad()
         );

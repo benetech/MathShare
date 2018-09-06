@@ -53,6 +53,7 @@
                 "resize": "Resize or scale",
                 "open": "Open image",
                 "select": "Select area",
+                "undo": "Undo",
                 "close": "Close Painterro",
                 "eraser": "Eraser",
                 "settings": "Settings"
