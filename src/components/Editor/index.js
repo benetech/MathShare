@@ -191,7 +191,7 @@ export default class Editor extends Component {
         this.setState({ editorPosition: this.countEditorPosition(leftPartOfSteps) });
     }
 
-    exitUpdate(oldEquation, oldExplanation, index) {        
+    exitUpdate(oldEquation, oldExplanation, index) {
         this.restoreEditorPosition();
 
         var newStack = this.state.actionsStack;
@@ -467,9 +467,7 @@ export default class Editor extends Component {
                 redButtonLabel={Locales.strings.discard_changes} greenButtonLabel={Locales.strings.save_changes} />
             : null;
 
-        var myStepsList;
-        var problemHeaderTitle = this.state.solution.problem.title;
-        myStepsList = <MyStepsList
+        var myStepsList = <MyStepsList
             solution={this.state.solution}
             deleteStepCallback={() => this.deleteStep(true)}
             editStepCallback={this.editStep}
@@ -489,7 +487,6 @@ export default class Editor extends Component {
             history={this.props.history}
             newProblem={this.id === "newEditor"}
             readOnly={this.state.readOnly} />
-        problemHeaderTitle += ": ";
 
         return (
             <div id="MainWorkWrapper" className={editor.mainWorkWrapper}>
@@ -497,7 +494,7 @@ export default class Editor extends Component {
                 <main id="MainWorkArea" className={editor.editorAndHistoryWrapper}>
                     {confirmationModal}
                     {modal}
-                    <ProblemHeader math={JSON.parse(JSON.stringify(this.state.solution.problem.text))} title={problemHeaderTitle}
+                    <ProblemHeader math={JSON.parse(JSON.stringify(this.state.solution.problem.text))} title={this.state.solution.problem.title}
                         shareProblem={this.shareProblem} scratchpad={this.state.solution.problem.scratchpad}
                         saveProblem={this.saveProblem} readOnly={this.state.readOnly}
                         editLink={JSON.parse(JSON.stringify(this.state.editLink))} goBack={this.goBack} />

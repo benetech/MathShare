@@ -10,6 +10,7 @@ import config from '../../../../../../package.json';
 import axios from 'axios';
 import FontAwesome from "react-fontawesome";
 import showImage from '../../../../../scripts/showImage.js';
+import parseMathLive from '../../../../../scripts/parseMathLive.js';
 
 const mathLive = DEBUG_MODE ? require('../../../../../../mathlive/src/mathlive.js')
 : require('../../../../../lib/mathlivedist/mathlive.js');
@@ -23,26 +24,15 @@ export default class Problem extends Component {
 
         this.createNewSolution = this.createNewSolution.bind(this);
         this.onTrashClick = this.onTrashClick.bind(this);
+        this.onEditClick = this.onEditClick.bind(this);
         this.onImgClick = this.onImgClick.bind(this);
     }
 
     buildAnnotation() {
-        var text = this.parseMathLive(this.props.problem.title);
+        var text = parseMathLive(this.props.problem.title);
         return "$$" + OPEN_TEXT_TAG + (this.props.number + 1) + ". }" + text + "}$$";
     }
 
-    parseMathLive(text) {
-        var result = OPEN_TEXT_TAG;
-        var textParts = text.split("$$");
-        textParts.forEach(function(part, i) {
-            if (i % 2) {
-                result += "}" + part + OPEN_TEXT_TAG;
-            } else {
-                result += part;
-            }
-        })
-        return result;
-    }
 
     buildProblemText() {
         var text = this.props.problem.text;
@@ -78,7 +68,12 @@ export default class Problem extends Component {
     }
 
     onTrashClick(e) {
-        this.props.deleteCallback("confirmation", this.props.number);
+        this.props.activateModals(["confirmation"], this.props.number);
+        e.stopPropagation();
+    }
+
+    onEditClick(e) {
+        this.props.activateModals(["editProblem"], this.props.number);
         e.stopPropagation();
     }
 
@@ -144,6 +139,19 @@ export default class Problem extends Component {
             name='plus-circle'
         />
         : null;
+
+        var editButton = this.props.showRemove ? 
+        <FontAwesome
+            className={
+                classNames(
+                    problem.editIcon,
+                    'fa-2x'
+                )
+            }
+            onClick={this.onEditClick}
+            name='edit'
+        />
+        : null;
         
         var removeButton = this.props.showRemove ?  
         <FontAwesome
@@ -192,6 +200,7 @@ export default class Problem extends Component {
                     {imgButton}
                     {removeButton}
                     {plusButton}
+                    {editButton}
                     <span className={problem.problemEquation}>{equation}</span>
                 </span>
             </div>

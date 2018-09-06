@@ -7,6 +7,7 @@ import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 import googleAnalytics from '../../../../scripts/googleAnalytics';
 import Locales from '../../../../strings';
 import showImage from '../../../../scripts/showImage';
+import parseMathLive from '../../../../scripts/parseMathLive.js';
 
 const mathLive = DEBUG_MODE ? require('../../../../../mathlive/src/mathlive.js')
     : require('../../../../../src/lib/mathlivedist/mathlive.js');
@@ -26,7 +27,7 @@ export default class ProblemHeader extends Component {
     componentDidUpdate() {
         mathLive.renderMathInDocument();
     }
-
+    
     tour() {
         introJs().setOption('tooltipClass', 'introjs-helperLayer').start();
         googleAnalytics('Tour');
@@ -49,7 +50,9 @@ export default class ProblemHeader extends Component {
         />
         : null;
 
-        const title = this.props.title;
+        var text = parseMathLive(this.props.title);
+        const title =  "$$" + text + ": }$$";
+        
         var editOnlyControls = this.props.readOnly ? null :
         <div className={problem.btnContainer}>
                     <span className={problem.editLinkLabel}>{Locales.strings.edit_link_label}</span>

@@ -17,6 +17,7 @@ export default class Home extends Component {
         this.ADD_PROBLEMS_MODAL = "addProblems";
         this.SHARE_NEW_SET_MODAL = "shareNewSet";
         this.SHARE_SET_MODAL = "shareSet";
+        this.EDIT_PROBLEM_MODAL = "editProblem";
     }
 
     componentWillReceiveProps(np) {
@@ -50,11 +51,10 @@ export default class Home extends Component {
             deactivateModal={() => this.props.toggleModals([this.ADD_PROBLEM_SET_MODAL])}
             activateMathField={this.props.activateMathField}
             theActiveMathField={this.props.theActiveMathField}
-            textAreaChanged={this.props.textAreaChanged}
-            textAreaValue={this.props.textAreaValue}
             addProblemCallback={this.props.addProblemCallback}
             problems={this.props.tempProblems}
             saveCallback={this.props.saveProblemSet}
+            addingProblem
             cancelCallback={() => this.props.toggleModals([this.ADD_PROBLEM_SET_MODAL])}
             title={Locales.strings.add_problems_new_set}/>
         : null;
@@ -64,13 +64,28 @@ export default class Home extends Component {
             deactivateModal={() => this.props.toggleModals([this.ADD_PROBLEMS_MODAL])}
             activateMathField={this.props.activateMathField}
             theActiveMathField={this.props.theActiveMathField}
-            textAreaChanged={this.props.textAreaChanged}
-            textAreaValue={this.props.textAreaValue}
             addProblemCallback={this.props.addProblemCallback}
             problems={this.props.problems.concat(this.props.tempProblems)}
             saveCallback={this.props.saveProblems}
+            addingProblem
             cancelCallback={() => this.props.toggleModals([this.ADD_PROBLEMS_MODAL])}
             title={Locales.strings.add_problems}/>
+        : null;
+
+        const editProblem = this.state.activeModals.includes(this.EDIT_PROBLEM_MODAL)
+        ? <NewProblemsForm 
+            deactivateModal={() => this.props.toggleModals([this.EDIT_PROBLEM_MODAL])}
+            activateMathField={this.props.activateMathField}
+            theActiveMathField={this.props.theActiveMathField}
+            textAreaChanged={this.props.textAreaChanged}
+            textAreaValue={this.props.textAreaValue}
+            editProblemCallback={this.props.editProblemCallback}
+            problems={this.props.tempProblems}
+            cancelCallback={() => this.props.toggleModals([this.EDIT_PROBLEM_MODAL])}
+            editing
+            addingProblem
+            problemToEdit={this.props.problemToEdit}
+            title={Locales.strings.edit_problem}/>
         : null;
 
         return (
@@ -81,6 +96,7 @@ export default class Home extends Component {
                 {newSetShareModal}
                 {addProblems}
                 {addProblemSet}
+                {editProblem}
             </div>
         );
     }
