@@ -1,3 +1,4 @@
+
 import React, { Component } from "react";
 import classNames from "classnames";
 import editorButtons from './styles.css';
@@ -19,7 +20,7 @@ export default class MyWorkEditorButtons extends Component {
 
     addStep() {
         this.props.addStepCallback();
-        if (this.props.textAreaValue != "") {
+        if (this.props.textAreaValue && this.props.textAreaValue != "") {
             this.props.clearAndResizeScratchPad();
         }
     }
@@ -54,7 +55,7 @@ export default class MyWorkEditorButtons extends Component {
                 saveCallback={this.props.saveCallback}
                 addLabel={addLabel}
                 addStep={this.addStep}
-                undoButton={true}
+                undoButton={this.props.showUndo}
                 undoLastActionCallback={this.props.undoLastActionCallback}
                 cancelEditCallback={this.props.cancelEditCallback}
                 updateStepCallback={this.props.updateStepCallback}
