@@ -70,7 +70,10 @@ export default class MyWorkEditorArea extends Component {
                                 aria-label={Locales.strings.type_math_here}
                             ></section>
                             <div
-                                className={bootstrap['order-2']}
+                                className={classNames(
+                                    bootstrap['order-2'],
+                                    editorArea.annotationContainer,
+                                )}
                                 role="heading"
                                 aria-level="3"
                             >
@@ -89,12 +92,10 @@ export default class MyWorkEditorArea extends Component {
                                 <textarea
                                     id="mathAnnotation"
                                     ref="mathAnnotation"
-                                    className={
-                                        classNames(
-                                            bootstrap['form-control'],
-                                            editorArea.annotation,
-                                        )
-                                    }
+                                    className={classNames(
+                                        bootstrap['form-control'],
+                                        editorArea.annotation,
+                                    )}
                                     placeholder={tts_hint}
                                     data-step="2"
                                     data-intro={tts_intro}
