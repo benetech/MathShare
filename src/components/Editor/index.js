@@ -68,6 +68,7 @@ export default class Editor extends Component {
         this.undoLastAction = this.undoLastAction.bind(this);
         this.clearAll = this.clearAll.bind(this);
         this.editStep = this.editStep.bind(this);
+        this.deleteCleanupOf = this.deleteCleanupOf.bind(this);
         this.updateStep = this.updateStep.bind(this);
         this.exitUpdate = this.exitUpdate.bind(this);
         this.textAreaChanged = this.textAreaChanged.bind(this);
@@ -127,11 +128,6 @@ export default class Editor extends Component {
             this.moveEditorBelowSpecificStep(stepNumber)
         );
 
-        $('#updateStep').unbind();
-        $('#updateStep').click(() =>
-            this.updateStep(stepNumber)
-        );
-
         /*
         TODO: restore, while adding support for scratchpad on the backend
         var content = this.setScratchPadContentData(stepNumber);
@@ -144,6 +140,8 @@ export default class Editor extends Component {
 
     updateStep() {
         var index = this.state.editorPosition;
+        this.deleteCleanupOf(index);
+        
         if (this.state.textAreaValue === '') {
             createAlert('warning', Locales.strings.no_description_warning, 'Warning');
             setTimeout(function () {
@@ -160,11 +158,18 @@ export default class Editor extends Component {
         createAlert('success', Locales.strings.successfull_update_message, 'Success');
     }
 
+    deleteCleanupOf(index) {
+        var steps = this.state.solution.steps;
+        if (steps[index].cleanup) {
+            steps[index].cleanup = null;
+        }
+        this.setState({steps});
+    }
+    
     updateRowAfterCleanup(mathContent, mathStepNumber) {
         let cleanedUp = MathButton.CleanUpCrossouts(mathContent);
         if (mathContent !== cleanedUp) {
-            this.updateMathEditorRow(mathContent, mathStepNumber, false);
-            //UpdateMathEditorRow(cleanedUp, mathStepNumber + 1, true); TODO: add cleanup update support
+            this.updateMathEditorRow(mathContent, mathStepNumber, cleanedUp);
         } else {
             this.updateMathEditorRow(mathContent, mathStepNumber, false);
         }
@@ -173,7 +178,8 @@ export default class Editor extends Component {
     updateMathEditorRow(mathContent, mathStepNumber, cleanup) {
         let updatedHistory = this.state.solution.steps;
         updatedHistory[mathStepNumber].stepValue = mathContent;
-        updatedHistory[mathStepNumber].explanation = cleanup ? Locales.strings.cleanup : this.state.textAreaValue;
+        updatedHistory[mathStepNumber].explanation = this.state.textAreaValue;
+        updatedHistory[mathStepNumber].cleanup =  cleanup;
         let oldSolution = this.state.solution;
         oldSolution.steps = updatedHistory;
         this.setState({ solution: oldSolution })
@@ -185,7 +191,11 @@ export default class Editor extends Component {
     moveEditorBelowSpecificStep(stepNumber) {
         var steps = this.state.solution.steps.slice();
         var leftPartOfSteps = steps.splice(0, stepNumber);
-        this.setState({ editorPosition: this.countEditorPosition(leftPartOfSteps) });
+        var editorPosition = this.countEditorPosition(leftPartOfSteps);
+        if (leftPartOfSteps[leftPartOfSteps.length - 1].cleanup) {
+            editorPosition--;
+        }
+        this.setState({ editorPosition });
     }
 
     exitUpdate(oldEquation, oldExplanation, index) {

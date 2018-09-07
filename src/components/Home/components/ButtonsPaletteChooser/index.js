@@ -44,10 +44,9 @@ export default class PaletteChooser extends Component {
 
     render() {
         var mathPalette = palettes.map((palette, i) =>
-        <div className={styles.paletteRow}>
+        <div key={i} className={styles.paletteRow}>
             <div id="paletteButtons" className={styles.paletteButtons}>
                 <MathButtonsGroup
-                    key={i}
                     palette={palette}
                     theActiveMathField={this.props.theActiveMathField}
                     showLabel={false}
