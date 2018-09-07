@@ -8,6 +8,7 @@ import showImage from "../../../../scripts/showImage";
 import Button from "../../../../components/Button";
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 import { arrayMove } from 'react-sortable-hoc';
+import parseMathLive from '../../../../scripts/parseMathLive.js';
 
 const mathLive = DEBUG_MODE ? require('../../../../../mathlive/src/mathlive.js')
     : require('../../../../lib/mathlivedist/mathlive.js');
@@ -112,7 +113,7 @@ export default class NewProblemsForm extends Component {
                     {'$$' + problem.text + '$$'}
                 </div>
                 <div className={styles.cell}>
-                    {problem.title}
+                    {'$$' + parseMathLive(problem.title) + '}$$'}
                 </div>
                 <div className={styles.rowControl}>
                     {img}
