@@ -33,8 +33,48 @@ export default class MyWork extends Component {
         this.scratchpadChangeHandler = this.scratchpadChangeHandler.bind(this);
         this.InitScratchPad = this.InitScratchPad.bind(this);
         this.displayScratchpadImage = this.displayScratchpadImage.bind(this);
+
+        document.onkeydown = this.HandleKeyDown.bind(this);
     }
 
+    HandleKeyDown(event) {
+        var keyShortcuts = new Map(JSON.parse(sessionStorage.keyShortcuts));
+        if (event.shiftKey && this.props.theActiveMathField.selectionIsCollapsed()) {
+            // if an insertion cursor, extend the selection unless we are at an edge
+            if (event.key === 'Backspace' && !this.props.theActiveMathField.selectionAtStart()) {
+                this.props.theActiveMathField.perform('extendToPreviousChar');
+    
+            } else if (event.key === 'Delete' && !this.props.theActiveMathField.selectionAtEnd()) {
+                this.props.theActiveMathField.perform('extendToNextChar');
+            }
+        }
+        if (event.shiftKey && event.key === 'Enter' && $('#mathAnnotation').val() !== '') {
+            event.preventDefault();
+            if ($('#updateStep').is(":visible")) {
+                $('#updateStep').click();
+            } else {
+                this.addStep();
+            }
+        }
+        if (event.shiftKey && event.key === 'Backspace' && this.props.showUndo && !this.props.addingProblem) {
+            event.preventDefault();
+            this.props.undoLastAction();
+        }
+    
+        var keys = [];
+        if (event.shiftKey) {
+            keys.push("Shift");
+        }
+        if (event.ctrlKey) {
+            keys.push("Ctrl");
+        }
+        keys.push(event.key);
+        var id = keyShortcuts.get(keys.sort().join(''));
+        if (id) {
+            $("#" + id).click();
+        }
+    }
+    
     clearScrachPad() {
        this.scratchPadPainterro.clearBackground();
        this.scratchPadPainterro.worklog.current = null;

@@ -108,8 +108,6 @@ export default class Editor extends Component {
                 });
             })
         this.scrollToBottom();
-
-        document.onkeydown = HandleKeyDown.bind(this);
     }
 
     textAreaChanged(text) {
@@ -117,7 +115,6 @@ export default class Editor extends Component {
     }
 
     editStep(stepNumber) {
-        // nothing to do if there are no steps
         let mathStep = this.state.solution.steps[stepNumber - 1];
         let updatedMathField = this.state.theActiveMathField;
         updatedMathField.latex(mathStep.stepValue);
@@ -486,7 +483,8 @@ export default class Editor extends Component {
             updateCallback={this.updateStep}
             history={this.props.history}
             newProblem={this.id === "newEditor"}
-            readOnly={this.state.readOnly} />
+            readOnly={this.state.readOnly}
+            undoLastAction={this.undoLastAction} />
 
         return (
             <div id="MainWorkWrapper" className={editor.mainWorkWrapper}>
@@ -504,43 +502,5 @@ export default class Editor extends Component {
                 </main>
             </div>
         );
-    }
-}
-
-function HandleKeyDown(event) {
-    var keyShortcuts = new Map(JSON.parse(sessionStorage.keyShortcuts));
-    if (event.shiftKey && this.state.theActiveMathField.selectionIsCollapsed()) {
-        // if an insertion cursor, extend the selection unless we are at an edge
-        if (event.key === 'Backspace' && !this.state.theActiveMathField.selectionAtStart()) {
-            this.state.theActiveMathField.perform('extendToPreviousChar');
-
-        } else if (event.key === 'Delete' && !this.state.theActiveMathField.selectionAtEnd()) {
-            this.state.theActiveMathField.perform('extendToNextChar');
-        }
-    }
-    if (event.shiftKey && event.key === 'Enter' && $('#mathAnnotation').val() !== '') {
-        event.preventDefault();
-        if ($('#updateStep').is(":visible")) {
-            $('#updateStep').click();
-        } else {
-            this.addStep(true);
-        }
-    }
-    if (event.shiftKey && event.key === 'Backspace' && this.state.actionsStack.length > 0) {
-        event.preventDefault();
-        this.undoLastAction();
-    }
-
-    var keys = [];
-    if (event.shiftKey) {
-        keys.push("Shift");
-    }
-    if (event.ctrlKey) {
-        keys.push("Ctrl");
-    }
-    keys.push(event.key);
-    var id = keyShortcuts.get(keys.sort().join(''));
-    if (id) {
-        $("#" + id).click();
     }
 }

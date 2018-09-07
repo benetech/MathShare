@@ -69,6 +69,7 @@ export default class MyStepsList extends Component {
                     solution={this.props.solution}
                     openScratchpad={this.props.openScratchpad}
                     showUndo={this.props.showUndo}
+                    undoLastAction={this.props.undoLastAction}
                     title={Locales.strings.my_work} />
             )
         }
