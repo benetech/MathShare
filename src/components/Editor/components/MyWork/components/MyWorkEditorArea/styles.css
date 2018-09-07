@@ -6,16 +6,21 @@
     -ms-transform: scale(1.6, 1.6);
  }
 
+.annotationContainer {
+    display: flex;
+    align-items: stretch;
+}
+
  .annotation {
     border: 0px;
     box-shadow: none;
     transition: none;
-    display: inline;
+    resize: none;
+    display: block;
     border-radius: 0px;
     width: 280px;
-    height: 118px;
     margin-top: 1px;
-    margin-bottom: -6px;
+    margin-right: 3px;
     border-left: 1px solid rgb(204, 204, 204);
 }
 
