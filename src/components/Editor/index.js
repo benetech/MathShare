@@ -68,6 +68,7 @@ export default class Editor extends Component {
         this.undoLastAction = this.undoLastAction.bind(this);
         this.clearAll = this.clearAll.bind(this);
         this.editStep = this.editStep.bind(this);
+        this.deleteCleanupOf = this.deleteCleanupOf.bind(this);
         this.updateStep = this.updateStep.bind(this);
         this.exitUpdate = this.exitUpdate.bind(this);
         this.textAreaChanged = this.textAreaChanged.bind(this);
@@ -108,8 +109,6 @@ export default class Editor extends Component {
                 });
             })
         this.scrollToBottom();
-
-        document.onkeydown = HandleKeyDown.bind(this);
     }
 
     textAreaChanged(text) {
@@ -117,7 +116,6 @@ export default class Editor extends Component {
     }
 
     editStep(stepNumber) {
-        // nothing to do if there are no steps
         let mathStep = this.state.solution.steps[stepNumber - 1];
         let updatedMathField = this.state.theActiveMathField;
         updatedMathField.latex(mathStep.stepValue);
@@ -128,11 +126,6 @@ export default class Editor extends Component {
             updateMathFieldMode: true
         },
             this.moveEditorBelowSpecificStep(stepNumber)
-        );
-
-        $('#updateStep').unbind();
-        $('#updateStep').click(() =>
-            this.updateStep(stepNumber)
         );
 
         /*
@@ -147,6 +140,8 @@ export default class Editor extends Component {
 
     updateStep() {
         var index = this.state.editorPosition;
+        this.deleteCleanupOf(index);
+        
         if (this.state.textAreaValue === '') {
             createAlert('warning', Locales.strings.no_description_warning, 'Warning');
             setTimeout(function () {
@@ -163,11 +158,18 @@ export default class Editor extends Component {
         createAlert('success', Locales.strings.successfull_update_message, 'Success');
     }
 
+    deleteCleanupOf(index) {
+        var steps = this.state.solution.steps;
+        if (steps[index].cleanup) {
+            steps[index].cleanup = null;
+        }
+        this.setState({steps});
+    }
+    
     updateRowAfterCleanup(mathContent, mathStepNumber) {
         let cleanedUp = MathButton.CleanUpCrossouts(mathContent);
         if (mathContent !== cleanedUp) {
-            this.updateMathEditorRow(mathContent, mathStepNumber, false);
-            //UpdateMathEditorRow(cleanedUp, mathStepNumber + 1, true); TODO: add cleanup update support
+            this.updateMathEditorRow(mathContent, mathStepNumber, cleanedUp);
         } else {
             this.updateMathEditorRow(mathContent, mathStepNumber, false);
         }
@@ -176,7 +178,8 @@ export default class Editor extends Component {
     updateMathEditorRow(mathContent, mathStepNumber, cleanup) {
         let updatedHistory = this.state.solution.steps;
         updatedHistory[mathStepNumber].stepValue = mathContent;
-        updatedHistory[mathStepNumber].explanation = cleanup ? Locales.strings.cleanup : this.state.textAreaValue;
+        updatedHistory[mathStepNumber].explanation = this.state.textAreaValue;
+        updatedHistory[mathStepNumber].cleanup =  cleanup;
         let oldSolution = this.state.solution;
         oldSolution.steps = updatedHistory;
         this.setState({ solution: oldSolution })
@@ -188,7 +191,11 @@ export default class Editor extends Component {
     moveEditorBelowSpecificStep(stepNumber) {
         var steps = this.state.solution.steps.slice();
         var leftPartOfSteps = steps.splice(0, stepNumber);
-        this.setState({ editorPosition: this.countEditorPosition(leftPartOfSteps) });
+        var editorPosition = this.countEditorPosition(leftPartOfSteps);
+        if (leftPartOfSteps[leftPartOfSteps.length - 1].cleanup) {
+            editorPosition--;
+        }
+        this.setState({ editorPosition });
     }
 
     exitUpdate(oldEquation, oldExplanation, index) {
@@ -486,7 +493,8 @@ export default class Editor extends Component {
             updateCallback={this.updateStep}
             history={this.props.history}
             newProblem={this.id === "newEditor"}
-            readOnly={this.state.readOnly} />
+            readOnly={this.state.readOnly}
+            undoLastAction={this.undoLastAction} />
 
         return (
             <div id="MainWorkWrapper" className={editor.mainWorkWrapper}>
@@ -504,43 +512,5 @@ export default class Editor extends Component {
                 </main>
             </div>
         );
-    }
-}
-
-function HandleKeyDown(event) {
-    var keyShortcuts = new Map(JSON.parse(sessionStorage.keyShortcuts));
-    if (event.shiftKey && this.state.theActiveMathField.selectionIsCollapsed()) {
-        // if an insertion cursor, extend the selection unless we are at an edge
-        if (event.key === 'Backspace' && !this.state.theActiveMathField.selectionAtStart()) {
-            this.state.theActiveMathField.perform('extendToPreviousChar');
-
-        } else if (event.key === 'Delete' && !this.state.theActiveMathField.selectionAtEnd()) {
-            this.state.theActiveMathField.perform('extendToNextChar');
-        }
-    }
-    if (event.shiftKey && event.key === 'Enter' && $('#mathAnnotation').val() !== '') {
-        event.preventDefault();
-        if ($('#updateStep').is(":visible")) {
-            $('#updateStep').click();
-        } else {
-            this.addStep(true);
-        }
-    }
-    if (event.shiftKey && event.key === 'Backspace' && this.state.actionsStack.length > 0) {
-        event.preventDefault();
-        this.undoLastAction();
-    }
-
-    var keys = [];
-    if (event.shiftKey) {
-        keys.push("Shift");
-    }
-    if (event.ctrlKey) {
-        keys.push("Ctrl");
-    }
-    keys.push(event.key);
-    var id = keyShortcuts.get(keys.sort().join(''));
-    if (id) {
-        $("#" + id).click();
     }
 }
