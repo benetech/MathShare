@@ -67,6 +67,9 @@ export default class MyWork extends Component {
         }
         if (event.ctrlKey) {
             keys.push("Ctrl");
+            if (event.key == " ") {
+                this.props.theActiveMathField.perform(['insert', "\\\ "]);
+            }
         }
         keys.push(event.key);
         var id = keyShortcuts.get(keys.sort().join(''));

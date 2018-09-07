@@ -273,7 +273,7 @@ export default class Home extends Component {
         return (
             <div className={home.mainWrapper}>
                 <NotificationContainer />
-                <MainPageHeader editing={this.props.match.params.action == 'edit'} history={this.props.history} shareCallback={this.toggleModal}
+                <MainPageHeader editing={this.props.match.params.action == 'edit'} history={this.props.history} shareCallback={this.toggleModals}
                     addProblemSetCallback={this.addProblemSet} finishEditing={this.finishEditing} editCode={this.state.set.editCode}/>
                 <ModalContainer activeModals={this.state.activeModals} toggleModals={this.toggleModals}
                     progressToAddingProblems={this.progressToAddingProblems} deleteProblem={this.deleteProblem}

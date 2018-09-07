@@ -46,6 +46,9 @@ export default class MathButton extends Component {
             if (ids.includes("CalculateAndReplace")) {
                 this.CalculateAndReplace();
             }
+            if (ids.includes("EnterTextInput")) {
+                this.EnterTextInput();
+            }
         }
     }
 
@@ -102,6 +105,14 @@ export default class MathButton extends Component {
                 <span className="sr-only">{title}</span>
             </span>
         );
+    }
+
+    EnterTextInput() {
+        var theActiveMathField = this.props.theActiveMathField;
+        theActiveMathField.perform('enterCommandMode');
+        theActiveMathField.insert("text{}")
+        theActiveMathField.perform('moveToPreviousChar');
+        theActiveMathField.focus();
     }
 
     //***************************************************************************************************************************************************
