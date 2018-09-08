@@ -11,6 +11,7 @@ import Locales from '../../strings'
 import config from '../../../package.json';
 import axios from 'axios';
 import ModalContainer from './components/ModalContainer';
+import { SERVER_URL } from '../../config';
 
 const mathLive = DEBUG_MODE ? require('../../../mathlive/src/mathlive.js')
     : require('../../lib/mathlivedist/mathlive.js');
@@ -53,9 +54,9 @@ export default class Home extends Component {
     componentDidMount() {
         var path;
         if (this.props.match.params.action === "view") {
-            path = `${config.serverUrl}/problemSet/revision/${this.props.match.params.code}`
+            path = `${SERVER_URL}/problemSet/revision/${this.props.match.params.code}`
         } else {
-            path = `${config.serverUrl}/problemSet/${this.props.match.params.code}/`
+            path = `${SERVER_URL}/problemSet/${this.props.match.params.code}/`
         }
 
         axios.get(path)
@@ -137,7 +138,7 @@ export default class Home extends Component {
     addProblem(imageData, text, index) {
         if (!this.validateProblem(text)) {
             return;
-        } 
+        }
 
         let newProblems = this.state.tempProblems;
         let mathContent = this.state.theActiveMathField;
@@ -166,7 +167,7 @@ export default class Home extends Component {
         oldSet.problems = problems;
 
         this.toggleModals(this.state.activeModals);
-        axios.put(`${config.serverUrl}/problemSet/${this.state.set.editCode}`, oldSet)
+        axios.put(`${SERVER_URL}/problemSet/${this.state.set.editCode}`, oldSet)
             .then(response => {
                 this.setState({
                     set: {
@@ -182,7 +183,7 @@ export default class Home extends Component {
     deleteProblem() {
         var oldSet = this.state.set;
         oldSet.problems.splice(this.state.problemToDeleteIndex, 1);
-        axios.put(`${config.serverUrl}/problemSet/${this.state.set.editCode}`, oldSet)
+        axios.put(`${SERVER_URL}/problemSet/${this.state.set.editCode}`, oldSet)
             .then(response => {
                 this.setState({
                     set: {
@@ -203,13 +204,13 @@ export default class Home extends Component {
     editProblem(imageData, title) {
         if (!this.validateProblem(title)) {
             return;
-        } 
+        }
         var oldSet = this.state.set;
         oldSet.problems[this.state.problemToEditIndex].title = title;
         oldSet.problems[this.state.problemToEditIndex].scratchpad = imageData;
         oldSet.problems[this.state.problemToEditIndex].text = this.state.theActiveMathField.latex();
 
-        axios.put(`${config.serverUrl}/problemSet/${this.state.set.editCode}`, oldSet)
+        axios.put(`${SERVER_URL}/problemSet/${this.state.set.editCode}`, oldSet)
             .then(response => {
                 this.setState({
                     set: {
@@ -255,7 +256,7 @@ export default class Home extends Component {
             palettes: this.state.tempPalettes
         };
 
-        axios.post(`${config.serverUrl}/problemSet/`, set)
+        axios.post(`${SERVER_URL}/problemSet/`, set)
             .then(response => {
                 this.setState({
                     tempProblems: [],
@@ -277,8 +278,8 @@ export default class Home extends Component {
                     addProblemSetCallback={this.addProblemSet} finishEditing={this.finishEditing} editCode={this.state.set.editCode}/>
                 <ModalContainer activeModals={this.state.activeModals} toggleModals={this.toggleModals}
                     progressToAddingProblems={this.progressToAddingProblems} deleteProblem={this.deleteProblem}
-                    shareLink={config.serverUrl + '/problemSet/view/' + this.state.set.sharecode}
-                    newSetShareLink={config.serverUrl + '/problemSet/view/' + this.state.newSetSharecode}
+                    shareLink={SERVER_URL + '/problemSet/view/' + this.state.set.sharecode}
+                    newSetShareLink={SERVER_URL + '/problemSet/view/' + this.state.newSetSharecode}
                     activateMathField={theActiveMathField => this.setState({ theActiveMathField })}
                     theActiveMathField={this.state.theActiveMathField}
                     addProblemCallback={this.addProblem}

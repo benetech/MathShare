@@ -11,6 +11,7 @@ import axios from 'axios';
 import FontAwesome from "react-fontawesome";
 import showImage from '../../../../../scripts/showImage.js';
 import parseMathLive from '../../../../../scripts/parseMathLive.js';
+import { SERVER_URL } from '../../../../../config';
 
 const mathLive = DEBUG_MODE ? require('../../../../../../mathlive/src/mathlive.js')
 : require('../../../../../lib/mathlivedist/mathlive.js');
@@ -115,7 +116,7 @@ export default class Problem extends Component {
             equation = this.buildProblemText();
         }
 
-        var imgButton = (this.props.problem && this.props.problem.scratchpad) ? 
+        var imgButton = (this.props.problem && this.props.problem.scratchpad) ?
         <FontAwesome
             className={
                 classNames(
@@ -128,7 +129,7 @@ export default class Problem extends Component {
         />
         : null;
 
-        var plusButton = this.props.addNew ? 
+        var plusButton = this.props.addNew ?
         <FontAwesome
             className={
                 classNames(
@@ -140,7 +141,7 @@ export default class Problem extends Component {
         />
         : null;
 
-        var editButton = this.props.showRemove ? 
+        var editButton = this.props.showRemove ?
         <FontAwesome
             className={
                 classNames(
@@ -152,8 +153,8 @@ export default class Problem extends Component {
             name='edit'
         />
         : null;
-        
-        var removeButton = this.props.showRemove ?  
+
+        var removeButton = this.props.showRemove ?
         <FontAwesome
             className={
                 classNames(
