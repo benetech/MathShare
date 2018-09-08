@@ -19,7 +19,7 @@
     "url": "https://github.com/benetech/MathShare/issues"
   },
   "homepage": "https://github.com/benetech/MathShare#readme",
-  "serverUrl": "http://localhost:8080",
+
   "devDependencies": {
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.4",
