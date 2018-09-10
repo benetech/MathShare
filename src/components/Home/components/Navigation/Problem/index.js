@@ -37,7 +37,7 @@ export default class Problem extends Component {
 
     buildProblemText() {
         var text = this.props.problem.text;
-        if(this.props.problem.text == "") {
+        if (this.props.problem.text == "") {
             return <img className={problem.image} src={this.props.problem.scratchpad}/>
         }
         else if (text.includes("\\frac")) {
