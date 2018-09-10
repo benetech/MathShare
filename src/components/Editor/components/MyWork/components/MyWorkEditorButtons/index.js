@@ -8,30 +8,12 @@ import InputContainerSelectors from './components/InputContainerSelectors';
 import Locales from '../../../../../../strings';
 
 export default class MyWorkEditorButtons extends Component {
-    constructor(props) {
-        super(props);
-
-        this.addStep = this.addStep.bind(this);
-    }
-
-    componentDidMount() {
-        $('#undoAction').hide();
-    }
-
-    addStep() {
-        this.props.addStepCallback();
-        if (this.props.textAreaValue && this.props.textAreaValue != "") {
-            this.props.clearAndResizeScratchPad();
-        }
-    }
-
     render() {
         const addLabel = this.props.addingProblem ? Locales.strings.add_problem : Locales.strings.add_step;
         return (
             <div
                 id="editorButtons"
-                className={
-                    classNames(
+                className={classNames(
                         bootstrap['d-flex'],
                         bootstrap['flex-row'],
                         bootstrap['flex-nowrap'],
@@ -54,7 +36,7 @@ export default class MyWorkEditorButtons extends Component {
                 cancelCallback={this.props.cancelCallback}
                 saveCallback={this.props.saveCallback}
                 addLabel={addLabel}
-                addStep={this.addStep}
+                addStep={this.props.addStepCallback}
                 undoButton={this.props.showUndo}
                 undoLastActionCallback={this.props.undoLastActionCallback}
                 cancelEditCallback={this.props.cancelEditCallback}

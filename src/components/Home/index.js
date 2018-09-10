@@ -151,9 +151,6 @@ export default class Home extends Component {
         });
 
         mathLive.renderMathInDocument();
-
-        //  this.setScratchPadContentData(mathStepNewNumber, ScratchPadPainterro.imageSaver.asDataURL())
-        //  this.clearScrachPad();
         this.scrollToBottom();
     }
 

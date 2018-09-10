@@ -20,7 +20,8 @@ export default class MyWork extends Component {
 
         this.state = {
             isScratchpadUsed: false,
-            scratchpadMode: false
+            scratchpadMode: false,
+            scratchpadContent: null
         }
 
         this.scratchPadPainterro;
@@ -35,6 +36,16 @@ export default class MyWork extends Component {
         this.displayScratchpadImage = this.displayScratchpadImage.bind(this);
 
         document.onkeydown = this.HandleKeyDown.bind(this);
+    }
+
+    componentDidMount() {
+        if (this.props.bindDisplayFunction) {
+            this.props.bindDisplayFunction((scratchpadContent) => {
+                this.setState(
+                    {scratchpadContent},
+                    this.displayScratchpadImage
+            )});
+        }
     }
 
     HandleKeyDown(event) {
@@ -77,13 +88,6 @@ export default class MyWork extends Component {
             $("#" + id).click();
         }
     }
-    
-    clearScrachPad() {
-       this.scratchPadPainterro.clearBackground();
-       this.scratchPadPainterro.worklog.current = null;
-        // it is because Painterro displays a modal if we want to replace an existing ScratchPad content
-       this.scratchPadPainterro.worklog.clean = true;
-    }
 
     scratchpadChangeHandler() {
         if (!this.state.isScratchpadUsed) {
@@ -109,29 +113,36 @@ export default class MyWork extends Component {
     }
 
     displayScratchpadImage() {
-        if(this.props.scratchpadContent) {
-            this.clearScrachPad();
-            this.scratchPadPainterro.show(this.props.scratchpadContent);
+        if (this.state.scratchpadMode) {
+            this.clearAndResizeScratchPad();
+            this.scratchPadPainterro.show(this.state.scratchpadContent);
         }
     }
 
     clearAndResizeScratchPad() {
-        if (this.state.isScratchpadUsed) {
-            this.setState({isScratchpadUsed: false});
+        if (this.state.scratchpadMode) {
             this.scratchPadPainterro.clear();
+            this.setState({
+                isScratchpadUsed: false,
+                scratchpadContent: null
+            });
         }
     }
 
     openScratchpad() {
-        this.setState({scratchpadMode: true});
-        $('#scratch-pad-containter').show();
-        this.displayScratchpadImage();
+        this.setState(
+            {scratchpadMode: true}, () => {
+                $('#scratch-pad-containter').show();
+                this.displayScratchpadImage();
+            });
     }
 
     hideScratchpad() {
-        this.setState({scratchpadMode: false});
-        $('#scratch-pad-containter').hide();
-        mathLive.renderMathInDocument();
+        this.setState(
+            {scratchpadMode: false}, () => {
+                $('#scratch-pad-containter').hide();
+                mathLive.renderMathInDocument();
+            });
     }
 
     addStep() {
@@ -149,12 +160,9 @@ export default class MyWork extends Component {
                     <div id="historyWorkSeparator" className={myWork.historyWorkSeparator}>
                         <h2>
                             <span
-                                className={
-                                    classNames(
-                                        editor.modalAreaHeading,
-                                        myWork.marginTop
-                                    )
-                                }
+                                className={classNames(
+                                    editor.modalAreaHeading,
+                                    myWork.marginTop)}
                                 aria-hidden="true">
                                 {this.props.title}
                             </span>
@@ -181,7 +189,8 @@ export default class MyWork extends Component {
                                 undoLastActionCallback={this.props.undoLastActionCallback} cancelEditCallback={this.props.cancelEditCallback}
                                 deleteStepsCallback={this.props.deleteStepsCallback} editing={this.props.editing} history={this.props.history}
                                 solution={this.props.solution} addingProblem={this.props.addingProblem} cancelCallback={this.props.cancelCallback}
-                                saveCallback={this.props.saveCallback} openScratchpad={this.openScratchpad} hideScratchpad={this.hideScratchpad} clearAndResizeScratchPad={this.clearAndResizeScratchPad}
+                                saveCallback={this.props.saveCallback} openScratchpad={this.openScratchpad} hideScratchpad={this.hideScratchpad}
+                                clearAndResizeScratchPad={this.clearAndResizeScratchPad}
                                 textAreaValue={this.props.textAreaValue} scratchpadMode={this.state.scratchpadMode} 
                                 updateCallback={this.updateStep} editingProblem={this.props.editingProblem}/>
                         </div>
