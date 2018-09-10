@@ -37,7 +37,10 @@ export default class Problem extends Component {
 
     buildProblemText() {
         var text = this.props.problem.text;
-        if (text.includes("\\frac")) {
+        if (this.props.problem.text == "") {
+            return <img className={problem.image} src={this.props.problem.scratchpad}/>
+        }
+        else if (text.includes("\\frac")) {
             text = this.buildComplexProblemText();
         } else {
             if (text.length > problemTextDisplayLength) {
@@ -202,7 +205,7 @@ export default class Problem extends Component {
                     {removeButton}
                     {plusButton}
                     {editButton}
-                    <span className={problem.problemEquation}>{equation}</span>
+                    {equation}
                 </span>
             </div>
         ))

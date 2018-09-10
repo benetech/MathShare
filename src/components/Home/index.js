@@ -113,16 +113,16 @@ export default class Home extends Component {
         this.setState({ activeModals: oldModals });
     }
 
-    validateProblem(text) {
+    validateProblem(text, image) {
         var message;
         if (text === "") {
-            if (this.state.theActiveMathField.latex() === "") {
-                message = Locales.strings.no_problem_equation_and_title_warning;
+            if (this.state.theActiveMathField.latex() === "" && image === null) {
+                message = Locales.strings.no_problem_equation_or_image_and_title_warning;
             } else {
                 message = Locales.strings.no_problem_title_warning;
             }
-        } else if (this.state.theActiveMathField.latex() === "") {
-            message = Locales.strings.no_problem_equation_warning;
+        } else if (this.state.theActiveMathField.latex() === "" && image === null) {
+            message = Locales.strings.no_problem_equation_or_image_warning;
         }
 
         if (message) {
@@ -136,7 +136,7 @@ export default class Home extends Component {
     }
 
     addProblem(imageData, text, index) {
-        if (!this.validateProblem(text)) {
+        if (!this.validateProblem(text, imageData)) {
             return;
         }
 
@@ -199,7 +199,7 @@ export default class Home extends Component {
     }
 
     editProblem(imageData, title) {
-        if (!this.validateProblem(title)) {
+        if (!this.validateProblem(title, imageData)) {
             return;
         }
         var oldSet = this.state.set;
