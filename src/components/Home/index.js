@@ -115,8 +115,9 @@ export default class Home extends Component {
 
     validateProblem(text, image) {
         var message;
-        if (text === "") {
-            if (this.state.theActiveMathField.latex() === "" && image === null) {
+
+        if (text === "" || $.trim(text).length === 0) {
+            if (this.state.theActiveMathField.latex() === "") {
                 message = Locales.strings.no_problem_equation_or_image_and_title_warning;
             } else {
                 message = Locales.strings.no_problem_title_warning;
