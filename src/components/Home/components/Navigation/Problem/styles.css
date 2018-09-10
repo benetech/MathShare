@@ -61,5 +61,9 @@
 }
 
 .navSpan {
-    position: relative
+    position: relative;
+}
+
+.image {
+    width: 260px;
 }
