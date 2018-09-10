@@ -56,7 +56,8 @@ export default class Editor extends Component {
             confirmationModalActive: false,
             shareLink: "http:mathshare.com/exampleShareLink/1",
             editLink: "Not saved yet.",
-            readOnly: false
+            readOnly: false,
+            displayScratchpad: null
         };
 
         this.stackDeleteAction = this.stackDeleteAction.bind(this);
@@ -120,6 +121,7 @@ export default class Editor extends Component {
         let mathStep = this.state.solution.steps[stepNumber - 1];
         let updatedMathField = this.state.theActiveMathField;
         updatedMathField.latex(mathStep.stepValue);
+        this.state.displayScratchpad(mathStep.scratchpad);
         this.setState({
             theActiveMathField: updatedMathField,
             textAreaValue: mathStep.explanation,
@@ -128,18 +130,9 @@ export default class Editor extends Component {
         },
             this.moveEditorBelowSpecificStep(stepNumber)
         );
-
-        /*
-        TODO: restore, while adding support for scratchpad on the backend
-        var content = this.setScratchPadContentData(stepNumber);
-        if (content) {
-            this.applyScratchPadContent(content);
-        } else {
-            this.clearScrachPad();
-        }*/
     }
 
-    updateStep() {
+    updateStep(img) {
         var index = this.state.editorPosition;
         this.deleteCleanupOf(index);
         
@@ -154,9 +147,10 @@ export default class Editor extends Component {
         let oldAnnotation = mathStep.data('annotation');
         let oldEquation = mathStep.data('equation');
 
-        this.updateRowAfterCleanup(this.state.theActiveMathField.latex(), index);
+        this.updateRowAfterCleanup(this.state.theActiveMathField.latex(), index, img);
         this.exitUpdate(oldEquation, oldAnnotation, index);
         createAlert('success', Locales.strings.successfull_update_message, 'Success');
+        this.state.displayScratchpad();
     }
 
     deleteCleanupOf(index) {
@@ -167,20 +161,21 @@ export default class Editor extends Component {
         this.setState({steps});
     }
     
-    updateRowAfterCleanup(mathContent, mathStepNumber) {
+    updateRowAfterCleanup(mathContent, mathStepNumber, scratchpad) {
         let cleanedUp = MathButton.CleanUpCrossouts(mathContent);
         if (mathContent !== cleanedUp) {
-            this.updateMathEditorRow(mathContent, mathStepNumber, cleanedUp);
+            this.updateMathEditorRow(mathContent, mathStepNumber, cleanedUp, scratchpad);
         } else {
-            this.updateMathEditorRow(mathContent, mathStepNumber, false);
+            this.updateMathEditorRow(mathContent, mathStepNumber, false, scratchpad);
         }
     }
 
-    updateMathEditorRow(mathContent, mathStepNumber, cleanup) {
+    updateMathEditorRow(mathContent, mathStepNumber, cleanup, scratchpad) {
         let updatedHistory = this.state.solution.steps;
         updatedHistory[mathStepNumber].stepValue = mathContent;
         updatedHistory[mathStepNumber].explanation = this.state.textAreaValue;
-        updatedHistory[mathStepNumber].cleanup =  cleanup;
+        updatedHistory[mathStepNumber].cleanup = cleanup;
+        updatedHistory[mathStepNumber].scratchpad = scratchpad;
         let oldSolution = this.state.solution;
         oldSolution.steps = updatedHistory;
         this.setState({ solution: oldSolution })
@@ -213,6 +208,7 @@ export default class Editor extends Component {
             actionsStack: newStack,
             updateMathFieldMode: false
         });
+        this.state.displayScratchpad();
     }
 
     restoreEditorPosition() {
@@ -349,7 +345,7 @@ export default class Editor extends Component {
         return steps.length + this.countCleanups(steps) - 1;
     }
 
-    addStep(addToHistory) {
+    addStep(addToHistory, img) {
         if (!this.state.textAreaValue || this.state.textAreaValue === "") {
             createAlert('warning', Locales.strings.no_description_warning, 'Warning');
             setTimeout(function () {
@@ -361,13 +357,14 @@ export default class Editor extends Component {
         let explanation = this.state.textAreaValue;
         var cleanedUp = MathButton.CleanUpCrossouts(mathContent);
         let cleanup = cleanedUp != mathContent ? cleanedUp : null;
-        var step = { "stepValue": mathContent, "explanation": explanation, "cleanup": cleanup };
+        var step = { "stepValue": mathContent, "explanation": explanation, "cleanup": cleanup, "scratchpad": img };
 
         if (addToHistory) {
             this.stackAddAction(step);
         }
 
         this.addNewStep(step);
+        this.state.displayScratchpad();
         this.scrollToBottom();
     }
 
@@ -484,7 +481,7 @@ export default class Editor extends Component {
             theActiveMathField={this.state.theActiveMathField}
             textAreaChanged={this.textAreaChanged}
             textAreaValue={this.state.textAreaValue}
-            addStepCallback={() => this.addStep(true)}
+            addStepCallback={(img) => this.addStep(true, img)}
             undoLastActionCallback={this.undoLastAction}
             deleteStepsCallback={this.clearAll}
             showUndo={this.state.actionsStack.length > 0}
@@ -495,7 +492,8 @@ export default class Editor extends Component {
             history={this.props.history}
             newProblem={this.id === "newEditor"}
             readOnly={this.state.readOnly}
-            undoLastAction={this.undoLastAction} />
+            undoLastAction={this.undoLastAction}
+            bindDisplayFunction={(f) => this.setState({displayScratchpad: f})} />
 
         return (
             <div id="MainWorkWrapper" className={editor.mainWorkWrapper}>
