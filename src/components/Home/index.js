@@ -134,7 +134,7 @@ export default class Home extends Component {
         return true;
     }
 
-    addProblem(imageData, text, index) {
+    addProblem(imageData, text, index, callback) {
         if (!this.validateProblem(text)) {
             return;
         } 
@@ -150,6 +150,7 @@ export default class Home extends Component {
             tempProblems: newProblems
         });
 
+        callback();
         mathLive.renderMathInDocument();
         this.scrollToBottom();
     }

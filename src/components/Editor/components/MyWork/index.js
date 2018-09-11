@@ -114,17 +114,17 @@ export default class MyWork extends Component {
 
     displayScratchpadImage() {
         if (this.state.scratchpadMode) {
-            this.clearAndResizeScratchPad();
+            this.clearAndResizeScratchPad(this.state.scratchpadContent);
             this.scratchPadPainterro.show(this.state.scratchpadContent);
         }
     }
 
-    clearAndResizeScratchPad() {
+    clearAndResizeScratchPad(content) {
         if (this.state.scratchpadMode) {
             this.scratchPadPainterro.clear();
             this.setState({
                 isScratchpadUsed: false,
-                scratchpadContent: null
+                scratchpadContent: content
             });
         }
     }
@@ -138,8 +138,9 @@ export default class MyWork extends Component {
     }
 
     hideScratchpad() {
-        this.setState(
-            {scratchpadMode: false}, () => {
+        this.setState({
+            scratchpadMode: false,
+            scratchpadContent: this.scratchPadPainterro.imageSaver.asDataURL()}, () => {
                 $('#scratch-pad-containter').hide();
                 mathLive.renderMathInDocument();
             });
