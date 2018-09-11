@@ -323,10 +323,13 @@ export default class Editor extends Component {
         var firstStep = solution.steps[0];
         solution.steps = [];
         solution.steps.push(firstStep);
+        var math = this.state.theActiveMathField;
+        math.latex(solution.steps[0].stepValue);
         this.setState({
             textAreaValue: "",
             actionsStack: stack,
-            solution: solution
+            solution: solution,
+            theActiveMathField: math
         });
     }
 

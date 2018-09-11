@@ -11,7 +11,7 @@ class Locales {
             step_after_cleanup: "step, after cleanup",
             cleanup: "(cleanup)",
             edit_this_step: "Edit this Step",
-            delete_this_step: "Edit this Step",
+            delete_this_step: "Delete this Step",
             edit: "Edit",
             delete: "Delete",
             math: "math",
