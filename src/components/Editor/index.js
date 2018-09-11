@@ -168,7 +168,7 @@ export default class Editor extends Component {
         if (mathContent !== cleanedUp) {
             this.updateMathEditorRow(mathContent, mathStepNumber, cleanedUp, scratchpad);
         } else {
-            this.updateMathEditorRow(mathContent, mathStepNumber, false, scratchpad);
+            this.updateMathEditorRow(mathContent, mathStepNumber, null, scratchpad);
         }
     }
 
@@ -200,7 +200,7 @@ export default class Editor extends Component {
         this.restoreEditorPosition();
         var newStack = this.state.actionsStack;
         if (index) {
-            var oldStep = { "id": index, "equation": oldEquation, "explanation": oldExplanation };
+            var oldStep = { "id": index, "stepValue": oldEquation, "explanation": oldExplanation };
             newStack.push({
                 type: EDIT,
                 step: oldStep
@@ -254,8 +254,11 @@ export default class Editor extends Component {
 
     undoClearAll(stackEntry) {
         var solution = this.state.solution;
+        var theActiveMathField = this.state.theActiveMathField;
+        theActiveMathField.latex(stackEntry.steps[stackEntry.steps.length - 1].stepValue);
         solution.steps = stackEntry.steps;
-        this.setState({ solution });
+        this.setState({ solution, theActiveMathField,
+             textAreaValue: stackEntry.steps[stackEntry.steps.length - 1].explanation});
     }
 
     undoDelete(stackEntry) {
