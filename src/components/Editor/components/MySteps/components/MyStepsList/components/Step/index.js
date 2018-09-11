@@ -42,7 +42,7 @@ export default class Step extends Component {
             return (<span className={styles.sROnly}> {this.OrdinalSuffix(this.props.stepNumber)} {Locales.strings.step_after_cleanup}</span>);
         } else {
             return (
-                <div>
+                <div className={step.reason}>
                     <span className={styles.sROnly}> {this.OrdinalSuffix(this.props.stepNumber)} {Locales.strings.step}</span>
                     <span className={step.header} aria-hidden="true">{Locales.strings.step} {this.props.stepNumber}:</span>
                 </div>
@@ -141,7 +141,6 @@ export default class Step extends Component {
                     {this.buildTrashBtn()}
                 </div>
             </div>
-
         );
     }
 }

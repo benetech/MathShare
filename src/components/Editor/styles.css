@@ -26,12 +26,14 @@
 .mainWorkWrapper {
     min-height: 100%;
     overflow: auto;
-    background-color: #fff; 
-    background-image: 
-    linear-gradient(90deg, transparent 99px, rgba(255, 102, 102, 0.63) 99px, rgba(255, 102, 102, 0.63) 101px, transparent 101px),
-    linear-gradient(90deg, transparent 92px, rgba(255, 102, 102, 0.63) 92px, rgba(255, 102, 102, 0.63) 93px, transparent 93px),
-    linear-gradient(rgba(173, 216, 230, 0.63) 0% .15em, transparent .1em);
+    background-color: rgb(255, 255, 255);
+    background-image:
+        linear-gradient(90deg, transparent 99px, rgba(255, 102, 102, 0.63) 99px, rgba(255, 102, 102, 0.63) 101px, transparent 101px),
+        linear-gradient(90deg, transparent 92px, rgba(255, 102, 102, 0.63) 92px, rgba(255, 102, 102, 0.63) 93px, transparent 93px),
+        linear-gradient(rgba(173, 216, 230, 0.63) 0% .15em, transparent .1em);
     background-size: 100% 2.6em;
+    background-position: 0px 25px;
+    background-attachment: local;
 }
 
 .mainWrapper {

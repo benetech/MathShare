@@ -5,7 +5,7 @@
 
 .step {
     font-size: 120%;
-    margin-left: 75px;
+    margin-left: 105px;
     padding: 5px 30px 10px 0px;
     opacity: 0.65;
     margin-right: 0px;
@@ -48,4 +48,8 @@
 
 .cleanUpAnnotation {
     color:#727272;
+}
+
+.reason {
+    margin-top: 8px;
 }
