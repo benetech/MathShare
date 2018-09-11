@@ -134,7 +134,7 @@ export default class Editor extends Component {
     updateStep(img) {
         var index = this.state.editorPosition;
         this.deleteCleanupOf(index);
-        
+
         if (this.state.textAreaValue === '') {
             createAlert('warning', Locales.strings.no_description_warning, 'Warning');
             setTimeout(function () {
@@ -157,9 +157,9 @@ export default class Editor extends Component {
         if (steps[index].cleanup) {
             steps[index].cleanup = null;
         }
-        this.setState({steps});
+        this.setState({ steps });
     }
-    
+
     updateRowAfterCleanup(mathContent, mathStepNumber, scratchpad) {
         let cleanedUp = MathButton.CleanUpCrossouts(mathContent);
         if (mathContent !== cleanedUp) {
@@ -195,14 +195,14 @@ export default class Editor extends Component {
 
     exitUpdate(oldEquation, oldExplanation, index) {
         this.restoreEditorPosition();
-
         var newStack = this.state.actionsStack;
-        var oldStep = { "id": index, "equation": oldEquation, "explanation": oldExplanation };
-        newStack.push({
-            type: EDIT,
-            step: oldStep
-        });
-
+        if (index) {
+            var oldStep = { "id": index, "equation": oldEquation, "explanation": oldExplanation };
+            newStack.push({
+                type: EDIT,
+                step: oldStep
+            });
+        }
         this.setState({
             actionsStack: newStack,
             updateMathFieldMode: false
@@ -212,7 +212,7 @@ export default class Editor extends Component {
 
     restoreEditorPosition() {
         let updatedMathField = this.state.theActiveMathField;
-        var lastStep = this.state.solution.steps[this.state.solution.steps.length -1];
+        var lastStep = this.state.solution.steps[this.state.solution.steps.length - 1];
         updatedMathField.latex(lastStep.stepValue);
         this.setState({
             theActiveMathField: updatedMathField,
@@ -302,9 +302,6 @@ export default class Editor extends Component {
     deleteLastStep() {
         let newSteps = this.state.solution.steps;
         var deletedStep = newSteps.pop();
-        if (deletedStep.cleanup) {
-            newSteps.pop();
-        }
         this.setState({
             steps: newSteps,
             editorPosition: this.countEditorPosition(this.state.solution.steps)
@@ -433,7 +430,9 @@ export default class Editor extends Component {
             return false;
         }
         for (var i = 0; i < first.length; i++) {
-            if (first[i].stepValue != second[i].stepValue || first[i].explanation != second[i].explanation) {
+            if (first[i].stepValue != second[i].stepValue ||
+                first[i].explanation != second[i].explanation || 
+                first[i].scratchpad != second[i].scratchpad) {
                 return false;
             }
         }
@@ -492,7 +491,7 @@ export default class Editor extends Component {
             newProblem={this.id === "newEditor"}
             readOnly={this.state.readOnly}
             undoLastAction={this.undoLastAction}
-            bindDisplayFunction={(f) => this.setState({displayScratchpad: f})} />
+            bindDisplayFunction={(f) => this.setState({ displayScratchpad: f })} />
 
         return (
             <div id="MainWorkWrapper" className={editor.mainWorkWrapper}>

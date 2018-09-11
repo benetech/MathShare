@@ -5,7 +5,7 @@ import PaletteChooser from '../../components/ButtonsPaletteChooser';
 import Locales from '../../../../strings'
 import React, { Component } from 'react'
 
-export default class Home extends Component {
+export default class ModalContainer extends Component {
     constructor(props) {
         super(props);
         this.state = {
