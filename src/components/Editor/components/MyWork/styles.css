@@ -5,7 +5,6 @@
 
 .myWorkArea {
     z-index: 1;
-    display: grid;
     border-radius: 12px;
     margin-top: 10px;
     margin-bottom: 20px;
