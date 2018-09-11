@@ -46,6 +46,7 @@ export default class Editor extends Component {
                 }
             ],
             editorPosition: 0,
+            editedStep: null,
             allowedPalettes: [],
             theActiveMathField: null,
             textAreaValue: "",
@@ -123,6 +124,7 @@ export default class Editor extends Component {
         updatedMathField.latex(mathStep.stepValue);
         this.state.displayScratchpad(mathStep.scratchpad);
         this.setState({
+            editedStep: stepNumber - 1,
             theActiveMathField: updatedMathField,
             textAreaValue: mathStep.explanation,
             editing: true,
@@ -133,7 +135,7 @@ export default class Editor extends Component {
     }
 
     updateStep(img) {
-        var index = this.state.editorPosition;
+        var index = this.state.editedStep;
         this.deleteCleanupOf(index);
 
         if (this.state.textAreaValue === '') {
