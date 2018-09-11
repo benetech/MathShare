@@ -14,10 +14,10 @@ export default class MyStepsList extends Component {
         this.buildStep = this.buildStep.bind(this);
     }
 
-    buildStep(i, value, explanation, isCleanup) {
+    buildStep(i, value, explanation, isCleanup, isEdited) {
         var showTrash = false;
         var showEdit = false;
-        if (i > 0 && !this.props.readOnly) {
+        if (i > 0 && !this.props.readOnly && !isEdited) {
             showEdit = true;
         }
 
@@ -41,11 +41,14 @@ export default class MyStepsList extends Component {
     
     render() {
         var steps = [];
-        var counter = 0;
+        var i = 0;
+        var cleanups = 0;
         this.props.solution.steps.forEach((step) => {
-            steps.push(this.buildStep(counter++, step.stepValue, step.explanation, false));
+            var isEdited = this.props.editing && (i + cleanups == this.props.editorPosition);
+            steps.push(this.buildStep(i++, step.stepValue, step.explanation, false, isEdited));
             if (step.cleanup) {
-                steps.push(this.buildStep(counter, step.cleanup, Locales.strings.cleanup, true));
+                cleanups++;
+                steps.push(this.buildStep(i, step.cleanup, Locales.strings.cleanup, true));
             }
         });
 
