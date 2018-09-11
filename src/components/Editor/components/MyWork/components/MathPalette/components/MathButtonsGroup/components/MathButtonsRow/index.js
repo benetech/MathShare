@@ -10,6 +10,7 @@ export default class MathButtonsRow extends Component {
                     button={button}
                     palette={this.props.palette}
                     theActiveMathField={this.props.theActiveMathField}
+                    readOnly={this.props.readOnly}
                 />
             )
         );

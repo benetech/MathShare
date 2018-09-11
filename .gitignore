@@ -11,3 +11,6 @@ npm-debug.log
 
 # Debugging MathLive
 mathlive/
+
+# build output
+dist/

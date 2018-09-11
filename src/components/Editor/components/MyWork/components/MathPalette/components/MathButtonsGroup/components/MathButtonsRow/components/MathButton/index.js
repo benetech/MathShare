@@ -100,7 +100,7 @@ export default class MathButton extends Component {
                     data-toggle="tooltip"
                     title={title}
                     content={this.props.button.value}
-                    onClick={functions.bind(this)}
+                    onClick={this.props.readOnly ? null : functions.bind(this)}
                 />
                 <span className="sr-only">{title}</span>
             </span>

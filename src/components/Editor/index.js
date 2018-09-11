@@ -12,6 +12,7 @@ import config from '../../../package.json';
 import ShareModal from '../ShareModal';
 import googleAnalytics from '../../scripts/googleAnalytics';
 import ConfirmationModal from '../ConfirmationModal';
+import { SERVER_URL } from '../../config';
 
 const mathLive = DEBUG_MODE ? require('../../../mathlive/src/mathlive.js')
     : require('../../lib/mathlivedist/mathlive.js');
@@ -45,7 +46,7 @@ export default class Editor extends Component {
                 }
             ],
             editorPosition: 0,
-            allowedPalettes: props.allowedPalettes,
+            allowedPalettes: [],
             theActiveMathField: null,
             textAreaValue: "",
             actionsStack: [],
@@ -87,9 +88,9 @@ export default class Editor extends Component {
     componentDidMount() {
         var path;
         if (this.props.match.params.action == "view") {
-            path = `${config.serverUrl}/solution/revision/${this.props.match.params.code}`
+            path = `${SERVER_URL}/solution/revision/${this.props.match.params.code}`
         } else {
-            path = `${config.serverUrl}/solution/${this.props.match.params.code}/`
+            path = `${SERVER_URL}/solution/${this.props.match.params.code}/`
         }
         axios.get(path)
             .then(response => {
@@ -394,10 +395,10 @@ export default class Editor extends Component {
     };
 
     shareProblem() {
-        axios.put(`${config.serverUrl}/solution/${this.state.solution.editCode}`, this.state.solution)
+        axios.put(`${SERVER_URL}/solution/${this.state.solution.editCode}`, this.state.solution)
             .then(response => {
                 this.setState({
-                    shareLink: config.serverUrl + '/problem/view/' + response.data.shareCode,
+                    shareLink: SERVER_URL + '/problem/view/' + response.data.shareCode,
                     modalActive: true
                 });
             }
@@ -406,10 +407,10 @@ export default class Editor extends Component {
 
     saveProblem() {
         googleAnalytics('Save');
-        axios.put(`${config.serverUrl}/solution/${this.state.solution.editCode}`, this.state.solution)
+        axios.put(`${SERVER_URL}/solution/${this.state.solution.editCode}`, this.state.solution)
             .then(response => {
                 this.setState({
-                    editLink: config.serverUrl + '/problem/edit/' + this.state.solution.editCode,
+                    editLink: SERVER_URL + '/problem/edit/' + this.state.solution.editCode,
                     stepsFromLastSave: JSON.parse(JSON.stringify(this.state.solution.steps))
                 })
                 createAlert('success', Locales.strings.problem_saved_success_message, Locales.strings.success);
