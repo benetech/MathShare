@@ -20,6 +20,7 @@ export default class NewProblemsForm extends Component {
         this.state = {
             problems: [],
             textAreaValue: "",
+            displayScratchpad: null
         };
 
         this.save = this.save.bind(this);
@@ -76,7 +77,7 @@ export default class NewProblemsForm extends Component {
     }
 
     addStep(imageData, text) {
-        this.props.addProblemCallback(imageData, text, this.state.problems.length);
+        this.props.addProblemCallback(imageData, text, this.state.problems.length, this.state.displayScratchpad);
     }
 
     render() {
@@ -176,7 +177,8 @@ export default class NewProblemsForm extends Component {
                         title={this.props.title}
                         lastMathEquation={lastMathEquation}
                         updateCallback={this.update}
-                        scratchpadContent={scratchpadContent} />
+                        scratchpadContent={scratchpadContent}
+                        bindDisplayFunction={(f) => this.setState({ displayScratchpad: f })} />
                     <div className={styles.footer}>
                         {saveButton}
                         <Button
