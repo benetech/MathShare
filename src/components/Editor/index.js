@@ -348,7 +348,7 @@ export default class Editor extends Component {
     }
 
     addStep(addToHistory, img) {
-        if (!this.state.textAreaValue || this.state.textAreaValue === "") {
+        if (!this.state.textAreaValue || this.state.textAreaValue === "" || $.trim(this.state.textAreaValue).length === 0) {
             createAlert('warning', Locales.strings.no_description_warning, 'Warning');
             setTimeout(function () {
                 $('#mathAnnotation').focus();

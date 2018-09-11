@@ -71,6 +71,7 @@ export default class PaletteChooser extends Component {
                 titleText="demo one"
                 onExit={this.props.deactivateModal}
                 getApplicationNode={this.getApplicationNode}
+                focusDialog={true}
                 underlayStyle={{ paddingTop: '2em' }}
             >
                 

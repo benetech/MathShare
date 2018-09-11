@@ -31,7 +31,7 @@ class Locales {
             done: " Done",
             clear_all: " Clear all",
             save_intro: "Save your work or close out to try again from the beginning.",
-            clear_sketchpad: "\"Clear the sketchpad\"",
+            clear_sketchpad: "Clear the sketchpad",
             sketchpad_loading_warning: "Sketchpad library wasn't loaded properly",
             undo_last_action: "Undo Last Action (⌨: shift+backspace)",
             clean_up_and_add_step: "Clean up and add new step",
