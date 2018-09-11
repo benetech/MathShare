@@ -46,7 +46,7 @@ export default class Editor extends Component {
                 }
             ],
             editorPosition: 0,
-            allowedPalettes: props.allowedPalettes,
+            allowedPalettes: [],
             theActiveMathField: null,
             textAreaValue: "",
             actionsStack: [],

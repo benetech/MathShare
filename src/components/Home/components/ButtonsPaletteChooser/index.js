@@ -50,6 +50,7 @@ export default class PaletteChooser extends Component {
                     palette={palette}
                     theActiveMathField={this.props.theActiveMathField}
                     showLabel={false}
+                    readOnly
                 />
             </div>
             <h5 id="paletteLabel" className={styles.paletteLabel}>

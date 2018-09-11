@@ -12,6 +12,7 @@ export default class MathButtonsGroup extends Component {
                     buttonsRow={buttonsRow}
                     palette={this.props.palette}
                     theActiveMathField={this.props.theActiveMathField}
+                    readOnly={this.props.readOnly}
                 />
             </div>
         );
