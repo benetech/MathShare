@@ -4,7 +4,6 @@ import Locales from '../../strings';
 import AriaModal from "react-aria-modal";
 import Button from '../Button';
 import classNames from "classnames";
-import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 
 export default class ShareModal extends Component {
 
@@ -31,7 +30,7 @@ export default class ShareModal extends Component {
                 </div>
                 <footer className={editor.modalFooter}>
                     <Button
-                        className={classNames(bootstrap.btn, bootstrap['btn-primary'], editor.button)}
+                        className={classNames('btn', 'btn-primary', editor.button)}
                         ariaHidden="false"
                         type="button"
                         icon="copy"
@@ -39,7 +38,7 @@ export default class ShareModal extends Component {
                         onClick={() => this.copyShareLink()}/>
                     <Button
                         id="deactivate"
-                        className={classNames(bootstrap.btn, bootstrap['btn-primary'])}
+                        className={classNames('btn', 'btn-primary')}
                         ariaHidden="false"
                         type="button"
                         icon="times"

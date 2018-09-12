@@ -2,7 +2,7 @@
     {
         "screenReadersTitle": "cross out and calc buttons",
         "label": "Edit",
-        "commonClass": "btn btn-facility paletteButton",
+        "commonClass": "button btn-facility paletteButton",
         "buttonsRows": [
             [
                 {
@@ -81,7 +81,7 @@
     {
         "screenReadersTitle": "Operator buttons",
         "label": "Operators",
-        "commonClass": "btn btn-operator paletteButton",
+        "commonClass": "button btn-operator paletteButton",
         "commonOnclick": ["MathLivePasteFromButton"],
         "buttonsRows": [
             [
@@ -135,7 +135,7 @@
     {
         "screenReadersTitle": "Fraction and other notation buttons",
         "label": "Notations",
-        "commonClass": "btn btn-notation paletteButton",
+        "commonClass": "button btn-notation paletteButton",
         "commonOnclick": ["MathLivePasteFromButton"],
         "buttonsRows": [
             [
@@ -199,7 +199,7 @@
     {
         "screenReadersTitle": "Additional symbols buttons",
         "label": "Geometry",
-        "commonClass": "btn btn-symbol paletteButton",
+        "commonClass": "button btn-symbol paletteButton",
         "commonOnclick": ["MathLivePasteFromButton"],
         "buttonsRows": [
             [

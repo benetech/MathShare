@@ -34,6 +34,10 @@ module.exports = env => {
                 },
                 {
                     test: /\.css$/,
+                    include: [
+                        /src\/components/,
+                        /src\/styles/
+                    ],
                     use: [
                         {
                             loader: "style-loader"
@@ -49,6 +53,26 @@ module.exports = env => {
                             }
                         }
                     ]
+                },
+                {
+                    test: /\.css$/,
+                    include: [
+                        /node_modules\/react-notifications/,
+                        /node_modules\/bootstrap/,
+                        /src\/lib/
+                    ],
+                    use: [
+                        {
+                            loader: "style-loader"
+                        },
+                        {
+                            loader: "css-loader"
+                        }
+                    ]
+                },
+                {
+                    test: /\.(ttf|eot|svg|woff(2)?)(\S+)?$/,
+                    loader: 'file-loader?publicPath=/&name=fonts/[name].[ext]'
                 }
             ]
         },

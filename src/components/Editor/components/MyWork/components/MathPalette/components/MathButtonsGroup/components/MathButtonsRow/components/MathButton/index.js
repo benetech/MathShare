@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import Button from '../../.././../../../../../../../../Button';
 import classNames from "classnames";
 import mathButton from './styles.css';
-import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 import teXCommands from './teXCommands.json';
 import googleAnalytics from '../../../../../../../../../../../../scripts/googleAnalytics';
 import createAlert from '../../../../../../../../../../../../scripts/alert';
@@ -78,7 +77,7 @@ export default class MathButton extends Component {
         classes.forEach(function (clazz) {
             result.push(mathButton[clazz]);
         });
-        return classNames(bootstrap.btn, result);
+        return classNames('btn', result);
     }
 
     render() {

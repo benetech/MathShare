@@ -3,40 +3,37 @@ import FontAwesome from "react-fontawesome";
 import classNames from "classnames";
 import header from './styles.css';
 import styles from '../../../../styles/styles.css';
-import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 import { withRouter } from 'react-router-dom';
 import { Dropdown, MenuItem } from 'react-bootstrap';
 import { NotificationManager } from 'react-notifications';
 import Locales from '../../../../strings';
-import axios from 'axios';
-import config from '../../../../../package.json';
 
 export default class MainPageHeader extends Component {
     render() {
         const GettingStartedButton = withRouter(({ history }) => (
-            <a className={classNames(bootstrap['nav-link'], header.pointer)} onClick={() => { history.push('/problem/example') }}>
+            <a className={classNames('nav-link', header.pointer)} onClick={() => { history.push('/problem/example') }}>
                 {Locales.strings.getting_started_title}
             </a>
         ))
 
         const shareButton = this.props.editing ? 
-        <a className={classNames(bootstrap['nav-link'], header.pointer)} onClick={() => this.props.shareCallback(["shareSet"])}>
+        <a className={classNames('nav-link', header.pointer)} onClick={() => this.props.shareCallback(["shareSet"])}>
             {Locales.strings.share}
         </a>
         : 
         null
         const button = this.props.editing ? 
-            <a className={classNames(bootstrap['nav-link'], header.pointer)} onClick={this.props.finishEditing}>
+            <a className={classNames('nav-link', header.pointer)} onClick={this.props.finishEditing}>
                 {Locales.strings.finish_edit}
             </a>
             : 
-            <a className={classNames(bootstrap['nav-link'], header.pointer)} onClick={() => { 
+            <a className={classNames('nav-link', header.pointer)} onClick={() => { 
                     this.props.history.push(`/problemSet/edit/${this.props.editCode}`);
                 }}>
                 {Locales.strings.edit}
             </a>
 
-         const addProblemSetButton = <a className={classNames(bootstrap['nav-link'], header.pointer)} onClick={this.props.addProblemSetCallback}>
+         const addProblemSetButton = <a className={classNames('nav-link', header.pointer)} onClick={this.props.addProblemSetCallback}>
              {Locales.strings.add_problem_set}
          </a>
 
@@ -44,30 +41,30 @@ export default class MainPageHeader extends Component {
             <div id="topNavigationWrapper" className={header.header} role="heading" aria-level="1">
                 <header>
                     <h2 className={styles.sROnly}>{Locales.strings.header}</h2>
-                    <nav className={classNames(header.navbar, bootstrap['navbar-expand-lg'], bootstrap.navbar)}
+                    <nav className={classNames(header.navbar, 'navbar-expand-lg', 'navbar')}
                         id="topNavigation">
-                        <a className={bootstrap['navbar-brand']} href="#">
+                        <a className={'navbar-brand'} href="#">
                             <img src="/src/images/logo.png" alt="Benetech Math Editor" height="37" />
                         </a>
-                        <div className={bootstrap['navbar-collapse']}
+                        <div className={'navbar-collapse'}
                             id="navbarNav">
-                            <ul className={classNames(bootstrap['navbar-nav'], bootstrap['mr-auto'])}>
+                            <ul className={classNames('navbar-nav', 'mr-auto')}>
                             </ul>
-                            <ul className={classNames(bootstrap['navbar-nav'], header.navItem)}>
-                                <li className={bootstrap['nav_item']}>
+                            <ul className={classNames('navbar-nav', header.navItem)}>
+                                <li className={'nav_item'}>
                                     <GettingStartedButton />
                                 </li>
-                                <li className={bootstrap['nav_item']}>
+                                <li className={'nav_item'}>
                                     {addProblemSetButton}
                                 </li>
-                                <li className={bootstrap['nav_item']}>
+                                <li className={'nav_item'}>
                                     {shareButton}
                                 </li>
-                                <li className={bootstrap['nav_item']}>
+                                <li className={'nav_item'}>
                                     {button}
                                 </li>
-                                <li className={classNames(bootstrap['nav-item'], [bootstrap.dropdown])}>
-                                    <a className={classNames(bootstrap['nav-link'], bootstrap['dropdown-toggle'])}
+                                <li className={classNames('nav-item', ['dropdown'])}>
+                                    <a className={classNames('nav-link', 'dropdown-toggle')}
                                         data-toggle="dropdown" href="#" role="button"
                                         aria-haspopup="true"
                                         aria-expanded="false">
@@ -81,13 +78,13 @@ export default class MainPageHeader extends Component {
                                         <input ref='fileid' type='file' hidden onChange={readBlob.bind(this)} />
                                     </Dropdown.Menu>
                                 </li>
-                                <li className={bootstrap['nav-item']}>
-                                    <a className={bootstrap['nav-link']} href="mailto:info@diagramcenter.org">{Locales.strings.contact_us}</a>
+                                <li className={'nav-item'}>
+                                    <a className={'nav-link'} href="mailto:info@diagramcenter.org">{Locales.strings.contact_us}</a>
                                 </li>
-                                <li className={bootstrap['nav-item']}>
+                                <li className={'nav-item'}>
                                     <a href="http://www.surveygizmo.com/s3/4048161/Benetech-s-Math-Editor-Online-Feedback"
                                         target="_blank"
-                                        className={bootstrap['nav-link']}>
+                                        className={'nav-link'}>
                                         <FontAwesome
                                             className='super-crazy-colors'
                                             name='arrow-circle-right'

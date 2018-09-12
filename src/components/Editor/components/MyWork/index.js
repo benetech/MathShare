@@ -6,7 +6,6 @@ import classNames from "classnames";
 import myWork from './styles.css';
 import editor from '../../styles.css';
 import styles from '../../../../styles/styles.css';
-import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 import Locales from '../../../../strings';
 import Painterro from '../../../../lib/painterro/painterro.commonjs2';
 import painterroConfiguration from './painterroConfiguration.json';
@@ -177,10 +176,10 @@ export default class MyWork extends Component {
                         <div
                             className={
                                 classNames(
-                                    bootstrap['d-flex'],
-                                    bootstrap['flex-nowrap'],
-                                    bootstrap['justify-content-between'],
-                                    bootstrap['pt-2']
+                                    'd-flex',
+                                    'flex-nowrap',
+                                    'justify-content-between',
+                                    'pt-2'
                                 )
                             }
                         >
@@ -198,10 +197,10 @@ export default class MyWork extends Component {
                         <div
                             className={
                                 classNames(
-                                    bootstrap['d-flex'],
-                                    bootstrap['flex-nowrap'],
-                                    bootstrap['justify-content-between'],
-                                    bootstrap['pt-2']
+                                    'd-flex',
+                                    'flex-nowrap',
+                                    'justify-content-between',
+                                    'pt-2'
                                 )
                             }
                         >

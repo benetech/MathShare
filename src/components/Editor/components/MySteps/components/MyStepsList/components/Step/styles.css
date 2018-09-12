@@ -5,7 +5,7 @@
 
 .step {
     font-size: 120%;
-    margin-left: 105px;
+    margin-left: 105px!important;
     padding: 5px 30px 10px 0px;
     opacity: 0.65;
     margin-right: 0px;
@@ -27,15 +27,19 @@
     justify-content: flex-end;
 }
 
-.btn {
+.button {
     background-color: rgb(240, 240, 240);
     transition: all 0.3s;
     flex-shrink: 0;
 }
 
+.withRightMargin {
+    margin-right: 22px;
+}
+
 .clearAll {
     height: 37px;
-    border: 1px solid rgb(204, 204, 204);
+    border: 1px solid rgb(204, 204, 204)!important;
 }
 
 .btnEdit {

@@ -12,16 +12,15 @@
 }
 
  .annotation {
-    border: 0px;
+    border: 0px!important;
     box-shadow: none;
     transition: none;
     resize: none;
     display: block;
-    border-radius: 0px;
-    width: 280px;
-    margin-top: 1px;
+    border-radius: 0px!important;
+    width: 250px!important;
     margin-right: 3px;
-    border-left: 1px solid rgb(204, 204, 204);
+    border-left: 1px solid rgb(204, 204, 204)!important;
 }
 
 .annotationHeader {

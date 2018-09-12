@@ -4,7 +4,6 @@ import classNames from "classnames";
 import myStepsList from './styles.css';
 import mySteps from '../../../../styles.css';
 import MyWork from '../../../../components/MyWork';
-import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 import Locales from '../../../../../../strings';
 
 export default class MyStepsList extends Component {
@@ -83,14 +82,14 @@ export default class MyStepsList extends Component {
 
         return (
             <div id="HistoryWrapper" className={mySteps.historyWrapper}>
-                <div className={bootstrap.row} data-step="4"
-                    data-intro={Locales.strings.history_data_intro}>
-                    <div className={bootstrap['col-lg-12']}>
+                <div className={'row'} data-step="4"
+                     data-intro={Locales.strings.history_data_intro}>
+                    <div className={'col-lg-12'}>
                         <div
                             id="MathHistory"
                             className={
                                 classNames(
-                                    bootstrap['container-fluid'],
+                                    'container-fluid',
                                     myStepsList.list
                                 )
                             }
