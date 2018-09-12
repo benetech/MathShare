@@ -20,20 +20,17 @@
     background-color: inherit;
 }
 
-.problemAnnotation {
+.problemAnnotation, .problemAnnotationScaled {
+    word-wrap: break-word;
     display: block;
     text-align: center;
     cursor: pointer;
     margin-bottom: 2ex;
 }
 
-
-.problemEquation {
-    display: inline-flex;
-    text-align: center;
-    padding-left: 15px;
-    min-height: 60px;
-    align-items: center;
+.problemAnnotationScaled {
+    font-size: 1.15em;
+    margin-top: -1ex;
 }
 
 .trashIcon {
