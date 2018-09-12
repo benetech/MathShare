@@ -71,7 +71,6 @@ export default class Editor extends Component {
         this.undoLastAction = this.undoLastAction.bind(this);
         this.clearAll = this.clearAll.bind(this);
         this.editStep = this.editStep.bind(this);
-        this.deleteCleanupOf = this.deleteCleanupOf.bind(this);
         this.updateStep = this.updateStep.bind(this);
         this.exitUpdate = this.exitUpdate.bind(this);
         this.textAreaChanged = this.textAreaChanged.bind(this);
@@ -136,7 +135,6 @@ export default class Editor extends Component {
 
     updateStep(img) {
         var index = this.state.editedStep;
-        this.deleteCleanupOf(index);
 
         if (this.state.textAreaValue === '') {
             createAlert('warning', Locales.strings.no_description_warning, 'Warning');
@@ -146,27 +144,12 @@ export default class Editor extends Component {
             return;
         }
         let mathStep = Object.assign({}, this.state.solution.steps[index]);
-        this.updateRowAfterCleanup(this.state.theActiveMathField.latex(), index, img);
-        this.exitUpdate(mathStep.stepValue, mathStep.explanation, index);
+        let cleanedup = MathButton.CleanUpCrossouts(this.state.theActiveMathField.latex());
+        let cleanup = cleanedup === this.state.theActiveMathField.latex() ? null : cleanedup;
+        this.updateMathEditorRow(this.state.theActiveMathField.latex(), index, cleanup, img);
+        this.exitUpdate(mathStep.stepValue, mathStep.explanation, mathStep.cleanup, index, mathStep.scratchpad);
         createAlert('success', Locales.strings.successfull_update_message, 'Success');
         this.state.displayScratchpad();
-    }
-
-    deleteCleanupOf(index) {
-        var steps = this.state.solution.steps;
-        if (steps[index].cleanup) {
-            steps[index].cleanup = null;
-        }
-        this.setState({ steps });
-    }
-
-    updateRowAfterCleanup(mathContent, mathStepNumber, scratchpad) {
-        let cleanedUp = MathButton.CleanUpCrossouts(mathContent);
-        if (mathContent !== cleanedUp) {
-            this.updateMathEditorRow(mathContent, mathStepNumber, cleanedUp, scratchpad);
-        } else {
-            this.updateMathEditorRow(mathContent, mathStepNumber, null, scratchpad);
-        }
     }
 
     updateMathEditorRow(mathContent, mathStepNumber, cleanup, scratchpad) {
@@ -177,7 +160,11 @@ export default class Editor extends Component {
         updatedHistory[mathStepNumber].scratchpad = scratchpad;
         let oldSolution = this.state.solution;
         oldSolution.steps = updatedHistory;
-        this.setState({ solution: oldSolution })
+        this.setState(
+            { 
+            solution: oldSolution,
+            textAreaValue: "" 
+        })
         mathLive.renderMathInDocument();
     }
 
@@ -191,11 +178,11 @@ export default class Editor extends Component {
         this.setState({ editorPosition });
     }
 
-    exitUpdate(oldEquation, oldExplanation, index) {
+    exitUpdate(oldEquation, oldExplanation, cleanup, index, img) {
         this.restoreEditorPosition();
         var newStack = this.state.actionsStack;
         if (index) {
-            var oldStep = { "id": index, "stepValue": oldEquation, "explanation": oldExplanation };
+            var oldStep = { "id": index, "stepValue": oldEquation, "cleanup": cleanup, "explanation": oldExplanation, "scratchpad": img};
             newStack.push({
                 type: EDIT,
                 step: oldStep
@@ -211,10 +198,9 @@ export default class Editor extends Component {
     restoreEditorPosition() {
         let updatedMathField = this.state.theActiveMathField;
         var lastStep = this.state.solution.steps[this.state.solution.steps.length - 1];
-        updatedMathField.latex(lastStep.stepValue);
+        updatedMathField.latex(lastStep.cleanup ? lastStep.cleanup : lastStep.stepValue);
         this.setState({
             theActiveMathField: updatedMathField,
-            textAreaValue: "",
             editorPosition: this.countEditorPosition(this.state.solution.steps),
             editing: false
         });
@@ -266,13 +252,16 @@ export default class Editor extends Component {
     }
 
     undoEdit(stackEntry) {
+        let step = stackEntry.step.id == this.state.solution.steps.length -1 ? //todo: po co to
+            stackEntry.step :
+            this.state.solution.steps[this.state.solution.steps.length -1];
         let updatedMathField = this.state.theActiveMathField;
-        updatedMathField.latex(stackEntry.step.stepValue);
+        updatedMathField.latex(step.cleanup ? step.cleanup : step.stepValue);
         this.setState({
             theActiveMathField: updatedMathField,
-            textAreaValue: stackEntry.step.explanation
+            textAreaValue: step.explanation
         }, () => {
-            this.updateMathEditorRow(stackEntry.step.stepValue, stackEntry.step.id, null)
+            this.updateMathEditorRow(stackEntry.step.stepValue, stackEntry.step.id, stackEntry.step.cleanup, stackEntry.step.scratchpad)
         });
     }
 
@@ -303,7 +292,7 @@ export default class Editor extends Component {
 
     deleteLastStep() {
         let newSteps = this.state.solution.steps;
-        var deletedStep = newSteps.pop();
+        newSteps.pop();
         this.setState({
             steps: newSteps,
             editorPosition: this.countEditorPosition(this.state.solution.steps)
@@ -359,7 +348,6 @@ export default class Editor extends Component {
         var cleanedUp = MathButton.CleanUpCrossouts(mathContent);
         let cleanup = cleanedUp != mathContent ? cleanedUp : null;
         var step = { "stepValue": mathContent, "explanation": explanation, "cleanup": cleanup, "scratchpad": img };
-
         if (addToHistory) {
             this.stackAddAction(step);
         }
