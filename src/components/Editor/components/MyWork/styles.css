@@ -6,7 +6,7 @@
 .myWorkArea {
     z-index: 1;
     border-radius: 12px;
-    margin-top: 10px;
+    margin-top: 0px;
     margin-bottom: 20px;
     background-color: rgba(173, 216, 230, 0.749);
     transition: all 1s;
