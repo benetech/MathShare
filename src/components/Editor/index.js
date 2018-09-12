@@ -272,7 +272,7 @@ export default class Editor extends Component {
             theActiveMathField: updatedMathField,
             textAreaValue: stackEntry.step.explanation
         }, () => {
-            this.updateMathEditorRow(stackEntry.step.stepValue, stackEntry.step.id, false)
+            this.updateMathEditorRow(stackEntry.step.stepValue, stackEntry.step.id, null)
         });
     }
 
