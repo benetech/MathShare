@@ -36,6 +36,7 @@ class Locales {
             undo_last_action: "Undo Last Action (⌨: shift+backspace)",
             clean_up_and_add_step: "Clean up and add new step",
             add_step_button_title: "Clean up the cross outs and start a new step (⌨: shift+enter)",
+            update_problem_button_title: "Update the problem (⌨: shift+enter)",
             add_problem_button_title: "Add a new problem (⌨: shift+enter)",
             add_step: " Add step",
             add_step_intro: "Clean-up your work and start a new step.",

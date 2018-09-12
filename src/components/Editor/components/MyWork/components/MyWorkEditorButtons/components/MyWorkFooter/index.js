@@ -52,7 +52,7 @@ export default class MyWorkFooter extends Component {
                 className={btnClassNames}
                 additionalStyles={['addStep']}
                 toggle="tooltip"
-                title={Locales.strings.clean_up_button_title}
+                title={Locales.strings.update_problem_button_title}
                 content={Locales.strings.update_problem}
                 step="3"
                 intro={Locales.strings.update_problem_intro}

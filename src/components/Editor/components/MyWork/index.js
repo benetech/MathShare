@@ -61,8 +61,8 @@ export default class MyWork extends Component {
         }
         if (event.shiftKey && event.key === 'Enter' && $('#mathAnnotation').val() !== '') {
             event.preventDefault();
-            if ($('#updateStep').is(":visible")) {
-                $('#updateStep').click();
+            if (this.props.editing || this.props.editingProblem) {
+               this.updateStep();
             } else {
                 this.addStep();
             }
