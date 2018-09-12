@@ -290,6 +290,7 @@ export default class Editor extends Component {
             this.stackDeleteAction(lastStep);
         }
 
+        this.state.displayScratchpad();
         this.deleteLastStep();
     }
 
