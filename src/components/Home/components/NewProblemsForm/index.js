@@ -6,7 +6,6 @@ import MyWork from '../../../Editor/components/MyWork';
 import FontAwesome from "react-fontawesome";
 import showImage from "../../../../scripts/showImage";
 import Button from "../../../../components/Button";
-import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 import { arrayMove } from 'react-sortable-hoc';
 import parseMathLive from '../../../../scripts/parseMathLive.js';
 
@@ -141,7 +140,7 @@ export default class NewProblemsForm extends Component {
             </div>
         var saveButton = this.props.editing ? null :
             <Button
-                className={bootstrap.btn}
+                className={'btn'}
                 additionalStyles={['withRightMargin', 'default', 'right']}
                 icon="save"
                 content={Locales.strings.save}
@@ -183,7 +182,7 @@ export default class NewProblemsForm extends Component {
                         {saveButton}
                         <Button
                             id='bottom'
-                            className={bootstrap.btn}
+                            className={'btn'}
                             additionalStyles={['withRightMargin', 'default', 'right']}
                             content={Locales.strings.cancel}
                             icon="times-circle"

@@ -6,7 +6,6 @@ import palettes from '../../../palettes.json';
 import MathButtonsGroup from '../../../Editor/components/MyWork/components/MathPalette/components/MathButtonsGroup';
 import Button from '../../../Button';
 import appStyles from '../../../../styles/styles.css';
-import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 
 const mathLive = DEBUG_MODE ? require('../../../../../mathlive/src/mathlive.js')
     : require('../../../../lib/mathlivedist/mathlive.js');
@@ -62,7 +61,7 @@ export default class PaletteChooser extends Component {
         </div>
         )
         const btnClassNames = [
-            bootstrap.btn,
+            'btn',
             appStyles.pointer
         ];
         return (

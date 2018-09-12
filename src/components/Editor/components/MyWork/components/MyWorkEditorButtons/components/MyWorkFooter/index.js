@@ -3,16 +3,15 @@ import Button from "../../../../../../../../components/Button";
 import classNames from "classnames";
 import footer from './styles.css';
 import styles from '../../../../../../../../styles/styles.css';
-import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 import Locales from '../../../../../../../../strings';
 
 export default class MyWorkFooter extends Component {
 
     render() {
         const btnClassNames = [
-            bootstrap.btn,
+            'btn',
             styles.pointer,
-            footer.btn
+            footer.button
         ];
 
         const undoButton = this.props.undoButton && !this.props.addingProblem ?

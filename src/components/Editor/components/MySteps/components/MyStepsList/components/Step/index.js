@@ -3,7 +3,6 @@ import Button from '../../../../../../../../components/Button';
 import classNames from "classnames";
 import step from './styles.css';
 import styles from '../../../../../../../../styles/styles.css';
-import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 import Locales from '../../../../../../../../strings'
 
 const mathLive = DEBUG_MODE ? require('../../../../../../../../../mathlive/src/mathlive.js')
@@ -56,9 +55,9 @@ export default class Step extends Component {
                 <Button
                     className={
                         classNames(
-                            bootstrap.btn,
+                            'btn',
                             step.btnEdit,
-                            step.btn
+                            step.button
                         )
                     }
                     additionalStyles={['background', 'palette']}
@@ -81,9 +80,9 @@ export default class Step extends Component {
                 <Button
                     className={
                         classNames(
-                            bootstrap.btn,
+                            'btn',
                             step.btnDelete,
-                            step.btn
+                            step.button
                         )
                     }
                     additionalStyles={['background', 'palette', 'withLeftMargin']}
@@ -108,9 +107,9 @@ export default class Step extends Component {
         const clearAll = this.props.stepNumber == 1 && !this.props.readOnly ?
             <Button
                 className={classNames([
-                    bootstrap.btn,
+                    'btn',
                     step.clearAll,
-                    step.btn
+                    step.button
                 ])}
                 content={Locales.strings.clear_all}
                 icon="times-circle"
@@ -118,23 +117,23 @@ export default class Step extends Component {
             /> : null;
 
         return (
-            <div id="mathStep" className={classNames(bootstrap.row, step.step)}>
-                <div className={bootstrap['col-md-1']}>
+            <div id="mathStep" className={classNames('row', step.step)}>
+                <div className={'col-md-1'}>
                     <span role="heading" aria-level="3">
                         {this.buildReason()}
                     </span>
                 </div>
-                <div className={classNames(bootstrap['col-md-5'], step.annotationEquation)}>
+                <div className={classNames('col-md-5', step.annotationEquation)}>
                     <span className={styles.sROnly}> {Locales.strings.math}: </span>
                     <span className="staticMath" >{"$$" + this.props.math + "$$"}</span>
                 </div>
-                <div className={classNames(bootstrap['col-md-5'], step.annotationEquation)}>
+                <div className={classNames('col-md-5', step.annotationEquation)}>
                     <span className={styles.sROnly} role="heading" aria-level="4">{Locales.strings.reason}:</span>
                     <span className={classNames({
                         [step.cleanUpAnnotation]: this.props.cleanup
                     })}> {this.props.annotation} </span>
                 </div>
-                <div className={classNames(bootstrap['col-md-1'], step.btnContainer)}>
+                <div className={classNames('col-md-1', step.btnContainer)}>
                     {clearAll}
                     {this.buildEditBtn()}
                     {this.buildTrashBtn()}

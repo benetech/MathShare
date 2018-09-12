@@ -1,6 +1,5 @@
 import React, {Component} from "react";
 import MathButtonsRow from './components/MathButtonsRow';
-import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 import buttonsGroup from './styles.css';
 
 export default class MathButtonsGroup extends Component {
@@ -17,7 +16,7 @@ export default class MathButtonsGroup extends Component {
             </div>
         );
         return (
-            <div className={bootstrap[this.props.order]}>
+            <div className={this.props.order}>
                 {rows}
                 {label}
             </div>

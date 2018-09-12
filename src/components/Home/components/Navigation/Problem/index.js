@@ -4,7 +4,6 @@ import Button from '../../.././../Button';
 import classNames from "classnames";
 import problem from './styles.css';
 import buttons from '../../../../../components/Button/styles.css';
-import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 import Locales from '../../../../../strings';
 import config from '../../../../../../package.json';
 import axios from 'axios';
@@ -174,8 +173,8 @@ export default class Problem extends Component {
             <div
                 className={
                     classNames(
-                        bootstrap['col-md-4'],
-                        bootstrap['text-center'],
+                        'col-md-4',
+                        'text-center',
                         problem.problem
                     )
                 }
@@ -183,7 +182,7 @@ export default class Problem extends Component {
                 <span
                     className={
                         classNames(
-                            bootstrap.btn,
+                            'btn',
                             buttons.default,
                             buttons.huge,
                             problem.navSpan

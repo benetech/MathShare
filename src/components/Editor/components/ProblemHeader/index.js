@@ -3,7 +3,6 @@ import Button from '../../../../components/Button';
 import classNames from "classnames";
 import problem from './styles.css';
 import styles from '../../../../styles/styles.css';
-import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 import googleAnalytics from '../../../../scripts/googleAnalytics';
 import Locales from '../../../../strings';
 import showImage from '../../../../scripts/showImage';
@@ -40,7 +39,7 @@ export default class ProblemHeader extends Component {
     render() {
         var imgButton = this.props.scratchpad ?
         <Button
-            className={classNames(bootstrap.btn, styles.pointer, problem.btn)}
+            className={classNames('btn', styles.pointer, problem.button)}
             additionalStyles={['image']}
             ariaHidden="true"
             type="button"
@@ -58,21 +57,21 @@ export default class ProblemHeader extends Component {
                     <span className={problem.editLinkLabel}>{Locales.strings.edit_link_label}</span>
                     <input type="text" readOnly value={this.props.editLink} className={problem.editLink}/>
             <Button
-                className={classNames(bootstrap.btn, styles.pointer, problem.btn)}
+                className={classNames('btn', styles.pointer, problem.button)}
                 additionalStyles={['default']}
                 type="button"
                 icon="share-alt"
                 content={Locales.strings.share}
                 onClick={this.props.shareProblem} />
             <Button
-                className={classNames(bootstrap.btn, styles.pointer, problem.btn)}
+                className={classNames('btn', styles.pointer, problem.button)}
                 additionalStyles={['default']}
                 type="button"
                 icon="save"
                 content={Locales.strings.save}
                 onClick={this.props.saveProblem} />
             <Button
-                className={classNames(bootstrap.btn, styles.pointer, problem.btn)}
+                className={classNames('btn', styles.pointer, problem.button)}
                 additionalStyles={['default']}
                 ariaHidden="true"
                 type="button"
@@ -83,7 +82,7 @@ export default class ProblemHeader extends Component {
             <div className={problem.header}>
                 <div className={problem.backBtnContainer}>
                     <Button
-                        className={classNames(bootstrap.btn, styles.pointer, problem.btn)}
+                        className={classNames('btn', styles.pointer, problem.button)}
                         additionalStyles={['default']}
                         ariaHidden="true"
                         type="button"

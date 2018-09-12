@@ -2,7 +2,6 @@
 import React, { Component } from "react";
 import classNames from "classnames";
 import editorButtons from './styles.css';
-import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 import MyWorkFooter from './components/MyWorkFooter';
 import InputContainerSelectors from './components/InputContainerSelectors';
 import Locales from '../../../../../../strings';
@@ -14,10 +13,10 @@ export default class MyWorkEditorButtons extends Component {
             <div
                 id="editorButtons"
                 className={classNames(
-                        bootstrap['d-flex'],
-                        bootstrap['flex-row'],
-                        bootstrap['flex-nowrap'],
-                        bootstrap['justify-content-between'],
+                        'd-flex',
+                        'flex-row',
+                        'flex-nowrap',
+                        'justify-content-between',
                         editorButtons.editorButtons
                     )
                 }

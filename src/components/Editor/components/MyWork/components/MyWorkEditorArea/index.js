@@ -3,7 +3,6 @@ import SpeechToTextButton from "./components/SpeechToTextButton";
 import classNames from "classnames";
 import editorArea from './styles.css';
 import styles from '../../../../../../styles/styles.css';
-import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 import Locales from '../../../../../../strings'
 
 const mathLive = DEBUG_MODE ? require('../../../../../../../mathlive/src/mathlive.js')
@@ -44,15 +43,15 @@ export default class MyWorkEditorArea extends Component {
         var tts_intro = this.props.addingProblem ? Locales.strings.tts_intro_add_problem : Locales.strings.tts_intro;
         return (
             <div role="heading" aria-level="2">
-                <div className={bootstrap.row}>
-                    <div className={bootstrap['col-lg-12']}>
+                <div className={'row'}>
+                    <div className={'col-lg-12'}>
                         <div id="workArea"
                             className={
                                 classNames(
                                     editorArea.workArea,
-                                    bootstrap['d-flex'],
-                                    bootstrap['flex-nowrap'],
-                                    bootstrap['justify-content-between']
+                                    'd-flex',
+                                    'flex-nowrap',
+                                    'justify-content-between'
                                 )
                             }
                             data-step="1"
@@ -65,13 +64,13 @@ export default class MyWorkEditorArea extends Component {
                                 id="mathEditorActive"
                                 ref="mathEditorActive"
                                 tabIndex="0"
-                                className={classNames(bootstrap['order-1'], editorArea.mathEditorActive)}
+                                className={classNames('order-1', editorArea.mathEditorActive)}
                                 role="heading"
                                 aria-label={Locales.strings.type_math_here}
                             ></section>
                             <div
                                 className={classNames(
-                                    bootstrap['order-2'],
+                                    'order-2',
                                     editorArea.annotationContainer,
                                 )}
                                 role="heading"
@@ -93,7 +92,7 @@ export default class MyWorkEditorArea extends Component {
                                     id="mathAnnotation"
                                     ref="mathAnnotation"
                                     className={classNames(
-                                        bootstrap['form-control'],
+                                        'form-control',
                                         editorArea.annotation,
                                     )}
                                     placeholder={tts_hint}

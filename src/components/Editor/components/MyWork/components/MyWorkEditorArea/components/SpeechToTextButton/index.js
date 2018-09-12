@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import Button from '../../.././../../../../Button';
 import classNames from "classnames";
 import editorArea from '../../styles.css';
-import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 import styles from '../../../../../../styles.css';
 import googleAnalytics from '../../../../../../../../scripts/googleAnalytics';
 import createAlert from '../../../../../../../../scripts/alert';
@@ -56,7 +55,7 @@ export default class SpeechToTextButton extends Component {
                     id="start_button"
                     className={
                         classNames(
-                            bootstrap.btn,
+                            'btn',
                             styles.pointer
                         )
                     }
