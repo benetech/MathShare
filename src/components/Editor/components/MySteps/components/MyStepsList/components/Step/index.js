@@ -118,8 +118,7 @@ export default class Step extends Component {
             /> : null;
 
         return (
-            <div id="mathStep" className={classNames(bootstrap.row, step.step)} data-step={this.props.stepNumber}
-                data-equation={this.props.math} data-annotation={this.props.annotation}>
+            <div id="mathStep" className={classNames(bootstrap.row, step.step)}>
                 <div className={bootstrap['col-md-1']}>
                     <span role="heading" aria-level="3">
                         {this.buildReason()}

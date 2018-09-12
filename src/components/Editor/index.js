@@ -145,12 +145,9 @@ export default class Editor extends Component {
             }, 6000);
             return;
         }
-        let mathStep = $($("#MathHistory").children("#mathStep")[index]);
-        let oldAnnotation = mathStep.data('annotation');
-        let oldEquation = mathStep.data('equation');
-
+        let mathStep = Object.assign({}, this.state.solution.steps[index]);
         this.updateRowAfterCleanup(this.state.theActiveMathField.latex(), index, img);
-        this.exitUpdate(oldEquation, oldAnnotation, index);
+        this.exitUpdate(mathStep.stepValue, mathStep.explanation, index);
         createAlert('success', Locales.strings.successfull_update_message, 'Success');
         this.state.displayScratchpad();
     }
@@ -181,8 +178,6 @@ export default class Editor extends Component {
         let oldSolution = this.state.solution;
         oldSolution.steps = updatedHistory;
         this.setState({ solution: oldSolution })
-        $($("#MathHistory").children("#mathStep")[mathStepNumber]).data('equation', mathContent);
-        $($("#MathHistory").children("#mathStep")[mathStepNumber]).data('annotation', cleanup ? Locales.strings.cleanup : this.state.textAreaValue);
         mathLive.renderMathInDocument();
     }
 
