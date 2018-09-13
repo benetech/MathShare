@@ -30,7 +30,16 @@ export default class Problem extends Component {
 
     buildAnnotation() {
         var text = parseMathLive(this.props.problem.title);
-        return "$$" + OPEN_TEXT_TAG + (this.props.number + 1) + ". }" + text + "}$$";
+        if ((text.match(/\\text{/g) || []).length > 1) {
+            if (text.includes("\\frac")) {
+                text = this.buildComplexProblemText();
+            } else if (text.length > problemMathDisplayLength) {
+                text = text.slice(0, problemMathDisplayLength) + "...";
+            }
+            return "$$" + OPEN_TEXT_TAG + (this.props.number + 1) + ". }" + text + "}$$";
+        } else {
+            return (this.props.number + 1) + ". " + this.props.problem.title;
+        }
     }
 
 
@@ -41,10 +50,8 @@ export default class Problem extends Component {
         }
         else if (text.includes("\\frac")) {
             text = this.buildComplexProblemText();
-        } else {
-            if (text.length > problemTextDisplayLength) {
-                text = text.slice(0, problemTextDisplayLength) + "...";
-            }
+        } else if (text.length > problemTextDisplayLength) {
+            text = text.slice(0, problemTextDisplayLength) + "...";
         }
         return "$$" + text + "$$";
     }
@@ -117,8 +124,12 @@ export default class Problem extends Component {
             annotation = this.buildAnnotation();
             equation = this.buildProblemText();
         }
-
-        var imgButton = (this.props.problem && this.props.problem.scratchpad) ?
+    
+        var wrappedAnnotation = annotation !== undefined && (annotation.match(/\\text{/g) || []).length > 1 ? 
+            <span className={problem.problemAnnotationScaled}>{annotation}</span> :
+            <span className={problem.problemAnnotation}>{annotation}</span>
+            
+        var imgButton = (this.props.problem && this.props.problem.scratchpad) ? 
         <FontAwesome
             className={
                 classNames(
@@ -198,7 +209,7 @@ export default class Problem extends Component {
                                 problem.colorInherit
                             )
                         }
-                        content={<span className={problem.problemAnnotation}>{annotation}</span>}
+                        content={wrappedAnnotation}
                     />
                     {imgButton}
                     {removeButton}
