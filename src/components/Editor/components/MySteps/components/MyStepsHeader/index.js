@@ -2,7 +2,6 @@ import React, {Component} from "react";
 import classNames from "classnames";
 import header from './styles.css';
 import mySteps from '../../../../styles.css';
-import styles from '../../../../../../styles/styles.css';
 import Locales from '../../../../../../strings.js';
 
 export default class MyStepsHeader extends Component {
@@ -14,7 +13,7 @@ export default class MyStepsHeader extends Component {
                     <span className={classNames(mySteps.modalAreaHeading, header.title)} aria-hidden="true">
                         {title}
                     </span>
-                    <span className={styles.sROnly}>{Locales.strings.my_steps}</span>
+                    <span className={'sROnly'}>{Locales.strings.my_steps}</span>
                 </h2>
             </div>
         );

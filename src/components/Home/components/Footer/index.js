@@ -1,6 +1,5 @@
 import React, {Component} from "react";
 import footer from './styles.css';
-import styles from '../../../../styles/styles.css';
 import Locales from '../../../../strings'
 
 export default class MainPageFooter extends Component {
@@ -8,7 +7,7 @@ export default class MainPageFooter extends Component {
       return (
         <div id="footer" className="{footer.footer}">
             <footer className={footer.footer}>
-                <h2 className={styles.sROnly}> {Locales.strings.footer} </h2>
+                <h2 className={'sROnly'}> {Locales.strings.footer} </h2>
                 <div className={footer.edGov}>
                     <a href="https://www2.ed.gov/about/offices/list/osers/osep/index.html" target="_blank">
                         <img className={footer.edGovImg}

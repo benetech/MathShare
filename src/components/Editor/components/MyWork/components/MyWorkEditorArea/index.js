@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import SpeechToTextButton from "./components/SpeechToTextButton";
 import classNames from "classnames";
 import editorArea from './styles.css';
-import styles from '../../../../../../styles/styles.css';
 import Locales from '../../../../../../strings'
 
 const mathLive = DEBUG_MODE ? require('../../../../../../../mathlive/src/mathlive.js')
@@ -58,7 +57,7 @@ export default class MyWorkEditorArea extends Component {
                             data-position="top"
                             data-intro={Locales.strings.work_area_intro}
                         >
-                            <h3 className={styles.sROnly}>{Locales.strings.math_editor}</h3>
+                            <h3 className={'sROnly'}>{Locales.strings.math_editor}</h3>
                             <section
                                 aria-label={Locales.strings.edit_equation}
                                 id="mathEditorActive"
@@ -81,7 +80,7 @@ export default class MyWorkEditorArea extends Component {
                                     className={
                                         classNames(
                                             editorArea.annotationHeader,
-                                            styles.sROnly
+                                            'sROnly'
                                         )
                                     }
                                     tabIndex="-1"

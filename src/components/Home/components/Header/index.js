@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import FontAwesome from "react-fontawesome";
 import classNames from "classnames";
 import header from './styles.css';
-import styles from '../../../../styles/styles.css';
 import { withRouter } from 'react-router-dom';
 import { Dropdown, MenuItem } from 'react-bootstrap';
 import { NotificationManager } from 'react-notifications';
@@ -40,7 +39,7 @@ export default class MainPageHeader extends Component {
         return (
             <div id="topNavigationWrapper" className={header.header} role="heading" aria-level="1">
                 <header>
-                    <h2 className={styles.sROnly}>{Locales.strings.header}</h2>
+                    <h2 className={'sROnly'}>{Locales.strings.header}</h2>
                     <nav className={classNames(header.navbar, 'navbar-expand-lg', 'navbar')}
                         id="topNavigation">
                         <a className={'navbar-brand'} href="#">

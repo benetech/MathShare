@@ -35,8 +35,7 @@ module.exports = env => {
                 {
                     test: /\.css$/,
                     include: [
-                        /src\/components/,
-                        /src\/styles/
+                        /src\/components/
                     ],
                     use: [
                         {
@@ -59,7 +58,8 @@ module.exports = env => {
                     include: [
                         /node_modules\/react-notifications/,
                         /node_modules\/bootstrap/,
-                        /src\/lib/
+                        /src\/lib/,
+                        /src\/styles/
                     ],
                     use: [
                         {

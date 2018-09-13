@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import MathButtonsGroup from './components/MathButtonsGroup';
 import classNames from "classnames";
-import styles from '../../../../../../styles/styles.css';
 import paletteStyle from './styles.css';
 import palettes from '../../../../../palettes.json';
 import Locales from '../../../../../../strings';
@@ -54,7 +53,7 @@ export default class MathPalette extends Component {
                     paletteStyle.mathPalette
                 )}
             >
-                <h3 className={styles.sROnly}>{Locales.strings.math_input_buttons}</h3>
+                <h3 className={'sROnly'}>{Locales.strings.math_input_buttons}</h3>
                 {mathPalette}
             </div> : null;
 
