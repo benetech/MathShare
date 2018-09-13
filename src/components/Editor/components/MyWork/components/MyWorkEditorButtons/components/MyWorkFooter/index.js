@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import Button from "../../../../../../../../components/Button";
 import classNames from "classnames";
 import footer from './styles.css';
-import styles from '../../../../../../../../styles/styles.css';
 import Locales from '../../../../../../../../strings';
 
 export default class MyWorkFooter extends Component {
@@ -10,7 +9,7 @@ export default class MyWorkFooter extends Component {
     render() {
         const btnClassNames = [
             'btn',
-            styles.pointer,
+            'pointer',
             footer.button
         ];
 

@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import Button from '../../.././../../../../Button';
 import classNames from "classnames";
 import editorArea from '../../styles.css';
-import styles from '../../../../../../styles.css';
 import googleAnalytics from '../../../../../../../../scripts/googleAnalytics';
 import createAlert from '../../../../../../../../scripts/alert';
 import Locales from '../../../../../../../../strings';
@@ -60,7 +59,7 @@ export default class SpeechToTextButton extends Component {
                     className={
                         classNames(
                             'btn',
-                            styles.pointer
+                            'pointer'
                         )
                     }
                     additionalStyles={['mic']}
