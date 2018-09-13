@@ -8,7 +8,6 @@ import { NotificationContainer } from 'react-notifications';
 import createAlert from '../../scripts/alert';
 import Locales from '../../strings';
 import axios from 'axios';
-import config from '../../../package.json';
 import ShareModal from '../ShareModal';
 import googleAnalytics from '../../scripts/googleAnalytics';
 import ConfirmationModal from '../ConfirmationModal';

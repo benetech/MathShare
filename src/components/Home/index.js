@@ -8,7 +8,6 @@ import { NotificationContainer } from 'react-notifications';
 import exampleProblem from '../../data/example01.json'; //TODO: Add example problem to the UI
 import createAlert from '../../scripts/alert';
 import Locales from '../../strings'
-import config from '../../../package.json';
 import axios from 'axios';
 import ModalContainer from './components/ModalContainer';
 import { SERVER_URL } from '../../config';
