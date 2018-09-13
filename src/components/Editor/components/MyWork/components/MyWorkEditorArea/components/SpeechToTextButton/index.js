@@ -4,17 +4,21 @@ import classNames from "classnames";
 import editorArea from '../../styles.css';
 import googleAnalytics from '../../../../../../../../scripts/googleAnalytics';
 import createAlert from '../../../../../../../../scripts/alert';
-import Locales from '../../../../../../../../strings'
+import Locales from '../../../../../../../../strings';
+
+import mic from '../../../../../../../../../images/mic.gif';
+import mic_slash from '../../../../../../../../../images/mic-slash.gif';
+import mic_animate from '../../../../../../../../../images/mic-animate.gif';
 
 export default class SpeechToTextButton extends Component {
     constructor(props) {
         super(props);
 
-        var micImage = "/src/images/mic.gif";
+        var micImage = mic;
         try {
             this.recognition = initializeRecognition(this);
         } catch (e) {
-            micImage = "/src/images/mic-slash.gif"
+            micImage = mic_slash;
             console.log(Locales.strings.speech_recongition_error);
         }
 
@@ -36,13 +40,13 @@ export default class SpeechToTextButton extends Component {
             this.recognition.stop();
             this.setState({
                 micEnabled: false,
-                imageSrc: "/src/images/mic.gif"
+                imageSrc: mic
             });
         } else {
             this.recognition.start();
             this.setState({
                 micEnabled: true,
-                imageSrc: "/src/images/mic-animate.gif"
+                imageSrc: mic_animate
             });
         }
     }

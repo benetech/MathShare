@@ -43,11 +43,11 @@
 }
 
 .btnEdit {
-    background-image: url(/src/images/pencil.png);
+    background-image: url(/images/pencil.png);
 }
 
 .btnDelete {
-    background-image: url(/src/images/delete.png);
+    background-image: url(/images/delete.png);
 }
 
 .cleanUpAnnotation {

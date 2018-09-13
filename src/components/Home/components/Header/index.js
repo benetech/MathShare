@@ -7,6 +7,8 @@ import { Dropdown, MenuItem } from 'react-bootstrap';
 import { NotificationManager } from 'react-notifications';
 import Locales from '../../../../strings';
 
+import logo from '../../../../../images/logo.png';
+
 export default class MainPageHeader extends Component {
     render() {
         const GettingStartedButton = withRouter(({ history }) => (
@@ -43,7 +45,7 @@ export default class MainPageHeader extends Component {
                     <nav className={classNames(header.navbar, 'navbar-expand-lg', 'navbar')}
                         id="topNavigation">
                         <a className={'navbar-brand'} href="#">
-                            <img src="/src/images/logo.png" alt="Benetech Math Editor" height="37" />
+                            <img src={logo} alt="Benetech Math Editor" height="37" />
                         </a>
                         <div className={'navbar-collapse'}
                             id="navbarNav">

@@ -12,6 +12,8 @@ import './lib/intro/minified/introjs.min.css';
 import './lib/font-awesome/css/font-awesome.min.css';
 import './styles/styles.css';
 
+import '../images/favicon.png';
+
 render((
   <HashRouter>
     <App />
