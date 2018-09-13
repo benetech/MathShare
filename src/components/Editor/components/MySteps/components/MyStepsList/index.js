@@ -52,38 +52,41 @@ export default class MyStepsList extends Component {
             }
         });
 
-        if (!this.props.readOnly) {
+
+        const myWork = this.props.readOnly ? null :
+            <MyWork
+                allowedPalettes={this.props.allowedPalettes}
+                activateMathField={this.props.activateMathField}
+                theActiveMathField={this.props.theActiveMathField}
+                textAreaChanged={this.props.textAreaChanged}
+                textAreaValue={this.props.textAreaValue}
+                addStepCallback={this.props.addStepCallback}
+                undoLastActionCallback={this.props.undoLastActionCallback}
+                lastMathEquation={this.props.solution.steps[this.props.solution.steps.length - 1].stepValue}
+                deleteStepsCallback={this.props.deleteStepsCallback}
+                cancelEditCallback={this.props.cancelEditCallback}
+                updateCallback={this.props.updateCallback}
+                editing={this.props.editing}
+                history={this.props.history}
+                solution={this.props.solution}
+                openScratchpad={this.props.openScratchpad}
+                showUndo={this.props.showUndo}
+                undoLastAction={this.props.undoLastAction}
+                title={Locales.strings.my_work}
+                bindDisplayFunction={this.props.bindDisplayFunction}
+            />
+
             steps.splice(this.props.editorPosition + 1, 0,
                 <div key={"editor"}>
                     <div className={classNames(myStepsList.background, myStepsList.padding)} />
-                    <MyWork
-                        allowedPalettes={this.props.allowedPalettes}
-                        activateMathField={this.props.activateMathField}
-                        theActiveMathField={this.props.theActiveMathField}
-                        textAreaChanged={this.props.textAreaChanged}
-                        textAreaValue={this.props.textAreaValue}
-                        addStepCallback={this.props.addStepCallback}
-                        undoLastActionCallback={this.props.undoLastActionCallback}
-                        lastMathEquation={this.props.solution.steps[this.props.solution.steps.length - 1].stepValue}
-                        deleteStepsCallback={this.props.deleteStepsCallback}
-                        cancelEditCallback={this.props.cancelEditCallback}
-                        updateCallback={this.props.updateCallback}
-                        editing={this.props.editing}
-                        history={this.props.history}
-                        solution={this.props.solution}
-                        openScratchpad={this.props.openScratchpad}
-                        showUndo={this.props.showUndo}
-                        undoLastAction={this.props.undoLastAction}
-                        title={Locales.strings.my_work}
-                        bindDisplayFunction={this.props.bindDisplayFunction} />
+                    {myWork}
                 </div>
-            )
-        }
+            );
 
         return (
             <div id="HistoryWrapper" className={mySteps.historyWrapper}>
                 <div className={'row'} data-step="4"
-                     data-intro={Locales.strings.history_data_intro}>
+                    data-intro={Locales.strings.history_data_intro}>
                     <div className={'col-lg-12'}>
                         <div
                             id="MathHistory"

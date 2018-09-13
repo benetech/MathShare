@@ -5,7 +5,6 @@ import MyWorkEditorButtons from './components/MyWorkEditorButtons';
 import classNames from "classnames";
 import myWork from './styles.css';
 import editor from '../../styles.css';
-import styles from '../../../../styles/styles.css';
 import Locales from '../../../../strings';
 import Painterro from '../../../../lib/painterro/painterro.commonjs2';
 import painterroConfiguration from './painterroConfiguration.json';
@@ -167,7 +166,7 @@ export default class MyWork extends Component {
                                 {this.props.title}
                             </span>
                             <br/>
-                            <span className={styles.sROnly}>{Locales.strings.my_work}</span>
+                            <span className={'sROnly'}>{Locales.strings.my_work}</span>
                         </h2>
                     </div>
                     <div className={myWork.editorWrapper}>

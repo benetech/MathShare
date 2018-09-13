@@ -35,8 +35,7 @@ module.exports = env => {
                 {
                     test: /\.css$/,
                     include: [
-                        /src\/components/,
-                        /src\/styles/
+                        /src\/components/
                     ],
                     use: [
                         {
@@ -51,7 +50,19 @@ module.exports = env => {
                                 sourceMap: true,
                                 minimize: true
                             }
-                        }
+                        },
+                    ]
+                },
+                {
+                    test: /\.(jpg|png|gif|pdf|ico)$/,
+                    include: /images/,
+                    use: [
+                        {
+                            loader: 'file-loader',
+                            options: {
+                                name: '[path]/[name].[ext]'
+                            },
+                        },
                     ]
                 },
                 {
@@ -59,7 +70,8 @@ module.exports = env => {
                     include: [
                         /node_modules\/react-notifications/,
                         /node_modules\/bootstrap/,
-                        /src\/lib/
+                        /src\/lib/,
+                        /src\/styles/
                     ],
                     use: [
                         {

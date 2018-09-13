@@ -5,7 +5,6 @@ import styles from './styles.css';
 import palettes from '../../../palettes.json';
 import MathButtonsGroup from '../../../Editor/components/MyWork/components/MathPalette/components/MathButtonsGroup';
 import Button from '../../../Button';
-import appStyles from '../../../../styles/styles.css';
 
 const mathLive = DEBUG_MODE ? require('../../../../../mathlive/src/mathlive.js')
     : require('../../../../lib/mathlivedist/mathlive.js');
@@ -62,7 +61,7 @@ export default class PaletteChooser extends Component {
         )
         const btnClassNames = [
             'btn',
-            appStyles.pointer
+            'pointer'
         ];
         return (
             <AriaModal

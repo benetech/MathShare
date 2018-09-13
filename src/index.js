@@ -10,6 +10,9 @@ import './lib/mathlivedist/mathlive.core.css';
 import './lib/mathlivedist/mathlive.css';
 import './lib/intro/minified/introjs.min.css';
 import './lib/font-awesome/css/font-awesome.min.css';
+import './styles/styles.css';
+
+import '../images/favicon.png';
 
 render((
   <HashRouter>
