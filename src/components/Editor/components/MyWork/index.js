@@ -67,7 +67,7 @@ export default class MyWork extends Component {
         }
         if (event.shiftKey && event.key === 'Backspace' && this.props.showUndo && !this.props.addingProblem) {
             event.preventDefault();
-            this.props.undoLastAction();
+            this.props.undoLastActionCallback();
         }
     
         var keys = [];
@@ -170,8 +170,7 @@ export default class MyWork extends Component {
                         </h2>
                     </div>
                     <div className={myWork.editorWrapper}>
-                        <MyWorkEditorArea activateMathField={this.props.activateMathField} lastMathEquation={this.props.lastMathEquation}
-                            textAreaChanged={this.props.textAreaChanged} textAreaValue={this.props.textAreaValue} addingProblem={this.props.addingProblem} />
+                        <MyWorkEditorArea {...this.props} />
                         <div
                             className={
                                 classNames(
@@ -182,16 +181,22 @@ export default class MyWork extends Component {
                                 )
                             }
                         >
-                            <MathPalette theActiveMathField={this.props.theActiveMathField} allowedPalettes={this.props.allowedPalettes}
-                            scratchpadMode={this.state.scratchpadMode} InitScratchPad={this.InitScratchPad} addStepCallback={this.addStep} />
-                            <MyWorkEditorButtons className="d-flex flex-nowrap justify-content-between" addStepCallback={this.addStep} showUndo={this.props.showUndo}
-                                undoLastActionCallback={this.props.undoLastActionCallback} cancelEditCallback={this.props.cancelEditCallback}
-                                deleteStepsCallback={this.props.deleteStepsCallback} editing={this.props.editing} history={this.props.history}
-                                solution={this.props.solution} addingProblem={this.props.addingProblem} cancelCallback={this.props.cancelCallback}
-                                saveCallback={this.props.saveCallback} openScratchpad={this.openScratchpad} hideScratchpad={this.hideScratchpad}
+                            <MathPalette 
+                                {...this.props}
+                                scratchpadMode={this.state.scratchpadMode}
+                                InitScratchPad={this.InitScratchPad}
+                                addStepCallback={this.addStep}
+                            />
+                            <MyWorkEditorButtons 
+                                {...this.props}
+                                className="d-flex flex-nowrap justify-content-between"
+                                addStepCallback={this.addStep} 
+                                openScratchpad={this.openScratchpad} 
+                                hideScratchpad={this.hideScratchpad}
                                 clearAndResizeScratchPad={this.clearAndResizeScratchPad}
-                                textAreaValue={this.props.textAreaValue} scratchpadMode={this.state.scratchpadMode} 
-                                updateCallback={this.updateStep} editingProblem={this.props.editingProblem}/>
+                                scratchpadMode={this.state.scratchpadMode}
+                                updateCallback={this.updateStep} 
+                            />
                         </div>
                         <div
                             className={
