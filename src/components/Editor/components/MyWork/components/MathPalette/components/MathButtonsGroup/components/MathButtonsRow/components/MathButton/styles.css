@@ -5,7 +5,13 @@
     height: 37px;
     border: 1px solid #CCC;
     cursor: pointer;
-  }
+}
+
+.paletteButton:disabled {
+    color: black;
+    opacity: 1!important;
+    cursor: default;
+}
 
 .btn-facility {
     background-color: rgb(246, 255, 93);

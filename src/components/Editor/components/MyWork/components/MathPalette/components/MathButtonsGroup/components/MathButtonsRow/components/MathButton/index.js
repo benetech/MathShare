@@ -33,7 +33,6 @@ export default class MathButton extends Component {
         }
     }
 
-
     getFunctionsById(ids) {
         return function () {
             if (ids.includes("MathLivePasteFromButton")) {
@@ -94,6 +93,7 @@ export default class MathButton extends Component {
         return (
             <span role="listitem">
                 <Button
+                    disabled={this.props.readOnly}
                     id={this.props.button.id}
                     className={this.buildClassNames()}
                     data-toggle="tooltip"
