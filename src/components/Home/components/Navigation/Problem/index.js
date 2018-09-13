@@ -5,7 +5,6 @@ import classNames from "classnames";
 import problem from './styles.css';
 import buttons from '../../../../../components/Button/styles.css';
 import Locales from '../../../../../strings';
-import config from '../../../../../../package.json';
 import axios from 'axios';
 import FontAwesome from "react-fontawesome";
 import showImage from '../../../../../scripts/showImage.js';
@@ -106,7 +105,7 @@ export default class Problem extends Component {
                 }
             ]
         }
-        axios.post(`${config.serverUrl}/solution/`, solution)
+        axios.post(`${SERVER_URL}/solution/`, solution)
             .then(response => {
                 history.push('/problem/edit/' + response.data.editCode);
             })
