@@ -51,7 +51,19 @@ module.exports = env => {
                                 sourceMap: true,
                                 minimize: true
                             }
-                        }
+                        },
+                    ]
+                },
+                {
+                    test: /\.(jpg|png|gif|pdf|ico)$/,
+                    include: /images/,
+                    use: [
+                        {
+                            loader: 'file-loader',
+                            options: {
+                                name: '[path]/[name].[ext]'
+                            },
+                        },
                     ]
                 },
                 {

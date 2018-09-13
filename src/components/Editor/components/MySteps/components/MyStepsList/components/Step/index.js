@@ -3,7 +3,10 @@ import Button from '../../../../../../../../components/Button';
 import classNames from "classnames";
 import step from './styles.css';
 import styles from '../../../../../../../../styles/styles.css';
-import Locales from '../../../../../../../../strings'
+import Locales from '../../../../../../../../strings';
+
+import '../../../../../../../../../images/pencil.png';
+import '../../../../../../../../../images/delete.png';
 
 const mathLive = DEBUG_MODE ? require('../../../../../../../../../mathlive/src/mathlive.js')
     : require('../../../../../../../../lib/mathlivedist/mathlive.js');
