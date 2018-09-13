@@ -53,6 +53,7 @@ export default class Step extends Component {
         if (this.props.showEdit) {
             return (
                 <Button
+                    id={`editStepBtn-${this.props.stepNumber}`}
                     className={
                         classNames(
                             'btn',
@@ -78,6 +79,7 @@ export default class Step extends Component {
         if (this.props.showTrash && !this.props.cleanup) {
             return (
                 <Button
+                    id={`deleteStepBtn-${this.props.stepNumber}`}
                     className={
                         classNames(
                             'btn',
@@ -106,6 +108,7 @@ export default class Step extends Component {
     render() {
         const clearAll = this.props.stepNumber == 1 && !this.props.readOnly ?
             <Button
+                id="clearAllStepsBtn"
                 className={classNames([
                     'btn',
                     step.clearAll,
@@ -117,7 +120,7 @@ export default class Step extends Component {
             /> : null;
 
         return (
-            <div id="mathStep" className={classNames('row', step.step)}>
+            <div id={`mathStep-${this.props.stepNumber}`} className={classNames('row', step.step)}>
                 <div className={'col-md-1'}>
                     <span role="heading" aria-level="3">
                         {this.buildReason()}

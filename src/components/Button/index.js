@@ -52,6 +52,7 @@ export default class Button extends Component {
 
         return (
             <button
+                disabled={this.props.disabled}
                 id={this.props.id}
                 className={this.buildClassNames()}
                 aria-hidden={this.props.ariaHidden}

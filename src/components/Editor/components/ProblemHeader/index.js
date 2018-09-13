@@ -82,12 +82,13 @@ export default class ProblemHeader extends Component {
             <div className={problem.header}>
                 <div className={problem.backBtnContainer}>
                     <Button
+                        id="backBtn"
                         className={classNames('btn', styles.pointer, problem.button)}
                         additionalStyles={['default']}
                         ariaHidden="true"
                         type="button"
                         icon="arrow-left"
-                        onClick={this.props.goBack}/>
+                        onClick={this.props.goBack} />
                 </div>
                 <span id="ProblemTitle" className={problem.title} role="heading" aria-level="1">{title}</span>
                 <span id="ProblemMath" className={problem.title}>{"$$" + this.props.math + "$$"}</span>
