@@ -26,8 +26,8 @@ export default class MyWork extends Component {
 
         this.openScratchpad = this.openScratchpad.bind(this);
         this.hideScratchpad = this.hideScratchpad.bind(this);
-        this.addStep = this.addStep.bind(this);
-        this.updateStep = this.updateStep.bind(this);
+        this.addStepCallback = this.addStepCallback.bind(this);
+        this.updateCallback = this.updateCallback.bind(this);
         this.clearAndResizeScratchPad = this.clearAndResizeScratchPad.bind(this);
         this.scratchpadChangeHandler = this.scratchpadChangeHandler.bind(this);
         this.InitScratchPad = this.InitScratchPad.bind(this);
@@ -60,9 +60,9 @@ export default class MyWork extends Component {
         if (event.shiftKey && event.key === 'Enter' && $('#mathAnnotation').val() !== '') {
             event.preventDefault();
             if (this.props.editing || this.props.editingProblem) {
-               this.updateStep();
+               this.updateCallback();
             } else {
-                this.addStep();
+                this.addStepCallback();
             }
         }
         if (event.shiftKey && event.key === 'Backspace' && this.props.showUndo && !this.props.addingProblem) {
@@ -144,11 +144,11 @@ export default class MyWork extends Component {
             });
     }
 
-    addStep() {
+    addStepCallback() {
         this.props.addStepCallback(this.state.isScratchpadUsed ? this.scratchPadPainterro.imageSaver.asDataURL() : null, this.props.textAreaValue);
     }
 
-    updateStep() {
+    updateCallback() {
         this.props.updateCallback(this.state.isScratchpadUsed ? this.scratchPadPainterro.imageSaver.asDataURL() : null, this.props.textAreaValue);
     }
 
@@ -172,41 +172,25 @@ export default class MyWork extends Component {
                     <div className={myWork.editorWrapper}>
                         <MyWorkEditorArea {...this.props} />
                         <div
-                            className={
-                                classNames(
-                                    'd-flex',
-                                    'flex-nowrap',
-                                    'justify-content-between',
-                                    'pt-2'
-                                )
-                            }
+                            className={classNames(
+                                'd-flex',
+                                'flex-nowrap',
+                                'justify-content-between',
+                                'pt-2'
+                            )}
                         >
-                            <MathPalette 
-                                {...this.props}
-                                scratchpadMode={this.state.scratchpadMode}
-                                InitScratchPad={this.InitScratchPad}
-                                addStepCallback={this.addStep}
-                            />
-                            <MyWorkEditorButtons 
-                                {...this.props}
+                            <MathPalette {...this} {...this.props} {...this.state} />
+                            <MyWorkEditorButtons {...this} {...this.props} {...this.state}
                                 className="d-flex flex-nowrap justify-content-between"
-                                addStepCallback={this.addStep} 
-                                openScratchpad={this.openScratchpad} 
-                                hideScratchpad={this.hideScratchpad}
-                                clearAndResizeScratchPad={this.clearAndResizeScratchPad}
-                                scratchpadMode={this.state.scratchpadMode}
-                                updateCallback={this.updateStep} 
                             />
                         </div>
                         <div
-                            className={
-                                classNames(
-                                    'd-flex',
-                                    'flex-nowrap',
-                                    'justify-content-between',
-                                    'pt-2'
-                                )
-                            }
+                            className={classNames(
+                                'd-flex',
+                                'flex-nowrap',
+                                'justify-content-between',
+                                'pt-2'
+                            )}
                         >
                         </div>
                     </div>

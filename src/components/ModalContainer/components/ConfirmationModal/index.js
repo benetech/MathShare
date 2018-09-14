@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import modalStyles from './styles.css';
 import AriaModal from "react-aria-modal";
-import Button from '../Button';
+import Button from '../../../Button';
 import classNames from "classnames";
 
 export default class ConfirmationModal extends Component {

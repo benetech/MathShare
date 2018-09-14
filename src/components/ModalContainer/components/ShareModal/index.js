@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import editor from './styles.css';
-import Locales from '../../strings';
+import Locales from '../../../../strings';
 import AriaModal from "react-aria-modal";
-import Button from '../Button';
+import Button from '../../../Button';
 import classNames from "classnames";
 
 export default class ShareModal extends Component {

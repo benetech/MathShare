@@ -9,7 +9,7 @@ import exampleProblem from '../../data/example01.json'; //TODO: Add example prob
 import createAlert from '../../scripts/alert';
 import Locales from '../../strings'
 import axios from 'axios';
-import ModalContainer from './components/ModalContainer';
+import ModalContainer, { CONFIRMATION, PALETTE_CHOOSER, ADD_PROBLEM_SET, ADD_PROBLEMS, SHARE_NEW_SET, EDIT_PROBLEM } from '../../components/ModalContainer';
 import { SERVER_URL } from '../../config';
 
 const mathLive = DEBUG_MODE ? require('../../../mathlive/src/mathlive.js')
@@ -42,12 +42,6 @@ export default class Home extends Component {
         this.progressToAddingProblems = this.progressToAddingProblems.bind(this);
         this.saveProblemSet = this.saveProblemSet.bind(this);
         this.finishEditing = this.finishEditing.bind(this);
-        this.CONFIRMATION_MODAL = "confirmation";
-        this.PALETTE_CHOOSER_MODAL = "paletteChooser";
-        this.ADD_PROBLEM_SET_MODAL = "addProblemSet";
-        this.ADD_PROBLEMS_MODAL = "addProblems";
-        this.SHARE_NEW_SET_MODAL = "shareNewSet";
-        this.EDIT_PROBLEM_MODAL = "editProblem";
     }
 
     componentDidMount() {
@@ -92,15 +86,15 @@ export default class Home extends Component {
             if (this.state.activeModals.indexOf(modal) != -1) {
                 oldModals = oldModals.filter(e => e !== modal);
             } else {
-                if (modal == this.ADD_PROBLEM_SET_MODAL || modal == this.ADD_PROBLEMS_MODAL) {
+                if (modal == ADD_PROBLEM_SET || modal == ADD_PROBLEMS) {
                     this.setState({
                         tempProblems: []
                     });
-                } else if (modal == this.CONFIRMATION_MODAL) {
+                } else if (modal == CONFIRMATION) {
                     this.setState({
                         problemToDeleteIndex: index
                     });
-                } else if (modal == this.EDIT_PROBLEM_MODAL) {
+                } else if (modal == EDIT_PROBLEM) {
                     this.setState({
                         problemToEditIndex: index,
                         problemToEdit: this.state.set.problems[index]
@@ -196,7 +190,7 @@ export default class Home extends Component {
         setTimeout(function () {
             mathLive.renderMathInDocument();
         }.bind(this), 200);
-        this.toggleModals([this.CONFIRMATION_MODAL]);
+        this.toggleModals([CONFIRMATION]);
     }
 
     editProblem(imageData, title) {
@@ -223,7 +217,7 @@ export default class Home extends Component {
         setTimeout(function () {
             mathLive.renderMathInDocument();
         }.bind(this), 200);
-        this.toggleModals([this.EDIT_PROBLEM_MODAL]);
+        this.toggleModals([EDIT_PROBLEM]);
     }
 
     updatePositions(problems) {
@@ -236,7 +230,7 @@ export default class Home extends Component {
     }
 
     addProblemSet() {
-        this.toggleModals([this.PALETTE_CHOOSER_MODAL]);
+        this.toggleModals([PALETTE_CHOOSER]);
     }
 
     progressToAddingProblems(palettes) {
@@ -245,7 +239,7 @@ export default class Home extends Component {
             return;
         }
         this.setState({ tempPalettes: palettes });
-        this.toggleModals([this.PALETTE_CHOOSER_MODAL, this.ADD_PROBLEM_SET_MODAL]);
+        this.toggleModals([PALETTE_CHOOSER, ADD_PROBLEM_SET]);
     }
 
     saveProblemSet() {
@@ -261,7 +255,7 @@ export default class Home extends Component {
                     newSetSharecode: response.data.shareCode
                 })
             });
-        this.toggleModals([this.ADD_PROBLEM_SET_MODAL, this.SHARE_NEW_SET_MODAL]);
+        this.toggleModals([ADD_PROBLEM_SET, SHARE_NEW_SET]);
     }
 
     finishEditing() {
@@ -274,7 +268,9 @@ export default class Home extends Component {
                 <NotificationContainer />
                 <MainPageHeader editing={this.props.match.params.action == 'edit'} history={this.props.history} shareCallback={this.toggleModals}
                     addProblemSetCallback={this.addProblemSet} finishEditing={this.finishEditing} editCode={this.state.set.editCode}/>
-                <ModalContainer activeModals={this.state.activeModals} toggleModals={this.toggleModals}
+                <ModalContainer 
+                    activeModals={this.state.activeModals}
+                    toggleModals={this.toggleModals}
                     progressToAddingProblems={this.progressToAddingProblems} deleteProblem={this.deleteProblem}
                     shareLink={SERVER_URL + '/problemSet/view/' + this.state.set.sharecode}
                     newSetShareLink={SERVER_URL + '/problemSet/view/' + this.state.newSetSharecode}

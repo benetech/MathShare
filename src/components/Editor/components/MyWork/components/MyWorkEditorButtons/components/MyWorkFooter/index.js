@@ -13,7 +13,7 @@ export default class MyWorkFooter extends Component {
             footer.button
         ];
 
-        const undoButton = this.props.undoButton && !this.props.addingProblem ?
+        const undoButton = this.props.showUndo && !this.props.addingProblem ?
             <Button
                 className={btnClassNames}
                 additionalStyles={['withRightMargin', 'undo']}
@@ -67,7 +67,7 @@ export default class MyWorkFooter extends Component {
                 step="3"
                 intro={Locales.strings.add_step_intro}
                 icon="plus"
-                onClick={() => this.props.addStep()} />
+                onClick={() => this.props.addStepCallback()} />
         }
 
         return (

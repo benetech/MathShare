@@ -1,5 +1,5 @@
 
-import { stackDeleteAction, stackAddAction, } from './stack';
+import { stackDeleteAction, stackAddAction } from './stack';
 import MathButton from './components/MyWork/components/MathPalette/components/MathButtonsGroup/components/MathButtonsRow/components/MathButton';
 import createAlert from '../../scripts/alert';
 import Locales from '../../strings';
@@ -71,7 +71,7 @@ function updateStep(context, img) {
     let cleanedup = MathButton.CleanUpCrossouts(context.state.theActiveMathField.latex());
     let cleanup = cleanedup === context.state.theActiveMathField.latex() ? null : cleanedup;
     context.updateMathEditorRow(context.state.theActiveMathField.latex(), index, cleanup, img);
-    context.exitUpdate(mathStep.stepValue, mathStep.explanation, mathStep.cleanup, index, mathStep.scratchpad);
+    context.cancelEditCallback(mathStep.stepValue, mathStep.explanation, mathStep.cleanup, index, mathStep.scratchpad);
     createAlert('success', Locales.strings.successfull_update_message, 'Success');
     context.state.displayScratchpad();
 }
