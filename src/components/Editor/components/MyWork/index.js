@@ -181,6 +181,8 @@ export default class MyWork extends Component {
                         >
                             <MathPalette {...this} {...this.props} {...this.state} />
                             <MyWorkEditorButtons {...this} {...this.props} {...this.state}
+                                addStepCallback={this.addStepCallback}
+                                openScratchpad={this.openScratchpad}
                                 className="d-flex flex-nowrap justify-content-between"
                             />
                         </div>
