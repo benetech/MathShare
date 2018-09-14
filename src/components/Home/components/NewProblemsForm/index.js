@@ -29,8 +29,12 @@ export default class NewProblemsForm extends Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        if(prevState.problems.length != this.state.problems.length) {
+        if (prevState.problems.length != this.state.problems.length) {
             this.scrollToBottom();
+        }
+        if (this.state.displayScratchpad && this.props.problemToEdit) {
+            this.state.displayScratchpad(this.props.problemToEdit.scratchpad);
+            this.setState({displayScratchpad: null});
         }
     }
 
@@ -101,7 +105,6 @@ export default class NewProblemsForm extends Component {
                     onClick={i == 0 ? null : () => this.reorder(problem.position, problem.position - 1)}
                 />
             const moveDownBtn =
-
                 <FontAwesome
                     size="lg"
                     className={i == this.state.problems.length - 1 ? styles.disabled : null}

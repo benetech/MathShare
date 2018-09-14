@@ -18,6 +18,7 @@ export default class MyWork extends Component {
 
         this.state = {
             isScratchpadUsed: false,
+            isScratchpadInitialized: false,
             scratchpadMode: false,
             scratchpadContent: null
         }
@@ -40,7 +41,7 @@ export default class MyWork extends Component {
         if (this.props.bindDisplayFunction) {
             this.props.bindDisplayFunction((scratchpadContent) => {
                 this.setState(
-                    {scratchpadContent},
+                    { scratchpadContent },
                     this.displayScratchpadImage
             )});
         }
@@ -129,7 +130,7 @@ export default class MyWork extends Component {
 
     openScratchpad() {
         this.setState(
-            {scratchpadMode: true}, () => {
+            { scratchpadMode: true }, () => {
                 $('#scratch-pad-containter').show();
                 this.displayScratchpadImage();
             });
@@ -145,11 +146,13 @@ export default class MyWork extends Component {
     }
 
     addStepCallback() {
-        this.props.addStepCallback(this.state.isScratchpadUsed ? this.scratchPadPainterro.imageSaver.asDataURL() : null, this.props.textAreaValue);
+        this.props.addStepCallback(this.state.isScratchpadUsed ? this.scratchPadPainterro.imageSaver.asDataURL() : 
+            this.state.scratchpadContent, this.props.textAreaValue);
     }
 
     updateCallback() {
-        this.props.updateCallback(this.state.isScratchpadUsed ? this.scratchPadPainterro.imageSaver.asDataURL() : null, this.props.textAreaValue);
+        this.props.updateCallback(this.state.isScratchpadUsed ? this.scratchPadPainterro.imageSaver.asDataURL() :
+            this.state.scratchpadContent, this.props.textAreaValue);
     }
 
     render() {
@@ -182,6 +185,7 @@ export default class MyWork extends Component {
                             <MathPalette {...this} {...this.props} {...this.state} />
                             <MyWorkEditorButtons {...this} {...this.props} {...this.state}
                                 addStepCallback={this.addStepCallback}
+                                updateCallback={this.updateCallback}
                                 openScratchpad={this.openScratchpad}
                                 className="d-flex flex-nowrap justify-content-between"
                             />
