@@ -143,7 +143,11 @@ export default class Editor extends Component {
     }
 
     scrollToBottom() {
-        document.querySelector("#MainWorkWrapper").scrollTo(0, document.querySelector("#MainWorkWrapper").scrollHeight);
+        try {
+            document.querySelector("#MainWorkWrapper").scrollTo(0, document.querySelector("#MainWorkWrapper").scrollHeight);
+        } catch(e) {
+            console.log("scrollTo method not supported");
+        }
     }
 
     countCleanups(steps) {
@@ -253,7 +257,7 @@ export default class Editor extends Component {
                     />
                     <MyStepsHeader readOnly={this.state.readOnly} />
                     {myStepsList}
-                    <div ref={el => { this.el = el; }} style={{ height: 50 }} />
+                    <div ref={el => { this.el = el; }} style={{ height: 50 }}></div>
                 </main>
             </div>
         );
