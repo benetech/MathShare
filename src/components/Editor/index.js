@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import ProblemHeader from './components/ProblemHeader';
 import MyStepsHeader from './components/MySteps/components/MyStepsHeader';
 import MyStepsList from './components/MySteps/components/MyStepsList';
+import ModalContainer, { CONFIRMATION_BACK, SHARE_SET } from '../ModalContainer';
 import editor from './styles.css';
 import { NotificationContainer } from 'react-notifications';
 import createAlert from '../../scripts/alert';
@@ -9,9 +10,7 @@ import { undoLastAction, clearAll, stackEditAction } from './stack';
 import { deleteStep, editStep, updateStep, addStep } from './stepsOperations';
 import Locales from '../../strings';
 import axios from 'axios';
-import ShareModal from '../ShareModal';
 import googleAnalytics from '../../scripts/googleAnalytics';
-import ConfirmationModal from '../ConfirmationModal';
 import { SERVER_URL } from '../../config';
 
 const mathLive = DEBUG_MODE ? require('../../../mathlive/src/mathlive.js')
@@ -40,6 +39,7 @@ export default class Editor extends Component {
                     explanation: Locales.strings.loading
                 }
             ],
+            activeModals: [],
             editorPosition: 0,
             editedStep: null,
             allowedPalettes: [],
@@ -48,23 +48,19 @@ export default class Editor extends Component {
             actionsStack: [],
             updateMathFieldMode: false,
             editing: false,
-            modalActive: false,
-            confirmationModalActive: false,
             shareLink: "http:mathshare.com/exampleShareLink/1",
             editLink: "Not saved yet.",
             readOnly: false,
             displayScratchpad: null
         };
 
+        this.toggleModals = this.toggleModals.bind(this);
         this.restoreEditorPosition = this.restoreEditorPosition.bind(this);
         this.exitUpdate = this.exitUpdate.bind(this);
         this.textAreaChanged = this.textAreaChanged.bind(this);
         this.getApplicationNode = this.getApplicationNode.bind(this);
         this.shareProblem = this.shareProblem.bind(this);
         this.saveProblem = this.saveProblem.bind(this);
-        this.deactivateModal = this.deactivateModal.bind(this);
-        this.deactivateConfirmationModal = this.deactivateConfirmationModal.bind(this);
-        this.activateConfirmationModal = this.activateConfirmationModal.bind(this);
         this.goBack = this.goBack.bind(this);
         this.confirmationModalSaveCallback = this.confirmationModalSaveCallback.bind(this);
         this.confirmationModalDiscardCallback = this.confirmationModalDiscardCallback.bind(this);
@@ -172,9 +168,8 @@ export default class Editor extends Component {
         axios.put(`${SERVER_URL}/solution/${this.state.solution.editCode}`, this.state.solution)
             .then(response => {
                 this.setState({
-                    shareLink: SERVER_URL + '/problem/view/' + response.data.shareCode,
-                    modalActive: true
-                });
+                    shareLink: SERVER_URL + '/problem/view/' + response.data.shareCode
+                }, this.toggleModals([SHARE_SET]));
             })
     };
 
@@ -193,7 +188,7 @@ export default class Editor extends Component {
 
     goBack() {
         if (!this.compareStepArrays(this.state.solution.steps, this.state.stepsFromLastSave)) {
-            this.activateConfirmationModal();
+            this.toggleModals([CONFIRMATION_BACK]);
         } else {
             this.props.history.goBack();
         }
@@ -213,38 +208,30 @@ export default class Editor extends Component {
         return true;
     }
 
-    deactivateModal() {
-        this.setState({ modalActive: false });
-    };
-
-    deactivateConfirmationModal() {
-        this.setState({ confirmationModalActive: false });
-    };
-
-    activateConfirmationModal() {
-        this.setState({ confirmationModalActive: true });
-    };
+    toggleModals(modals) {
+        var oldModals = this.state.activeModals;
+        for (var modal of modals) {
+            if (this.state.activeModals.indexOf(modal) != -1) {
+                oldModals = oldModals.filter(e => e !== modal);
+            } else {
+                oldModals.push(modal);
+            }
+        }
+        this.setState({ activeModals: oldModals });
+    }
 
     confirmationModalSaveCallback() {
-        this.deactivateConfirmationModal();
+        this.toggleModals([CONFIRMATION_BACK]);
         this.saveProblem();
     }
 
     confirmationModalDiscardCallback() {
-        this.deactivateConfirmationModal();
+        this.toggleModals([CONFIRMATION_BACK]);
         this.props.history.goBack();
     }
 
     render() {
-        const modal = this.state.modalActive ? <ShareModal shareLink={this.state.shareLink} deactivateModal={this.deactivateModal} /> : null;
-
-        const confirmationModal = this.state.confirmationModalActive ?
-            <ConfirmationModal redButtonCallback={this.confirmationModalDiscardCallback} greenButtonCallback={this.confirmationModalSaveCallback}
-                deactivateModal={this.deactivateConfirmationModal} title={Locales.strings.confirmation_modal_unsaved_title}
-                redButtonLabel={Locales.strings.discard_changes} greenButtonLabel={Locales.strings.save_changes} />
-            : null;
-
-        var myStepsList = <MyStepsList
+        const myStepsList = <MyStepsList
             deleteStepCallback={() => deleteStep(this, true)}
             editStepCallback={(stepNumber) => editStep(this, stepNumber)}
             activateMathField={theActiveMathField => this.setState({ theActiveMathField })}
@@ -269,9 +256,14 @@ export default class Editor extends Component {
         return (
             <div id="MainWorkWrapper" className={editor.mainWorkWrapper}>
                 <NotificationContainer />
+                <ModalContainer
+                    activeModals={this.state.activeModals}
+                    toggleModals={this.toggleModals}
+                    shareLink={this.state.shareLink}
+                    redButtonCallback={this.confirmationModalDiscardCallback}
+                    greenButtonCallback={this.confirmationModalSaveCallback}
+                />
                 <main id="MainWorkArea" className={editor.editorAndHistoryWrapper}>
-                    {confirmationModal}
-                    {modal}
                     <ProblemHeader math={JSON.parse(JSON.stringify(this.state.solution.problem.text))} title={this.state.solution.problem.title}
                         shareProblem={this.shareProblem} scratchpad={this.state.solution.problem.scratchpad}
                         saveProblem={this.saveProblem} readOnly={this.state.readOnly}
