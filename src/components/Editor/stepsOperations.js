@@ -70,7 +70,7 @@ function updateStep(context, img) {
     let mathStep = Object.assign({}, context.state.solution.steps[index]);
     let cleanedup = MathButton.CleanUpCrossouts(context.state.theActiveMathField.latex());
     let cleanup = cleanedup === context.state.theActiveMathField.latex() ? null : cleanedup;
-    context.updateMathEditorRow(context.state.theActiveMathField.latex(), index, cleanup, img);
+    context.updateMathEditorRow(context.state.theActiveMathField.latex(), context.state.textAreaValue, index, cleanup, img);
     context.cancelEditCallback(mathStep.stepValue, mathStep.explanation, mathStep.cleanup, index, mathStep.scratchpad);
     createAlert('success', Locales.strings.successfull_update_message, 'Success');
     context.state.displayScratchpad();
