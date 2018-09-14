@@ -44,7 +44,7 @@ export default class ModalContainer extends Component {
 
         const confirmationModal = this.state.activeModals.includes(CONFIRMATION) ? 
         <ConfirmationModal redButtonCallback={() => this.props.toggleModals([CONFIRMATION])} greenButtonCallback={this.props.deleteProblem}
-            deactivateModal={() => this.props.toggleModals([CONFIRMATION])} title={Locales.strings.confirmation_sure_to_remove_problem}
+            deactivateModal={() => this.props.toggleModals([CONFIRMATION])} title={Locales.strings.confirmation_modal_sure_to_remove_problem}
             redButtonLabel={Locales.strings.cancel} greenButtonLabel={Locales.strings.yes}/>
         : null;
 

@@ -9,6 +9,7 @@ import Locales from '../../../../../../strings';
 export default class MyWorkEditorButtons extends Component {
     render() {
         const addLabel = this.props.addingProblem ? Locales.strings.add_problem : Locales.strings.add_step;
+
         return (
             <div
                 id="editorButtons"
