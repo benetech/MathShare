@@ -286,13 +286,11 @@ export default class Home extends Component {
                     saveProblems={this.saveProblems}
                     problemToEdit={this.state.problemToEdit}
                     editProblemCallback={this.editProblem} />
-                <div id="ContentWrapper">
-                    <nav id="LeftNavigation" className={home.leftNavigation} aria-labelledby="LeftNavigationHeader">
-                        <NavigationHeader />
-                        <NavigationProblems problems={this.state.set.problems} editing={this.props.match.params.action == 'edit'}
-                            activateModals={this.toggleModals} updatePositions={this.updatePositions} />
-                    </nav>
-                </div>
+                <nav id="LeftNavigation" className={home.leftNavigation} aria-labelledby="LeftNavigationHeader">
+                    <NavigationHeader />
+                    <NavigationProblems problems={this.state.set.problems} editing={this.props.match.params.action == 'edit'}
+                        activateModals={this.toggleModals} updatePositions={this.updatePositions} />
+                </nav>
                 <MainPageFooter />
             </div>
         )
