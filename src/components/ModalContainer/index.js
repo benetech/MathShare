@@ -116,6 +116,4 @@ export default class ModalContainer extends Component {
     }
 }
 
-
-
 export { CONFIRMATION, PALETTE_CHOOSER, ADD_PROBLEM_SET, ADD_PROBLEMS, SHARE_NEW_SET, SHARE_SET, EDIT_PROBLEM, CONFIRMATION_BACK };
