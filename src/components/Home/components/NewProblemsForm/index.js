@@ -64,7 +64,11 @@ export default class NewProblemsForm extends Component {
     }
 
     scrollToBottom() {
-        document.querySelector("#container").scrollTo(0, document.querySelector("#container").scrollHeight);
+        try {
+            document.querySelector("#container").scrollTo(0, document.querySelector("#container").scrollHeight);
+        } catch(e) {
+            console.log("scrollTo method not supported");
+        }
     }
 
     save() {
