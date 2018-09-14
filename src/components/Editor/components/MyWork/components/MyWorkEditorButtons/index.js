@@ -21,27 +21,8 @@ export default class MyWorkEditorButtons extends Component {
                     )
                 }
             >
-            <InputContainerSelectors
-                openScratchpad={this.props.openScratchpad}
-                hideScratchpad={this.props.hideScratchpad}
-                openSymbols={this.props.openScratchpad}
-                scratchpadMode={this.props.scratchpadMode} />
-            <MyWorkFooter
-                deleteStepsCallback={this.props.deleteStepsCallback}
-                hide={this.props.editing}
-                history={this.props.history}
-                solution={this.props.solution}
-                addingProblem={this.props.addingProblem}
-                cancelCallback={this.props.cancelCallback}
-                saveCallback={this.props.saveCallback}
-                addLabel={addLabel}
-                addStep={this.props.addStepCallback}
-                undoButton={this.props.showUndo}
-                undoLastActionCallback={this.props.undoLastActionCallback}
-                cancelEditCallback={this.props.cancelEditCallback}
-                updateCallback={this.props.updateCallback}
-                editing={this.props.editing}
-                editingProblem={this.props.editingProblem} />
+            <InputContainerSelectors {...this.props} />
+            <MyWorkFooter {...this.props} addLabel={addLabel} />
             </div>
         );
     }

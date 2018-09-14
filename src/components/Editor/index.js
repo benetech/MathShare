@@ -56,14 +56,14 @@ export default class Editor extends Component {
 
         this.toggleModals = this.toggleModals.bind(this);
         this.restoreEditorPosition = this.restoreEditorPosition.bind(this);
-        this.exitUpdate = this.exitUpdate.bind(this);
+        this.cancelEditCallback = this.cancelEditCallback.bind(this);
         this.textAreaChanged = this.textAreaChanged.bind(this);
         this.getApplicationNode = this.getApplicationNode.bind(this);
         this.shareProblem = this.shareProblem.bind(this);
         this.saveProblem = this.saveProblem.bind(this);
         this.goBack = this.goBack.bind(this);
-        this.confirmationModalSaveCallback = this.confirmationModalSaveCallback.bind(this);
-        this.confirmationModalDiscardCallback = this.confirmationModalDiscardCallback.bind(this);
+        this.redButtonCallback = this.redButtonCallback.bind(this);
+        this.greenButtonCallback = this.greenButtonCallback.bind(this);
     }
 
     componentDidMount() {
@@ -124,7 +124,7 @@ export default class Editor extends Component {
         this.setState({ editorPosition });
     }
 
-    exitUpdate(oldEquation, oldExplanation, cleanup, index, img) {
+    cancelEditCallback(oldEquation, oldExplanation, cleanup, index, img) {
         this.restoreEditorPosition();
         stackEditAction(this, index, oldEquation, cleanup, oldExplanation, img);
         this.state.displayScratchpad();
@@ -220,18 +220,18 @@ export default class Editor extends Component {
         this.setState({ activeModals: oldModals });
     }
 
-    confirmationModalSaveCallback() {
+    greenButtonCallback() {
         this.toggleModals([CONFIRMATION_BACK]);
         this.saveProblem();
     }
 
-    confirmationModalDiscardCallback() {
+    redButtonCallback() {
         this.toggleModals([CONFIRMATION_BACK]);
         this.props.history.goBack();
     }
 
     render() {
-        const myStepsList = <MyStepsList
+        const myStepsList = <MyStepsList {...this} {...this.state}
             deleteStepCallback={() => deleteStep(this, true)}
             editStepCallback={(stepNumber) => editStep(this, stepNumber)}
             activateMathField={theActiveMathField => this.setState({ theActiveMathField })}
@@ -240,34 +240,17 @@ export default class Editor extends Component {
             deleteStepsCallback={() => clearAll(this)}
             updateCallback={(img) => updateStep(this, img)}
             bindDisplayFunction={(f) => this.setState({ displayScratchpad: f })}
-            solution={this.state.solution}
-            allowedPalettes={this.state.allowedPalettes}
-            theActiveMathField={this.state.theActiveMathField}
-            textAreaChanged={this.textAreaChanged}
-            textAreaValue={this.state.textAreaValue}
             showUndo={this.state.actionsStack.length > 0}
-            cancelEditCallback={this.exitUpdate}
-            editorPosition={this.state.editorPosition}
-            editing={this.state.editing}
-            history={this.props.history}
-            newProblem={this.id === "newEditor"}
-            readOnly={this.state.readOnly} />
+            newProblem={this.id === "newEditor"} />
 
         return (
             <div id="MainWorkWrapper" className={editor.mainWorkWrapper}>
                 <NotificationContainer />
-                <ModalContainer
-                    activeModals={this.state.activeModals}
-                    toggleModals={this.toggleModals}
-                    shareLink={this.state.shareLink}
-                    redButtonCallback={this.confirmationModalDiscardCallback}
-                    greenButtonCallback={this.confirmationModalSaveCallback}
-                />
+                <ModalContainer {...this} {...this.state} />
                 <main id="MainWorkArea" className={editor.editorAndHistoryWrapper}>
-                    <ProblemHeader math={JSON.parse(JSON.stringify(this.state.solution.problem.text))} title={this.state.solution.problem.title}
-                        shareProblem={this.shareProblem} scratchpad={this.state.solution.problem.scratchpad}
-                        saveProblem={this.saveProblem} readOnly={this.state.readOnly}
-                        editLink={JSON.parse(JSON.stringify(this.state.editLink))} goBack={this.goBack} />
+                    <ProblemHeader {...this} {...this.state} {...this.state.solution.problem}
+                        math={JSON.parse(JSON.stringify(this.state.solution.problem.text))}
+                    />
                     <MyStepsHeader readOnly={this.state.readOnly} />
                     {myStepsList}
                     <div ref={el => { this.el = el; }} style={{ height: 50 }} />

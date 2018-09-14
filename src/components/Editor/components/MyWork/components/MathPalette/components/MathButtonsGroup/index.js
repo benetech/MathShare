@@ -7,11 +7,8 @@ export default class MathButtonsGroup extends Component {
         const label = this.props.showLabel ? <span className={buttonsGroup.label} role="listitem">{this.props.palette.label}</span> : null;
         var rows = this.props.palette.buttonsRows.map((buttonsRow, i) =>
             <div key={i} role="list" className={buttonsGroup.row}>
-                <MathButtonsRow
+                <MathButtonsRow {...this.props}
                     buttonsRow={buttonsRow}
-                    palette={this.props.palette}
-                    theActiveMathField={this.props.theActiveMathField}
-                    readOnly={this.props.readOnly}
                 />
             </div>
         );

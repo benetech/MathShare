@@ -121,8 +121,9 @@ export default class Step extends Component {
                 onClick={this.props.deleteStepsCallback}
             /> : null;
 
+        var id = this.props.cleanup ? `mathStep-${this.props.stepNumber - 1}-cleanup` : `mathStep-${this.props.stepNumber}`;
         return (
-            <div id={`mathStep-${this.props.stepNumber}`} className={classNames('row', step.step)}>
+            <div id={id} className={classNames('row', step.step)}>
                 <div className={'col-md-1'}>
                     <span role="heading" aria-level="3">
                         {this.buildReason()}
