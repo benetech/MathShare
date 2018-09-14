@@ -69,7 +69,6 @@ export default class MyStepsList extends Component {
                 editing={this.props.editing}
                 history={this.props.history}
                 solution={this.props.solution}
-                openScratchpad={this.props.openScratchpad}
                 showUndo={this.props.showUndo}
                 title={Locales.strings.my_work}
                 bindDisplayFunction={this.props.bindDisplayFunction}

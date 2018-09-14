@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { withRouter } from 'react-router-dom'
 import Button from '../../.././../Button';
 import classNames from "classnames";
+import { EDIT_PROBLEM, CONFIRMATION, ADD_PROBLEMS } from '../../../../ModalContainer';
 import problem from './styles.css';
 import buttons from '../../../../../components/Button/styles.css';
 import Locales from '../../../../../strings';
@@ -78,12 +79,12 @@ export default class Problem extends Component {
     }
 
     onTrashClick(e) {
-        this.props.activateModals(["confirmation"], this.props.number);
+        this.props.activateModals([CONFIRMATION], this.props.number);
         e.stopPropagation();
     }
 
     onEditClick(e) {
-        this.props.activateModals(["editProblem"], this.props.number);
+        this.props.activateModals([EDIT_PROBLEM], this.props.number);
         e.stopPropagation();
     }
 
@@ -201,7 +202,7 @@ export default class Problem extends Component {
                             problem.navSpan
                         )
                     }
-                    onClick={() => this.props.addNew ? this.props.activateModals(["addProblems"]) : this.createNewSolution(history)}
+                    onClick={() => this.props.addNew ? this.props.activateModals([ADD_PROBLEMS]) : this.createNewSolution(history)}
                 >
                 <div className={problem.middle}>
                     <Button
