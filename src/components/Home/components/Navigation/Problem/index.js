@@ -44,15 +44,16 @@ export default class Problem extends Component {
 
     buildProblemText() {
         var text = this.props.problem.text;
-        if (this.props.problem.text == "") {
-            return <img className={problem.image} src={this.props.problem.scratchpad}/>
-        }
-        else if (text.includes("\\frac")) {
+        if (text.includes("\\frac")) {
             text = this.buildComplexProblemText();
         } else if (text.length > problemTextDisplayLength) {
             text = text.slice(0, problemTextDisplayLength) + "...";
         }
         return "$$" + text + "$$";
+    }
+
+    buildProblemImage() {
+        return <img className={problem.image} src={this.props.problem.scratchpad}/>
     }
 
     buildComplexProblemText() {
@@ -114,14 +115,16 @@ export default class Problem extends Component {
     render() {
         var annotation;
         var equation;
+        var image;
         if (this.props.example) {
             annotation = Locales.strings.getting_started_title;
             equation = Locales.strings.getting_started_equation;
         } else if (this.props.addNew) {
-            equation = Locales.strings.add_problem_title;
+            annotation = Locales.strings.add_problem_title;
         } else {
             annotation = this.buildAnnotation();
             equation = this.buildProblemText();
+            image = this.buildProblemImage();
         }
     
         var wrappedAnnotation = annotation !== undefined && (annotation.match(/\\text{/g) || []).length > 1 ? 
@@ -200,11 +203,11 @@ export default class Problem extends Component {
                     }
                     onClick={() => this.props.addNew ? this.props.activateModals(["addProblems"]) : this.createNewSolution(history)}
                 >
+                <div className={problem.middle}>
                     <Button
                         className={
                             classNames(
                                 problem.navItemButton,
-                                problem.annotation,
                                 problem.colorInherit
                             )
                         }
@@ -215,6 +218,8 @@ export default class Problem extends Component {
                     {plusButton}
                     {editButton}
                     {equation}
+                    {image}
+                </div>
                 </span>
             </div>
         ))
