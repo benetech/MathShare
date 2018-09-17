@@ -5,7 +5,7 @@ import MyStepsList from './components/MySteps/components/MyStepsList';
 import ModalContainer, { CONFIRMATION_BACK, SHARE_SET } from '../ModalContainer';
 import editor from './styles.css';
 import { NotificationContainer } from 'react-notifications';
-import createAlert from '../../scripts/alert';
+import { alertSuccess } from '../../scripts/alert';
 import { undoLastAction, clearAll, stackEditAction } from './stack';
 import { deleteStep, editStep, updateStep, addStep } from './stepsOperations';
 import Locales from '../../strings';
@@ -185,7 +185,7 @@ export default class Editor extends Component {
                     editLink: SERVER_URL + '/problem/edit/' + this.state.solution.editCode,
                     stepsFromLastSave: JSON.parse(JSON.stringify(this.state.solution.steps))
                 })
-                createAlert('success', Locales.strings.problem_saved_success_message, Locales.strings.success);
+                alertSuccess(Locales.strings.problem_saved_success_message, Locales.strings.success);
             }
             )
     };

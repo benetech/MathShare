@@ -4,7 +4,7 @@ import classNames from "classnames";
 import paletteStyle from './styles.css';
 import palettes from '../../../../../palettes.json';
 import Locales from '../../../../../../strings';
-import createAlert from '../../../../../../scripts/alert';
+import { alertWarning } from '../../../../../../scripts/alert';
 
 export default class MathPalette extends Component {
     initializeKeyShortcuts(palettes) {
@@ -25,7 +25,7 @@ export default class MathPalette extends Component {
         try {
             this.props.InitScratchPad();
         } catch(e) {
-            createAlert("warning", Locales.strings.sketchpad_loading_warning, "Warning");
+            alertWarning(Locales.strings.sketchpad_loading_warning, "Warning");
         }
         this.refs.scratchpad.style.display = 'none';
     }

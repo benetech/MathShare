@@ -6,7 +6,7 @@ import MainPageFooter from './components/Footer';
 import home from './styles.css';
 import { NotificationContainer } from 'react-notifications';
 import exampleProblem from '../../data/example01.json'; //TODO: Add example problem to the UI
-import createAlert from '../../scripts/alert';
+import { alertWarning } from '../../scripts/alert';
 import Locales from '../../strings'
 import axios from 'axios';
 import ModalContainer, { CONFIRMATION, PALETTE_CHOOSER, ADD_PROBLEM_SET, ADD_PROBLEMS, SHARE_NEW_SET, EDIT_PROBLEM } from '../../components/ModalContainer';
@@ -114,7 +114,7 @@ export default class Home extends Component {
         }
 
         if (message) {
-            createAlert('warning', message, Locales.strings.warning);
+            alertWarning(message, Locales.strings.warning);
             setTimeout(function () {
                 $('#mathAnnotation').focus();
             }, 6000);
@@ -228,7 +228,7 @@ export default class Home extends Component {
 
     progressToAddingProblems(palettes) {
         if (palettes.length == 0) {
-            createAlert('warning', Locales.strings.no_palettes_chosen_warning, Locales.strings.warning);
+            alertWarning(Locales.strings.no_palettes_chosen_warning, Locales.strings.warning);
             return;
         }
         this.setState({ tempPalettes: palettes });

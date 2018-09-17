@@ -1,7 +1,7 @@
 
 import { stackDeleteAction, stackAddAction } from './stack';
 import MathButton from './components/MyWork/components/MathPalette/components/MathButtonsGroup/components/MathButtonsRow/components/MathButton';
-import createAlert from '../../scripts/alert';
+import { alertSuccess, alertWarning } from '../../scripts/alert';
 import Locales from '../../strings';
 
 function addNewStep(context, step) {
@@ -61,7 +61,7 @@ function updateStep(context, img) {
     var index = context.state.editedStep;
 
     if (context.state.textAreaValue === '') {
-        createAlert('warning', Locales.strings.no_description_warning, 'Warning');
+        alertWarning(Locales.strings.no_description_warning, 'Warning');
         setTimeout(function () {
             $('#mathAnnotation').focus();
         }, 6000);
@@ -72,13 +72,13 @@ function updateStep(context, img) {
     let cleanup = cleanedup === context.state.theActiveMathField.latex() ? null : cleanedup;
     context.updateMathEditorRow(context.state.theActiveMathField.latex(), context.state.textAreaValue, index, cleanup, img);
     context.cancelEditCallback(mathStep.stepValue, mathStep.explanation, mathStep.cleanup, index, mathStep.scratchpad);
-    createAlert('success', Locales.strings.successfull_update_message, 'Success');
+    alertSuccess(Locales.strings.successfull_update_message, 'Success');
     context.state.displayScratchpad();
 }
 
 function addStep(context, addToHistory, img) {
     if (!context.state.textAreaValue || context.state.textAreaValue === "" || $.trim(context.state.textAreaValue).length === 0) {
-        createAlert('warning', Locales.strings.no_description_warning, 'Warning');
+        alertWarning(Locales.strings.no_description_warning, 'Warning');
         setTimeout(function () {
             $('#mathAnnotation').focus();
         }, 6000);
