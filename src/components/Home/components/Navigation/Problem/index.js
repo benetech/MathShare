@@ -61,11 +61,11 @@ export default class Problem extends Component {
         var text = this.props.problem.text;
         var equationParts = text.split("{");
         var result = "";
-        equationParts.forEach(function(part) {
+        equationParts.forEach(function(part, i) {
             if (part.length > problemMathDisplayLength) {
                 result += "{" + part.slice(0, problemMathDisplayLength) + "...}";
             } else {
-                if (part.includes("}")) {
+                if (i != 0) {
                     result += "{";
                 }
                 result +=  part;
