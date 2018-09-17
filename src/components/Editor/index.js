@@ -98,10 +98,10 @@ export default class Editor extends Component {
         this.setState({ textAreaValue: text });
     }
 
-    updateMathEditorRow(mathContent, mathStepNumber, cleanup, scratchpad) {
+    updateMathEditorRow(mathContent, mathAnnotation, mathStepNumber, cleanup, scratchpad) {
         let updatedHistory = this.state.solution.steps;
         updatedHistory[mathStepNumber].stepValue = mathContent;
-        updatedHistory[mathStepNumber].explanation = this.state.textAreaValue;
+        updatedHistory[mathStepNumber].explanation = mathAnnotation;
         updatedHistory[mathStepNumber].cleanup = cleanup;
         updatedHistory[mathStepNumber].scratchpad = scratchpad;
         let oldSolution = this.state.solution;
