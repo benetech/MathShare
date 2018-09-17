@@ -69,7 +69,7 @@
     },
     "id": "scratch-pad-containter",
     "defaultTool": "brush",
-    "hiddenTools": ["crop", "pixelize", "rotate", "resize", "settings", "close", "save", "text"],
+    "hiddenTools": ["crop", "pixelize", "rotate", "resize", "settings", "close", "save", "text", "open"],
     "defaultSize": "fill",
     "defaultLineWidth": 4,
     "defaultEraserWidth": 16,

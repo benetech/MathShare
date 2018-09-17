@@ -1,0 +1,12 @@
+.container {
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    background-color: rgb(255, 255, 255);
+    overflow-x: hidden;
+}
+
+.title {
+    margin-bottom: 120px;
+}

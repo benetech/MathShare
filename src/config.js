@@ -1,8 +1,7 @@
 const hostname = window && window.location && window.location.hostname;
 console.log("found hostname: " + hostname);
 let serverUrl
-
-switch (hostname) {
+ switch (hostname) {
     case 'mathshare-qa.diagramcenter.org':
         serverUrl = 'https://mathshare-api-qa.diagramcenter.org'
         break;
@@ -13,6 +12,4 @@ switch (hostname) {
         serverUrl = 'http://localhost:8080'
 }
 console.log("using server URL: " + serverUrl)
-
 export const SERVER_URL = serverUrl;
-

@@ -3,7 +3,7 @@ import Button from '../../.././../../../../Button';
 import classNames from "classnames";
 import editorArea from '../../styles.css';
 import googleAnalytics from '../../../../../../../../scripts/googleAnalytics';
-import createAlert from '../../../../../../../../scripts/alert';
+import { alertInfo } from '../../../../../../../../scripts/alert';
 import Locales from '../../../../../../../../strings';
 
 import mic from '../../../../../../../../../images/mic.gif';
@@ -32,7 +32,7 @@ export default class SpeechToTextButton extends Component {
     speechToText() {
         googleAnalytics('S2T Clicked');
         if (!this.recognition) {
-            createAlert('info', Locales.strings.speech_recongition_error, 'Info');
+            alertInfo(Locales.strings.speech_recongition_error, 'Info');
             console.log(Locales.strings.speech_recongition_error);
             return;
         }

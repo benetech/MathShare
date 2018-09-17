@@ -1,13 +1,13 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import MainPageHeader from './components/Header';
 import NavigationHeader from './components/Navigation/Header';
 import NavigationProblems from './components/Navigation/Problems';
 import MainPageFooter from './components/Footer';
+import NotFound from '../NotFound';
 import home from './styles.css';
 import { NotificationContainer } from 'react-notifications';
-import exampleProblem from '../../data/example01.json'; //TODO: Add example problem to the UI
-import createAlert from '../../scripts/alert';
-import Locales from '../../strings'
+import { alertWarning } from '../../scripts/alert';
+import Locales from '../../strings';
 import axios from 'axios';
 import ModalContainer, { CONFIRMATION, PALETTE_CHOOSER, ADD_PROBLEM_SET, ADD_PROBLEMS, SHARE_NEW_SET, EDIT_PROBLEM } from '../../components/ModalContainer';
 import { SERVER_URL } from '../../config';
@@ -27,9 +27,9 @@ export default class Home extends Component {
             activeModals: [],
             allowedPalettes: [],
             theActiveMathField: null,
-            tempProblems: [],
             tempPalettes: [],
-            newSetSharecode: ""
+            newSetSharecode: "",
+            notFound: false
         }
 
         this.toggleModals = this.toggleModals.bind(this);
@@ -54,6 +54,9 @@ export default class Home extends Component {
 
         axios.get(path)
             .then(response => {
+                if (response.status != 200) {
+                    this.setState({notFound: true});
+                }
                 var orderedProblems = this.orderProblems(response.data.problems);
                 this.setState({
                     set: {
@@ -62,6 +65,8 @@ export default class Home extends Component {
                         sharecode: response.data.shareCode
                     }
                 });
+            }).catch((error) => {
+                this.setState({notFound: true});
             });
         mathLive.renderMathInDocument();
     }
@@ -75,7 +80,7 @@ export default class Home extends Component {
 
     componentDidUpdate(prevProps, prevState) {
         if (this.state.set !== prevState.set || this.state.allowedPalettes !== prevState.allowedPalettes
-            || this.state.tempProblems !== prevState.tempProblems || this.state.tempPalettes !== prevState.tempPalettes
+            || this.state.tempPalettes !== prevState.tempPalettes
             || this.state.newSetSharecode !== prevState.newSetSharecode || this.state.activeModals !== prevState.activeModals)
             mathLive.renderMathInDocument();
     }
@@ -86,11 +91,7 @@ export default class Home extends Component {
             if (this.state.activeModals.indexOf(modal) != -1) {
                 oldModals = oldModals.filter(e => e !== modal);
             } else {
-                if (modal == ADD_PROBLEM_SET || modal == ADD_PROBLEMS) {
-                    this.setState({
-                        tempProblems: []
-                    });
-                } else if (modal == CONFIRMATION) {
+                if (modal == CONFIRMATION) {
                     this.setState({
                         problemToDeleteIndex: index
                     });
@@ -119,7 +120,7 @@ export default class Home extends Component {
         }
 
         if (message) {
-            createAlert('warning', message, Locales.strings.warning);
+            alertWarning(message, Locales.strings.warning);
             setTimeout(function () {
                 $('#mathAnnotation').focus();
             }, 6000);
@@ -128,23 +129,22 @@ export default class Home extends Component {
         return true;
     }
 
-    addProblem(imageData, text, index, callback) {
+    addProblem(imageData, text, index) {
         if (!this.validateProblem(text, imageData)) {
             return;
         }
 
-        let newProblems = this.state.tempProblems;
+        let problems = this.state.set.problems;
         let mathContent = this.state.theActiveMathField;
         let annotation = text;
-        newProblems.push({ "text": mathContent.latex(), "title": annotation, "scratchpad": imageData, "position": index });
+        problems.push({ "text": mathContent.latex(), "title": annotation, "scratchpad": imageData, "position": index });
 
         mathContent.latex("$$$$");
         this.setState({
-            theActiveMathField: mathContent,
-            tempProblems: newProblems
+            theActiveMathField: mathContent
         });
-
-        callback();
+        this.saveProblems(problems);
+        
         mathLive.renderMathInDocument();
         this.scrollToBottom();
     }
@@ -161,7 +161,6 @@ export default class Home extends Component {
         var oldSet = this.state.set;
         oldSet.problems = problems;
 
-        this.toggleModals(this.state.activeModals);
         axios.put(`${SERVER_URL}/problemSet/${this.state.set.editCode}`, oldSet)
             .then(response => {
                 this.setState({
@@ -169,8 +168,7 @@ export default class Home extends Component {
                         problems: response.data.problems,
                         editCode: response.data.editCode,
                         sharecode: response.data.shareCode
-                    },
-                    tempProblems: []
+                    }
                 });
             });
     }
@@ -185,8 +183,7 @@ export default class Home extends Component {
                         problems: response.data.problems,
                         editCode: response.data.editCode,
                         sharecode: response.data.shareCode
-                    },
-                    tempProblems: []
+                    }
                 });
             });
 
@@ -212,8 +209,7 @@ export default class Home extends Component {
                         problems: response.data.problems,
                         editCode: response.data.editCode,
                         sharecode: response.data.shareCode
-                    },
-                    tempProblems: []
+                    }
                 });
             });
 
@@ -238,7 +234,7 @@ export default class Home extends Component {
 
     progressToAddingProblems(palettes) {
         if (palettes.length == 0) {
-            createAlert('warning', Locales.strings.no_palettes_chosen_warning, Locales.strings.warning);
+            alertWarning(Locales.strings.no_palettes_chosen_warning, Locales.strings.warning);
             return;
         }
         this.setState({ tempPalettes: palettes });
@@ -247,14 +243,12 @@ export default class Home extends Component {
 
     saveProblemSet() {
         var set = {
-            problems: this.state.tempProblems,
             palettes: this.state.tempPalettes
         };
 
         axios.post(`${SERVER_URL}/problemSet/`, set)
             .then(response => {
                 this.setState({
-                    tempProblems: [],
                     newSetSharecode: response.data.shareCode
                 })
             });
@@ -266,6 +260,9 @@ export default class Home extends Component {
     }
 
     render() {
+        if (this.state.notFound) {
+            return <NotFound />
+        }
         return (
             <div className={home.mainWrapper}>
                 <NotificationContainer />
@@ -281,7 +278,6 @@ export default class Home extends Component {
                     theActiveMathField={this.state.theActiveMathField}
                     addProblemCallback={this.addProblem}
                     problems={this.state.set.problems}
-                    tempProblems={this.state.tempProblems}
                     saveProblemSet={this.saveProblemSet}
                     saveProblems={this.saveProblems}
                     problemToEdit={this.state.problemToEdit}

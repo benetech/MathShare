@@ -22,9 +22,8 @@ export default class NewProblemsForm extends Component {
             displayScratchpad: null
         };
 
-        this.save = this.save.bind(this);
         this.update = this.update.bind(this);
-        this.addStep = this.addStep.bind(this);
+        this.addProblem = this.addProblem.bind(this);
         this.textAreaChanged = this.textAreaChanged.bind(this);
     }
 
@@ -60,6 +59,7 @@ export default class NewProblemsForm extends Component {
         problems[newIndex].position = oldIndex;
         problems = arrayMove(problems, oldIndex, newIndex);
         this.setState({ problems });
+        this.props.saveCallback(problems);
         mathLive.renderMathInDocument();
     }
 
@@ -75,16 +75,12 @@ export default class NewProblemsForm extends Component {
         }
     }
 
-    save() {
-        this.props.saveCallback(this.state.problems);
-    }
-
     update(imageData, text) {
         this.props.editProblemCallback(imageData, text);
     }
 
-    addStep(imageData, text) {
-        this.props.addProblemCallback(imageData, text, this.state.problems.length, this.state.displayScratchpad);
+    addProblem(imageData, text) {
+        this.props.addProblemCallback(imageData, text, this.state.problems.length);
     }
 
     render() {
@@ -145,13 +141,13 @@ export default class NewProblemsForm extends Component {
                 <div className={styles.rowControl}>
                 </div>
             </div>
-        var saveButton = this.props.editing ? null :
+        var doneButton = this.props.editing ? null :
             <Button
                 className={'btn'}
                 additionalStyles={['withRightMargin', 'default', 'right']}
-                icon="save"
-                content={Locales.strings.save}
-                onClick={this.save}
+                icon="check"
+                content={Locales.strings.done}
+                onClick={this.props.deactivateModal}
             />
 
         var lastMathEquation = this.props.editing ? this.props.problemToEdit.text : "";
@@ -174,7 +170,7 @@ export default class NewProblemsForm extends Component {
                         theActiveMathField={this.props.theActiveMathField}
                         textAreaChanged={this.textAreaChanged}
                         textAreaValue={this.state.textAreaValue}
-                        addStepCallback={this.addStep}
+                        addStepCallback={this.addProblem}
                         editing={false}
                         history={[]}
                         solution={this.props.solution}
@@ -186,15 +182,7 @@ export default class NewProblemsForm extends Component {
                         scratchpadContent={scratchpadContent}
                         bindDisplayFunction={(f) => this.setState({ displayScratchpad: f })} />
                     <div className={styles.footer}>
-                        {saveButton}
-                        <Button
-                            id='bottom'
-                            className={'btn'}
-                            additionalStyles={['withRightMargin', 'default', 'right']}
-                            content={Locales.strings.cancel}
-                            icon="times-circle"
-                            onClick={this.props.cancelCallback}
-                        />
+                        {doneButton}
                     </div>
                     <div className={styles.footer}/>
                 </div>

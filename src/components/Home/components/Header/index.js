@@ -11,19 +11,20 @@ import logo from '../../../../../images/logo.png';
 
 export default class MainPageHeader extends Component {
     render() {
+        //TODO: when there will be an example problem, update the route
         const GettingStartedButton = withRouter(({ history }) => (
             <a className={classNames('nav-link', header.pointer)} onClick={() => { history.push('/problem/example') }}>
                 {Locales.strings.getting_started_title}
             </a>
         ))
 
-        const shareButton = this.props.editing ? 
+        const shareButton = this.props.editing && !this.props.notFound ? 
         <a className={classNames('nav-link', header.pointer)} onClick={() => this.props.shareCallback(["shareSet"])}>
             {Locales.strings.share}
         </a>
         : 
         null
-        const button = this.props.editing ? 
+        var button = this.props.editing ? 
             <a className={classNames('nav-link', header.pointer)} onClick={this.props.finishEditing}>
                 {Locales.strings.finish_edit}
             </a>
@@ -34,9 +35,13 @@ export default class MainPageHeader extends Component {
                 {Locales.strings.edit}
             </a>
 
-         const addProblemSetButton = <a className={classNames('nav-link', header.pointer)} onClick={this.props.addProblemSetCallback}>
+        if (this.props.notFound) {
+            button = null;
+        }
+        
+         const addProblemSetButton = !this.props.notFound ? <a className={classNames('nav-link', header.pointer)} onClick={this.props.addProblemSetCallback}>
              {Locales.strings.add_problem_set}
-         </a>
+         </a> : null;
 
         return (
             <div id="topNavigationWrapper" className={header.header} role="heading" aria-level="1">

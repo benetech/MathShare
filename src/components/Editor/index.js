@@ -3,15 +3,17 @@ import ProblemHeader from './components/ProblemHeader';
 import MyStepsHeader from './components/MySteps/components/MyStepsHeader';
 import MyStepsList from './components/MySteps/components/MyStepsList';
 import ModalContainer, { CONFIRMATION_BACK, SHARE_SET } from '../ModalContainer';
+import NotFound from '../NotFound';
 import editor from './styles.css';
 import { NotificationContainer } from 'react-notifications';
-import createAlert from '../../scripts/alert';
+import { alertSuccess } from '../../scripts/alert';
 import { undoLastAction, clearAll, stackEditAction } from './stack';
 import { deleteStep, editStep, updateStep, addStep } from './stepsOperations';
 import Locales from '../../strings';
 import axios from 'axios';
 import googleAnalytics from '../../scripts/googleAnalytics';
 import { SERVER_URL } from '../../config';
+import exampleProblem from './example.json';
 
 const mathLive = DEBUG_MODE ? require('../../../mathlive/src/mathlive.js')
     : require('../../lib/mathlivedist/mathlive.js');
@@ -51,7 +53,8 @@ export default class Editor extends Component {
             shareLink: "http:mathshare.com/exampleShareLink/1",
             editLink: "Not saved yet.",
             readOnly: false,
-            displayScratchpad: null
+            displayScratchpad: null,
+            notFound: false
         };
 
         this.toggleModals = this.toggleModals.bind(this);
@@ -68,29 +71,49 @@ export default class Editor extends Component {
 
     componentDidMount() {
         var path;
-        if (this.props.match.params.action == "view") {
-            path = `${SERVER_URL}/solution/revision/${this.props.match.params.code}`
+        if (this.props.example) {
+            var solution = {
+                problem: exampleProblem,
+                steps: exampleProblem.steps,
+            }
+
+            this.setState({
+                solution,
+                editorPosition: this.countEditorPosition(exampleProblem.steps),
+                readOnly: false,
+                allowedPalettes: "Edit;Operators;Notations;Geometry"
+            });
         } else {
-            path = `${SERVER_URL}/solution/${this.props.match.params.code}/`
-        }
-        axios.get(path)
-            .then(response => {
-                var solution = {
-                    problem: response.data.problem,
-                    steps: response.data.steps,
-                    editCode: response.data.editCode
-                }
-                let field = this.state.theActiveMathField;
-                field.latex(response.data.steps[response.data.steps.length - 1].stepValue);
-                this.setState({
-                    solution,
-                    editorPosition: this.countEditorPosition(response.data.steps),
-                    theActiveMathField: field,
-                    readOnly: this.props.match.params.action == 'view',
-                    stepsFromLastSave: JSON.parse(JSON.stringify(response.data.steps)),
-                    allowedPalettes: response.data.palettes
+            if (this.props.match.params.action == "view") {
+                path = `${SERVER_URL}/solution/revision/${this.props.match.params.code}`
+            } else {
+                path = `${SERVER_URL}/solution/${this.props.match.params.code}/`
+            }
+            axios.get(path)
+                .then(response => {
+                    if (response.status != 200) {
+                        this.setState({ notFound: true });
+                    } else {
+                        var solution = {
+                            problem: response.data.problem,
+                            steps: response.data.steps,
+                            editCode: response.data.editCode
+                        }
+                        let field = this.state.theActiveMathField;
+                        field.latex(response.data.steps[response.data.steps.length - 1].stepValue);
+                        this.setState({
+                            solution,
+                            editorPosition: this.countEditorPosition(response.data.steps),
+                            theActiveMathField: field,
+                            readOnly: this.props.match.params.action == 'view',
+                            stepsFromLastSave: JSON.parse(JSON.stringify(response.data.steps)),
+                            allowedPalettes: response.data.palettes
+                        });
+                    }
+                }).catch((error) => {
+                    this.setState({ notFound: true });
                 });
-            })
+        }
         this.scrollToBottom();
     }
 
@@ -145,7 +168,7 @@ export default class Editor extends Component {
     scrollToBottom() {
         try {
             document.querySelector("#MainWorkWrapper").scrollTo(0, document.querySelector("#MainWorkWrapper").scrollHeight);
-        } catch(e) {
+        } catch (e) {
             console.log("scrollTo method not supported");
         }
     }
@@ -169,29 +192,39 @@ export default class Editor extends Component {
     };
 
     shareProblem() {
-        axios.put(`${SERVER_URL}/solution/${this.state.solution.editCode}`, this.state.solution)
-            .then(response => {
-                this.setState({
-                    shareLink: SERVER_URL + '/problem/view/' + response.data.shareCode
-                }, this.toggleModals([SHARE_SET]));
-            })
+        if (this.props.example) {
+            this.setState({
+                shareLink: Locales.strings.example_share_code
+            }, this.toggleModals([SHARE_SET]));
+        } else {
+            axios.put(`${SERVER_URL}/solution/${this.state.solution.editCode}`, this.state.solution)
+                .then(response => {
+                    this.setState({
+                        shareLink: SERVER_URL + '/problem/view/' + response.data.shareCode
+                    }, this.toggleModals([SHARE_SET]));
+                })
+        }
     };
 
     saveProblem() {
-        googleAnalytics('Save');
-        axios.put(`${SERVER_URL}/solution/${this.state.solution.editCode}`, this.state.solution)
-            .then(response => {
-                this.setState({
-                    editLink: SERVER_URL + '/problem/edit/' + this.state.solution.editCode,
-                    stepsFromLastSave: JSON.parse(JSON.stringify(this.state.solution.steps))
-                })
-                createAlert('success', Locales.strings.problem_saved_success_message, Locales.strings.success);
-            }
-            )
+        if (this.props.example) {
+            this.setState({editLink: Locales.strings.example_edit_code });
+        } else {
+            googleAnalytics('Save');
+            axios.put(`${SERVER_URL}/solution/${this.state.solution.editCode}`, this.state.solution)
+                .then(response => {
+                    this.setState({
+                        editLink: SERVER_URL + '/problem/edit/' + this.state.solution.editCode,
+                        stepsFromLastSave: JSON.parse(JSON.stringify(this.state.solution.steps))
+                    })
+                    alertSuccess(Locales.strings.problem_saved_success_message, Locales.strings.success);
+                }
+                )
+        }
     };
 
     goBack() {
-        if (!this.compareStepArrays(this.state.solution.steps, this.state.stepsFromLastSave)) {
+        if (!this.compareStepArrays(this.state.solution.steps, this.state.stepsFromLastSave) && !this.props.example) {
             this.toggleModals([CONFIRMATION_BACK]);
         } else {
             this.props.history.goBack();
@@ -234,11 +267,28 @@ export default class Editor extends Component {
         this.props.history.goBack();
     }
 
+    activateMathField(theActiveMathField) {
+        this.setState({ theActiveMathField: theActiveMathField },
+            () => {
+                if (this.props.example) {
+                    let field = theActiveMathField;
+                    field.latex(exampleProblem.steps[exampleProblem.steps.length - 1].stepValue);
+                    this.setState({
+                        theActiveMathField: field
+                    });
+                }
+            });
+    }
+
     render() {
+        if (this.state.notFound) {
+            return <NotFound />
+        }
+
         const myStepsList = <MyStepsList {...this} {...this.state}
             deleteStepCallback={() => deleteStep(this, true)}
             editStepCallback={(stepNumber) => editStep(this, stepNumber)}
-            activateMathField={theActiveMathField => this.setState({ theActiveMathField })}
+            activateMathField={(field) => this.activateMathField(field)}
             addStepCallback={(img) => addStep(this, true, img)}
             undoLastActionCallback={() => undoLastAction(this)}
             deleteStepsCallback={() => clearAll(this)}
@@ -253,7 +303,7 @@ export default class Editor extends Component {
                 <ModalContainer {...this} {...this.state} />
                 <main id="MainWorkArea" className={editor.editorAndHistoryWrapper}>
                     <ProblemHeader {...this} {...this.state} {...this.state.solution.problem}
-                        math={JSON.parse(JSON.stringify(this.state.solution.problem.text))}
+                        math={JSON.parse(JSON.stringify(this.state.solution.problem.text))} example={this.props.example}
                     />
                     <MyStepsHeader readOnly={this.state.readOnly} />
                     {myStepsList}
