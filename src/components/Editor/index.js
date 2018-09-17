@@ -3,6 +3,7 @@ import ProblemHeader from './components/ProblemHeader';
 import MyStepsHeader from './components/MySteps/components/MyStepsHeader';
 import MyStepsList from './components/MySteps/components/MyStepsList';
 import ModalContainer, { CONFIRMATION_BACK, SHARE_SET } from '../ModalContainer';
+import NotFound from '../NotFound';
 import editor from './styles.css';
 import { NotificationContainer } from 'react-notifications';
 import { alertSuccess } from '../../scripts/alert';
@@ -51,7 +52,8 @@ export default class Editor extends Component {
             shareLink: "http:mathshare.com/exampleShareLink/1",
             editLink: "Not saved yet.",
             readOnly: false,
-            displayScratchpad: null
+            displayScratchpad: null, 
+            notFound: false
         };
 
         this.toggleModals = this.toggleModals.bind(this);
@@ -75,191 +77,201 @@ export default class Editor extends Component {
         }
         axios.get(path)
             .then(response => {
-                var solution = {
-                    problem: response.data.problem,
-                    steps: response.data.steps,
-                    editCode: response.data.editCode
+                if (response.status != 200) {
+                    this.setState({ notFound: true });
+                } else {
+                    var solution = {
+                        problem: response.data.problem,
+                        steps: response.data.steps,
+                        editCode: response.data.editCode
+                    }
+                    let field = this.state.theActiveMathField;
+                    field.latex(response.data.steps[response.data.steps.length - 1].stepValue);
+                    this.setState({
+                        solution,
+                        editorPosition: this.countEditorPosition(response.data.steps),
+                        theActiveMathField: field,
+                        readOnly: this.props.match.params.action == 'view',
+                        stepsFromLastSave: JSON.parse(JSON.stringify(response.data.steps)),
+                        allowedPalettes: response.data.palettes
+                    });
                 }
-                let field = this.state.theActiveMathField;
-                field.latex(response.data.steps[response.data.steps.length - 1].stepValue);
-                this.setState({
-                    solution,
-                    editorPosition: this.countEditorPosition(response.data.steps),
-                    theActiveMathField: field,
-                    readOnly: this.props.match.params.action == 'view',
-                    stepsFromLastSave: JSON.parse(JSON.stringify(response.data.steps)),
-                    allowedPalettes: response.data.palettes
-                });
-            })
+            }).catch((error) => {
+                this.setState({ notFound: true });
+            });
         this.scrollToBottom();
     }
 
-    textAreaChanged(text) {
-        this.setState({ textAreaValue: text });
-    }
+textAreaChanged(text) {
+    this.setState({ textAreaValue: text });
+}
 
-    updateMathEditorRow(mathContent, mathAnnotation, mathStepNumber, cleanup, scratchpad) {
-        let updatedHistory = this.state.solution.steps;
-        updatedHistory[mathStepNumber].stepValue = mathContent;
-        updatedHistory[mathStepNumber].explanation = mathAnnotation;
-        updatedHistory[mathStepNumber].cleanup = cleanup;
-        updatedHistory[mathStepNumber].scratchpad = scratchpad;
-        let oldSolution = this.state.solution;
-        oldSolution.steps = updatedHistory;
-        this.setState(
-            {
-                solution: oldSolution,
-                textAreaValue: ""
-            })
-        mathLive.renderMathInDocument();
-    }
-
-    moveEditorBelowSpecificStep(stepNumber) {
-        var steps = this.state.solution.steps.slice();
-        var leftPartOfSteps = steps.splice(0, stepNumber);
-        var editorPosition = this.countEditorPosition(leftPartOfSteps);
-        if (leftPartOfSteps[leftPartOfSteps.length - 1].cleanup) {
-            editorPosition--;
-        }
-        this.setState({ editorPosition });
-    }
-
-    cancelEditCallback(oldEquation, oldExplanation, cleanup, index, img) {
-        this.restoreEditorPosition();
-        stackEditAction(this, index, oldEquation, cleanup, oldExplanation, img);
-        this.state.displayScratchpad();
-    }
-
-    restoreEditorPosition() {
-        let updatedMathField = this.state.theActiveMathField;
-        var lastStep = this.state.solution.steps[this.state.solution.steps.length - 1];
-        updatedMathField.latex(lastStep.cleanup ? lastStep.cleanup : lastStep.stepValue);
-        this.setState({
-            theActiveMathField: updatedMathField,
-            editorPosition: this.countEditorPosition(this.state.solution.steps),
-            editing: false
-        });
-        this.state.theActiveMathField.focus();
-    }
-
-    scrollToBottom() {
-        try {
-            document.querySelector("#MainWorkWrapper").scrollTo(0, document.querySelector("#MainWorkWrapper").scrollHeight);
-        } catch(e) {
-            console.log("scrollTo method not supported");
-        }
-    }
-
-    countCleanups(steps) {
-        var cleanups = 0;
-        steps.forEach(function (step) {
-            if (step.cleanup) {
-                cleanups++;
-            }
+updateMathEditorRow(mathContent, mathAnnotation, mathStepNumber, cleanup, scratchpad) {
+    let updatedHistory = this.state.solution.steps;
+    updatedHistory[mathStepNumber].stepValue = mathContent;
+    updatedHistory[mathStepNumber].explanation = mathAnnotation;
+    updatedHistory[mathStepNumber].cleanup = cleanup;
+    updatedHistory[mathStepNumber].scratchpad = scratchpad;
+    let oldSolution = this.state.solution;
+    oldSolution.steps = updatedHistory;
+    this.setState(
+        {
+            solution: oldSolution,
+            textAreaValue: ""
         })
-        return cleanups;
+    mathLive.renderMathInDocument();
+}
+
+moveEditorBelowSpecificStep(stepNumber) {
+    var steps = this.state.solution.steps.slice();
+    var leftPartOfSteps = steps.splice(0, stepNumber);
+    var editorPosition = this.countEditorPosition(leftPartOfSteps);
+    if (leftPartOfSteps[leftPartOfSteps.length - 1].cleanup) {
+        editorPosition--;
     }
+    this.setState({ editorPosition });
+}
 
-    countEditorPosition(steps) {
-        return steps.length + this.countCleanups(steps) - 1;
+cancelEditCallback(oldEquation, oldExplanation, cleanup, index, img) {
+    this.restoreEditorPosition();
+    stackEditAction(this, index, oldEquation, cleanup, oldExplanation, img);
+    this.state.displayScratchpad();
+}
+
+restoreEditorPosition() {
+    let updatedMathField = this.state.theActiveMathField;
+    var lastStep = this.state.solution.steps[this.state.solution.steps.length - 1];
+    updatedMathField.latex(lastStep.cleanup ? lastStep.cleanup : lastStep.stepValue);
+    this.setState({
+        theActiveMathField: updatedMathField,
+        editorPosition: this.countEditorPosition(this.state.solution.steps),
+        editing: false
+    });
+    this.state.theActiveMathField.focus();
+}
+
+scrollToBottom() {
+    try {
+        document.querySelector("#MainWorkWrapper").scrollTo(0, document.querySelector("#MainWorkWrapper").scrollHeight);
+    } catch (e) {
+        console.log("scrollTo method not supported");
     }
+}
 
-    getApplicationNode() {
-        return document.getElementById('root');
-    };
+countCleanups(steps) {
+    var cleanups = 0;
+    steps.forEach(function (step) {
+        if (step.cleanup) {
+            cleanups++;
+        }
+    })
+    return cleanups;
+}
 
-    shareProblem() {
-        axios.put(`${SERVER_URL}/solution/${this.state.solution.editCode}`, this.state.solution)
-            .then(response => {
-                this.setState({
-                    shareLink: SERVER_URL + '/problem/view/' + response.data.shareCode
-                }, this.toggleModals([SHARE_SET]));
+countEditorPosition(steps) {
+    return steps.length + this.countCleanups(steps) - 1;
+}
+
+getApplicationNode() {
+    return document.getElementById('root');
+};
+
+shareProblem() {
+    axios.put(`${SERVER_URL}/solution/${this.state.solution.editCode}`, this.state.solution)
+        .then(response => {
+            this.setState({
+                shareLink: SERVER_URL + '/problem/view/' + response.data.shareCode
+            }, this.toggleModals([SHARE_SET]));
+        })
+};
+
+saveProblem() {
+    googleAnalytics('Save');
+    axios.put(`${SERVER_URL}/solution/${this.state.solution.editCode}`, this.state.solution)
+        .then(response => {
+            this.setState({
+                editLink: SERVER_URL + '/problem/edit/' + this.state.solution.editCode,
+                stepsFromLastSave: JSON.parse(JSON.stringify(this.state.solution.steps))
             })
-    };
-
-    saveProblem() {
-        googleAnalytics('Save');
-        axios.put(`${SERVER_URL}/solution/${this.state.solution.editCode}`, this.state.solution)
-            .then(response => {
-                this.setState({
-                    editLink: SERVER_URL + '/problem/edit/' + this.state.solution.editCode,
-                    stepsFromLastSave: JSON.parse(JSON.stringify(this.state.solution.steps))
-                })
-                alertSuccess(Locales.strings.problem_saved_success_message, Locales.strings.success);
-            }
-            )
-    };
-
-    goBack() {
-        if (!this.compareStepArrays(this.state.solution.steps, this.state.stepsFromLastSave)) {
-            this.toggleModals([CONFIRMATION_BACK]);
-        } else {
-            this.props.history.goBack();
+            alertSuccess(Locales.strings.problem_saved_success_message, Locales.strings.success);
         }
-    }
+        )
+};
 
-    compareStepArrays(first, second) {
-        if (first.length != second.length) {
-            return false;
-        }
-        for (var i = 0; i < first.length; i++) {
-            if (first[i].stepValue != second[i].stepValue ||
-                first[i].explanation != second[i].explanation ||
-                first[i].scratchpad != second[i].scratchpad) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    toggleModals(modals) {
-        var oldModals = this.state.activeModals;
-        for (var modal of modals) {
-            if (this.state.activeModals.indexOf(modal) != -1) {
-                oldModals = oldModals.filter(e => e !== modal);
-            } else {
-                oldModals.push(modal);
-            }
-        }
-        this.setState({ activeModals: oldModals });
-    }
-
-    greenButtonCallback() {
+goBack() {
+    if (!this.compareStepArrays(this.state.solution.steps, this.state.stepsFromLastSave)) {
         this.toggleModals([CONFIRMATION_BACK]);
-        this.saveProblem();
-    }
-
-    redButtonCallback() {
-        this.toggleModals([CONFIRMATION_BACK]);
+    } else {
         this.props.history.goBack();
     }
+}
 
-    render() {
-        const myStepsList = <MyStepsList {...this} {...this.state}
-            deleteStepCallback={() => deleteStep(this, true)}
-            editStepCallback={(stepNumber) => editStep(this, stepNumber)}
-            activateMathField={theActiveMathField => this.setState({ theActiveMathField })}
-            addStepCallback={(img) => addStep(this, true, img)}
-            undoLastActionCallback={() => undoLastAction(this)}
-            deleteStepsCallback={() => clearAll(this)}
-            updateCallback={(img) => updateStep(this, img)}
-            bindDisplayFunction={(f) => this.setState({ displayScratchpad: f })}
-            showUndo={this.state.actionsStack.length > 0}
-            newProblem={this.id === "newEditor"} />
-
-        return (
-            <div id="MainWorkWrapper" className={editor.mainWorkWrapper}>
-                <NotificationContainer />
-                <ModalContainer {...this} {...this.state} />
-                <main id="MainWorkArea" className={editor.editorAndHistoryWrapper}>
-                    <ProblemHeader {...this} {...this.state} {...this.state.solution.problem}
-                        math={JSON.parse(JSON.stringify(this.state.solution.problem.text))}
-                    />
-                    <MyStepsHeader readOnly={this.state.readOnly} />
-                    {myStepsList}
-                    <div ref={el => { this.el = el; }} style={{ height: 50 }}></div>
-                </main>
-            </div>
-        );
+compareStepArrays(first, second) {
+    if (first.length != second.length) {
+        return false;
     }
+    for (var i = 0; i < first.length; i++) {
+        if (first[i].stepValue != second[i].stepValue ||
+            first[i].explanation != second[i].explanation ||
+            first[i].scratchpad != second[i].scratchpad) {
+            return false;
+        }
+    }
+    return true;
+}
+
+toggleModals(modals) {
+    var oldModals = this.state.activeModals;
+    for (var modal of modals) {
+        if (this.state.activeModals.indexOf(modal) != -1) {
+            oldModals = oldModals.filter(e => e !== modal);
+        } else {
+            oldModals.push(modal);
+        }
+    }
+    this.setState({ activeModals: oldModals });
+}
+
+greenButtonCallback() {
+    this.toggleModals([CONFIRMATION_BACK]);
+    this.saveProblem();
+}
+
+redButtonCallback() {
+    this.toggleModals([CONFIRMATION_BACK]);
+    this.props.history.goBack();
+}
+
+render() {
+    if (this.state.notFound) {
+        return <NotFound />
+    }
+    
+    const myStepsList = <MyStepsList {...this} {...this.state}
+        deleteStepCallback={() => deleteStep(this, true)}
+        editStepCallback={(stepNumber) => editStep(this, stepNumber)}
+        activateMathField={theActiveMathField => this.setState({ theActiveMathField })}
+        addStepCallback={(img) => addStep(this, true, img)}
+        undoLastActionCallback={() => undoLastAction(this)}
+        deleteStepsCallback={() => clearAll(this)}
+        updateCallback={(img) => updateStep(this, img)}
+        bindDisplayFunction={(f) => this.setState({ displayScratchpad: f })}
+        showUndo={this.state.actionsStack.length > 0}
+        newProblem={this.id === "newEditor"} />
+
+    return (
+        <div id="MainWorkWrapper" className={editor.mainWorkWrapper}>
+            <NotificationContainer />
+            <ModalContainer {...this} {...this.state} />
+            <main id="MainWorkArea" className={editor.editorAndHistoryWrapper}>
+                <ProblemHeader {...this} {...this.state} {...this.state.solution.problem}
+                    math={JSON.parse(JSON.stringify(this.state.solution.problem.text))}
+                />
+                <MyStepsHeader readOnly={this.state.readOnly} />
+                {myStepsList}
+                <div ref={el => { this.el = el; }} style={{ height: 50 }}></div>
+            </main>
+        </div>
+    );
+}
 }

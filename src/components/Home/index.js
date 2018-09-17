@@ -1,8 +1,9 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import MainPageHeader from './components/Header';
 import NavigationHeader from './components/Navigation/Header';
 import NavigationProblems from './components/Navigation/Problems';
 import MainPageFooter from './components/Footer';
+import NotFound from '../NotFound';
 import home from './styles.css';
 import { NotificationContainer } from 'react-notifications';
 import exampleProblem from '../../data/example01.json'; //TODO: Add example problem to the UI
@@ -28,7 +29,8 @@ export default class Home extends Component {
             allowedPalettes: [],
             theActiveMathField: null,
             tempPalettes: [],
-            newSetSharecode: ""
+            newSetSharecode: "",
+            notFound: false
         }
 
         this.toggleModals = this.toggleModals.bind(this);
@@ -53,6 +55,9 @@ export default class Home extends Component {
 
         axios.get(path)
             .then(response => {
+                if (response.status != 200) {
+                    this.setState({notFound: true});
+                }
                 var orderedProblems = this.orderProblems(response.data.problems);
                 this.setState({
                     set: {
@@ -61,6 +66,8 @@ export default class Home extends Component {
                         sharecode: response.data.shareCode
                     }
                 });
+            }).catch((error) => {
+                this.setState({notFound: true});
             });
         mathLive.renderMathInDocument();
     }
@@ -254,6 +261,9 @@ export default class Home extends Component {
     }
 
     render() {
+        if (this.state.notFound) {
+            return <NotFound />
+        }
         return (
             <div className={home.mainWrapper}>
                 <NotificationContainer />

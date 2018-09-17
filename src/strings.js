@@ -110,7 +110,10 @@ class Locales {
             choose_palettes_title: "Select button palettes available for this problem set",
             no_palettes_chosen_warning: "Please select at least one palette",
             finish_edit: "Finish Edit",
-            edit_problem: "Edit Problem"
+            edit_problem: "Edit Problem",
+            page_was_not_found_title: "Page Not Found",
+            page_was_not_found: "We are sorry but the page you are looking for does not exist.",
+            page_was_not_found_info: "Please visit the homepage or contact us about the problem."
         },
         es: {
         }

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PageIndex from './PageIndex';
+import NotFound from './NotFound';
 import Home from './Home';
 import Editor from './Editor';
 import { Switch, Route } from 'react-router-dom';
@@ -32,6 +33,7 @@ export default class App extends Component {
                 <Route exact path='/problemSet/:action/:code' render={p => <Home {...p}/> } />
                 <Route exact path='/problem/:action/:code' render={p => <Editor {...p}/> } />
                 <Route exact path='/' render={p => <PageIndex {...p} />} />
+                <Route render={p => <NotFound {...p} />} />
             </Switch>
         )
     }
