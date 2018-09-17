@@ -1,3 +1,18 @@
-const SERVER_URL = "http://localhost:8080";
+const hostname = window && window.location && window.location.hostname;
+console.log("found hostname: " + hostname);
+let serverUrl
 
-export { SERVER_URL };
+switch (hostname) {
+    case 'mathshare-qa.diagramcenter.org':
+        serverUrl = 'https://mathshare-api-qa.diagramcenter.org'
+        break;
+    case 'mathshare-staging.diagramcenter.org':
+        serverUrl = 'https://mathshare-api-staging.diagramcenter.org'
+        break;
+    default:
+        serverUrl = 'http://localhost:8080'
+}
+console.log("using server URL: " + serverUrl)
+
+export const SERVER_URL = serverUrl;
+
