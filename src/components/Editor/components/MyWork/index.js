@@ -5,8 +5,6 @@ import MyWorkEditorButtons from './components/MyWorkEditorButtons';
 import classNames from "classnames";
 import myWork from './styles.css';
 import editor from '../../styles.css';
-import styles from '../../../../styles/styles.css';
-import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 import Locales from '../../../../strings';
 import Painterro from '../../../../lib/painterro/painterro.commonjs2';
 import painterroConfiguration from './painterroConfiguration.json';
@@ -20,21 +18,33 @@ export default class MyWork extends Component {
 
         this.state = {
             isScratchpadUsed: false,
-            scratchpadMode: false
+            isScratchpadInitialized: false,
+            scratchpadMode: false,
+            scratchpadContent: null
         }
 
         this.scratchPadPainterro;
 
         this.openScratchpad = this.openScratchpad.bind(this);
         this.hideScratchpad = this.hideScratchpad.bind(this);
-        this.addStep = this.addStep.bind(this);
-        this.updateStep = this.updateStep.bind(this);
+        this.addStepCallback = this.addStepCallback.bind(this);
+        this.updateCallback = this.updateCallback.bind(this);
         this.clearAndResizeScratchPad = this.clearAndResizeScratchPad.bind(this);
         this.scratchpadChangeHandler = this.scratchpadChangeHandler.bind(this);
         this.InitScratchPad = this.InitScratchPad.bind(this);
         this.displayScratchpadImage = this.displayScratchpadImage.bind(this);
 
         document.onkeydown = this.HandleKeyDown.bind(this);
+    }
+
+    componentDidMount() {
+        if (this.props.bindDisplayFunction) {
+            this.props.bindDisplayFunction((scratchpadContent) => {
+                this.setState(
+                    { scratchpadContent },
+                    this.displayScratchpadImage
+            )});
+        }
     }
 
     HandleKeyDown(event) {
@@ -50,15 +60,15 @@ export default class MyWork extends Component {
         }
         if (event.shiftKey && event.key === 'Enter' && $('#mathAnnotation').val() !== '') {
             event.preventDefault();
-            if ($('#updateStep').is(":visible")) {
-                $('#updateStep').click();
+            if (this.props.editing || this.props.editingProblem) {
+               this.updateCallback();
             } else {
-                this.addStep();
+                this.addStepCallback();
             }
         }
         if (event.shiftKey && event.key === 'Backspace' && this.props.showUndo && !this.props.addingProblem) {
             event.preventDefault();
-            this.props.undoLastAction();
+            this.props.undoLastActionCallback();
         }
     
         var keys = [];
@@ -77,13 +87,6 @@ export default class MyWork extends Component {
             $("#" + id).click();
         }
     }
-    
-    clearScrachPad() {
-       this.scratchPadPainterro.clearBackground();
-       this.scratchPadPainterro.worklog.current = null;
-        // it is because Painterro displays a modal if we want to replace an existing ScratchPad content
-       this.scratchPadPainterro.worklog.clean = true;
-    }
 
     scratchpadChangeHandler() {
         if (!this.state.isScratchpadUsed) {
@@ -97,7 +100,7 @@ export default class MyWork extends Component {
         this.scratchPadPainterro.show();
 
         $('#scratch-pad-containter-bar > div > span').first()
-            .append('<button id="clear-button" type="button" class="ptro-icon-btn ptro-color-control" title='+ Locales.strings.clear_sketchpad + '><i class="ptro-icon ptro-icon-close"></i></button>');
+            .append('<button id="clear-button" type="button" class="ptro-icon-btn ptro-color-control" title='+ "\"" +Locales.strings.clear_sketchpad + "\"" + '><i class="ptro-icon ptro-icon-close"></i></button>');
         $('#clear-button').click(() =>
             this.clearAndResizeScratchPad()
         );
@@ -109,37 +112,47 @@ export default class MyWork extends Component {
     }
 
     displayScratchpadImage() {
-        if(this.props.scratchpadContent) {
-            this.clearScrachPad();
-            this.scratchPadPainterro.show(this.props.scratchpadContent);
+        if (this.state.scratchpadMode) {
+            this.clearAndResizeScratchPad(this.state.scratchpadContent);
+            this.scratchPadPainterro.show(this.state.scratchpadContent);
         }
     }
 
-    clearAndResizeScratchPad() {
-        if (this.state.isScratchpadUsed) {
-            this.setState({isScratchpadUsed: false});
+    clearAndResizeScratchPad(content) {
+        if (this.state.scratchpadMode) {
             this.scratchPadPainterro.clear();
+            this.setState({
+                isScratchpadUsed: false,
+                scratchpadContent: content
+            });
         }
     }
 
     openScratchpad() {
-        this.setState({scratchpadMode: true});
-        $('#scratch-pad-containter').show();
-        this.displayScratchpadImage();
+        this.setState(
+            { scratchpadMode: true }, () => {
+                $('#scratch-pad-containter').show();
+                this.displayScratchpadImage();
+            });
     }
 
     hideScratchpad() {
-        this.setState({scratchpadMode: false});
-        $('#scratch-pad-containter').hide();
-        mathLive.renderMathInDocument();
+        this.setState({
+            scratchpadMode: false,
+            scratchpadContent: this.scratchPadPainterro.imageSaver.asDataURL()}, () => {
+                $('#scratch-pad-containter').hide();
+                mathLive.renderMathInDocument();
+            });
     }
 
-    addStep() {
-        this.props.addStepCallback(this.state.isScratchpadUsed ? this.scratchPadPainterro.imageSaver.asDataURL() : null, this.props.textAreaValue);
+    addStepCallback() {
+        this.props.addStepCallback(this.state.isScratchpadUsed ? this.scratchPadPainterro.imageSaver.asDataURL() : 
+            this.state.scratchpadContent, this.props.textAreaValue);
     }
 
-    updateStep() {
-        this.props.updateCallback(this.state.isScratchpadUsed ? this.scratchPadPainterro.imageSaver.asDataURL() : null, this.props.textAreaValue);
+    updateCallback() {
+        this.props.updateCallback(this.state.isScratchpadUsed ? this.scratchPadPainterro.imageSaver.asDataURL() :
+            this.state.scratchpadContent, this.props.textAreaValue);
     }
 
     render() {
@@ -149,51 +162,41 @@ export default class MyWork extends Component {
                     <div id="historyWorkSeparator" className={myWork.historyWorkSeparator}>
                         <h2>
                             <span
-                                className={
-                                    classNames(
-                                        editor.modalAreaHeading,
-                                        myWork.marginTop
-                                    )
-                                }
+                                className={classNames(
+                                    editor.modalAreaHeading,
+                                    myWork.marginTop)}
                                 aria-hidden="true">
                                 {this.props.title}
                             </span>
                             <br/>
-                            <span className={styles.sROnly}>{Locales.strings.my_work}</span>
+                            <span className={'sROnly'}>{Locales.strings.my_work}</span>
                         </h2>
                     </div>
                     <div className={myWork.editorWrapper}>
-                        <MyWorkEditorArea activateMathField={this.props.activateMathField} lastMathEquation={this.props.lastMathEquation}
-                            textAreaChanged={this.props.textAreaChanged} textAreaValue={this.props.textAreaValue} addingProblem={this.props.addingProblem} />
+                        <MyWorkEditorArea {...this.props} />
                         <div
-                            className={
-                                classNames(
-                                    bootstrap['d-flex'],
-                                    bootstrap['flex-nowrap'],
-                                    bootstrap['justify-content-between'],
-                                    bootstrap['pt-2']
-                                )
-                            }
+                            className={classNames(
+                                'd-flex',
+                                'flex-nowrap',
+                                'justify-content-between',
+                                'pt-2'
+                            )}
                         >
-                            <MathPalette theActiveMathField={this.props.theActiveMathField} allowedPalettes={this.props.allowedPalettes}
-                            scratchpadMode={this.state.scratchpadMode} InitScratchPad={this.InitScratchPad} addStepCallback={this.addStep} />
-                            <MyWorkEditorButtons className="d-flex flex-nowrap justify-content-between" addStepCallback={this.addStep} showUndo={this.props.showUndo}
-                                undoLastActionCallback={this.props.undoLastActionCallback} cancelEditCallback={this.props.cancelEditCallback}
-                                deleteStepsCallback={this.props.deleteStepsCallback} editing={this.props.editing} history={this.props.history}
-                                solution={this.props.solution} addingProblem={this.props.addingProblem} cancelCallback={this.props.cancelCallback}
-                                saveCallback={this.props.saveCallback} openScratchpad={this.openScratchpad} hideScratchpad={this.hideScratchpad} clearAndResizeScratchPad={this.clearAndResizeScratchPad}
-                                textAreaValue={this.props.textAreaValue} scratchpadMode={this.state.scratchpadMode} 
-                                updateCallback={this.updateStep} editingProblem={this.props.editingProblem}/>
+                            <MathPalette {...this} {...this.props} {...this.state} />
+                            <MyWorkEditorButtons {...this} {...this.props} {...this.state}
+                                addStepCallback={this.addStepCallback}
+                                updateCallback={this.updateCallback}
+                                openScratchpad={this.openScratchpad}
+                                className="d-flex flex-nowrap justify-content-between"
+                            />
                         </div>
                         <div
-                            className={
-                                classNames(
-                                    bootstrap['d-flex'],
-                                    bootstrap['flex-nowrap'],
-                                    bootstrap['justify-content-between'],
-                                    bootstrap['pt-2']
-                                )
-                            }
+                            className={classNames(
+                                'd-flex',
+                                'flex-nowrap',
+                                'justify-content-between',
+                                'pt-2'
+                            )}
                         >
                         </div>
                     </div>

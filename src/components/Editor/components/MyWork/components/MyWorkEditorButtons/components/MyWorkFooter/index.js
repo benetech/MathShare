@@ -2,20 +2,18 @@ import React, { Component } from "react";
 import Button from "../../../../../../../../components/Button";
 import classNames from "classnames";
 import footer from './styles.css';
-import styles from '../../../../../../../../styles/styles.css';
-import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 import Locales from '../../../../../../../../strings';
 
 export default class MyWorkFooter extends Component {
 
     render() {
         const btnClassNames = [
-            bootstrap.btn,
-            styles.pointer,
-            footer.btn
+            'btn',
+            'pointer',
+            footer.button
         ];
 
-        const undoButton = this.props.undoButton && !this.props.addingProblem ?
+        const undoButton = this.props.showUndo && !this.props.addingProblem ?
             <Button
                 className={btnClassNames}
                 additionalStyles={['withRightMargin', 'undo']}
@@ -47,6 +45,17 @@ export default class MyWorkFooter extends Component {
                 intro={Locales.strings.update_step_intro}
                 icon="pencil"
                 onClick={() => this.props.updateCallback()} />
+        } else if (this.props.editingProblem) {
+            confirmButton =  <Button
+                className={btnClassNames}
+                additionalStyles={['addStep']}
+                toggle="tooltip"
+                title={Locales.strings.update_problem_button_title}
+                content={Locales.strings.update_problem}
+                step="3"
+                intro={Locales.strings.update_problem_intro}
+                icon="pencil"
+                onClick={() => this.props.updateCallback()} />
         } else {
             confirmButton =  <Button
                 className={btnClassNames}
@@ -58,7 +67,7 @@ export default class MyWorkFooter extends Component {
                 step="3"
                 intro={Locales.strings.add_step_intro}
                 icon="plus"
-                onClick={() => this.props.addStep()} />
+                onClick={() => this.props.addStepCallback()} />
         }
 
         return (

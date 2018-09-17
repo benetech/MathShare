@@ -6,7 +6,6 @@ import MyWork from '../../../Editor/components/MyWork';
 import FontAwesome from "react-fontawesome";
 import showImage from "../../../../scripts/showImage";
 import Button from "../../../../components/Button";
-import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 import { arrayMove } from 'react-sortable-hoc';
 import parseMathLive from '../../../../scripts/parseMathLive.js';
 
@@ -20,6 +19,7 @@ export default class NewProblemsForm extends Component {
         this.state = {
             problems: [],
             textAreaValue: "",
+            displayScratchpad: null
         };
 
         this.save = this.save.bind(this);
@@ -29,8 +29,12 @@ export default class NewProblemsForm extends Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        if(prevState.problems.length != this.state.problems.length) {
+        if (prevState.problems.length != this.state.problems.length) {
             this.scrollToBottom();
+        }
+        if (this.state.displayScratchpad && this.props.problemToEdit) {
+            this.state.displayScratchpad(this.props.problemToEdit.scratchpad);
+            this.setState({displayScratchpad: null});
         }
     }
 
@@ -64,7 +68,11 @@ export default class NewProblemsForm extends Component {
     }
 
     scrollToBottom() {
-        document.querySelector("#container").scrollTo(0, document.querySelector("#container").scrollHeight);
+        try {
+            document.querySelector("#container").scrollTo(0, document.querySelector("#container").scrollHeight);
+        } catch(e) {
+            console.log("scrollTo method not supported");
+        }
     }
 
     save() {
@@ -76,7 +84,7 @@ export default class NewProblemsForm extends Component {
     }
 
     addStep(imageData, text) {
-        this.props.addProblemCallback(imageData, text, this.state.problems.length);
+        this.props.addProblemCallback(imageData, text, this.state.problems.length, this.state.displayScratchpad);
     }
 
     render() {
@@ -97,7 +105,6 @@ export default class NewProblemsForm extends Component {
                     onClick={i == 0 ? null : () => this.reorder(problem.position, problem.position - 1)}
                 />
             const moveDownBtn =
-
                 <FontAwesome
                     size="lg"
                     className={i == this.state.problems.length - 1 ? styles.disabled : null}
@@ -140,7 +147,7 @@ export default class NewProblemsForm extends Component {
             </div>
         var saveButton = this.props.editing ? null :
             <Button
-                className={bootstrap.btn}
+                className={'btn'}
                 additionalStyles={['withRightMargin', 'default', 'right']}
                 icon="save"
                 content={Locales.strings.save}
@@ -176,12 +183,13 @@ export default class NewProblemsForm extends Component {
                         title={this.props.title}
                         lastMathEquation={lastMathEquation}
                         updateCallback={this.update}
-                        scratchpadContent={scratchpadContent} />
+                        scratchpadContent={scratchpadContent}
+                        bindDisplayFunction={(f) => this.setState({ displayScratchpad: f })} />
                     <div className={styles.footer}>
                         {saveButton}
                         <Button
                             id='bottom'
-                            className={bootstrap.btn}
+                            className={'btn'}
                             additionalStyles={['withRightMargin', 'default', 'right']}
                             content={Locales.strings.cancel}
                             icon="times-circle"

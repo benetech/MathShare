@@ -2,11 +2,10 @@ import React, { Component } from "react";
 import { withRouter } from 'react-router-dom'
 import Button from '../../.././../Button';
 import classNames from "classnames";
+import { EDIT_PROBLEM, CONFIRMATION, ADD_PROBLEMS } from '../../../../ModalContainer';
 import problem from './styles.css';
 import buttons from '../../../../../components/Button/styles.css';
-import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 import Locales from '../../../../../strings';
-import config from '../../../../../../package.json';
 import axios from 'axios';
 import FontAwesome from "react-fontawesome";
 import showImage from '../../../../../scripts/showImage.js';
@@ -31,7 +30,16 @@ export default class Problem extends Component {
 
     buildAnnotation() {
         var text = parseMathLive(this.props.problem.title);
-        return "$$" + OPEN_TEXT_TAG + (this.props.number + 1) + ". }" + text + "}$$";
+        if ((text.match(/\\text{/g) || []).length > 1) {
+            if (text.includes("\\frac")) {
+                text = this.buildComplexProblemText();
+            } else if (text.length > problemMathDisplayLength) {
+                text = text.slice(0, problemMathDisplayLength) + "...";
+            }
+            return "$$" + OPEN_TEXT_TAG + (this.props.number + 1) + ". }" + text + "}$$";
+        } else {
+            return (this.props.number + 1) + ". " + this.props.problem.title;
+        }
     }
 
 
@@ -39,12 +47,14 @@ export default class Problem extends Component {
         var text = this.props.problem.text;
         if (text.includes("\\frac")) {
             text = this.buildComplexProblemText();
-        } else {
-            if (text.length > problemTextDisplayLength) {
-                text = text.slice(0, problemTextDisplayLength) + "...";
-            }
+        } else if (text.length > problemTextDisplayLength) {
+            text = text.slice(0, problemTextDisplayLength) + "...";
         }
         return "$$" + text + "$$";
+    }
+
+    buildProblemImage() {
+        return <img className={problem.image} src={this.props.problem.scratchpad}/>
     }
 
     buildComplexProblemText() {
@@ -69,12 +79,12 @@ export default class Problem extends Component {
     }
 
     onTrashClick(e) {
-        this.props.activateModals(["confirmation"], this.props.number);
+        this.props.activateModals([CONFIRMATION], this.props.number);
         e.stopPropagation();
     }
 
     onEditClick(e) {
-        this.props.activateModals(["editProblem"], this.props.number);
+        this.props.activateModals([EDIT_PROBLEM], this.props.number);
         e.stopPropagation();
     }
 
@@ -97,7 +107,7 @@ export default class Problem extends Component {
                 }
             ]
         }
-        axios.post(`${config.serverUrl}/solution/`, solution)
+        axios.post(`${SERVER_URL}/solution/`, solution)
             .then(response => {
                 history.push('/problem/edit/' + response.data.editCode);
             })
@@ -106,17 +116,23 @@ export default class Problem extends Component {
     render() {
         var annotation;
         var equation;
+        var image;
         if (this.props.example) {
             annotation = Locales.strings.getting_started_title;
             equation = Locales.strings.getting_started_equation;
         } else if (this.props.addNew) {
-            equation = Locales.strings.add_problem_title;
+            annotation = Locales.strings.add_problem_title;
         } else {
             annotation = this.buildAnnotation();
             equation = this.buildProblemText();
+            image = this.buildProblemImage();
         }
-
-        var imgButton = (this.props.problem && this.props.problem.scratchpad) ?
+    
+        var wrappedAnnotation = annotation !== undefined && (annotation.match(/\\text{/g) || []).length > 1 ? 
+            <span className={problem.problemAnnotationScaled}>{annotation}</span> :
+            <span className={problem.problemAnnotation}>{annotation}</span>
+            
+        var imgButton = (this.props.problem && this.props.problem.scratchpad) ? 
         <FontAwesome
             className={
                 classNames(
@@ -171,8 +187,8 @@ export default class Problem extends Component {
             <div
                 className={
                     classNames(
-                        bootstrap['col-md-4'],
-                        bootstrap['text-center'],
+                        'col-md-4',
+                        'text-center',
                         problem.problem
                     )
                 }
@@ -180,29 +196,31 @@ export default class Problem extends Component {
                 <span
                     className={
                         classNames(
-                            bootstrap.btn,
+                            'btn',
                             buttons.default,
                             buttons.huge,
                             problem.navSpan
                         )
                     }
-                    onClick={() => this.props.addNew ? this.props.activateModals(["addProblems"]) : this.createNewSolution(history)}
+                    onClick={() => this.props.addNew ? this.props.activateModals([ADD_PROBLEMS]) : this.createNewSolution(history)}
                 >
+                <div className={problem.middle}>
                     <Button
                         className={
                             classNames(
                                 problem.navItemButton,
-                                problem.annotation,
                                 problem.colorInherit
                             )
                         }
-                        content={<span className={problem.problemAnnotation}>{annotation}</span>}
+                        content={wrappedAnnotation}
                     />
                     {imgButton}
                     {removeButton}
                     {plusButton}
                     {editButton}
-                    <span className={problem.problemEquation}>{equation}</span>
+                    {equation}
+                    {image}
+                </div>
                 </span>
             </div>
         ))

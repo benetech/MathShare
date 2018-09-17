@@ -2,9 +2,10 @@ import React, { Component } from "react";
 import Button from '../../../../../../../../components/Button';
 import classNames from "classnames";
 import step from './styles.css';
-import styles from '../../../../../../../../styles/styles.css';
-import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
-import Locales from '../../../../../../../../strings'
+import Locales from '../../../../../../../../strings';
+
+import '../../../../../../../../../images/pencil.png';
+import '../../../../../../../../../images/delete.png';
 
 const mathLive = DEBUG_MODE ? require('../../../../../../../../../mathlive/src/mathlive.js')
     : require('../../../../../../../../lib/mathlivedist/mathlive.js');
@@ -39,11 +40,11 @@ export default class Step extends Component {
 
     buildReason() {
         if (this.props.cleanup) {
-            return (<span className={styles.sROnly}> {this.OrdinalSuffix(this.props.stepNumber)} {Locales.strings.step_after_cleanup}</span>);
+            return (<span className={'sROnly'}> {this.OrdinalSuffix(this.props.stepNumber)} {Locales.strings.step_after_cleanup}</span>);
         } else {
             return (
-                <div>
-                    <span className={styles.sROnly}> {this.OrdinalSuffix(this.props.stepNumber)} {Locales.strings.step}</span>
+                <div className={step.reason}>
+                    <span className={'sROnly'}> {this.OrdinalSuffix(this.props.stepNumber)} {Locales.strings.step}</span>
                     <span className={step.header} aria-hidden="true">{Locales.strings.step} {this.props.stepNumber}:</span>
                 </div>
             );
@@ -54,18 +55,19 @@ export default class Step extends Component {
         if (this.props.showEdit) {
             return (
                 <Button
+                    id={`editStepBtn-${this.props.stepNumber}`}
                     className={
                         classNames(
-                            bootstrap.btn,
+                            'btn',
                             step.btnEdit,
-                            step.btn
+                            step.button
                         )
                     }
                     additionalStyles={['background', 'palette']}
                     data-toggle="tooltip"
                     title={Locales.strings.edit_this_step}
                     content={
-                        <span className={styles.sROnly}>
+                        <span className={'sROnly'}>
                             {Locales.strings.edit} {this.OrdinalSuffix(this.props.stepNumber)} {Locales.strings.step}
                         </span>
                     }
@@ -79,18 +81,19 @@ export default class Step extends Component {
         if (this.props.showTrash && !this.props.cleanup) {
             return (
                 <Button
+                    id={`deleteStepBtn-${this.props.stepNumber}`}
                     className={
                         classNames(
-                            bootstrap.btn,
+                            'btn',
                             step.btnDelete,
-                            step.btn
+                            step.button
                         )
                     }
                     additionalStyles={['background', 'palette', 'withLeftMargin']}
                     data-toggle="tooltip"
                     title={Locales.strings.delete_this_step}
                     content={
-                        <span className={styles.sROnly}>
+                        <span className={'sROnly'}>
                             {Locales.strings.delete} {this.OrdinalSuffix(this.props.stepNumber)} {Locales.strings.step}
                         </span>
                     }
@@ -107,41 +110,41 @@ export default class Step extends Component {
     render() {
         const clearAll = this.props.stepNumber == 1 && !this.props.readOnly ?
             <Button
+                id="clearAllStepsBtn"
                 className={classNames([
-                    bootstrap.btn,
+                    'btn',
                     step.clearAll,
-                    step.btn
+                    step.button
                 ])}
                 content={Locales.strings.clear_all}
                 icon="times-circle"
                 onClick={this.props.deleteStepsCallback}
             /> : null;
 
+        var id = this.props.cleanup ? `mathStep-${this.props.stepNumber - 1}-cleanup` : `mathStep-${this.props.stepNumber}`;
         return (
-            <div id="mathStep" className={classNames(bootstrap.row, step.step)} data-step={this.props.stepNumber}
-                data-equation={this.props.math} data-annotation={this.props.annotation}>
-                <div className={bootstrap['col-md-1']}>
+            <div id={id} className={classNames('row', step.step)}>
+                <div className={'col-md-1'}>
                     <span role="heading" aria-level="3">
                         {this.buildReason()}
                     </span>
                 </div>
-                <div className={classNames(bootstrap['col-md-5'], step.annotationEquation)}>
-                    <span className={styles.sROnly}> {Locales.strings.math}: </span>
+                <div className={classNames('col-md-5', step.annotationEquation)}>
+                    <span className={'sROnly'}> {Locales.strings.math}: </span>
                     <span className="staticMath" >{"$$" + this.props.math + "$$"}</span>
                 </div>
-                <div className={classNames(bootstrap['col-md-5'], step.annotationEquation)}>
-                    <span className={styles.sROnly} role="heading" aria-level="4">{Locales.strings.reason}:</span>
+                <div className={classNames('col-md-5', step.annotationEquation)}>
+                    <span className={'sROnly'} role="heading" aria-level="4">{Locales.strings.reason}:</span>
                     <span className={classNames({
                         [step.cleanUpAnnotation]: this.props.cleanup
                     })}> {this.props.annotation} </span>
                 </div>
-                <div className={classNames(bootstrap['col-md-1'], step.btnContainer)}>
+                <div className={classNames('col-md-1', step.btnContainer)}>
                     {clearAll}
                     {this.buildEditBtn()}
                     {this.buildTrashBtn()}
                 </div>
             </div>
-
         );
     }
 }

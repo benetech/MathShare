@@ -34,6 +34,9 @@ module.exports = env => {
                 },
                 {
                     test: /\.css$/,
+                    include: [
+                        /src\/components/
+                    ],
                     use: [
                         {
                             loader: "style-loader"
@@ -47,8 +50,41 @@ module.exports = env => {
                                 sourceMap: true,
                                 minimize: true
                             }
+                        },
+                    ]
+                },
+                {
+                    test: /\.(jpg|png|gif|pdf|ico)$/,
+                    include: /images/,
+                    use: [
+                        {
+                            loader: 'file-loader',
+                            options: {
+                                name: '[path]/[name].[ext]'
+                            },
+                        },
+                    ]
+                },
+                {
+                    test: /\.css$/,
+                    include: [
+                        /node_modules\/react-notifications/,
+                        /node_modules\/bootstrap/,
+                        /src\/lib/,
+                        /src\/styles/
+                    ],
+                    use: [
+                        {
+                            loader: "style-loader"
+                        },
+                        {
+                            loader: "css-loader"
                         }
                     ]
+                },
+                {
+                    test: /\.(ttf|eot|svg|woff(2)?)(\S+)?$/,
+                    loader: 'file-loader?publicPath=/&name=fonts/[name].[ext]'
                 }
             ]
         },

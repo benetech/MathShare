@@ -1,11 +1,7 @@
 .problem {
     list-style: none;
     margin: auto;
-    margin-bottom: 20px;
-}
-
-.annotation {
-    width: 90%;
+    margin-bottom: 30px;
 }
 
 .navItemButton {
@@ -20,20 +16,18 @@
     background-color: inherit;
 }
 
-.problemAnnotation {
+.problemAnnotation, .problemAnnotationScaled {
+    word-wrap: break-word;
     display: block;
     text-align: center;
     cursor: pointer;
     margin-bottom: 2ex;
+    width: 260px;
 }
 
-
-.problemEquation {
-    display: inline-flex;
-    text-align: center;
-    padding-left: 15px;
-    min-height: 60px;
-    align-items: center;
+.problemAnnotationScaled {
+    font-size: 1.15em;
+    margin-top: -1ex;
 }
 
 .trashIcon {
@@ -61,5 +55,17 @@
 }
 
 .navSpan {
-    position: relative
+    position: relative;
+}
+
+.image {
+    width: 260px;
+    margin-top: 15px;
+}
+
+.middle {
+    vertical-align: middle;
+    width: 300px;
+    height: 220px;
+    display: table-cell;
 }

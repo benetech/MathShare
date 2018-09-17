@@ -8,9 +8,8 @@ import { NotificationContainer } from 'react-notifications';
 import exampleProblem from '../../data/example01.json'; //TODO: Add example problem to the UI
 import createAlert from '../../scripts/alert';
 import Locales from '../../strings'
-import config from '../../../package.json';
 import axios from 'axios';
-import ModalContainer from './components/ModalContainer';
+import ModalContainer, { CONFIRMATION, PALETTE_CHOOSER, ADD_PROBLEM_SET, ADD_PROBLEMS, SHARE_NEW_SET, EDIT_PROBLEM } from '../../components/ModalContainer';
 import { SERVER_URL } from '../../config';
 
 const mathLive = DEBUG_MODE ? require('../../../mathlive/src/mathlive.js')
@@ -43,12 +42,6 @@ export default class Home extends Component {
         this.progressToAddingProblems = this.progressToAddingProblems.bind(this);
         this.saveProblemSet = this.saveProblemSet.bind(this);
         this.finishEditing = this.finishEditing.bind(this);
-        this.CONFIRMATION_MODAL = "confirmation";
-        this.PALETTE_CHOOSER_MODAL = "paletteChooser";
-        this.ADD_PROBLEM_SET_MODAL = "addProblemSet";
-        this.ADD_PROBLEMS_MODAL = "addProblems";
-        this.SHARE_NEW_SET_MODAL = "shareNewSet";
-        this.EDIT_PROBLEM_MODAL = "editProblem";
     }
 
     componentDidMount() {
@@ -93,15 +86,15 @@ export default class Home extends Component {
             if (this.state.activeModals.indexOf(modal) != -1) {
                 oldModals = oldModals.filter(e => e !== modal);
             } else {
-                if (modal == this.ADD_PROBLEM_SET_MODAL || modal == this.ADD_PROBLEMS_MODAL) {
+                if (modal == ADD_PROBLEM_SET || modal == ADD_PROBLEMS) {
                     this.setState({
                         tempProblems: []
                     });
-                } else if (modal == this.CONFIRMATION_MODAL) {
+                } else if (modal == CONFIRMATION) {
                     this.setState({
                         problemToDeleteIndex: index
                     });
-                } else if (modal == this.EDIT_PROBLEM_MODAL) {
+                } else if (modal == EDIT_PROBLEM) {
                     this.setState({
                         problemToEditIndex: index,
                         problemToEdit: this.state.set.problems[index]
@@ -113,16 +106,16 @@ export default class Home extends Component {
         this.setState({ activeModals: oldModals });
     }
 
-    validateProblem(text) {
+    validateProblem(text, image) {
         var message;
-        if (text === "") {
-            if (this.state.theActiveMathField.latex() === "") {
-                message = Locales.strings.no_problem_equation_and_title_warning;
+        if (text === "" || $.trim(text).length === 0) {
+            if (this.state.theActiveMathField.latex() === "" && image === null) {
+                message = Locales.strings.no_problem_equation_or_image_and_title_warning;
             } else {
                 message = Locales.strings.no_problem_title_warning;
             }
-        } else if (this.state.theActiveMathField.latex() === "") {
-            message = Locales.strings.no_problem_equation_warning;
+        } else if (this.state.theActiveMathField.latex() === "" && image === null) {
+            message = Locales.strings.no_problem_equation_or_image_warning;
         }
 
         if (message) {
@@ -135,8 +128,8 @@ export default class Home extends Component {
         return true;
     }
 
-    addProblem(imageData, text, index) {
-        if (!this.validateProblem(text)) {
+    addProblem(imageData, text, index, callback) {
+        if (!this.validateProblem(text, imageData)) {
             return;
         }
 
@@ -151,15 +144,17 @@ export default class Home extends Component {
             tempProblems: newProblems
         });
 
+        callback();
         mathLive.renderMathInDocument();
-
-        //  this.setScratchPadContentData(mathStepNewNumber, ScratchPadPainterro.imageSaver.asDataURL())
-        //  this.clearScrachPad();
         this.scrollToBottom();
     }
 
     scrollToBottom() {
-        document.querySelector("#container").scrollTo(0, document.querySelector("#container").scrollHeight);
+        try {
+            document.querySelector("#container").scrollTo(0, document.querySelector("#container").scrollHeight);
+        } catch(e) {
+            console.log("scrollTo method not supported");
+        }
     }
 
     saveProblems(problems) {
@@ -198,11 +193,11 @@ export default class Home extends Component {
         setTimeout(function () {
             mathLive.renderMathInDocument();
         }.bind(this), 200);
-        this.toggleModals([this.CONFIRMATION_MODAL]);
+        this.toggleModals([CONFIRMATION]);
     }
 
     editProblem(imageData, title) {
-        if (!this.validateProblem(title)) {
+        if (!this.validateProblem(title, imageData)) {
             return;
         }
         var oldSet = this.state.set;
@@ -225,7 +220,7 @@ export default class Home extends Component {
         setTimeout(function () {
             mathLive.renderMathInDocument();
         }.bind(this), 200);
-        this.toggleModals([this.EDIT_PROBLEM_MODAL]);
+        this.toggleModals([EDIT_PROBLEM]);
     }
 
     updatePositions(problems) {
@@ -238,7 +233,7 @@ export default class Home extends Component {
     }
 
     addProblemSet() {
-        this.toggleModals([this.PALETTE_CHOOSER_MODAL]);
+        this.toggleModals([PALETTE_CHOOSER]);
     }
 
     progressToAddingProblems(palettes) {
@@ -247,7 +242,7 @@ export default class Home extends Component {
             return;
         }
         this.setState({ tempPalettes: palettes });
-        this.toggleModals([this.PALETTE_CHOOSER_MODAL, this.ADD_PROBLEM_SET_MODAL]);
+        this.toggleModals([PALETTE_CHOOSER, ADD_PROBLEM_SET]);
     }
 
     saveProblemSet() {
@@ -263,7 +258,7 @@ export default class Home extends Component {
                     newSetSharecode: response.data.shareCode
                 })
             });
-        this.toggleModals([this.ADD_PROBLEM_SET_MODAL, this.SHARE_NEW_SET_MODAL]);
+        this.toggleModals([ADD_PROBLEM_SET, SHARE_NEW_SET]);
     }
 
     finishEditing() {
@@ -276,7 +271,9 @@ export default class Home extends Component {
                 <NotificationContainer />
                 <MainPageHeader editing={this.props.match.params.action == 'edit'} history={this.props.history} shareCallback={this.toggleModals}
                     addProblemSetCallback={this.addProblemSet} finishEditing={this.finishEditing} editCode={this.state.set.editCode}/>
-                <ModalContainer activeModals={this.state.activeModals} toggleModals={this.toggleModals}
+                <ModalContainer 
+                    activeModals={this.state.activeModals}
+                    toggleModals={this.toggleModals}
                     progressToAddingProblems={this.progressToAddingProblems} deleteProblem={this.deleteProblem}
                     shareLink={SERVER_URL + '/problemSet/view/' + this.state.set.sharecode}
                     newSetShareLink={SERVER_URL + '/problemSet/view/' + this.state.newSetSharecode}
@@ -289,13 +286,11 @@ export default class Home extends Component {
                     saveProblems={this.saveProblems}
                     problemToEdit={this.state.problemToEdit}
                     editProblemCallback={this.editProblem} />
-                <div className={home.contentWrapper} id="ContentWrapper">
-                    <nav id="LeftNavigation" className={home.leftNavigation} aria-labelledby="LeftNavigationHeader">
-                        <NavigationHeader />
-                        <NavigationProblems problems={this.state.set.problems} editing={this.props.match.params.action == 'edit'}
-                            activateModals={this.toggleModals} updatePositions={this.updatePositions} />
-                    </nav>
-                </div>
+                <nav id="LeftNavigation" className={home.leftNavigation} aria-labelledby="LeftNavigationHeader">
+                    <NavigationHeader />
+                    <NavigationProblems problems={this.state.set.problems} editing={this.props.match.params.action == 'edit'}
+                        activateModals={this.toggleModals} updatePositions={this.updatePositions} />
+                </nav>
                 <MainPageFooter />
             </div>
         )

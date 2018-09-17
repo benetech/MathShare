@@ -7,12 +7,7 @@
 
 .leftNavigation {
     overflow-x: hidden;
-    overflow-y: auto;
-    flex: 0 0 100%;
+    height: 100%;
     background-color: #FFFFFF;
     border-right: 1px solid #CCC;
 }
-
-.contentWrapper {
-    display: contents;
-}    

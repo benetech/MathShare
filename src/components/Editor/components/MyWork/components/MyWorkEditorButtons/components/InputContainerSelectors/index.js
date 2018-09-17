@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import Button from "../../../../../../../../components/Button";
 import classNames from "classnames";
 import styles from './styles.css';
-import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 import Locales from '../../../../../../../../strings';
 
 export default class InputContainerSelectors extends Component {
@@ -18,9 +17,9 @@ export default class InputContainerSelectors extends Component {
             }>
                 <Button
                     className={classNames([
-                        bootstrap.btn,
+                        'btn',
                         styles.scratch,
-                        styles.btn,
+                        styles.button,
                         scratchClass
                     ])}
                     fa5
@@ -32,9 +31,9 @@ export default class InputContainerSelectors extends Component {
                 />
                 <Button
                     className={[
-                        bootstrap.btn,
+                        'btn',
                         styles.symbols,
-                        styles.btn,
+                        styles.button,
                         symbolsClass
                     ]}
                     fa5

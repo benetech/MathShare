@@ -5,8 +5,6 @@ import styles from './styles.css';
 import palettes from '../../../palettes.json';
 import MathButtonsGroup from '../../../Editor/components/MyWork/components/MathPalette/components/MathButtonsGroup';
 import Button from '../../../Button';
-import appStyles from '../../../../styles/styles.css';
-import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 
 const mathLive = DEBUG_MODE ? require('../../../../../mathlive/src/mathlive.js')
     : require('../../../../lib/mathlivedist/mathlive.js');
@@ -50,6 +48,7 @@ export default class PaletteChooser extends Component {
                     palette={palette}
                     theActiveMathField={this.props.theActiveMathField}
                     showLabel={false}
+                    readOnly
                 />
             </div>
             <h5 id="paletteLabel" className={styles.paletteLabel}>
@@ -61,8 +60,8 @@ export default class PaletteChooser extends Component {
         </div>
         )
         const btnClassNames = [
-            bootstrap.btn,
-            appStyles.pointer
+            'btn',
+            'pointer'
         ];
         return (
             <AriaModal
@@ -70,6 +69,7 @@ export default class PaletteChooser extends Component {
                 titleText="demo one"
                 onExit={this.props.deactivateModal}
                 getApplicationNode={this.getApplicationNode}
+                focusDialog={true}
                 underlayStyle={{ paddingTop: '2em' }}
             >
                 

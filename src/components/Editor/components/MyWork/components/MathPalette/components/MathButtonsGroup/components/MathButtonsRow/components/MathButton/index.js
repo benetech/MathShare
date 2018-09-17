@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import Button from '../../.././../../../../../../../../Button';
 import classNames from "classnames";
 import mathButton from './styles.css';
-import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 import teXCommands from './teXCommands.json';
 import googleAnalytics from '../../../../../../../../../../../../scripts/googleAnalytics';
 import createAlert from '../../../../../../../../../../../../scripts/alert';
@@ -33,7 +32,6 @@ export default class MathButton extends Component {
             UpdateMathFieldMode: false
         }
     }
-
 
     getFunctionsById(ids) {
         return function () {
@@ -78,7 +76,7 @@ export default class MathButton extends Component {
         classes.forEach(function (clazz) {
             result.push(mathButton[clazz]);
         });
-        return classNames(bootstrap.btn, result);
+        return classNames('btn', result);
     }
 
     render() {
@@ -95,12 +93,13 @@ export default class MathButton extends Component {
         return (
             <span role="listitem">
                 <Button
+                    disabled={this.props.readOnly}
                     id={this.props.button.id}
                     className={this.buildClassNames()}
                     data-toggle="tooltip"
                     title={title}
                     content={this.props.button.value}
-                    onClick={functions.bind(this)}
+                    onClick={this.props.readOnly ? null : functions.bind(this)}
                 />
                 <span className="sr-only">{title}</span>
             </span>
