@@ -114,7 +114,10 @@ class Locales {
             page_was_not_found_title: "Page Not Found",
             page_was_not_found: "We are sorry but the page you are looking for does not exist.",
             page_was_not_found_info: "Please visit the homepage or contact us about the problem.",
-            open_image: "Open image"
+            open_image: "Open image",
+            example: "example",
+            example_edit_code: "Here you could find an URL with edit code",
+            example_share_code: "Here you could find an URL with share code"
         },
         es: {
         }

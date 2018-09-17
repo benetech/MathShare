@@ -6,9 +6,8 @@ import MainPageFooter from './components/Footer';
 import NotFound from '../NotFound';
 import home from './styles.css';
 import { NotificationContainer } from 'react-notifications';
-import exampleProblem from '../../data/example01.json'; //TODO: Add example problem to the UI
 import { alertWarning } from '../../scripts/alert';
-import Locales from '../../strings'
+import Locales from '../../strings';
 import axios from 'axios';
 import ModalContainer, { CONFIRMATION, PALETTE_CHOOSER, ADD_PROBLEM_SET, ADD_PROBLEMS, SHARE_NEW_SET, EDIT_PROBLEM } from '../../components/ModalContainer';
 import { SERVER_URL } from '../../config';

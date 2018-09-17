@@ -77,6 +77,9 @@ export default class ProblemHeader extends Component {
                 icon="question"
                 onClick={this.tour} />
         </div>
+
+        const exampleLabel = this.props.example ? <span className={problem.label}>{Locales.strings.example}</span> : null;
+
         return (
             <div className={problem.header}>
                 <div className={problem.backBtnContainer}>
@@ -91,6 +94,7 @@ export default class ProblemHeader extends Component {
                 </div>
                 <span id="ProblemTitle" className={problem.title} role="heading" aria-level="1">{title}</span>
                 <span id="ProblemMath" className={problem.title}>{"$$" + this.props.math + "$$"}</span>
+                {exampleLabel}
                 {imgButton}
                 {editOnlyControls}
             </div>

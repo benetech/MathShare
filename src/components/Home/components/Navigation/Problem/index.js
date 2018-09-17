@@ -13,7 +13,7 @@ import parseMathLive from '../../../../../scripts/parseMathLive.js';
 import { SERVER_URL } from '../../../../../config';
 
 const mathLive = DEBUG_MODE ? require('../../../../../../mathlive/src/mathlive.js')
-: require('../../../../../lib/mathlivedist/mathlive.js');
+    : require('../../../../../lib/mathlivedist/mathlive.js');
 const problemTextDisplayLength = 40;
 const problemMathDisplayLength = 30;
 const OPEN_TEXT_TAG = "\\text{";
@@ -54,21 +54,21 @@ export default class Problem extends Component {
     }
 
     buildProblemImage() {
-        return <img className={problem.image} src={this.props.problem.scratchpad}/>
+        return <img className={problem.image} src={this.props.problem.scratchpad} />
     }
 
     buildComplexProblemText() {
         var text = this.props.problem.text;
         var equationParts = text.split("{");
         var result = "";
-        equationParts.forEach(function(part, i) {
+        equationParts.forEach(function (part, i) {
             if (part.length > problemMathDisplayLength) {
                 result += "{" + part.slice(0, problemMathDisplayLength) + "...}";
             } else {
                 if (i != 0) {
                     result += "{";
                 }
-                result +=  part;
+                result += part;
             }
         });
         return result;
@@ -94,23 +94,27 @@ export default class Problem extends Component {
     }
 
     createNewSolution(history) {
-        var solution = {
-            problem: {
-                problemSetRevisionShareCode: this.props.problem.problemSetRevisionShareCode,
-                text: this.props.problem.text,
-                title: this.props.problem.title
-            },
-            steps: [
-                {
-                    stepValue: this.props.problem.text,
-                    explanation: this.props.problem.title
-                }
-            ]
+        if (this.props.example) {
+            history.push('/problem/example/');
+        } else {
+            var solution = {
+                problem: {
+                    problemSetRevisionShareCode: this.props.problem.problemSetRevisionShareCode,
+                    text: this.props.problem.text,
+                    title: this.props.problem.title
+                },
+                steps: [
+                    {
+                        stepValue: this.props.problem.text,
+                        explanation: this.props.problem.title
+                    }
+                ]
+            }
+            axios.post(`${SERVER_URL}/solution/`, solution)
+                .then(response => {
+                    history.push('/problem/edit/' + response.data.editCode);
+                })
         }
-        axios.post(`${SERVER_URL}/solution/`, solution)
-            .then(response => {
-                history.push('/problem/edit/' + response.data.editCode);
-            })
     }
 
     render() {
@@ -127,61 +131,61 @@ export default class Problem extends Component {
             equation = this.buildProblemText();
             image = this.buildProblemImage();
         }
-    
-        var wrappedAnnotation = annotation !== undefined && (annotation.match(/\\text{/g) || []).length > 1 ? 
+
+        var wrappedAnnotation = annotation !== undefined && (annotation.match(/\\text{/g) || []).length > 1 ?
             <span className={problem.problemAnnotationScaled}>{annotation}</span> :
             <span className={problem.problemAnnotation}>{annotation}</span>
-            
-        var imgButton = (this.props.problem && this.props.problem.scratchpad) ? 
-        <FontAwesome
-            className={
-                classNames(
-                    problem.imgIcon,
-                    'fa-2x'
-                )
-            }
-            onClick={this.onImgClick}
-            name='image'
-        />
-        : null;
+
+        var imgButton = (this.props.problem && this.props.problem.scratchpad) ?
+            <FontAwesome
+                className={
+                    classNames(
+                        problem.imgIcon,
+                        'fa-2x'
+                    )
+                }
+                onClick={this.onImgClick}
+                name='image'
+            />
+            : null;
 
         var plusButton = this.props.addNew ?
-        <FontAwesome
-            className={
-                classNames(
-                    problem.plusIcon,
-                    'fa-2x'
-                )
-            }
-            name='plus-circle'
-        />
-        : null;
+            <FontAwesome
+                className={
+                    classNames(
+                        problem.plusIcon,
+                        'fa-2x'
+                    )
+                }
+                name='plus-circle'
+            />
+            : null;
 
         var editButton = this.props.showRemove ?
-        <FontAwesome
-            className={
-                classNames(
-                    problem.editIcon,
-                    'fa-2x'
-                )
-            }
-            onClick={this.onEditClick}
-            name='edit'
-        />
-        : null;
+            <FontAwesome
+                className={
+                    classNames(
+                        problem.editIcon,
+                        'fa-2x'
+                    )
+                }
+                onClick={this.onEditClick}
+                name='edit'
+            />
+            : null;
 
         var removeButton = this.props.showRemove ?
-        <FontAwesome
-            className={
-                classNames(
-                    problem.trashIcon,
-                    'fa-2x'
-                )
-            }
-            onClick={this.onTrashClick}
-            name='trash'
-        />
-        : null;
+            <FontAwesome
+                className={
+                    classNames(
+                        problem.trashIcon,
+                        'fa-2x'
+                    )
+                }
+                onClick={this.onTrashClick}
+                name='trash'
+            />
+            : null;
 
         const NavItem = withRouter(({ history }) => (
             <div
@@ -204,23 +208,23 @@ export default class Problem extends Component {
                     }
                     onClick={() => this.props.addNew ? this.props.activateModals([ADD_PROBLEMS]) : this.createNewSolution(history)}
                 >
-                <div className={problem.middle}>
-                    <Button
-                        className={
-                            classNames(
-                                problem.navItemButton,
-                                problem.colorInherit
-                            )
-                        }
-                        content={wrappedAnnotation}
-                    />
-                    {imgButton}
-                    {removeButton}
-                    {plusButton}
-                    {editButton}
-                    {equation}
-                    {image}
-                </div>
+                    <div className={problem.middle}>
+                        <Button
+                            className={
+                                classNames(
+                                    problem.navItemButton,
+                                    problem.colorInherit
+                                )
+                            }
+                            content={wrappedAnnotation}
+                        />
+                        {imgButton}
+                        {removeButton}
+                        {plusButton}
+                        {editButton}
+                        {equation}
+                        {image}
+                    </div>
                 </span>
             </div>
         ))
