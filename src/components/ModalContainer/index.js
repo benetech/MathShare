@@ -65,7 +65,7 @@ export default class ModalContainer extends Component {
             activateMathField={this.props.activateMathField}
             theActiveMathField={this.props.theActiveMathField}
             addProblemCallback={this.props.addProblemCallback}
-            problems={this.props.tempProblems}
+            problems={[]}
             saveCallback={this.props.saveProblemSet}
             addingProblem
             cancelCallback={() => this.props.toggleModals([ADD_PROBLEM_SET])}
@@ -78,7 +78,7 @@ export default class ModalContainer extends Component {
             activateMathField={this.props.activateMathField}
             theActiveMathField={this.props.theActiveMathField}
             addProblemCallback={this.props.addProblemCallback}
-            problems={this.props.problems.concat(this.props.tempProblems)}
+            problems={this.props.problems}
             saveCallback={this.props.saveProblems}
             addingProblem
             cancelCallback={() => this.props.toggleModals([ADD_PROBLEMS])}
@@ -93,7 +93,7 @@ export default class ModalContainer extends Component {
             textAreaChanged={this.props.textAreaChanged}
             textAreaValue={this.props.textAreaValue}
             editProblemCallback={this.props.editProblemCallback}
-            problems={this.props.tempProblems}
+            problems={[]}
             cancelCallback={() => this.props.toggleModals([EDIT_PROBLEM])}
             editing
             addingProblem
