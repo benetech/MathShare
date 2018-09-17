@@ -1,9 +1,7 @@
-let serverUrl;
-
 const hostname = window && window.location && window.location.hostname;
-console.log("found hostname" + hostname);
-
-switch (hostname) {
+console.log("found hostname: " + hostname);
+let serverUrl
+ switch (hostname) {
     case 'mathshare-qa.diagramcenter.org':
         serverUrl = 'https://mathshare-api-qa.diagramcenter.org'
         break;
@@ -13,6 +11,5 @@ switch (hostname) {
     default:
         serverUrl = 'http://localhost:8080'
 }
-console.log("using backend SERVER_URL " + serverUrl)
-
+console.log("using server URL: " + serverUrl)
 export const SERVER_URL = serverUrl;
