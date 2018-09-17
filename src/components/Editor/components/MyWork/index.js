@@ -33,6 +33,7 @@ export default class MyWork extends Component {
         this.scratchpadChangeHandler = this.scratchpadChangeHandler.bind(this);
         this.InitScratchPad = this.InitScratchPad.bind(this);
         this.displayScratchpadImage = this.displayScratchpadImage.bind(this);
+        this.loadImage = this.loadImage.bind(this);
 
         document.onkeydown = this.HandleKeyDown.bind(this);
     }
@@ -43,7 +44,8 @@ export default class MyWork extends Component {
                 this.setState(
                     { scratchpadContent },
                     this.displayScratchpadImage
-            )});
+                )
+            });
         }
     }
 
@@ -53,7 +55,7 @@ export default class MyWork extends Component {
             // if an insertion cursor, extend the selection unless we are at an edge
             if (event.key === 'Backspace' && !this.props.theActiveMathField.selectionAtStart()) {
                 this.props.theActiveMathField.perform('extendToPreviousChar');
-    
+
             } else if (event.key === 'Delete' && !this.props.theActiveMathField.selectionAtEnd()) {
                 this.props.theActiveMathField.perform('extendToNextChar');
             }
@@ -61,7 +63,7 @@ export default class MyWork extends Component {
         if (event.shiftKey && event.key === 'Enter' && $('#mathAnnotation').val() !== '') {
             event.preventDefault();
             if (this.props.editing || this.props.editingProblem) {
-               this.updateCallback();
+                this.updateCallback();
             } else {
                 this.addStepCallback();
             }
@@ -70,7 +72,7 @@ export default class MyWork extends Component {
             event.preventDefault();
             this.props.undoLastActionCallback();
         }
-    
+
         var keys = [];
         if (event.shiftKey) {
             keys.push("Shift");
@@ -90,7 +92,7 @@ export default class MyWork extends Component {
 
     scratchpadChangeHandler() {
         if (!this.state.isScratchpadUsed) {
-            this.setState({isScratchpadUsed: true});
+            this.setState({ isScratchpadUsed: true });
         }
     }
 
@@ -100,15 +102,34 @@ export default class MyWork extends Component {
         this.scratchPadPainterro.show();
 
         $('#scratch-pad-containter-bar > div > span').first()
-            .append('<button id="clear-button" type="button" class="ptro-icon-btn ptro-color-control" title='+ "\"" +Locales.strings.clear_sketchpad + "\"" + '><i class="ptro-icon ptro-icon-close"></i></button>');
-        $('#clear-button').click(() =>
-            this.clearAndResizeScratchPad()
-        );
+            .append('<button id="clear-button" type="button" class="ptro-icon-btn ptro-color-control" title=' 
+            + "\"" + Locales.strings.clear_sketchpad + "\"" + '><i class="ptro-icon ptro-icon-close"></i></button>');
+        $('#clear-button').click(() => this.clearAndResizeScratchPad());
+
+        $('#scratch-pad-containter-bar > div > span').first()
+            .append('<input ref="imageInput" id="open-image" hidden type="file"></input>' +
+            '<button id="open-image-btn" type="button" class="ptro-icon-btn ptro-color-control" title=' 
+            + "\"" + Locales.strings.open_image + "\"" + '><i class="ptro-icon ptro-icon-open"></i></button>');
+        $('#open-image-btn').click(() => $("#open-image").trigger('click'));
+        $('#open-image').change((e) => this.loadImage(e));
+
         $('.ptro-icon-btn').css('border-radius', '.25rem');
         $('.ptro-bordered-btn').css('border-radius', '.5rem');
         $('.ptro-info').hide();
 
-        this.setState({isScratchpadUsed: false});
+        this.setState({ isScratchpadUsed: false });
+    }
+
+    loadImage(event) {
+        var file = event.target.files[0];
+        if (!file) {
+          return;
+        }
+        var reader = new FileReader();
+        reader.onload = (e) => {
+            this.setState({scratchpadContent: e.target.result}, () => this.scratchPadPainterro.show(this.state.scratchpadContent));
+        }
+        reader.readAsDataURL(file);
     }
 
     displayScratchpadImage() {
@@ -139,14 +160,15 @@ export default class MyWork extends Component {
     hideScratchpad() {
         this.setState({
             scratchpadMode: false,
-            scratchpadContent: this.scratchPadPainterro.imageSaver.asDataURL()}, () => {
-                $('#scratch-pad-containter').hide();
-                mathLive.renderMathInDocument();
-            });
+            scratchpadContent: this.scratchPadPainterro.imageSaver.asDataURL()
+        }, () => {
+            $('#scratch-pad-containter').hide();
+            mathLive.renderMathInDocument();
+        });
     }
 
     addStepCallback() {
-        this.props.addStepCallback(this.state.isScratchpadUsed ? this.scratchPadPainterro.imageSaver.asDataURL() : 
+        this.props.addStepCallback(this.state.isScratchpadUsed ? this.scratchPadPainterro.imageSaver.asDataURL() :
             this.state.scratchpadContent, this.props.textAreaValue);
     }
 
@@ -168,7 +190,7 @@ export default class MyWork extends Component {
                                 aria-hidden="true">
                                 {this.props.title}
                             </span>
-                            <br/>
+                            <br />
                             <span className={'sROnly'}>{Locales.strings.my_work}</span>
                         </h2>
                     </div>
