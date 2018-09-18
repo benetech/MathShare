@@ -12,7 +12,7 @@ import { deleteStep, editStep, updateStep, addStep } from './stepsOperations';
 import Locales from '../../strings';
 import axios from 'axios';
 import googleAnalytics from '../../scripts/googleAnalytics';
-import { SERVER_URL } from '../../config';
+import { SERVER_URL, FRONTEND_URL } from '../../config';
 import exampleProblem from './example.json';
 
 const mathLive = DEBUG_MODE ? require('../../../mathlive/src/mathlive.js')
@@ -51,7 +51,7 @@ export default class Editor extends Component {
             updateMathFieldMode: false,
             editing: false,
             shareLink: "http:mathshare.com/exampleShareLink/1",
-            editLink: "Not saved yet.",
+            editLink: Locales.strings.not_saved_yet,
             readOnly: false,
             displayScratchpad: null,
             notFound: false
@@ -200,7 +200,7 @@ export default class Editor extends Component {
             axios.put(`${SERVER_URL}/solution/${this.state.solution.editCode}`, this.state.solution)
                 .then(response => {
                     this.setState({
-                        shareLink: SERVER_URL + '/problem/view/' + response.data.shareCode
+                        shareLink: FRONTEND_URL + '/problem/view/' + response.data.shareCode
                     }, this.toggleModals([SHARE_SET]));
                 })
         }
@@ -214,7 +214,7 @@ export default class Editor extends Component {
             axios.put(`${SERVER_URL}/solution/${this.state.solution.editCode}`, this.state.solution)
                 .then(response => {
                     this.setState({
-                        editLink: SERVER_URL + '/problem/edit/' + this.state.solution.editCode,
+                        editLink: FRONTEND_URL + '/problem/edit/' + this.state.solution.editCode,
                         stepsFromLastSave: JSON.parse(JSON.stringify(this.state.solution.steps))
                     })
                     alertSuccess(Locales.strings.problem_saved_success_message, Locales.strings.success);
