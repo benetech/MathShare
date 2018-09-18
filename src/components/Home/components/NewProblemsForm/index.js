@@ -8,6 +8,7 @@ import showImage from "../../../../scripts/showImage";
 import Button from "../../../../components/Button";
 import { arrayMove } from 'react-sortable-hoc';
 import parseMathLive from '../../../../scripts/parseMathLive.js';
+import scrollTo from '../../../../scripts/scrollTo.js';
 
 const mathLive = DEBUG_MODE ? require('../../../../../mathlive/src/mathlive.js')
     : require('../../../../lib/mathlivedist/mathlive.js');
@@ -68,11 +69,7 @@ export default class NewProblemsForm extends Component {
     }
 
     scrollToBottom() {
-        try {
-            document.querySelector("#container").scrollTo(0, document.querySelector("#container").scrollHeight);
-        } catch(e) {
-            console.log("scrollTo method not supported");
-        }
+        scrollTo('container', 'myWorkFooter');
     }
 
     update(imageData, text) {
@@ -181,10 +178,9 @@ export default class NewProblemsForm extends Component {
                         updateCallback={this.update}
                         scratchpadContent={scratchpadContent}
                         bindDisplayFunction={(f) => this.setState({ displayScratchpad: f })} />
-                    <div className={styles.footer}>
+                    <div id="myWorkFooter" className={styles.footer}>
                         {doneButton}
                     </div>
-                    <div className={styles.footer}/>
                 </div>
             </AriaModal>
         );

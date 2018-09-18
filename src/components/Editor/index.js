@@ -14,6 +14,7 @@ import axios from 'axios';
 import googleAnalytics from '../../scripts/googleAnalytics';
 import { SERVER_URL, FRONTEND_URL } from '../../config';
 import exampleProblem from './example.json';
+import scrollTo from '../../scripts/scrollTo.js';
 
 const mathLive = DEBUG_MODE ? require('../../../mathlive/src/mathlive.js')
     : require('../../lib/mathlivedist/mathlive.js');
@@ -166,11 +167,7 @@ export default class Editor extends Component {
     }
 
     scrollToBottom() {
-        try {
-            document.querySelector("#MainWorkWrapper").scrollTo(0, document.querySelector("#MainWorkWrapper").scrollHeight);
-        } catch (e) {
-            console.log("scrollTo method not supported");
-        }
+        scrollTo('MainWorkWrapper', 'mainWorkAreaFooter');
     }
 
     countCleanups(steps) {
@@ -307,7 +304,7 @@ export default class Editor extends Component {
                     />
                     <MyStepsHeader readOnly={this.state.readOnly} />
                     {myStepsList}
-                    <div ref={el => { this.el = el; }} style={{ height: 50 }}></div>
+                    <div id="mainWorkAreaFooter"></div>
                 </main>
             </div>
         );
