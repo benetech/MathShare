@@ -11,6 +11,7 @@ import Locales from '../../strings';
 import axios from 'axios';
 import ModalContainer, { CONFIRMATION, PALETTE_CHOOSER, ADD_PROBLEM_SET, ADD_PROBLEMS, SHARE_NEW_SET, EDIT_PROBLEM } from '../../components/ModalContainer';
 import { SERVER_URL, FRONTEND_URL } from '../../config';
+import scrollTo from '../../scripts/scrollTo';
 
 const mathLive = DEBUG_MODE ? require('../../../mathlive/src/mathlive.js')
     : require('../../lib/mathlivedist/mathlive.js');
@@ -150,11 +151,7 @@ export default class Home extends Component {
     }
 
     scrollToBottom() {
-        try {
-            document.querySelector("#container").scrollTo(0, document.querySelector("#container").scrollHeight);
-        } catch(e) {
-            console.log("scrollTo method not supported");
-        }
+        scrollTo('container', 'myWorkFooter');
     }
 
     saveProblems(problems) {
