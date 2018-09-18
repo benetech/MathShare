@@ -117,7 +117,8 @@ class Locales {
             open_image: "Open image",
             example: "example",
             example_edit_code: "Here you could find an URL with edit code",
-            example_share_code: "Here you could find an URL with share code"
+            example_share_code: "Here you could find an URL with share code",
+            not_saved_yet: "Not saved yet."
         },
         es: {
         }

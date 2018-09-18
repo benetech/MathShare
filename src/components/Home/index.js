@@ -10,7 +10,7 @@ import { alertWarning } from '../../scripts/alert';
 import Locales from '../../strings';
 import axios from 'axios';
 import ModalContainer, { CONFIRMATION, PALETTE_CHOOSER, ADD_PROBLEM_SET, ADD_PROBLEMS, SHARE_NEW_SET, EDIT_PROBLEM } from '../../components/ModalContainer';
-import { SERVER_URL } from '../../config';
+import { SERVER_URL, FRONTEND_URL } from '../../config';
 
 const mathLive = DEBUG_MODE ? require('../../../mathlive/src/mathlive.js')
     : require('../../lib/mathlivedist/mathlive.js');
@@ -272,8 +272,8 @@ export default class Home extends Component {
                     activeModals={this.state.activeModals}
                     toggleModals={this.toggleModals}
                     progressToAddingProblems={this.progressToAddingProblems} deleteProblem={this.deleteProblem}
-                    shareLink={SERVER_URL + '/problemSet/view/' + this.state.set.sharecode}
-                    newSetShareLink={SERVER_URL + '/problemSet/view/' + this.state.newSetSharecode}
+                    shareLink={FRONTEND_URL + '/problemSet/view/' + this.state.set.sharecode}
+                    newSetShareLink={FRONTEND_URL + '/problemSet/view/' + this.state.newSetSharecode}
                     activateMathField={theActiveMathField => this.setState({ theActiveMathField })}
                     theActiveMathField={this.state.theActiveMathField}
                     addProblemCallback={this.addProblem}
