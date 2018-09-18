@@ -45,7 +45,7 @@ function undoDelete(context, stackEntry) {
     context.setState({
         theActiveMathField: updatedMathField,
         textAreaValue: stackEntry.step.explanation
-    }, () => addStep(context));
+    }, () => addStep(context, false, stackEntry.step.scratchpad));
 }
 
 function undoEdit(context, stackEntry) {
@@ -54,8 +54,6 @@ function undoEdit(context, stackEntry) {
         context.state.solution.steps[context.state.solution.steps.length - 1];
     let updatedMathField = context.state.theActiveMathField;
     updatedMathField.latex(step.cleanup ? step.cleanup : step.stepValue);
-    console.log(stackEntry)
-    console.log(step)
     context.setState({
         theActiveMathField: updatedMathField,
         textAreaValue: step.explanation

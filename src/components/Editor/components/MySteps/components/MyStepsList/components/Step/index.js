@@ -3,6 +3,7 @@ import Button from '../../../../../../../../components/Button';
 import classNames from "classnames";
 import step from './styles.css';
 import Locales from '../../../../../../../../strings';
+import showImage from '../../../../../../../../scripts/showImage';
 
 import '../../../../../../../../../images/pencil.png';
 import '../../../../../../../../../images/delete.png';
@@ -129,15 +130,18 @@ export default class Step extends Component {
                         {this.buildReason()}
                     </span>
                 </div>
-                <div className={classNames('col-md-5', step.annotationEquation)}>
+                <div className={classNames('col-md-4', step.annotationEquation)}>
                     <span className={'sROnly'}> {Locales.strings.math}: </span>
                     <span className="staticMath" >{"$$" + this.props.math + "$$"}</span>
                 </div>
-                <div className={classNames('col-md-5', step.annotationEquation)}>
+                <div className={classNames('col-md-4', step.annotationEquation)}>
                     <span className={'sROnly'} role="heading" aria-level="4">{Locales.strings.reason}:</span>
                     <span className={classNames({
                         [step.cleanUpAnnotation]: this.props.cleanup
                     })}> {this.props.annotation} </span>
+                </div>
+                <div className={classNames('col-md-2', step.annotationEquation)}>
+                    <img className={step.image} src={this.props.scratchpad} onClick={() => showImage(this.props.scratchpad)}/>
                 </div>
                 <div className={classNames('col-md-1', step.btnContainer)}>
                     {clearAll}

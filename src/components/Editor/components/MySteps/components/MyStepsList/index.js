@@ -13,7 +13,7 @@ export default class MyStepsList extends Component {
         this.buildStep = this.buildStep.bind(this);
     }
 
-    buildStep(i, value, explanation, isCleanup, isEdited) {
+    buildStep(i, value, explanation, isCleanup, isEdited, scratchpad) {
         var showTrash = false;
         var showEdit = false;
         if (i > 0 && !this.props.readOnly && !isEdited) {
@@ -35,7 +35,8 @@ export default class MyStepsList extends Component {
                 deleteStepCallback={this.props.deleteStepCallback}
                 editStepCallback={this.props.editStepCallback}
                 deleteStepsCallback={this.props.deleteStepsCallback}
-                readOnly={this.props.readOnly} />
+                readOnly={this.props.readOnly}
+                scratchpad={scratchpad} />
         </div>
     }
 
@@ -45,7 +46,7 @@ export default class MyStepsList extends Component {
         var cleanups = 0;
         this.props.solution.steps.forEach((step) => {
             var isEdited = this.props.editing && (i + cleanups == this.props.editorPosition);
-            steps.push(this.buildStep(i++, step.stepValue, step.explanation, false, isEdited));
+            steps.push(this.buildStep(i++, step.stepValue, step.explanation, false, isEdited, step.scratchpad));
             if (step.cleanup) {
                 cleanups++;
                 steps.push(this.buildStep(i, step.cleanup, Locales.strings.cleanup, true));
