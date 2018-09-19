@@ -14,13 +14,17 @@ import { SERVER_URL } from '../../../../../config';
 
 const mathLive = DEBUG_MODE ? require('../../../../../../mathlive/src/mathlive.js')
     : require('../../../../../lib/mathlivedist/mathlive.js');
-const problemTextDisplayLength = 40;
 const problemMathDisplayLength = 30;
 const OPEN_TEXT_TAG = "\\text{";
 
 export default class Problem extends Component {
     constructor(props) {
         super(props);
+
+        this.state = {
+            isOverflownHorizontally: false,
+            isOverflownVertically: false
+        }
 
         this.createNewSolution = this.createNewSolution.bind(this);
         this.onTrashClick = this.onTrashClick.bind(this);
@@ -44,13 +48,7 @@ export default class Problem extends Component {
 
 
     buildProblemText() {
-        var text = this.props.problem.text;
-        if (text.includes("\\frac")) {
-            text = this.buildComplexProblemText();
-        } else if (text.length > problemTextDisplayLength) {
-            text = text.slice(0, problemTextDisplayLength) + "...";
-        }
-        return "$$" + text + "$$";
+        return "$$" + this.props.problem.text + "$$";
     }
 
     buildProblemImage() {
@@ -76,6 +74,12 @@ export default class Problem extends Component {
 
     componentDidMount() {
         mathLive.renderMathInDocument();
+        var isOverflownVertically = this.navItemContent.scrollHeight > this.navItemContent.clientHeight;
+        var isOverflownHorizontally = this.navItemContent.scrollWidth > this.navItemContent.clientWidth;
+        this.setState({
+            isOverflownVertically,
+            isOverflownHorizontally
+        });
     }
 
     onTrashClick(e) {
@@ -120,6 +124,7 @@ export default class Problem extends Component {
     render() {
         var annotation;
         var equation;
+        var equationFollowUp;
         var image;
         if (this.props.example) {
             annotation = Locales.strings.getting_started_title;
@@ -129,6 +134,7 @@ export default class Problem extends Component {
         } else {
             annotation = this.buildAnnotation();
             equation = this.buildProblemText();
+            equationFollowUp = this.state.isOverflownHorizontally || this.state.isOverflownVertically ? "..." : null;
             image = this.buildProblemImage();
         }
 
@@ -222,7 +228,20 @@ export default class Problem extends Component {
                         {removeButton}
                         {plusButton}
                         {editButton}
-                        {equation}
+                        <div className={classNames(
+                            problem.navItemContent,
+                            this.state.isOverflownHorizontally ? problem.contentOverflownHorizontally: null,
+                            this.state.isOverflownVertically ? problem.contentOverflownVertically : null
+                        )}>
+                            <div ref={(el) => {this.navItemContent = el}} className={classNames(
+                                this.props.example ? null : problem.equation,
+                                this.state.isOverflownHorizontally ? problem.equationOverflownHorizontally : null,
+                                this.state.isOverflownVertically ? problem.equationOverflownVertically : null
+                            )}>
+                                {equation}
+                            </div>
+                            {equationFollowUp}
+                        </div>
                         {image}
                     </div>
                 </span>

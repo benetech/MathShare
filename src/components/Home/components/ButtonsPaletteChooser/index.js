@@ -21,7 +21,7 @@ export default class PaletteChooser extends Component {
 
     componentDidMount() {
         $("input[type='checkbox']").prop("checked", true);
-         mathLive.renderMathInDocument();
+        mathLive.renderMathInDocument();
     }
 
     getApplicationNode() {
