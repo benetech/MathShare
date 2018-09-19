@@ -23,6 +23,7 @@ export default class NewProblemsForm extends Component {
             displayScratchpad: null
         };
 
+        this.save = this.save.bind(this);
         this.update = this.update.bind(this);
         this.addProblem = this.addProblem.bind(this);
         this.textAreaChanged = this.textAreaChanged.bind(this);
@@ -60,7 +61,9 @@ export default class NewProblemsForm extends Component {
         problems[newIndex].position = oldIndex;
         problems = arrayMove(problems, oldIndex, newIndex);
         this.setState({ problems });
-        this.props.saveCallback(problems);
+        if (!this.props.newProblemSet) {
+            this.props.saveCallback(problems);
+        }
         mathLive.renderMathInDocument();
     }
 
@@ -77,7 +80,11 @@ export default class NewProblemsForm extends Component {
     }
 
     addProblem(imageData, text) {
-        this.props.addProblemCallback(imageData, text, this.state.problems.length);
+        this.props.addProblemCallback(imageData, text, this.state.problems.length, this.props.newProblemSet);
+    }
+
+    save() {
+        this.props.saveCallback(this.state.problems);
     }
 
     render() {
@@ -138,14 +145,32 @@ export default class NewProblemsForm extends Component {
                 <div className={styles.rowControl}>
                 </div>
             </div>
-        var doneButton = this.props.editing ? null :
+        var doneButton = this.props.newProblemSet ?
+        <Button
+            className={'btn'}
+            additionalStyles={['withRightMargin', 'default', 'right']}
+            icon="save"
+            content={Locales.strings.save}
+            onClick={this.save}
+        />
+        :
+        <Button
+            className={'btn'}
+            additionalStyles={['withRightMargin', 'default', 'right']}
+            icon="check"
+            content={Locales.strings.done}
+            onClick={this.props.deactivateModal}
+        />
+        doneButton = this.props.editing ? null : doneButton;
+        var cancelButton = this.props.newProblemSet ?
             <Button
+                id='bottom'
                 className={'btn'}
                 additionalStyles={['withRightMargin', 'default', 'right']}
-                icon="check"
-                content={Locales.strings.done}
+                content={Locales.strings.cancel}
+                icon="times-circle"
                 onClick={this.props.deactivateModal}
-            />
+            /> : null;
 
         var lastMathEquation = this.props.editing ? this.props.problemToEdit.text : "";
         var scratchpadContent = this.props.editing ? this.props.problemToEdit.scratchpad : null;
@@ -180,6 +205,7 @@ export default class NewProblemsForm extends Component {
                         bindDisplayFunction={(f) => this.setState({ displayScratchpad: f })} />
                     <div id="myWorkFooter" className={styles.footer}>
                         {doneButton}
+                        {cancelButton}
                     </div>
                 </div>
             </AriaModal>

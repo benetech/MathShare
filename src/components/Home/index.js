@@ -29,6 +29,7 @@ export default class Home extends Component {
             allowedPalettes: [],
             theActiveMathField: null,
             tempPalettes: [],
+            tempProblems: [],
             newSetSharecode: "",
             notFound: false
         }
@@ -92,7 +93,11 @@ export default class Home extends Component {
             if (this.state.activeModals.indexOf(modal) != -1) {
                 oldModals = oldModals.filter(e => e !== modal);
             } else {
-                if (modal == CONFIRMATION) {
+                if (modal == ADD_PROBLEM_SET) {
+                    this.setState({
+                        tempProblems: []
+                    });
+                } else if (modal == CONFIRMATION) {
                     this.setState({
                         problemToDeleteIndex: index
                     });
@@ -130,12 +135,12 @@ export default class Home extends Component {
         return true;
     }
 
-    addProblem(imageData, text, index) {
+    addProblem(imageData, text, index, newProblemSet) {
         if (!this.validateProblem(text, imageData)) {
             return;
         }
 
-        let problems = this.state.set.problems;
+        let problems = newProblemSet ? this.state.tempProblems : this.state.set.problems;
         let mathContent = this.state.theActiveMathField;
         let annotation = text;
         problems.push({ "text": mathContent.latex(), "title": annotation, "scratchpad": imageData, "position": index });
@@ -144,7 +149,10 @@ export default class Home extends Component {
         this.setState({
             theActiveMathField: mathContent
         });
-        this.saveProblems(problems);
+        newProblemSet ?
+        this.setState({
+            tempProblems: problems
+        }) : this.saveProblems(problems);
         
         mathLive.renderMathInDocument();
         this.scrollToBottom();
@@ -238,14 +246,16 @@ export default class Home extends Component {
         this.toggleModals([PALETTE_CHOOSER, ADD_PROBLEM_SET]);
     }
 
-    saveProblemSet() {
+    saveProblemSet(orderedProblems) {
         var set = {
+            problems: orderedProblems,
             palettes: this.state.tempPalettes
         };
 
         axios.post(`${SERVER_URL}/problemSet/`, set)
             .then(response => {
                 this.setState({
+                    tempProblems: [],
                     newSetSharecode: response.data.shareCode
                 })
             });
@@ -275,6 +285,7 @@ export default class Home extends Component {
                     theActiveMathField={this.state.theActiveMathField}
                     addProblemCallback={this.addProblem}
                     problems={this.state.set.problems}
+                    tempProblems={this.state.tempProblems}
                     saveProblemSet={this.saveProblemSet}
                     saveProblems={this.saveProblems}
                     problemToEdit={this.state.problemToEdit}

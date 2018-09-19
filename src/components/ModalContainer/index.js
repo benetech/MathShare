@@ -65,11 +65,12 @@ export default class ModalContainer extends Component {
             activateMathField={this.props.activateMathField}
             theActiveMathField={this.props.theActiveMathField}
             addProblemCallback={this.props.addProblemCallback}
-            problems={[]}
+            problems={this.props.tempProblems}
             saveCallback={this.props.saveProblemSet}
             addingProblem
             cancelCallback={() => this.props.toggleModals([ADD_PROBLEM_SET])}
-            title={Locales.strings.add_problems_new_set}/>
+            title={Locales.strings.add_problems_new_set}
+            newProblemSet/>
         : null;
 
         const addProblems = this.state.activeModals.includes(ADD_PROBLEMS)
