@@ -83,8 +83,11 @@ export default class Home extends Component {
     componentDidUpdate(prevProps, prevState) {
         if (this.state.set !== prevState.set || this.state.allowedPalettes !== prevState.allowedPalettes
             || this.state.tempPalettes !== prevState.tempPalettes
-            || this.state.newSetSharecode !== prevState.newSetSharecode || this.state.activeModals !== prevState.activeModals)
-            mathLive.renderMathInDocument();
+            || this.state.newSetSharecode !== prevState.newSetSharecode || this.state.activeModals !== prevState.activeModals) {
+                mathLive.renderMathInDocument();
+                //The state needs to be refreshed at this point so the equations overflow could be detected
+                setTimeout(() => {this.setState({})}, 1);
+            }
     }
 
     toggleModals(modals, index) {
