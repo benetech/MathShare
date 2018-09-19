@@ -148,23 +148,23 @@ export default class NewProblemsForm extends Component {
                 <div className={styles.rowControl}>
                 </div>
             </div>
-        var doneButton = this.props.editing ? null :
-            this.props.newProblemSet ?
-            <Button
-                className={'btn'}
-                additionalStyles={['withRightMargin', 'default', 'right']}
-                icon="save"
-                content={Locales.strings.save}
-                onClick={this.save}
-            />
-            :
-            <Button
-                className={'btn'}
-                additionalStyles={['withRightMargin', 'default', 'right']}
-                icon="check"
-                content={Locales.strings.done}
-                onClick={this.props.deactivateModal}
-            />
+        var doneButton = this.props.newProblemSet ?
+        <Button
+            className={'btn'}
+            additionalStyles={['withRightMargin', 'default', 'right']}
+            icon="save"
+            content={Locales.strings.save}
+            onClick={this.save}
+        />
+        :
+        <Button
+            className={'btn'}
+            additionalStyles={['withRightMargin', 'default', 'right']}
+            icon="check"
+            content={Locales.strings.done}
+            onClick={this.props.deactivateModal}
+        />
+        doneButton = this.props.editing ? null : doneButton;
         var cancelButton = this.props.newProblemSet ?
             <Button
                 id='bottom'
