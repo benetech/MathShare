@@ -189,13 +189,13 @@ export default class Step extends Component {
                     </span>
                 </div>
                 <div className={classNames('col-md-2', step.annotationEquation)}>
+                    {/* eslint-disable jsx-a11y/alt-text */}
                     <img
                         role="button"
                         className={step.image}
                         src={this.props.scratchpad}
                         onClick={() => showImage(this.props.scratchpad)}
                         onKeyPress={() => showImage(this.props.scratchpad)}
-                        alt={Locales.strings.scratchpad}
                     />
                 </div>
                 <div className={classNames('col-md-1', step.btnContainer)}>

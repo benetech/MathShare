@@ -119,7 +119,6 @@ class Locales {
                 example_edit_code: 'Here you could find an URL with edit code',
                 example_share_code: 'Here you could find an URL with share code',
                 not_saved_yet: 'Not saved yet.',
-                alt_sketchpad_thumbnail: 'Sketchpad thumbnail',
                 the: 'The',
                 finish: 'Finish',
                 tour_editor: 'Type or edit the equation using your keyboard and the math keys below. '
