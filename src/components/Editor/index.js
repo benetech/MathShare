@@ -171,8 +171,8 @@ export default class Editor extends Component {
             axios.put(`${SERVER_URL}/solution/${this.state.solution.editCode}`, this.state.solution)
                 .then(() => {
                     this.setState((prevState) => {
-                        const editCode = prevState.editCode;
-                        const steps = prevState.steps;
+                        const editCode = prevState.solution.editCode;
+                        const steps = prevState.solution.steps;
                         return {
                             editLink: `${FRONTEND_URL}/problem/edit/${editCode}`,
                             stepsFromLastSave: JSON.parse(JSON.stringify(steps)),

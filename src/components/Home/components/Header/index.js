@@ -2,7 +2,6 @@ import React from 'react';
 import FontAwesome from 'react-fontawesome';
 import classNames from 'classnames';
 import { withRouter } from 'react-router-dom';
-import { Dropdown, MenuItem } from 'react-bootstrap';
 import header from './styles.css';
 import Locales from '../../../../strings';
 
@@ -145,6 +144,7 @@ const MainPageHeader = (props) => {
                             <li className="nav_item">
                                 {button}
                             </li>
+                            {/*
                             <li className={classNames('nav-item', ['dropdown'])}>
                                 <a
                                     className={classNames('nav-link', 'dropdown-toggle')}
@@ -166,7 +166,7 @@ const MainPageHeader = (props) => {
                                     <MenuItem onClick={() => props.changeDataSet(2)}>
                                         {Locales.strings.problem_set_3}
                                     </MenuItem>
-                                    {/*
+                                    {
                                     <MenuItem onClick={uploadProblemSet.bind(this)}>
                                         {Locales.strings.upload}
                                     </MenuItem>
@@ -175,9 +175,10 @@ const MainPageHeader = (props) => {
                                             type="file"
                                             hidden
                                             onChange={readBlob.bind(this)}
-                                            /> */}
+                                            />
                                 </Dropdown.Menu>
                             </li>
+                            */}
                             <li className="nav-item">
                                 <a className="nav-link" href="mailto:info@diagramcenter.org">
                                     {Locales.strings.contact_us}
