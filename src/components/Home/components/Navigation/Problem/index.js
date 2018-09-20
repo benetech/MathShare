@@ -77,12 +77,12 @@ export default class Problem extends Component {
         return result;
     }
 
+    /* eslint-disable jsx-a11y/alt-text */
     buildProblemImage() {
         return (
             <img
                 className={problem.image}
                 src={this.props.problem.scratchpad}
-                alt={Locales.strings.alt_sketchpad_thumbnail}
             />
         );
     }
