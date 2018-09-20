@@ -102,15 +102,19 @@ export default class Editor extends Component {
                             steps: response.data.steps,
                             editCode: response.data.editCode,
                         };
-                        const field = this.state.theActiveMathField;
-                        field.latex(response.data.steps[response.data.steps.length - 1].stepValue);
-                        this.setState({
-                            solution,
-                            editorPosition: this.countEditorPosition(response.data.steps),
-                            theActiveMathField: field,
-                            readOnly: this.props.match.params.action === 'view',
-                            stepsFromLastSave: JSON.parse(JSON.stringify(response.data.steps)),
-                            allowedPalettes: response.data.palettes,
+                        this.setState((prevState) => {
+                            const field = prevState.theActiveMathField;
+                            field.latex(
+                                response.data.steps[response.data.steps.length - 1].stepValue,
+                            );
+                            return {
+                                solution,
+                                editorPosition: this.countEditorPosition(response.data.steps),
+                                theActiveMathField: field,
+                                readOnly: this.props.match.params.action === 'view',
+                                stepsFromLastSave: JSON.parse(JSON.stringify(response.data.steps)),
+                                allowedPalettes: response.data.palettes,
+                            };
                         });
                     }
                 }).catch(() => {
@@ -166,9 +170,13 @@ export default class Editor extends Component {
             googleAnalytics('Save');
             axios.put(`${SERVER_URL}/solution/${this.state.solution.editCode}`, this.state.solution)
                 .then(() => {
-                    this.setState({
-                        editLink: `${FRONTEND_URL}/problem/edit/${this.state.solution.editCode}`,
-                        stepsFromLastSave: JSON.parse(JSON.stringify(this.state.solution.steps)),
+                    this.setState((prevState) => {
+                        const editCode = prevState.editCode;
+                        const steps = prevState.steps;
+                        return {
+                            editLink: `${FRONTEND_URL}/problem/edit/${editCode}`,
+                            stepsFromLastSave: JSON.parse(JSON.stringify(steps)),
+                        };
                     });
                     alertSuccess(Locales.strings.problem_saved_success_message,
                         Locales.strings.success);
@@ -200,13 +208,15 @@ export default class Editor extends Component {
     }
 
     restoreEditorPosition() {
-        const updatedMathField = this.state.theActiveMathField;
-        const lastStep = this.state.solution.steps[this.state.solution.steps.length - 1];
-        updatedMathField.latex(lastStep.cleanup ? lastStep.cleanup : lastStep.stepValue);
-        this.setState({
-            theActiveMathField: updatedMathField,
-            editorPosition: this.countEditorPosition(this.state.solution.steps),
-            editing: false,
+        this.setState((prevState) => {
+            const updatedMathField = prevState.theActiveMathField;
+            const lastStep = prevState.solution.steps[prevState.solution.steps.length - 1];
+            updatedMathField.latex(lastStep.cleanup ? lastStep.cleanup : lastStep.stepValue);
+            return {
+                theActiveMathField: updatedMathField,
+                editorPosition: this.countEditorPosition(prevState.solution.steps),
+                editing: false,
+            };
         });
         this.state.theActiveMathField.focus();
     }
@@ -228,33 +238,35 @@ export default class Editor extends Component {
     }
 
     updateMathEditorRow(mathContent, mathAnnotation, mathStepNumber, cleanup, scratchpad) {
-        const updatedHistory = this.state.solution.steps;
-        updatedHistory[mathStepNumber].stepValue = mathContent;
-        updatedHistory[mathStepNumber].explanation = mathAnnotation;
-        updatedHistory[mathStepNumber].cleanup = cleanup;
-        updatedHistory[mathStepNumber].scratchpad = scratchpad;
-        const oldSolution = this.state.solution;
-        oldSolution.steps = updatedHistory;
-        this.setState(
-            {
+        this.setState((prevState) => {
+            const updatedHistory = prevState.solution.steps;
+            updatedHistory[mathStepNumber].stepValue = mathContent;
+            updatedHistory[mathStepNumber].explanation = mathAnnotation;
+            updatedHistory[mathStepNumber].cleanup = cleanup;
+            updatedHistory[mathStepNumber].scratchpad = scratchpad;
+            const oldSolution = prevState.solution;
+            oldSolution.steps = updatedHistory;
+            return {
                 solution: oldSolution,
                 textAreaValue: '',
-            },
-        );
+            };
+        });
         mathLive.renderMathInDocument();
     }
 
     toggleModals(modals) {
-        let oldModals = this.state.activeModals;
-        // eslint-disable-next-line no-restricted-syntax
-        for (const modal of modals) {
-            if (this.state.activeModals.indexOf(modal) !== -1) {
-                oldModals = oldModals.filter(e => e !== modal);
-            } else {
-                oldModals.push(modal);
+        this.setState((prevState) => {
+            let oldModals = prevState.activeModals;
+            // eslint-disable-next-line no-restricted-syntax
+            for (const modal of modals) {
+                if (prevState.activeModals.indexOf(modal) !== -1) {
+                    oldModals = oldModals.filter(e => e !== modal);
+                } else {
+                    oldModals.push(modal);
+                }
             }
-        }
-        this.setState({ activeModals: oldModals });
+            return { activeModals: oldModals };
+        });
     }
 
     greenButtonCallback() {
