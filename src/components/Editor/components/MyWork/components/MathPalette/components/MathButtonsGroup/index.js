@@ -7,7 +7,7 @@ const MathButtonsGroup = (props) => {
     const rows = props.palette.buttonsRows.map((buttonsRow, i) => (
         <div key={i} role="list" className={buttonsGroup.row}>
             <MathButtonsRow
-                {...this.props}
+                {...props}
                 buttonsRow={buttonsRow}
             />
         </div>
