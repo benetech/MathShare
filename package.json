@@ -19,7 +19,6 @@
     "url": "https://github.com/benetech/MathShare/issues"
   },
   "homepage": "https://github.com/benetech/MathShare#readme",
-
   "devDependencies": {
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.4",
@@ -43,7 +42,6 @@
     "babel-preset-es2016": "^6.24.1",
     "bootstrap": "^4.1.1",
     "classnames": "^2.2.6",
-    "intro.js": "^2.9.3",
     "jquery": "^3.3.1",
     "lodash": "^4.17.10",
     "react": "^16.4.1",
@@ -55,6 +53,8 @@
     "react-localization": "^1.0.10",
     "react-notifications": "^1.4.3",
     "react-router-dom": "^4.3.1",
-    "react-sortable-hoc": "^0.8.3"
+    "react-sortable-hoc": "^0.8.3",
+    "reactour": "^1.9.0",
+    "styled-components": "^3.4.9"
   }
 }

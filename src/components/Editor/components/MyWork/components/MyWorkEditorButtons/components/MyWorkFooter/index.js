@@ -36,6 +36,7 @@ export default class MyWorkFooter extends Component {
         var confirmButton;
         if (this.props.editing){ 
             confirmButton = <Button	
+                id="addStep"
                 className={btnClassNames}
                 additionalStyles={['addStep']}
                 toggle="tooltip"
@@ -47,6 +48,7 @@ export default class MyWorkFooter extends Component {
                 onClick={() => this.props.updateCallback()} />
         } else if (this.props.editingProblem) {
             confirmButton =  <Button
+                id="addStep"
                 className={btnClassNames}
                 additionalStyles={['addStep']}
                 toggle="tooltip"
@@ -58,6 +60,7 @@ export default class MyWorkFooter extends Component {
                 onClick={() => this.props.updateCallback()} />
         } else {
             confirmButton =  <Button
+                id="addStep"
                 className={btnClassNames}
                 additionalStyles={['addStep']}
                 hide={this.props.editing}

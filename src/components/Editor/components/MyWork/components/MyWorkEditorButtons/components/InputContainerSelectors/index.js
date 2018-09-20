@@ -10,7 +10,7 @@ export default class InputContainerSelectors extends Component {
         const symbolsClass = !this.props.scratchpadMode ? styles.symbolsActive : styles.disabled;
 
         return (
-            <div className={
+            <div id="inputContainersSelectors" className={
                 classNames(
                     styles.container
                 )
