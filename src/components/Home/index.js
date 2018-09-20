@@ -103,25 +103,29 @@ export default class Home extends Component {
             return;
         }
 
-        const problems = newProblemSet ? this.state.tempProblems : this.state.set.problems;
-        const mathContent = this.state.theActiveMathField;
-        const annotation = text;
-        problems.push({
-            text: mathContent.latex(), title: annotation, scratchpad: imageData, position: index,
-        });
+        let problems;
+        this.setState((prevState) => {
+            problems = newProblemSet ? prevState.tempProblems : prevState.set.problems;
+            const mathContent = prevState.theActiveMathField;
+            const annotation = text;
+            problems.push({
+                text: mathContent.latex(),
+                title: annotation,
+                scratchpad: imageData,
+                position: index,
+            });
 
-        mathContent.latex('$$$$');
-        this.setState({
-            theActiveMathField: mathContent,
+            mathContent.latex('$$$$');
+            return { theActiveMathField: mathContent };
+        }, () => {
+            // eslint-disable-next-line no-unused-expressions
+            newProblemSet
+                ? this.setState({
+                    tempProblems: problems,
+                }) : this.saveProblems(problems);
+            mathLive.renderMathInDocument();
+            this.scrollToBottom();
         });
-        // eslint-disable-next-line no-unused-expressions
-        newProblemSet
-            ? this.setState({
-                tempProblems: problems,
-            }) : this.saveProblems(problems);
-
-        mathLive.renderMathInDocument();
-        this.scrollToBottom();
     }
 
     validateProblem(text, image) {
@@ -147,30 +151,32 @@ export default class Home extends Component {
     }
 
     toggleModals(modals, index) {
-        let oldModals = this.state.activeModals;
-        // eslint-disable-next-line no-restricted-syntax
-        for (const modal of modals) {
-            if (this.state.activeModals.indexOf(modal) !== -1) {
-                oldModals = oldModals.filter(e => e !== modal);
-            } else {
-                if (modal === ADD_PROBLEM_SET) {
-                    this.setState({
-                        tempProblems: [],
-                    });
-                } else if (modal === CONFIRMATION) {
-                    this.setState({
-                        problemToDeleteIndex: index,
-                    });
-                } else if (modal === EDIT_PROBLEM) {
-                    this.setState({
-                        problemToEditIndex: index,
-                        problemToEdit: this.state.set.problems[index],
-                    });
+        this.setState((prevState) => {
+            let oldModals = prevState.activeModals;
+            // eslint-disable-next-line no-restricted-syntax
+            for (const modal of modals) {
+                if (oldModals.indexOf(modal) !== -1) {
+                    oldModals = oldModals.filter(e => e !== modal);
+                } else {
+                    if (modal === ADD_PROBLEM_SET) {
+                        this.setState({
+                            tempProblems: [],
+                        });
+                    } else if (modal === CONFIRMATION) {
+                        this.setState({
+                            problemToDeleteIndex: index,
+                        });
+                    } else if (modal === EDIT_PROBLEM) {
+                        this.setState({
+                            problemToEditIndex: index,
+                            problemToEdit: prevState.set.problems[index],
+                        });
+                    }
+                    oldModals.push(modal);
                 }
-                oldModals.push(modal);
             }
-        }
-        this.setState({ activeModals: oldModals });
+            return { activeModals: oldModals };
+        });
     }
 
     saveProblems(problems) {

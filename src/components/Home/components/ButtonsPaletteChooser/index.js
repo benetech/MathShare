@@ -28,13 +28,17 @@ export default class PaletteChooser extends Component {
 
     handleChange(key) {
         if (this.state.chosenPalettes.indexOf(key) !== -1) {
-            let oldPalettes = this.state.chosenPalettes;
-            oldPalettes = oldPalettes.filter(e => e !== key);
-            this.setState({ chosenPalettes: oldPalettes });
+            this.setState((prevState) => {
+                let oldPalettes = prevState.chosenPalettes;
+                oldPalettes = oldPalettes.filter(e => e !== key);
+                return { chosenPalettes: oldPalettes };
+            });
         } else {
-            const oldPalettes = this.state.chosenPalettes;
-            oldPalettes.push(key);
-            this.setState({ chosenPalettes: oldPalettes });
+            this.setState((prevState) => {
+                const oldPalettes = prevState.chosenPalettes;
+                oldPalettes.push(key);
+                return { chosenPalettes: oldPalettes };
+            });
         }
     }
 

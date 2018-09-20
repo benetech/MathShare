@@ -65,15 +65,18 @@ export default class NewProblemsForm extends Component {
     }
 
     reorder(oldIndex, newIndex) {
-        let problems = this.state.problems;
-        problems[oldIndex].position = newIndex;
-        problems[newIndex].position = oldIndex;
-        problems = arrayMove(problems, oldIndex, newIndex);
-        this.setState({ problems });
-        if (!this.props.newProblemSet) {
-            this.props.saveCallback(problems);
-        }
-        mathLive.renderMathInDocument();
+        this.setState((prevState) => {
+            let problems = prevState.problems;
+            problems[oldIndex].position = newIndex;
+            problems[newIndex].position = oldIndex;
+            problems = arrayMove(problems, oldIndex, newIndex);
+            return { problems };
+        }, () => {
+            if (!this.props.newProblemSet) {
+                this.props.saveCallback(this.state.problems);
+            }
+            mathLive.renderMathInDocument();
+        });
     }
 
     update(imageData, text) {
@@ -124,7 +127,7 @@ export default class NewProblemsForm extends Component {
                 <div className={styles.row} key={i}>
                     <div className={styles.ordinal}>
                         {i + 1}
-.
+                        .
                     </div>
                     <div className={styles.cell}>
                         {`$$${problem.text}$$`}
