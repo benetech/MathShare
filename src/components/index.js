@@ -22,7 +22,7 @@ export default class App extends Component {
         this.initializeIcons();
     }
 
-    initializeIcons() {
+    initializeIcons = () => {
         library.add(faSignature, faSquareRootAlt);
     }
 
