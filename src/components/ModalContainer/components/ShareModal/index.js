@@ -6,10 +6,10 @@ import Locales from '../../../../strings';
 import Button from '../../../Button';
 
 export default class ShareModal extends Component {
-    copyShareLink() {
+    copyShareLink = () => {
         const copyText = document.getElementById('shareLink');
         copyText.select();
-        this.document.execCommand('copy');
+        document.execCommand('copy');
     }
 
     render() {
