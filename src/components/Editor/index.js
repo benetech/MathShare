@@ -1,20 +1,22 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
+import { NotificationContainer } from 'react-notifications';
+import axios from 'axios';
 import ProblemHeader from './components/ProblemHeader';
 import MyStepsHeader from './components/MySteps/components/MyStepsHeader';
 import MyStepsList from './components/MySteps/components/MyStepsList';
 import ModalContainer, { CONFIRMATION_BACK, SHARE_SET } from '../ModalContainer';
 import NotFound from '../NotFound';
 import editor from './styles.css';
-import { NotificationContainer } from 'react-notifications';
 import { alertSuccess } from '../../scripts/alert';
 import { undoLastAction, clearAll, stackEditAction } from './stack';
-import { deleteStep, editStep, updateStep, addStep } from './stepsOperations';
+import {
+    deleteStep, editStep, updateStep, addStep,
+} from './stepsOperations';
 import Locales from '../../strings';
-import axios from 'axios';
 import googleAnalytics from '../../scripts/googleAnalytics';
 import { SERVER_URL, FRONTEND_URL } from '../../config';
 import exampleProblem from './example.json';
-import scrollTo from '../../scripts/scrollTo.js';
+import scrollTo from '../../scripts/scrollTo';
 
 const mathLive = DEBUG_MODE ? require('../../../mathlive/src/mathlive.js')
     : require('../../lib/mathlivedist/mathlive.js');
@@ -30,32 +32,32 @@ export default class Editor extends Component {
                 },
                 steps: [
                     {
-                        stepValue: "",
-                        explanation: Locales.strings.loading
-                    }
+                        stepValue: '',
+                        explanation: Locales.strings.loading,
+                    },
                 ],
-                editCode: null
+                editCode: null,
             },
             stepsFromLastSave: [
                 {
-                    stepValue: "",
-                    explanation: Locales.strings.loading
-                }
+                    stepValue: '',
+                    explanation: Locales.strings.loading,
+                },
             ],
             activeModals: [],
             editorPosition: 0,
             editedStep: null,
             allowedPalettes: [],
             theActiveMathField: null,
-            textAreaValue: "",
+            textAreaValue: '',
             actionsStack: [],
             updateMathFieldMode: false,
             editing: false,
-            shareLink: "http:mathshare.com/exampleShareLink/1",
+            shareLink: 'http:mathshare.com/exampleShareLink/1',
             editLink: Locales.strings.not_saved_yet,
             readOnly: false,
             displayScratchpad: null,
-            notFound: false
+            notFound: false,
         };
 
         this.toggleModals = this.toggleModals.bind(this);
@@ -71,81 +73,142 @@ export default class Editor extends Component {
     }
 
     componentDidMount() {
-        var path;
+        let path;
         if (this.props.example) {
-            var solution = {
+            const solution = {
                 problem: exampleProblem,
                 steps: exampleProblem.steps,
-            }
+            };
 
             this.setState({
                 solution,
                 editorPosition: this.countEditorPosition(exampleProblem.steps),
                 readOnly: false,
-                allowedPalettes: "Edit;Operators;Notations;Geometry"
+                allowedPalettes: 'Edit;Operators;Notations;Geometry',
             });
         } else {
-            if (this.props.match.params.action == "view") {
-                path = `${SERVER_URL}/solution/revision/${this.props.match.params.code}`
+            if (this.props.match.params.action === 'view') {
+                path = `${SERVER_URL}/solution/revision/${this.props.match.params.code}`;
             } else {
-                path = `${SERVER_URL}/solution/${this.props.match.params.code}/`
+                path = `${SERVER_URL}/solution/${this.props.match.params.code}/`;
             }
             axios.get(path)
-                .then(response => {
-                    if (response.status != 200) {
+                .then((response) => {
+                    if (response.status !== 200) {
                         this.setState({ notFound: true });
                     } else {
-                        var solution = {
+                        const solution = {
                             problem: response.data.problem,
                             steps: response.data.steps,
-                            editCode: response.data.editCode
-                        }
-                        let field = this.state.theActiveMathField;
+                            editCode: response.data.editCode,
+                        };
+                        const field = this.state.theActiveMathField;
                         field.latex(response.data.steps[response.data.steps.length - 1].stepValue);
                         this.setState({
                             solution,
                             editorPosition: this.countEditorPosition(response.data.steps),
                             theActiveMathField: field,
-                            readOnly: this.props.match.params.action == 'view',
+                            readOnly: this.props.match.params.action === 'view',
                             stepsFromLastSave: JSON.parse(JSON.stringify(response.data.steps)),
-                            allowedPalettes: response.data.palettes
+                            allowedPalettes: response.data.palettes,
                         });
                     }
-                }).catch((error) => {
+                }).catch(() => {
                     this.setState({ notFound: true });
                 });
         }
         this.scrollToBottom();
     }
 
+    scrollToBottom = () => {
+        scrollTo('MainWorkWrapper', 'mainWorkAreaFooter');
+    }
+
+    countCleanups = (steps) => {
+        let cleanups = 0;
+        steps.forEach((step) => {
+            if (step.cleanup) {
+                cleanups += 1;
+            }
+        });
+        return cleanups;
+    }
+
+    getApplicationNode = () => document.getElementById('root')
+
+    compareStepArrays = (first, second) => {
+        if (first.length !== second.length) {
+            return false;
+        }
+        for (let i = 0; i < first.length; i += 1) {
+            if (first[i].stepValue !== second[i].stepValue
+                || first[i].explanation !== second[i].explanation
+                || first[i].scratchpad !== second[i].scratchpad) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    goBack() {
+        if (!this.compareStepArrays(this.state.solution.steps, this.state.stepsFromLastSave)
+            && !this.props.example) {
+            this.toggleModals([CONFIRMATION_BACK]);
+        } else {
+            this.props.history.goBack();
+        }
+    }
+
+    saveProblem() {
+        if (this.props.example) {
+            this.setState({ editLink: Locales.strings.example_edit_code });
+        } else {
+            googleAnalytics('Save');
+            axios.put(`${SERVER_URL}/solution/${this.state.solution.editCode}`, this.state.solution)
+                .then(() => {
+                    this.setState({
+                        editLink: `${FRONTEND_URL}/problem/edit/${this.state.solution.editCode}`,
+                        stepsFromLastSave: JSON.parse(JSON.stringify(this.state.solution.steps)),
+                    });
+                    alertSuccess(Locales.strings.problem_saved_success_message,
+                        Locales.strings.success);
+                });
+        }
+    }
+
+    shareProblem() {
+        if (this.props.example) {
+            this.setState({
+                shareLink: Locales.strings.example_share_code,
+            }, this.toggleModals([SHARE_SET]));
+        } else {
+            axios.put(`${SERVER_URL}/solution/${this.state.solution.editCode}`, this.state.solution)
+                .then((response) => {
+                    this.setState({
+                        shareLink: `${FRONTEND_URL}/problem/view/${response.data.shareCode}`,
+                    }, this.toggleModals([SHARE_SET]));
+                });
+        }
+    }
+
     textAreaChanged(text) {
         this.setState({ textAreaValue: text });
     }
 
-    updateMathEditorRow(mathContent, mathAnnotation, mathStepNumber, cleanup, scratchpad) {
-        let updatedHistory = this.state.solution.steps;
-        updatedHistory[mathStepNumber].stepValue = mathContent;
-        updatedHistory[mathStepNumber].explanation = mathAnnotation;
-        updatedHistory[mathStepNumber].cleanup = cleanup;
-        updatedHistory[mathStepNumber].scratchpad = scratchpad;
-        let oldSolution = this.state.solution;
-        oldSolution.steps = updatedHistory;
-        this.setState(
-            {
-                solution: oldSolution,
-                textAreaValue: ""
-            })
-        mathLive.renderMathInDocument();
+    countEditorPosition(steps) {
+        return steps.length + this.countCleanups(steps) - 1;
     }
 
-    moveEditorBelowSpecificStep(stepNumber) {
-        var steps = this.state.solution.steps.slice();
-        var leftPartOfSteps = steps.splice(0, stepNumber);
-        var editorPosition = this.countEditorPosition(leftPartOfSteps);
-        if (leftPartOfSteps[leftPartOfSteps.length - 1].cleanup) {
-            editorPosition--;
-        }
-        this.setState({ editorPosition });
+    restoreEditorPosition() {
+        const updatedMathField = this.state.theActiveMathField;
+        const lastStep = this.state.solution.steps[this.state.solution.steps.length - 1];
+        updatedMathField.latex(lastStep.cleanup ? lastStep.cleanup : lastStep.stepValue);
+        this.setState({
+            theActiveMathField: updatedMathField,
+            editorPosition: this.countEditorPosition(this.state.solution.steps),
+            editing: false,
+        });
+        this.state.theActiveMathField.focus();
     }
 
     cancelEditCallback(oldEquation, oldExplanation, cleanup, index, img) {
@@ -154,98 +217,38 @@ export default class Editor extends Component {
         this.state.displayScratchpad();
     }
 
-    restoreEditorPosition() {
-        let updatedMathField = this.state.theActiveMathField;
-        var lastStep = this.state.solution.steps[this.state.solution.steps.length - 1];
-        updatedMathField.latex(lastStep.cleanup ? lastStep.cleanup : lastStep.stepValue);
-        this.setState({
-            theActiveMathField: updatedMathField,
-            editorPosition: this.countEditorPosition(this.state.solution.steps),
-            editing: false
-        });
-        this.state.theActiveMathField.focus();
+    moveEditorBelowSpecificStep(stepNumber) {
+        const steps = this.state.solution.steps.slice();
+        const leftPartOfSteps = steps.splice(0, stepNumber);
+        let editorPosition = this.countEditorPosition(leftPartOfSteps);
+        if (leftPartOfSteps[leftPartOfSteps.length - 1].cleanup) {
+            editorPosition -= 1;
+        }
+        this.setState({ editorPosition });
     }
 
-    scrollToBottom() {
-        scrollTo('MainWorkWrapper', 'mainWorkAreaFooter');
-    }
-
-    countCleanups(steps) {
-        var cleanups = 0;
-        steps.forEach(function (step) {
-            if (step.cleanup) {
-                cleanups++;
-            }
-        })
-        return cleanups;
-    }
-
-    countEditorPosition(steps) {
-        return steps.length + this.countCleanups(steps) - 1;
-    }
-
-    getApplicationNode() {
-        return document.getElementById('root');
-    };
-
-    shareProblem() {
-        if (this.props.example) {
-            this.setState({
-                shareLink: Locales.strings.example_share_code
-            }, this.toggleModals([SHARE_SET]));
-        } else {
-            axios.put(`${SERVER_URL}/solution/${this.state.solution.editCode}`, this.state.solution)
-                .then(response => {
-                    this.setState({
-                        shareLink: FRONTEND_URL + '/problem/view/' + response.data.shareCode
-                    }, this.toggleModals([SHARE_SET]));
-                })
-        }
-    };
-
-    saveProblem() {
-        if (this.props.example) {
-            this.setState({editLink: Locales.strings.example_edit_code });
-        } else {
-            googleAnalytics('Save');
-            axios.put(`${SERVER_URL}/solution/${this.state.solution.editCode}`, this.state.solution)
-                .then(response => {
-                    this.setState({
-                        editLink: FRONTEND_URL + '/problem/edit/' + this.state.solution.editCode,
-                        stepsFromLastSave: JSON.parse(JSON.stringify(this.state.solution.steps))
-                    })
-                    alertSuccess(Locales.strings.problem_saved_success_message, Locales.strings.success);
-                }
-                )
-        }
-    };
-
-    goBack() {
-        if (!this.compareStepArrays(this.state.solution.steps, this.state.stepsFromLastSave) && !this.props.example) {
-            this.toggleModals([CONFIRMATION_BACK]);
-        } else {
-            this.props.history.goBack();
-        }
-    }
-
-    compareStepArrays(first, second) {
-        if (first.length != second.length) {
-            return false;
-        }
-        for (var i = 0; i < first.length; i++) {
-            if (first[i].stepValue != second[i].stepValue ||
-                first[i].explanation != second[i].explanation ||
-                first[i].scratchpad != second[i].scratchpad) {
-                return false;
-            }
-        }
-        return true;
+    updateMathEditorRow(mathContent, mathAnnotation, mathStepNumber, cleanup, scratchpad) {
+        const updatedHistory = this.state.solution.steps;
+        updatedHistory[mathStepNumber].stepValue = mathContent;
+        updatedHistory[mathStepNumber].explanation = mathAnnotation;
+        updatedHistory[mathStepNumber].cleanup = cleanup;
+        updatedHistory[mathStepNumber].scratchpad = scratchpad;
+        const oldSolution = this.state.solution;
+        oldSolution.steps = updatedHistory;
+        this.setState(
+            {
+                solution: oldSolution,
+                textAreaValue: '',
+            },
+        );
+        mathLive.renderMathInDocument();
     }
 
     toggleModals(modals) {
-        var oldModals = this.state.activeModals;
-        for (var modal of modals) {
-            if (this.state.activeModals.indexOf(modal) != -1) {
+        let oldModals = this.state.activeModals;
+        // eslint-disable-next-line no-restricted-syntax
+        for (const modal of modals) {
+            if (this.state.activeModals.indexOf(modal) !== -1) {
                 oldModals = oldModals.filter(e => e !== modal);
             } else {
                 oldModals.push(modal);
@@ -265,13 +268,13 @@ export default class Editor extends Component {
     }
 
     activateMathField(theActiveMathField) {
-        this.setState({ theActiveMathField: theActiveMathField },
+        this.setState({ theActiveMathField },
             () => {
                 if (this.props.example) {
-                    let field = theActiveMathField;
+                    const field = theActiveMathField;
                     field.latex(exampleProblem.steps[exampleProblem.steps.length - 1].stepValue);
                     this.setState({
-                        theActiveMathField: field
+                        theActiveMathField: field,
                     });
                 }
             });
@@ -279,32 +282,41 @@ export default class Editor extends Component {
 
     render() {
         if (this.state.notFound) {
-            return <NotFound />
+            return <NotFound />;
         }
 
-        const myStepsList = <MyStepsList {...this} {...this.state}
-            deleteStepCallback={() => deleteStep(this, true)}
-            editStepCallback={(stepNumber) => editStep(this, stepNumber)}
-            activateMathField={(field) => this.activateMathField(field)}
-            addStepCallback={(img) => addStep(this, true, img)}
-            undoLastActionCallback={() => undoLastAction(this)}
-            deleteStepsCallback={() => clearAll(this)}
-            updateCallback={(img) => updateStep(this, img)}
-            bindDisplayFunction={(f) => this.setState({ displayScratchpad: f })}
-            showUndo={this.state.actionsStack.length > 0}
-            newProblem={this.id === "newEditor"} />
+        const myStepsList = (
+            <MyStepsList
+                {...this}
+                {...this.state}
+                deleteStepCallback={() => deleteStep(this, true)}
+                editStepCallback={stepNumber => editStep(this, stepNumber)}
+                activateMathField={field => this.activateMathField(field)}
+                addStepCallback={img => addStep(this, true, img)}
+                undoLastActionCallback={() => undoLastAction(this)}
+                deleteStepsCallback={() => clearAll(this)}
+                updateCallback={img => updateStep(this, img)}
+                bindDisplayFunction={f => this.setState({ displayScratchpad: f })}
+                showUndo={this.state.actionsStack.length > 0}
+                newProblem={this.id === 'newEditor'}
+            />
+        );
 
         return (
             <div id="MainWorkWrapper" className={editor.mainWorkWrapper}>
                 <NotificationContainer />
                 <ModalContainer {...this} {...this.state} />
                 <main id="MainWorkArea" className={editor.editorAndHistoryWrapper}>
-                    <ProblemHeader {...this} {...this.state} {...this.state.solution.problem}
-                        math={JSON.parse(JSON.stringify(this.state.solution.problem.text))} example={this.props.example}
+                    <ProblemHeader
+                        {...this}
+                        {...this.state}
+                        {...this.state.solution.problem}
+                        math={JSON.parse(JSON.stringify(this.state.solution.problem.text))}
+                        example={this.props.example}
                     />
                     <MyStepsHeader readOnly={this.state.readOnly} />
                     {myStepsList}
-                    <div id="mainWorkAreaFooter"></div>
+                    <div id="mainWorkAreaFooter" />
                 </main>
             </div>
         );

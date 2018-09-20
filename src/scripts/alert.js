@@ -18,4 +18,6 @@ function alertError(message, title) {
     NotificationManager.error(message, title, ALERT_DELAY_MS);
 }
 
-export { alertInfo, alertSuccess, alertWarning, alertError }
+export {
+    alertInfo, alertSuccess, alertWarning, alertError,
+};

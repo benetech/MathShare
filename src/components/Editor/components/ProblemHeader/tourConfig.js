@@ -1,6 +1,6 @@
-import React from "react";
-import Button from '../../../../components/Button';
-import classNames from "classnames";
+import React from 'react';
+import classNames from 'classnames';
+import Button from '../../../Button';
 import Locales from '../../../../strings';
 import problem from './styles.css';
 
@@ -9,19 +9,19 @@ const accentColor = 'rgb(0, 98, 217)';
 const tourConfig = [
     {
         selector: '#mathEditorActive',
-        content: Locales.strings.tour_editor
+        content: Locales.strings.tour_editor,
     },
     {
         selector: '#mathAnnotationContainer',
-        content: Locales.strings.tour_annotation
+        content: Locales.strings.tour_annotation,
     },
     {
         selector: '#inputContainersSelectors',
-        content: Locales.strings.tour_input_containers
+        content: Locales.strings.tour_input_containers,
     },
     {
         selector: '#addStep',
-        content: Locales.strings.tour_add_step
+        content: Locales.strings.tour_add_step,
     },
     {
         selector: '#mathStep-1',
@@ -34,7 +34,7 @@ const tourConfig = [
                             classNames(
                                 'btn',
                                 problem.iconBtn,
-                                problem.btnDelete
+                                problem.btnDelete,
                             )
                         }
                         disabled
@@ -46,36 +46,36 @@ const tourConfig = [
                             classNames(
                                 'btn',
                                 problem.iconBtn,
-                                problem.btnEdit
+                                problem.btnEdit,
                             )
                         }
                         disabled
                         additionalStyles={['background']}
                     />
                     .
-            </div>
-            )
-        }
+                </div>
+            );
+        },
     },
     {
         selector: '#clearAllStepsBtn',
-        content: Locales.strings.tour_clear_all
+        content: Locales.strings.tour_clear_all,
     },
     {
         selector: '#saveBtn',
         content: Locales.strings.tour_save,
-        position: 'bottom'
+        position: 'bottom',
     },
     {
         selector: '#editUrl',
         content: Locales.strings.tour_edit,
-        position: 'bottom'
+        position: 'bottom',
     },
     {
         selector: '#shareBtn',
         content: Locales.strings.tour_share,
-        position: 'bottom'
-    }
-]
+        position: 'bottom',
+    },
+];
 
 export { tourConfig, accentColor };

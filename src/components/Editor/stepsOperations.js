@@ -5,24 +5,33 @@ import { alertSuccess, alertWarning } from '../../scripts/alert';
 import Locales from '../../strings';
 
 function addNewStep(context, step) {
-    let newSteps = context.state.solution.steps;
+    const newSteps = context.state.solution.steps;
     newSteps.push(step);
-    let updatedMathField = context.state.theActiveMathField;
+    const updatedMathField = context.state.theActiveMathField;
     updatedMathField.latex(step.cleanup);
 
-    var solution = context.state.solution;
+    const solution = context.state.solution;
     solution.steps = newSteps;
     context.setState({
         editorPosition: context.countEditorPosition(newSteps),
-        solution: solution,
+        solution,
         theActiveMathField: updatedMathField,
-        textAreaValue: ""
+        textAreaValue: '',
     });
 }
 
+function deleteLastStep(context) {
+    const newSteps = context.state.solution.steps;
+    newSteps.pop();
+    context.setState({
+        steps: newSteps,
+        editorPosition: context.countEditorPosition(context.state.solution.steps),
+    }, context.restoreEditorPosition);
+}
+
 function deleteStep(context, addToHistory) {
-    var steps = context.state.solution.steps;
-    var lastStep = steps[steps.length - 1];
+    const steps = context.state.solution.steps;
+    const lastStep = steps[steps.length - 1];
 
     if (addToHistory) {
         stackDeleteAction(context, lastStep);
@@ -32,18 +41,9 @@ function deleteStep(context, addToHistory) {
     deleteLastStep(context);
 }
 
-function deleteLastStep(context) {
-    let newSteps = context.state.solution.steps;
-    newSteps.pop();
-    context.setState({
-        steps: newSteps,
-        editorPosition: context.countEditorPosition(context.state.solution.steps)
-    }, context.restoreEditorPosition);
-}
-
 function editStep(context, stepNumber) {
-    let mathStep = context.state.solution.steps[stepNumber - 1];
-    let updatedMathField = context.state.theActiveMathField;
+    const mathStep = context.state.solution.steps[stepNumber - 1];
+    const updatedMathField = context.state.theActiveMathField;
     updatedMathField.latex(mathStep.stepValue);
     context.state.displayScratchpad(mathStep.scratchpad);
     context.setState({
@@ -51,44 +51,47 @@ function editStep(context, stepNumber) {
         theActiveMathField: updatedMathField,
         textAreaValue: mathStep.explanation,
         editing: true,
-        updateMathFieldMode: true
+        updateMathFieldMode: true,
     },
-        () => context.moveEditorBelowSpecificStep(stepNumber)
-    );
+    () => context.moveEditorBelowSpecificStep(stepNumber));
 }
 
 function updateStep(context, img) {
-    var index = context.state.editedStep;
+    const index = context.state.editedStep;
 
     if (context.state.textAreaValue === '') {
         alertWarning(Locales.strings.no_description_warning, 'Warning');
-        setTimeout(function () {
+        setTimeout(() => {
             $('#mathAnnotation').focus();
         }, 6000);
         return;
     }
-    let mathStep = Object.assign({}, context.state.solution.steps[index]);
-    let cleanedup = MathButton.CleanUpCrossouts(context.state.theActiveMathField.latex());
-    let cleanup = cleanedup === context.state.theActiveMathField.latex() ? null : cleanedup;
-    context.updateMathEditorRow(context.state.theActiveMathField.latex(), context.state.textAreaValue, index, cleanup, img);
-    context.cancelEditCallback(mathStep.stepValue, mathStep.explanation, mathStep.cleanup, index, mathStep.scratchpad);
+    const mathStep = Object.assign({}, context.state.solution.steps[index]);
+    const cleanedup = MathButton.CleanUpCrossouts(context.state.theActiveMathField.latex());
+    const cleanup = cleanedup === context.state.theActiveMathField.latex() ? null : cleanedup;
+    context.updateMathEditorRow(context.state.theActiveMathField.latex(),
+        context.state.textAreaValue, index, cleanup, img);
+    context.cancelEditCallback(mathStep.stepValue, mathStep.explanation,
+        mathStep.cleanup, index, mathStep.scratchpad);
     alertSuccess(Locales.strings.successfull_update_message, 'Success');
     context.state.displayScratchpad();
 }
 
 function addStep(context, addToHistory, img) {
-    if (!context.state.textAreaValue || context.state.textAreaValue === "" || $.trim(context.state.textAreaValue).length === 0) {
+    if (!context.state.textAreaValue || context.state.textAreaValue === '' || $.trim(context.state.textAreaValue).length === 0) {
         alertWarning(Locales.strings.no_description_warning, 'Warning');
-        setTimeout(function () {
+        setTimeout(() => {
             $('#mathAnnotation').focus();
         }, 6000);
         return;
     }
-    let mathContent = context.state.theActiveMathField.latex();
-    let explanation = context.state.textAreaValue;
-    var cleanedUp = MathButton.CleanUpCrossouts(mathContent);
-    let cleanup = cleanedUp != mathContent ? cleanedUp : null;
-    var step = { "stepValue": mathContent, "explanation": explanation, "cleanup": cleanup, "scratchpad": img };
+    const mathContent = context.state.theActiveMathField.latex();
+    const explanation = context.state.textAreaValue;
+    const cleanedUp = MathButton.CleanUpCrossouts(mathContent);
+    const cleanup = cleanedUp !== mathContent ? cleanedUp : null;
+    const step = {
+        stepValue: mathContent, explanation, cleanup, scratchpad: img,
+    };
     if (addToHistory) {
         stackAddAction(context, step);
     }
@@ -98,4 +101,6 @@ function addStep(context, addToHistory, img) {
     context.scrollToBottom();
 }
 
-export { deleteStep, editStep, updateStep, addStep };
+export {
+    deleteStep, editStep, updateStep, addStep,
+};

@@ -5,6 +5,6 @@ export default function GoogleAnalytics(action) {
         hitType: 'event',
         eventCategory: 'Editor',
         eventAction: action,
-        eventLabel: ''
+        eventLabel: '',
     });
 }

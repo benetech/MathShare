@@ -1,8 +1,8 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
+import classNames from 'classnames';
 import MyWorkEditorArea from './components/MyWorkEditorArea';
 import MathPalette from './components/MathPalette';
 import MyWorkEditorButtons from './components/MyWorkEditorButtons';
-import classNames from "classnames";
 import myWork from './styles.css';
 import editor from '../../styles.css';
 import Locales from '../../../../strings';
@@ -20,9 +20,9 @@ export default class MyWork extends Component {
             isScratchpadUsed: false,
             isScratchpadInitialized: false,
             scratchpadMode: false,
-            scratchpadContent: null
-        }
-
+            scratchpadContent: null,
+        };
+        // eslint-disable-next-line no-unused-expressions
         this.scratchPadPainterro;
 
         this.openScratchpad = this.openScratchpad.bind(this);
@@ -43,19 +43,18 @@ export default class MyWork extends Component {
             this.props.bindDisplayFunction((scratchpadContent) => {
                 this.setState(
                     { scratchpadContent },
-                    this.displayScratchpadImage
-                )
+                    this.displayScratchpadImage,
+                );
             });
         }
     }
 
     HandleKeyDown(event) {
-        var keyShortcuts = new Map(JSON.parse(sessionStorage.keyShortcuts));
+        const keyShortcuts = new Map(JSON.parse(sessionStorage.keyShortcuts));
         if (event.shiftKey && this.props.theActiveMathField.selectionIsCollapsed()) {
             // if an insertion cursor, extend the selection unless we are at an edge
             if (event.key === 'Backspace' && !this.props.theActiveMathField.selectionAtStart()) {
                 this.props.theActiveMathField.perform('extendToPreviousChar');
-
             } else if (event.key === 'Delete' && !this.props.theActiveMathField.selectionAtEnd()) {
                 this.props.theActiveMathField.perform('extendToNextChar');
             }
@@ -73,20 +72,21 @@ export default class MyWork extends Component {
             this.props.undoLastActionCallback();
         }
 
-        var keys = [];
+        const keys = [];
         if (event.shiftKey) {
-            keys.push("Shift");
+            keys.push('Shift');
         }
         if (event.ctrlKey) {
-            keys.push("Ctrl");
-            if (event.key == " ") {
-                this.props.theActiveMathField.perform(['insert', "\\\ "]);
+            keys.push('Ctrl');
+            if (event.key === ' ') {
+                // eslint-disable-next-line no-useless-escape
+                this.props.theActiveMathField.perform(['insert', '\\\ ']);
             }
         }
         keys.push(event.key);
-        var id = keyShortcuts.get(keys.sort().join(''));
+        const id = keyShortcuts.get(keys.sort().join(''));
         if (id) {
-            $("#" + id).click();
+            $(`#${id}`).click();
         }
     }
 
@@ -100,18 +100,18 @@ export default class MyWork extends Component {
         painterroConfiguration.changeHandler = this.scratchpadChangeHandler;
         this.scratchPadPainterro = Painterro(painterroConfiguration);
         this.scratchPadPainterro.show();
-
+        /* eslint-disable no-useless-concat */
         $('#scratch-pad-containter-bar > div > span').first()
-            .append('<button id="clear-button" type="button" class="ptro-icon-btn ptro-color-control" title=' 
-            + "\"" + Locales.strings.clear_sketchpad + "\"" + '><i class="ptro-icon ptro-icon-close"></i></button>');
+            .append(`${'<button id="clear-button" type="button" class="ptro-icon-btn ptro-color-control" title='
+            + '"'}${Locales.strings.clear_sketchpad}"` + '><i class="ptro-icon ptro-icon-close"></i></button>');
         $('#clear-button').click(() => this.clearAndResizeScratchPad());
 
         $('#scratch-pad-containter-bar > div > span').first()
-            .append('<input ref="imageInput" id="open-image" hidden type="file"></input>' +
-            '<button id="open-image-btn" type="button" class="ptro-icon-btn ptro-color-control" title=' 
-            + "\"" + Locales.strings.open_image + "\"" + '><i class="ptro-icon ptro-icon-open"></i></button>');
-        $('#open-image-btn').click(() => $("#open-image").trigger('click'));
-        $('#open-image').change((e) => this.loadImage(e));
+            .append(`${'<input ref="imageInput" id="open-image" hidden type="file"></input>'
+            + '<button id="open-image-btn" type="button" class="ptro-icon-btn ptro-color-control" title='
+            + '"'}${Locales.strings.open_image}"` + '><i class="ptro-icon ptro-icon-open"></i></button>');
+        $('#open-image-btn').click(() => $('#open-image').trigger('click'));
+        $('#open-image').change(e => this.loadImage(e));
 
         $('.ptro-icon-btn').css('border-radius', '.25rem');
         $('.ptro-bordered-btn').css('border-radius', '.5rem');
@@ -121,14 +121,15 @@ export default class MyWork extends Component {
     }
 
     loadImage(event) {
-        var file = event.target.files[0];
+        const file = event.target.files[0];
         if (!file) {
-          return;
+            return;
         }
-        var reader = new FileReader();
+        const reader = new FileReader();
         reader.onload = (e) => {
-            this.setState({scratchpadContent: e.target.result}, () => this.scratchPadPainterro.show(this.state.scratchpadContent));
-        }
+            this.setState({ scratchpadContent: e.target.result },
+                () => this.scratchPadPainterro.show(this.state.scratchpadContent));
+        };
         reader.readAsDataURL(file);
     }
 
@@ -144,7 +145,7 @@ export default class MyWork extends Component {
             this.scratchPadPainterro.clear();
             this.setState({
                 isScratchpadUsed: false,
-                scratchpadContent: content
+                scratchpadContent: content,
             });
         }
     }
@@ -154,13 +155,14 @@ export default class MyWork extends Component {
             { scratchpadMode: true }, () => {
                 $('#scratch-pad-containter').show();
                 this.displayScratchpadImage();
-            });
+            },
+        );
     }
 
     hideScratchpad() {
         this.setState({
             scratchpadMode: false,
-            scratchpadContent: this.scratchPadPainterro.imageSaver.asDataURL()
+            scratchpadContent: this.scratchPadPainterro.imageSaver.asDataURL(),
         }, () => {
             $('#scratch-pad-containter').hide();
             mathLive.renderMathInDocument();
@@ -168,14 +170,16 @@ export default class MyWork extends Component {
     }
 
     addStepCallback() {
-        this.props.addStepCallback(this.state.isScratchpadUsed ? this.scratchPadPainterro.imageSaver.asDataURL() :
-            this.state.scratchpadContent, this.props.textAreaValue);
+        this.props.addStepCallback(this.state.isScratchpadUsed
+            ? this.scratchPadPainterro.imageSaver.asDataURL()
+            : this.state.scratchpadContent, this.props.textAreaValue);
         this.clearAndResizeScratchPad();
     }
 
     updateCallback() {
-        this.props.updateCallback(this.state.isScratchpadUsed ? this.scratchPadPainterro.imageSaver.asDataURL() :
-            this.state.scratchpadContent, this.props.textAreaValue);
+        this.props.updateCallback(this.state.isScratchpadUsed
+            ? this.scratchPadPainterro.imageSaver.asDataURL()
+            : this.state.scratchpadContent, this.props.textAreaValue);
     }
 
     render() {
@@ -187,12 +191,14 @@ export default class MyWork extends Component {
                             <span
                                 className={classNames(
                                     editor.modalAreaHeading,
-                                    myWork.marginTop)}
-                                aria-hidden="true">
+                                    myWork.marginTop,
+                                )}
+                                aria-hidden="true"
+                            >
                                 {this.props.title}
                             </span>
                             <br />
-                            <span className={'sROnly'}>{Locales.strings.my_work}</span>
+                            <span className="sROnly">{Locales.strings.my_work}</span>
                         </h2>
                     </div>
                     <div className={myWork.editorWrapper}>
@@ -202,11 +208,14 @@ export default class MyWork extends Component {
                                 'd-flex',
                                 'flex-nowrap',
                                 'justify-content-between',
-                                'pt-2'
+                                'pt-2',
                             )}
                         >
                             <MathPalette {...this} {...this.props} {...this.state} />
-                            <MyWorkEditorButtons {...this} {...this.props} {...this.state}
+                            <MyWorkEditorButtons
+                                {...this}
+                                {...this.props}
+                                {...this.state}
                                 addStepCallback={this.addStepCallback}
                                 updateCallback={this.updateCallback}
                                 openScratchpad={this.openScratchpad}
@@ -218,10 +227,9 @@ export default class MyWork extends Component {
                                 'd-flex',
                                 'flex-nowrap',
                                 'justify-content-between',
-                                'pt-2'
+                                'pt-2',
                             )}
-                        >
-                        </div>
+                        />
                     </div>
                 </div>
             </div>
