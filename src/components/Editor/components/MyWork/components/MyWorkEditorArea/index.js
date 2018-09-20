@@ -68,6 +68,7 @@ export default class MyWorkEditorArea extends Component {
                                 aria-label={Locales.strings.type_math_here}
                             ></section>
                             <div
+                                id="mathAnnotationContainer"
                                 className={classNames(
                                     'order-2',
                                     editorArea.annotationContainer,

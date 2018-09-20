@@ -50,3 +50,23 @@
     border-radius: .25em;
     background-color: rgb(92, 184, 92);
 }
+
+.btnDelete {
+    background-image: url(/images/delete.png);
+}
+
+.btnEdit {
+    background-image: url(/images/pencil.png);
+}
+
+.btnFinish {
+    background-color: rgb(72, 204, 112);
+    color: rgb(255, 255, 255);
+}
+
+.iconBtn {
+    background-color: rgb(255, 255, 255);
+    padding: 0;
+    width: 24px;
+    height: 24px;
+}
