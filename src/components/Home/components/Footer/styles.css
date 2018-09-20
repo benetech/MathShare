@@ -5,6 +5,7 @@
     border-top: 10px solid #001F3F; 
     display: flex; 
     border-bottom: 10px solid #001F3F;
+    overflow-y: auto;
   }
 
 .edGov {
