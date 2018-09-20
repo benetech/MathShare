@@ -50,8 +50,9 @@ export default class MyStepsList extends Component {
         let cleanups = 0;
         this.props.solution.steps.forEach((step) => {
             const isEdited = this.props.editing && (i + cleanups === this.props.editorPosition);
-            steps.push(this.buildStep(i += 1, step.stepValue, step.explanation, false, isEdited,
+            steps.push(this.buildStep(i, step.stepValue, step.explanation, false, isEdited,
                 step.scratchpad));
+            i += 1;
             if (step.cleanup) {
                 cleanups += 1;
                 steps.push(this.buildStep(i, step.cleanup, Locales.strings.cleanup, true));
