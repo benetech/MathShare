@@ -1,8 +1,0 @@
-
-> MathShare@1.0.0 start /home/user/MathShare
-> webpack-dev-server --mode development --open
-
-ℹ ｢wds｣: Project is running at [1m[34mhttp://localhost:3000/[39m[22m
-ℹ ｢wds｣: webpack output is served from [1m[34m/[39m[22m
-ℹ ｢wdm｣: wait until bundle finished: /
-ℹ ｢wdm｣: Failed to compile.

@@ -28,7 +28,8 @@ export default class MyWorkEditorArea extends Component {
                         '<-': '<-', // override builtin shortcut (\leftarrow)
                         '<=': '\\leq', // use more familiar ≤
                         '>=': '\\geq', // use more familar ≥
-                        $: '\\$', // make it easy to type $
+                        // eslint-disable-next-line quote-props
+                        '$': '\\$', // make it easy to type $
                         '%': '\\%', // make it easy to type %
                         '*': '\\times', // what most people want
                         '?=': '\\overset{?}{=}',	// is equal to
