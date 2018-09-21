@@ -13,7 +13,7 @@ export default class MyStepsList extends Component {
         this.buildStep = this.buildStep.bind(this);
     }
 
-    buildStep(i, value, explanation, isCleanup, isEdited, scratchpad) {
+    buildStep(i, value, explanation, isCleanup, isEdited, scratchpad, stepsSize) {
         let showTrash = false;
         let showEdit = false;
         if (i > 0 && !this.props.readOnly && !isEdited) {
@@ -29,6 +29,7 @@ export default class MyStepsList extends Component {
             <div key={`${isCleanup}-${i}`} className={myStepsList.background}>
                 <Step
                     stepNumber={i + 1}
+                    showClearAll={stepsSize && stepsSize > 1}
                     math={value}
                     annotation={explanation}
                     cleanup={isCleanup}
@@ -51,14 +52,13 @@ export default class MyStepsList extends Component {
         this.props.solution.steps.forEach((step) => {
             const isEdited = this.props.editing && (i + cleanups === this.props.editorPosition);
             steps.push(this.buildStep(i, step.stepValue, step.explanation, false, isEdited,
-                step.scratchpad));
+                step.scratchpad, this.props.solution.steps.length));
             i += 1;
             if (step.cleanup) {
                 cleanups += 1;
                 steps.push(this.buildStep(i, step.cleanup, Locales.strings.cleanup, true));
             }
         });
-
 
         const myWork = this.props.readOnly ? null
             : (
