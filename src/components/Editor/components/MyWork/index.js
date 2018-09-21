@@ -170,10 +170,12 @@ export default class MyWork extends Component {
     }
 
     addStepCallback() {
-        this.props.addStepCallback(this.state.isScratchpadUsed
+        const isAdded = this.props.addStepCallback(this.state.isScratchpadUsed
             ? this.scratchPadPainterro.imageSaver.asDataURL()
             : this.state.scratchpadContent, this.props.textAreaValue);
-        this.clearAndResizeScratchPad();
+        if (isAdded) {
+            this.clearAndResizeScratchPad();
+        }
     }
 
     updateCallback() {

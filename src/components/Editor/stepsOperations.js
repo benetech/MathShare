@@ -83,7 +83,7 @@ function addStep(context, addToHistory, img) {
         setTimeout(() => {
             $('#mathAnnotation').focus();
         }, 6000);
-        return;
+        return false;
     }
     const mathContent = context.state.theActiveMathField.latex();
     const explanation = context.state.textAreaValue;
@@ -99,6 +99,7 @@ function addStep(context, addToHistory, img) {
     addNewStep(context, step);
     context.state.displayScratchpad();
     context.scrollToBottom();
+    return true;
 }
 
 export {
