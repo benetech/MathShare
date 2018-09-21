@@ -60,7 +60,7 @@ module.exports = env => {
                         {
                             loader: 'file-loader',
                             options: {
-                                name: '[path]/[name].[ext]'
+                                name: '[path][name].[ext]'
                             },
                         },
                     ]
