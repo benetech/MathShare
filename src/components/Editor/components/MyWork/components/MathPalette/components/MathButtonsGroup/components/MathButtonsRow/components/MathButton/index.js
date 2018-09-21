@@ -81,6 +81,7 @@ export default class MathButton extends Component {
 
     EnterTextInput() {
         const theActiveMathField = this.props.theActiveMathField;
+        theActiveMathField.commandMode = true;
         theActiveMathField.perform('enterCommandMode');
         theActiveMathField.insert('text{}');
         theActiveMathField.perform('moveToPreviousChar');
