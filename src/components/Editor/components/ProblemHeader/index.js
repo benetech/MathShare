@@ -1,13 +1,13 @@
-import React, { Component } from "react";
-import Button from '../../../../components/Button';
-import classNames from "classnames";
+import React, { Component } from 'react';
+import classNames from 'classnames';
+import Tour from 'reactour';
+import Button from '../../../Button';
 import problem from './styles.css';
 import googleAnalytics from '../../../../scripts/googleAnalytics';
 import Locales from '../../../../strings';
 import showImage from '../../../../scripts/showImage';
-import parseMathLive from '../../../../scripts/parseMathLive.js';
-import Tour from 'reactour';
-import { tourConfig, accentColor } from './tourConfig.js';
+import { tourConfig, accentColor } from './tourConfig';
+import parseMathLive from '../../../../scripts/parseMathLive';
 
 const mathLive = DEBUG_MODE ? require('../../../../../mathlive/src/mathlive.js')
     : require('../../../../../src/lib/mathlivedist/mathlive.js');
@@ -17,26 +17,26 @@ export default class ProblemHeader extends Component {
         super(props);
 
         this.state = {
-            isTourOpen: false
-        }
+            isTourOpen: false,
+        };
 
         this.onImgClick = this.onImgClick.bind(this);
         this.openTour = this.openTour.bind(this);
         this.closeTour = this.closeTour.bind(this);
     }
 
-    shouldComponentUpdate(nextProps, nextState) { 
-        //this prevents unnecessary re-rendering and updates of the element
+    shouldComponentUpdate(nextProps, nextState) {
+        // this prevents unnecessary re-rendering and updates of the element
         return this.props.editLink !== nextProps.editLink || this.props.title !== nextProps.title
-            || this.props.math !== nextProps.math || this.state.isTourOpen != nextState.isTourOpen;
+            || this.props.math !== nextProps.math || this.state.isTourOpen !== nextState.isTourOpen;
     }
 
     componentDidUpdate() {
         mathLive.renderMathInDocument();
     }
 
-    closeTour() {
-        this.setState({ isTourOpen: false });
+    onImgClick() {
+        showImage(this.props.scratchpad);
     }
 
     openTour() {
@@ -44,56 +44,64 @@ export default class ProblemHeader extends Component {
         googleAnalytics('Tour');
     }
 
-    onImgClick() {
-        showImage(this.props.scratchpad);
+    closeTour() {
+        this.setState({ isTourOpen: false });
     }
 
     render() {
-        var imgButton = this.props.scratchpad ?
-            <Button
-                className={classNames('btn', 'pointer', problem.button)}
-                additionalStyles={['image']}
-                ariaHidden="true"
-                type="button"
-                icon="image"
-                iconSize="2x"
-                onClick={this.onImgClick}
-            />
-            : null;
-
-        var text = parseMathLive(this.props.title);
-        const title = "$$" + text + ": }$$";
-
-        var editOnlyControls = this.props.readOnly ? null :
-            <div className={problem.btnContainer}>
-                <span className={problem.editLinkLabel}>{Locales.strings.edit_link_label}</span>
-                <input id="editUrl" type="text" readOnly value={this.props.editLink} className={problem.editLink} />
-                <Button
-                    id="shareBtn"
-                    className={classNames('btn', 'pointer', problem.button)}
-                    additionalStyles={['default']}
-                    type="button"
-                    icon="share-alt"
-                    content={Locales.strings.share}
-                    onClick={this.props.shareProblem} />
-                <Button
-                    id="saveBtn"
-                    className={classNames('btn', 'pointer', problem.button)}
-                    additionalStyles={['default']}
-                    type="button"
-                    icon="save"
-                    content={Locales.strings.save}
-                    onClick={this.props.saveProblem} />
+        const imgButton = this.props.scratchpad
+            ? (
                 <Button
                     className={classNames('btn', 'pointer', problem.button)}
-                    additionalStyles={['default']}
+                    additionalStyles={['image']}
                     ariaHidden="true"
                     type="button"
-                    icon="question"
-                    onClick={this.openTour} />
-            </div>
+                    icon="image"
+                    iconSize="2x"
+                    onClick={this.onImgClick}
+                />
+            )
+            : null;
 
-        const exampleLabel = this.props.example ? <span className={problem.label}>{Locales.strings.example}</span> : null;        
+        const text = parseMathLive(this.props.title);
+        const title = `$$${text}: }$$`;
+
+        const editOnlyControls = this.props.readOnly ? null
+            : (
+                <div className={problem.btnContainer}>
+                    <span className={problem.editLinkLabel}>{Locales.strings.edit_link_label}</span>
+                    <input id="editUrl" type="text" readOnly value={this.props.editLink} className={problem.editLink} />
+                    <Button
+                        id="shareBtn"
+                        className={classNames('btn', 'pointer', problem.button)}
+                        additionalStyles={['default']}
+                        type="button"
+                        icon="share-alt"
+                        content={Locales.strings.share}
+                        onClick={this.props.shareProblem}
+                    />
+                    <Button
+                        id="saveBtn"
+                        className={classNames('btn', 'pointer', problem.button)}
+                        additionalStyles={['default']}
+                        type="button"
+                        icon="save"
+                        content={Locales.strings.save}
+                        onClick={this.props.saveProblem}
+                    />
+                    <Button
+                        className={classNames('btn', 'pointer', problem.button)}
+                        additionalStyles={['default']}
+                        ariaHidden="true"
+                        type="button"
+                        icon="question"
+                        onClick={this.openTour}
+                    />
+                </div>
+            );
+
+        const exampleLabel = this.props.example
+            ? <span className={problem.label}>{Locales.strings.example}</span> : null;
 
         return (
             <div className={problem.header}>
@@ -105,10 +113,11 @@ export default class ProblemHeader extends Component {
                         ariaHidden="true"
                         type="button"
                         icon="arrow-left"
-                        onClick={this.props.goBack} />
+                        onClick={this.props.goBack}
+                    />
                 </div>
                 <span id="ProblemTitle" className={problem.title} role="heading" aria-level="1">{title}</span>
-                <span id="ProblemMath" className={problem.title}>{"$$" + this.props.math + "$$"}</span>
+                <span id="ProblemMath" className={problem.title}>{`$$${this.props.math}$$`}</span>
                 {exampleLabel}
                 {imgButton}
                 {editOnlyControls}

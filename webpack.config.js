@@ -85,6 +85,12 @@ module.exports = env => {
                 {
                     test: /\.(ttf|eot|svg|woff(2)?)(\S+)?$/,
                     loader: 'file-loader?publicPath=/&name=fonts/[name].[ext]'
+                },
+                {
+                    enforce: 'pre',
+                    test: /\.js$/,
+                    exclude: [/node_modules/,/dist/,/src\/lib/],
+                    loaders: ['eslint-loader']
                 }
             ]
         },

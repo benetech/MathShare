@@ -1,21 +1,22 @@
-import React, { Component } from "react";
-import { withRouter } from 'react-router-dom'
-import Button from '../../.././../Button';
-import classNames from "classnames";
+import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
+import classNames from 'classnames';
+import axios from 'axios';
+import FontAwesome from 'react-fontawesome';
+import Button from '../../../../Button';
 import { EDIT_PROBLEM, CONFIRMATION, ADD_PROBLEMS } from '../../../../ModalContainer';
 import problem from './styles.css';
-import buttons from '../../../../../components/Button/styles.css';
+import buttons from '../../../../Button/styles.css';
 import Locales from '../../../../../strings';
-import axios from 'axios';
-import FontAwesome from "react-fontawesome";
-import showImage from '../../../../../scripts/showImage.js';
-import parseMathLive from '../../../../../scripts/parseMathLive.js';
+import showImage from '../../../../../scripts/showImage';
+import parseMathLive from '../../../../../scripts/parseMathLive';
 import { SERVER_URL } from '../../../../../config';
 
 const mathLive = DEBUG_MODE ? require('../../../../../../mathlive/src/mathlive.js')
     : require('../../../../../lib/mathlivedist/mathlive.js');
+
 const problemMathDisplayLength = 30;
-const OPEN_TEXT_TAG = "\\text{";
+const OPEN_TEXT_TAG = '\\text{';
 
 export default class Problem extends Component {
     constructor(props) {
@@ -23,8 +24,8 @@ export default class Problem extends Component {
 
         this.state = {
             isOverflownHorizontally: false,
-            isOverflownVertically: false
-        }
+            isOverflownVertically: false,
+        };
 
         this.createNewSolution = this.createNewSolution.bind(this);
         this.onTrashClick = this.onTrashClick.bind(this);
@@ -32,53 +33,15 @@ export default class Problem extends Component {
         this.onImgClick = this.onImgClick.bind(this);
     }
 
-    buildAnnotation() {
-        var text = parseMathLive(this.props.problem.title);
-        if ((text.match(/\\text{/g) || []).length > 1) {
-            if (text.includes("\\frac")) {
-                text = this.buildComplexProblemText();
-            } else if (text.length > problemMathDisplayLength) {
-                text = text.slice(0, problemMathDisplayLength) + "...";
-            }
-            return "$$" + OPEN_TEXT_TAG + (this.props.number + 1) + ". }" + text + "}$$";
-        } else {
-            return (this.props.number + 1) + ". " + this.props.problem.title;
-        }
-    }
-
-
-    buildProblemText() {
-        return "$$" + this.props.problem.text + "$$";
-    }
-
-    buildProblemImage() {
-        return <img className={problem.image} src={this.props.problem.scratchpad} />
-    }
-
-    buildComplexProblemText() {
-        var text = this.props.problem.text;
-        var equationParts = text.split("{");
-        var result = "";
-        equationParts.forEach(function (part, i) {
-            if (part.length > problemMathDisplayLength) {
-                result += "{" + part.slice(0, problemMathDisplayLength) + "...}";
-            } else {
-                if (i != 0) {
-                    result += "{";
-                }
-                result += part;
-            }
-        });
-        return result;
-    }
-
     componentDidMount() {
         mathLive.renderMathInDocument();
-        var isOverflownVertically = this.navItemContent.scrollHeight > this.navItemContent.clientHeight;
-        var isOverflownHorizontally = this.navItemContent.scrollWidth > this.navItemContent.clientWidth;
+        const isOverflownVertically = this.navItemContent.scrollHeight
+            > this.navItemContent.clientHeight;
+        const isOverflownHorizontally = this.navItemContent.scrollWidth
+            > this.navItemContent.clientWidth;
         this.setState({
             isOverflownVertically,
-            isOverflownHorizontally
+            isOverflownHorizontally,
         });
     }
 
@@ -97,35 +60,79 @@ export default class Problem extends Component {
         e.stopPropagation();
     }
 
+    buildComplexProblemText() {
+        const text = this.props.problem.text;
+        const equationParts = text.split('{');
+        let result = '';
+        equationParts.forEach((part, i) => {
+            if (part.length > problemMathDisplayLength) {
+                result += `{${part.slice(0, problemMathDisplayLength)}...}`;
+            } else {
+                if (i !== 0) {
+                    result += '{';
+                }
+                result += part;
+            }
+        });
+        return result;
+    }
+
+    /* eslint-disable jsx-a11y/alt-text */
+    buildProblemImage() {
+        return (
+            <img
+                className={problem.image}
+                src={this.props.problem.scratchpad}
+            />
+        );
+    }
+
+    buildAnnotation() {
+        let text = parseMathLive(this.props.problem.title);
+        if ((text.match(/\\text{/g) || []).length > 1) {
+            if (text.includes('\\frac')) {
+                text = this.buildComplexProblemText();
+            } else if (text.length > problemMathDisplayLength) {
+                text = `${text.slice(0, problemMathDisplayLength)}...`;
+            }
+            return `$$${OPEN_TEXT_TAG}${this.props.number + 1}. }${text}}$$`;
+        }
+        return `${this.props.number + 1}. ${this.props.problem.title}`;
+    }
+
+    buildProblemText() {
+        return `$$${this.props.problem.text}$$`;
+    }
+
     createNewSolution(history) {
         if (this.props.example) {
             history.push('/problem/example/');
         } else {
-            var solution = {
+            const solution = {
                 problem: {
                     problemSetRevisionShareCode: this.props.problem.problemSetRevisionShareCode,
                     text: this.props.problem.text,
-                    title: this.props.problem.title
+                    title: this.props.problem.title,
                 },
                 steps: [
                     {
                         stepValue: this.props.problem.text,
-                        explanation: this.props.problem.title
-                    }
-                ]
-            }
+                        explanation: this.props.problem.title,
+                    },
+                ],
+            };
             axios.post(`${SERVER_URL}/solution/`, solution)
-                .then(response => {
-                    history.push('/problem/edit/' + response.data.editCode);
-                })
+                .then((response) => {
+                    history.push(`/problem/edit/${response.data.editCode}`);
+                });
         }
     }
 
     render() {
-        var annotation;
-        var equation;
-        var equationFollowUp;
-        var image;
+        let annotation;
+        let equation;
+        let equationFollowUp;
+        let image;
         if (this.props.example) {
             annotation = Locales.strings.getting_started_title;
             equation = Locales.strings.getting_started_equation;
@@ -134,63 +141,71 @@ export default class Problem extends Component {
         } else {
             annotation = this.buildAnnotation();
             equation = this.buildProblemText();
-            equationFollowUp = this.state.isOverflownHorizontally || this.state.isOverflownVertically ? "..." : null;
+            equationFollowUp = this.state.isOverflownHorizontally || this.state.isOverflownVertically ? '...' : null;
             image = this.buildProblemImage();
         }
 
-        var wrappedAnnotation = annotation !== undefined && (annotation.match(/\\text{/g) || []).length > 1 ?
-            <span className={problem.problemAnnotationScaled}>{annotation}</span> :
-            <span className={problem.problemAnnotation}>{annotation}</span>
+        const wrappedAnnotation = annotation !== undefined && (annotation.match(/\\text{/g) || []).length > 1
+            ? <span className={problem.problemAnnotationScaled}>{annotation}</span>
+            : <span className={problem.problemAnnotation}>{annotation}</span>;
 
-        var imgButton = (this.props.problem && this.props.problem.scratchpad) ?
-            <FontAwesome
-                className={
-                    classNames(
-                        problem.imgIcon,
-                        'fa-2x'
-                    )
-                }
-                onClick={this.onImgClick}
-                name='image'
-            />
+        const imgButton = (this.props.problem && this.props.problem.scratchpad)
+            ? (
+                <FontAwesome
+                    className={
+                        classNames(
+                            problem.imgIcon,
+                            'fa-2x',
+                        )
+                    }
+                    onClick={this.onImgClick}
+                    name="image"
+                />
+            )
             : null;
 
-        var plusButton = this.props.addNew ?
-            <FontAwesome
-                className={
-                    classNames(
-                        problem.plusIcon,
-                        'fa-2x'
-                    )
-                }
-                name='plus-circle'
-            />
+        const plusButton = this.props.addNew
+            ? (
+                <FontAwesome
+                    className={
+                        classNames(
+                            problem.plusIcon,
+                            'fa-2x',
+                        )
+                    }
+                    name="plus-circle"
+                />
+            )
             : null;
 
-        var editButton = this.props.showRemove ?
-            <FontAwesome
-                className={
-                    classNames(
-                        problem.editIcon,
-                        'fa-2x'
-                    )
-                }
-                onClick={this.onEditClick}
-                name='edit'
-            />
+        const editButton = this.props.showRemove
+            ? (
+                <FontAwesome
+                    className={
+                        classNames(
+                            problem.editIcon,
+                            'fa-2x',
+                        )
+                    }
+                    onClick={this.onEditClick}
+                    name="edit"
+                />
+            )
             : null;
 
-        var removeButton = this.props.showRemove ?
-            <FontAwesome
-                className={
-                    classNames(
-                        problem.trashIcon,
-                        'fa-2x'
-                    )
-                }
-                onClick={this.onTrashClick}
-                name='trash'
-            />
+        const removeButton = this.props.showRemove
+            ? (
+                <FontAwesome
+                    className={
+                        classNames(
+                            problem.trashIcon,
+                            'fa-2x',
+                        )
+                    }
+                    onClick={this.onTrashClick}
+                    name="trash"
+                />
+            )
             : null;
 
         const NavItem = withRouter(({ history }) => (
@@ -199,7 +214,7 @@ export default class Problem extends Component {
                     classNames(
                         'col-md-4',
                         'text-center',
-                        problem.problem
+                        problem.problem,
                     )
                 }
             >
@@ -209,17 +224,22 @@ export default class Problem extends Component {
                             'btn',
                             buttons.default,
                             buttons.huge,
-                            problem.navSpan
+                            problem.navSpan,
                         )
                     }
-                    onClick={() => this.props.addNew ? this.props.activateModals([ADD_PROBLEMS]) : this.createNewSolution(history)}
+                    onClick={() => (this.props.addNew ? this.props.activateModals([ADD_PROBLEMS])
+                        : this.createNewSolution(history))}
+                    onKeyPress={() => (this.props.addNew ? this.props.activateModals([ADD_PROBLEMS])
+                        : this.createNewSolution(history))}
+                    role="button"
+                    tabIndex={this.props.number}
                 >
                     <div className={problem.middle}>
                         <Button
                             className={
                                 classNames(
                                     problem.navItemButton,
-                                    problem.colorInherit
+                                    problem.colorInherit,
                                 )
                             }
                             content={wrappedAnnotation}
@@ -230,14 +250,23 @@ export default class Problem extends Component {
                         {editButton}
                         <div className={classNames(
                             problem.navItemContent,
-                            this.state.isOverflownHorizontally ? problem.contentOverflownHorizontally: null,
-                            this.state.isOverflownVertically ? problem.contentOverflownVertically : null
-                        )}>
-                            <div ref={(el) => {this.navItemContent = el}} className={classNames(
-                                this.props.example ? null : problem.equation,
-                                this.state.isOverflownHorizontally ? problem.equationOverflownHorizontally : null,
-                                this.state.isOverflownVertically ? problem.equationOverflownVertically : null
-                            )}>
+                            this.state.isOverflownHorizontally
+                                ? problem.contentOverflownHorizontally : null,
+                            this.state.isOverflownVertically
+                                ? problem.contentOverflownVertically
+                                : null,
+                        )}
+                        >
+                            <div
+                                ref={(el) => { this.navItemContent = el; }}
+                                className={classNames(
+                                    this.props.example ? null : problem.equation,
+                                    this.state.isOverflownHorizontally
+                                        ? problem.equationOverflownHorizontally : null,
+                                    this.state.isOverflownVertically
+                                        ? problem.equationOverflownVertically : null,
+                                )}
+                            >
                                 {equation}
                             </div>
                             {equationFollowUp}
@@ -246,7 +275,7 @@ export default class Problem extends Component {
                     </div>
                 </span>
             </div>
-        ))
-        return <NavItem />
+        ));
+        return <NavItem />;
     }
 }

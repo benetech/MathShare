@@ -1,17 +1,27 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
+import classNames from 'classnames';
 import MathButtonsGroup from './components/MathButtonsGroup';
-import classNames from "classnames";
 import paletteStyle from './styles.css';
 import palettes from '../../../../../palettes.json';
 import Locales from '../../../../../../strings';
 import { alertWarning } from '../../../../../../scripts/alert';
 
+/* eslint-disable react/no-string-refs */
 export default class MathPalette extends Component {
-    initializeKeyShortcuts(palettes) {
-        var keyShortcuts = new Map();
-        palettes.forEach(function (palette) {
-            palette.buttonsRows.forEach(function (buttonsRow) {
-                buttonsRow.forEach(function (button) {
+    componentDidMount() {
+        try {
+            this.props.InitScratchPad();
+        } catch (e) {
+            alertWarning(Locales.strings.sketchpad_loading_warning, 'Warning');
+        }
+        this.refs.scratchpad.style.display = 'none';
+    }
+
+    initializeKeyShortcuts = (palettesParam) => {
+        const keyShortcuts = new Map();
+        palettesParam.forEach((palette) => {
+            palette.buttonsRows.forEach((buttonsRow) => {
+                buttonsRow.forEach((button) => {
                     if (button.keys) {
                         keyShortcuts.set(button.keys.sort().join(''), button.id);
                     }
@@ -21,51 +31,47 @@ export default class MathPalette extends Component {
         sessionStorage.keyShortcuts = JSON.stringify(Array.from(keyShortcuts.entries()));
     }
 
-    componentDidMount() {
-        try {
-            this.props.InitScratchPad();
-        } catch(e) {
-            alertWarning(Locales.strings.sketchpad_loading_warning, "Warning");
-        }
-        this.refs.scratchpad.style.display = 'none';
-    }
-
     render() {
-        var allowedPalettes = palettes.filter(palette =>
-            (!this.props.allowedPalettes || this.props.allowedPalettes.includes(palette.label)));
+        const allowedPalettes = palettes.filter(palette => (!this.props.allowedPalettes
+            || this.props.allowedPalettes.includes(palette.label)));
         this.initializeKeyShortcuts(allowedPalettes);
-        var mathPalette = allowedPalettes.map((palette, i) =>
+        const mathPalette = allowedPalettes.map((palette, i) => (
             <MathButtonsGroup
                 key={i}
-                order={"order-" + (i + 1)}
+                order={`order-${i + 1}`}
                 palette={palette}
                 theActiveMathField={this.props.theActiveMathField}
-                showLabel={true}
+                showLabel
             />
-        )
+        ));
 
-        const symbolsContainer = !this.props.scratchpadMode ?
-            <div id="mathPalette"
-                className={classNames(
-                    'pl-0',
-                    'd-flex',
-                    'flex-nowrap',
-                    paletteStyle.mathPalette
-                )}
-            >
-                <h3 className={'sROnly'}>{Locales.strings.math_input_buttons}</h3>
-                {mathPalette}
-            </div> : null;
+        const symbolsContainer = !this.props.scratchpadMode
+            ? (
+                <div
+                    id="mathPalette"
+                    className={classNames(
+                        'pl-0',
+                        'd-flex',
+                        'flex-nowrap',
+                        paletteStyle.mathPalette,
+                    )}
+                >
+                    <h3 className="sROnly">{Locales.strings.math_input_buttons}</h3>
+                    {mathPalette}
+                </div>
+            ) : null;
 
-        const border = this.props.scratchpadMode ? paletteStyle.scratchBorder : paletteStyle.symbolsBorder;
+        const border = this.props.scratchpadMode ? paletteStyle.scratchBorder
+            : paletteStyle.symbolsBorder;
 
         return (
             <div className={classNames(paletteStyle.inputContainer, border)}>
-                <div id="scratch-pad-containter"
+                <div
+                    id="scratch-pad-containter"
                     ref="scratchpad"
                     className={classNames(
                         'order-0',
-                        paletteStyle.scratchPadContainter
+                        paletteStyle.scratchPadContainter,
                     )}
                 />
                 {symbolsContainer}

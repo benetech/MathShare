@@ -1,22 +1,23 @@
-import React, {Component} from "react";
+import React from 'react';
 import MathButtonsRow from './components/MathButtonsRow';
 import buttonsGroup from './styles.css';
 
-export default class MathButtonsGroup extends Component {
-    render() {
-        const label = this.props.showLabel ? <span className={buttonsGroup.label} role="listitem">{this.props.palette.label}</span> : null;
-        var rows = this.props.palette.buttonsRows.map((buttonsRow, i) =>
-            <div key={i} role="list" className={buttonsGroup.row}>
-                <MathButtonsRow {...this.props}
-                    buttonsRow={buttonsRow}
-                />
-            </div>
-        );
-        return (
-            <div className={this.props.order}>
-                {rows}
-                {label}
-            </div>
-        );
-    }
-}
+const MathButtonsGroup = (props) => {
+    const label = props.showLabel ? <span className={buttonsGroup.label} role="listitem">{props.palette.label}</span> : null;
+    const rows = props.palette.buttonsRows.map((buttonsRow, i) => (
+        <div key={i} role="list" className={buttonsGroup.row}>
+            <MathButtonsRow
+                {...props}
+                buttonsRow={buttonsRow}
+            />
+        </div>
+    ));
+    return (
+        <div className={props.order}>
+            {rows}
+            {label}
+        </div>
+    );
+};
+
+export default MathButtonsGroup;
