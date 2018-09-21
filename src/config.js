@@ -14,4 +14,4 @@ default:
 }
 console.log('using server URL: ' + serverUrl);
 export const SERVER_URL = serverUrl;
-export const FRONTEND_URL = hostname === 'localhost' ? 'localhost:3000/#' : hostname;
+export const FRONTEND_URL = hostname === 'localhost' ? 'localhost:3000/#' : `${hostname}/#`;
