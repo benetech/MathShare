@@ -82,7 +82,7 @@ export default class NewProblemsForm extends Component {
     }
 
     addProblem(imageData, text) {
-        this.props.addProblemCallback(imageData, text, this.state.problems.length,
+        return this.props.addProblemCallback(imageData, text, this.state.problems.length,
             this.props.newProblemSet);
     }
 

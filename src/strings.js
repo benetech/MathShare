@@ -30,6 +30,7 @@ class Locales {
                 tts_intro_add_problem: 'Describe problem titlw by typing directly \nor using the microphone to record a title of problem (required).',
                 done: ' Done',
                 clear_all: ' Clear all',
+                clear_all_title: 'Clear all steps',
                 save_intro: 'Save your work or close out to try again from the beginning.',
                 clear_sketchpad: 'Clear the sketchpad',
                 sketchpad_loading_warning: 'Sketchpad library wasn\'t loaded properly',

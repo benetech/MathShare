@@ -100,7 +100,7 @@ export default class Home extends Component {
 
     addProblem(imageData, text, index, newProblemSet) {
         if (!this.validateProblem(text, imageData)) {
-            return;
+            return false;
         }
 
         let problems;
@@ -126,6 +126,7 @@ export default class Home extends Component {
             mathLive.renderMathInDocument();
             this.scrollToBottom();
         });
+        return true;
     }
 
     validateProblem(text, image) {

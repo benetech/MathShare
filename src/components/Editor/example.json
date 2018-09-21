@@ -8,19 +8,13 @@
         },
         {
             "stepValue": "7x\\enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{-13}=\\enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{1+13}14",
-            "explanation": "add 13 to both sides, then calc"
-        },
-        {
-            "stepValue": "7x=14",
-            "explanation": ""
+            "explanation": "add 13 to both sides, then calc",
+            "cleanup": "7x=14"
         },
         {
             "stepValue": "\\enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{\\frac{7x}{7}}^x=\\enclose{updiagonalstrike downdiagonalstrike}[2px solid red]{\\frac{14}{7}}^2",
-            "explanation": "divide by 7, then simplify"
-        },
-        {
-            "stepValue": "x=2",
-            "explanation": ""
+            "explanation": "divide by 7, then simplify",
+            "cleanup": "x=2"
         }
     ]
 }

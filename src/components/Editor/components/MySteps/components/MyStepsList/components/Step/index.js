@@ -149,6 +149,9 @@ export default class Step extends Component {
                         step.clearAll,
                         step.button,
                     ])}
+                    data-toggle="tooltip"
+                    title={Locales.strings.clear_all_title}
+                    disabled={!this.props.showClearAll}
                     content={Locales.strings.clear_all}
                     icon="times-circle"
                     onClick={this.props.deleteStepsCallback}
