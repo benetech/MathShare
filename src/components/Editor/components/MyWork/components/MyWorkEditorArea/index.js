@@ -23,18 +23,38 @@ export default class MyWorkEditorArea extends Component {
                 commandbarToggle: 'hidden',
                 overrideDefaultInlineShortcuts: false,
                 inlineShortcuts:
-                    {
-                        '>-': '>-', // override builtin shortcut (\succ)
-                        '<-': '<-', // override builtin shortcut (\leftarrow)
-                        '<=': '\\leq', // use more familiar ≤
-                        '>=': '\\geq', // use more familar ≥
-                        // eslint-disable-next-line quote-props
-                        '$': '\\$', // make it easy to type $
-                        '%': '\\%', // make it easy to type %
-                        '*': '\\times', // what most people want
-                        '?=': '\\overset{?}{=}',	// is equal to
-                    },
-                // onSelectionDidChange: UpdatePalette
+                {
+                    '>-': '>-', // override builtin shortcut (\succ)
+                    '<-': '<-', // override builtin shortcut (\leftarrow)
+                    '<=': '\\leq', // use more familiar ≤
+                    '>=': '\\geq', // use more familar ≥
+                    // eslint-disable-next-line quote-props
+                    '$': '\\$', // make it easy to type $
+                    '%': '\\%', // make it easy to type %
+                    '*': '\\times', // what most people want
+                    '?=': '\\overset{?}{=}',	// is equal to
+                },
+                onKeystroke: (key) => {
+                    if (key === 'Enter') {
+                        this.props.theActiveMathField.perform('complete');
+                        this.props.theActiveMathField.commandMode = false;
+                    } else if (key === 'Spacebar') {
+                        if (this.props.theActiveMathField.commandMode) {
+                            this.props.theActiveMathField.perform('complete');
+                        }
+                        this.props.theActiveMathField.insert('\\ ');
+                        this.props.theActiveMathField.insert('\\ ');
+                        this.props.theActiveMathField.perform('moveToNextChar');
+                        this.props.theActiveMathField.perform('moveToPreviousChar');
+                        if (this.props.theActiveMathField.commandMode) {
+                            this.props.theActiveMathField.perform('enterCommandMode');
+                            this.props.theActiveMathField.insert('text{}');
+                            this.props.theActiveMathField.perform('moveToPreviousChar');
+                        }
+                        return false;
+                    }
+                    return true;
+                },
             },
         );
     }
