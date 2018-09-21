@@ -249,6 +249,7 @@ export default class Editor extends Component {
             return {
                 solution: oldSolution,
                 textAreaValue: '',
+                editorPosition: this.countEditorPosition(prevState.solution.steps),
             };
         });
         mathLive.renderMathInDocument();
