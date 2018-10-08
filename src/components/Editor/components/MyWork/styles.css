@@ -1,0 +1,36 @@
+.editorArea {
+    padding-left:25px;
+    padding-right:25px;
+}
+
+.myWorkArea {
+    z-index: 1;
+    border-radius: 12px;
+    margin-top: 0px;
+    margin-bottom: 20px;
+    background-color: rgba(173, 216, 230, 0.749);
+    transition: all 1s;
+    opacity: 1;
+    min-width: 940px;
+}
+
+.historyWorkSeparator {
+    flex: 0 0 50px;
+    padding-left: 10px;
+}
+
+.marginTop {
+    margin-top: 8px;
+}
+
+.editorWrapper {
+    flex: 0 0 200px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.scratchPadContainter {
+    position: relative;
+    height: 300px;
+    width: 100%;
+}

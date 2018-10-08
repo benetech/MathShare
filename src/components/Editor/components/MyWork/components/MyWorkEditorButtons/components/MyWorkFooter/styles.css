@@ -1,0 +1,9 @@
+.footer {
+    display: flex;
+    padding: 5px;
+    align-items: flex-end;
+}
+
+.button {
+    height: 37px;
+}

@@ -1,0 +1,36 @@
+.footer {
+    flex: 0 0 70px;
+    justify-content: space-between;
+    background-color: #001F3F; 
+    border-top: 10px solid #001F3F; 
+    display: flex; 
+    border-bottom: 10px solid #001F3F;
+    overflow-y: auto;
+  }
+
+.edGov {
+    flex: 0 0 100px;
+  }
+
+.edGovImg {
+    float: left; 
+    margin: 0px 25px 0px 10px; 
+    background-color: #FFF; 
+    padding: 5px;
+  }
+
+.footerText {
+    font-size: 0.7em; 
+    color: #FFF;  
+}
+
+.benetech {
+    flex: 0 0 100px;
+}
+
+.benetechImg {
+    float: right;
+    margin: 0px 10px 0px 25px; 
+    background-color: #FFF; 
+    padding: 5px;
+}

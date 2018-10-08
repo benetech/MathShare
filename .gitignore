@@ -1,2 +1,16 @@
 # VSCode
 .vscode/
+
+# InteliJ
+.idea/
+
+# npm
+node_modules/
+package-lock.json
+npm-debug.log
+
+# Debugging MathLive
+mathlive/
+
+# build output
+dist/

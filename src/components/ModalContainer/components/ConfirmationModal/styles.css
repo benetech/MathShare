@@ -1,0 +1,30 @@
+.modal {
+    background: rgb(255, 255, 255);
+    outline: 0;
+    width: 500px;
+    border-radius: 4px;
+}
+
+.modalHeader {
+    padding: 0.5em 2em;
+    text-align: center;
+}
+
+.modalFooter {
+    text-align: center;
+}
+
+.button {
+    margin-right: 15px;
+    margin-bottom: 10px;
+}
+
+.discardButton {
+    background-color: rgb(255, 88, 88);
+    color: rgb(255, 255, 255);
+}
+
+.saveButton {
+    background-color: rgb(98, 195, 106);
+    color: rgb(255, 255, 255);
+}

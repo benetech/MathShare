@@ -1,0 +1,66 @@
+.default {
+    background-color: rgb(250, 250, 250);
+}
+
+.background {
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 80%;
+}
+
+.palette {
+    padding: 0;
+    margin: 0px 0px 4px 0px;
+    width: 37px;
+    height: 37px;
+    border: 1px solid rgb(204, 204, 204);
+    cursor: pointer;
+}
+
+.image {
+    padding: 2px 3px 0 3px;
+    background-color: rgb(250, 250, 250);
+    border: 1px solid rgb(204, 204, 204);
+}
+
+.withRightMargin {
+    margin-right: 5px;
+}
+
+.withLeftMargin {
+    margin-left: 5px;
+}
+
+.withHugeRightMargin {
+    margin-right: 20px;
+}
+
+.mic {
+    border: 0px;
+    background-color: rgb(255, 255, 255);
+    padding: 0px;
+    margin-top: 2px;
+}
+
+.huge {
+    width: 300px;
+    height: 220px;
+    margin: 0px auto;
+    vertical-align: middle;
+    white-space: normal !important;
+    border: 1px solid rgb(204, 204, 204) !important;
+}
+
+.undo {
+    background-color: rgb(126, 126, 126);
+    color: rgb(255, 255, 255);
+}
+
+.addStep {
+    background-color: rgb(72, 204, 112);
+    color: rgb(255, 255, 255);
+}
+
+.right {
+    float: right;
+}
