@@ -35,7 +35,7 @@ module.exports = env => {
                 {
                     test: /\.css$/,
                     include: [
-                        /src\/components/
+                        /src(\/|\\)components/
                     ],
                     use: [
                         {
@@ -68,10 +68,10 @@ module.exports = env => {
                 {
                     test: /\.css$/,
                     include: [
-                        /node_modules\/react-notifications/,
-                        /node_modules\/bootstrap/,
-                        /src\/lib/,
-                        /src\/styles/
+                        /node_modules(\/|\\)react-notifications/,
+                        /node_modules(\/|\\)bootstrap/,
+                        /src(\/|\\)lib/,
+                        /src(\/|\\)styles/
                     ],
                     use: [
                         {
@@ -89,7 +89,7 @@ module.exports = env => {
                 {
                     enforce: 'pre',
                     test: /\.js$/,
-                    exclude: [/node_modules/,/dist/,/src\/lib/],
+                    exclude: [/node_modules/,/dist/,/src(\/|\\)lib/],
                     loaders: ['eslint-loader']
                 }
             ]
