@@ -86,6 +86,16 @@
         "buttonsRows": [
             [
                 {
+                    "id": "plusBtn",
+                    "title": "Plus (⌨: +)",
+                    "value": "$$+$$"
+                },
+                {
+                    "id": "minusBtn",
+                    "title": "Dot times (⌨: -)",
+                    "value": "$$-$$"
+                },
+                {
                     "id": "dotTimesBtn",
                     "title": "Dot times (⌨: \\cdot⏎)",
                     "value": "$$\\cdot$$"
@@ -103,9 +113,31 @@
             ],
             [
                 {
+                    "id": "equalBtn",
+                    "title": "Equal (⌨: =)",
+                    "value": "$$=$$"
+                },
+                {
+                    "id": "LessThanBtn",
+                    "title": "Less than (⌨: <)",
+                    "value": "$$<$$"
+                },
+                {
+                    "id": "GreaterThanBtn",
+                    "title": "Greater than (⌨: >)",
+                    "value": "$$>$$"
+                },
+                {
                     "id": "plusMinusBtn",
                     "title": "Plus minus (⌨: +-)",
                     "value": "$$\\pm$$"
+                }
+            ],
+            [
+                {
+                    "id": "notEqualBtn",
+                    "title": "Not equal (⌨: !=)",
+                    "value": "$$\\neq$$"
                 },
                 {
                     "id": "lessThanOrEqualBtn",
@@ -116,13 +148,6 @@
                     "id": "greaterThanOrEqualBtn",
                     "title": "Greater than or equal  (⌨: >=)",
                     "value": "$$\\geq$$"
-                }
-            ],
-            [
-                {
-                    "id": "notEqualBtn",
-                    "title": "Not equal (⌨: !=)",
-                    "value": "$$\\neq$$"
                 },
                 {
                     "id": "isEqualToBtn",
