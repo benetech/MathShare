@@ -193,30 +193,30 @@
                 },
                 {
                     "id": "parenthesesBtn",
-                    "title": "Parentheses",
-                    "value": "$$\\Bigl{(}\\blacksquare\\Bigr{)}$$"
+                    "title": "Parentheses (⌨: ( ) )",
+                    "value": "$$\\left(\\blacksquare\\right)$$"
                 }
             ],
             [
                 {
                     "id": "squareBracketsBtn",
-                    "title": "Square brackets",
-                    "value": "$$\\Bigl{[}\\blacksquare\\Bigr{]}$$"
+                    "title": "Square brackets (⌨: [ ])",
+                    "value": "$$\\left[\\blacksquare\\right]$$"
                 },
                 {
                     "id": "absoluteValueBtn",
-                    "title": "Absolute value",
-                    "value": "$$\\Bigl{|}\\blacksquare\\Bigr{|}$$"
+                    "title": "Absolute value (⌨: | |)",
+                    "value": "$$\\left|\\blacksquare\\right|$$"
                 },
                 {
                     "id": "floorBtn",
-                    "title": "Floor",
-                    "value": "$$\\Bigl{\\lfloor}\\blacksquare\\Bigr{\\rfloor}$$"
+                    "title": "Floor (⌨: \\lfloor \\rfloor)",
+                    "value": "$$\\left\\lfloor\\blacksquare\\right\\rfloor$$"
                 },
                 {
                     "id": "ceilingBtn",
-                    "title": "Ceiling",
-                    "value": "$$\\Bigl{\\lceil}\\blacksquare\\Bigr{\\rceil}$$"
+                    "title": "Ceiling (⌨: \\lceil \\rceil)",
+                    "value": "$$\\left\\lceil\\blacksquare\\right\\rceil$$"
                 }
             ]
         ]
