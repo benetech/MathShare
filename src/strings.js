@@ -21,6 +21,7 @@ class Locales {
                 speech_recongition_error: 'Speech recognition is supported only for Google Chrome',
                 start_speaking: 'Start Speaking',
                 work_area_intro: 'Type or edit the equation using your keyboard and the math keys below. \nTry using the cross out, replace, and calc buttons to help show your work.',
+                work_area_heading: 'math and description of your work',
                 math_editor: 'Math editor',
                 edit_equation: 'edit equation',
                 type_math_here: 'type math here',
