@@ -163,9 +163,9 @@ export default class Step extends Component {
         return (
             <div id={id} className={classNames('row', step.step)}>
                 <div className="col-md-1">
-                    <span role="heading" aria-level="3">
+                    <h3>
                         {this.buildReason()}
-                    </span>
+                    </h3>
                 </div>
                 <div className={classNames('col-md-4', step.annotationEquation)}>
                     <span className="sROnly">
@@ -177,10 +177,10 @@ export default class Step extends Component {
                     <span className="staticMath">{`$$${this.props.math}$$`}</span>
                 </div>
                 <div className={classNames('col-md-4', step.annotationEquation)}>
-                    <span className="sROnly" role="heading" aria-level="4">
+                    <h4 className="sROnly">
                         {Locales.strings.reason}
 :
-                    </span>
+                    </h4>
                     <span className={classNames({
                         [step.cleanUpAnnotation]: this.props.cleanup,
                     })}

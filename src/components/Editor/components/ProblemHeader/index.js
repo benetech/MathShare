@@ -116,7 +116,7 @@ export default class ProblemHeader extends Component {
                         onClick={this.props.goBack}
                     />
                 </div>
-                <span id="ProblemTitle" className={problem.title} role="heading" aria-level="1">{title}</span>
+                <h1 id="ProblemTitle" className={problem.title}>{title}</h1>
                 <span id="ProblemMath" className={problem.title}>{`$$${this.props.math}$$`}</span>
                 {exampleLabel}
                 {imgButton}

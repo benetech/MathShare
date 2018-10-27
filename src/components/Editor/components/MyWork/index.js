@@ -189,18 +189,13 @@ export default class MyWork extends Component {
             <div id="EditorArea" className={myWork.editorArea}>
                 <div className={myWork.myWorkArea}>
                     <div id="historyWorkSeparator" className={myWork.historyWorkSeparator}>
-                        <h2>
-                            <span
-                                className={classNames(
-                                    editor.modalAreaHeading,
-                                    myWork.marginTop,
-                                )}
-                                aria-hidden="true"
-                            >
-                                {this.props.title}
-                            </span>
-                            <br />
-                            <span className="sROnly">{Locales.strings.my_work}</span>
+                        <h2
+                            className={classNames(
+                                editor.modalAreaHeading,
+                                myWork.marginTop,
+                            )}
+                        >
+                            {this.props.title}
                         </h2>
                     </div>
                     <div className={myWork.editorWrapper}>

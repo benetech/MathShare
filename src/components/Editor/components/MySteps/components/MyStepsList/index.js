@@ -106,8 +106,6 @@ export default class MyStepsList extends Component {
                                     myStepsList.list,
                                 )
                             }
-                            role="heading"
-                            aria-level="2"
                         >
                             {steps}
                         </div>
