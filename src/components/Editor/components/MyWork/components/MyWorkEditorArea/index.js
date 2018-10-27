@@ -13,7 +13,6 @@ export default class MyWorkEditorArea extends Component {
         const mathField = this.getMathField();
         mathField.latex(this.props.lastMathEquation);
         this.props.activateMathField(mathField);
-        this.refs.mathEditorActive.onFocus = mathField.focus();
     }
 
     getMathField() {
@@ -52,6 +51,10 @@ export default class MyWorkEditorArea extends Component {
                             this.props.theActiveMathField.perform('moveToPreviousChar');
                         }
                         return false;
+                    } else if (key === 'Esc') {
+                        $('#mathAnnotationHeader').focus();
+                        $('#mathEditorActive').find('span[aria-live]')[0].textContent = 'after application';
+                        return false;
                     }
                     return true;
                 },
@@ -59,80 +62,84 @@ export default class MyWorkEditorArea extends Component {
         );
     }
 
+    setFocus = () => {
+        this.props.theActiveMathField.focus();
+    }
+
     render() {
         const ttsHint = this.props.addingProblem ? Locales.strings.tts_hint_add_problem : Locales.strings.tts_hint;
         const ttsIntro = this.props.addingProblem ? Locales.strings.tts_intro_add_problem : Locales.strings.tts_intro;
         return (
-            <div role="heading" aria-level="2">
-                <div className="row">
-                    <div className="col-lg-12">
+            <section aria-labelledby="workarea-header">
+                <h2 id="workarea-header" className="sROnly">{Locales.strings.work_area_intro}</h2>
+                <div className="row col-lg-12">
+                    <div
+                        id="workArea"
+                        className={
+                            classNames(
+                                editorArea.workArea,
+                                'd-flex',
+                                'flex-nowrap',
+                                'justify-content-between',
+                            )
+                        }
+                        data-step="1"
+                        data-position="top"
+                        data-intro={Locales.strings.work_area_intro}
+                    >
+                        <h3 className="sROnly">{Locales.strings.math_editor}</h3>
                         <div
-                            id="workArea"
-                            className={
-                                classNames(
-                                    editorArea.workArea,
-                                    'd-flex',
-                                    'flex-nowrap',
-                                    'justify-content-between',
-                                )
-                            }
-                            data-step="1"
-                            data-position="top"
-                            data-intro={Locales.strings.work_area_intro}
+                            aria-label={Locales.strings.edit_equation}
+                            id="mathEditorActive"
+                            ref="mathEditorActive"
+                            className={classNames('order-1', editorArea.mathEditorActive)}
+                            role="application"
+                            /* eslint jsx-a11y/no-noninteractive-tabindex: off */
+                            tabIndex="0"
+                            onFocus={this.setFocus}
+                        />
+                        <div
+                            id="mathAnnotationContainer"
+                            className={classNames(
+                                'order-2',
+                                editorArea.annotationContainer,
+                            )}
                         >
-                            <h3 className="sROnly">{Locales.strings.math_editor}</h3>
-                            <section
-                                aria-label={Locales.strings.edit_equation}
-                                id="mathEditorActive"
-                                ref="mathEditorActive"
-                                className={classNames('order-1', editorArea.mathEditorActive)}
-                                role="heading"
-                            />
-                            <div
-                                id="mathAnnotationContainer"
-                                className={classNames(
-                                    'order-2',
-                                    editorArea.annotationContainer,
-                                )}
-                                role="heading"
-                                aria-level="3"
+                            <h3
+                                id="mathAnnotationHeader"
+                                className={
+                                    classNames(
+                                        editorArea.annotationHeader,
+                                        'sROnly',
+                                    )
+                                }
+                                tabIndex="-1"
                             >
-                                <h3
-                                    id="mathAnnotationHeader"
-                                    className={
-                                        classNames(
-                                            editorArea.annotationHeader,
-                                            'sROnly',
-                                        )
-                                    }
-                                    tabIndex="-1"
-                                >
-                                    Describe your work
-                                </h3>
-                                <textarea
-                                    id="mathAnnotation"
-                                    ref="mathAnnotation"
-                                    className={classNames(
-                                        'form-control',
-                                        editorArea.annotation,
-                                    )}
-                                    placeholder={ttsHint}
-                                    data-step="2"
-                                    data-intro={ttsIntro}
-                                    aria-label={ttsHint}
-                                    value={this.props.textAreaValue}
-                                    onChange={
-                                        value => this.props.textAreaChanged(value.target.value)}
-                                />
-                                <SpeechToTextButton
-                                    textAreaValue={this.props.textAreaValue}
-                                    setTextAreaValue={value => this.props.textAreaChanged(value)}
-                                />
-                            </div>
+                                Describe your work
+                            </h3>
+                            <textarea
+                                id="mathAnnotation"
+                                ref="mathAnnotation"
+                                className={classNames(
+                                    'form-control',
+                                    editorArea.annotation,
+                                )}
+                                placeholder={ttsHint}
+                                data-step="2"
+                                data-intro={ttsIntro}
+                                aria-label={ttsHint}
+                                value={this.props.textAreaValue}
+                                onChange={
+                                    value => this.props.textAreaChanged(value.target.value)}
+                            />
+                            <SpeechToTextButton
+                                textAreaValue={this.props.textAreaValue}
+                                setTextAreaValue={value => this.props.textAreaChanged(value)}
+                            />
                         </div>
                     </div>
                 </div>
-            </div>
+            </section>
         );
     }
 }
