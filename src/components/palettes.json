@@ -92,7 +92,7 @@
                 },
                 {
                     "id": "minusBtn",
-                    "title": "Dot times (⌨: -)",
+                    "title": "Minus (⌨: -)",
                     "value": "$$-$$"
                 },
                 {
