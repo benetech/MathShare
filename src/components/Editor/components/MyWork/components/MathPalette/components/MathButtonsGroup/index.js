@@ -3,20 +3,28 @@ import MathButtonsRow from './components/MathButtonsRow';
 import buttonsGroup from './styles.css';
 
 const MathButtonsGroup = (props) => {
-    const label = props.showLabel ? <span className={buttonsGroup.label} role="listitem">{props.palette.label}</span> : null;
+    const label = props.showLabel
+        ? (
+            <li className={buttonsGroup.label} aria-hidden="true">
+                {props.palette.label}
+            </li>
+        )
+        : null;
     const rows = props.palette.buttonsRows.map((buttonsRow, i) => (
-        <div key={i} role="list" className={buttonsGroup.row}>
+        <span key={i} className={buttonsGroup.row}>
             <MathButtonsRow
                 {...props}
                 buttonsRow={buttonsRow}
             />
-        </div>
+        </span>
     ));
+    const headingId = `heading-${props.order}`;
     return (
-        <div className={props.order}>
+        <ul className={props.order} aria-labelledby={headingId}>
+            <span className="sROnly" id={headingId}>{props.palette.label}</span>
             {rows}
             {label}
-        </div>
+        </ul>
     );
 };
 

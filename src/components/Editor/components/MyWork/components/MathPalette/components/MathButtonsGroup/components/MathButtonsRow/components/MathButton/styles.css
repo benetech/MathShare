@@ -28,3 +28,7 @@
 .btn-symbol {
     background-color: rgb(164, 121, 255);
 }
+
+li {
+    list-style-type: none;
+}

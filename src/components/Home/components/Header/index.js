@@ -116,7 +116,7 @@ const MainPageHeader = (props) => {
     ) : null;
 
     return (
-        <div id="topNavigationWrapper" className={header.header} role="heading" aria-level="1">
+        <div id="topNavigationWrapper" className={header.header}>
             <header>
                 <h2 className="sROnly">{Locales.strings.header}</h2>
                 <nav

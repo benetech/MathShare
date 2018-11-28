@@ -5,6 +5,7 @@ import mathButton from './styles.css';
 import teXCommands from './teXCommands.json';
 import googleAnalytics from '../../../../../../../../../../../../scripts/googleAnalytics';
 import { alertWarning } from '../../../../../../../../../../../../scripts/alert';
+import Locales from '../../../../../../../../../../../../strings';
 
 // those disabled check occur mainly in commented/legacy code that might be needed at some point
 /* eslint-disable no-tabs, func-names, max-len, no-use-before-define, no-eval, no-param-reassign, no-shadow, react/sort-comp, no-unused-vars, no-fallthrough */
@@ -186,9 +187,28 @@ export default class MathButton extends Component {
         theActiveMathField.focus();
     }
 
+
     /* eslint-disable react/jsx-no-bind */
     render() {
+        function fixTitleForSpeech(title) {
+            // Unicode chars and punctuaton chars don't get spoken
+            // We convert them here
+            /* eslint-disable dot-location */
+            /* eslint-disable indent */
+            return (title.
+                replace('⌨', Locales.strings.keyboard).
+                replace('-', Locales.strings.dash).
+                replace(',', Locales.strings.comma).
+                replace('!', Locales.strings.bang).
+                replace('\\', Locales.strings.backslash).
+                replace('.', Locales.strings.dot).
+                replace('^', Locales.strings.carrot).
+                replace('_', Locales.strings.underbar)
+            );
+        }
         const title = this.buildButtonTitle();
+        const titleFixedForSpeech = fixTitleForSpeech(title);
+
         let functionIds = [];
         if (this.props.palette.commonOnclick) {
             functionIds = functionIds.concat(this.props.palette.commonOnclick);
@@ -197,20 +217,22 @@ export default class MathButton extends Component {
             functionIds = functionIds.concat(this.props.button.additionalOnclick);
         }
         const functions = this.getFunctionsById(functionIds, null, null);
-
+        const visualContent = (
+            <span aria-hidden="true">
+                {this.props.button.value}
+            </span>);
         return (
-            <span role="listitem">
+            <li>
                 <Button
                     disabled={this.props.readOnly}
                     id={this.props.button.id}
                     className={this.buildClassNames()}
                     data-toggle="tooltip"
-                    title={title}
-                    content={this.props.button.value}
+                    content={visualContent}
                     onClick={this.props.readOnly ? null : functions.bind(this)}
                 />
-                <span className="sr-only">{title}</span>
-            </span>
+                <span className="sr-only">{titleFixedForSpeech}</span>
+            </li>
         );
     }
 
