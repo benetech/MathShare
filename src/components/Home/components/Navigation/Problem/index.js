@@ -219,7 +219,7 @@ export default class Problem extends Component {
                     )
                 }
             >
-                <span
+                <div
                     className={
                         classNames(
                             'btn',
@@ -274,7 +274,7 @@ export default class Problem extends Component {
                         </div>
                         {image}
                     </div>
-                </span>
+                </div>
             </div>
         ));
         return <NavItem />;
