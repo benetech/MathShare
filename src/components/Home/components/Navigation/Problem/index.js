@@ -3,7 +3,6 @@ import { withRouter } from 'react-router-dom';
 import classNames from 'classnames';
 import axios from 'axios';
 import FontAwesome from 'react-fontawesome';
-import Button from '../../../../Button';
 import { EDIT_PROBLEM, CONFIRMATION, ADD_PROBLEMS } from '../../../../ModalContainer';
 import problem from './styles.css';
 import buttons from '../../../../Button/styles.css';
@@ -236,15 +235,16 @@ export default class Problem extends Component {
                     tabIndex={this.props.number}
                 >
                     <div className={problem.middle}>
-                        <Button
+                        <span
                             className={
                                 classNames(
                                     problem.navItemButton,
                                     problem.colorInherit,
                                 )
                             }
-                            content={wrappedAnnotation}
-                        />
+                        >
+                            {wrappedAnnotation}
+                        </span>
                         {imgButton}
                         {removeButton}
                         {plusButton}
