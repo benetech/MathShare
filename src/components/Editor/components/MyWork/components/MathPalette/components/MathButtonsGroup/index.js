@@ -5,9 +5,9 @@ import buttonsGroup from './styles.css';
 const MathButtonsGroup = (props) => {
     const label = props.showLabel
         ? (
-            <li className={buttonsGroup.label} aria-hidden="true">
+            <span role="listitem" className={buttonsGroup.label} aria-hidden="true">
                 {props.palette.label}
-            </li>
+            </span>
         )
         : null;
     const rows = props.palette.buttonsRows.map((buttonsRow, i) => (
@@ -20,11 +20,13 @@ const MathButtonsGroup = (props) => {
     ));
     const headingId = `heading-${props.order}`;
     return (
-        <ul className={props.order} aria-labelledby={headingId}>
+        <div>
             <span className="sROnly" id={headingId}>{props.palette.label}</span>
-            {rows}
-            {label}
-        </ul>
+            <div role="list" className={props.order} aria-labelledby={headingId}>
+                {rows}
+                {label}
+            </div>
+        </div>
     );
 };
 

@@ -1,12 +1,7 @@
-ul {
-    margin-bottom: 0px;
-    margin-left: 0px;
-}
 
 .row {
     display: flex;
     margin-right: 25px;
-    margin-bottom: 0px;
 }
 
 .label {

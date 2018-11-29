@@ -222,7 +222,7 @@ export default class MathButton extends Component {
                 {this.props.button.value}
             </span>);
         return (
-            <li>
+            <span role="listitem">
                 <Button
                     disabled={this.props.readOnly}
                     id={this.props.button.id}
@@ -232,7 +232,7 @@ export default class MathButton extends Component {
                     onClick={this.props.readOnly ? null : functions.bind(this)}
                 />
                 <span className="sr-only">{titleFixedForSpeech}</span>
-            </li>
+            </span>
         );
     }
 
