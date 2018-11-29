@@ -59,7 +59,7 @@ export default class Step extends Component {
             );
         }
         return (
-            <div className={step.reason}>
+            <span className={step.reason}>
                 <span className="sROnly">
                     {' '}
                     {this.OrdinalSuffix(this.props.stepNumber)}
@@ -72,7 +72,7 @@ export default class Step extends Component {
                     {this.props.stepNumber}
 :
                 </span>
-            </div>
+            </span>
         );
     }
 
