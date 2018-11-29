@@ -82,6 +82,7 @@ export default class Problem extends Component {
             <img
                 className={problem.image}
                 src={this.props.problem.scratchpad}
+                alt={Locales.strings.scratchpad_alt}
             />
         );
     }
@@ -272,7 +273,7 @@ export default class Problem extends Component {
                             </div>
                             {equationFollowUp}
                         </div>
-                        {image}
+                        {this.props.problem && this.props.problem.scratchpad ? image : null}
                     </div>
                 </div>
             </div>
