@@ -33,7 +33,7 @@ export default class Problems extends Component {
         const SortableItem = SortableElement(({
             problem, number, example, addNew,
         }) => (
-            <div>
+            <li>
                 <NavigationProblem
                     problem={problem}
                     number={number}
@@ -42,7 +42,7 @@ export default class Problems extends Component {
                     showRemove={this.props.editing && (!example && !addNew)}
                     activateModals={this.props.activateModals}
                 />
-            </div>
+            </li>
         ));
 
         const exampleProblem = <SortableItem key="item-example" example index={0} disabled />;
@@ -51,7 +51,7 @@ export default class Problems extends Component {
             ? <SortableItem key="item-new" addNew index={this.state.problems.length + 1} disabled /> : null;
 
         const SortableList = SortableContainer(({ problems }) => (
-            <div className={styles.container}>
+            <ul className={styles.container}>
                 {exampleProblem}
                 {problems.map((problem, index) => (
                     problem
@@ -59,7 +59,7 @@ export default class Problems extends Component {
                         : null
                 ))}
                 {newProblem}
-            </div>
+            </ul>
         ));
 
         return (
