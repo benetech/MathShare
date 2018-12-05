@@ -110,10 +110,11 @@ export default class ProblemHeader extends Component {
                         id="backBtn"
                         className={classNames('btn', 'pointer', problem.button)}
                         additionalStyles={['default']}
-                        ariaHidden="true"
                         type="button"
                         icon="arrow-left"
                         onClick={this.props.goBack}
+                        tabIndex="-1"
+                        content={<span className="sROnly">{Locales.strings.back_to_problem_page}</span>}
                     />
                 </div>
                 <h1 id="ProblemTitle" className={problem.title}>{title}</h1>

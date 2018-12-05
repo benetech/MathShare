@@ -87,6 +87,7 @@ class Locales {
                 benetech: 'Benetech',
                 footer_description: 'initiative supported by the U.S. Department of Education, Office of Special Education Programs (Cooperative Agreement #H327B100001). Opinions expressed herein are those of the authors and do not necessarily represent the position of the U.S. Department of Education. Poet™ is a trademark of Beneficent Technology, Inc. This website is copyright © 2012-2017, Beneficent Technology, Inc.',
                 loading: 'Loading...',
+                back_to_problem_page: 'return to list of problems',
                 share: ' Share',
                 copy: ' Copy',
                 close: ' Close',
