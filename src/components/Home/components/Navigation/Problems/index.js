@@ -45,21 +45,18 @@ export default class Problems extends Component {
             </li>
         ));
 
-        const exampleProblem = <SortableItem key="item-example" example index={0} disabled />;
-
         const newProblem = this.props.editing
             ? <SortableItem key="item-new" addNew index={this.state.problems.length + 1} disabled /> : null;
 
         const SortableList = SortableContainer(({ problems }) => (
-            <ul className={styles.container}>
-                {exampleProblem}
+            <ol className={styles.container}>
                 {problems.map((problem, index) => (
                     problem
                         ? <SortableItem key={`item-${index}`} index={index + 1} problem={problem} number={index} disabled={!this.props.editing} />
                         : null
                 ))}
                 {newProblem}
-            </ul>
+            </ol>
         ));
 
         return (
