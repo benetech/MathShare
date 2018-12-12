@@ -48,12 +48,22 @@ function readBlob(optStartByte, optStopByte) {
 
 const MainPageHeader = (props) => {
     /* eslint-disable jsx-a11y/anchor-is-valid */
+    const SkipToContentButton = withRouter(() => (
+        <a
+            className={classNames('nav-link', header.pointer)}
+            tabIndex={0}
+            href="#LeftNavigationHeader"
+        >
+            {Locales.strings.go_to_main_content}
+        </a>
+    ));
+
     const GettingStartedButton = withRouter(({ history }) => (
         <a
             className={classNames('nav-link', header.pointer)}
             onClick={() => { history.push('/problem/example'); }}
             onKeyPress={() => { history.push('/problem/example'); }}
-            role="button"
+            role="link"
             tabIndex={0}
         >
             {Locales.strings.getting_started_title}
@@ -73,13 +83,13 @@ const MainPageHeader = (props) => {
             </a>
         )
         : null;
-    let button = props.editing
+    let link = props.editing
         ? (
             <a
                 className={classNames('nav-link', header.pointer)}
                 onClick={props.finishEditing}
                 onKeyPress={() => props.shareCallback(['shareSet'])}
-                role="button"
+                role="link"
                 tabIndex={-2}
             >
                 {Locales.strings.finish_edit}
@@ -92,15 +102,15 @@ const MainPageHeader = (props) => {
                     props.history.push(`/problemSet/edit/${props.editCode}`);
                 }}
                 onKeyPress={() => props.shareCallback(['shareSet'])}
-                role="button"
+                role="link"
                 tabIndex={-3}
             >
-                {Locales.strings.edit}
+                {Locales.strings.edit_problem_set}
             </a>
         );
 
     if (props.notFound) {
-        button = null;
+        link = null;
     }
 
     const addProblemSetButton = !props.notFound ? (
@@ -118,11 +128,12 @@ const MainPageHeader = (props) => {
     return (
         <div id="topNavigationWrapper" className={header.header}>
             <header>
-                <h2 className="sROnly">{Locales.strings.header}</h2>
                 <nav
+                    labeledby="topNavLabel"
                     className={classNames(header.navbar, 'navbar-expand-lg', 'navbar')}
                     id="topNavigation"
                 >
+                    <h1 id="topNavLabel" className="sROnly">{Locales.strings.header}</h1>
                     <a className="navbar-brand" href="#">
                         <img src={logo} alt="Benetech Math Editor" height="37" />
                     </a>
@@ -133,6 +144,9 @@ const MainPageHeader = (props) => {
                         <ul className={classNames('navbar-nav', 'mr-auto')} />
                         <ul className={classNames('navbar-nav', header.navItem)}>
                             <li className="nav_item">
+                                <SkipToContentButton />
+                            </li>
+                            <li className="nav_item">
                                 <GettingStartedButton />
                             </li>
                             <li className="nav_item">
@@ -142,7 +156,7 @@ const MainPageHeader = (props) => {
                                 {shareButton}
                             </li>
                             <li className="nav_item">
-                                {button}
+                                {link}
                             </li>
                             {/*
                             <li className={classNames('nav-item', ['dropdown'])}>
