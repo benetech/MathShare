@@ -232,8 +232,8 @@ export default class Problem extends Component {
                         : this.createNewSolution(history))}
                     onKeyPress={() => (this.props.addNew ? this.props.activateModals([ADD_PROBLEMS])
                         : this.createNewSolution(history))}
-                    role="button"
-                    tabIndex={this.props.number}
+                    role="link"
+                    tabIndex="0"
                 >
                     <div className={problem.middle}>
                         <span
