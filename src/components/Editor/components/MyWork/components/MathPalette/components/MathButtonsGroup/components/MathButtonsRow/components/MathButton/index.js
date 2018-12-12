@@ -221,9 +221,12 @@ export default class MathButton extends Component {
             <span aria-hidden="true">
                 {this.props.button.value}
             </span>);
+        const labelId = `${this.props.button.id}-label`;
         return (
             <span role="listitem">
                 <Button
+                    aria-labelledby={labelId}
+                    title={title}
                     disabled={this.props.readOnly}
                     id={this.props.button.id}
                     className={this.buildClassNames()}
@@ -231,7 +234,7 @@ export default class MathButton extends Component {
                     content={visualContent}
                     onClick={this.props.readOnly ? null : functions.bind(this)}
                 />
-                <span className="sr-only">{titleFixedForSpeech}</span>
+                <span id={labelId} className="sr-only">{titleFixedForSpeech}</span>
             </span>
         );
     }
