@@ -51,7 +51,7 @@ const MainPageHeader = (props) => {
     const SkipToContentButton = withRouter(() => (
         <a
             className={classNames('nav-link', header.pointer)}
-            tabIndex={0}
+            tabIndex="0"
             href="#LeftNavigationHeader"
         >
             {Locales.strings.go_to_main_content}
@@ -64,7 +64,7 @@ const MainPageHeader = (props) => {
             onClick={() => { history.push('/problem/example'); }}
             onKeyPress={() => { history.push('/problem/example'); }}
             role="link"
-            tabIndex={0}
+            tabIndex="0"
         >
             {Locales.strings.getting_started_title}
         </a>
@@ -77,7 +77,7 @@ const MainPageHeader = (props) => {
                 onClick={() => props.shareCallback(['shareSet'])}
                 onKeyPress={() => props.shareCallback(['shareSet'])}
                 role="button"
-                tabIndex={-1}
+                tabIndex="0"
             >
                 {Locales.strings.share}
             </a>
@@ -90,7 +90,7 @@ const MainPageHeader = (props) => {
                 onClick={props.finishEditing}
                 onKeyPress={() => props.shareCallback(['shareSet'])}
                 role="link"
-                tabIndex={-2}
+                tabIndex="0"
             >
                 {Locales.strings.finish_edit}
             </a>
@@ -103,7 +103,7 @@ const MainPageHeader = (props) => {
                 }}
                 onKeyPress={() => props.shareCallback(['shareSet'])}
                 role="link"
-                tabIndex={-3}
+                tabIndex="0"
             >
                 {Locales.strings.edit_problem_set}
             </a>
@@ -119,7 +119,7 @@ const MainPageHeader = (props) => {
             onClick={props.addProblemSetCallback}
             onKeyPress={props.addProblemSetCallback}
             role="button"
-            tabIndex={-4}
+            tabIndex="0"
         >
             {Locales.strings.add_problem_set}
         </a>
