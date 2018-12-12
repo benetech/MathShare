@@ -321,7 +321,7 @@ export default class Home extends Component {
                     problemToEdit={this.state.problemToEdit}
                     editProblemCallback={this.editProblem}
                 />
-                <nav id="LeftNavigation" className={home.leftNavigation} aria-labelledby="LeftNavigationHeader">
+                <main id="LeftNavigation" className={home.leftNavigation} aria-labelledby="LeftNavigationHeader">
                     <NavigationHeader />
                     <NavigationProblems
                         problems={this.state.set.problems}
@@ -329,7 +329,7 @@ export default class Home extends Component {
                         activateModals={this.toggleModals}
                         updatePositions={this.updatePositions}
                     />
-                </nav>
+                </main>
                 <MainPageFooter />
             </div>
         );
