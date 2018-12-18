@@ -226,55 +226,58 @@ export default class Problem extends Component {
                             buttons.default,
                             buttons.huge,
                             problem.navSpan,
+                            problem.middle,
                         )
                     }
-                    onClick={() => (this.props.addNew ? this.props.activateModals([ADD_PROBLEMS])
-                        : this.createNewSolution(history))}
-                    onKeyPress={() => (this.props.addNew ? this.props.activateModals([ADD_PROBLEMS])
-                        : this.createNewSolution(history))}
-                    role="link"
-                    tabIndex="0"
                 >
-                    <div className={problem.middle}>
-                        <span
-                            className={
-                                classNames(
-                                    problem.navItemButton,
-                                    problem.colorInherit,
-                                )
-                            }
+                    <span
+                        className={
+                            classNames(
+                                problem.navItemButton,
+                                problem.colorInherit,
+                            )
+                        }
+                        onClick={() => (
+                            this.props.addNew
+                                ? this.props.activateModals([ADD_PROBLEMS])
+                                : this.createNewSolution(history))}
+                        onKeyPress={() => (
+                            this.props.addNew
+                                ? this.props.activateModals([ADD_PROBLEMS])
+                                : this.createNewSolution(history))}
+                        role="link"
+                        tabIndex="0"
+                    >
+                        {wrappedAnnotation}
+                    </span>
+                    {imgButton}
+                    {removeButton}
+                    {plusButton}
+                    {editButton}
+                    <div className={classNames(
+                        problem.navItemContent,
+                        this.state.isOverflownHorizontally
+                            ? problem.contentOverflownHorizontally : null,
+                        this.state.isOverflownVertically
+                            ? problem.contentOverflownVertically
+                            : null,
+                    )}
+                    >
+                        <div
+                            ref={(el) => { this.navItemContent = el; }}
+                            className={classNames(
+                                this.props.example ? null : problem.equation,
+                                this.state.isOverflownHorizontally
+                                    ? problem.equationOverflownHorizontally : null,
+                                this.state.isOverflownVertically
+                                    ? problem.equationOverflownVertically : null,
+                            )}
                         >
-                            {wrappedAnnotation}
-                        </span>
-                        {imgButton}
-                        {removeButton}
-                        {plusButton}
-                        {editButton}
-                        <div className={classNames(
-                            problem.navItemContent,
-                            this.state.isOverflownHorizontally
-                                ? problem.contentOverflownHorizontally : null,
-                            this.state.isOverflownVertically
-                                ? problem.contentOverflownVertically
-                                : null,
-                        )}
-                        >
-                            <div
-                                ref={(el) => { this.navItemContent = el; }}
-                                className={classNames(
-                                    this.props.example ? null : problem.equation,
-                                    this.state.isOverflownHorizontally
-                                        ? problem.equationOverflownHorizontally : null,
-                                    this.state.isOverflownVertically
-                                        ? problem.equationOverflownVertically : null,
-                                )}
-                            >
-                                {equation}
-                            </div>
-                            {equationFollowUp}
+                            {equation}
                         </div>
-                        {this.props.problem && this.props.problem.scratchpad ? image : null}
+                        {equationFollowUp}
                     </div>
+                    {this.props.problem && this.props.problem.scratchpad ? image : null}
                 </div>
             </div>
         ));
