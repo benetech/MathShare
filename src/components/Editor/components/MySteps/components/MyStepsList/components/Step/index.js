@@ -151,6 +151,7 @@ export default class Step extends Component {
                     ])}
                     data-toggle="tooltip"
                     title={Locales.strings.clear_all_title}
+                    ariaLabel={Locales.strings.clear_all_title}
                     disabled={!this.props.showClearAll}
                     content={Locales.strings.clear_all}
                     icon="times-circle"
