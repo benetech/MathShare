@@ -59,6 +59,7 @@ export default class Button extends Component {
                 id={this.props.id}
                 className={this.buildClassNames()}
                 aria-hidden={this.props.ariaHidden}
+                aria-label={this.props.ariaLabel}
                 type={this.props.type}
                 title={this.props.title}
                 data-step={this.props.intro}
