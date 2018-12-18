@@ -114,6 +114,7 @@ export default class ProblemHeader extends Component {
                         icon="arrow-left"
                         onClick={this.props.goBack}
                         tabIndex="-1"
+                        ariaLabel={Locales.strings.back_to_problem_page}
                         content={<span className="sROnly">{Locales.strings.back_to_problem_page}</span>}
                     />
                 </div>
