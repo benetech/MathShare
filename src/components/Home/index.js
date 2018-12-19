@@ -321,7 +321,7 @@ export default class Home extends Component {
                     problemToEdit={this.state.problemToEdit}
                     editProblemCallback={this.editProblem}
                 />
-                <main id="LeftNavigation" className={home.leftNavigation} aria-labelledby="LeftNavigationHeader">
+                <main id="LeftNavigation" className={home.leftNavigation}>
                     <NavigationHeader />
                     <NavigationProblems
                         problems={this.state.set.problems}
