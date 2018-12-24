@@ -52,6 +52,7 @@ export default class ProblemHeader extends Component {
         const imgButton = this.props.scratchpad
             ? (
                 <Button
+                    id="scratchpadBtn"
                     className={classNames('btn', 'pointer', problem.button)}
                     additionalStyles={['image']}
                     ariaHidden="true"
@@ -90,6 +91,7 @@ export default class ProblemHeader extends Component {
                         onClick={this.props.saveProblem}
                     />
                     <Button
+                        id="questionBtn"
                         className={classNames('btn', 'pointer', problem.button)}
                         additionalStyles={['default']}
                         ariaHidden="true"

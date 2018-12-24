@@ -18,6 +18,7 @@ const InputContainerSelectors = (props) => {
             }
         >
             <Button
+                id="switchToScratchPadBtn"
                 className={classNames([
                     'btn',
                     styles.scratch,
@@ -32,6 +33,7 @@ const InputContainerSelectors = (props) => {
                 onClick={() => props.openScratchpad()}
             />
             <Button
+                id="switchToSymbolsBtn"
                 className={[
                     'btn',
                     styles.symbols,
