@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import FontAwesome from 'react-fontawesome';
 import classNames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -52,7 +53,13 @@ export default class Button extends Component {
                 );
         }
 
-        return (
+        const tooltip = (
+            <Tooltip id={`${this.props.id}-tltp`}>
+                {this.props.title}
+            </Tooltip>
+        );
+
+        const button = (
             // eslint-disable-next-line react/button-has-type
             <button
                 disabled={this.props.disabled}
@@ -61,16 +68,28 @@ export default class Button extends Component {
                 aria-hidden={this.props.ariaHidden}
                 aria-label={this.props.ariaLabel}
                 type={this.props.type}
-                title={this.props.title}
                 data-step={this.props.intro}
                 data-intro={this.props.step}
                 data-toggle={this.props.toggle}
                 onClick={this.props.onClick}
                 style={this.props.hide ? { display: 'none' } : {}}
+                bsStyle="default"
             >
                 {span}
                 {this.state.content}
             </button>
+
+        );
+
+        return (
+            <OverlayTrigger
+                overlay={tooltip}
+                placement="top"
+                delayShow={300}
+                delayHide={150}
+            >
+                {button}
+            </OverlayTrigger>
         );
     }
 }
