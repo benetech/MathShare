@@ -52,7 +52,9 @@ const MainPageHeader = (props) => {
         <a
             className={classNames('nav-link', header.pointer)}
             tabIndex="0"
-            href="#LeftNavigationHeader"
+            role="link"
+            onClick={() => { document.getElementById('LeftNavigationHeader').focus(); }}
+            onKeyDown={() => { document.getElementById('LeftNavigationHeader').focus(); }}
         >
             {Locales.strings.go_to_main_content}
         </a>
