@@ -220,7 +220,8 @@ export default class MathButton extends Component {
         const visualContent = (
             <span aria-hidden="true">
                 {this.props.button.value}
-            </span>);
+            </span>
+            );
         const labelId = `${this.props.button.id}-label`;
         return (
             <span role="listitem">
