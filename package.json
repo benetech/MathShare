@@ -55,7 +55,6 @@
     "lodash": "^4.17.10",
     "react": "^16.7.0",
     "react-aria-modal": "^3.0.1",
-    "react-bootstrap": "^0.32.4",
     "react-dom": "^16.7.0",
     "react-fontawesome": "^1.6.1",
     "react-ga": "^2.5.6",
@@ -64,6 +63,7 @@
     "react-router-dom": "^4.3.1",
     "react-sortable-hoc": "^0.8.4",
     "reactour": "^1.11.1",
+    "reactstrap": "^7.0.2",
     "styled-components": "^3.4.9"
   }
 }
