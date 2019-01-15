@@ -77,7 +77,7 @@ export default class MathButton extends Component {
         classes.forEach((clazz) => {
             result.push(mathButton[clazz]);
         });
-        return classNames('btn', result);
+        return classNames(result, 'btn');
     }
 
     EnterTextInput() {
