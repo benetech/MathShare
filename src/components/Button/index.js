@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { UncontrolledTooltip } from 'reactstrap';
 import FontAwesome from 'react-fontawesome';
 import classNames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -54,9 +54,9 @@ export default class Button extends Component {
         }
 
         const tooltip = (
-            <Tooltip id={`${this.props.id}-tltp`}>
+            <UncontrolledTooltip placement="top" target={this.props.id}>
                 {this.props.title}
-            </Tooltip>
+            </UncontrolledTooltip>
         );
 
         const button = (
@@ -73,7 +73,6 @@ export default class Button extends Component {
                 data-toggle={this.props.toggle}
                 onClick={this.props.onClick}
                 style={this.props.hide ? { display: 'none' } : {}}
-                bsStyle="default"
             >
                 {span}
                 {this.state.content}
@@ -82,14 +81,11 @@ export default class Button extends Component {
         );
 
         return (
-            <OverlayTrigger
-                overlay={tooltip}
-                placement="top"
-                delayShow={300}
-                delayHide={150}
-            >
-                {button}
-            </OverlayTrigger>
+            <span>
+                { button }
+                { tooltip }
+            </span>
+
         );
     }
 }
