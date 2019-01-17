@@ -4,7 +4,7 @@ import NavigationProblem from '../Problem';
 import styles from './styles.css';
 import Locales from '../../../../../strings';
 
-const mathLive = DEBUG_MODE ? require('../../../../../../mathlive/src/mathlive.js')
+const mathLive = DEBUG_MODE ? require('../../../../../../../mathlive/src/mathlive.js').default
     : require('../../../../../lib/mathlivedist/mathlive.js');
 
 export default class Problems extends Component {

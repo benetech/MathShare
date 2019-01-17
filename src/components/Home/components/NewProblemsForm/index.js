@@ -10,7 +10,7 @@ import Button from '../../../Button';
 import parseMathLive from '../../../../scripts/parseMathLive';
 import scrollTo from '../../../../scripts/scrollTo';
 
-const mathLive = DEBUG_MODE ? require('../../../../../mathlive/src/mathlive.js')
+const mathLive = DEBUG_MODE ? require('../../../../../../mathlive/src/mathlive.js').default
     : require('../../../../lib/mathlivedist/mathlive.js');
 
 export default class NewProblemsForm extends Component {

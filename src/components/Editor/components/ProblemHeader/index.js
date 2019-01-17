@@ -9,7 +9,7 @@ import showImage from '../../../../scripts/showImage';
 import { tourConfig, accentColor } from './tourConfig';
 import parseMathLive from '../../../../scripts/parseMathLive';
 
-const mathLive = DEBUG_MODE ? require('../../../../../mathlive/src/mathlive.js')
+const mathLive = DEBUG_MODE ? require('../../../../../../mathlive/src/mathlive.js').default
     : require('../../../../../src/lib/mathlivedist/mathlive.js');
 
 export default class ProblemHeader extends Component {

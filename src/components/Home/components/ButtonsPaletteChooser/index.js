@@ -6,7 +6,7 @@ import palettes from '../../../palettes.json';
 import MathButtonsGroup from '../../../Editor/components/MyWork/components/MathPalette/components/MathButtonsGroup';
 import Button from '../../../Button';
 
-const mathLive = DEBUG_MODE ? require('../../../../../mathlive/src/mathlive.js')
+const mathLive = DEBUG_MODE ? require('../../../../../../mathlive/src/mathlive.js').default
     : require('../../../../lib/mathlivedist/mathlive.js');
 
 export default class PaletteChooser extends Component {

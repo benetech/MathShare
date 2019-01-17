@@ -8,7 +8,7 @@ import showImage from '../../../../../../../../scripts/showImage';
 import '../../../../../../../../../images/pencil.png';
 import '../../../../../../../../../images/delete.png';
 
-const mathLive = DEBUG_MODE ? require('../../../../../../../../../mathlive/src/mathlive.js')
+const mathLive = DEBUG_MODE ? require('../../../../../../../../../../mathlive/src/mathlive.js').default
     : require('../../../../../../../../lib/mathlivedist/mathlive.js');
 
 export default class Step extends Component {

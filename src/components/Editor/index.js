@@ -18,7 +18,7 @@ import { SERVER_URL, FRONTEND_URL } from '../../config';
 import exampleProblem from './example.json';
 import scrollTo from '../../scripts/scrollTo';
 
-const mathLive = DEBUG_MODE ? require('../../../mathlive/src/mathlive.js')
+const mathLive = DEBUG_MODE ? require('../../../../mathlive/src/mathlive.js').default
     : require('../../lib/mathlivedist/mathlive.js');
 
 export default class Editor extends Component {
