@@ -72,7 +72,7 @@ export default class Home extends Component {
             }).catch(() => {
                 this.setState({ notFound: true });
             });
-        mathLive.renderMathInDocument();
+        // mathLive.renderMathInDocument();
     }
 
     componentDidUpdate(prevProps, prevState) {

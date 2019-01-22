@@ -131,12 +131,11 @@ const MainPageHeader = (props) => {
         <div id="topNavigationWrapper" className={header.header}>
             <header>
                 <nav
-                    aria-labelledby="topNavLabel"
                     className={classNames(header.navbar, 'navbar-expand-lg', 'navbar')}
                     id="topNavigation"
                 >
-                    <h2 id="topNavLabel" className="sROnly">{Locales.strings.header}</h2>
                     <SkipToContentButton />
+                    <h2 id="topNavLabel" className="sROnly">{Locales.strings.header}</h2>
                     <a className="navbar-brand" href="#">
                         <img src={logo} alt="Benetech Math Editor" height="37" />
                     </a>
@@ -145,7 +144,7 @@ const MainPageHeader = (props) => {
                         id="navbarNav"
                     >
                         <ul className={classNames('navbar-nav', 'mr-auto')} />
-                        <ul className={classNames('navbar-nav', header.navItem)}>
+                        <ul aria-labelledby="topNavLabel" className={classNames('navbar-nav', header.navItem)}>
                             <li className="nav_item">
                                 <GettingStartedButton />
                             </li>
