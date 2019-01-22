@@ -20,7 +20,7 @@ class Locales {
                 dash: 'minus',
                 comma: 'comma',
                 bang: 'bang',
-                backslash: 'backslash',
+                backslash: 'backslash ',
                 dot: 'dot',
                 carrot: 'carrot',
                 underbar: 'line',
