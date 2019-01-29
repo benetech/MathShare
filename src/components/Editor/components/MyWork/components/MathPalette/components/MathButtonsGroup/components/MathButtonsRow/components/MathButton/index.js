@@ -235,7 +235,7 @@ export default class MathButton extends Component {
                     content={visualContent}
                     onClick={this.props.readOnly ? null : functions.bind(this)}
                 />
-                <span id={labelId} className="sr-only">{titleFixedForSpeech}</span>
+                <span id={labelId} className="sROnly">{titleFixedForSpeech}</span>
             </span>
         );
     }
