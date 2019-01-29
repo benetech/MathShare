@@ -149,6 +149,12 @@ export default class Problem extends Component {
             ? <span className={problem.problemAnnotationScaled}>{annotation}</span>
             : <span className={problem.problemAnnotation}>{annotation}</span>;
 
+        const speechForMath = (
+            <span className="sROnly">
+                {this.props.theActiveMathField.$text('spoken-text')}
+            </span>
+        );
+
         const imgButton = (this.props.problem && this.props.problem.scratchpad)
             ? (
                 <FontAwesome
@@ -249,6 +255,7 @@ export default class Problem extends Component {
                         tabIndex="0"
                     >
                         {wrappedAnnotation}
+                        {speechForMath}
                     </span>
                     {imgButton}
                     {removeButton}
@@ -263,7 +270,7 @@ export default class Problem extends Component {
                             : null,
                     )}
                     >
-                        <div
+                        <div aria-hidden="true" // math speech is part of link
                             ref={(el) => { this.navItemContent = el; }}
                             className={classNames(
                                 this.props.example ? null : problem.equation,
