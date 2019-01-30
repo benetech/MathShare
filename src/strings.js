@@ -98,7 +98,7 @@ class Locales {
                 add_problem: ' Add Problem',
                 add_problem_equation: '+',
                 save: ' Save',
-                edit_link_label: 'Edit Url: ',
+                edit_link_label: 'URL for editing: ',
                 cancel: ' Cancel',
                 new_problem: ' New Problem',
                 add_problems: ' Add problem(s) to Problem Set',
