@@ -33,7 +33,7 @@ export default class Problem extends Component {
     }
 
     componentDidMount() {
-        mathLive.renderMathInDocument();
+        mathLive.renderMathInElement(this.navItemContent);
         const isOverflownVertically = this.navItemContent.scrollHeight
             > this.navItemContent.clientHeight;
         const isOverflownHorizontally = this.navItemContent.scrollWidth
@@ -42,6 +42,10 @@ export default class Problem extends Component {
             isOverflownVertically,
             isOverflownHorizontally,
         });
+    }
+
+    componentDidUpdate() {
+        mathLive.renderMathInElement(this.navItemContent);
     }
 
     onTrashClick(e) {
@@ -151,7 +155,8 @@ export default class Problem extends Component {
 
         const speechForMath = (
             <span className="sROnly">
-                {this.props.theActiveMathField.$text('spoken-text')}
+                {/* this.navItemContent --generate text -- .$text('spoken-text') */}
+                dummy speech
             </span>
         );
 
@@ -270,7 +275,8 @@ export default class Problem extends Component {
                             : null,
                     )}
                     >
-                        <div aria-hidden="true" // math speech is part of link
+                        <div
+                            aria-hidden="true" // math speech is part of link
                             ref={(el) => { this.navItemContent = el; }}
                             className={classNames(
                                 this.props.example ? null : problem.equation,

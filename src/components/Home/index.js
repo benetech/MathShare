@@ -80,7 +80,7 @@ export default class Home extends Component {
             !== prevState.allowedPalettes || this.state.tempPalettes !== prevState.tempPalettes
             || this.state.newSetSharecode !== prevState.newSetSharecode
             || this.state.activeModals !== prevState.activeModals) {
-            mathLive.renderMathInDocument();
+            // mathLive.renderMathInDocument();
             // The state needs to be refreshed at this point
             // so the equations overflow could be detected
             setTimeout(() => { this.setState({}); }, 1);
@@ -123,7 +123,7 @@ export default class Home extends Component {
                 ? this.setState({
                     tempProblems: problems,
                 }) : this.saveProblems(problems);
-            mathLive.renderMathInDocument();
+            // mathLive.renderMathInDocument();
             this.scrollToBottom();
         });
         return true;
