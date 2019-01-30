@@ -241,7 +241,8 @@ export default class Problem extends Component {
                         )
                     }
                 >
-                    <span
+                    <button
+                        type="button"
                         className={
                             classNames(
                                 problem.navItemButton,
@@ -256,7 +257,6 @@ export default class Problem extends Component {
                             this.props.addNew
                                 ? this.props.activateModals([ADD_PROBLEMS])
                                 : this.createNewSolution(history))}
-                        role="link"
                         tabIndex="0"
                     >
                         {wrappedAnnotation}
@@ -274,7 +274,7 @@ export default class Problem extends Component {
                             {equation}
                         </div>
                         {speechForMath}
-                    </span>
+                    </button>
                     {imgButton}
                     {removeButton}
                     {plusButton}
