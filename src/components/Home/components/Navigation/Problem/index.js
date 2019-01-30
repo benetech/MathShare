@@ -260,6 +260,19 @@ export default class Problem extends Component {
                         tabIndex="0"
                     >
                         {wrappedAnnotation}
+                        <div
+                            aria-hidden="true" // math speech is part of link
+                            ref={(el) => { this.navItemContent = el; }}
+                            className={classNames(
+                                this.props.example ? null : problem.equation,
+                                this.state.isOverflownHorizontally
+                                    ? problem.equationOverflownHorizontally : null,
+                                this.state.isOverflownVertically
+                                    ? problem.equationOverflownVertically : null,
+                            )}
+                        >
+                            {equation}
+                        </div>
                         {speechForMath}
                     </span>
                     {imgButton}
@@ -275,19 +288,6 @@ export default class Problem extends Component {
                             : null,
                     )}
                     >
-                        <div
-                            aria-hidden="true" // math speech is part of link
-                            ref={(el) => { this.navItemContent = el; }}
-                            className={classNames(
-                                this.props.example ? null : problem.equation,
-                                this.state.isOverflownHorizontally
-                                    ? problem.equationOverflownHorizontally : null,
-                                this.state.isOverflownVertically
-                                    ? problem.equationOverflownVertically : null,
-                            )}
-                        >
-                            {equation}
-                        </div>
                         {equationFollowUp}
                     </div>
                     {this.props.problem && this.props.problem.scratchpad ? image : null}
