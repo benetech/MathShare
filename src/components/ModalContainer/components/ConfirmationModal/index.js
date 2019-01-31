@@ -22,6 +22,7 @@ export default class ConfirmationModal extends Component {
                     </div>
                     <footer className={modalStyles.modalFooter}>
                         <Button
+                            id="discardButton"
                             className={classNames('btn', modalStyles.button, modalStyles.discardButton)}
                             ariaHidden="false"
                             type="button"

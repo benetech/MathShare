@@ -14,6 +14,7 @@ const MyWorkFooter = (props) => {
     const undoButton = props.showUndo && !props.addingProblem
         ? (
             <Button
+                id="undoButton"
                 className={btnClassNames}
                 additionalStyles={['withRightMargin', 'undo']}
                 content={Locales.strings.undo}
@@ -25,6 +26,7 @@ const MyWorkFooter = (props) => {
 
     const cancelButton = (
         <Button
+            id="cancelButton"
             className={btnClassNames}
             additionalStyles={['withRightMargin', 'undo']}
             content={Locales.strings.cancel}

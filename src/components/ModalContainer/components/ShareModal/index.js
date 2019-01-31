@@ -29,6 +29,7 @@ export default class ShareModal extends Component {
                     </div>
                     <footer className={editor.modalFooter}>
                         <Button
+                            id="copy_button"
                             className={classNames('btn', 'btn-primary', editor.button)}
                             ariaHidden="false"
                             type="button"

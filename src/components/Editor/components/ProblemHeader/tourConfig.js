@@ -30,6 +30,7 @@ const tourConfig = [
                 <div>
                     {Locales.strings.tour_math_step_part_1}
                     <Button
+                        id="tour_step1"
                         className={
                             classNames(
                                 'btn',
@@ -42,6 +43,7 @@ const tourConfig = [
                     />
                     {Locales.strings.tour_math_step_part_2}
                     <Button
+                        id="tour_step2"
                         className={
                             classNames(
                                 'btn',

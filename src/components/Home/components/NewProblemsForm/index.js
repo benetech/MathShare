@@ -161,6 +161,7 @@ export default class NewProblemsForm extends Component {
         let doneButton = this.props.newProblemSet
             ? (
                 <Button
+                    id="saveButton"
                     className="btn"
                     additionalStyles={['withRightMargin', 'default', 'right']}
                     icon="save"
@@ -170,6 +171,7 @@ export default class NewProblemsForm extends Component {
             )
             : (
                 <Button
+                    id="doneButton"
                     className="btn"
                     additionalStyles={['withRightMargin', 'default', 'right']}
                     icon="check"
