@@ -169,12 +169,6 @@ export default class Step extends Component {
                     </h3>
                 </div>
                 <div className={classNames('col-md-4', step.annotationEquation)}>
-                    <span className="sROnly">
-                        {' '}
-                        {Locales.strings.math}
-:
-                        {' '}
-                    </span>
                     <span className="staticMath">{`$$${this.props.math}$$`}</span>
                 </div>
                 <div className={classNames('col-md-4', step.annotationEquation)}>
