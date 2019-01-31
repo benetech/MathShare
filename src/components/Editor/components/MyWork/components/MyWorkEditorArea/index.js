@@ -20,6 +20,7 @@ export default class MyWorkEditorArea extends Component {
             this.refs.mathEditorActive,
             {
                 commandbarToggle: 'hidden',
+                virtualKeyboardMode: 'off',
                 overrideDefaultInlineShortcuts: false,
                 inlineShortcuts:
                 {

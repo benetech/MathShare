@@ -21,9 +21,5 @@ html, body {
 }
 
 #workArea .ML__mathlive {
-    display: block;
-    transform-origin: top left;
-    transform: scale(1.6, 1.6);
-    -webkit-transform: scale(1.6, 1.6);
-    -ms-transform: scale(1.6, 1.6);
+    font-size: 160%;
 }
