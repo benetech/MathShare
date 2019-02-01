@@ -143,7 +143,7 @@ const MainPageHeader = (props) => {
                         className="navbar-collapse"
                         id="navbarNav"
                     >
-                        <ul className={classNames('navbar-nav', 'mr-auto')} />
+                        <div className={classNames('navbar-nav', 'mr-auto')} />
                         <ul aria-labelledby="topNavLabel" className={classNames('navbar-nav', header.navItem)}>
                             <li className="nav_item">
                                 <GettingStartedButton />
