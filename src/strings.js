@@ -117,6 +117,7 @@ class Locales {
                 save_changes: ' Save Changes',
                 scratchpad: ' Sketch',
                 scratchpad_alt: 'Problem sketch',
+                scratchpad_enlarge: 'Enlarge sketch',
                 symbols: ' Symbols',
                 switch_to_sketchpad: 'Switch to the sketchpad view',
                 switch_to_symbols: 'Switch to the symbols view',

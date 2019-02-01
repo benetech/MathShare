@@ -187,14 +187,20 @@ export default class Step extends Component {
                     </span>
                 </div>
                 <div className={classNames('col-md-2', step.annotationEquation)}>
-                    {/* eslint-disable jsx-a11y/alt-text */}
-                    <img
-                        role="button"
-                        className={step.image}
-                        src={this.props.scratchpad}
+                    <button
+                        type="button"
+                        aria-labelledby="sketch-button-in-step"
+                        style={{ display: this.props.scratchpad ? 'inline' : 'none' }}
                         onClick={() => showImage(this.props.scratchpad)}
                         onKeyPress={() => showImage(this.props.scratchpad)}
-                    />
+                    >
+                        <img
+                            id="sketch-button-in-step"
+                            className={step.image}
+                            alt={Locales.strings.scratchpad_enlarge}
+                            src={this.props.scratchpad}
+                        />
+                    </button>
                 </div>
                 <div className={classNames('col-md-1', step.btnContainer)}>
                     {clearAll}
