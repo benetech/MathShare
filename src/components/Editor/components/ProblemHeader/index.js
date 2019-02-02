@@ -7,7 +7,7 @@ import googleAnalytics from '../../../../scripts/googleAnalytics';
 import Locales from '../../../../strings';
 import showImage from '../../../../scripts/showImage';
 import { tourConfig, accentColor } from './tourConfig';
-import parseMathLive from '../../../../scripts/parseMathLive';
+// import parseMathLive from '../../../../scripts/parseMathLive';
 
 const mathLive = DEBUG_MODE ? require('../../../../../../mathlive/src/mathlive.js').default
     : require('../../../../../src/lib/mathlivedist/mathlive.js');
@@ -64,8 +64,7 @@ export default class ProblemHeader extends Component {
             )
             : null;
 
-        const text = parseMathLive(this.props.title);
-        const title = `$$${text}: }$$`;
+        const title = `${this.props.title}: `;
 
         const editOnlyControls = this.props.readOnly ? null
             : (
