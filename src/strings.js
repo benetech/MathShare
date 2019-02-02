@@ -16,7 +16,7 @@ class Locales {
                 delete: 'Delete',
                 math: 'math',
                 reason: 'reason',
-                keyboard: 'keyboard',
+                keyboard: 'shortcut is ',
                 dash: 'minus',
                 comma: 'comma',
                 bang: 'bang',
