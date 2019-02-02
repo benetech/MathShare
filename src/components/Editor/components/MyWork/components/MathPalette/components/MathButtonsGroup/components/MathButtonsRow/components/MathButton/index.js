@@ -218,9 +218,12 @@ export default class MathButton extends Component {
         }
         const functions = this.getFunctionsById(functionIds, null, null);
         const visualContent = (
-            <span aria-hidden="true">
-                {this.props.button.value}
-            </span>
+            <React.Fragment>
+                <span aria-hidden="true">
+                    {this.props.button.value}
+                </span>
+                <span id={labelId} className="sROnly">{titleFixedForSpeech}</span>
+            </React.Fragment>
             );
         const labelId = `${this.props.button.id}-label`;
         return (
@@ -235,7 +238,6 @@ export default class MathButton extends Component {
                     content={visualContent}
                     onClick={this.props.readOnly ? null : functions.bind(this)}
                 />
-                <span id={labelId} className="sROnly">{titleFixedForSpeech}</span>
             </span>
         );
     }
