@@ -155,8 +155,7 @@ export default class Problem extends Component {
 
         const speechForMath = (
             <span className="sROnly">
-                {/* this.navItemContent --generate text -- .$text('spoken-text') */}
-                dummy speech
+                {mathLive.latexToSpeakableText(this.props.problem.text)}
             </span>
         );
 
