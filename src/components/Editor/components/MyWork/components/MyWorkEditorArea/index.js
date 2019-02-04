@@ -60,6 +60,9 @@ export default class MyWorkEditorArea extends Component {
                     }
                     return true;
                 },
+                textToSpeechMarkup: 'ssml',
+                textToSpeechRules: 'local',
+                speechEngine: 'local', // *** change to 'amazon' when AWS is added
             },
         );
     }
