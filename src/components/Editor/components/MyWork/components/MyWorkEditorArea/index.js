@@ -34,6 +34,7 @@ export default class MyWorkEditorArea extends Component {
                     '*': '\\times', // what most people want
                     '?=': '\\overset{?}{=}',	// is equal to
                 },
+                onMoveOutOf: () => false,
                 onKeystroke: (key) => {
                     if (key === 'Enter') {
                         this.props.theActiveMathField.perform('complete');
