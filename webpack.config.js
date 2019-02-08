@@ -19,17 +19,24 @@ module.exports = env => {
             DEBUG_MODE: debug
         })
     ];
+    var path = require('path');
     if (!debug) {
         plugins.push(new webpack.IgnorePlugin(/mathlive\/src\/mathlive.js/));
     }
     return {
+        resolveLoader: {
+	  modules: [path.join(__dirname, 'node_modules')]
+	  },
         module: {
             rules: [
                 {
                     test: /\.js$/,
                     exclude: /node_modules/,
                     use: {
-                        loader: "babel-loader"
+                        loader: "babel-loader",
+			options: {
+			    presets: ['@babel/preset-env']
+			}
                     }
                 },
                 {
