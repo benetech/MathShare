@@ -19,7 +19,7 @@ class Locales {
                 keyboard: 'shortcut is ',
                 dash: 'minus',
                 comma: 'comma',
-                bang: 'bang',
+                bang: 'exclamation point',
                 backslash: 'backslash ',
                 dot: 'dot',
                 carrot: 'carrot',
