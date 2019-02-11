@@ -61,7 +61,8 @@ export default class MyWorkEditorArea extends Component {
                     return true;
                 },
                 textToSpeechMarkup: 'ssml',
-                textToSpeechRules: 'local',
+                textToSpeechRules: 'sre',
+                textToSpeechRulesOptions: { domain: 'clearspeak', style: 'default', markup: 'ssml_step' },
                 speechEngine: 'local', // *** change to 'amazon' when AWS is added
             },
         );

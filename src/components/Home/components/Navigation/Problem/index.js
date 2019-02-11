@@ -155,7 +155,13 @@ export default class Problem extends Component {
 
         const speechForMath = (
             <span className="sROnly">
-                {mathLive.latexToSpeakableText(this.props.problem.text)}
+                {mathLive.latexToSpeakableText(
+                    this.props.problem.text,
+                    {
+                        textToSpeechRules: 'sre',
+                        textToSpeechRulesOptions: { domain: 'clearspeak', style: 'default', markup: 'none' },
+                    },
+                )}
             </span>
         );
 
