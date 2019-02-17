@@ -34,6 +34,8 @@ export default class MyWorkEditorArea extends Component {
                     '*': '\\times', // what most people want
                     '?=': '\\overset{?}{=}',	// is equal to
                 },
+                inlineShortcutBackspaceCommand: 'delete', // make deleting multichar shortcut be atomic
+                removeExtraneousParentheses: false, // if typed, keep parens around
                 onMoveOutOf: () => false,
                 onKeystroke: (key) => {
                     if (key === 'Enter') {
@@ -63,7 +65,7 @@ export default class MyWorkEditorArea extends Component {
                 textToSpeechMarkup: 'ssml',
                 textToSpeechRules: 'sre',
                 textToSpeechRulesOptions: { domain: 'clearspeak', style: 'default', markup: 'ssml_step' },
-                speechEngine: 'local', // *** change to 'amazon' when AWS is added
+                speechEngine: 'amazon',
             },
         );
     }
