@@ -15,6 +15,12 @@
 
     <title>Benetech Math Editor</title>
 	<link rel="icon" href="/images/favicon.png">
+    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.249.1.min.js"></script>
+    <script>
+        // Initialize the Amazon Cognito credentials provider
+        AWS.config.region = 'us-east-1'; 
+        AWS.config.credentials = new AWS.CognitoIdentityCredentials({IdentityPoolId: 'us-east-1:ac6523d9-ebad-4bb9-85cd-794672b83d14'});
+    </script>
     </head>
 
 <body lang=EN-US>
