@@ -36,6 +36,7 @@ export default class MyWorkEditorArea extends Component {
                 },
                 inlineShortcutBackspaceCommand: 'delete', // make deleting multichar shortcut be atomic
                 removeExtraneousParentheses: false, // if typed, keep parens around
+                smartFence: false,
                 onMoveOutOf: () => false,
                 onKeystroke: (key) => {
                     if (key === 'Enter') {
