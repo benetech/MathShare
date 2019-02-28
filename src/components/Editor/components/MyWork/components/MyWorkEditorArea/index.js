@@ -33,6 +33,8 @@ export default class MyWorkEditorArea extends Component {
                     '%': '\\%', // make it easy to type %
                     '*': '\\times', // what most people want
                     '?=': '\\overset{?}{=}',	// is equal to
+                    cbrt: '\\sqrt[{3}]{#0}',	// cube root,
+                    root: '\\sqrt[{#?}]{#0}',	// general root
                 },
                 inlineShortcutBackspaceCommand: 'delete', // make deleting multichar shortcut be atomic
                 removeExtraneousParentheses: false, // if typed, keep parens around

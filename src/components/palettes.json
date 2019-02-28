@@ -187,8 +187,13 @@
                     "value": "$$\\sqrt{\\blacksquare}$$"
                 },
                 {
+                    "id": "cubeRootBtn",
+                    "title": "Cube root (⌨: cbrt)",
+                    "value": "$$\\sqrt[{3}]{\\blacksquare}$$"
+                },
+                {
                     "id": "generalRootBtn",
-                    "title": "General root(⌨: \\sqrt[n])",
+                    "title": "General root(⌨: root)",
                     "value": "$$\\sqrt[{\\square}]{\\blacksquare}$$"
                 },
                 {
