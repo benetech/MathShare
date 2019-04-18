@@ -1,4 +1,4 @@
-.default {
+button.default {
     background-color: rgb(250, 250, 250);
 }
 
@@ -56,7 +56,7 @@
     color: rgb(255, 255, 255);
 }
 
-.addStep {
+button.addStep {
     background-color: rgb(72, 204, 112);
     color: rgb(255, 255, 255);
 }

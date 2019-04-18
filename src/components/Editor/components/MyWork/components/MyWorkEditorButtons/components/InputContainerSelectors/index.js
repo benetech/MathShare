@@ -12,26 +12,13 @@ const InputContainerSelectors = (props) => {
         <div
             id="inputContainersSelectors"
             className={
-                classNames(
+                classNames([
+                    'd-flex',
+                    'flex-column',
                     styles.container,
-                )
+                ])
             }
         >
-            <Button
-                id="switchToScratchPadBtn"
-                className={classNames([
-                    'btn',
-                    styles.scratch,
-                    styles.button,
-                    scratchClass,
-                ])}
-                fa5
-                icon="signature"
-                content={Locales.strings.scratchpad}
-                toggle="tooltip"
-                title={Locales.strings.switch_to_sketchpad}
-                onClick={() => props.openScratchpad()}
-            />
             <Button
                 id="switchToSymbolsBtn"
                 className={[
@@ -46,6 +33,21 @@ const InputContainerSelectors = (props) => {
                 toggle="tooltip"
                 title={Locales.strings.switch_to_symbols}
                 onClick={() => props.hideScratchpad()}
+            />
+            <Button
+                id="switchToScratchPadBtn"
+                className={classNames([
+                    'btn',
+                    styles.scratch,
+                    styles.button,
+                    scratchClass,
+                ])}
+                fa5
+                icon="signature"
+                content={Locales.strings.scratchpad}
+                toggle="tooltip"
+                title={Locales.strings.switch_to_sketchpad}
+                onClick={() => props.openScratchpad()}
             />
         </div>
     );

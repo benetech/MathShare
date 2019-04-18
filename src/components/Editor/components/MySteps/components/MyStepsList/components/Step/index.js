@@ -70,7 +70,7 @@ export default class Step extends Component {
                     {Locales.strings.step}
                     {' '}
                     {this.props.stepNumber}
-:
+                    :
                 </span>
             </span>
         );
@@ -162,8 +162,8 @@ export default class Step extends Component {
         const id = this.props.cleanup ? `mathStep-${this.props.stepNumber - 1}-cleanup`
             : `mathStep-${this.props.stepNumber}`;
         return (
-            <div id={id} className={classNames('row', step.step)}>
-                <div className="col-md-1">
+            <div id={id} className={classNames('d-flex flex-column flex-md-row flex-lg-row flex-xl-row', step.step)}>
+                <div className="d-flex p-2">
                     <h3>
                         {this.buildReason()}
                     </h3>
@@ -171,10 +171,10 @@ export default class Step extends Component {
                 <div className={classNames('col-md-4', step.annotationEquation)}>
                     <span className="staticMath">{`$$${this.props.math}$$`}</span>
                 </div>
-                <div className={classNames('col-md-4', step.annotationEquation)}>
+                <div className={classNames('flex-grow-1', step.annotationEquation)}>
                     <h4 className="sROnly">
                         {Locales.strings.reason}
-:
+                        :
                     </h4>
                     <span className={classNames({
                         [step.cleanUpAnnotation]: this.props.cleanup,
@@ -186,7 +186,7 @@ export default class Step extends Component {
 
                     </span>
                 </div>
-                <div className={classNames('col-md-2', step.annotationEquation)}>
+                <div className={classNames('flex-shrink-1', step.annotationEquation)}>
                     <button
                         type="button"
                         aria-labelledby="sketch-button-in-step"
@@ -202,7 +202,7 @@ export default class Step extends Component {
                         />
                     </button>
                 </div>
-                <div className={classNames('col-md-1', step.btnContainer)}>
+                <div className={classNames('d-flex justify-content-end', step.btnContainer)}>
                     {clearAll}
                     {this.buildEditBtn()}
                     {this.buildTrashBtn()}

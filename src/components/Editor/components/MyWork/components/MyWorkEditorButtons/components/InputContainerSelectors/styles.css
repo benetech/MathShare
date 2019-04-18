@@ -1,34 +1,38 @@
 .container {
-    position: relative;
     display: block;
     width: 70px;
 }
 
-.scratch {
-    bottom: 36px;
+.container>span {
+    flex: 1;
 }
 
-.symbols {
-    top: 36px;
-}
-
-.button {
-    right: -4px;
-    position: absolute;
-    display: block;
-    width: 110px;
+.container>span>.button {
+    display: flex;
     transform: rotate(270deg);
     color: rgb(255, 255, 255);
 }
 
-.scratchActive {
+.container>span>.scratch {
+    transform-origin: 52% 146%;
+}
+
+.container>span>.symbols {
+    transform-origin: 51% 155%;
+}
+
+.container>span>.button svg {
+    padding-right: 5px;
+}
+
+.container>span>.scratchActive {
     background-color: rgb(0, 123, 255);
 }
 
-.symbolsActive {
+.container>span>.symbolsActive {
     background-color: rgb(72, 204, 112);
 }
 
-.disabled {
+.container>span>.disabled {
     background-color: rgb(126, 126, 126);
 }

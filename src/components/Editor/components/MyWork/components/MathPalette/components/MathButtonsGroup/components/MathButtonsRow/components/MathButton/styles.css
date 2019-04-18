@@ -1,5 +1,5 @@
 .paletteButton {
-    padding: 0!important;
+    padding: 0 !important;
     margin: 0px 0px 4px 4px;
     width: 37px;
     height: 37px;
@@ -9,7 +9,7 @@
 
 .paletteButton:disabled {
     color: black;
-    opacity: 1!important;
+    opacity: 1 !important;
     cursor: default;
 }
 

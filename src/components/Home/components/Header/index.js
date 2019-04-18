@@ -47,18 +47,6 @@ function readBlob(optStartByte, optStopByte) {
 } */
 
 const MainPageHeader = (props) => {
-    /* eslint-disable jsx-a11y/anchor-is-valid */
-    const SkipToContentButton = withRouter(() => (
-        <a
-            className={classNames('nav-link', header.pointer)}
-            tabIndex="0"
-            role="link"
-            onClick={() => { document.getElementById('LeftNavigationHeader').focus(); }}
-            onKeyDown={() => { document.getElementById('LeftNavigationHeader').focus(); }}
-        >
-            {Locales.strings.go_to_main_content}
-        </a>
-    ));
 
     const GettingStartedButton = withRouter(({ history }) => (
         <a
@@ -134,7 +122,6 @@ const MainPageHeader = (props) => {
                     className={classNames(header.navbar, 'navbar-expand-lg', 'navbar')}
                     id="topNavigation"
                 >
-                    <SkipToContentButton />
                     <h2 id="topNavLabel" className="sROnly">{Locales.strings.header}</h2>
                     <a className="navbar-brand" href="#">
                         <img src={logo} alt="Benetech Math Editor" height="37" />

@@ -5,15 +5,19 @@
 
 .step {
     font-size: 120%;
-    margin-left: 105px!important;
+    margin-left: 105px !important;
     padding: 5px 55px 10px 0px;
     opacity: 0.65;
     margin-right: 0px;
     transition: all 1s;
 }
 
+.step>div:first-child {
+    min-width: 120px;
+}
+
 .cleanup {
-    color:rgb(114, 114, 114);
+    color: rgb(114, 114, 114);
 }
 
 .annotationEquation {
@@ -26,12 +30,17 @@
     display: flex;
     justify-content: flex-end;
     margin-top: 8px;
+    width: 120px;
 }
 
-.button {
+button.button {
     background-color: rgb(240, 240, 240);
     transition: all 0.3s;
     flex-shrink: 0;
+}
+
+button.button:disabled {
+    color: #9a9a9a;
 }
 
 .withRightMargin {
@@ -40,7 +49,8 @@
 
 .clearAll {
     height: 37px;
-    border: 1px solid rgb(204, 204, 204)!important;
+    width: 110px;
+    border: 1px solid rgb(204, 204, 204) !important;
 }
 
 .btnEdit {
@@ -52,7 +62,7 @@
 }
 
 .cleanUpAnnotation {
-    color:#727272;
+    color: #727272;
 }
 
 .reason {
