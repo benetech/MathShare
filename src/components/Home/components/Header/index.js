@@ -47,6 +47,7 @@ function readBlob(optStartByte, optStopByte) {
 } */
 
 const MainPageHeader = (props) => {
+    /* eslint-disable jsx-a11y/anchor-is-valid */
 
     const GettingStartedButton = withRouter(({ history }) => (
         <a
