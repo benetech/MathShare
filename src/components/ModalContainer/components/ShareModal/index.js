@@ -26,6 +26,20 @@ export default class ShareModal extends Component {
                             {Locales.strings.share_link}
                         </h3>
                         <input type="text" readOnly value={this.props.shareLink} id="shareLink" className={editor.shareLink} />
+                        <div className={editor.modalMessage}>
+                            <p>
+                                Use this link to share your
+                                {' '}
+                                <b>finished</b>
+                                {' '}
+                                work
+                            </p>
+                            <p>
+                                If you want to continue working on it later,
+                                {' '}
+                                use the &quot;Save&quot; button instead
+                            </p>
+                        </div>
                     </div>
                     <footer className={editor.modalFooter}>
                         <Button
