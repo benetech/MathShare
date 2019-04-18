@@ -63,6 +63,6 @@
     "reactour": "^1.13.1",
     "reactstrap": "^7.1.0",
     "speech-rule-engine": "^2.3.0-beta.0",
-    "styled-components": "^3.4.9"
+    "styled-components": "4.0.3"
   }
 }
