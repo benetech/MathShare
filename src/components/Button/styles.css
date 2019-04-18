@@ -51,12 +51,14 @@ button.default {
     border: 1px solid rgb(204, 204, 204) !important;
 }
 
-.undo {
+button.undo,
+button.undo:hover {
     background-color: rgb(126, 126, 126);
     color: rgb(255, 255, 255);
 }
 
-button.addStep {
+button.addStep,
+button.addStep:hover {
     background-color: rgb(72, 204, 112);
     color: rgb(255, 255, 255);
 }

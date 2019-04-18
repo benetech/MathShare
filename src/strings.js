@@ -121,7 +121,7 @@ class Locales {
                 symbols: ' Symbols',
                 switch_to_sketchpad: 'Switch to the sketchpad view',
                 switch_to_symbols: 'Switch to the symbols view',
-                undo: ' Undo',
+                delete_step: ' Delete Step',
                 add_problem_set: 'New Problem Set',
                 edit_problem_set: 'Edit Problem Set',
                 choose_palettes_title: 'Select button palettes available for this problem set',
@@ -150,8 +150,7 @@ class Locales {
                 tour_edit: 'Use this link to continue your work in the future.',
                 tour_share: 'Share your solution with others.',
             },
-            es: {
-            },
+            es: {},
         });
     }
 }

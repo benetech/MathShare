@@ -17,8 +17,8 @@ const MyWorkFooter = (props) => {
                 id="undoButton"
                 className={btnClassNames}
                 additionalStyles={['withRightMargin', 'undo']}
-                content={Locales.strings.undo}
-                icon="reply"
+                content={Locales.strings.delete_step}
+                icon="minus"
                 title={Locales.strings.undo_last_action}
                 onClick={props.undoLastActionCallback}
             />
