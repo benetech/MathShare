@@ -27,6 +27,10 @@ export default class NewProblemsForm extends Component {
         this.update = this.update.bind(this);
         this.addProblem = this.addProblem.bind(this);
         this.textAreaChanged = this.textAreaChanged.bind(this);
+
+        setImmediate(() => {
+            mathLive.renderMathInDocument();
+        }, 0);
     }
 
     componentWillReceiveProps(newProps) {
