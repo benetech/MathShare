@@ -153,7 +153,7 @@ export default class Problem extends Component {
             ? <span className={problem.problemAnnotationScaled}>{annotation}</span>
             : <span className={problem.problemAnnotation}>{annotation}</span>;
 
-        const speechForMath = (
+        const speechForMath = (this.props.problem && this.props.problem.text) ? (
             <span className="sROnly">
                 {mathLive.latexToSpeakableText(
                     this.props.problem.text,
@@ -163,7 +163,7 @@ export default class Problem extends Component {
                     },
                 )}
             </span>
-        );
+        ) : null;
 
         const imgButton = (this.props.problem && this.props.problem.scratchpad)
             ? (
