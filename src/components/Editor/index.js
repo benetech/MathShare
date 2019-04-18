@@ -24,6 +24,10 @@ const mathLive = DEBUG_MODE ? require('../../../../mathlive/src/mathlive.js').de
 export default class Editor extends Component {
     constructor(props) {
         super(props);
+        let editLink = Locales.strings.not_saved_yet;
+        if (props.location.pathname.indexOf('/problem/edit') === 0) {
+            editLink = window.location.href;
+        }
         this.state = {
             solution: {
                 problem: {
@@ -54,7 +58,7 @@ export default class Editor extends Component {
             updateMathFieldMode: false,
             editing: false,
             shareLink: 'http:mathshare.com/exampleShareLink/1',
-            editLink: Locales.strings.not_saved_yet,
+            editLink,
             readOnly: false,
             displayScratchpad: null,
             notFound: false,
@@ -70,9 +74,11 @@ export default class Editor extends Component {
         this.goBack = this.goBack.bind(this);
         this.redButtonCallback = this.redButtonCallback.bind(this);
         this.greenButtonCallback = this.greenButtonCallback.bind(this);
+        this.onUnload = this.onUnload.bind(this);
     }
 
     componentDidMount() {
+        window.addEventListener('beforeunload', this.onUnload);
         let path;
         if (this.props.example) {
             const solution = {
@@ -122,6 +128,28 @@ export default class Editor extends Component {
                 });
         }
         this.scrollToBottom();
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('beforeunload', this.onUnload);
+    }
+
+    onUnload(event) {
+        const { editLink, solution, stepsFromLastSave } = this.state;
+        if (editLink !== Locales.strings.not_saved_yet
+            && this.compareStepArrays(solution.steps, stepsFromLastSave)) {
+            return null;
+        }
+        const e = event || window.event;
+
+        // For IE and Firefox prior to version 4
+        if (e) {
+            e.preventDefault();
+            e.returnValue = 'Sure?';
+        }
+
+        // For Safari
+        return 'Sure?';
     }
 
     scrollToBottom = () => {
