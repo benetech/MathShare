@@ -4,7 +4,7 @@ import axios from 'axios';
 import ProblemHeader from './components/ProblemHeader';
 import MyStepsHeader from './components/MySteps/components/MyStepsHeader';
 import MyStepsList from './components/MySteps/components/MyStepsList';
-import ModalContainer, { CONFIRMATION_BACK, SHARE_SET } from '../ModalContainer';
+import ModalContainer, { CONFIRMATION_BACK, SAVE_SET, SHARE_SET } from '../ModalContainer';
 import NotFound from '../NotFound';
 import editor from './styles.css';
 import { alertSuccess } from '../../scripts/alert';
@@ -25,10 +25,6 @@ const mathLive = DEBUG_MODE ? require('../../../../mathlive/src/mathlive.js').de
 export default class Editor extends Component {
     constructor(props) {
         super(props);
-        let editLink = Locales.strings.not_saved_yet;
-        if (props.location.pathname.indexOf('/problem/edit') === 0) {
-            editLink = window.location.href;
-        }
         this.state = {
             solution: {
                 problem: {
@@ -59,7 +55,7 @@ export default class Editor extends Component {
             updateMathFieldMode: false,
             editing: false,
             shareLink: 'http:mathshare.com/exampleShareLink/1',
-            editLink,
+            editLink: Locales.strings.not_saved_yet,
             readOnly: false,
             displayScratchpad: null,
             notFound: false,
@@ -137,8 +133,11 @@ export default class Editor extends Component {
 
     onUnload(event) {
         const { editLink, solution, stepsFromLastSave } = this.state;
-        if (editLink !== Locales.strings.not_saved_yet
-            && this.compareStepArrays(solution.steps, stepsFromLastSave)) {
+        const { location } = this.props;
+        console.log(this.props);
+        if (location.pathname.indexOf('/problem/view') === '0' // check if the open view is readonly
+            || (editLink !== Locales.strings.not_saved_yet
+                && this.compareStepArrays(solution.steps, stepsFromLastSave))) {
             return null;
         }
         const e = event || window.event;
@@ -197,18 +196,24 @@ export default class Editor extends Component {
             this.setState({ editLink: Locales.strings.example_edit_code });
         } else {
             googleAnalytics('Save');
+            const isInitialSave = this.state.editLink === Locales.strings.not_saved_yet;
             axios.put(`${SERVER_URL}/solution/${this.state.solution.editCode}`, this.state.solution)
                 .then(() => {
                     this.setState((prevState) => {
                         const editCode = prevState.solution.editCode;
                         const steps = prevState.solution.steps;
+                        if (isInitialSave) {
+                            this.toggleModals([SAVE_SET]);
+                        }
                         return {
                             editLink: `${FRONTEND_URL}/problem/edit/${editCode}`,
                             stepsFromLastSave: JSON.parse(JSON.stringify(steps)),
                         };
                     });
-                    alertSuccess(Locales.strings.problem_saved_success_message,
-                        Locales.strings.success);
+                    if (!isInitialSave) {
+                        alertSuccess(Locales.strings.problem_saved_success_message,
+                            Locales.strings.success);
+                    }
                 });
         }
     }

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import NewProblemsForm from '../Home/components/NewProblemsForm';
 import ShareModal from './components/ShareModal';
+import SaveModal from './components/SaveModal';
 import ConfirmationModal from './components/ConfirmationModal';
 import PaletteChooser from '../Home/components/ButtonsPaletteChooser';
 import Locales from '../../strings';
@@ -11,6 +12,7 @@ const ADD_PROBLEM_SET = 'addProblemSet';
 const ADD_PROBLEMS = 'addProblems';
 const SHARE_NEW_SET = 'shareNewSet';
 const SHARE_SET = 'shareSet';
+const SAVE_SET = 'saveSet';
 const EDIT_PROBLEM = 'editProblem';
 const CONFIRMATION_BACK = 'confirmationBack';
 
@@ -32,6 +34,14 @@ export default class ModalContainer extends Component {
                 <ShareModal
                     shareLink={this.props.shareLink}
                     deactivateModal={() => this.props.toggleModals([SHARE_SET])}
+                />
+            )
+            : null;
+        const saveModal = this.state.activeModals.includes(SAVE_SET)
+            ? (
+                <SaveModal
+                    editLink={this.props.editLink}
+                    deactivateModal={() => this.props.toggleModals([SAVE_SET])}
                 />
             )
             : null;
@@ -136,6 +146,7 @@ export default class ModalContainer extends Component {
 
         return (
             <div>
+                {saveModal}
                 {shareModal}
                 {confirmationModal}
                 {confirmationBackModal}
@@ -151,5 +162,5 @@ export default class ModalContainer extends Component {
 
 export {
     CONFIRMATION, PALETTE_CHOOSER, ADD_PROBLEM_SET, ADD_PROBLEMS,
-    SHARE_NEW_SET, SHARE_SET, EDIT_PROBLEM, CONFIRMATION_BACK,
+    SHARE_NEW_SET, SAVE_SET, SHARE_SET, EDIT_PROBLEM, CONFIRMATION_BACK,
 };

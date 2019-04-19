@@ -106,6 +106,7 @@ class Locales {
                 hash: '#',
                 equation: 'Equation',
                 title: 'Title',
+                save_text: 'Save Text: ',
                 share_link: 'Share Link: ',
                 problem_image: 'Problem image',
                 confirmation_modal_unsaved_title: 'You have unsaved changes, do you wish to save?',
