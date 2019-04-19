@@ -4,6 +4,17 @@
     margin-right: 10px;
 }
 
+.question {
+    margin-right: 0;
+    overflow: hidden;
+}
+
+.mathEllipsis {
+    margin-left: 4px;
+    margin-right: 24px;
+    color: white;
+}
+
 .header {
     z-index: 1;
     min-height: 60px;
@@ -15,7 +26,6 @@
 
 .btnContainer {
     white-space: nowrap;
-    margin-left: auto;
 }
 
 .backBtnContainer {

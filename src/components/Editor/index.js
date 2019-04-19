@@ -4,7 +4,9 @@ import axios from 'axios';
 import ProblemHeader from './components/ProblemHeader';
 import MyStepsHeader from './components/MySteps/components/MyStepsHeader';
 import MyStepsList from './components/MySteps/components/MyStepsList';
-import ModalContainer, { CONFIRMATION_BACK, SAVE_SET, SHARE_SET } from '../ModalContainer';
+import ModalContainer, {
+    CONFIRMATION_BACK, SAVE_SET, SHARE_SET, VIEW_SET,
+} from '../ModalContainer';
 import NotFound from '../NotFound';
 import editor from './styles.css';
 import { alertSuccess } from '../../scripts/alert';
@@ -68,6 +70,7 @@ export default class Editor extends Component {
         this.getApplicationNode = this.getApplicationNode.bind(this);
         this.shareProblem = this.shareProblem.bind(this);
         this.saveProblem = this.saveProblem.bind(this);
+        this.viewProblem = this.viewProblem.bind(this);
         this.goBack = this.goBack.bind(this);
         this.redButtonCallback = this.redButtonCallback.bind(this);
         this.greenButtonCallback = this.greenButtonCallback.bind(this);
@@ -134,7 +137,6 @@ export default class Editor extends Component {
     onUnload(event) {
         const { editLink, solution, stepsFromLastSave } = this.state;
         const { location } = this.props;
-        console.log(this.props);
         if (location.pathname.indexOf('/problem/view') === '0' // check if the open view is readonly
             || (editLink !== Locales.strings.not_saved_yet
                 && this.compareStepArrays(solution.steps, stepsFromLastSave))) {
@@ -231,6 +233,10 @@ export default class Editor extends Component {
                     }, this.toggleModals([SHARE_SET]));
                 });
         }
+    }
+
+    viewProblem() {
+        this.toggleModals([VIEW_SET]);
     }
 
     textAreaChanged(text) {

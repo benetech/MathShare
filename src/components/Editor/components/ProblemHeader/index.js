@@ -23,6 +23,12 @@ export default class ProblemHeader extends Component {
         this.onImgClick = this.onImgClick.bind(this);
         this.openTour = this.openTour.bind(this);
         this.closeTour = this.closeTour.bind(this);
+        this.updateDimensionsWorker = this.updateDimensions();
+        this.debounce = null;
+    }
+
+    componentDidMount() {
+        window.addEventListener('resize', this.updateDimensionsWorker);
     }
 
     shouldComponentUpdate(nextProps, nextState) {
@@ -33,10 +39,40 @@ export default class ProblemHeader extends Component {
 
     componentDidUpdate() {
         mathLive.renderMathInDocument();
+        this.updateDimensionsWorker();
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.updateDimensionsWorker);
+        clearTimeout(this.debounce);
     }
 
     onImgClick() {
         showImage(this.props.scratchpad);
+    }
+
+    updateDimensionsInternal = () => {
+        setTimeout(() => {
+            const containerWidth = document.getElementById('ProblemMath').offsetWidth;
+            const childrenWidths = Array.from(document.querySelectorAll('#ProblemMath > span')).map(Element => Element.offsetWidth);
+            const needEllipsis = childrenWidths.find(
+                childWidth => (childWidth - containerWidth) > 10,
+            );
+            if (needEllipsis) {
+                document.getElementById('math-ellipsis').innerText = '...';
+                document.getElementById('viewBtn').style.display = '';
+            } else {
+                document.getElementById('math-ellipsis').innerText = '';
+                document.getElementById('viewBtn').style.display = 'none';
+            }
+        }, 0);
+    }
+
+    updateDimensions(time = 300) {
+        return () => {
+            clearTimeout(this.debounce);
+            this.debounce = setTimeout(this.updateDimensionsInternal, time);
+        };
     }
 
     openTour() {
@@ -68,7 +104,7 @@ export default class ProblemHeader extends Component {
 
         const editOnlyControls = this.props.readOnly ? null
             : (
-                <div className={problem.btnContainer}>
+                <div className={`d-flex justify-content-end flex-shrink-1 ${problem.btnContainer}`}>
                     <span className={problem.editLinkLabel}>{Locales.strings.edit_link_label}</span>
                     <input id="editUrl" type="text" readOnly value={this.props.editLink} className={problem.editLink} />
                     <Button
@@ -105,7 +141,7 @@ export default class ProblemHeader extends Component {
             ? <span className={problem.label}>{Locales.strings.example}</span> : null;
 
         return (
-            <div className={problem.header}>
+            <div className={`d-flex flex-row ${problem.header}`}>
                 <div className={problem.backBtnContainer}>
                     <Button
                         id="backBtn"
@@ -118,9 +154,21 @@ export default class ProblemHeader extends Component {
                         ariaLabel={Locales.strings.back_to_problem_page}
                         content={<span className="sROnly">{Locales.strings.back_to_problem_page}</span>}
                     />
+                    <Button
+                        id="viewBtn"
+                        className={classNames('btn', 'pointer', problem.button)}
+                        additionalStyles={['default']}
+                        type="button"
+                        icon="search"
+                        onClick={this.props.viewProblem}
+                        tabIndex="-1"
+                        ariaLabel={Locales.strings.view_problem_description}
+                        content={<span className="sROnly">{Locales.strings.view_problem_description}</span>}
+                    />
                 </div>
                 <h1 id="ProblemTitle" className={problem.title}>{title}</h1>
-                <span id="ProblemMath" className={problem.title}>{`$$${this.props.math}$$`}</span>
+                <span id="ProblemMath" className={`${problem.title} ${problem.question}`}>{`$$${this.props.math}$$`}</span>
+                <span id="math-ellipsis" className={`flex-grow-1 ${problem.mathEllipsis}`}>&nbsp;</span>
                 {exampleLabel}
                 {imgButton}
                 {editOnlyControls}
