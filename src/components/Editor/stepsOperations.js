@@ -102,5 +102,8 @@ function addStep(context, addToHistory, img) {
 }
 
 export {
-    deleteStep, editStep, updateStep, addStep,
+    addStep,
+    deleteStep,
+    editStep,
+    updateStep,
 };
