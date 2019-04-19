@@ -1,5 +1,4 @@
-
-import { stackDeleteAction, stackAddAction } from './stack';
+import { stackDeleteAction, stackAddAction } from './stackOperations';
 import MathButton from './components/MyWork/components/MathPalette/components/MathButtonsGroup/components/MathButtonsRow/components/MathButton';
 import { alertSuccess, alertWarning } from '../../scripts/alert';
 import Locales from '../../strings';

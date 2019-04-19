@@ -1,10 +1,11 @@
 
 import { deleteStep, addStep } from './stepsOperations';
-
-const DELETE = 'delete';
-const CLEAR_ALL = 'clear all';
-const ADD = 'add';
-const EDIT = 'edit';
+import {
+    ADD,
+    CLEAR_ALL,
+    DELETE,
+    EDIT,
+} from './stackConstants';
 
 function undoClearAll(context, stackEntry) {
     const solution = context.state.solution;
@@ -68,24 +69,6 @@ function undoLastAction(context) {
     }
 }
 
-function stackDeleteAction(context, step) {
-    const actionsStack = context.state.actionsStack;
-    actionsStack.push({
-        type: DELETE,
-        step,
-    });
-    context.setState({ actionsStack });
-}
-
-function stackAddAction(context, step) {
-    const actionsStack = context.state.actionsStack;
-    actionsStack.push({
-        type: ADD,
-        step,
-    });
-    context.setState({ actionsStack });
-}
-
 function clearAll(context) {
     const stack = context.state.actionsStack;
     const steps = context.state.solution.steps;
@@ -108,28 +91,7 @@ function clearAll(context) {
     });
 }
 
-function stackEditAction(context, index, oldEquation, cleanup, oldExplanation, img) {
-    const newStack = context.state.actionsStack;
-    if (index) {
-        const oldStep = {
-            id: index,
-            stepValue: oldEquation,
-            cleanup,
-            explanation: oldExplanation,
-            scratchpad: img,
-        };
-        newStack.push({
-            type: EDIT,
-            step: oldStep,
-        });
-    }
-    context.setState({
-        textAreaValue: '',
-        actionsStack: newStack,
-        updateMathFieldMode: false,
-    });
-}
-
 export {
-    undoLastAction, stackDeleteAction, stackAddAction, clearAll, stackEditAction,
+    undoLastAction,
+    clearAll,
 };

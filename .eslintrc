@@ -25,6 +25,7 @@
     ],
     "rules": {
       "import/named": 2,
+      "import/no-cycle": 2,
       "react/jsx-filename-extension": 0,
       "jsx-a11y/anchor-is-valid": [ "error", {
         "components": [ "Link" ],

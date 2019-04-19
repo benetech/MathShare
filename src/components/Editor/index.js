@@ -8,7 +8,8 @@ import ModalContainer, { CONFIRMATION_BACK, SHARE_SET } from '../ModalContainer'
 import NotFound from '../NotFound';
 import editor from './styles.css';
 import { alertSuccess } from '../../scripts/alert';
-import { undoLastAction, clearAll, stackEditAction } from './stack';
+import { stackEditAction } from './stackOperations';
+import { clearAll, undoLastAction } from './stack';
 import {
     deleteStep, editStep, updateStep, addStep,
 } from './stepsOperations';
