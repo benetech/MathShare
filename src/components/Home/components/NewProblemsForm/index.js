@@ -42,6 +42,7 @@ export default class NewProblemsForm extends Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
+        mathLive.renderMathInDocument();
         if (prevState.problems.length !== this.state.problems.length) {
             this.scrollToBottom();
         }
