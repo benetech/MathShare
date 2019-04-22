@@ -23,3 +23,10 @@ html, body {
 #workArea .ML__mathlive {
     font-size: 160%;
 }
+
+.staticMath .ML__mathlive,
+.ML__fieldcontainer .ML__mathlive,
+.mathliveModal .ML__mathlive {
+    white-space: normal;
+    width: 100%;
+}
