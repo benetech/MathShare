@@ -26,7 +26,8 @@ html, body {
 
 .staticMath .ML__mathlive,
 .ML__fieldcontainer .ML__mathlive,
-.mathliveModal .ML__mathlive {
+.mathliveModal .ML__mathlive,
+button .ML__mathlive {
     white-space: normal;
     width: 100%;
 }

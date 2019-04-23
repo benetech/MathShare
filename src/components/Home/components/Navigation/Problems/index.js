@@ -50,14 +50,16 @@ export default class Problems extends Component {
             ? <SortableItem key="item-new" addNew index={this.state.problems.length + 1} disabled /> : null;
 
         const SortableList = SortableContainer(({ problems }) => (
-            <ol className={styles.container} aria-label={Locales.strings.problems}>
-                {problems.map((problem, index) => (
-                    problem
-                        ? <SortableItem key={`item-${index}`} index={index + 1} problem={problem} number={index} disabled={!this.props.editing} />
-                        : null
-                ))}
-                {newProblem}
-            </ol>
+            <div className={styles.container}>
+                <ol className={`justify-content-around ${styles.problemList}`} aria-label={Locales.strings.problems}>
+                    {problems.map((problem, index) => (
+                        problem
+                            ? <SortableItem key={`item-${index}`} index={index + 1} problem={problem} number={index} disabled={!this.props.editing} />
+                            : null
+                    ))}
+                    {newProblem}
+                </ol>
+            </div>
         ));
 
         return (

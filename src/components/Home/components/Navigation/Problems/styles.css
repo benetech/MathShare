@@ -1,8 +1,16 @@
 .container {
+    margin: auto;
+    max-width: 1000px;
+}
+
+.problemList {
     display: flex;
     flex-wrap: wrap;
-    margin: auto;
-    width: 1200px;
+    padding: 0;
+}
+
+.problemList li {
+    padding: 10px;
 }
 
 li {

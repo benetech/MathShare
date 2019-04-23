@@ -4,6 +4,10 @@
     margin-bottom: 30px;
 }
 
+.problem>div {
+    padding: 1.0rem 1.25rem;
+}
+
 .navItemButton {
     cursor:pointer;
     border: none;
@@ -22,7 +26,6 @@
     text-align: center;
     cursor: pointer;
     margin-bottom: 2ex;
-    width: 260px;
 }
 
 .problemAnnotationScaled {
@@ -66,7 +69,6 @@
 .middle {
     vertical-align: middle;
     width: 300px;
-    height: 200px;
     display: table-cell;
 }
 
@@ -76,8 +78,7 @@
 }
 
 .equation {
-    width: 260px;
-    height: 50px;
+    min-height: 50px;
     display: flex;
     align-items: center;
     justify-content: center;

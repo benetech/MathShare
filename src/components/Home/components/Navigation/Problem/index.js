@@ -229,7 +229,7 @@ export default class Problem extends Component {
                 id={`problem-${this.props.number + 1}`}
                 className={
                     classNames(
-                        'col-md-4',
+                        'd-flex',
                         'text-center',
                         problem.problem,
                     )
