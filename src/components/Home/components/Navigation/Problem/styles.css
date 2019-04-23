@@ -6,10 +6,14 @@
 
 .problem>div {
     padding: 1.0rem 1.25rem;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
 }
 
 .navItemButton {
-    cursor:pointer;
+    cursor: pointer;
+    overflow-y: scroll;
     border: none;
     text-align: left;
     text-decoration: none;
