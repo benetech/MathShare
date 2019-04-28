@@ -350,7 +350,7 @@ export default class Editor extends Component {
                 deleteStepsCallback={() => clearAll(this)}
                 updateCallback={img => updateStep(this, img)}
                 bindDisplayFunction={f => this.setState({ displayScratchpad: f })}
-                showUndo={this.state.actionsStack.length > 0}
+                showDelete={this.state.actionsStack.length > 0}
                 newProblem={this.id === 'newEditor'}
             />
         );

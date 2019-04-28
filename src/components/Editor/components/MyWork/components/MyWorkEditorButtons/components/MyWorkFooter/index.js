@@ -11,11 +11,12 @@ const MyWorkFooter = (props) => {
         footer.button,
     ];
 
-    const undoButton = props.showUndo && !props.addingProblem
+    const deleteButton = props.showDelete && !props.addingProblem
         ? (
             <Button
-                id="undoButton"
+                id="deleteButton"
                 className={btnClassNames}
+                spanStyle="order-2"
                 additionalStyles={['withRightMargin', 'undo']}
                 content={Locales.strings.delete_step}
                 icon="minus"
@@ -28,6 +29,7 @@ const MyWorkFooter = (props) => {
         <Button
             id="cancelButton"
             className={btnClassNames}
+            spanStyle="order-2"
             additionalStyles={['withRightMargin', 'undo']}
             content={Locales.strings.cancel}
             icon="ban"
@@ -42,6 +44,7 @@ const MyWorkFooter = (props) => {
             <Button
                 id="addStep"
                 className={btnClassNames}
+                spanStyle="order-1"
                 additionalStyles={['addStep']}
                 toggle="tooltip"
                 title={Locales.strings.update_step_button_title}
@@ -57,6 +60,7 @@ const MyWorkFooter = (props) => {
             <Button
                 id="addStep"
                 className={btnClassNames}
+                spanStyle="order-1"
                 additionalStyles={['addStep']}
                 toggle="tooltip"
                 title={Locales.strings.update_problem_button_title}
@@ -72,6 +76,7 @@ const MyWorkFooter = (props) => {
             <Button
                 id="addStep"
                 className={btnClassNames}
+                spanStyle="order-1"
                 additionalStyles={['addStep']}
                 hide={props.editing}
                 toggle="tooltip"
@@ -86,17 +91,45 @@ const MyWorkFooter = (props) => {
         );
     }
 
+    const undoButton = (
+        <Button
+            id="undoStep"
+            className={btnClassNames}
+            spanStyle="order-0"
+            additionalStyles={['undo']}
+            toggle="tooltip"
+            title={Locales.strings.undo_step}
+            content={Locales.strings.undo_step}
+            step="3"
+            intro={Locales.strings.undo_step}
+            icon="undo"
+            onClick={() => {
+                const editor = document.getElementById('mathEditorActive');
+                if (editor && editor.mathfield) {
+                    const { undoManager } = editor.mathfield;
+                    if (undoManager.index > 1) {
+                        editor.mathfield.perform('undo');
+                        return;
+                    }
+                }
+                document.execCommand('undo', false, null);
+            }}
+        />
+    );
+
     return (
         <div
             id="control-buttons"
             className={
                 classNames(
                     footer.footer,
+                    'flex-wrap-reverse',
                 )
             }
         >
-            {props.editing ? cancelButton : undoButton}
+            {undoButton}
             {confirmButton}
+            {props.editing ? cancelButton : deleteButton}
         </div>
     );
 };

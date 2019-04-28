@@ -67,7 +67,7 @@ export default class MyWork extends Component {
                 this.addStepCallback();
             }
         }
-        if (event.shiftKey && event.key === 'Backspace' && this.props.showUndo && !this.props.addingProblem) {
+        if (event.shiftKey && event.key === 'Backspace' && this.props.showDelete && !this.props.addingProblem) {
             event.preventDefault();
             this.props.undoLastActionCallback();
         }

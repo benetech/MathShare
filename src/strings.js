@@ -124,6 +124,7 @@ class Locales {
                 switch_to_sketchpad: 'Switch to the sketchpad view',
                 switch_to_symbols: 'Switch to the symbols view',
                 delete_step: ' Delete Step',
+                undo_step: ' Undo',
                 add_problem_set: 'New Problem Set',
                 edit_problem_set: 'Edit Problem Set',
                 choose_palettes_title: 'Select button palettes available for this problem set',
