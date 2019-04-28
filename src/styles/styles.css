@@ -31,3 +31,7 @@ button .ML__mathlive {
     white-space: normal;
     width: 100%;
 }
+
+button .ML__mathlive {
+    text-align: center!important;
+}
