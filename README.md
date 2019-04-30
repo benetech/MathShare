@@ -25,7 +25,7 @@ http://localhost:8080
 ```
 For **Windows** with Docker the real url may be different - Docker (based on Virtual Machine) uses a different IP (eg. 192.168.99.100). You can get the IP by opening Docker Quickstart Terminal - the URL should be displayed as a welcome message. 
 
-If the backend server url is different from the default one, there is a need to change it in ```package.json``` file in the root directory. Please set the server url value as follows:
+If the backend server url is different from the default one, there is a need to change it in ```src/config.js``` file. Please set the server url value as follows:
 ```
 "serverUrl": "http://<backend server ip>:8080"
 ```
