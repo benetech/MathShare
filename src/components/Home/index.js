@@ -10,7 +10,8 @@ import home from './styles.css';
 import { alertWarning } from '../../scripts/alert';
 import Locales from '../../strings';
 import ModalContainer, {
-    CONFIRMATION, PALETTE_CHOOSER, ADD_PROBLEM_SET, SHARE_NEW_SET, EDIT_PROBLEM,
+    CONFIRMATION, PALETTE_CHOOSER, ADD_PROBLEM_SET, SHARE_NEW_SET,
+    EDIT_PROBLEM, SHARE_PROBLEM_SET,
 } from '../ModalContainer';
 import { SERVER_URL, FRONTEND_URL } from '../../config';
 import scrollTo from '../../scripts/scrollTo';
@@ -46,12 +47,16 @@ export default class Home extends Component {
         this.progressToAddingProblems = this.progressToAddingProblems.bind(this);
         this.saveProblemSet = this.saveProblemSet.bind(this);
         this.finishEditing = this.finishEditing.bind(this);
+        this.shareProblemSet = this.shareProblemSet.bind(this);
     }
 
     componentDidMount() {
         let path;
-        if (this.props.match.params.action === 'view') {
+        const action = this.props.match.params.action;
+        if (action === 'view') {
             path = `${SERVER_URL}/problemSet/revision/${this.props.match.params.code}`;
+        } else if (action === 'review') {
+            path = `${SERVER_URL}/solution/review/${this.props.match.params.code}`;
         } else {
             path = `${SERVER_URL}/problemSet/${this.props.match.params.code}/`;
         }
@@ -61,14 +66,26 @@ export default class Home extends Component {
                 if (response.status !== 200) {
                     this.setState({ notFound: true });
                 }
-                const orderedProblems = this.orderProblems(response.data.problems);
-                this.setState({
-                    set: {
-                        problems: orderedProblems,
-                        editCode: response.data.editCode,
-                        sharecode: response.data.shareCode,
-                    },
-                });
+                if (action === 'review') {
+                    const { solutions } = response.data;
+                    localStorage.setItem(`${action}_${this.props.match.params.code}`,
+                        JSON.stringify(solutions));
+                    this.setState({
+                        set: {
+                            problems: solutions.map(solution => solution.problem),
+                            sharecode: this.props.match.params.code,
+                        },
+                    });
+                } else {
+                    const orderedProblems = this.orderProblems(response.data.problems);
+                    this.setState({
+                        set: {
+                            problems: orderedProblems,
+                            editCode: response.data.editCode,
+                            sharecode: response.data.shareCode,
+                        },
+                    });
+                }
             }).catch(() => {
                 this.setState({ notFound: true });
             });
@@ -260,6 +277,30 @@ export default class Home extends Component {
         this.toggleModals([PALETTE_CHOOSER]);
     }
 
+    shareProblemSet() {
+        const { code, action } = this.props.match.params;
+        const key = `${action}_${code}`;
+        let promise;
+        const existingSolutions = localStorage.getItem(key);
+        if (existingSolutions) {
+            promise = new Promise((resolve) => {
+                resolve(JSON.parse(existingSolutions));
+            });
+        } else {
+            promise = axios.post(`${SERVER_URL}/solution/review/${code}`)
+                .then((response) => {
+                    const { solutions } = response.data;
+                    localStorage.setItem(key, JSON.stringify(solutions));
+                    return solutions;
+                });
+        }
+        promise.then((solutions) => {
+            this.setState({
+                problemSetShareCode: solutions[0].reviewCode,
+            }, this.toggleModals([SHARE_PROBLEM_SET]));
+        });
+    }
+
     progressToAddingProblems(palettes) {
         if (palettes.length === 0) {
             alertWarning(Locales.strings.no_palettes_chosen_warning, Locales.strings.warning);
@@ -301,8 +342,10 @@ export default class Home extends Component {
                     history={this.props.history}
                     shareCallback={this.toggleModals}
                     addProblemSetCallback={this.addProblemSet}
+                    shareProblemSetCallback={this.shareProblemSet}
                     finishEditing={this.finishEditing}
                     editCode={this.state.set.editCode}
+                    action={this.props.match.params.action}
                 />
                 <ModalContainer
                     activeModals={this.state.activeModals}
@@ -311,6 +354,7 @@ export default class Home extends Component {
                     deleteProblem={this.deleteProblem}
                     shareLink={`${FRONTEND_URL}/problemSet/view/${this.state.set.sharecode}`}
                     newSetShareLink={`${FRONTEND_URL}/problemSet/view/${this.state.newSetSharecode}`}
+                    problemSetShareLink={`${FRONTEND_URL}/problemSet/review/${this.state.problemSetShareCode}`}
                     activateMathField={theActiveMathField => this.setState({ theActiveMathField })}
                     theActiveMathField={this.state.theActiveMathField}
                     addProblemCallback={this.addProblem}
@@ -328,6 +372,8 @@ export default class Home extends Component {
                         editing={this.props.match.params.action === 'edit'}
                         activateModals={this.toggleModals}
                         updatePositions={this.updatePositions}
+                        action={this.props.match.params.action}
+                        code={this.props.match.params.code}
                     />
                 </main>
                 <MainPageFooter />

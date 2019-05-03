@@ -109,8 +109,22 @@ export default class Problem extends Component {
     }
 
     createNewSolution(history) {
+        const { action } = this.props;
+        const code = this.props.code;
+        const solutions = JSON.parse(
+            localStorage.getItem(`${action}_${code}`) || '[]',
+        );
+        const currentSolution = solutions.find(solution => (
+            solution.problem.id === this.props.problem.id
+        ));
         if (this.props.example) {
             history.push('/problem/example/');
+        } else if (currentSolution) {
+            if (action === 'review') {
+                history.push(`/problem/view/${currentSolution.shareCode}`);
+            } else {
+                history.push(`/problem/edit/${currentSolution.editCode}`);
+            }
         } else {
             const solution = {
                 problem: {

@@ -19,7 +19,9 @@ export default class Problems extends Component {
     }
 
     componentWillReceiveProps(newProps) {
-        this.setState({ problems: newProps.problems });
+        this.setState({
+            problems: newProps.problems,
+        });
     }
 
     onSortEnd({ oldIndex, newIndex }) {
@@ -32,7 +34,7 @@ export default class Problems extends Component {
 
     render() {
         const SortableItem = SortableElement(({
-            problem, number, example, addNew,
+            problem, number, example, addNew, action, code,
         }) => (
             <li>
                 <NavigationProblem
@@ -40,6 +42,8 @@ export default class Problems extends Component {
                     number={number}
                     example={example}
                     addNew={addNew}
+                    action={action}
+                    code={code}
                     showRemove={this.props.editing && (!example && !addNew)}
                     activateModals={this.props.activateModals}
                 />
@@ -49,12 +53,12 @@ export default class Problems extends Component {
         const newProblem = this.props.editing
             ? <SortableItem key="item-new" addNew index={this.state.problems.length + 1} disabled /> : null;
 
-        const SortableList = SortableContainer(({ problems }) => (
+        const SortableList = SortableContainer(({ problems, solutions }) => (
             <div className={styles.container}>
                 <ol className={`justify-content-around ${styles.problemList}`} aria-label={Locales.strings.problems}>
                     {problems.map((problem, index) => (
                         problem
-                            ? <SortableItem key={`item-${index}`} index={index + 1} problem={problem} number={index} disabled={!this.props.editing} />
+                            ? <SortableItem key={`item-${index}`} index={index + 1} problem={problem} solutions={solutions} number={index} disabled={!this.props.editing} action={this.props.action} code={this.props.code} />
                             : null
                     ))}
                     {newProblem}
@@ -66,6 +70,7 @@ export default class Problems extends Component {
             <SortableList
                 distance={5}
                 problems={this.state.problems}
+                solutions={this.state.solutions}
                 onSortEnd={this.onSortEnd}
                 onSortStart={this.onSortStart}
                 axis="xy"

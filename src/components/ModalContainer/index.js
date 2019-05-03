@@ -3,6 +3,7 @@ import NewProblemsForm from '../Home/components/NewProblemsForm';
 import ShareModal from './components/ShareModal';
 import SaveModal from './components/SaveModal';
 import ProblemModal from './components/ProblemModal';
+import ProblemSetShareModal from './components/ProblemSetShareModal';
 import ConfirmationModal from './components/ConfirmationModal';
 import PaletteChooser from '../Home/components/ButtonsPaletteChooser';
 import Locales from '../../strings';
@@ -13,6 +14,7 @@ const ADD_PROBLEM_SET = 'addProblemSet';
 const ADD_PROBLEMS = 'addProblems';
 const SHARE_NEW_SET = 'shareNewSet';
 const SHARE_SET = 'shareSet';
+const SHARE_PROBLEM_SET = 'shareProblemSet';
 const SAVE_SET = 'saveSet';
 const VIEW_SET = 'viewSet';
 const EDIT_PROBLEM = 'editProblem';
@@ -155,6 +157,15 @@ export default class ModalContainer extends Component {
             )
             : null;
 
+        const shareProblemSet = this.state.activeModals.includes(SHARE_PROBLEM_SET)
+            ? (
+                <ProblemSetShareModal
+                    problemSetShareLink={this.props.problemSetShareLink}
+                    deactivateModal={() => this.props.toggleModals([SHARE_PROBLEM_SET])}
+                />
+            )
+            : null;
+
         return (
             <div>
                 {saveModal}
@@ -167,12 +178,13 @@ export default class ModalContainer extends Component {
                 {addProblemSet}
                 {editProblem}
                 {viewProblem}
+                {shareProblemSet}
             </div>
         );
     }
 }
 
 export {
-    CONFIRMATION, PALETTE_CHOOSER, ADD_PROBLEM_SET, ADD_PROBLEMS,
+    CONFIRMATION, PALETTE_CHOOSER, ADD_PROBLEM_SET, ADD_PROBLEMS, SHARE_PROBLEM_SET,
     SHARE_NEW_SET, SAVE_SET, SHARE_SET, VIEW_SET, EDIT_PROBLEM, CONFIRMATION_BACK,
 };
