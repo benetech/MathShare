@@ -10,6 +10,7 @@ import Locales from '../../../../../strings';
 import showImage from '../../../../../scripts/showImage';
 import parseMathLive from '../../../../../scripts/parseMathLive';
 import { SERVER_URL } from '../../../../../config';
+import { getSolutionByProblem } from '../../../../../services/review';
 
 const mathLive = DEBUG_MODE ? require('../../../../../../../mathlive/src/mathlive.js').default
     : require('../../../../../lib/mathlivedist/mathlive.js');
@@ -110,24 +111,19 @@ export default class Problem extends Component {
 
     createNewSolution(history) {
         const { action } = this.props;
-        const code = this.props.code;
-        const solutions = JSON.parse(
-            localStorage.getItem(`${action}_${code}`) || '[]',
-        );
-        const currentSolution = solutions.find(solution => (
-            solution.problem.id === this.props.problem.id
-        ));
+        const currentSolution = getSolutionByProblem(action, this.props.problem, this.props.code);
         if (this.props.example) {
             history.push('/problem/example/');
-        } else if (currentSolution) {
-            if (action === 'review') {
-                history.push(`/problem/view/${currentSolution.shareCode}`);
-            } else {
+        } else if (currentSolution.editCode || currentSolution.shareCode) {
+            if (currentSolution.editCode && action !== 'review') {
                 history.push(`/problem/edit/${currentSolution.editCode}`);
+            } else {
+                history.push(`/problem/view/${currentSolution.shareCode}`);
             }
         } else {
             const solution = {
                 problem: {
+                    id: this.props.problem.id,
                     problemSetRevisionShareCode: this.props.problem.problemSetRevisionShareCode,
                     text: this.props.problem.text,
                     title: this.props.problem.title,

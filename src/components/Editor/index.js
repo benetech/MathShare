@@ -18,6 +18,7 @@ import {
 import Locales from '../../strings';
 import googleAnalytics from '../../scripts/googleAnalytics';
 import { SERVER_URL, FRONTEND_URL } from '../../config';
+import { updateSolution } from '../../services/review';
 import exampleProblem from './example.json';
 import scrollTo from '../../scripts/scrollTo';
 
@@ -103,11 +104,8 @@ export default class Editor extends Component {
                     if (response.status !== 200) {
                         this.setState({ notFound: true });
                     } else {
-                        const solution = {
-                            problem: response.data.problem,
-                            steps: response.data.steps,
-                            editCode: response.data.editCode,
-                        };
+                        const solution = response.data;
+                        updateSolution(solution);
                         this.setState((prevState) => {
                             const field = prevState.theActiveMathField;
                             field.latex(
@@ -200,7 +198,9 @@ export default class Editor extends Component {
             googleAnalytics('Save');
             const isInitialSave = this.state.editLink === Locales.strings.not_saved_yet;
             axios.put(`${SERVER_URL}/solution/${this.state.solution.editCode}`, this.state.solution)
-                .then(() => {
+                .then((response) => {
+                    const solution = response.data;
+                    updateSolution(solution);
                     this.setState((prevState) => {
                         const editCode = prevState.solution.editCode;
                         const steps = prevState.solution.steps;
@@ -226,25 +226,13 @@ export default class Editor extends Component {
                 shareLink: Locales.strings.example_share_code,
             }, this.toggleModals([SHARE_SET]));
         } else {
-            const { problem } = this.state.solution;
-            const solutionsStr = localStorage.getItem(`view_${problem.problemSetRevisionShareCode}`);
-            let promise;
-            if (solutionsStr) {
-                const solutions = JSON.parse(solutionsStr);
-                const savedSolution = solutions.find(solution => (
-                    solution.problem.id === problem.id
-                ));
-                promise = axios.put(`${SERVER_URL}/solution/${this.state.solution.editCode}`, this.state.solution)
-                    .then(() => savedSolution.shareCode);
-            } else {
-                promise = axios.put(`${SERVER_URL}/solution/${this.state.solution.editCode}`, this.state.solution)
-                    .then(response => response.data.shareCode);
-            }
-            promise.then((shareCode) => {
-                this.setState({
-                    shareLink: `${FRONTEND_URL}/problem/view/${shareCode}`,
-                }, this.toggleModals([SHARE_SET]));
-            });
+            updateSolution(this.state.solution);
+            axios.put(`${SERVER_URL}/solution/${this.state.solution.editCode}`, this.state.solution)
+                .then((response) => {
+                    this.setState({
+                        shareLink: `${FRONTEND_URL}/problem/view/${response.data.shareCode}`,
+                    }, this.toggleModals([SHARE_SET]));
+                });
         }
     }
 

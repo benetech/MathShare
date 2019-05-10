@@ -14,6 +14,13 @@ import ModalContainer, {
     EDIT_PROBLEM, SHARE_PROBLEM_SET,
 } from '../ModalContainer';
 import { SERVER_URL, FRONTEND_URL } from '../../config';
+import {
+    createReviewProblemSetOnUpdate,
+    getLocalSolutions,
+    getSolutionObjectFromProblems,
+    shareSolutions,
+    storeSolutionsLocally,
+} from '../../services/review';
 import scrollTo from '../../scripts/scrollTo';
 
 const mathLive = DEBUG_MODE ? require('../../../../mathlive/src/mathlive.js').default
@@ -26,7 +33,7 @@ export default class Home extends Component {
             set: {
                 problems: [],
                 editCode: null,
-                sharecode: null,
+                shareCode: null,
             },
             activeModals: [],
             allowedPalettes: [],
@@ -68,22 +75,39 @@ export default class Home extends Component {
                 }
                 if (action === 'review') {
                     const { solutions } = response.data;
-                    localStorage.setItem(`${action}_${this.props.match.params.code}`,
-                        JSON.stringify(solutions));
+                    storeSolutionsLocally(
+                        action,
+                        this.props.match.params.code,
+                        solutions,
+                    );
                     this.setState({
                         set: {
                             problems: solutions.map(solution => solution.problem),
-                            sharecode: this.props.match.params.code,
+                            shareCode: this.props.match.params.code,
                         },
                     });
                 } else {
+                    let promise;
                     const orderedProblems = this.orderProblems(response.data.problems);
-                    this.setState({
-                        set: {
-                            problems: orderedProblems,
-                            editCode: response.data.editCode,
-                            sharecode: response.data.shareCode,
-                        },
+                    const code = orderedProblems[0].problemSetRevisionShareCode;
+                    const existingSolutions = getLocalSolutions('view', code);
+                    if (!existingSolutions || existingSolutions.length === 0) {
+                        const solutions = getSolutionObjectFromProblems(orderedProblems);
+                        storeSolutionsLocally('view', code, solutions);
+                        promise = shareSolutions('view', code);
+                    } else {
+                        promise = new Promise((resolve) => {
+                            resolve();
+                        });
+                    }
+                    promise.then(() => {
+                        this.setState({
+                            set: {
+                                problems: orderedProblems,
+                                editCode: response.data.editCode,
+                                shareCode: response.data.shareCode,
+                            },
+                        });
                     });
                 }
             }).catch(() => {
@@ -197,17 +221,19 @@ export default class Home extends Component {
         });
     }
 
-    saveProblems(problems) {
+    saveProblems(newProblems) {
         const oldSet = this.state.set;
-        oldSet.problems = problems;
+        oldSet.problems = newProblems;
 
         axios.put(`${SERVER_URL}/problemSet/${this.state.set.editCode}`, oldSet)
-            .then((response) => {
+            .then(({ data }) => {
+                const { editCode, problems, shareCode } = data;
+                createReviewProblemSetOnUpdate(problems, shareCode);
                 this.setState({
                     set: {
-                        problems: response.data.problems,
-                        editCode: response.data.editCode,
-                        sharecode: response.data.shareCode,
+                        problems,
+                        editCode,
+                        shareCode,
                     },
                 });
             });
@@ -217,12 +243,14 @@ export default class Home extends Component {
         const oldSet = this.state.set;
         oldSet.problems.splice(this.state.problemToDeleteIndex, 1);
         axios.put(`${SERVER_URL}/problemSet/${this.state.set.editCode}`, oldSet)
-            .then((response) => {
+            .then(({ data }) => {
+                const { editCode, problems, shareCode } = data;
+                createReviewProblemSetOnUpdate(problems, shareCode);
                 this.setState({
                     set: {
-                        problems: response.data.problems,
-                        editCode: response.data.editCode,
-                        sharecode: response.data.shareCode,
+                        problems,
+                        editCode,
+                        shareCode,
                     },
                 });
             });
@@ -243,12 +271,14 @@ export default class Home extends Component {
         oldSet.problems[this.state.problemToEditIndex].text = this.state.theActiveMathField.latex();
 
         axios.put(`${SERVER_URL}/problemSet/${this.state.set.editCode}`, oldSet)
-            .then((response) => {
+            .then(({ data }) => {
+                const { editCode, problems, shareCode } = data;
+                createReviewProblemSetOnUpdate(problems, shareCode);
                 this.setState({
                     set: {
-                        problems: response.data.problems,
-                        editCode: response.data.editCode,
-                        sharecode: response.data.shareCode,
+                        problems,
+                        editCode,
+                        shareCode,
                     },
                 });
             });
@@ -279,26 +309,15 @@ export default class Home extends Component {
 
     shareProblemSet() {
         const { code, action } = this.props.match.params;
-        const key = `${action}_${code}`;
-        let promise;
-        const existingSolutions = localStorage.getItem(key);
-        if (existingSolutions) {
-            promise = new Promise((resolve) => {
-                resolve(JSON.parse(existingSolutions));
+        shareSolutions(action, code)
+            .then(({ reviewCode }) => {
+                this.setState({
+                    problemSetShareCode: reviewCode,
+                }, this.toggleModals([SHARE_PROBLEM_SET]));
+            })
+            .catch((e) => {
+                console.log(e);
             });
-        } else {
-            promise = axios.post(`${SERVER_URL}/solution/review/${code}`)
-                .then((response) => {
-                    const { solutions } = response.data;
-                    localStorage.setItem(key, JSON.stringify(solutions));
-                    return solutions;
-                });
-        }
-        promise.then((solutions) => {
-            this.setState({
-                problemSetShareCode: solutions[0].reviewCode,
-            }, this.toggleModals([SHARE_PROBLEM_SET]));
-        });
     }
 
     progressToAddingProblems(palettes) {
@@ -327,7 +346,7 @@ export default class Home extends Component {
     }
 
     finishEditing() {
-        this.props.history.push(`/problemSet/view/${this.state.set.sharecode}`);
+        this.props.history.push(`/problemSet/view/${this.state.set.shareCode}`);
     }
 
     render() {
@@ -352,7 +371,7 @@ export default class Home extends Component {
                     toggleModals={this.toggleModals}
                     progressToAddingProblems={this.progressToAddingProblems}
                     deleteProblem={this.deleteProblem}
-                    shareLink={`${FRONTEND_URL}/problemSet/view/${this.state.set.sharecode}`}
+                    shareLink={`${FRONTEND_URL}/problemSet/view/${this.state.set.shareCode}`}
                     newSetShareLink={`${FRONTEND_URL}/problemSet/view/${this.state.newSetSharecode}`}
                     problemSetShareLink={`${FRONTEND_URL}/problemSet/review/${this.state.problemSetShareCode}`}
                     activateMathField={theActiveMathField => this.setState({ theActiveMathField })}
