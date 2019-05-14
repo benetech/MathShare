@@ -77,7 +77,7 @@ export default class ProblemHeader extends Component {
 
     openTour() {
         this.setState({ isTourOpen: true });
-        googleAnalytics('Tour');
+        googleAnalytics('Help Menu');
     }
 
     closeTour() {

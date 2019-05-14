@@ -56,7 +56,7 @@ export default class SpeechToTextButton extends Component {
     }
 
     speechToText() {
-        googleAnalytics('S2T Clicked');
+        googleAnalytics('Speech to Text');
         if (!this.recognition) {
             alertInfo(Locales.strings.speech_recongition_error, 'Info');
             // eslint-disable-next-line no-console

@@ -2,8 +2,10 @@ import { stackDeleteAction, stackAddAction } from './stackOperations';
 import MathButton from './components/MyWork/components/MathPalette/components/MathButtonsGroup/components/MathButtonsRow/components/MathButton';
 import { alertSuccess, alertWarning } from '../../scripts/alert';
 import Locales from '../../strings';
+import googleAnalytics from '../../scripts/googleAnalytics';
 
 function addNewStep(context, step) {
+    googleAnalytics('Add new step');
     const newSteps = context.state.solution.steps;
     newSteps.push(step);
     const updatedMathField = context.state.theActiveMathField;
@@ -20,6 +22,7 @@ function addNewStep(context, step) {
 }
 
 function deleteLastStep(context) {
+    googleAnalytics('Delete last step');
     const newSteps = context.state.solution.steps;
     newSteps.pop();
     context.setState({
@@ -29,6 +32,7 @@ function deleteLastStep(context) {
 }
 
 function deleteStep(context, addToHistory) {
+    googleAnalytics('Delete step');
     const steps = context.state.solution.steps;
     const lastStep = steps[steps.length - 1];
 
@@ -41,6 +45,7 @@ function deleteStep(context, addToHistory) {
 }
 
 function editStep(context, stepNumber) {
+    googleAnalytics('Edit step');
     const mathStep = context.state.solution.steps[stepNumber - 1];
     const updatedMathField = context.state.theActiveMathField;
     updatedMathField.latex(mathStep.stepValue);
@@ -56,6 +61,7 @@ function editStep(context, stepNumber) {
 }
 
 function updateStep(context, img) {
+    googleAnalytics('Edit step');
     const index = context.state.editedStep;
 
     if (context.state.textAreaValue === '') {

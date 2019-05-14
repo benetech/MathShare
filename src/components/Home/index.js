@@ -22,6 +22,7 @@ import {
     storeSolutionsLocally,
 } from '../../services/review';
 import scrollTo from '../../scripts/scrollTo';
+import googleAnalytics from '../../scripts/googleAnalytics';
 
 const mathLive = DEBUG_MODE ? require('../../../../mathlive/src/mathlive.js').default
     : require('../../lib/mathlivedist/mathlive.js');
@@ -330,6 +331,7 @@ export default class Home extends Component {
     }
 
     saveProblemSet(orderedProblems) {
+        googleAnalytics(Locales.strings.add_problem_set);
         const set = {
             problems: orderedProblems,
             palettes: this.state.tempPalettes,
