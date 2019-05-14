@@ -21,6 +21,8 @@ export default class MyWorkEditorArea extends Component {
             {
                 commandbarToggle: 'hidden',
                 virtualKeyboardMode: 'off',
+                smartMode: true,
+                smartFence: false,
                 overrideDefaultInlineShortcuts: false,
                 inlineShortcuts:
                 {
@@ -33,12 +35,14 @@ export default class MyWorkEditorArea extends Component {
                     '%': '\\%', // make it easy to type %
                     '*': '\\times', // what most people want
                     '?=': '\\overset{?}{=}',	// is equal to
-                    cbrt: '\\sqrt[{3}]{#0}',	// cube root,
+		    sqrt: '\\sqrt{#0}',
+                    squareroot: '\\sqrt{#0}',
+                    cbrt: '\\sqrt[3]{#0}',	// cube root
+                    cuberoot: '\\sqrt[3]{#0}',	// cube root
                     root: '\\sqrt[{#?}]{#0}',	// general root
                 },
                 inlineShortcutBackspaceCommand: 'delete', // make deleting multichar shortcut be atomic
                 removeExtraneousParentheses: false, // if typed, keep parens around
-                smartFence: false,
                 onMoveOutOf: () => false,
                 onKeystroke: (key) => {
                     if (key === 'Enter') {
