@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import classNames from 'classnames';
 import Step from './components/Step';
-import myStepsList from './styles.css';
-import mySteps from '../../../../styles.css';
+import myStepsList from './styles.scss';
+import mySteps from '../../../../styles.scss';
 import MyWork from '../../../MyWork';
 import Locales from '../../../../../../strings';
 

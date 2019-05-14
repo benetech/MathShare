@@ -1,0 +1,38 @@
+.container {
+    display: block;
+    width: 50px;
+
+    >span {
+        flex: 1;
+
+        >.button {
+            display: flex;
+            transform: rotate(270deg);
+            color: rgb(255, 255, 255);
+
+            svg {
+                padding-right: 5px;
+            }
+        }
+
+        >.scratch {
+            transform-origin: 52% 146%;
+        }
+
+        >.symbols {
+            transform-origin: 51% 155%;
+        }
+
+        >.scratchActive {
+            background-color: rgb(0, 123, 255);
+        }
+
+        >.symbolsActive {
+            background-color: rgb(72, 204, 112);
+        }
+
+        >.disabled {
+            background-color: rgb(126, 126, 126);
+        }
+    }
+}

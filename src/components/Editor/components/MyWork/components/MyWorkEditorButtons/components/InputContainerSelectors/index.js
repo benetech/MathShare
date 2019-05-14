@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import Button from '../../../../../../../Button';
-import styles from './styles.css';
+import styles from './styles.scss';
 import Locales from '../../../../../../../../strings';
 
 const InputContainerSelectors = (props) => {

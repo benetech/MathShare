@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { SortableContainer, SortableElement, arrayMove } from 'react-sortable-hoc';
 import NavigationProblem from '../Problem';
-import styles from './styles.css';
+import styles from './styles.scss';
 import Locales from '../../../../../strings';
 
 const mathLive = DEBUG_MODE ? require('../../../../../../../mathlive/src/mathlive.js').default

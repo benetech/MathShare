@@ -2,7 +2,7 @@ import React from 'react';
 import FontAwesome from 'react-fontawesome';
 import classNames from 'classnames';
 import { withRouter } from 'react-router-dom';
-import header from './styles.css';
+import header from './styles.scss';
 import Locales from '../../../../strings';
 
 import logo from '../../../../../images/logo.png';

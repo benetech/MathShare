@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import classNames from 'classnames';
 import Button from '../../../../../../../Button';
-import editorArea from '../../styles.css';
+import editorArea from '../../styles.scss';
 import googleAnalytics from '../../../../../../../../scripts/googleAnalytics';
 import { alertInfo } from '../../../../../../../../scripts/alert';
 import Locales from '../../../../../../../../strings';

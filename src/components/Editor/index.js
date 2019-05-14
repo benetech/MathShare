@@ -8,7 +8,7 @@ import ModalContainer, {
     CONFIRMATION_BACK, SAVE_SET, SHARE_SET, VIEW_SET,
 } from '../ModalContainer';
 import NotFound from '../NotFound';
-import editor from './styles.css';
+import editor from './styles.scss';
 import { alertSuccess } from '../../scripts/alert';
 import { stackEditAction } from './stackOperations';
 import { clearAll, undoLastAction } from './stack';

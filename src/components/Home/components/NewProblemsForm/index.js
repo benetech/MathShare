@@ -3,7 +3,7 @@ import AriaModal from 'react-aria-modal';
 import FontAwesome from 'react-fontawesome';
 import { arrayMove } from 'react-sortable-hoc';
 import Locales from '../../../../strings';
-import styles from './styles.css';
+import styles from './styles.scss';
 import MyWork from '../../../Editor/components/MyWork';
 import showImage from '../../../../scripts/showImage';
 import Button from '../../../Button';

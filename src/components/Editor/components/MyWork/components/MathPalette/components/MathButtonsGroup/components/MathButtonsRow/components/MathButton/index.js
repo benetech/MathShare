@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import classNames from 'classnames';
 import Button from '../../../../../../../../../../../Button';
-import mathButton from './styles.css';
+import mathButton from './styles.scss';
 import teXCommands from './teXCommands.json';
 import googleAnalytics from '../../../../../../../../../../../../scripts/googleAnalytics';
 import { alertWarning } from '../../../../../../../../../../../../scripts/alert';

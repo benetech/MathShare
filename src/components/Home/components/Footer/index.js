@@ -1,5 +1,5 @@
 import React from 'react';
-import footer from './styles.css';
+import footer from './styles.scss';
 import Locales from '../../../../strings';
 
 import benetechLogoTransparent from '../../../../../images/benetech-logo-transparent.gif';

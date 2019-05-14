@@ -3,18 +3,18 @@
     padding: 5px;
     align-items: flex-end;
     align-self: flex-end;
-}
 
-.footer>span {
-    margin-top: 5px;
+    >span {
+        margin-top: 5px;
+    }
 }
 
 .button {
     height: 37px;
     margin-left: 5px;
     outline: none;
-}
 
-.button:focus {
-    box-shadow: none;
+    &:focus {
+        box-shadow: none;
+    }
 }

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import classNames from 'classnames';
 import SpeechToTextButton from './components/SpeechToTextButton';
-import editorArea from './styles.css';
+import editorArea from './styles.scss';
 import Locales from '../../../../../../strings';
 
 const mathLive = DEBUG_MODE ? require('../../../../../../../../mathlive/src/mathlive.js').default

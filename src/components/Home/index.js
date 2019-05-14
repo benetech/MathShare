@@ -6,7 +6,7 @@ import NavigationHeader from './components/Navigation/Header';
 import NavigationProblems from './components/Navigation/Problems';
 import MainPageFooter from './components/Footer';
 import NotFound from '../NotFound';
-import home from './styles.css';
+import home from './styles.scss';
 import { alertWarning } from '../../scripts/alert';
 import Locales from '../../strings';
 import ModalContainer, {

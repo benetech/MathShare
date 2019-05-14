@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
-import header from './styles.css';
-import mySteps from '../../../../styles.css';
+import header from './styles.scss';
+import mySteps from '../../../../styles.scss';
 import Locales from '../../../../../../strings';
 
 const MyStepsHeader = (props) => {
