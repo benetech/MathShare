@@ -6,6 +6,7 @@ import {
     DELETE,
     EDIT,
 } from './stackConstants';
+import googleAnalytics from '../../scripts/googleAnalytics';
 
 function undoClearAll(context, stackEntry) {
     const solution = context.state.solution;
@@ -70,6 +71,7 @@ function undoLastAction(context) {
 }
 
 function clearAll(context) {
+    googleAnalytics('Clear All');
     const stack = context.state.actionsStack;
     const steps = context.state.solution.steps;
     stack.push({

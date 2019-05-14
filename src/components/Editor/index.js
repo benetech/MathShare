@@ -8,7 +8,7 @@ import ModalContainer, {
     CONFIRMATION_BACK, SAVE_SET, SHARE_SET, VIEW_SET,
 } from '../ModalContainer';
 import NotFound from '../NotFound';
-import editor from './styles.css';
+import editor from './styles.scss';
 import { alertSuccess } from '../../scripts/alert';
 import { stackEditAction } from './stackOperations';
 import { clearAll, undoLastAction } from './stack';
@@ -76,6 +76,15 @@ export default class Editor extends Component {
         this.redButtonCallback = this.redButtonCallback.bind(this);
         this.greenButtonCallback = this.greenButtonCallback.bind(this);
         this.onUnload = this.onUnload.bind(this);
+    }
+
+    componentWillMount() {
+        const { match } = this.props;
+        if (match.params.action === 'view') {
+            googleAnalytics('View a Problem: Teacher');
+        } else if (match.params.action === 'edit') {
+            googleAnalytics('View a Problem: Student');
+        }
     }
 
     componentDidMount() {
@@ -195,7 +204,7 @@ export default class Editor extends Component {
         if (this.props.example) {
             this.setState({ editLink: Locales.strings.example_edit_code });
         } else {
-            googleAnalytics('Save');
+            googleAnalytics('Save Problem');
             const isInitialSave = this.state.editLink === Locales.strings.not_saved_yet;
             axios.put(`${SERVER_URL}/solution/${this.state.solution.editCode}`, this.state.solution)
                 .then((response) => {
@@ -226,6 +235,7 @@ export default class Editor extends Component {
                 shareLink: Locales.strings.example_share_code,
             }, this.toggleModals([SHARE_SET]));
         } else {
+            googleAnalytics('Share Problem');
             updateSolution(this.state.solution);
             axios.put(`${SERVER_URL}/solution/${this.state.solution.editCode}`, this.state.solution)
                 .then((response) => {

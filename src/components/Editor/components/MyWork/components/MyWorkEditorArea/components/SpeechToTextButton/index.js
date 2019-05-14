@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import classNames from 'classnames';
 import Button from '../../../../../../../Button';
-import editorArea from '../../styles.css';
+import editorArea from '../../styles.scss';
 import googleAnalytics from '../../../../../../../../scripts/googleAnalytics';
 import { alertInfo } from '../../../../../../../../scripts/alert';
 import Locales from '../../../../../../../../strings';
@@ -56,7 +56,7 @@ export default class SpeechToTextButton extends Component {
     }
 
     speechToText() {
-        googleAnalytics('S2T Clicked');
+        googleAnalytics('Speech to Text');
         if (!this.recognition) {
             alertInfo(Locales.strings.speech_recongition_error, 'Info');
             // eslint-disable-next-line no-console

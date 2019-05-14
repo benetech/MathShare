@@ -2,10 +2,13 @@ import React from 'react';
 import FontAwesome from 'react-fontawesome';
 import classNames from 'classnames';
 import { withRouter } from 'react-router-dom';
-import header from './styles.css';
+import header from './styles.scss';
 import Locales from '../../../../strings';
 
 import logo from '../../../../../images/logo.png';
+
+import googleAnalytics from '../../../../scripts/googleAnalytics';
+
 
 /*
 this may be needed in future
@@ -52,8 +55,14 @@ const MainPageHeader = (props) => {
     const GettingStartedButton = withRouter(({ history }) => (
         <a
             className={classNames('nav-link', header.pointer)}
-            onClick={() => { history.push('/problem/example'); }}
-            onKeyPress={() => { history.push('/problem/example'); }}
+            onClick={() => {
+                googleAnalytics(Locales.strings.getting_started_title);
+                history.push('/problem/example');
+            }}
+            onKeyPress={() => {
+                googleAnalytics(Locales.strings.getting_started_title);
+                history.push('/problem/example');
+            }}
             role="link"
             tabIndex="0"
         >
@@ -90,6 +99,7 @@ const MainPageHeader = (props) => {
             <a
                 className={classNames('nav-link', header.pointer)}
                 onClick={() => {
+                    googleAnalytics(Locales.strings.edit_problem_set);
                     props.history.push(`/problemSet/edit/${props.editCode}`);
                 }}
                 onKeyPress={() => props.shareCallback(['shareSet'])}

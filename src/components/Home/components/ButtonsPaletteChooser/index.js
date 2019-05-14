@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import AriaModal from 'react-aria-modal';
 import Locales from '../../../../strings';
-import styles from './styles.css';
+import styles from './styles.scss';
 import palettes from '../../../palettes.json';
 import MathButtonsGroup from '../../../Editor/components/MyWork/components/MathPalette/components/MathButtonsGroup';
 import Button from '../../../Button';

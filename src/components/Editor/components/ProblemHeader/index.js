@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import classNames from 'classnames';
 import Tour from 'reactour';
 import Button from '../../../Button';
-import problem from './styles.css';
+import problem from './styles.scss';
 import googleAnalytics from '../../../../scripts/googleAnalytics';
 import Locales from '../../../../strings';
 import showImage from '../../../../scripts/showImage';
@@ -77,7 +77,7 @@ export default class ProblemHeader extends Component {
 
     openTour() {
         this.setState({ isTourOpen: true });
-        googleAnalytics('Tour');
+        googleAnalytics('Help Menu');
     }
 
     closeTour() {

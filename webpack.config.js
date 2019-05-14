@@ -1,10 +1,10 @@
-
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const webpack = require('webpack');
 const htmlWebpackPlugin = new HtmlWebPackPlugin({
     template: "./src/index.html",
     filename: "./index.html"
 });
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = env => {
     var debug = (env && env.debug);
@@ -17,6 +17,10 @@ module.exports = env => {
         }),
         new webpack.DefinePlugin({
             DEBUG_MODE: debug
+        }),
+        new MiniCssExtractPlugin({
+            filename: debug ? '[name].css' : '[name].[hash].css',
+            chunkFilename: debug ? '[id].css' : '[id].[hash].css'
         })
     ];
     var path = require('path');
@@ -25,27 +29,46 @@ module.exports = env => {
     }
     return {
         resolveLoader: {
-	  modules: [path.join(__dirname, 'node_modules')]
-	  },
+            modules: [path.join(__dirname, 'node_modules')]
+        },
         module: {
-            rules: [
-                {
+            rules: [{
                     test: /\.js$/,
                     exclude: /node_modules/,
                     use: {
                         loader: "babel-loader",
-			options: {
-			    presets: ['@babel/preset-env']
-			}
+                        options: {
+                            presets: ['@babel/preset-env']
+                        }
                     }
+                },
+                {
+                    test: /\.s(a|c)ss$/,
+                    loader: [
+                        debug ? 'style-loader' : MiniCssExtractPlugin.loader,
+                        {
+                            loader: 'css-loader',
+                            options: {
+                                modules: true,
+                                localIdentName: '[name]__[local]___[hash:base64:5]',
+                                camelCase: true,
+                                sourceMap: debug
+                            }
+                        },
+                        {
+                            loader: 'sass-loader',
+                            options: {
+                                sourceMap: debug
+                            }
+                        }
+                    ]
                 },
                 {
                     test: /\.css$/,
                     include: [
                         /src(\/|\\)components/
                     ],
-                    use: [
-                        {
+                    use: [{
                             loader: "style-loader"
                         },
                         {
@@ -63,14 +86,12 @@ module.exports = env => {
                 {
                     test: /\.(jpg|png|gif|pdf|ico)$/,
                     include: /images/,
-                    use: [
-                        {
-                            loader: 'file-loader',
-                            options: {
-                                name: '[path][name].[ext]'
-                            },
+                    use: [{
+                        loader: 'file-loader',
+                        options: {
+                            name: '[path][name].[ext]'
                         },
-                    ]
+                    }, ]
                 },
                 {
                     test: /\.css$/,
@@ -80,8 +101,7 @@ module.exports = env => {
                         /src(\/|\\)lib/,
                         /src(\/|\\)styles/
                     ],
-                    use: [
-                        {
+                    use: [{
                             loader: "style-loader"
                         },
                         {
@@ -96,7 +116,7 @@ module.exports = env => {
                 {
                     enforce: 'pre',
                     test: /\.js$/,
-                    exclude: [/node_modules/,/dist/,/src(\/|\\)lib/],
+                    exclude: [/node_modules/, /dist/, /src(\/|\\)lib/],
                     loaders: ['eslint-loader']
                 }
             ]
@@ -104,6 +124,9 @@ module.exports = env => {
         devServer: {
             port: 3000
         },
-        plugins: plugins
+        plugins: plugins,
+        resolve: {
+            extensions: ['.js', '.css', '.scss']
+        }
     }
 };

@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import Button from '../../../Button';
 import Locales from '../../../../strings';
-import problem from './styles.css';
+import problem from './styles.scss';
 
 const accentColor = 'rgb(0, 98, 217)';
 

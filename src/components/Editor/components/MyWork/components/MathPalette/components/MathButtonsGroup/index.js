@@ -1,6 +1,6 @@
 import React from 'react';
 import MathButtonsRow from './components/MathButtonsRow';
-import buttonsGroup from './styles.css';
+import buttonsGroup from './styles.scss';
 
 const MathButtonsGroup = (props) => {
     const label = props.showLabel

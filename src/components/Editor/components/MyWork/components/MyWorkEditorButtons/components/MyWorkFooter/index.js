@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import Button from '../../../../../../../Button';
-import footer from './styles.css';
+import footer from './styles.scss';
 import Locales from '../../../../../../../../strings';
 
 const MyWorkFooter = (props) => {

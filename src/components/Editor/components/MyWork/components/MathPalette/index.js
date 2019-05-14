@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import classNames from 'classnames';
 import MathButtonsGroup from './components/MathButtonsGroup';
-import paletteStyle from './styles.css';
+import paletteStyle from './styles.scss';
 import palettes from '../../../../../palettes.json';
 import Locales from '../../../../../../strings';
 import { alertWarning } from '../../../../../../scripts/alert';

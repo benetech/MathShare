@@ -1,11 +1,19 @@
 import React, { Component } from 'react';
 import AriaModal from 'react-aria-modal';
 import classNames from 'classnames';
-import editor from './styles.css';
+import editor from './styles.scss';
 import Locales from '../../../../strings';
 import Button from '../../../Button';
+import googleAnalytics from '../../../../scripts/googleAnalytics';
 
 export default class ShareModal extends Component {
+    componentWillMount() {
+        const { shareLink } = this.props;
+        if (shareLink) {
+            googleAnalytics(Locales.strings.share_problem_set);
+        }
+    }
+
     copyShareLink = () => {
         const copyText = document.getElementById('shareLink');
         copyText.select();

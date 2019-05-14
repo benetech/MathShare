@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import AriaModal from 'react-aria-modal';
 import classNames from 'classnames';
-import editor from './styles.css';
+import editor from './styles.scss';
 import Locales from '../../../../strings';
 import Button from '../../../Button';
 

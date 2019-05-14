@@ -3,7 +3,7 @@ import { UncontrolledTooltip } from 'reactstrap';
 import FontAwesome from 'react-fontawesome';
 import classNames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import styles from './styles.css';
+import styles from './styles.scss';
 
 export default class Button extends Component {
     constructor(props) {

@@ -1,7 +1,7 @@
 
 import React from 'react';
 import classNames from 'classnames';
-import editorButtons from './styles.css';
+import editorButtons from './styles.scss';
 import MyWorkFooter from './components/MyWorkFooter';
 import InputContainerSelectors from './components/InputContainerSelectors';
 import Locales from '../../../../../../strings';

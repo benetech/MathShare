@@ -2,13 +2,13 @@
     list-style: none;
     margin: auto;
     margin-bottom: 30px;
-}
 
-.problem>div {
-    padding: 1.0rem 1.25rem;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
+    >div {
+        padding: 1.0rem 1.25rem;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+    }
 }
 
 .navItemButton {
@@ -24,7 +24,8 @@
     background-color: inherit;
 }
 
-.problemAnnotation, .problemAnnotationScaled {
+.problemAnnotation,
+.problemAnnotationScaled {
     word-wrap: break-word;
     display: block;
     text-align: center;

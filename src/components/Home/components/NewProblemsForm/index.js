@@ -3,12 +3,13 @@ import AriaModal from 'react-aria-modal';
 import FontAwesome from 'react-fontawesome';
 import { arrayMove } from 'react-sortable-hoc';
 import Locales from '../../../../strings';
-import styles from './styles.css';
+import styles from './styles.scss';
 import MyWork from '../../../Editor/components/MyWork';
 import showImage from '../../../../scripts/showImage';
 import Button from '../../../Button';
 import parseMathLive from '../../../../scripts/parseMathLive';
 import scrollTo from '../../../../scripts/scrollTo';
+import googleAnalytics from '../../../../scripts/googleAnalytics';
 
 const mathLive = DEBUG_MODE ? require('../../../../../../mathlive/src/mathlive.js').default
     : require('../../../../lib/mathlivedist/mathlive.js');
@@ -47,6 +48,7 @@ export default class NewProblemsForm extends Component {
             this.scrollToBottom();
         }
         if (this.state.displayScratchpad && this.props.problemToEdit) {
+            googleAnalytics('Open Sketch Tab');
             this.state.displayScratchpad(this.props.problemToEdit.scratchpad);
             // eslint-disable-next-line react/no-did-update-set-state
             this.setState({ displayScratchpad: null });

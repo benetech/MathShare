@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import classNames from 'classnames';
 import Button from '../../../../../../../Button';
-import step from './styles.css';
+import step from './styles.scss';
 import Locales from '../../../../../../../../strings';
 import showImage from '../../../../../../../../scripts/showImage';
 
