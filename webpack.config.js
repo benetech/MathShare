@@ -5,6 +5,7 @@ const htmlWebpackPlugin = new HtmlWebPackPlugin({
     filename: "./index.html"
 });
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = env => {
     var debug = (env && env.debug);
@@ -21,7 +22,11 @@ module.exports = env => {
         new MiniCssExtractPlugin({
             filename: debug ? '[name].css' : '[name].[hash].css',
             chunkFilename: debug ? '[id].css' : '[id].[hash].css'
-        })
+        }),
+        new CopyWebpackPlugin([{
+            from: 'node_modules/speech-rule-engine/lib/sre_browser.js',
+            to: 'libs/speech-rule-engine/lib/sre_browser.js'
+        }]),
     ];
     var path = require('path');
     if (!debug) {
@@ -44,6 +49,7 @@ module.exports = env => {
                 },
                 {
                     test: /\.s(a|c)ss$/,
+                    exclude: /node_modules/,
                     loader: [
                         debug ? 'style-loader' : MiniCssExtractPlugin.loader,
                         {

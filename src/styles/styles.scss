@@ -1,0 +1,59 @@
+/* style to use if only the screen reader user should hear this */
+:global(.sROnly) {
+    clip: rect(1px, 1px, 1px, 1px);
+    position: absolute !important;
+    white-space: nowrap;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+}
+
+:global(.pointer) {
+    cursor: pointer;
+}
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+    font-size: 16px;
+    background-color: rgb(240, 240, 240);
+    overflow: hidden;
+}
+
+:global(#workArea) :global(.ML__mathlive) {
+    font-size: 160%;
+}
+
+:global(.staticMath),
+:global(.mathliveModal),
+:global(button) {
+    :global(.ML__mathlive) {
+        white-space: normal;
+        display: inline;
+        word-break: break-word;
+    }
+}
+
+:global(.ML__mathlive)>:global(.ML__base) {
+    display: inline;
+}
+
+button :global(.ML__mathlive) {
+    text-align: center !important;
+}
+
+:global(.ML__fieldcontainer),
+:global(.ML__fieldcontainer__field) {
+    overflow-x: auto;
+}
+
+:global(.ML__fieldcontainer__field) {
+    line-height: 75px;
+}
+
+:global(.staticMath) :global(.ML__mathlive) :global(.ML__base) :global(.ML__text) {
+    white-space: normal;
+    user-select: text;
+    cursor: text;
+}

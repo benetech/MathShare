@@ -9,7 +9,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import './lib/mathlivedist/mathlive.core.css';
 import './lib/mathlivedist/mathlive.css';
 import './lib/font-awesome/css/font-awesome.min.css';
-import './styles/styles.css';
+import './styles/styles.scss';
 
 import '../images/favicon.png';
 

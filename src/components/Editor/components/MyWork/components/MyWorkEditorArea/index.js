@@ -35,12 +35,12 @@ export default class MyWorkEditorArea extends Component {
                     '$': '\\$', // make it easy to type $
                     '%': '\\%', // make it easy to type %
                     '*': '\\times', // what most people want
-                    '?=': '\\overset{?}{=}',	// is equal to
-                    sqrt: '\\sqrt{#0}',
-                    squareroot: '\\sqrt{#0}',
-                    cbrt: '\\sqrt[3]{#0}',	// cube root
-                    cuberoot: '\\sqrt[3]{#0}',	// cube root
-                    root: '\\sqrt[{#?}]{#0}',	// general root
+                    '?=': '\\overset{?}{=}', // is equal to
+                    sqrt: '\\sqrt{#0}', // square root (currently broken in mathlive)
+                    squareroot: '\\sqrt{#0}', // square root (for consistency with 'cuberoot')
+                    cbrt: '\\sqrt[3]{#0}', // cube root
+                    cuberoot: '\\sqrt[3]{#0}', // cube root
+                    root: '\\sqrt[{#?}]{#0}', // general root
                 },
                 inlineShortcutBackspaceCommand: 'delete', // make deleting multichar shortcut be atomic
                 removeExtraneousParentheses: false, // if typed, keep parens around
