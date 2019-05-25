@@ -23,6 +23,7 @@ export default class MyWorkEditorArea extends Component {
                 virtualKeyboardMode: 'off',
                 smartMode: true,
                 smartFence: false,
+                smartSuperscript: true,
                 overrideDefaultInlineShortcuts: false,
                 inlineShortcuts:
                 {
@@ -35,7 +36,7 @@ export default class MyWorkEditorArea extends Component {
                     '%': '\\%', // make it easy to type %
                     '*': '\\times', // what most people want
                     '?=': '\\overset{?}{=}',	// is equal to
-		    sqrt: '\\sqrt{#0}',
+                    sqrt: '\\sqrt{#0}',
                     squareroot: '\\sqrt{#0}',
                     cbrt: '\\sqrt[3]{#0}',	// cube root
                     cuberoot: '\\sqrt[3]{#0}',	// cube root
