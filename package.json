@@ -67,6 +67,6 @@
     "reactour": "^1.13.4",
     "reactstrap": "^7.1.0",
     "speech-rule-engine": "^2.4.0",
-    "styled-components": "4.0.3"
+    "watson-speech": "^0.35.12"
   }
 }

@@ -1,16 +1,18 @@
 import React, { Component } from 'react';
 import classNames from 'classnames';
+import Watson from 'watson-speech';
+import { SERVER_URL } from '../../../../../../../../config';
 import Button from '../../../../../../../Button';
 import editorArea from '../../styles.scss';
 import googleAnalytics from '../../../../../../../../scripts/googleAnalytics';
-import { alertInfo } from '../../../../../../../../scripts/alert';
+import { alertInfo, alertWarning, alertError } from '../../../../../../../../scripts/alert';
 import Locales from '../../../../../../../../strings';
 
 import mic from '../../../../../../../../../images/mic.gif';
 import micSlash from '../../../../../../../../../images/mic-slash.gif';
 import micAnimate from '../../../../../../../../../images/mic-animate.gif';
 
-function initializeRecognition(component) {
+function initializeRecognitionChrome(component) {
     // eslint-disable-next-line new-cap, no-undef
     const recognition = new webkitSpeechRecognition();
     recognition.interimResults = false;
@@ -35,45 +37,125 @@ function initializeRecognition(component) {
     return recognition;
 }
 
+function initializeRecognitionOther(component, callback) {
+    return fetch(`${SERVER_URL}/solution/s2t/token`)
+        .then(response => response.json())
+        .then((response) => {
+            const stream = Watson.SpeechToText.recognizeMicrophone({ // eslint-disable-line
+                access_token: response.access_token,
+                object_mode: false,
+                interim_results: true,
+            });
+            stream.setEncoding('utf8');
+            stream.on('error', (err) => {
+                callback(err);
+            });
+            stream.on('data', (data) => {
+                const processedData = ('' || data).replace(/\. $/, ' ').toLowerCase();
+                const currentAnnotation = component.props.textAreaValue;
+
+                component.props.setTextAreaValue(`${currentAnnotation} ${processedData}`);
+
+                $('#indicator-sr').text(processedData);
+                // eslint-disable-next-line no-param-reassign
+                component.spokens = component.spokens.concat(processedData);
+            });
+            // eslint-disable-next-line no-param-reassign
+            component.recognition = stream;
+            return stream;
+        });
+}
+
 export default class SpeechToTextButton extends Component {
     constructor(props) {
         super(props);
+        const isChrome = (/Chrome/.test(navigator.userAgent)
+            && /Google Inc/.test(navigator.vendor));
+        this.spokens = [];
 
-        let micImage = mic;
-        try {
-            this.recognition = initializeRecognition(this);
-        } catch (e) {
-            micImage = micSlash;
-            // eslint-disable-next-line no-console
-            console.log(Locales.strings.speech_recongition_error);
+        let imageSrc = mic;
+
+        if (isChrome) {
+            try {
+                this.recognition = initializeRecognitionChrome(this);
+            } catch (error) {
+                imageSrc = micSlash;
+            }
         }
 
-        this.spokens = [];
         this.state = {
+            isChrome,
+            imageSrc,
             micEnabled: false,
-            imageSrc: micImage,
+            inProgress: false,
         };
     }
 
     speechToText() {
+        const {
+            isChrome,
+            micEnabled,
+        } = this.state;
         googleAnalytics('Speech to Text');
-        if (!this.recognition) {
-            alertInfo(Locales.strings.speech_recongition_error, 'Info');
-            // eslint-disable-next-line no-console
-            console.log(Locales.strings.speech_recongition_error);
-            return;
-        }
-        if (this.state.micEnabled) {
-            this.recognition.stop();
+
+        if (isChrome) {
+            if (!this.recognition) {
+                alertInfo(Locales.strings.speech_recongition_error, 'Info');
+            } else if (micEnabled) {
+                this.setState({
+                    micEnabled: false,
+                    imageSrc: mic,
+                }, () => {
+                    this.recognition.stop();
+                });
+            } else {
+                this.setState({
+                    micEnabled: true,
+                    imageSrc: micAnimate,
+                }, () => {
+                    this.recognition.start();
+                });
+            }
+        } else if (micEnabled) {
+            if (this.recognition) {
+                this.recognition.stop();
+                this.recognition = null;
+            }
             this.setState({
                 micEnabled: false,
                 imageSrc: mic,
             });
         } else {
-            this.recognition.start();
+            if (this.state.inProgress) {
+                return;
+            }
             this.setState({
-                micEnabled: true,
-                imageSrc: micAnimate,
+                imageSrc: micSlash,
+                inProgress: true,
+            }, () => {
+                try {
+                    initializeRecognitionOther(this, (err) => {
+                        if (err && err.name === 'NotAllowedError') {
+                            alertWarning(Locales.strings.speech_recongition_permission_denied, 'Permission Denied!');
+                        } else {
+                            alertError(Locales.strings.speech_recongition_error, 'Error');
+                        }
+                        this.setState({
+                            micEnabled: false,
+                            imageSrc: mic,
+                            inProgress: false,
+                        });
+                    })
+                        .then(() => {
+                            this.setState({
+                                micEnabled: true,
+                                imageSrc: micAnimate,
+                                inProgress: false,
+                            });
+                        });
+                } catch (e) {
+                    alertInfo(Locales.strings.speech_recongition_error, 'Info');
+                }
             });
         }
     }
