@@ -62,10 +62,12 @@
     "react-ga": "^2.5.7",
     "react-localization": "^1.0.13",
     "react-notifications": "^1.4.3",
+    "react-redux": "^7.0.3",
     "react-router-dom": "^4.3.1",
     "react-sortable-hoc": "^0.8.4",
     "reactour": "^1.13.4",
     "reactstrap": "^7.1.0",
+    "redux": "^4.0.1",
     "speech-rule-engine": "^2.4.0",
     "styled-components": "^4.2.0",
     "watson-speech": "^0.35.12"
