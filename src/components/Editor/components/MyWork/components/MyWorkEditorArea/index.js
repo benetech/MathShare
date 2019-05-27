@@ -23,6 +23,7 @@ export default class MyWorkEditorArea extends Component {
                 virtualKeyboardMode: 'off',
                 smartMode: true,
                 smartFence: false,
+                smartSuperscript: true,
                 overrideDefaultInlineShortcuts: false,
                 inlineShortcuts:
                 {
