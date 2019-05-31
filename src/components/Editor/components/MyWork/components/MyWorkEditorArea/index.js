@@ -20,7 +20,7 @@ export default class MyWorkEditorArea extends Component {
             this.refs.mathEditorActive,
             {
                 commandbarToggle: 'hidden',
-                virtualKeyboardMode: 'off',
+                virtualKeyboardMode: /android|ipad|ipod|iphone/i.test(navigator.userAgent) ? 'onfocus' : 'off',
                 smartMode: true,
                 smartFence: false,
                 smartSuperscript: true,
@@ -135,6 +135,8 @@ export default class MyWorkEditorArea extends Component {
                             </h3>
                             <textarea
                                 id="mathAnnotation"
+                                data-toggle="tooltip"
+                                title={Locales.strings.no_description_warning}
                                 ref="mathAnnotation"
                                 className={classNames(
                                     'form-control',

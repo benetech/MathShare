@@ -73,3 +73,14 @@ button.addStep {
 .right {
     float: right;
 }
+
+button.finish {
+    margin: auto;
+    color: rgb(255, 255, 255);
+    background-color: rgb(72, 204, 112);
+    font-size: 22px;
+
+    span {
+        padding-right: 8px;
+    }
+}

@@ -143,7 +143,7 @@ class Locales {
                 example_share_code: 'Here you could find an URL with share code',
                 not_saved_yet: 'Not saved yet.',
                 the: 'The',
-                finish: 'Finish',
+                finish: ' Finish',
                 tour_editor: 'Type or edit the equation using your keyboard and the math keys below. '
                 + 'Try using the cross out, replace, and calc buttons to help show your work.',
                 tour_annotation: 'Describe your work by typing directly or using the microphone to record an explanation of your work (required).',

@@ -5,6 +5,8 @@ import myStepsList from './styles.scss';
 import mySteps from '../../../../styles.scss';
 import MyWork from '../../../MyWork';
 import Locales from '../../../../../../strings';
+import Button from '../../../../../Button';
+
 
 export default class MyStepsList extends Component {
     constructor(props) {
@@ -109,6 +111,20 @@ export default class MyStepsList extends Component {
                         >
                             {steps}
                         </div>
+                        {!this.props.readOnly && (
+                            <div>
+                                <Button
+                                    id="finishBtn"
+                                    className={classNames('btn', 'pointer')}
+                                    additionalStyles={['finish']}
+                                    type="button"
+                                    icon="check"
+                                    content={Locales.strings.finish}
+                                    onClick={this.props.finishProblem}
+                                    spanStyle={myStepsList.finishContainer}
+                                />
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>

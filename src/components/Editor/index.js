@@ -5,7 +5,8 @@ import ProblemHeader from './components/ProblemHeader';
 import MyStepsHeader from './components/MySteps/components/MyStepsHeader';
 import MyStepsList from './components/MySteps/components/MyStepsList';
 import ModalContainer, {
-    CONFIRMATION_BACK, SAVE_SET, SHARE_SET, VIEW_SET,
+    CONFIRMATION_BACK, SHARE_SET, VIEW_SET,
+    // SAVE_SET,
 } from '../ModalContainer';
 import NotFound from '../NotFound';
 import editor from './styles.scss';
@@ -62,6 +63,8 @@ export default class Editor extends Component {
             readOnly: false,
             displayScratchpad: null,
             notFound: false,
+            isUpdated: false,
+            lastSaved: null,
         };
 
         this.toggleModals = this.toggleModals.bind(this);
@@ -71,6 +74,7 @@ export default class Editor extends Component {
         this.getApplicationNode = this.getApplicationNode.bind(this);
         this.shareProblem = this.shareProblem.bind(this);
         this.saveProblem = this.saveProblem.bind(this);
+        this.finishProblem = this.finishProblem.bind(this);
         this.viewProblem = this.viewProblem.bind(this);
         this.goBack = this.goBack.bind(this);
         this.redButtonCallback = this.redButtonCallback.bind(this);
@@ -201,32 +205,45 @@ export default class Editor extends Component {
     }
 
     saveProblem() {
-        if (this.props.example) {
-            this.setState({ editLink: Locales.strings.example_edit_code });
-        } else {
-            googleAnalytics('Save Problem');
-            const isInitialSave = this.state.editLink === Locales.strings.not_saved_yet;
-            axios.put(`${SERVER_URL}/solution/${this.state.solution.editCode}`, this.state.solution)
-                .then((response) => {
-                    const solution = response.data;
-                    updateSolution(solution);
-                    this.setState((prevState) => {
-                        const editCode = prevState.solution.editCode;
-                        const steps = prevState.solution.steps;
-                        if (isInitialSave) {
-                            this.toggleModals([SAVE_SET]);
+        return new Promise((resolve, reject) => {
+            if (this.props.example) {
+                this.setState({ editLink: Locales.strings.example_edit_code });
+                resolve(true);
+            } else {
+                googleAnalytics('Save Problem');
+                const isInitialSave = this.state.editLink === Locales.strings.not_saved_yet;
+                axios.put(`${SERVER_URL}/solution/${this.state.solution.editCode}`, this.state.solution)
+                    .then((response) => {
+                        const solution = response.data;
+                        updateSolution(solution);
+                        this.setState((prevState) => {
+                            const editCode = prevState.solution.editCode;
+                            const steps = prevState.solution.steps;
+                            // if (isInitialSave) {
+                            //     this.toggleModals([SAVE_SET]);
+                            // }
+                            return {
+                                editLink: `${FRONTEND_URL}/problem/edit/${editCode}`,
+                                stepsFromLastSave: JSON.parse(JSON.stringify(steps)),
+                                lastSaved: (new Date().toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })),
+                            };
+                        });
+                        if (!isInitialSave) {
+                            alertSuccess(Locales.strings.problem_saved_success_message,
+                                Locales.strings.success);
                         }
-                        return {
-                            editLink: `${FRONTEND_URL}/problem/edit/${editCode}`,
-                            stepsFromLastSave: JSON.parse(JSON.stringify(steps)),
-                        };
+                        resolve(true);
+                    }).catch((error) => {
+                        reject(error);
                     });
-                    if (!isInitialSave) {
-                        alertSuccess(Locales.strings.problem_saved_success_message,
-                            Locales.strings.success);
-                    }
-                });
-        }
+            }
+        });
+    }
+
+    finishProblem() {
+        this.saveProblem().then(() => {
+            this.goBack();
+        });
     }
 
     shareProblem() {

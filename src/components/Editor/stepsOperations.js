@@ -1,6 +1,12 @@
-import { stackDeleteAction, stackAddAction } from './stackOperations';
+import {
+    stackDeleteAction,
+    stackAddAction,
+} from './stackOperations';
 import MathButton from './components/MyWork/components/MathPalette/components/MathButtonsGroup/components/MathButtonsRow/components/MathButton';
-import { alertSuccess, alertWarning } from '../../scripts/alert';
+import {
+    alertSuccess,
+    // alertWarning,
+} from '../../scripts/alert';
 import Locales from '../../strings';
 import googleAnalytics from '../../scripts/googleAnalytics';
 
@@ -18,6 +24,7 @@ function addNewStep(context, step) {
         solution,
         theActiveMathField: updatedMathField,
         textAreaValue: '',
+        isUpdated: true,
     });
 }
 
@@ -28,6 +35,7 @@ function deleteLastStep(context) {
     context.setState({
         steps: newSteps,
         editorPosition: context.countEditorPosition(context.state.solution.steps),
+        isUpdated: true,
     }, context.restoreEditorPosition);
 }
 
@@ -56,6 +64,7 @@ function editStep(context, stepNumber) {
         textAreaValue: mathStep.explanation,
         editing: true,
         updateMathFieldMode: true,
+        isUpdated: true,
     },
     () => context.moveEditorBelowSpecificStep(stepNumber));
 }
@@ -65,7 +74,8 @@ function updateStep(context, img) {
     const index = context.state.editedStep;
 
     if (context.state.textAreaValue === '') {
-        alertWarning(Locales.strings.no_description_warning, 'Warning');
+        // alertWarning(Locales.strings.no_description_warning, 'Warning');
+        $('#mathAnnotation').tooltip('show');
         setTimeout(() => {
             $('#mathAnnotation').focus();
         }, 6000);
@@ -80,11 +90,15 @@ function updateStep(context, img) {
         mathStep.cleanup, index, mathStep.scratchpad);
     alertSuccess(Locales.strings.successfull_update_message, 'Success');
     context.state.displayScratchpad();
+    context.setState({
+        isUpdated: true,
+    });
 }
 
 function addStep(context, addToHistory, img) {
     if (!context.state.textAreaValue || context.state.textAreaValue === '' || $.trim(context.state.textAreaValue).length === 0) {
-        alertWarning(Locales.strings.no_description_warning, 'Warning');
+        // alertWarning(Locales.strings.no_description_warning, 'Warning');
+        $('#mathAnnotation').tooltip('show');
         setTimeout(() => {
             $('#mathAnnotation').focus();
         }, 6000);
@@ -95,7 +109,10 @@ function addStep(context, addToHistory, img) {
     const cleanedUp = MathButton.CleanUpCrossouts(mathContent);
     const cleanup = cleanedUp !== mathContent ? cleanedUp : null;
     const step = {
-        stepValue: mathContent, explanation, cleanup, scratchpad: img,
+        stepValue: mathContent,
+        explanation,
+        cleanup,
+        scratchpad: img,
     };
     if (addToHistory) {
         stackAddAction(context, step);
@@ -104,6 +121,9 @@ function addStep(context, addToHistory, img) {
     addNewStep(context, step);
     context.state.displayScratchpad();
     context.scrollToBottom();
+    context.setState({
+        isUpdated: true,
+    });
     return true;
 }
 

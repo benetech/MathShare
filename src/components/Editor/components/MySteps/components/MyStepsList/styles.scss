@@ -4,7 +4,7 @@
     position: relative;
 }
 
-.background { 
+.background {
     position: relative;
     overflow: none;
     background-color: rgb(255, 255, 255);
@@ -26,4 +26,9 @@
     background-image:
         linear-gradient(90deg, transparent 104px, rgba(255, 102, 102, 0.63) 104px, rgba(255, 102, 102, 0.63) 105px, transparent 106px),
         linear-gradient(90deg, transparent 96px, rgba(255, 102, 102, 0.63) 96px, rgba(255, 102, 102, 0.63) 97px, transparent 97px);
+}
+
+.finishContainer {
+    display: flex;
+    align-items: center;
 }

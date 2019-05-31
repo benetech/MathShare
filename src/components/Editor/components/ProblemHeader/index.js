@@ -34,7 +34,8 @@ export default class ProblemHeader extends Component {
     shouldComponentUpdate(nextProps, nextState) {
         // this prevents unnecessary re-rendering and updates of the element
         return this.props.editLink !== nextProps.editLink || this.props.title !== nextProps.title
-            || this.props.math !== nextProps.math || this.state.isTourOpen !== nextState.isTourOpen;
+            || this.props.math !== nextProps.math || this.state.isTourOpen !== nextState.isTourOpen
+            || this.props.isUpdated !== nextProps.isUpdated;
     }
 
     componentDidUpdate() {
@@ -105,8 +106,6 @@ export default class ProblemHeader extends Component {
         const editOnlyControls = this.props.readOnly ? null
             : (
                 <div className={`d-flex justify-content-end flex-shrink-1 ${problem.btnContainer}`}>
-                    <span className={problem.editLinkLabel}>{Locales.strings.edit_link_label}</span>
-                    <input id="editUrl" type="text" readOnly value={this.props.editLink} className={problem.editLink} />
                     <Button
                         id="shareBtn"
                         className={classNames('btn', 'pointer', problem.button)}
@@ -124,7 +123,14 @@ export default class ProblemHeader extends Component {
                         icon="save"
                         content={Locales.strings.save}
                         onClick={this.props.saveProblem}
+                        disabled={!this.props.isUpdated}
                     />
+                    {this.props.lastSaved && (
+                        <div className={problem.timeContainer}>
+                            <div>Saved</div>
+                            <div>{this.props.lastSaved}</div>
+                        </div>
+                    )}
                     <Button
                         id="questionBtn"
                         className={classNames('btn', 'pointer', problem.button)}
@@ -141,49 +147,53 @@ export default class ProblemHeader extends Component {
             ? <span className={problem.label}>{Locales.strings.example}</span> : null;
 
         return (
-            <div className={`d-flex flex-row ${problem.header}`}>
-                <div className={problem.backBtnContainer}>
-                    <Button
-                        id="backBtn"
-                        className={classNames('btn', 'pointer', problem.button)}
-                        additionalStyles={['default']}
-                        type="button"
-                        icon="arrow-left"
-                        onClick={this.props.goBack}
-                        tabIndex="-1"
-                        ariaLabel={Locales.strings.back_to_problem_page}
-                        content={<span className="sROnly">{Locales.strings.back_to_problem_page}</span>}
-                    />
-                    <Button
-                        id="viewBtn"
-                        className={classNames('btn', 'pointer', problem.button)}
-                        additionalStyles={['default']}
-                        type="button"
-                        icon="search"
-                        onClick={this.props.viewProblem}
-                        tabIndex="-1"
-                        ariaLabel={Locales.strings.view_problem_description}
-                        content={<span className="sROnly">{Locales.strings.view_problem_description}</span>}
+            <React.Fragment>
+                <div className={`d-flex flex-row ${problem.header}`}>
+                    <div className={problem.backBtnContainer}>
+                        <Button
+                            id="backBtn"
+                            className={classNames('btn', 'pointer', problem.button)}
+                            additionalStyles={['default']}
+                            type="button"
+                            icon="arrow-left"
+                            onClick={this.props.goBack}
+                            tabIndex="-1"
+                            ariaLabel={Locales.strings.back_to_problem_page}
+                            content={<span className="sROnly">{Locales.strings.back_to_problem_page}</span>}
+                        />
+                        <Button
+                            id="viewBtn"
+                            className={classNames('btn', 'pointer', problem.button)}
+                            additionalStyles={['default']}
+                            type="button"
+                            icon="search"
+                            onClick={this.props.viewProblem}
+                            tabIndex="-1"
+                            ariaLabel={Locales.strings.view_problem_description}
+                            content={<span className="sROnly">{Locales.strings.view_problem_description}</span>}
+                        />
+                    </div>
+                    <span id="math-ellipsis" className={`flex-grow-1 ${problem.mathEllipsis}`}>&nbsp;</span>
+                    {exampleLabel}
+                    {imgButton}
+                    {editOnlyControls}
+                    <Tour
+                        onRequestClose={this.closeTour}
+                        steps={tourConfig}
+                        isOpen={this.state.isTourOpen}
+                        rounded={5}
+                        accentColor={accentColor}
+                        startAt={0}
+                        lastStepNextButton={
+                            <div className={classNames('btn', 'pointer', problem.btnFinish)}>{Locales.strings.finish}</div>
+                        }
                     />
                 </div>
-                <h1 id="ProblemTitle" className={problem.title}>{title}</h1>
-                <span id="ProblemMath" className={`${problem.title} ${problem.question}`}>{`$$${this.props.math}$$`}</span>
-                <span id="math-ellipsis" className={`flex-grow-1 ${problem.mathEllipsis}`}>&nbsp;</span>
-                {exampleLabel}
-                {imgButton}
-                {editOnlyControls}
-                <Tour
-                    onRequestClose={this.closeTour}
-                    steps={tourConfig}
-                    isOpen={this.state.isTourOpen}
-                    rounded={5}
-                    accentColor={accentColor}
-                    startAt={0}
-                    lastStepNextButton={
-                        <div className={classNames('btn', 'pointer', problem.btnFinish)}>{Locales.strings.finish}</div>
-                    }
-                />
-            </div>
+                <div className={`d-flex flex-row ${problem.subHeader}`}>
+                    <h1 id="ProblemTitle" className={problem.title}>{title}</h1>
+                    <span id="ProblemMath" className={`${problem.title} ${problem.question}`}>{`$$${this.props.math}$$`}</span>
+                </div>
+            </React.Fragment>
         );
     }
 }
