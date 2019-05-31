@@ -211,7 +211,6 @@ export default class Editor extends Component {
                 resolve(true);
             } else {
                 googleAnalytics('Save Problem');
-                const isInitialSave = this.state.editLink === Locales.strings.not_saved_yet;
                 axios.put(`${SERVER_URL}/solution/${this.state.solution.editCode}`, this.state.solution)
                     .then((response) => {
                         const solution = response.data;
@@ -229,10 +228,8 @@ export default class Editor extends Component {
                                 isUpdated: false,
                             };
                         });
-                        if (!isInitialSave) {
-                            alertSuccess(Locales.strings.problem_saved_success_message,
-                                Locales.strings.success);
-                        }
+                        alertSuccess(Locales.strings.problem_saved_success_message,
+                            Locales.strings.success);
                         resolve(true);
                     }).catch((error) => {
                         reject(error);
