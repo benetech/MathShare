@@ -1,10 +1,13 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import FontAwesome from 'react-fontawesome';
 import classNames from 'classnames';
 import { withRouter } from 'react-router-dom';
 import header from './styles.scss';
 import Locales from '../../../../strings';
-
+import {
+    toggleModals,
+} from '../../../../redux/problemList/actions';
 import logo from '../../../../../images/logo.png';
 
 import googleAnalytics from '../../../../scripts/googleAnalytics';
@@ -74,8 +77,8 @@ const MainPageHeader = (props) => {
         ? (
             <a
                 className={classNames('nav-link', header.pointer)}
-                onClick={() => props.shareCallback(['shareSet'])}
-                onKeyPress={() => props.shareCallback(['shareSet'])}
+                onClick={() => props.toggleModals(['shareSet'])}
+                onKeyPress={() => props.toggleModals(['shareSet'])}
                 role="button"
                 tabIndex="0"
             >
@@ -88,7 +91,7 @@ const MainPageHeader = (props) => {
             <a
                 className={classNames('nav-link', header.pointer)}
                 onClick={props.finishEditing}
-                onKeyPress={() => props.shareCallback(['shareSet'])}
+                onKeyPress={() => props.toggleModals(['shareSet'])}
                 role="link"
                 tabIndex="0"
             >
@@ -102,7 +105,7 @@ const MainPageHeader = (props) => {
                     googleAnalytics(Locales.strings.edit_problem_set);
                     props.history.push(`/problemSet/edit/${props.editCode}`);
                 }}
-                onKeyPress={() => props.shareCallback(['shareSet'])}
+                onKeyPress={() => props.toggleModals(['shareSet'])}
                 role="link"
                 tabIndex="0"
             >
@@ -234,4 +237,9 @@ const MainPageHeader = (props) => {
     );
 };
 
-export default MainPageHeader;
+export default connect(
+    () => ({}),
+    {
+        toggleModals,
+    },
+)(MainPageHeader);
