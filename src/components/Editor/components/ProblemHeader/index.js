@@ -35,7 +35,7 @@ export default class ProblemHeader extends Component {
         // this prevents unnecessary re-rendering and updates of the element
         return this.props.editLink !== nextProps.editLink || this.props.title !== nextProps.title
             || this.props.math !== nextProps.math || this.state.isTourOpen !== nextState.isTourOpen
-            || this.props.isUpdated !== nextProps.isUpdated;
+            || this.props.isUpdated !== nextProps.isUpdated || this.props.lastSaved !== nextProps.lastSaved;
     }
 
     componentDidUpdate() {
