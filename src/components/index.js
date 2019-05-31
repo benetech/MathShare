@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import ReactGA from 'react-ga';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faSignature, faSquareRootAlt }
-    from '@fortawesome/free-solid-svg-icons';
+import {
+    faSignature, faSquareRootAlt,
+} from '@fortawesome/free-solid-svg-icons';
 import PageIndex from './PageIndex';
 import NotFound from './NotFound';
 import Home from './Home';
@@ -12,13 +13,6 @@ import Editor from './Editor';
 export default class App extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            dataSet: {
-                problems: [],
-            },
-            problem: {},
-        };
-
         this.initializeIcons();
     }
 

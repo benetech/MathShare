@@ -2,9 +2,8 @@ import React from 'react';
 import { render } from 'react-dom';
 import { HashRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
-
-import store from './redux/store';
-
+import { ConnectedRouter } from 'connected-react-router';
+import configureStore, { history } from './redux/configureStore';
 import App from './components';
 import 'jquery/dist/jquery';
 import 'bootstrap/dist/js/bootstrap.bundle';
@@ -18,9 +17,11 @@ import './styles/styles.scss';
 import '../images/favicon.png';
 
 render((
-    <Provider store={store}>
-        <HashRouter>
-            <App />
-        </HashRouter>
+    <Provider store={configureStore()}>
+        <ConnectedRouter history={history}>
+            <HashRouter>
+                <App />
+            </HashRouter>
+        </ConnectedRouter>
     </Provider>
 ), document.getElementById('root'));
