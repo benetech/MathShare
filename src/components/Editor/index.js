@@ -226,6 +226,7 @@ export default class Editor extends Component {
                                 editLink: `${FRONTEND_URL}/problem/edit/${editCode}`,
                                 stepsFromLastSave: JSON.parse(JSON.stringify(steps)),
                                 lastSaved: (new Date().toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })),
+                                isUpdated: false,
                             };
                         });
                         if (!isInitialSave) {
