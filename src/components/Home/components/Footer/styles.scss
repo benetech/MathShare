@@ -1,10 +1,10 @@
 .footer {
   flex: 0 0 70px;
   justify-content: space-between;
-  background-color: #001F3F;
-  border-top: 10px solid #001F3F;
+  background-color: #ffffff;
+  border-top: 2px solid #f1f1f1;
+  padding-top: 8px;
   display: flex;
-  border-bottom: 10px solid #001F3F;
   overflow-y: auto;
 }
 
@@ -21,7 +21,12 @@
 
 .footerText {
   font-size: 0.7em;
-  color: #FFF;
+  color: #8c8c8c;
+
+  a,
+  a:hover {
+    color: #000000;
+  }
 }
 
 .benetech {
