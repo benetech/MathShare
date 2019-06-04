@@ -11,3 +11,29 @@
     background-color: #FFFFFF;
     border-right: 1px solid #CCC;
 }
+
+.actionBar {
+    padding: 10px;
+    padding-bottom: 0;
+
+    .left {
+        width: 50%;
+    }
+
+    .right {
+        width: 50%;
+        text-align: right;
+        padding: 10px 20px;
+    }
+
+    .actionBarText {
+        font-size: 20px;
+        padding-right: 10px;
+        top: 2px;
+        position: relative;
+    }
+
+    button span {
+        padding-right: 5px;
+    }
+}

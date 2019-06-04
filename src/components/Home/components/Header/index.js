@@ -129,17 +129,17 @@ const MainPageHeader = (props) => {
         </a>
     ) : null;
 
-    const shareProblemSetButton = !props.notFound && props.action !== 'review' ? (
-        <a
-            className={classNames('nav-link', header.pointer)}
-            onClick={props.shareProblemSetCallback}
-            onKeyPress={props.shareProblemSetCallback}
-            role="button"
-            tabIndex="0"
-        >
-            {Locales.strings.share_problem_set}
-        </a>
-    ) : null;
+    // const shareProblemSetButton = !props.notFound && props.action !== 'review' ? (
+    //     <a
+    //         className={classNames('nav-link', header.pointer)}
+    //         onClick={props.shareProblemSetCallback}
+    //         onKeyPress={props.shareProblemSetCallback}
+    //         role="button"
+    //         tabIndex="0"
+    //     >
+    //         {Locales.strings.share_problem_set}
+    //     </a>
+    // ) : null;
 
     return (
         <div id="topNavigationWrapper" className={header.header}>
@@ -158,9 +158,9 @@ const MainPageHeader = (props) => {
                     >
                         <div className={classNames('navbar-nav', 'mr-auto')} />
                         <ul aria-labelledby="topNavLabel" className={classNames('navbar-nav', header.navItem)}>
-                            <li className="nav_item">
+                            {/* <li className="nav_item">
                                 {shareProblemSetButton}
-                            </li>
+                            </li> */}
                             <li className="nav_item">
                                 <GettingStartedButton />
                             </li>

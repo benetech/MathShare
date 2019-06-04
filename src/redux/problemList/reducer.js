@@ -11,6 +11,7 @@ const initialState = {
         problems: [],
         editCode: null,
         shareCode: null,
+        title: '',
     },
     notFound: false,
     activeModals: [],

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { NotificationContainer } from 'react-notifications';
 import { connect } from 'react-redux';
+import classNames from 'classnames';
 import MainPageHeader from './components/Header';
 import NavigationHeader from './components/Navigation/Header';
 import NavigationProblems from './components/Navigation/Problems';
@@ -14,11 +15,9 @@ import ModalContainer, {
     EDIT_PROBLEM,
 } from '../ModalContainer';
 import { FRONTEND_URL } from '../../config';
-import {
-    addProblem, deleteProblem, requestProblemSet, saveProblems,
-    saveProblemSet, setActiveMathField, shareSolutions, setTempPalettes, toggleModals,
-} from '../../redux/problemList/actions';
+import problemActions from '../../redux/problemList/actions';
 import googleAnalytics from '../../scripts/googleAnalytics';
+import Button from '../Button';
 
 const mathLive = DEBUG_MODE ? require('../../../../mathlive/src/mathlive.js').default
     : require('../../lib/mathlivedist/mathlive.js');
@@ -109,9 +108,9 @@ class Home extends Component {
         this.props.toggleModals([PALETTE_CHOOSER, ADD_PROBLEM_SET]);
     }
 
-    saveProblemSet = (orderedProblems) => {
+    saveProblemSet = (orderedProblems, title) => {
         googleAnalytics(Locales.strings.add_problem_set);
-        this.props.saveProblemSet(orderedProblems);
+        this.props.saveProblemSet(orderedProblems, title);
     }
 
     finishEditing = () => {
@@ -163,7 +162,38 @@ class Home extends Component {
                     editProblemCallback={this.editProblem}
                 />
                 <main id="LeftNavigation" className={home.leftNavigation}>
-                    <NavigationHeader />
+                    {params.action !== 'review' && (
+                        <div className={classNames([
+                            'row',
+                            home.actionBar,
+                        ])}
+                        >
+                            <div className={classNames([
+                                'align-self-end',
+                                'col',
+                            ])}
+                            />
+                            <div className={home.right}>
+                                <span className={home.actionBarText}>
+                                    {Locales.strings.submit}
+                                    :
+                                    {' '}
+                                </span>
+                                <Button
+                                    id="shareBtn"
+                                    className={classNames([
+                                        'btn',
+                                        'btn-outline-dark',
+                                    ])}
+                                    type="button"
+                                    icon="link"
+                                    content={Locales.strings.link}
+                                    onClick={this.shareProblemSet}
+                                />
+                            </div>
+                        </div>
+                    )}
+                    <NavigationHeader set={problemList.set} />
                     <NavigationProblems
                         problems={problemList.set.problems}
                         editing={params.action === 'edit'}
@@ -183,15 +213,5 @@ export default connect(
     state => ({
         problemList: state.problemList,
     }),
-    {
-        addProblem,
-        deleteProblem,
-        requestProblemSet,
-        setActiveMathField,
-        setTempPalettes,
-        saveProblems,
-        saveProblemSet,
-        shareSolutions,
-        toggleModals,
-    },
+    problemActions,
 )(Home);

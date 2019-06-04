@@ -77,21 +77,25 @@ export const setProblemSetShareCode = problemSetShareCode => ({
     },
 });
 
-export const saveProblemSet = problems => ({
+export const saveProblemSet = (problems, title) => ({
     type: 'REQUEST_SAVE_PROBLEM_SET',
     payload: {
         problems,
+        title,
     },
 });
 
 export default {
+    addProblem,
     deleteProblem,
     requestDefaultRevision,
     requestProblemSet,
     toggleModals,
+    saveProblems,
     saveProblemSet,
     setTempPalettes,
     setActiveMathField,
     shareSolutions,
     setProblemSetShareCode,
+    updateProblemList,
 };
