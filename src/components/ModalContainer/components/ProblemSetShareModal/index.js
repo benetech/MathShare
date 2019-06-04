@@ -23,8 +23,15 @@ export default class ProblemSetShareModal extends Component {
                 <div id="demo-one-modal" className={editor.modal}>
                     <div className={editor.modalBody}>
                         <h3>
-                            {Locales.strings.share_link}
+                            {Locales.strings.submit_problem_link}
                         </h3>
+                        <div className={editor.modalMessage}>
+                            <p>
+                                Copy this link to your problem set and send
+                                {' '}
+                                to your teacher/paste in your LMS
+                            </p>
+                        </div>
                         <input type="text" readOnly value={this.props.problemSetShareLink} id="shareLink" className={editor.shareLink} />
                     </div>
                     <footer className={editor.modalFooter}>

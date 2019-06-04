@@ -8,11 +8,17 @@ export const fetchDefaultRevisionApi = () => axios.get(`${SERVER_URL}/problemSet
 
 export const fetchProblemsByRevisionCodeApi = revisionCode => axios.get(`${SERVER_URL}/problemSet/revision/${revisionCode}`);
 
+export const fetchProblemsByEditCodeApi = editCode => axios.get(`${SERVER_URL}/problemSet/${editCode}`);
+
 export const fetchProblemsByReviewCodeApi = reviewCode => axios.get(`${SERVER_URL}/solution/review/${reviewCode}`);
 
 export const fetchProblemsByActionAndCodeApi = (action, code) => {
     if (action === 'view') {
         return fetchProblemsByRevisionCodeApi(code);
+    }
+
+    if (action === 'edit') {
+        return fetchProblemsByEditCodeApi(code);
     }
     // action === 'review'
     return fetchProblemsByReviewCodeApi(code);

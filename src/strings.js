@@ -112,6 +112,7 @@ class Locales {
                 title: 'Title',
                 save_text: 'Save Text: ',
                 share_link: 'Share Link: ',
+                submit_problem_link: 'Submit Problem Link: ',
                 problem_image: 'Problem image',
                 confirmation_modal_unsaved_title: 'You have unsaved changes, do you wish to save?',
                 discard_changes: ' Discard Changes',
@@ -145,7 +146,7 @@ class Locales {
                 the: 'The',
                 finish: ' Finish',
                 tour_editor: 'Type or edit the equation using your keyboard and the math keys below. '
-                + 'Try using the cross out, replace, and calc buttons to help show your work.',
+                    + 'Try using the cross out, replace, and calc buttons to help show your work.',
                 tour_annotation: 'Describe your work by typing directly or using the microphone to record an explanation of your work (required).',
                 tour_input_containers: 'You can switch between symbols palette and the sketchpad.',
                 tour_add_step: 'Clean-up your work and start a new step.',
@@ -155,6 +156,8 @@ class Locales {
                 tour_save: 'Save your work so you don\'t lose it.',
                 tour_edit: 'Use this link to continue your work in the future.',
                 tour_share: 'Share your solution with others.',
+                link: ' Link',
+                submit: 'Submit',
             },
             es: {},
         });

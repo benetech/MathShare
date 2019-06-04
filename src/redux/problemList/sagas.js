@@ -82,6 +82,7 @@ function* requestProblemSetByCode() {
                 problems,
                 editCode,
                 shareCode,
+                title,
             } = response.data;
             if (action === 'review') {
                 storeSolutionsLocally(action, code, solutions);
@@ -90,6 +91,7 @@ function* requestProblemSetByCode() {
                     payload: {
                         problems: solutions.map(solution => solution.problem),
                         shareCode: code,
+                        title,
                     },
                 });
             } else {
@@ -112,6 +114,7 @@ function* requestProblemSetByCode() {
                         problems: orderedProblems,
                         editCode,
                         shareCode,
+                        title,
                     },
                 });
             }
@@ -302,6 +305,7 @@ function* requestSaveProblemSetSaga() {
     yield takeLatest('REQUEST_SAVE_PROBLEM_SET', function* workerSaga({
         payload: {
             problems,
+            title,
         },
     }) {
         try {
@@ -310,6 +314,7 @@ function* requestSaveProblemSetSaga() {
             } = yield select(getState);
             const set = {
                 problems,
+                title,
                 palettes: tempPalettes,
             };
             const {

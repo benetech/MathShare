@@ -22,6 +22,7 @@ export default class NewProblemsForm extends Component {
             problems: [],
             textAreaValue: '',
             displayScratchpad: null,
+            title: '',
         };
 
         this.save = this.save.bind(this);
@@ -94,7 +95,7 @@ export default class NewProblemsForm extends Component {
     }
 
     save() {
-        this.props.saveCallback(this.state.problems);
+        this.props.saveCallback(this.state.problems, this.state.title);
     }
 
     render() {
@@ -210,6 +211,19 @@ export default class NewProblemsForm extends Component {
                 underlayStyle={{ paddingTop: '2em' }}
             >
                 <div className={styles.container} id="container">
+                    {(this.props.title !== Locales.strings.edit_problem) && (
+                        <div className={styles.titleContainer}>
+                            <input
+                                type="text"
+                                placeholder="Problem Set Name"
+                                onChange={(e) => {
+                                    this.setState({
+                                        title: e.target.value,
+                                    });
+                                }}
+                            />
+                        </div>
+                    )}
                     {header}
                     {problems}
                     <MyWork
