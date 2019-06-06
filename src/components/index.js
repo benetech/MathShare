@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Switch, Route } from 'react-router-dom';
-import ReactGA from 'react-ga';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
     faSignature, faSquareRootAlt,
@@ -21,7 +20,6 @@ export default class App extends Component {
     }
 
     render() {
-        ReactGA.initialize(GA_ACCOUNT_ID);
         return (
             <Switch>
                 <Route exact path="/problemSet/:action/:code" render={p => <Home {...p} />} />
