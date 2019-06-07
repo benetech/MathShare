@@ -60,11 +60,11 @@ const MainPageHeader = (props) => {
             className={classNames('nav-link', header.pointer)}
             onClick={() => {
                 googleAnalytics(Locales.strings.getting_started_title);
-                history.push('/problem/example');
+                history.push('/app/problem/example');
             }}
             onKeyPress={() => {
                 googleAnalytics(Locales.strings.getting_started_title);
-                history.push('/problem/example');
+                history.push('/app/problem/example');
             }}
             role="link"
             tabIndex="0"
@@ -103,7 +103,7 @@ const MainPageHeader = (props) => {
                 className={classNames('nav-link', header.pointer)}
                 onClick={() => {
                     googleAnalytics(Locales.strings.edit_problem_set);
-                    props.history.push(`/problemSet/edit/${props.editCode}`);
+                    props.history.push(`/app/problemSet/edit/${props.editCode}`);
                 }}
                 onKeyPress={() => props.toggleModals(['shareSet'])}
                 role="link"

@@ -148,7 +148,7 @@ export default class Editor extends Component {
     onUnload(event) {
         const { editLink, solution, stepsFromLastSave } = this.state;
         const { location } = this.props;
-        if (location.pathname.indexOf('/problem/view') === '0' // check if the open view is readonly
+        if (location.pathname.indexOf('/app/problem/view') === '0' // check if the open view is readonly
             || (editLink !== Locales.strings.not_saved_yet
                 && this.compareStepArrays(solution.steps, stepsFromLastSave))) {
             return null;
@@ -222,7 +222,7 @@ export default class Editor extends Component {
                             //     this.toggleModals([SAVE_SET]);
                             // }
                             return {
-                                editLink: `${FRONTEND_URL}/problem/edit/${editCode}`,
+                                editLink: `${FRONTEND_URL}/app/problem/edit/${editCode}`,
                                 stepsFromLastSave: JSON.parse(JSON.stringify(steps)),
                                 lastSaved: (new Date().toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })),
                                 isUpdated: false,
@@ -255,7 +255,7 @@ export default class Editor extends Component {
             axios.put(`${SERVER_URL}/solution/${this.state.solution.editCode}`, this.state.solution)
                 .then((response) => {
                     this.setState({
-                        shareLink: `${FRONTEND_URL}/problem/view/${response.data.shareCode}`,
+                        shareLink: `${FRONTEND_URL}/app/problem/view/${response.data.shareCode}`,
                     }, this.toggleModals([SHARE_SET]));
                 });
         }

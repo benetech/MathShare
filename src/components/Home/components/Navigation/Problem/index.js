@@ -113,12 +113,12 @@ export default class Problem extends Component {
         const { action } = this.props;
         const currentSolution = getSolutionByProblem(action, this.props.problem, this.props.code);
         if (this.props.example) {
-            history.push('/problem/example/');
+            history.push('/app/problem/example/');
         } else if (currentSolution.editCode || currentSolution.shareCode) {
             if (currentSolution.editCode && action !== 'review') {
-                history.push(`/problem/edit/${currentSolution.editCode}`);
+                history.push(`/app/problem/edit/${currentSolution.editCode}`);
             } else {
-                history.push(`/problem/view/${currentSolution.shareCode}`);
+                history.push(`/app/problem/view/${currentSolution.shareCode}`);
             }
         } else {
             const solution = {
@@ -137,7 +137,7 @@ export default class Problem extends Component {
             };
             axios.post(`${SERVER_URL}/solution/`, solution)
                 .then((response) => {
-                    history.push(`/problem/edit/${response.data.editCode}`);
+                    history.push(`/app/problem/edit/${response.data.editCode}`);
                 });
         }
     }

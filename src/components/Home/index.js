@@ -117,7 +117,7 @@ class Home extends Component {
         const {
             set,
         } = this.props.problemList;
-        this.props.history.push(`/problemSet/view/${set.shareCode}`);
+        this.props.history.push(`/app/problemSet/view/${set.shareCode}`);
     }
 
     render() {
@@ -148,9 +148,9 @@ class Home extends Component {
                     toggleModals={this.props.toggleModals}
                     progressToAddingProblems={this.progressToAddingProblems}
                     deleteProblem={this.deleteProblem}
-                    shareLink={`${FRONTEND_URL}/problemSet/view/${problemList.set.shareCode}`}
-                    newSetShareLink={`${FRONTEND_URL}/problemSet/view/${problemList.newSetSharecode}`}
-                    problemSetShareLink={`${FRONTEND_URL}/problemSet/review/${problemList.problemSetShareCode}`}
+                    shareLink={`${FRONTEND_URL}/app/problemSet/view/${problemList.set.shareCode}`}
+                    newSetShareLink={`${FRONTEND_URL}/app/problemSet/view/${problemList.newSetSharecode}`}
+                    problemSetShareLink={`${FRONTEND_URL}/app/problemSet/review/${problemList.problemSetShareCode}`}
                     activateMathField={field => this.props.setActiveMathField(field)}
                     theActiveMathField={problemList.theActiveMathField}
                     addProblemCallback={this.addProblem}

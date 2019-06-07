@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Redirect, Route } from 'react-router-dom';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
     faSignature, faSquareRootAlt,
@@ -22,10 +22,13 @@ export default class App extends Component {
     render() {
         return (
             <Switch>
-                <Route exact path="/problemSet/:action/:code" render={p => <Home {...p} />} />
-                <Route exact path="/problem/:action/:code" render={p => <Editor {...p} />} />
-                <Route exact path="/problem/example" render={p => <Editor example {...p} />} />
-                <Route exact path="/" render={p => <PageIndex {...p} />} />
+                <Route exact path="/app/problemSet/:action/:code" render={p => <Home {...p} />} />
+                <Route exact path="/app/problem/:action/:code" render={p => <Editor {...p} />} />
+                <Route exact path="/app/problem/example" render={p => <Editor example {...p} />} />
+                <Route exact path="/app" render={p => <PageIndex {...p} />} />
+                <Route exact path="/">
+                    <Redirect to="/app" />
+                </Route>
                 <Route render={p => <NotFound {...p} />} />
             </Switch>
         );

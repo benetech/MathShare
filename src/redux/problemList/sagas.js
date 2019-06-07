@@ -51,7 +51,7 @@ function* requestDefaultRevisionSaga() {
                     revisionCode,
                 },
             });
-            yield put(push(`/problemSet/view/${revisionCode}`));
+            yield put(push(`/app/problemSet/view/${revisionCode}`));
         } catch (error) {
             // dispatch a failure action to the store with the error
             yield put({
