@@ -152,8 +152,11 @@ const MainPageHeader = (props) => {
                     <a className="navbar-brand" href="#">
                         <img src={logo} alt="Benetech Math Editor" height="37" />
                     </a>
+                    <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+                        <span className={`${header.navbarTogglerIcon} fa fa-bars fa-lg`} />
+                    </button>
                     <div
-                        className="navbar-collapse"
+                        className="collapse navbar-collapse"
                         id="navbarNav"
                     >
                         <div className={classNames('navbar-nav', 'mr-auto')} />
