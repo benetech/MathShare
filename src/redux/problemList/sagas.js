@@ -25,10 +25,13 @@ import {
 } from './selectors';
 import {
     ADD_PROBLEM_SET,
-    SHARE_NEW_SET,
+    // SHARE_NEW_SET,
     SHARE_PROBLEM_SET,
 } from '../../components/ModalContainer';
 import scrollTo from '../../scripts/scrollTo';
+import {
+    alertSuccess,
+} from '../../scripts/alert';
 import {
     createReviewProblemSetOnUpdate,
     getLocalSolutions,
@@ -36,6 +39,7 @@ import {
     shareSolutions,
     storeSolutionsLocally,
 } from '../../services/review';
+import Locales from '../../strings';
 
 
 function* requestDefaultRevisionSaga() {
@@ -321,15 +325,19 @@ function* requestSaveProblemSetSaga() {
                 data,
             } = yield call(saveProblemSetApi, set);
             const {
+                editCode,
                 shareCode,
             } = data;
             yield put({
                 type: 'REQUEST_SAVE_PROBLEM_SET_SUCCESS',
                 payload: {
+                    editCode,
                     shareCode,
                 },
             });
-            yield put(toggleModals([ADD_PROBLEM_SET, SHARE_NEW_SET]));
+            yield put(push(`/app/problemSet/view/${shareCode}`));
+            yield put(toggleModals([ADD_PROBLEM_SET]));
+            alertSuccess(Locales.strings.created_problem_set, Locales.strings.success);
         } catch (error) {
             // dispatch a failure action to the store with the error
             yield put({

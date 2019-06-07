@@ -31,6 +31,16 @@ class Home extends Component {
         // mathLive.renderMathInDocument();
     }
 
+    componentWillReceiveProps(newProps) {
+        const {
+            code,
+        } = this.props.match.params;
+        const newParams = newProps.match.params;
+        if (newParams.code !== code) {
+            this.props.requestProblemSet(newParams.action, newParams.code);
+        }
+    }
+
     addProblem = (imageData, text, index, newProblemSet) => {
         if (!this.validateProblem(text, imageData)) {
             return false;

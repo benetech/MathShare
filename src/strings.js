@@ -78,6 +78,7 @@ class Locales {
                 share_problem_set: 'Share Problem Set',
                 header: ' Navigation ',
                 problems: 'Problems',
+                created_problem_set: 'Problem Set has been created',
                 problem_sets: 'Problem Sets',
                 problem_set_1: 'Problem Set 01',
                 problem_set_2: 'Problem Set 02',
