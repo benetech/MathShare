@@ -245,7 +245,8 @@ export default class Problem extends Component {
                     )
                 }
             >
-                <div
+                <button
+                    type="button"
                     className={
                         classNames(
                             'btn',
@@ -253,26 +254,26 @@ export default class Problem extends Component {
                             buttons.huge,
                             problem.navSpan,
                             problem.middle,
+                            problem.tile,
                         )
                     }
+                    onClick={() => (
+                        this.props.addNew
+                            ? this.props.activateModals([ADD_PROBLEMS])
+                            : this.createNewSolution(history))}
+                    onKeyPress={() => (
+                        this.props.addNew
+                            ? this.props.activateModals([ADD_PROBLEMS])
+                            : this.createNewSolution(history))}
+                    tabIndex="0"
                 >
-                    <button
-                        type="button"
+                    <div
                         className={
                             classNames(
                                 problem.navItemButton,
                                 problem.colorInherit,
                             )
                         }
-                        onClick={() => (
-                            this.props.addNew
-                                ? this.props.activateModals([ADD_PROBLEMS])
-                                : this.createNewSolution(history))}
-                        onKeyPress={() => (
-                            this.props.addNew
-                                ? this.props.activateModals([ADD_PROBLEMS])
-                                : this.createNewSolution(history))}
-                        tabIndex="0"
                     >
                         {wrappedAnnotation}
                         <div
@@ -289,7 +290,7 @@ export default class Problem extends Component {
                             {equation}
                         </div>
                         {speechForMath}
-                    </button>
+                    </div>
                     {imgButton}
                     {removeButton}
                     {plusButton}
@@ -306,7 +307,7 @@ export default class Problem extends Component {
                         {equationFollowUp}
                     </div>
                     {this.props.problem && this.props.problem.scratchpad ? image : null}
-                </div>
+                </button>
             </div>
         ));
         return <NavItem />;

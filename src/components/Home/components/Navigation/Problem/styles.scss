@@ -3,11 +3,19 @@
     margin: auto;
     margin-bottom: 30px;
 
+    .tile {
+        background-color: #fafafa;
+    }
+
     >div {
-        padding: 1.0rem 1.25rem;
+        padding: 0;
         box-sizing: border-box;
         display: flex;
         flex-direction: column;
+
+        >button {
+            padding: 1.0rem 1.25rem;
+        }
     }
 }
 
@@ -84,9 +92,10 @@
 
 .equation {
     min-height: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    // display: flex;
+    text-align: center;
+    // align-items: center;
+    // justify-content: center;
     overflow: hidden;
 }
 
