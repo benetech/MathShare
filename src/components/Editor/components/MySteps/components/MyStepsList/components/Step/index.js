@@ -16,6 +16,11 @@ export default class Step extends Component {
         mathLive.renderMathInDocument();
     }
 
+    componentWillUpdate() {
+        mathLive.renderMathInDocument();
+        setTimeout(mathLive.renderMathInDocument, 100); // failsafe to ensure mathlive conversion
+    }
+
     /**
     Convert number to ordinal -- checked with NVDA that 2nd will read as "second", etc.
     From https://stackoverflow.com/questions/13627308/add-st-nd-rd-and-th-ordinal-suffix-to-a-number
