@@ -85,11 +85,16 @@ export const saveProblemSet = (problems, title) => ({
     },
 });
 
+export const resetProblemSet = () => ({
+    type: 'RESET_PROBLEM_SET',
+});
+
 export default {
     addProblem,
     deleteProblem,
     requestDefaultRevision,
     requestProblemSet,
+    resetProblemSet,
     toggleModals,
     saveProblems,
     saveProblemSet,

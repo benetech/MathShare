@@ -35,6 +35,12 @@ const problems = (state = initialState, {
             ...state,
             defaultRevisionCode: payload.revisionCode,
         };
+    case 'RESET_PROBLEM_SET':
+    case 'REQUEST_PROBLEM_SET':
+        return {
+            ...state,
+            set: initialState.set,
+        };
     case 'REQUEST_PROBLEM_SET_SUCCESS':
     case 'REQUEST_SAVE_PROBLEMS_SUCCESS':
         return {

@@ -10,6 +10,7 @@ import {
     push,
 } from 'connected-react-router';
 import {
+    resetProblemSet,
     saveProblems,
     setProblemSetShareCode,
     toggleModals,
@@ -321,6 +322,7 @@ function* requestSaveProblemSetSaga() {
             const {
                 tempPalettes,
             } = yield select(getState);
+            yield put(resetProblemSet());
             const set = {
                 problems,
                 title,
