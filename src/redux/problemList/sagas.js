@@ -31,6 +31,7 @@ import {
 import scrollTo from '../../scripts/scrollTo';
 import {
     alertSuccess,
+    alertError,
 } from '../../scripts/alert';
 import {
     createReviewProblemSetOnUpdate,
@@ -55,7 +56,7 @@ function* requestDefaultRevisionSaga() {
                     revisionCode,
                 },
             });
-            yield put(push(`/app/problemSet/view/${revisionCode}`));
+            // yield put(push(`/app/problemSet/view/${revisionCode}`));
         } catch (error) {
             // dispatch a failure action to the store with the error
             yield put({
@@ -76,9 +77,11 @@ function* requestProblemSetByCode() {
         try {
             const response = yield call(fetchProblemsByActionAndCodeApi, action, code);
             if (response.status !== 200) {
+                yield put(push('/app/'));
                 yield put({
                     type: 'REQUEST_PROBLEM_SET_FAILURE',
                 });
+                alertError('Unable to load problem set');
                 return;
             }
             const {
@@ -123,9 +126,11 @@ function* requestProblemSetByCode() {
                 });
             }
         } catch (error) {
+            yield put(push('/app/'));
             yield put({
                 type: 'REQUEST_PROBLEM_SET_FAILURE',
             });
+            alertError('Unable to load problem set');
         }
     });
 }

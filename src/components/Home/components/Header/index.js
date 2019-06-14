@@ -8,7 +8,7 @@ import Locales from '../../../../strings';
 import {
     toggleModals,
 } from '../../../../redux/problemList/actions';
-import logo from '../../../../../images/logo.png';
+import logo from '../../../../../images/mathshare_logo_white.png';
 
 import googleAnalytics from '../../../../scripts/googleAnalytics';
 
@@ -73,7 +73,7 @@ const MainPageHeader = (props) => {
         </a>
     ));
 
-    const shareButton = props.editing && !props.notFound
+    const shareButton = props.editing && !props.notFound && props.action
         ? (
             <a
                 className={classNames('nav-link', header.pointer)}
@@ -113,7 +113,7 @@ const MainPageHeader = (props) => {
             </a>
         );
 
-    if (props.notFound) {
+    if (props.notFound || !props.action) {
         link = null;
     }
 
@@ -129,18 +129,6 @@ const MainPageHeader = (props) => {
         </a>
     ) : null;
 
-    // const shareProblemSetButton = !props.notFound && props.action !== 'review' ? (
-    //     <a
-    //         className={classNames('nav-link', header.pointer)}
-    //         onClick={props.shareProblemSetCallback}
-    //         onKeyPress={props.shareProblemSetCallback}
-    //         role="button"
-    //         tabIndex="0"
-    //     >
-    //         {Locales.strings.share_problem_set}
-    //     </a>
-    // ) : null;
-
     return (
         <div id="topNavigationWrapper" className={header.header}>
             <header>
@@ -149,8 +137,15 @@ const MainPageHeader = (props) => {
                     id="topNavigation"
                 >
                     <h2 id="topNavLabel" className="sROnly">{Locales.strings.header}</h2>
-                    <a className="navbar-brand" href="#">
+                    <a
+                        className="navbar-brand"
+                        href="#/app"
+                        onClick={() => {
+                            googleAnalytics('clicked logo');
+                        }}
+                    >
                         <img src={logo} alt="Benetech Math Editor" height="37" />
+                        <span className={header.beta}>beta</span>
                     </a>
                     <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
                         <span className={`${header.navbarTogglerIcon} fa fa-bars fa-lg`} />
@@ -161,21 +156,26 @@ const MainPageHeader = (props) => {
                     >
                         <div className={classNames('navbar-nav', 'mr-auto')} />
                         <ul aria-labelledby="topNavLabel" className={classNames('navbar-nav', header.navItem)}>
-                            {/* <li className="nav_item">
-                                {shareProblemSetButton}
-                            </li> */}
-                            <li className="nav_item">
-                                <GettingStartedButton />
-                            </li>
-                            <li className="nav_item">
-                                {addProblemSetButton}
-                            </li>
-                            <li className="nav_item">
-                                {shareButton}
-                            </li>
-                            <li className="nav_item">
-                                {link}
-                            </li>
+                            {props.action && (
+                                <li className="nav_item">
+                                    <GettingStartedButton />
+                                </li>
+                            )}
+                            {props.action && (
+                                <li className="nav_item">
+                                    {!props.action && addProblemSetButton}
+                                </li>
+                            )}
+                            {props.action && (
+                                <li className="nav_item">
+                                    {!props.action && shareButton}
+                                </li>
+                            )}
+                            {props.action && (
+                                <li className="nav_item">
+                                    {link}
+                                </li>
+                            )}
                             {/*
                             <li className={classNames('nav-item', ['dropdown'])}>
                                 <a
@@ -212,16 +212,32 @@ const MainPageHeader = (props) => {
                             </li>
                             */}
                             <li className="nav-item">
-                                <a className="nav-link" href="mailto:info@diagramcenter.org">
-                                    {Locales.strings.contact_us}
+                                <a
+                                    className="nav-link"
+                                    href="https://docs.google.com/document/d/e/2PACX-1vQOx_2OGBBrG0AQkQC1Y9K2zUpjod-YKQvK5Z6_aCEdFgy2aINtBei5Xxm8pK-UinG0glY4C8aLVXKD/pub"
+                                    onClick={() => {
+                                        googleAnalytics('click help center');
+                                    }}
+                                >
+                                    {Locales.strings.help_center}
                                 </a>
                             </li>
+                            {props.action && (
+                                <li className="nav-item">
+                                    <a className="nav-link" href="mailto:info@diagramcenter.org">
+                                        {Locales.strings.contact_us}
+                                    </a>
+                                </li>
+                            )}
                             <li className="nav-item">
                                 <a
                                     href="http://www.surveygizmo.com/s3/4048161/Benetech-s-Math-Editor-Online-Feedback"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="nav-link"
+                                    onClick={() => {
+                                        googleAnalytics('click feedback');
+                                    }}
                                 >
                                     <FontAwesome
                                         className="super-crazy-colors"

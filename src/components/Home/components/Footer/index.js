@@ -5,8 +5,8 @@ import Locales from '../../../../strings';
 import benetechLogoTransparent from '../../../../../images/benetech-logo-transparent.gif';
 import ideaLogo from '../../../../../images/IDEA-logo.gif';
 
-const MainPageFooter = () => (
-    <footer id="footer" className={footer.footer}>
+const MainPageFooter = ({ customClass }) => (
+    <footer id="footer" className={`${footer.footer} ${customClass || ''}`}>
         <h2 className="sROnly">
             {' '}
             {Locales.strings.footer}

@@ -11,7 +11,6 @@ const problems = (state = {}, {
 }) => {
     switch (type) {
     case LOCATION_CHANGE:
-        console.log(payload);
         ReactGA.pageview(
             payload.location.pathname,
         );

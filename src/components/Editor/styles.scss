@@ -1,4 +1,3 @@
-
 .modalAreaHeading {
     color: rgb(0, 31, 63);
     font-style: italic;
@@ -24,6 +23,7 @@
 }
 
 .mainWorkWrapper {
+    display: table-caption;
     min-height: 100%;
     overflow: auto;
     background-color: rgb(255, 255, 255);
@@ -34,6 +34,7 @@
     background-size: 100% 2.6em;
     background-position: 0px 25px;
     background-attachment: local;
+    padding-bottom: 25px;
 }
 
 .mainWrapper {
@@ -44,12 +45,12 @@
 }
 
 .alertContainer {
-    position: absolute; 
-    margin-left: auto; 
-    margin-right: auto; 
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
     left: 0;
     right: 0;
-    z-index: 100; 
-    top: 2.5%; 
+    z-index: 100;
+    top: 2.5%;
     width: 30%;
 }

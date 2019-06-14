@@ -123,7 +123,6 @@ export default class MathButton extends Component {
                 },
             });
             this.pickr.on('save', (color) => {
-                console.log('save', color);
                 let hexColor = '#000000';
                 if (color) {
                     hexColor = color.toHEXA().toString();

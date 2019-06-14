@@ -7,6 +7,7 @@ import {
 /* eslint-disable no-unused-vars */
 const initialState = {
     revisionCode: null,
+    defaultRevisionCode: null,
     set: {
         problems: [],
         editCode: null,
@@ -32,7 +33,7 @@ const problems = (state = initialState, {
     case 'REQUEST_DEFAULT_REVISION_SUCCESS':
         return {
             ...state,
-            revisionCode: payload.revisionCode,
+            defaultRevisionCode: payload.revisionCode,
         };
     case 'REQUEST_PROBLEM_SET_SUCCESS':
     case 'REQUEST_SAVE_PROBLEMS_SUCCESS':

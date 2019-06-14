@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { NotificationContainer } from 'react-notifications';
 import axios from 'axios';
 import ProblemHeader from './components/ProblemHeader';
 import MyStepsHeader from './components/MySteps/components/MyStepsHeader';
@@ -67,7 +66,6 @@ export default class Editor extends Component {
             lastSaved: null,
         };
 
-        this.toggleModals = this.toggleModals.bind(this);
         this.restoreEditorPosition = this.restoreEditorPosition.bind(this);
         this.cancelEditCallback = this.cancelEditCallback.bind(this);
         this.textAreaChanged = this.textAreaChanged.bind(this);
@@ -198,7 +196,7 @@ export default class Editor extends Component {
     goBack() {
         if (!this.compareStepArrays(this.state.solution.steps, this.state.stepsFromLastSave)
             && !this.props.example) {
-            this.toggleModals([CONFIRMATION_BACK]);
+            this.props.toggleModals([CONFIRMATION_BACK]);
         } else {
             this.props.history.goBack();
         }
@@ -248,7 +246,7 @@ export default class Editor extends Component {
         if (this.props.example) {
             this.setState({
                 shareLink: Locales.strings.example_share_code,
-            }, this.toggleModals([SHARE_SET]));
+            }, this.props.toggleModals([SHARE_SET]));
         } else {
             googleAnalytics('Share Problem');
             updateSolution(this.state.solution);
@@ -256,13 +254,13 @@ export default class Editor extends Component {
                 .then((response) => {
                     this.setState({
                         shareLink: `${FRONTEND_URL}/app/problem/view/${response.data.shareCode}`,
-                    }, this.toggleModals([SHARE_SET]));
+                    }, this.props.toggleModals([SHARE_SET]));
                 });
         }
     }
 
     viewProblem() {
-        this.toggleModals([VIEW_SET]);
+        this.props.toggleModals([VIEW_SET]);
     }
 
     textAreaChanged(text) {
@@ -321,28 +319,13 @@ export default class Editor extends Component {
         mathLive.renderMathInDocument();
     }
 
-    toggleModals(modals) {
-        this.setState((prevState) => {
-            let oldModals = prevState.activeModals;
-            // eslint-disable-next-line no-restricted-syntax
-            for (const modal of modals) {
-                if (prevState.activeModals.indexOf(modal) !== -1) {
-                    oldModals = oldModals.filter(e => e !== modal);
-                } else {
-                    oldModals.push(modal);
-                }
-            }
-            return { activeModals: oldModals };
-        });
-    }
-
     greenButtonCallback() {
-        this.toggleModals([CONFIRMATION_BACK]);
+        this.props.toggleModals([CONFIRMATION_BACK]);
         this.saveProblem();
     }
 
     redButtonCallback() {
-        this.toggleModals([CONFIRMATION_BACK]);
+        this.props.toggleModals([CONFIRMATION_BACK]);
         this.props.history.goBack();
     }
 
@@ -383,7 +366,6 @@ export default class Editor extends Component {
 
         return (
             <div id="MainWorkWrapper" className={editor.mainWorkWrapper}>
-                <NotificationContainer />
                 <ModalContainer {...this} {...this.state} />
                 <main id="MainWorkArea" className={editor.editorAndHistoryWrapper}>
                     <ProblemHeader
@@ -392,6 +374,7 @@ export default class Editor extends Component {
                         {...this.state.solution.problem}
                         math={JSON.parse(JSON.stringify(this.state.solution.problem.text))}
                         example={this.props.example}
+                        shareProblem={this.props.shareProblem}
                     />
                     <MyStepsHeader readOnly={this.state.readOnly} />
                     {myStepsList}
