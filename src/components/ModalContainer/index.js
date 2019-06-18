@@ -90,7 +90,7 @@ export default class ModalContainer extends Component {
                         this.props.toggleModals([CONFIRMATION_BACK]);
                         this.props.history.goBack();
                     }}
-                    greenButtonCallback={this.props.greenButtonCallback}
+                    greenButtonCallback={this.props.saveProblemCallback}
                     deactivateModal={() => this.props.toggleModals([CONFIRMATION_BACK])}
                     title={Locales.strings.confirmation_modal_unsaved_title}
                     redButtonLabel={Locales.strings.discard_changes}

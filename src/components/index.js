@@ -8,6 +8,7 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import {
     faSignature, faSquareRootAlt,
 } from '@fortawesome/free-solid-svg-icons';
+import axios from 'axios';
 import PageIndex from './PageIndex';
 import NotFound from './NotFound';
 import Home from './Home';
@@ -15,13 +16,15 @@ import Editor from './Editor';
 import MainPageFooter from './Home/components/Footer';
 import Locales from '../strings';
 import ModalContainer, {
-    CONFIRMATION, PALETTE_CHOOSER, ADD_PROBLEM_SET,
-    EDIT_PROBLEM,
+    CONFIRMATION, CONFIRMATION_BACK, PALETTE_CHOOSER, ADD_PROBLEM_SET,
+    EDIT_PROBLEM, SHARE_SET, VIEW_SET,
 } from './ModalContainer';
-import { alertWarning } from '../scripts/alert';
+import { alertWarning, alertSuccess } from '../scripts/alert';
 import googleAnalytics from '../scripts/googleAnalytics';
-import { FRONTEND_URL } from '../config';
-import problemActions from '../redux/problemList/actions';
+import { SERVER_URL, FRONTEND_URL } from '../config';
+import problemListActions from '../redux/problemList/actions';
+import problemActions from '../redux/problem/actions';
+import { updateSolution } from '../services/review';
 
 const mathLive = DEBUG_MODE ? require('../../mathlive/src/mathlive.js').default
     : require('../lib/mathlivedist/mathlive.js');
@@ -126,6 +129,92 @@ class App extends Component {
         this.props.history.push(`/app/problemSet/view/${set.shareCode}`);
     }
 
+    compareStepArrays = (first, second) => {
+        if (first.length !== second.length) {
+            return false;
+        }
+        for (let i = 0; i < first.length; i += 1) {
+            if (first[i].stepValue !== second[i].stepValue
+                || first[i].explanation !== second[i].explanation
+                || first[i].scratchpad !== second[i].scratchpad) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    saveProblem = () => new Promise((resolve, reject) => {
+        if (this.props.example) {
+            this.props.updateProblemStore({ editLink: Locales.strings.example_edit_code });
+            resolve(true);
+        } else {
+            googleAnalytics('Save Problem');
+            axios.put(`${SERVER_URL}/solution/${this.props.problemStore.solution.editCode}`, this.props.problemStore.solution)
+                .then((response) => {
+                    const { problemStore } = this.props;
+                    const solution = response.data;
+                    updateSolution(solution);
+                    const editCode = problemStore.solution.editCode;
+                    const steps = problemStore.solution.steps;
+                    this.props.updateProblemStore({
+                        editLink: `${FRONTEND_URL}/app/problem/edit/${editCode}`,
+                        stepsFromLastSave: JSON.parse(JSON.stringify(steps)),
+                        lastSaved: (new Date().toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })),
+                        isUpdated: false,
+                    });
+                    alertSuccess(Locales.strings.problem_saved_success_message,
+                        Locales.strings.success);
+                    resolve(true);
+                }).catch((error) => {
+                    reject(error);
+                });
+        }
+    })
+
+    finishProblem = () => {
+        this.saveProblem().then(() => {
+            this.goBack();
+        });
+    }
+
+    shareProblem = () => {
+        if (this.props.example) {
+            this.props.updateProblemStore({
+                shareLink: Locales.strings.example_share_code,
+            });
+            this.props.toggleModals([SHARE_SET]);
+        } else {
+            googleAnalytics('Share Problem');
+            updateSolution(this.props.problemStore.solution);
+            axios.put(`${SERVER_URL}/solution/${this.props.problemStore.solution.editCode}`, this.props.problemStore.solution)
+                .then((response) => {
+                    this.props.updateProblemStore({
+                        shareLink: `${FRONTEND_URL}/app/problem/view/${response.data.shareCode}`,
+                    });
+                    this.props.toggleModals([SHARE_SET]);
+                });
+        }
+    }
+
+    viewProblem = () => {
+        this.props.toggleModals([VIEW_SET]);
+    }
+
+    saveProblemCallback = () => {
+        this.props.toggleModals([CONFIRMATION_BACK]);
+        this.saveProblem();
+    }
+
+    goBack = () => {
+        const { problemStore } = this.props;
+        if (!this.compareStepArrays(problemStore.solution.steps, problemStore.stepsFromLastSave)
+            && !this.props.example) {
+            this.props.toggleModals([CONFIRMATION_BACK]);
+        } else {
+            this.props.history.goBack();
+        }
+    }
+
     render() {
         const commonProps = this.props;
         const { problemList, problemStore } = this.props;
@@ -151,6 +240,7 @@ class App extends Component {
                         problemToEdit={problemList.problemToEdit}
                         editProblemCallback={this.editProblem}
                         history={this.props.history}
+                        {...this}
                     />
                     <Switch>
                         <Route exact path="/app/problemSet/:action/:code" render={p => <Home {...commonProps} {...p} {...this} />} />
@@ -174,5 +264,8 @@ export default withRouter(connect(
         problemList: state.problemList,
         problemStore: state.problem,
     }),
-    problemActions,
+    {
+        ...problemActions,
+        ...problemListActions,
+    },
 )(App));
