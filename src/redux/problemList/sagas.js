@@ -241,7 +241,9 @@ function* requestDeleteProblemSaga() {
                 set,
             } = yield select(getState);
 
-            const updatedProblems = set.problems.splice(problemToDeleteIndex, 1);
+            const updatedProblems = set.problems.filter(
+                (_problem, index) => index !== problemToDeleteIndex,
+            );
             yield put(saveProblems(updatedProblems));
         } catch (error) {
             // dispatch a failure action to the store with the error

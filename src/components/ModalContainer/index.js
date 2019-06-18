@@ -86,7 +86,10 @@ export default class ModalContainer extends Component {
         const confirmationBackModal = this.state.activeModals.includes(CONFIRMATION_BACK)
             ? (
                 <ConfirmationModal
-                    redButtonCallback={this.props.redButtonCallback}
+                    redButtonCallback={() => {
+                        this.props.toggleModals([CONFIRMATION_BACK]);
+                        this.props.history.goBack();
+                    }}
                     greenButtonCallback={this.props.greenButtonCallback}
                     deactivateModal={() => this.props.toggleModals([CONFIRMATION_BACK])}
                     title={Locales.strings.confirmation_modal_unsaved_title}

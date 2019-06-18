@@ -128,7 +128,7 @@ class App extends Component {
 
     render() {
         const commonProps = this.props;
-        const { problemList } = this.props;
+        const { problemList, problemStore } = this.props;
         return (
             <React.Fragment>
                 <NotificationContainer />
@@ -138,7 +138,7 @@ class App extends Component {
                         toggleModals={this.props.toggleModals}
                         progressToAddingProblems={this.progressToAddingProblems}
                         deleteProblem={this.deleteProblem}
-                        shareLink={`${FRONTEND_URL}/app/problemSet/view/${problemList.set.shareCode}`}
+                        shareLink={problemStore.shareLink}
                         newSetShareLink={`${FRONTEND_URL}/app/problemSet/view/${problemList.newSetSharecode}`}
                         problemSetShareLink={`${FRONTEND_URL}/app/problemSet/review/${problemList.problemSetShareCode}`}
                         activateMathField={field => this.props.setActiveMathField(field)}
@@ -150,6 +150,7 @@ class App extends Component {
                         saveProblems={this.props.saveProblems}
                         problemToEdit={problemList.problemToEdit}
                         editProblemCallback={this.editProblem}
+                        history={this.props.history}
                     />
                     <Switch>
                         <Route exact path="/app/problemSet/:action/:code" render={p => <Home {...commonProps} {...p} {...this} />} />
@@ -171,6 +172,7 @@ class App extends Component {
 export default withRouter(connect(
     state => ({
         problemList: state.problemList,
+        problemStore: state.problem,
     }),
     problemActions,
 )(App));

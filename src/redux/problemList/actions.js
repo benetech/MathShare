@@ -89,9 +89,18 @@ export const resetProblemSet = () => ({
     type: 'RESET_PROBLEM_SET',
 });
 
+export const editProblem = (imageData, title) => ({
+    type: 'REQUEST_EDIT_PROBLEM',
+    payload: {
+        imageData,
+        title,
+    },
+});
+
 export default {
     addProblem,
     deleteProblem,
+    editProblem,
     requestDefaultRevision,
     requestProblemSet,
     resetProblemSet,

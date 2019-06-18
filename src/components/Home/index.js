@@ -58,7 +58,7 @@ class Home extends Component {
                     action={params.action}
                 />
                 <main id="LeftNavigation" className={home.leftNavigation}>
-                    {params.action !== 'review' && (
+                    {(params.action !== 'review' && params.action !== 'edit') && (
                         <div className={classNames([
                             'row',
                             home.actionBar,

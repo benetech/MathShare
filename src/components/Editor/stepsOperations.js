@@ -9,18 +9,20 @@ import {
 } from '../../scripts/alert';
 import Locales from '../../strings';
 import googleAnalytics from '../../scripts/googleAnalytics';
+import { countEditorPosition } from '../../redux/problem/helpers';
 
 function addNewStep(context, step) {
+    const { updateProblemStore, problemStore } = context.props;
     googleAnalytics('Add new step');
-    const newSteps = context.state.solution.steps;
+    const newSteps = problemStore.solution.steps;
     newSteps.push(step);
-    const updatedMathField = context.state.theActiveMathField;
+    const updatedMathField = problemStore.theActiveMathField;
     updatedMathField.latex(step.cleanup);
 
-    const solution = context.state.solution;
+    const solution = problemStore.solution;
     solution.steps = newSteps;
-    context.setState({
-        editorPosition: context.countEditorPosition(newSteps),
+    updateProblemStore({
+        editorPosition: countEditorPosition(newSteps),
         solution,
         theActiveMathField: updatedMathField,
         textAreaValue: '',
@@ -29,51 +31,56 @@ function addNewStep(context, step) {
 }
 
 function deleteLastStep(context) {
+    const { updateProblemStore, problemStore } = context.props;
     googleAnalytics('Delete last step');
-    const newSteps = context.state.solution.steps;
+    const newSteps = problemStore.solution.steps;
     newSteps.pop();
-    context.setState({
+    updateProblemStore({
         steps: newSteps,
-        editorPosition: context.countEditorPosition(context.state.solution.steps),
+        editorPosition: countEditorPosition(problemStore.solution.steps),
         isUpdated: true,
-    }, context.restoreEditorPosition);
+    });
+    context.restoreEditorPosition();
 }
 
 function deleteStep(context, addToHistory) {
+    const { problemStore } = context.props;
     googleAnalytics('Delete step');
-    const steps = context.state.solution.steps;
+    const steps = problemStore.solution.steps;
     const lastStep = steps[steps.length - 1];
 
     if (addToHistory) {
         stackDeleteAction(context, lastStep);
     }
 
-    context.state.displayScratchpad();
+    problemStore.displayScratchpad();
     deleteLastStep(context);
 }
 
 function editStep(context, stepNumber) {
+    const { problemStore, updateProblemStore } = context.props;
     googleAnalytics('Edit step');
-    const mathStep = context.state.solution.steps[stepNumber - 1];
-    const updatedMathField = context.state.theActiveMathField;
+    const mathStep = problemStore.solution.steps[stepNumber - 1];
+    const updatedMathField = problemStore.theActiveMathField;
     updatedMathField.latex(mathStep.stepValue);
-    context.state.displayScratchpad(mathStep.scratchpad);
-    context.setState({
+    problemStore.displayScratchpad(mathStep.scratchpad);
+    updateProblemStore({
         editedStep: stepNumber - 1,
         theActiveMathField: updatedMathField,
         textAreaValue: mathStep.explanation,
         editing: true,
         updateMathFieldMode: true,
         isUpdated: true,
-    },
-    () => context.moveEditorBelowSpecificStep(stepNumber));
+    });
+    context.moveEditorBelowSpecificStep(stepNumber);
 }
 
 function updateStep(context, img) {
+    const { updateProblemStore, problemStore } = context.props;
     googleAnalytics('Edit step');
-    const index = context.state.editedStep;
+    const index = problemStore.editedStep;
 
-    if (context.state.textAreaValue === '') {
+    if (problemStore.textAreaValue === '') {
         // alertWarning(Locales.strings.no_description_warning, 'Warning');
         $('#mathAnnotation').tooltip('show');
         setTimeout(() => {
@@ -81,22 +88,23 @@ function updateStep(context, img) {
         }, 6000);
         return;
     }
-    const mathStep = Object.assign({}, context.state.solution.steps[index]);
-    const cleanedup = MathButton.CleanUpCrossouts(context.state.theActiveMathField.latex());
-    const cleanup = cleanedup === context.state.theActiveMathField.latex() ? null : cleanedup;
-    context.updateMathEditorRow(context.state.theActiveMathField.latex(),
-        context.state.textAreaValue, index, cleanup, img);
+    const mathStep = Object.assign({}, problemStore.solution.steps[index]);
+    const cleanedup = MathButton.CleanUpCrossouts(problemStore.theActiveMathField.latex());
+    const cleanup = cleanedup === problemStore.theActiveMathField.latex() ? null : cleanedup;
+    context.updateMathEditorRow(problemStore.theActiveMathField.latex(),
+        problemStore.textAreaValue, index, cleanup, img);
     context.cancelEditCallback(mathStep.stepValue, mathStep.explanation,
         mathStep.cleanup, index, mathStep.scratchpad);
     alertSuccess(Locales.strings.successfull_update_message, 'Success');
-    context.state.displayScratchpad();
-    context.setState({
+    problemStore.displayScratchpad();
+    updateProblemStore({
         isUpdated: true,
     });
 }
 
 function addStep(context, addToHistory, img) {
-    if (!context.state.textAreaValue || context.state.textAreaValue === '' || $.trim(context.state.textAreaValue).length === 0) {
+    const { problemStore, updateProblemStore } = context.props;
+    if (!problemStore.textAreaValue || problemStore.textAreaValue === '' || $.trim(problemStore.textAreaValue).length === 0) {
         // alertWarning(Locales.strings.no_description_warning, 'Warning');
         $('#mathAnnotation').tooltip('show');
         setTimeout(() => {
@@ -104,8 +112,8 @@ function addStep(context, addToHistory, img) {
         }, 6000);
         return false;
     }
-    const mathContent = context.state.theActiveMathField.latex();
-    const explanation = context.state.textAreaValue;
+    const mathContent = problemStore.theActiveMathField.latex();
+    const explanation = problemStore.textAreaValue;
     const cleanedUp = MathButton.CleanUpCrossouts(mathContent);
     const cleanup = cleanedUp !== mathContent ? cleanedUp : null;
     const step = {
@@ -119,9 +127,9 @@ function addStep(context, addToHistory, img) {
     }
 
     addNewStep(context, step);
-    context.state.displayScratchpad();
+    problemStore.displayScratchpad();
     context.scrollToBottom();
-    context.setState({
+    updateProblemStore({
         isUpdated: true,
     });
     return true;
