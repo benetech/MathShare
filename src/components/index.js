@@ -217,13 +217,13 @@ class App extends Component {
 
     render() {
         const commonProps = this.props;
-        const { problemList, problemStore } = this.props;
+        const { modal, problemList, problemStore } = this.props;
         return (
             <React.Fragment>
                 <NotificationContainer />
                 <div className="body-container">
                     <ModalContainer
-                        activeModals={problemList.activeModals}
+                        activeModals={modal.activeModals}
                         toggleModals={this.props.toggleModals}
                         progressToAddingProblems={this.progressToAddingProblems}
                         deleteProblem={this.deleteProblem}
@@ -240,6 +240,7 @@ class App extends Component {
                         problemToEdit={problemList.problemToEdit}
                         editProblemCallback={this.editProblem}
                         history={this.props.history}
+                        {...problemStore}
                         {...this}
                     />
                     <Switch>
@@ -263,6 +264,7 @@ export default withRouter(connect(
     state => ({
         problemList: state.problemList,
         problemStore: state.problem,
+        modal: state.modal,
     }),
     {
         ...problemActions,

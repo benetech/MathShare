@@ -178,17 +178,6 @@ class Editor extends Component {
 
         return (
             <div id="MainWorkWrapper" className={editor.mainWorkWrapper}>
-                {/* <ModalContainer
-                    getApplicationNode={this.getApplicationNode}
-                    finishProblem={this.finishProblem}
-                    greenButtonCallback={this.greenButtonCallback}
-                    shareProblem={this.shareProblem}
-                    viewProblem={this.viewProblem}
-                    textAreaChanged={this.textAreaChanged}
-                    cancelEditCallback={this.cancelEditCallback}
-                    moveEditorBelowSpecificStep={this.moveEditorBelowSpecificStep}
-                    updateMathEditorRow={this.updateMathEditorRow}
-                /> */}
                 <main id="MainWorkArea" className={editor.editorAndHistoryWrapper}>
                     <ProblemHeader
                         {...this}

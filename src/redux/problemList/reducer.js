@@ -1,9 +1,3 @@
-import {
-    CONFIRMATION,
-    ADD_PROBLEM_SET,
-    EDIT_PROBLEM,
-} from '../../components/ModalContainer';
-
 /* eslint-disable no-unused-vars */
 const initialState = {
     revisionCode: null,
@@ -15,7 +9,8 @@ const initialState = {
         title: '',
     },
     notFound: false,
-    activeModals: [],
+    problemToEditIndex: null,
+    problemToDeleteIndex: null,
     allowedPalettes: [],
     theActiveMathField: null,
     tempPalettes: [],
@@ -74,37 +69,6 @@ const problems = (state = initialState, {
                 payload.problem,
             ],
         };
-    case 'TOGGLE_MODALS': {
-        let oldModals = state.activeModals.slice();
-        let actionUpdate = {};
-        // eslint-disable-next-line no-restricted-syntax
-        for (const modal of payload.modals) {
-            if (oldModals.indexOf(modal) !== -1) {
-                oldModals = oldModals.filter(e => e !== modal);
-            } else {
-                if (modal === ADD_PROBLEM_SET) {
-                    actionUpdate = {
-                        tempProblems: [],
-                    };
-                } else if (modal === CONFIRMATION) {
-                    actionUpdate = {
-                        problemToDeleteIndex: payload.index,
-                    };
-                } else if (modal === EDIT_PROBLEM) {
-                    actionUpdate = {
-                        problemToEditIndex: payload.index,
-                        problemToEdit: state.set.problems[payload.index],
-                    };
-                }
-                oldModals.push(modal);
-            }
-        }
-        return {
-            ...state,
-            ...actionUpdate,
-            activeModals: oldModals,
-        };
-    }
     case 'SET_ACTIVE_MATH_FIELD':
         return {
             ...state,
@@ -120,6 +84,24 @@ const problems = (state = initialState, {
             ...state,
             tempProblems: [],
             newSetSharecode: payload.shareCode,
+        };
+    case 'RESET_TEMP_PROBLEMS':
+        return {
+            ...state,
+            tempProblems: [],
+        };
+    case 'SET_PROBLEM_DELETE_INDEX':
+        return {
+            ...state,
+            problemToDeleteIndex: payload.problemToDeleteIndex,
+        };
+    case 'SET_EDIT_PROBLEM':
+        return {
+            ...state,
+            problemToEditIndex: payload.problemToEditIndex,
+            problemToEdit: {
+                ...state.set.problems[payload.problemToEditIndex],
+            },
         };
     default:
         return state;

@@ -19,7 +19,6 @@ export const initialState = {
         stepValue: '',
         explanation: Locales.strings.loading,
     }],
-    activeModals: [],
     editorPosition: 0,
     editedStep: null,
     allowedPalettes: [],
