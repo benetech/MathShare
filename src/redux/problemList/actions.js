@@ -4,6 +4,10 @@ export const requestDefaultRevision = () => ({
     type: 'REQUEST_DEFAULT_REVISION',
 });
 
+export const requestExampleSets = () => ({
+    type: 'REQUEST_EXAMPLE_SETS',
+});
+
 export const requestProblemSet = (action, code) => ({
     type: 'REQUEST_PROBLEM_SET',
     payload: {

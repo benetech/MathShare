@@ -2,6 +2,7 @@
 const initialState = {
     revisionCode: null,
     defaultRevisionCode: null,
+    exampleProblemSets: [],
     set: {
         problems: [],
         editCode: null,
@@ -29,6 +30,11 @@ const problems = (state = initialState, {
         return {
             ...state,
             defaultRevisionCode: payload.revisionCode,
+        };
+    case 'REQUEST_EXAMPLE_SETS_SUCCESS':
+        return {
+            ...state,
+            exampleProblemSets: payload.exampleProblemSets,
         };
     case 'RESET_PROBLEM_SET':
     case 'REQUEST_PROBLEM_SET':

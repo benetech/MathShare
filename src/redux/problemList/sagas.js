@@ -17,6 +17,7 @@ import {
 } from './actions';
 import {
     fetchDefaultRevisionApi,
+    fetchExampleSetsApi,
     fetchProblemsByActionAndCodeApi,
     saveProblemSetApi,
     updateProblemsApi,
@@ -50,18 +51,36 @@ function* requestDefaultRevisionSaga() {
             const response = yield call(fetchDefaultRevisionApi);
             const revisionCode = response.data;
 
-            // dispatch a success action to the store with the new dog
             yield put({
                 type: 'REQUEST_DEFAULT_REVISION_SUCCESS',
                 payload: {
                     revisionCode,
                 },
             });
-            // yield put(push(`/app/problemSet/view/${revisionCode}`));
         } catch (error) {
-            // dispatch a failure action to the store with the error
             yield put({
                 type: 'REQUEST_DEFAULT_REVISION_FAILURE',
+                error,
+            });
+        }
+    });
+}
+
+function* requestExampleSetSaga() {
+    yield takeLatest('REQUEST_EXAMPLE_SETS', function* workerSaga() {
+        try {
+            const response = yield call(fetchExampleSetsApi);
+            const exampleProblemSets = response.data;
+
+            yield put({
+                type: 'REQUEST_EXAMPLE_SETS_SUCCESS',
+                payload: {
+                    exampleProblemSets,
+                },
+            });
+        } catch (error) {
+            yield put({
+                type: 'REQUEST_EXAMPLE_SETS_FAILURE',
                 error,
             });
         }
@@ -179,12 +198,10 @@ function* addProblemSaga() {
             // mathLive.renderMathInDocument();
             scrollTo('container', 'myWorkFooter');
 
-            // dispatch a success action to the store with the new dog
             yield put({
                 type: 'SAVE_PROBLEM_SUCCESS',
             });
         } catch (error) {
-            // dispatch a failure action to the store with the error
             yield put({
                 type: 'SAVE_PROBLEM_FAILURE',
                 error,
@@ -224,7 +241,6 @@ function* requestSaveProblemsSaga() {
                 },
             });
         } catch (error) {
-            // dispatch a failure action to the store with the error
             yield put({
                 type: 'REQUEST_SAVE_PROBLEMS_FAILURE',
                 error,
@@ -246,7 +262,6 @@ function* requestDeleteProblemSaga() {
             );
             yield put(saveProblems(updatedProblems));
         } catch (error) {
-            // dispatch a failure action to the store with the error
             yield put({
                 type: 'REQUEST_DELETE_PROBLEM_FAILURE',
                 error,
@@ -281,7 +296,6 @@ function* requestEditProblemSaga() {
                 return problem;
             })));
         } catch (error) {
-            // dispatch a failure action to the store with the error
             yield put({
                 type: 'REQUEST_EDIT_PROBLEM_FAILURE',
                 error,
@@ -304,7 +318,6 @@ function* requestShareSolutionsSaga() {
             yield put(setProblemSetShareCode(reviewCode));
             yield put(toggleModals([SHARE_PROBLEM_SET]));
         } catch (error) {
-            // dispatch a failure action to the store with the error
             yield put({
                 type: 'REQUEST_SHARE_SOLUTIONS_FAILURE',
                 error,
@@ -348,7 +361,6 @@ function* requestSaveProblemSetSaga() {
             yield put(toggleModals([ADD_PROBLEM_SET]));
             alertSuccess(Locales.strings.created_problem_set, Locales.strings.success);
         } catch (error) {
-            // dispatch a failure action to the store with the error
             yield put({
                 type: 'REQUEST_SAVE_PROBLEM_SET_FAILURE',
                 error,
@@ -363,6 +375,7 @@ export default function* rootSaga() {
         fork(addProblemSaga),
         fork(requestDeleteProblemSaga),
         fork(requestDefaultRevisionSaga),
+        fork(requestExampleSetSaga),
         fork(requestProblemSetByCode),
         fork(requestSaveProblemsSaga),
         fork(requestEditProblemSaga),
