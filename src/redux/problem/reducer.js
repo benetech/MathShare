@@ -22,7 +22,6 @@ export const initialState = {
     editorPosition: 0,
     editedStep: null,
     allowedPalettes: [],
-    theActiveMathField: null,
     textAreaValue: '',
     actionsStack: [],
     updateMathFieldMode: false,
@@ -66,11 +65,6 @@ const problem = (state = initialState, {
             readOnly: (payload.action === 'view'),
             stepsFromLastSave: JSON.parse(JSON.stringify(payload.solution.steps)),
             allowedPalettes: payload.solution.palettes,
-        };
-    case 'SET_ACTIVE_MATH_FIELD_IN_PROBLEM':
-        return {
-            ...state,
-            theActiveMathField: payload.field,
         };
     case 'UPDATE_PROBLEM_STORE':
         return {

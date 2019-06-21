@@ -75,6 +75,7 @@ const problems = (state = initialState, {
                 payload.problem,
             ],
         };
+    case 'SET_ACTIVE_MATH_FIELD_IN_PROBLEM':
     case 'SET_ACTIVE_MATH_FIELD':
         return {
             ...state,

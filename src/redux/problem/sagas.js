@@ -14,8 +14,8 @@ import {
     setSolutionData,
 } from './actions';
 import {
-    getState,
-} from './selectors';
+    getState as getProblemListState,
+} from '../problemList/selectors';
 import {
     fetchProblemSolutionApi,
 } from './apis';
@@ -51,7 +51,7 @@ function* requestLoadProblemSaga() {
                 updateSolution(solution);
                 const {
                     theActiveMathField,
-                } = yield select(getState);
+                } = yield select(getProblemListState);
                 theActiveMathField.latex(solution.steps[solution.steps.length - 1].stepValue);
                 yield put(setSolutionData(solution, action));
             }

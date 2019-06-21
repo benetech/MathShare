@@ -12,11 +12,11 @@ import googleAnalytics from '../../scripts/googleAnalytics';
 import { countEditorPosition } from '../../redux/problem/helpers';
 
 function addNewStep(context, step) {
-    const { updateProblemStore, problemStore } = context.props;
+    const { updateProblemStore, problemStore, problemList } = context.props;
     googleAnalytics('Add new step');
     const newSteps = problemStore.solution.steps;
     newSteps.push(step);
-    const updatedMathField = problemStore.theActiveMathField;
+    const updatedMathField = problemList.theActiveMathField;
     updatedMathField.latex(step.cleanup);
 
     const solution = problemStore.solution;
@@ -58,10 +58,10 @@ function deleteStep(context, addToHistory) {
 }
 
 function editStep(context, stepNumber) {
-    const { problemStore, updateProblemStore } = context.props;
+    const { problemStore, problemList, updateProblemStore } = context.props;
     googleAnalytics('Edit step');
     const mathStep = problemStore.solution.steps[stepNumber - 1];
-    const updatedMathField = problemStore.theActiveMathField;
+    const updatedMathField = problemList.theActiveMathField;
     updatedMathField.latex(mathStep.stepValue);
     problemStore.displayScratchpad(mathStep.scratchpad);
     updateProblemStore({
@@ -76,7 +76,7 @@ function editStep(context, stepNumber) {
 }
 
 function updateStep(context, img) {
-    const { updateProblemStore, problemStore } = context.props;
+    const { updateProblemStore, problemStore, problemList } = context.props;
     googleAnalytics('Edit step');
     const index = problemStore.editedStep;
 
@@ -89,9 +89,9 @@ function updateStep(context, img) {
         return;
     }
     const mathStep = Object.assign({}, problemStore.solution.steps[index]);
-    const cleanedup = MathButton.CleanUpCrossouts(problemStore.theActiveMathField.latex());
-    const cleanup = cleanedup === problemStore.theActiveMathField.latex() ? null : cleanedup;
-    context.updateMathEditorRow(problemStore.theActiveMathField.latex(),
+    const cleanedup = MathButton.CleanUpCrossouts(problemList.theActiveMathField.latex());
+    const cleanup = cleanedup === problemList.theActiveMathField.latex() ? null : cleanedup;
+    context.updateMathEditorRow(problemList.theActiveMathField.latex(),
         problemStore.textAreaValue, index, cleanup, img);
     context.cancelEditCallback(mathStep.stepValue, mathStep.explanation,
         mathStep.cleanup, index, mathStep.scratchpad);
@@ -103,7 +103,7 @@ function updateStep(context, img) {
 }
 
 function addStep(context, addToHistory, img) {
-    const { problemStore, updateProblemStore } = context.props;
+    const { problemStore, problemList, updateProblemStore } = context.props;
     if (!problemStore.textAreaValue || problemStore.textAreaValue === '' || $.trim(problemStore.textAreaValue).length === 0) {
         // alertWarning(Locales.strings.no_description_warning, 'Warning');
         $('#mathAnnotation').tooltip('show');
@@ -112,7 +112,7 @@ function addStep(context, addToHistory, img) {
         }, 6000);
         return false;
     }
-    const mathContent = problemStore.theActiveMathField.latex();
+    const mathContent = problemList.theActiveMathField.latex();
     const explanation = problemStore.textAreaValue;
     const cleanedUp = MathButton.CleanUpCrossouts(mathContent);
     const cleanup = cleanedUp !== mathContent ? cleanedUp : null;

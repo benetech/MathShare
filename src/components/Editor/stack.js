@@ -13,9 +13,10 @@ import googleAnalytics from '../../scripts/googleAnalytics';
 function undoClearAll(context, stackEntry) {
     const {
         problemStore,
+        problemList,
     } = context.props;
     const solution = problemStore.solution;
-    const theActiveMathField = problemStore.theActiveMathField;
+    const theActiveMathField = problemList.theActiveMathField;
     theActiveMathField.latex(stackEntry.steps[stackEntry.steps.length - 1].stepValue);
     solution.steps = stackEntry.steps;
     context.setState({
@@ -26,7 +27,7 @@ function undoClearAll(context, stackEntry) {
 }
 
 function undoDelete(context, stackEntry) {
-    const updatedMathField = context.props.problemStore.theActiveMathField;
+    const updatedMathField = context.props.problemList.theActiveMathField;
     updatedMathField.latex(stackEntry.step.stepValue);
     context.setState({
         theActiveMathField: updatedMathField,
@@ -37,11 +38,12 @@ function undoDelete(context, stackEntry) {
 function undoEdit(context, stackEntry) {
     const {
         problemStore,
+        problemList,
     } = context.props;
     const step = stackEntry.step.id === problemStore.solution.steps.length - 1
         ? stackEntry.step
         : problemStore.solution.steps[problemStore.solution.steps.length - 1];
-    const updatedMathField = problemStore.theActiveMathField;
+    const updatedMathField = problemList.theActiveMathField;
     updatedMathField.latex(step.cleanup ? step.cleanup : step.stepValue);
     context.setState({
         theActiveMathField: updatedMathField,
@@ -86,6 +88,7 @@ function undoLastAction(context) {
 function clearAll(context) {
     googleAnalytics('Clear All');
     const {
+        problemList,
         problemStore,
     } = context.props;
     const stack = problemStore.actionsStack;
@@ -99,7 +102,7 @@ function clearAll(context) {
     const firstStep = solution.steps[0];
     solution.steps = [];
     solution.steps.push(firstStep);
-    const math = problemStore.theActiveMathField;
+    const math = problemList.theActiveMathField;
     math.latex(solution.steps[0].stepValue);
     context.setState({
         textAreaValue: '',
