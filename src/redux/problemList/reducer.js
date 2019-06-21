@@ -109,6 +109,11 @@ const problems = (state = initialState, {
                 ...state.set.problems[payload.problemToEditIndex],
             },
         };
+    case 'SET_TEMP_PALETTE':
+        return {
+            ...state,
+            tempPalettes: payload.palettes,
+        };
     default:
         return state;
     }
