@@ -103,13 +103,13 @@ export default class MyWork extends Component {
         /* eslint-disable no-useless-concat */
         $('#scratch-pad-containter-bar > div > span').first()
             .append(`${'<button id="clear-button" type="button" class="ptro-icon-btn ptro-color-control" title='
-            + '"'}${Locales.strings.clear_sketchpad}"` + '><i class="ptro-icon ptro-icon-close"></i></button>');
+                + '"'}${Locales.strings.clear_sketchpad}"` + '><i class="ptro-icon ptro-icon-close"></i></button>');
         $('#clear-button').click(() => this.clearAndResizeScratchPad());
 
         $('#scratch-pad-containter-bar > div > span').first()
             .append(`${'<input ref="imageInput" id="open-image" hidden type="file"></input>'
-            + '<button id="open-image-btn" type="button" class="ptro-icon-btn ptro-color-control" title='
-            + '"'}${Locales.strings.open_image}"` + '><i class="ptro-icon ptro-icon-open"></i></button>');
+                + '<button id="open-image-btn" type="button" class="ptro-icon-btn ptro-color-control" title='
+                + '"'}${Locales.strings.open_image}"` + '><i class="ptro-icon ptro-icon-open"></i></button>');
         $('#open-image-btn').click(() => $('#open-image').trigger('click'));
         $('#open-image').change(e => this.loadImage(e));
 

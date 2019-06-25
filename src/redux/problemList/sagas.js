@@ -14,6 +14,10 @@ import {
     saveProblems,
     setProblemSetShareCode,
     toggleModals,
+    updateProblemList,
+    updateTempSet,
+    finishEditing,
+    updateSet,
 } from './actions';
 import {
     fetchDefaultRevisionApi,
@@ -26,8 +30,14 @@ import {
     getState,
 } from './selectors';
 import {
+    matchCurrentRoute,
+} from '../router/selectors';
+import {
+    getState as getModalState,
+} from '../modal/selectors';
+import {
     ADD_PROBLEM_SET,
-    // SHARE_NEW_SET,
+    SHARE_NEW_SET,
     SHARE_PROBLEM_SET,
 } from '../../components/ModalContainer';
 import scrollTo from '../../scripts/scrollTo';
@@ -191,16 +201,15 @@ function* addProblemSaga() {
                     },
                 });
                 yield put(saveProblems());
+                yield put({
+                    type: 'SAVE_PROBLEM_SUCCESS',
+                });
             }
 
             theActiveMathField.latex('$$$$');
 
             // mathLive.renderMathInDocument();
             scrollTo('container', 'myWorkFooter');
-
-            yield put({
-                type: 'SAVE_PROBLEM_SUCCESS',
-            });
         } catch (error) {
             yield put({
                 type: 'SAVE_PROBLEM_FAILURE',
@@ -218,6 +227,19 @@ function* requestSaveProblemsSaga() {
     }) {
         try {
             const {
+                params,
+            } = yield select(matchCurrentRoute('/app/problemSet/:action'));
+            if (params && params.action === 'new') {
+                yield put(updateTempSet({
+                    problems: newProblems,
+                }));
+                return;
+            }
+            if (newProblems) {
+                yield put(updateProblemList(newProblems));
+            }
+
+            const {
                 set,
             } = yield select(getState);
 
@@ -226,7 +248,6 @@ function* requestSaveProblemsSaga() {
             );
 
             const {
-                editCode,
                 shareCode,
                 problems,
             } = response.data;
@@ -234,11 +255,7 @@ function* requestSaveProblemsSaga() {
             createReviewProblemSetOnUpdate(problems, shareCode);
             yield put({
                 type: 'REQUEST_SAVE_PROBLEMS_SUCCESS',
-                payload: {
-                    problems,
-                    editCode,
-                    shareCode,
-                },
+                payload: response.data,
             });
         } catch (error) {
             yield put({
@@ -255,12 +272,24 @@ function* requestDeleteProblemSaga() {
             const {
                 problemToDeleteIndex,
                 set,
+                tempSet,
             } = yield select(getState);
 
-            const updatedProblems = set.problems.filter(
-                (_problem, index) => index !== problemToDeleteIndex,
-            );
-            yield put(saveProblems(updatedProblems));
+            const {
+                params,
+            } = yield select(matchCurrentRoute('/app/problemSet/:action'));
+            if (params && params.action === 'new') {
+                yield put(updateTempSet({
+                    problems: tempSet.problems.filter(
+                        (_problem, index) => index !== problemToDeleteIndex,
+                    ),
+                }));
+            } else {
+                const updatedProblems = set.problems.filter(
+                    (_problem, index) => index !== problemToDeleteIndex,
+                );
+                yield put(saveProblems(updatedProblems));
+            }
         } catch (error) {
             yield put({
                 type: 'REQUEST_DELETE_PROBLEM_FAILURE',
@@ -281,20 +310,40 @@ function* requestEditProblemSaga() {
             const {
                 problemToEditIndex,
                 set,
+                tempSet,
                 theActiveMathField,
             } = yield select(getState);
 
-            yield put(saveProblems(set.problems.map((problem, index) => {
-                if (index === problemToEditIndex) {
-                    return {
-                        ...problem,
-                        title,
-                        scratchpad: imageData,
-                        text: theActiveMathField.latex(),
-                    };
-                }
-                return problem;
-            })));
+            const {
+                params,
+            } = yield select(matchCurrentRoute('/app/problemSet/:action'));
+            if (params && params.action === 'new') {
+                yield put(updateTempSet({
+                    problems: tempSet.problems.map((problem, index) => {
+                        if (index === problemToEditIndex) {
+                            return {
+                                ...problem,
+                                title,
+                                scratchpad: imageData,
+                                text: theActiveMathField.latex(),
+                            };
+                        }
+                        return problem;
+                    }),
+                }));
+            } else {
+                yield put(saveProblems(set.problems.map((problem, index) => {
+                    if (index === problemToEditIndex) {
+                        return {
+                            ...problem,
+                            title,
+                            scratchpad: imageData,
+                            text: theActiveMathField.latex(),
+                        };
+                    }
+                    return problem;
+                })));
+            }
         } catch (error) {
             yield put({
                 type: 'REQUEST_EDIT_PROBLEM_FAILURE',
@@ -331,9 +380,17 @@ function* requestSaveProblemSetSaga() {
         payload: {
             problems,
             title,
+            redirect,
         },
     }) {
         try {
+            const {
+                params,
+            } = yield select(matchCurrentRoute('/app/problemSet/:action'));
+            if (params && params.action === 'edit') {
+                yield put(finishEditing(redirect));
+                return;
+            }
             const {
                 tempPalettes,
             } = yield select(getState);
@@ -357,12 +414,106 @@ function* requestSaveProblemSetSaga() {
                     shareCode,
                 },
             });
-            yield put(push(`/app/problemSet/view/${shareCode}`));
-            yield put(toggleModals([ADD_PROBLEM_SET]));
+
+            const {
+                activeModals,
+            } = yield select(getModalState);
+            if (activeModals.includes(ADD_PROBLEM_SET)) {
+                yield put(toggleModals([ADD_PROBLEM_SET]));
+            }
+            if (redirect) {
+                yield put(push(`/app/problemSet/view/${shareCode}`));
+            } else {
+                yield put(push(`/app/problemSet/edit/${editCode}`));
+                yield put(toggleModals([SHARE_NEW_SET]));
+            }
             alertSuccess(Locales.strings.created_problem_set, Locales.strings.success);
         } catch (error) {
             yield put({
                 type: 'REQUEST_SAVE_PROBLEM_SET_FAILURE',
+                error,
+            });
+        }
+    });
+}
+
+function* requestFinishEditingSaga() {
+    yield takeLatest('FINISH_EDITING', function* workerSaga({
+        payload: {
+            redirect,
+        },
+    }) {
+        try {
+            const {
+                set: {
+                    shareCode,
+                },
+            } = yield select(getState);
+            if (redirect) {
+                yield put(push(`/app/problemSet/view/${shareCode}`));
+            } else {
+                yield put(toggleModals([SHARE_NEW_SET]));
+            }
+        } catch (error) {
+            yield put({
+                type: 'FINISH_EDITING_FAILURE',
+                error,
+            });
+        }
+    });
+}
+
+function* requestUpdateTitleSaga() {
+    yield takeLatest('UPDATE_PROBLEM_SET_TITLE', function* workerSaga({
+        payload: {
+            title,
+        },
+    }) {
+        try {
+            const {
+                params,
+            } = yield select(matchCurrentRoute('/app/problemSet/:action/:code?'));
+            if (params && params.action === 'new') {
+                yield put(updateTempSet({
+                    title,
+                }));
+            } else {
+                yield put(updateSet({
+                    title,
+                }));
+                yield put(saveProblems());
+            }
+        } catch (error) {
+            yield put({
+                type: 'UPDATE_PROBLEM_SET_TITLE_FAILURE',
+                error,
+            });
+        }
+    });
+}
+
+function* reqestDuplicateProblemSet() {
+    yield takeLatest('DUPLICATE_PROBLEM_SET', function* workerSaga() {
+        try {
+            const {
+                set,
+                tempPalettes,
+            } = yield select(getState);
+            const setPayload = {
+                ...set,
+                palettes: tempPalettes,
+            };
+            const {
+                data,
+            } = yield call(saveProblemSetApi, setPayload);
+            const {
+                editCode,
+            } = data;
+
+            window.open(`/#/app/problemSet/edit/${editCode}`, '_blank');
+        } catch (error) {
+            yield put({
+                type: 'DUPLICATE_PROBLEM_SET_FAILURE',
                 error,
             });
         }
@@ -381,5 +532,8 @@ export default function* rootSaga() {
         fork(requestEditProblemSaga),
         fork(requestShareSolutionsSaga),
         fork(requestSaveProblemSetSaga),
+        fork(requestFinishEditingSaga),
+        fork(requestUpdateTitleSaga),
+        fork(reqestDuplicateProblemSet),
     ]);
 }

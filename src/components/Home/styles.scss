@@ -3,6 +3,20 @@
     display: flex;
     justify-content: space-between;
     flex-direction: column;
+
+
+    .btnContainer {
+        padding: 10px;
+        margin-right: 5px;
+
+        .text {
+            margin: auto 5px;
+        }
+
+        span {
+            margin-left: 5px;
+        }
+    }
 }
 
 .leftNavigation {
@@ -36,4 +50,9 @@
     button span {
         padding-right: 5px;
     }
+}
+
+.titleHeader {
+    display: inline-block;
+    margin-right: 15px;
 }

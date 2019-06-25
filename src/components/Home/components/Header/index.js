@@ -52,6 +52,16 @@ function readBlob(optStartByte, optStopByte) {
     reader.readAsBinaryString(blob);
 } */
 
+const openNewProblemSet = () => {
+    window.open('/#/app/problemSet/new', '_blank');
+};
+
+const shareOnTwitter = () => {
+    window.open(
+        `https://twitter.com/intent/tweet?text=${encodeURIComponent(`${Locales.strings.share_with_teachers_text} ${window.location.href}`)}`, '_blank',
+    );
+};
+
 const MainPageHeader = (props) => {
     /* eslint-disable jsx-a11y/anchor-is-valid */
 
@@ -86,34 +96,38 @@ const MainPageHeader = (props) => {
             </a>
         )
         : null;
-    let link = props.editing
-        ? (
-            <a
-                className={classNames('nav-link', header.pointer)}
-                onClick={props.finishEditing}
-                onKeyPress={() => props.toggleModals(['shareSet'])}
-                role="link"
-                tabIndex="0"
-            >
-                {Locales.strings.finish_edit}
-            </a>
-        )
-        : (
-            <a
-                className={classNames('nav-link', header.pointer)}
-                onClick={() => {
-                    googleAnalytics(Locales.strings.edit_problem_set);
-                    props.history.push(`/app/problemSet/edit/${props.editCode}`);
-                }}
-                onKeyPress={() => props.toggleModals(['shareSet'])}
-                role="link"
-                tabIndex="0"
-            >
-                {Locales.strings.edit_problem_set}
-            </a>
-        );
+    let link = null;
+    // if (props.action === 'edit') {
+    //     link = (
+    //         <a
+    //             className={classNames('nav-link', header.pointer)}
+    //             onClick={props.finishEditing}
+    //             onKeyPress={() => props.toggleModals(['shareSet'])}
+    //             role="link"
+    //             tabIndex="0"
+    //         >
+    //             {Locales.strings.finish_edit}
+    //         </a>
+    //     );
+    // } else
+    // if (props.action === 'view') {
+    //     link = (
+    //         <a
+    //             className={classNames('nav-link', header.pointer)}
+    //             onClick={() => {
+    //                 googleAnalytics(Locales.strings.edit_problem_set);
+    //                 props.history.push(`/app/problemSet/edit/${props.editCode}`);
+    //             }}
+    //             onKeyPress={() => props.toggleModals(['shareSet'])}
+    //             role="link"
+    //             tabIndex="0"
+    //         >
+    //             {Locales.strings.edit_problem_set}
+    //         </a>
+    //     );
+    // }
 
-    if (props.notFound || !props.action) {
+    if (props.notFound) {
         link = null;
     }
 
@@ -247,6 +261,49 @@ const MainPageHeader = (props) => {
                                     {Locales.strings.provide_feedback}
                                 </a>
                             </li>
+                            {(props.action === 'new' || props.action === 'edit') && (
+                                <li className="nav-item dropdown">
+                                    <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Teachers
+                                    </a>
+                                    <div className="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        <a
+                                            className="dropdown-item"
+                                            onClick={openNewProblemSet}
+                                            onKeyPress={openNewProblemSet}
+                                            role="link"
+                                            tabIndex="0"
+                                        >
+                                            <FontAwesome
+                                                size="lg"
+                                                name="plus"
+                                            />
+                                            {` ${Locales.strings.add_problem_set}`}
+                                        </a>
+                                        {props.action === 'edit' && (
+                                            <React.Fragment>
+                                                <a
+                                                    className="dropdown-item"
+                                                    onClick={shareOnTwitter}
+                                                    onKeyPress={shareOnTwitter}
+                                                    role="link"
+                                                    tabIndex="0"
+                                                >
+                                                    <FontAwesome
+                                                        size="lg"
+                                                        name="twitter"
+                                                    />
+                                                    {` ${Locales.strings.share_with_teachers}`}
+                                                </a>
+                                            </React.Fragment>
+                                        )}
+                                        {/* <div className="dropdown-divider" />
+                                    <a className="dropdown-item" href="#">
+                                    Something else here
+                                    </a> */}
+                                    </div>
+                                </li>
+                            )}
                         </ul>
                     </div>
                 </nav>
