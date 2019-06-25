@@ -284,6 +284,19 @@ const MainPageHeader = (props) => {
                                             <React.Fragment>
                                                 <a
                                                     className="dropdown-item"
+                                                    onClick={props.duplicateProblemSet}
+                                                    onKeyPress={props.duplicateProblemSet}
+                                                    role="link"
+                                                    tabIndex="0"
+                                                >
+                                                    <FontAwesome
+                                                        size="lg"
+                                                        name="copy"
+                                                    />
+                                                    {` ${Locales.strings.duplicate_set}`}
+                                                </a>
+                                                <a
+                                                    className="dropdown-item"
                                                     onClick={shareOnTwitter}
                                                     onKeyPress={shareOnTwitter}
                                                     role="link"
