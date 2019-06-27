@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { NotificationContainer } from 'react-notifications';
 import { connect } from 'react-redux';
+import FontAwesome from 'react-fontawesome';
 import classNames from 'classnames';
 import MainPageHeader from './components/Header';
 import NavigationHeader from './components/Navigation/Header';
 import NavigationProblems from './components/Navigation/Problems';
+import { TITLE_EDIT_MODAL, PALETTE_CHOOSER } from '../ModalContainer';
 import NotFound from '../NotFound';
 import home from './styles.scss';
 import Locales from '../../strings';
@@ -16,7 +18,17 @@ class Home extends Component {
         const {
             action, code,
         } = this.props.match.params;
-        this.props.requestProblemSet(action, code);
+        const {
+            problemList,
+        } = this.props;
+        if (action === 'new') {
+            this.props.clearProblemSet();
+            if (!problemList.tempPalettes || problemList.tempPalettes.length === 0) {
+                this.props.toggleModals([PALETTE_CHOOSER]);
+            }
+        } else {
+            this.props.requestProblemSet(action, code);
+        }
         // mathLive.renderMathInDocument();
     }
 
@@ -43,6 +55,10 @@ class Home extends Component {
         const {
             params,
         } = match;
+        let currentSet = problemList.set;
+        if (params && params.action === 'new') {
+            currentSet = problemList.tempSet;
+        }
         if (problemList.notFound) {
             return <NotFound />;
         }
@@ -50,15 +66,15 @@ class Home extends Component {
             <div className={home.mainWrapper}>
                 <NotificationContainer />
                 <MainPageHeader
-                    editing={params.action === 'edit'}
+                    editing={params.action === 'edit' || params.action === 'new'}
                     history={this.props.history}
                     addProblemSetCallback={this.props.addProblemSet}
-                    finishEditing={this.props.finishEditing}
+                    duplicateProblemSet={this.props.duplicateProblemSet}
                     editCode={problemList.set.editCode}
                     action={params.action}
                 />
                 <main id="LeftNavigation" className={home.leftNavigation}>
-                    {(params.action !== 'review' && params.action !== 'edit') && (
+                    {(params.action !== 'review' && (params.action !== 'edit' && params.action !== 'new')) && (
                         <div className={classNames([
                             'row',
                             home.actionBar,
@@ -89,14 +105,86 @@ class Home extends Component {
                             </div>
                         </div>
                     )}
-                    <NavigationHeader set={problemList.set} />
+                    {(params.action === 'new' || params.action === 'edit') && (
+                        <React.Fragment>
+                            <div className={`row flex-row-reverse ${home.btnContainer}`}>
+                                {((params.action === 'new' && problemList.tempSet.problems.length > 0) || params.action === 'edit') && (
+                                    <React.Fragment>
+                                        <Button
+                                            id="viewAsStudent"
+                                            className={classNames([
+                                                'btn',
+                                                'btn-outline-dark',
+                                            ])}
+                                            type="button"
+                                            icon="eye"
+                                            content={Locales.strings.view_as_student}
+                                            onClick={() => {
+                                                this.props.saveProblemSet(
+                                                    currentSet.problems,
+                                                    currentSet.title,
+                                                    true,
+                                                );
+                                            }}
+                                        />
+                                        <Button
+                                            id="shareBtn"
+                                            className={classNames([
+                                                'btn',
+                                                'btn-outline-dark',
+                                            ])}
+                                            type="button"
+                                            icon="link"
+                                            content={Locales.strings.link}
+                                            onClick={() => {
+                                                this.props.saveProblemSet(
+                                                    currentSet.problems,
+                                                    currentSet.title,
+                                                );
+                                            }}
+                                        />
+                                        <div className={home.text}>Assign: </div>
+                                    </React.Fragment>
+                                )}
+                            </div>
+                            <div className="row">
+                                <div className={classNames('col-lg-12', 'm-3', 'text-left')}>
+                                    <h1 id="LeftNavigationHeader" className={home.titleHeader} tabIndex="-1">
+                                        {currentSet.title}
+                                    </h1>
+                                    {params.action === 'new' && (
+                                        <FontAwesome
+                                            className={
+                                                classNames(
+                                                    'fa-2x',
+                                                )
+                                            }
+                                            onClick={() => {
+                                                this.props.toggleModals([TITLE_EDIT_MODAL]);
+                                            }}
+                                            name="edit"
+                                        />
+                                    )}
+                                    <br aria-hidden="true" />
+                                    <br aria-hidden="true" />
+                                </div>
+                            </div>
+                        </React.Fragment>
+                    )}
+                    {(params.action !== 'new' && params.action !== 'edit') && (
+                        <NavigationHeader
+                            action={params.action}
+                            set={problemList.set}
+                        />
+                    )}
                     <NavigationProblems
-                        problems={problemList.set.problems}
-                        editing={params.action === 'edit'}
+                        problems={currentSet.problems}
+                        editing={params.action === 'edit' || params.action === 'new'}
                         activateModals={this.props.toggleModals}
                         updatePositions={this.props.updatePositions}
                         action={params.action}
                         code={params.code}
+                        setEditProblem={this.props.setEditProblem}
                     />
                 </main>
             </div>

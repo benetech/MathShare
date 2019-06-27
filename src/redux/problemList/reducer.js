@@ -1,7 +1,10 @@
+import * as dayjs from 'dayjs';
+
 /* eslint-disable no-unused-vars */
 const initialState = {
     revisionCode: null,
     defaultRevisionCode: null,
+    exampleProblemSets: [],
     set: {
         problems: [],
         editCode: null,
@@ -14,8 +17,14 @@ const initialState = {
     allowedPalettes: [],
     theActiveMathField: null,
     tempPalettes: [],
-    tempProblems: [],
+    tempSet: {
+        problems: [],
+        title: '',
+        textAreaValue: '',
+        displayScratchpad: null,
+    },
     newSetSharecode: '',
+    newSetShareEditCode: '',
     problemSetShareCode: '',
 };
 
@@ -30,6 +39,20 @@ const problems = (state = initialState, {
             ...state,
             defaultRevisionCode: payload.revisionCode,
         };
+    case 'REQUEST_EXAMPLE_SETS_SUCCESS':
+        return {
+            ...state,
+            exampleProblemSets: payload.exampleProblemSets,
+        };
+    case 'CLEAR_PROBLEM_SET':
+        return {
+            ...state,
+            set: initialState.set,
+            tempSet: {
+                ...initialState.tempSet,
+                title: `New Problem Set ${dayjs().format('MM-DD-YYYY')}`,
+            },
+        };
     case 'RESET_PROBLEM_SET':
     case 'REQUEST_PROBLEM_SET':
         return {
@@ -41,6 +64,7 @@ const problems = (state = initialState, {
         return {
             ...state,
             set: payload,
+            newSetSharecode: payload.shareCode,
         };
     case 'ADD_PROBLEM':
         return {
@@ -64,11 +88,15 @@ const problems = (state = initialState, {
     case 'ADD_TEMP_PROBLEM':
         return {
             ...state,
-            tempProblems: [
-                ...state.tempProblems,
-                payload.problem,
-            ],
+            tempSet: {
+                ...state.tempSet,
+                problems: [
+                    ...state.tempSet.problems,
+                    payload.problem,
+                ],
+            },
         };
+    case 'SET_ACTIVE_MATH_FIELD_IN_PROBLEM':
     case 'SET_ACTIVE_MATH_FIELD':
         return {
             ...state,
@@ -82,26 +110,58 @@ const problems = (state = initialState, {
     case 'REQUEST_SAVE_PROBLEM_SET_SUCCESS':
         return {
             ...state,
-            tempProblems: [],
+            tempSet: {
+                ...initialState.tempSet,
+                title: `New Problem Set ${dayjs().format('MM-DD-YYYY')}`,
+            },
             newSetSharecode: payload.shareCode,
+            newSetShareEditCode: payload.editCode,
         };
     case 'RESET_TEMP_PROBLEMS':
         return {
             ...state,
-            tempProblems: [],
+            tempSet: initialState.tempSet,
+        };
+    case 'UPDATE_TEMP_SET':
+        return {
+            ...state,
+            tempSet: {
+                ...state.tempSet,
+                ...payload,
+            },
+        };
+    case 'UPDATE_SET':
+        return {
+            ...state,
+            set: {
+                ...state.set,
+                ...payload,
+            },
         };
     case 'SET_PROBLEM_DELETE_INDEX':
         return {
             ...state,
             problemToDeleteIndex: payload.problemToDeleteIndex,
         };
-    case 'SET_EDIT_PROBLEM':
+    case 'SET_EDIT_PROBLEM': {
+        let set = null;
+        if (payload.action === 'new') {
+            set = state.tempSet;
+        } else {
+            set = state.set;
+        }
         return {
             ...state,
             problemToEditIndex: payload.problemToEditIndex,
             problemToEdit: {
-                ...state.set.problems[payload.problemToEditIndex],
+                ...set.problems[payload.problemToEditIndex],
             },
+        };
+    }
+    case 'SET_TEMP_PALETTE':
+        return {
+            ...state,
+            tempPalettes: payload.palettes,
         };
     default:
         return state;

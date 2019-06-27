@@ -5,17 +5,29 @@ import editor from './styles.scss';
 import Locales from '../../../../strings';
 import Button from '../../../Button';
 
-export default class ProblemSetShareModal extends Component {
-    copyShareLink = () => {
-        const copyText = document.getElementById('shareLink');
-        copyText.select();
-        document.execCommand('copy');
+export default class TitleEditModal extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            title: props.title,
+        };
+    }
+
+    updateTitle = (e) => {
+        this.setState({
+            title: e.target.value,
+        });
+    }
+
+    commitTitle = () => {
+        this.props.updateProblemSetTitle(this.state.title);
+        this.props.deactivateModal();
     }
 
     render() {
         return (
             <AriaModal
-                titleId="shareModal"
+                titleId="titleEditModal"
                 onExit={this.props.deactivateModal}
                 getApplicationNode={this.getApplicationNode}
                 underlayStyle={{ paddingTop: '2em' }}
@@ -23,24 +35,27 @@ export default class ProblemSetShareModal extends Component {
                 <div id="demo-one-modal" className={editor.modal}>
                     <div className={editor.modalBody}>
                         <h3>
-                            {Locales.strings.submit_problem_link}
+                            {Locales.strings.update_title}
                         </h3>
-                        <div className={editor.modalMessage}>
-                            <p>
-                                Students visit the link below to access the problem set
-                            </p>
-                        </div>
-                        <input type="text" readOnly value={this.props.problemSetShareLink} id="shareLink" className={editor.shareLink} />
+                        <input
+                            type="text"
+                            value={this.state.title}
+                            id="editTitle"
+                            className={editor.saveLink}
+                            onChange={this.updateTitle}
+                        />
+                        <br />
+                        <br />
                     </div>
                     <footer className={editor.modalFooter}>
                         <Button
-                            id="copy_button"
+                            id="save_title"
                             className={classNames('btn', 'btn-primary', editor.button)}
                             ariaHidden="false"
                             type="button"
-                            icon="copy"
-                            content={Locales.strings.copy}
-                            onClick={() => this.copyShareLink()}
+                            icon="save"
+                            content={Locales.strings.save}
+                            onClick={this.commitTitle}
                         />
                         <Button
                             id="deactivate"

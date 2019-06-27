@@ -99,8 +99,8 @@ class Editor extends Component {
     }
 
     restoreEditorPosition() {
-        const { problemStore } = this.props;
-        const updatedMathField = problemStore.theActiveMathField;
+        const { problemStore, problemList } = this.props;
+        const updatedMathField = problemList.theActiveMathField;
         const lastStep = problemStore.solution.steps[problemStore.solution.steps.length - 1];
         updatedMathField.latex(lastStep.cleanup ? lastStep.cleanup : lastStep.stepValue);
         this.props.updateProblemStore({
@@ -108,7 +108,7 @@ class Editor extends Component {
             editorPosition: countEditorPosition(problemStore.solution.steps),
             editing: false,
         });
-        this.props.problemStore.theActiveMathField.focus();
+        problemList.theActiveMathField.focus();
     }
 
     cancelEditCallback(oldEquation, oldExplanation, cleanup, index, img) {
@@ -153,7 +153,7 @@ class Editor extends Component {
     }
 
     render() {
-        const { problemStore } = this.props;
+        const { problemStore, problemList } = this.props;
         if (problemStore.notFound) {
             return <NotFound />;
         }
@@ -163,6 +163,7 @@ class Editor extends Component {
                 {...this}
                 {...this.props}
                 {...problemStore}
+                theActiveMathField={problemList.theActiveMathField}
                 deleteStepCallback={() => deleteStep(this, true)}
                 editStepCallback={stepNumber => editStep(this, stepNumber)}
                 activateMathField={field => this.activateMathField(field)}
@@ -202,6 +203,7 @@ class Editor extends Component {
 export default connect(
     state => ({
         problemStore: state.problem,
+        problemList: state.problemList,
     }),
     problemActions,
 )(Editor);

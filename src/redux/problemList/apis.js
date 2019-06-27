@@ -6,6 +6,8 @@ import {
 
 export const fetchDefaultRevisionApi = () => axios.get(`${SERVER_URL}/problemSet/defaultRevision`);
 
+export const fetchExampleSetsApi = () => axios.get(`${SERVER_URL}/problemSet/exampleSets`);
+
 export const fetchProblemsByRevisionCodeApi = revisionCode => axios.get(`${SERVER_URL}/problemSet/revision/${revisionCode}`);
 
 export const fetchProblemsByEditCodeApi = editCode => axios.get(`${SERVER_URL}/problemSet/${editCode}`);

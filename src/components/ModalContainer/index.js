@@ -1,10 +1,12 @@
 import React from 'react';
 import NewProblemsForm from '../Home/components/NewProblemsForm';
 import ShareModal from './components/ShareModal';
+import NewProblemSetShareModal from './components/NewProblemSetShareModal';
 import SaveModal from './components/SaveModal';
 import ProblemModal from './components/ProblemModal';
 import ProblemSetShareModal from './components/ProblemSetShareModal';
 import ConfirmationModal from './components/ConfirmationModal';
+import TitleEditModal from './components/TitleEditModal';
 import PaletteChooser from '../Home/components/ButtonsPaletteChooser';
 import Locales from '../../strings';
 
@@ -19,6 +21,7 @@ const SAVE_SET = 'saveSet';
 const VIEW_SET = 'viewSet';
 const EDIT_PROBLEM = 'editProblem';
 const CONFIRMATION_BACK = 'confirmationBack';
+const TITLE_EDIT_MODAL = 'titleEditModal';
 
 const ModalContainer = (props) => {
     const { activeModals } = props;
@@ -52,7 +55,7 @@ const ModalContainer = (props) => {
 
     const newSetShareModal = activeModals.includes(SHARE_NEW_SET)
         ? (
-            <ShareModal
+            <NewProblemSetShareModal
                 shareLink={props.newSetShareLink}
                 deactivateModal={() => props.toggleModals([SHARE_NEW_SET])}
             />
@@ -95,7 +98,8 @@ const ModalContainer = (props) => {
                 activateMathField={props.activateMathField}
                 theActiveMathField={props.theActiveMathField}
                 addProblemCallback={props.addProblemCallback}
-                problems={props.tempProblems}
+                problems={props.tempSet.problems}
+                updateTempSet={props.updateTempSet}
                 problemSetTitle={props.title}
                 saveCallback={props.saveProblemSet}
                 addingProblem
@@ -116,6 +120,7 @@ const ModalContainer = (props) => {
                 problems={props.problems}
                 problemSetTitle={props.title}
                 saveCallback={props.saveProblems}
+                updateTempSet={props.updateTempSet}
                 addingProblem
                 cancelCallback={() => props.toggleModals([ADD_PROBLEMS])}
                 title={Locales.strings.add_problems}
@@ -135,6 +140,7 @@ const ModalContainer = (props) => {
                 problems={[]}
                 problemSetTitle={props.title}
                 cancelCallback={() => props.toggleModals([EDIT_PROBLEM])}
+                updateTempSet={props.updateTempSet}
                 editing
                 addingProblem
                 problemToEdit={props.problemToEdit}
@@ -161,6 +167,16 @@ const ModalContainer = (props) => {
         )
         : null;
 
+    const titleEditModal = activeModals.includes(TITLE_EDIT_MODAL)
+        ? (
+            <TitleEditModal
+                title={props.tempSet.title}
+                updateProblemSetTitle={props.updateProblemSetTitle}
+                deactivateModal={() => props.toggleModals([TITLE_EDIT_MODAL])}
+            />
+        )
+        : null;
+
     return (
         <div>
             {saveModal}
@@ -174,6 +190,7 @@ const ModalContainer = (props) => {
             {editProblem}
             {viewProblem}
             {shareProblemSet}
+            {titleEditModal}
         </div>
     );
 };
@@ -182,5 +199,5 @@ export default ModalContainer;
 
 export {
     CONFIRMATION, PALETTE_CHOOSER, ADD_PROBLEM_SET, ADD_PROBLEMS, SHARE_PROBLEM_SET,
-    SHARE_NEW_SET, SAVE_SET, SHARE_SET, VIEW_SET, EDIT_PROBLEM, CONFIRMATION_BACK,
+    SHARE_NEW_SET, SAVE_SET, SHARE_SET, VIEW_SET, EDIT_PROBLEM, CONFIRMATION_BACK, TITLE_EDIT_MODAL,
 };

@@ -16,7 +16,7 @@ import Editor from './Editor';
 import MainPageFooter from './Home/components/Footer';
 import Locales from '../strings';
 import ModalContainer, {
-    CONFIRMATION, CONFIRMATION_BACK, PALETTE_CHOOSER, ADD_PROBLEM_SET,
+    CONFIRMATION, CONFIRMATION_BACK, PALETTE_CHOOSER, // ADD_PROBLEM_SET,
     EDIT_PROBLEM, SHARE_SET, VIEW_SET,
 } from './ModalContainer';
 import { alertWarning, alertSuccess } from '../scripts/alert';
@@ -97,10 +97,11 @@ class App extends Component {
     }
 
     updatePositions = (problems) => {
-        this.props.updateProblemList(problems.map((problem, position) => ({
+        const updatedProblems = problems.map((problem, position) => ({
             ...problem,
             position,
-        })));
+        }));
+        this.props.saveProblems(updatedProblems);
     }
 
     addProblemSet = () => {
@@ -114,7 +115,9 @@ class App extends Component {
             return;
         }
         this.props.setTempPalettes(palettes);
-        this.props.toggleModals([PALETTE_CHOOSER, ADD_PROBLEM_SET]);
+        // this.props.toggleModals([PALETTE_CHOOSER, ADD_PROBLEM_SET]);
+        this.props.toggleModals([PALETTE_CHOOSER]);
+        this.props.history.push('/app/problemSet/new');
     }
 
     saveProblemSet = (orderedProblems, title) => {
@@ -122,12 +125,12 @@ class App extends Component {
         this.props.saveProblemSet(orderedProblems, title);
     }
 
-    finishEditing = () => {
-        const {
-            set,
-        } = this.props.problemList;
-        this.props.history.push(`/app/problemSet/view/${set.shareCode}`);
-    }
+    // finishEditing = () => {
+    //     const {
+    //         set,
+    //     } = this.props.problemList;
+    //     this.props.history.push(`/app/problemSet/view/${set.shareCode}`);
+    // }
 
     compareStepArrays = (first, second) => {
         if (first.length !== second.length) {
@@ -225,6 +228,7 @@ class App extends Component {
                     <ModalContainer
                         activeModals={modal.activeModals}
                         toggleModals={this.props.toggleModals}
+                        updateProblemSetTitle={this.props.updateProblemSetTitle}
                         progressToAddingProblems={this.progressToAddingProblems}
                         deleteProblem={this.deleteProblem}
                         shareLink={problemStore.shareLink}
@@ -234,17 +238,19 @@ class App extends Component {
                         theActiveMathField={problemList.theActiveMathField}
                         addProblemCallback={this.addProblem}
                         problems={problemList.set.problems}
-                        tempProblems={problemList.tempProblems}
+                        tempSet={problemList.tempSet}
                         saveProblemSet={this.saveProblemSet}
                         saveProblems={this.props.saveProblems}
                         problemToEdit={problemList.problemToEdit}
                         editProblemCallback={this.editProblem}
                         history={this.props.history}
+                        updateTempSet={this.props.updateTempSet}
                         {...problemStore}
                         {...this}
+
                     />
                     <Switch>
-                        <Route exact path="/app/problemSet/:action/:code" render={p => <Home {...commonProps} {...p} {...this} />} />
+                        <Route exact path="/app/problemSet/:action/:code?" render={p => <Home {...commonProps} {...p} {...this} />} />
                         <Route exact path="/app/problem/:action/:code" render={p => <Editor {...commonProps} {...p} {...this} />} />
                         <Route exact path="/app/problem/example" render={p => <Editor example {...commonProps} {...p} {...this} />} />
                         <Route exact path="/app" render={p => <PageIndex {...commonProps} {...p} {...this} />} />

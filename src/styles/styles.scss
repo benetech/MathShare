@@ -105,3 +105,16 @@ button :global(.ML__mathlive) {
         }
     }
 }
+
+:global(.ML__scroller) {
+    display: none;
+}
+
+nav :global(.dropdown-menu) {
+    right: 0;
+    left: auto;
+
+    >a {
+        cursor: pointer;
+    }
+}

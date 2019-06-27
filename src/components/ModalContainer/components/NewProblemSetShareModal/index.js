@@ -4,8 +4,16 @@ import classNames from 'classnames';
 import editor from './styles.scss';
 import Locales from '../../../../strings';
 import Button from '../../../Button';
+import googleAnalytics from '../../../../scripts/googleAnalytics';
 
-export default class ProblemSetShareModal extends Component {
+export default class NewProblemSetShareModal extends Component {
+    componentWillMount() {
+        const { shareLink } = this.props;
+        if (shareLink) {
+            googleAnalytics(Locales.strings.share_problem_set);
+        }
+    }
+
     copyShareLink = () => {
         const copyText = document.getElementById('shareLink');
         copyText.select();
@@ -23,14 +31,14 @@ export default class ProblemSetShareModal extends Component {
                 <div id="demo-one-modal" className={editor.modal}>
                     <div className={editor.modalBody}>
                         <h3>
-                            {Locales.strings.submit_problem_link}
+                            {Locales.strings.assign_with_a_link}
                         </h3>
                         <div className={editor.modalMessage}>
                             <p>
-                                Students visit the link below to access the problem set
+                                Copy this link to the problem set and give to your students
                             </p>
                         </div>
-                        <input type="text" readOnly value={this.props.problemSetShareLink} id="shareLink" className={editor.shareLink} />
+                        <input type="text" readOnly value={this.props.shareLink} id="shareLink" className={editor.shareLink} />
                     </div>
                     <footer className={editor.modalFooter}>
                         <Button

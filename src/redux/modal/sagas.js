@@ -9,13 +9,21 @@ import {
     updateActiveModals,
 } from './actions';
 import {
+    updateTempSet,
+} from '../problemList/actions';
+import {
     getState,
 } from './selectors';
+import {
+    matchCurrentRoute,
+} from '../router/selectors';
+import {
+    getState as getProblemListState,
+} from '../problemList/selectors';
 
 import {
     CONFIRMATION,
-    ADD_PROBLEM_SET,
-    EDIT_PROBLEM,
+    TITLE_EDIT_MODAL,
 } from '../../components/ModalContainer';
 
 function* toggleModalSaga() {
@@ -34,24 +42,25 @@ function* toggleModalSaga() {
             if (updatedModals.indexOf(modal) !== -1) {
                 updatedModals = updatedModals.filter(e => e !== modal);
             } else {
-                if (modal === ADD_PROBLEM_SET) {
-                    yield put({
-                        type: 'RESET_TEMP_PROBLEMS',
-                    });
-                } else if (modal === CONFIRMATION) {
+                if (modal === CONFIRMATION) {
                     yield put({
                         type: 'SET_PROBLEM_DELETE_INDEX',
                         payload: {
                             problemToDeleteIndex: index,
                         },
                     });
-                } else if (modal === EDIT_PROBLEM) {
-                    yield put({
-                        type: 'SET_EDIT_PROBLEM',
-                        payload: {
-                            problemToEditIndex: index,
-                        },
-                    });
+                } else if (modal === TITLE_EDIT_MODAL) {
+                    const {
+                        set,
+                    } = yield select(getProblemListState);
+                    const {
+                        params,
+                    } = yield select(matchCurrentRoute('/app/problemSet/:action'));
+                    if (params.action !== 'new') {
+                        yield put(updateTempSet({
+                            title: set.title || '',
+                        }));
+                    }
                 }
                 updatedModals.push(modal);
             }
