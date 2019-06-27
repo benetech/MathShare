@@ -49,6 +49,30 @@ export default class MyWork extends Component {
         }
     }
 
+    getScratchPadValue = () => {
+        let { scratchPadValue, height, width } = this.state;
+
+        if (this.state.isScratchpadUsed) {
+            scratchPadValue = this.scratchPadPainterro.imageSaver.asDataURL();
+            height = this.scratchPadPainterro.canvas.height;
+            width = this.scratchPadPainterro.canvas.width;
+        }
+
+        if (scratchPadValue) {
+            const blank = document.createElement('canvas');
+            blank.width = width;
+            blank.height = height;
+            const ctx = blank.getContext('2d');
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, width, height);
+
+            if (scratchPadValue !== blank.toDataURL()) {
+                return scratchPadValue;
+            }
+        }
+        return undefined;
+    }
+
     HandleKeyDown(event) {
         const keyShortcuts = new Map(JSON.parse(sessionStorage.keyShortcuts));
         if (event.shiftKey && this.props.theActiveMathField.selectionIsCollapsed()) {
@@ -163,6 +187,8 @@ export default class MyWork extends Component {
         this.setState({
             scratchpadMode: false,
             scratchpadContent: this.scratchPadPainterro.imageSaver.asDataURL(),
+            scratchpadHeight: this.scratchPadPainterro.canvas.height,
+            scratchpadWidth: this.scratchPadPainterro.canvas.width,
         }, () => {
             $('#scratch-pad-containter').hide();
             mathLive.renderMathInDocument();
@@ -170,18 +196,16 @@ export default class MyWork extends Component {
     }
 
     addStepCallback() {
-        const isAdded = this.props.addStepCallback(this.state.isScratchpadUsed
-            ? this.scratchPadPainterro.imageSaver.asDataURL()
-            : this.state.scratchpadContent, this.props.textAreaValue);
+        const isAdded = this.props.addStepCallback(
+            this.getScratchPadValue(), this.props.textAreaValue,
+        );
         if (isAdded) {
             this.clearAndResizeScratchPad();
         }
     }
 
     updateCallback() {
-        this.props.updateCallback(this.state.isScratchpadUsed
-            ? this.scratchPadPainterro.imageSaver.asDataURL()
-            : this.state.scratchpadContent, this.props.textAreaValue);
+        this.props.updateCallback(this.getScratchPadValue(), this.props.textAreaValue);
     }
 
     render() {
