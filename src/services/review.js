@@ -26,7 +26,7 @@ export const storeSolutionsLocally = (action, code, solutions) => {
 
 export const shareSolutions = (action, code) => {
     const existingSolutions = getLocalSolutions(action, code);
-    if (!existingSolutions || existingSolutions.length === 0) {
+    if (!existingSolutions) {
         return new Promise((resolve, reject) => {
             reject(new Error("'No solutions saved'"));
         });

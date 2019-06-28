@@ -152,19 +152,17 @@ class Home extends Component {
                                     <h1 id="LeftNavigationHeader" className={home.titleHeader} tabIndex="-1">
                                         {currentSet.title}
                                     </h1>
-                                    {params.action === 'new' && (
-                                        <FontAwesome
-                                            className={
-                                                classNames(
-                                                    'fa-2x',
-                                                )
-                                            }
-                                            onClick={() => {
-                                                this.props.toggleModals([TITLE_EDIT_MODAL]);
-                                            }}
-                                            name="edit"
-                                        />
-                                    )}
+                                    <FontAwesome
+                                        className={
+                                            classNames(
+                                                'fa-2x',
+                                            )
+                                        }
+                                        onClick={() => {
+                                            this.props.toggleModals([TITLE_EDIT_MODAL]);
+                                        }}
+                                        name="edit"
+                                    />
                                     <br aria-hidden="true" />
                                     <br aria-hidden="true" />
                                 </div>
