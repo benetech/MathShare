@@ -106,7 +106,8 @@ function* requestProblemSetByCode() {
     }) {
         try {
             const response = yield call(fetchProblemsByActionAndCodeApi, action, code);
-            if (response.status !== 200) {
+            console.log(response);
+            if (response.status > 400) {
                 yield put(push('/app/'));
                 yield put({
                     type: 'REQUEST_PROBLEM_SET_FAILURE',
@@ -136,9 +137,7 @@ function* requestProblemSetByCode() {
                     ...problem,
                     position,
                 }));
-                const {
-                    problemSetRevisionShareCode,
-                } = orderedProblems[0];
+                const problemSetRevisionShareCode = shareCode;
                 const existingSolutions = getLocalSolutions('view', problemSetRevisionShareCode);
                 if (!existingSolutions || existingSolutions.length === 0) {
                     const storedSolutions = getSolutionObjectFromProblems(orderedProblems);
@@ -245,6 +244,7 @@ function* requestSaveProblemsSaga() {
 
             const response = yield call(
                 updateProblemsApi, set.editCode, set.shareCode, newProblems || set.problems,
+                set.title,
             );
 
             const {
@@ -384,13 +384,17 @@ function* requestSaveProblemSetSaga() {
         },
     }) {
         try {
-            const {
-                params,
-            } = yield select(matchCurrentRoute('/app/problemSet/:action'));
-            if (params && params.action === 'edit') {
-                yield put(finishEditing(redirect));
-                return;
+            const match = yield select(matchCurrentRoute('/app/problemSet/:action'));
+            if (match) {
+                const {
+                    params,
+                } = match;
+                if (params && params.action === 'edit') {
+                    yield put(finishEditing(redirect));
+                    return;
+                }
             }
+
             const {
                 tempPalettes,
             } = yield select(getState);
@@ -421,13 +425,17 @@ function* requestSaveProblemSetSaga() {
             if (activeModals.includes(ADD_PROBLEM_SET)) {
                 yield put(toggleModals([ADD_PROBLEM_SET]));
             }
-            if (redirect) {
-                yield put(push(`/app/problemSet/view/${shareCode}`));
+            if (redirect !== null) {
+                if (redirect) {
+                    yield put(push(`/app/problemSet/view/${shareCode}`));
+                } else {
+                    yield put(push(`/app/problemSet/edit/${editCode}`));
+                    yield put(toggleModals([SHARE_NEW_SET]));
+                }
+                alertSuccess(Locales.strings.created_problem_set, Locales.strings.success);
             } else {
                 yield put(push(`/app/problemSet/edit/${editCode}`));
-                yield put(toggleModals([SHARE_NEW_SET]));
             }
-            alertSuccess(Locales.strings.created_problem_set, Locales.strings.success);
         } catch (error) {
             yield put({
                 type: 'REQUEST_SAVE_PROBLEM_SET_FAILURE',

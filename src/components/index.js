@@ -9,6 +9,7 @@ import {
     faSignature, faSquareRootAlt,
 } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
+import * as dayjs from 'dayjs';
 import PageIndex from './PageIndex';
 import NotFound from './NotFound';
 import Home from './Home';
@@ -118,6 +119,7 @@ class App extends Component {
         // this.props.toggleModals([PALETTE_CHOOSER, ADD_PROBLEM_SET]);
         this.props.toggleModals([PALETTE_CHOOSER]);
         this.props.history.push('/app/problemSet/new');
+        this.props.saveProblemSet([], `New Problem Set ${dayjs().format('MM-DD-YYYY')}`, null);
     }
 
     saveProblemSet = (orderedProblems, title) => {
