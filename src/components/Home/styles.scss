@@ -24,6 +24,16 @@
     height: 100%;
     background-color: #FFFFFF;
     border-right: 1px solid #CCC;
+
+    .googleClassroomContainer {
+        display: flex;
+        padding: 2px;
+        margin-left: 5px;
+
+        .btnText {
+            padding: 4px 5px;
+        }
+    }
 }
 
 .actionBar {

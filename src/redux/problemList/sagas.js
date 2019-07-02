@@ -153,6 +153,11 @@ function* requestProblemSetByCode() {
                         title,
                     },
                 });
+                if (typeof (window) !== 'undefined') {
+                    window.gapi.sharetoclassroom.render('shareInClassroom', {
+                        url: `${window.location.origin}/app/problem/view/${shareCode}`,
+                    });
+                }
             }
         } catch (error) {
             yield put(push('/app/'));
@@ -257,6 +262,11 @@ function* requestSaveProblemsSaga() {
                 type: 'REQUEST_SAVE_PROBLEMS_SUCCESS',
                 payload: response.data,
             });
+            if (typeof (window) !== 'undefined') {
+                window.gapi.sharetoclassroom.render('shareInClassroom', {
+                    url: `${window.location.origin}/app/problem/view/${shareCode}`,
+                });
+            }
         } catch (error) {
             yield put({
                 type: 'REQUEST_SAVE_PROBLEMS_FAILURE',

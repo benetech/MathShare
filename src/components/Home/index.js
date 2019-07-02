@@ -47,6 +47,18 @@ class Home extends Component {
         this.props.shareSolutions(action, code);
     }
 
+    shareOnGoogleClassroom = (e) => {
+        const {
+            problemList,
+        } = this.props;
+        e.preventDefault();
+        window.open(
+            `https://classroom.google.com/u/0/share?url=${window.location.origin}/app/problem/view/${problemList.set.shareCode}`,
+            'googleClassroom',
+            'height=400,width=641,top=100,left=100,target=classroomPopup,toolbar=yes,scrollbars=yes,menubar=yes,location=no,resizable=yes',
+        );
+    }
+
     render() {
         const {
             match,
@@ -110,6 +122,31 @@ class Home extends Component {
                             <div className={`row flex-row-reverse ${home.btnContainer}`}>
                                 {((params.action === 'new' && problemList.tempSet.problems.length > 0) || params.action === 'edit') && (
                                     <React.Fragment>
+                                        <div
+                                            className={classNames([
+                                                'btn',
+                                                'btn-outline-dark',
+                                                home.googleClassroomContainer,
+                                            ])}
+                                            onClick={this.shareOnGoogleClassroom}
+                                            onKeyPress={this.shareOnGoogleClassroom}
+                                            role="link"
+                                            tabIndex="0"
+                                        >
+                                            <div className={home.btnText}>Google Classroom</div>
+                                            <div
+                                                id="shareInClassroom"
+                                                data-size="32"
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                }}
+                                                onKeyPress={(e) => {
+                                                    e.stopPropagation();
+                                                }}
+                                                role="link"
+                                                tabIndex="0"
+                                            />
+                                        </div>
                                         <Button
                                             id="viewAsStudent"
                                             className={classNames([
