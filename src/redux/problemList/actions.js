@@ -66,11 +66,12 @@ export const setTempPalettes = palettes => ({
     },
 });
 
-export const shareSolutions = (action, code) => ({
+export const shareSolutions = (action, code, silent) => ({
     type: 'REQUEST_SHARE_SOLUTIONS',
     payload: {
         action,
         code,
+        silent,
     },
 });
 

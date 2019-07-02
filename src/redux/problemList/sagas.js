@@ -18,6 +18,7 @@ import {
     updateTempSet,
     finishEditing,
     updateSet,
+    shareSolutions as shareSolutionsAction,
 } from './actions';
 import {
     fetchDefaultRevisionApi,
@@ -153,6 +154,17 @@ function* requestProblemSetByCode() {
                         title,
                     },
                 });
+                if (action === 'view') {
+                    console.log(action);
+                    yield put(shareSolutionsAction(action, code, true));
+                } else if (action === 'edit') {
+                    if (typeof (window) !== 'undefined') {
+                        window.gapi.sharetoclassroom.render('shareInClassroom', {
+                            url: `${window.location.origin}/#/app/problemSet/view/${shareCode}`,
+                            title,
+                        });
+                    }
+                }
             }
         } catch (error) {
             yield put(push('/app/'));
@@ -257,6 +269,12 @@ function* requestSaveProblemsSaga() {
                 type: 'REQUEST_SAVE_PROBLEMS_SUCCESS',
                 payload: response.data,
             });
+            if (typeof (window) !== 'undefined') {
+                window.gapi.sharetoclassroom.render('shareInClassroom', {
+                    url: `${window.location.origin}/#/app/problemSet/view/${shareCode}`,
+                    title: set.title,
+                });
+            }
         } catch (error) {
             yield put({
                 type: 'REQUEST_SAVE_PROBLEMS_FAILURE',
@@ -358,14 +376,22 @@ function* requestShareSolutionsSaga() {
         payload: {
             action,
             code,
+            silent,
         },
     }) {
         try {
             const {
                 reviewCode,
             } = yield call(shareSolutions, action, code);
+            if (typeof (window) !== 'undefined') {
+                window.gapi.sharetoclassroom.render('submitInClassroom', {
+                    url: `${window.location.origin}/#/app/problemSet/review/${reviewCode}`,
+                });
+            }
             yield put(setProblemSetShareCode(reviewCode));
-            yield put(toggleModals([SHARE_PROBLEM_SET]));
+            if (!silent) {
+                yield put(toggleModals([SHARE_PROBLEM_SET]));
+            }
         } catch (error) {
             yield put({
                 type: 'REQUEST_SHARE_SOLUTIONS_FAILURE',
