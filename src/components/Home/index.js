@@ -50,13 +50,26 @@ class Home extends Component {
     shareOnGoogleClassroom = (e) => {
         const {
             problemList,
+            match,
         } = this.props;
+        const {
+            action,
+        } = match.params;
         e.preventDefault();
-        window.open(
-            `https://classroom.google.com/u/0/share?url=${window.location.origin}/app/problem/view/${problemList.set.shareCode}`,
-            'googleClassroom',
-            'height=400,width=641,top=100,left=100,target=classroomPopup,toolbar=yes,scrollbars=yes,menubar=yes,location=no,resizable=yes',
-        );
+        const popupConfig = 'height=400,width=641,top=100,left=100,target=classroomPopup,toolbar=yes,scrollbars=yes,menubar=yes,location=no,resizable=yes';
+        if (action === 'edit') {
+            window.open(
+                `https://classroom.google.com/u/0/share?url=${encodeURIComponent(`${window.location.origin}/#/app/problemSet/view/${problemList.set.shareCode}`)}`,
+                'googleClassroom',
+                popupConfig,
+            );
+        } else if (action === 'view') {
+            window.open(
+                `https://classroom.google.com/u/0/share?url=${encodeURIComponent(`${window.location.origin}/#/app/problemSet/review/${problemList.problemSetShareCode}`)}`,
+                'googleClassroom',
+                popupConfig,
+            );
+        }
     }
 
     render() {
@@ -114,6 +127,31 @@ class Home extends Component {
                                     content={Locales.strings.link}
                                     onClick={this.shareProblemSet}
                                 />
+                                <div
+                                    className={classNames([
+                                        'btn',
+                                        'btn-outline-dark',
+                                        home.googleClassroomContainer,
+                                    ])}
+                                    onClick={this.shareOnGoogleClassroom}
+                                    onKeyPress={this.shareOnGoogleClassroom}
+                                    role="link"
+                                    tabIndex="0"
+                                >
+                                    <div className={home.btnText}>Google Classroom</div>
+                                    <div
+                                        id="submitInClassroom"
+                                        data-size="32"
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                        }}
+                                        onKeyPress={(e) => {
+                                            e.stopPropagation();
+                                        }}
+                                        role="link"
+                                        tabIndex="0"
+                                    />
+                                </div>
                             </div>
                         </div>
                     )}

@@ -38,6 +38,11 @@ export const shareSolutions = (action, code) => {
                 reviewCode,
             } = response.data;
             storeSolutionsLocally(action, code, solutions);
+            if (typeof (window) !== 'undefined') {
+                window.gapi.sharetoclassroom.render('submitInClassroom', {
+                    url: `${window.location.origin}/#/app/problem/review/${reviewCode}`,
+                });
+            }
             return {
                 solutions,
                 reviewCode,
