@@ -59,7 +59,7 @@ class Home extends Component {
         const popupConfig = 'height=400,width=641,top=100,left=100,target=classroomPopup,toolbar=yes,scrollbars=yes,menubar=yes,location=no,resizable=yes';
         if (action === 'edit') {
             window.open(
-                `https://classroom.google.com/u/0/share?url=${encodeURIComponent(`${window.location.origin}/#/app/problemSet/view/${problemList.set.shareCode}`)}`,
+                `https://classroom.google.com/u/0/share?url=${encodeURIComponent(`${window.location.origin}/#/app/problemSet/view/${problemList.set.shareCode}`)}&title=${problemList.set.title}`,
                 'googleClassroom',
                 popupConfig,
             );
