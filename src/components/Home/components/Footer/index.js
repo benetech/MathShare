@@ -13,7 +13,7 @@ const MainPageFooter = ({ customClass }) => (
                 {Locales.strings.footer}
                 {' '}
             </h2>
-            <div className="row">
+            <div>
                 <div className={footer.edGov}>
                     <a href="https://www2.ed.gov/about/offices/list/osers/osep/index.html" target="_blank" rel="noopener noreferrer">
                         <img

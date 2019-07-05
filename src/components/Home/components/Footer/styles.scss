@@ -45,4 +45,8 @@
   max-width: 768px;
   margin: auto;
   padding: 10px;
+
+  >div {
+    display: flex;
+  }
 }
