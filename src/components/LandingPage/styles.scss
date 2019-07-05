@@ -1,0 +1,125 @@
+.container {
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    overflow-x: hidden;
+
+    .btn {
+        background-color: #31af08;
+        max-width: 120px;
+        padding: 10px;
+        color: white;
+        margin: auto;
+        margin-top: 15px;
+        border-radius: 15px;
+        margin-bottom: 15px;
+        cursor: pointer;
+    }
+}
+
+.title {
+    margin-bottom: 120px;
+}
+
+.midLogo {
+    max-width: 400px;
+    position: relative;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    z-index: 1;
+}
+
+.content {
+    max-width: 768px;
+    margin: auto;
+    text-align: center;
+
+    hr {
+        margin: 30px auto;
+        max-width: 400px;
+    }
+}
+
+.midContainer {
+    position: relative;
+    margin-top: -36px;
+    background: rgb(8, 28, 214);
+    background: linear-gradient(180deg, rgba(8, 28, 214, 1) 0%, rgba(99, 112, 229, 1) 50%, rgba(151, 160, 238, 1) 80%, rgba(255, 255, 255, 1) 100%);
+    text-align: center;
+
+    .largeText {
+        line-height: 1;
+        text-align: center;
+        margin: 50px auto;
+        color: white;
+        padding: 20px;
+        font-size: 36px;
+        font-weight: 600;
+        max-width: 500px;
+        margin-bottom: 0;
+    }
+
+    img {
+        width: 100%;
+        max-width: 500px;
+        padding: 0 10px;
+        margin: auto;
+    }
+
+    .midBottomText {
+        margin: auto;
+        margin-top: 35px;
+        max-width: 500px;
+        padding: 10px;
+        font-weight: 500;
+    }
+}
+
+.features {
+    max-width: 600px;
+    padding: 50px;
+    margin: auto;
+
+    .feature {
+        display: flex;
+
+        >*:first-child {
+            padding-right: 10px;
+        }
+
+        >*:nth-child(2) {
+            padding-left: 10px;
+        }
+
+        .imageSection {
+            width: 50%;
+
+            img {
+                width: 100%;
+            }
+        }
+
+        .textSection {
+            width: 50%;
+            text-align: left;
+
+            .header {
+                font-size: 24px;
+            }
+
+            .textContent {
+                margin-top: 10px;
+                font-size: 12px;
+            }
+        }
+    }
+
+    .signupBtn {
+        max-width: 200px;
+        margin-top: 50px;
+    }
+
+}

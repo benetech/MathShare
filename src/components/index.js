@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { NotificationContainer } from 'react-notifications';
 import {
-    Switch, Redirect, Route, withRouter,
+    Switch, Route, withRouter,
 } from 'react-router-dom';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
@@ -14,7 +14,10 @@ import PageIndex from './PageIndex';
 import NotFound from './NotFound';
 import Home from './Home';
 import Editor from './Editor';
+import LandingPage from './LandingPage';
 import MainPageFooter from './Home/components/Footer';
+import SocialFooter from './Home/components/SocialFooter';
+import SiteMapFooter from './Home/components/SiteMapFooter';
 import Locales from '../strings';
 import ModalContainer, {
     CONFIRMATION, CONFIRMATION_BACK, PALETTE_CHOOSER, // ADD_PROBLEM_SET,
@@ -256,13 +259,13 @@ class App extends Component {
                         <Route exact path="/app/problem/:action/:code" render={p => <Editor {...commonProps} {...p} {...this} />} />
                         <Route exact path="/app/problem/example" render={p => <Editor example {...commonProps} {...p} {...this} />} />
                         <Route exact path="/app" render={p => <PageIndex {...commonProps} {...p} {...this} />} />
-                        <Route exact path="/">
-                            <Redirect to="/app" />
-                        </Route>
+                        <Route exact path="/" render={p => <LandingPage {...p} />} />
                         <Route render={p => <NotFound {...p} />} />
                     </Switch>
                 </div>
+                <SiteMapFooter />
                 <MainPageFooter customClass="footer" />
+                <SocialFooter />
             </React.Fragment>
         );
     }

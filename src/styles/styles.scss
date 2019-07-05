@@ -22,8 +22,8 @@ body {
 }
 
 :global(.body-container) {
-    min-height: calc(100vh - 70px);
     display: table;
+    padding-bottom: 25px;
 }
 
 :global(#workArea) :global(.ML__mathlive) {
