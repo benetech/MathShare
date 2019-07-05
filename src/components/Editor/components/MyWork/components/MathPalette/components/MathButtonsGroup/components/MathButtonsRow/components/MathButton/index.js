@@ -411,8 +411,18 @@ function DoCalculation(latex) {
 
     try {
         const result = eval(expr);
+        const firstChar = expr[0];
         const rounded = Math.round(result);
-        return Math.abs(result - rounded) < 1e-15 ? rounded : result;
+        let sign = '';
+        if (firstChar === '-' || firstChar === '+') {
+            sign = '+';
+            if (result < 0) {
+                sign = '-';
+            } else if (rounded === 0 && result < 1e-15) {
+                return ' ';
+            }
+        }
+        return sign + (Math.abs(result - rounded) < 1e-15 ? rounded : result);
     } catch (e) {
         return '';
     }
