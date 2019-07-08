@@ -58,13 +58,13 @@
         padding: 20px;
         font-size: 36px;
         font-weight: 600;
-        max-width: 500px;
+        max-width: 600px;
         margin-bottom: 0;
     }
 
     img {
         width: 100%;
-        max-width: 500px;
+        max-width: 600px;
         padding: 0 10px;
         margin: auto;
     }
@@ -72,7 +72,7 @@
     .midBottomText {
         margin: auto;
         margin-top: 35px;
-        max-width: 500px;
+        max-width: 600px;
         padding: 10px;
         font-weight: 500;
     }
@@ -80,7 +80,7 @@
 
 .features {
     max-width: 600px;
-    padding: 50px;
+    padding: 20px;
     margin: auto;
 
     .feature {
@@ -97,12 +97,12 @@
             text-align: left;
 
             .header {
-                font-size: 24px;
+                font-size: 22px;
             }
 
             .textContent {
                 margin-top: 10px;
-                font-size: 12px;
+                font-size: 14px;
             }
         }
     }
@@ -151,10 +151,6 @@
                     max-width: 100%;
                     max-height: 175px;
                 }
-            }
-
-            .textSection .textContent {
-                font-size: 14px;
             }
         }
     }
