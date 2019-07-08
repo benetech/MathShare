@@ -415,9 +415,9 @@ function DoCalculation(latex) {
         const rounded = Math.round(result);
         let sign = '';
         if (firstChar === '-' || firstChar === '+') {
-            sign = '+';
-            if (result < 0) {
-                sign = '-';
+            sign = '';
+            if (result > 0) {
+                sign = '+';
             } else if (rounded === 0 && result < 1e-15) {
                 return ' ';
             }
