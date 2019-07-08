@@ -30,6 +30,12 @@
         padding: 2px;
         margin-left: 5px;
 
+        &:focus,
+        [role="link"]:focus {
+            box-shadow: none;
+            outline: none;
+        }
+
         .btnText {
             padding: 4px 5px;
         }
