@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { NotificationContainer } from 'react-notifications';
+import { UncontrolledTooltip } from 'reactstrap';
 import { connect } from 'react-redux';
 import FontAwesome from 'react-fontawesome';
 import classNames from 'classnames';
@@ -127,31 +128,37 @@ class Home extends Component {
                                     content={Locales.strings.link}
                                     onClick={this.shareProblemSet}
                                 />
-                                <div
-                                    className={classNames([
-                                        'btn',
-                                        'btn-outline-dark',
-                                        home.googleClassroomContainer,
-                                    ])}
-                                    onClick={this.shareOnGoogleClassroom}
-                                    onKeyPress={this.shareOnGoogleClassroom}
-                                    role="link"
-                                    tabIndex="0"
-                                >
-                                    <div className={home.btnText}>Google Classroom</div>
-                                    <div
-                                        id="submitInClassroom"
-                                        data-size="32"
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                        }}
-                                        onKeyPress={(e) => {
-                                            e.stopPropagation();
-                                        }}
+                                <span>
+                                    <button
+                                        id="googleContainer1"
+                                        className={classNames([
+                                            'btn',
+                                            'btn-outline-dark',
+                                            home.googleClassroomContainer,
+                                            'pointer',
+                                        ])}
+                                        onClick={this.shareOnGoogleClassroom}
+                                        onKeyPress={this.shareOnGoogleClassroom}
                                         role="link"
                                         tabIndex="0"
-                                    />
-                                </div>
+                                        type="button"
+                                    >
+                                        <div className={home.btnText}>Google Classroom</div>
+                                        <div
+                                            id="submitInClassroom"
+                                            data-size="32"
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                            }}
+                                            onKeyPress={(e) => {
+                                                e.stopPropagation();
+                                            }}
+                                            role="link"
+                                            tabIndex="0"
+                                        />
+                                    </button>
+                                    <UncontrolledTooltip placement="top" target="googleContainer1" />
+                                </span>
                             </div>
                         </div>
                     )}
@@ -160,31 +167,37 @@ class Home extends Component {
                             <div className={`row flex-row-reverse ${home.btnContainer}`}>
                                 {((params.action === 'new' && problemList.tempSet.problems.length > 0) || params.action === 'edit') && (
                                     <React.Fragment>
-                                        <div
-                                            className={classNames([
-                                                'btn',
-                                                'btn-outline-dark',
-                                                home.googleClassroomContainer,
-                                            ])}
-                                            onClick={this.shareOnGoogleClassroom}
-                                            onKeyPress={this.shareOnGoogleClassroom}
-                                            role="link"
-                                            tabIndex="0"
-                                        >
-                                            <div className={home.btnText}>Google Classroom</div>
-                                            <div
-                                                id="shareInClassroom"
-                                                data-size="32"
-                                                onClick={(e) => {
-                                                    e.stopPropagation();
-                                                }}
-                                                onKeyPress={(e) => {
-                                                    e.stopPropagation();
-                                                }}
+                                        <span>
+                                            <button
+                                                id="googleContainer2"
+                                                className={classNames([
+                                                    'btn',
+                                                    'btn-outline-dark',
+                                                    home.googleClassroomContainer,
+                                                    'pointer',
+                                                ])}
+                                                onClick={this.shareOnGoogleClassroom}
+                                                onKeyPress={this.shareOnGoogleClassroom}
                                                 role="link"
                                                 tabIndex="0"
-                                            />
-                                        </div>
+                                                type="button"
+                                            >
+                                                <div className={home.btnText}>Google Classroom</div>
+                                                <div
+                                                    id="shareInClassroom"
+                                                    data-size="32"
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                    }}
+                                                    onKeyPress={(e) => {
+                                                        e.stopPropagation();
+                                                    }}
+                                                    role="link"
+                                                    tabIndex="0"
+                                                />
+                                            </button>
+                                            <UncontrolledTooltip placement="top" target="googleContainer2" />
+                                        </span>
                                         <Button
                                             id="viewAsStudent"
                                             className={classNames([
