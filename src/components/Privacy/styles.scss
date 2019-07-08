@@ -1,0 +1,50 @@
+.container {
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    overflow-x: hidden;
+}
+
+.content {
+    max-width: 768px;
+    margin: auto;
+    width: 100%;
+
+    .header {
+        font-size: 24px;
+        padding: 15px 0;
+    }
+
+    .textContent {
+        font-size: 18px;
+        padding: 10px 0 50px;
+
+        .metadata {
+            font-size: 16px;
+            color: gray;
+        }
+    }
+}
+
+.headerBottom {
+    position: relative;
+    margin-top: -18px;
+    background: rgb(8, 28, 214);
+    height: 34px;
+}
+
+.logoContainer {
+    max-width: 786px;
+    margin: auto;
+    width: 100%;
+
+    .midLogo {
+        max-width: 350px;
+        position: relative;
+        top: 15px;
+        left: 0;
+        right: 0;
+        z-index: 1;
+    }
+}

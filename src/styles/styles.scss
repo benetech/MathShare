@@ -23,7 +23,6 @@ body {
 
 :global(.body-container) {
     display: table;
-    padding-bottom: 25px;
 }
 
 :global(#workArea) :global(.ML__mathlive) {
@@ -66,6 +65,7 @@ button :global(.ML__mathlive) {
 :global(.mainContainer) {
     margin: auto;
     margin-top: 75px;
+    padding-bottom: 20px;
 
     :global(.row) {
         :global(.title) {

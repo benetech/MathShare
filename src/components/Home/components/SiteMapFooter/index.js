@@ -5,7 +5,7 @@ import footerLogo from '../../../../../images/footer_logo.png';
 // import Locales from '../../../../strings';
 
 const SiteMapFooter = ({ customClass }) => (
-    <footer id="footer" className={`${footer.footer} ${customClass || ''}`}>
+    <div className={`${footer.footer} ${customClass || ''}`}>
         <div className={`${footer.footerContainer} d-flex flex-row flex-wrap`}>
             <div>
                 <div className="d-flex flex-row">
@@ -125,7 +125,7 @@ const SiteMapFooter = ({ customClass }) => (
                 </div>
             </div>
         </div>
-    </footer>
+    </div>
 );
 
 export default SiteMapFooter;

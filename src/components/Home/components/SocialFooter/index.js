@@ -4,7 +4,7 @@ import footer from './styles.scss';
 import Locales from '../../../../strings';
 
 const SocialFooter = ({ customClass }) => (
-    <footer id="footer" className={`${footer.footer} ${customClass || ''}`}>
+    <div className={`${footer.footer} ${customClass || ''}`}>
         <div className={footer.footerContainer}>
             <a
                 href="https://twitter.com/MathShare"
@@ -30,7 +30,7 @@ const SocialFooter = ({ customClass }) => (
             </a>
             <div>{Locales.strings.copyright}</div>
         </div>
-    </footer>
+    </div>
 );
 
 export default SocialFooter;

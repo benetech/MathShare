@@ -6,7 +6,7 @@ import Locales from '../../../../strings';
 import ideaLogo from '../../../../../images/IDEA-logo.gif';
 
 const MainPageFooter = ({ customClass }) => (
-    <footer id="footer" className={`${footer.footer} ${customClass || ''}`}>
+    <div className={`${footer.footer} ${customClass || ''}`}>
         <div className={footer.footerContainer}>
             <h2 className="sROnly">
                 {' '}
@@ -51,7 +51,7 @@ const MainPageFooter = ({ customClass }) => (
             </div> */}
 
         </div>
-    </footer>
+    </div>
 );
 
 export default MainPageFooter;
