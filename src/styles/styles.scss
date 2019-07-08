@@ -23,6 +23,7 @@ body {
 
 :global(.body-container) {
     display: table;
+    width: 100%;
 }
 
 :global(#workArea) :global(.ML__mathlive) {
