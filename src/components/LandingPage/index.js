@@ -45,7 +45,10 @@ const LandingPage = withRouter(({ history }) => (
         <div className={styles.features}>
             <div className={styles.content}>
                 <hr />
-                <div className={styles.feature}>
+                <div className={`${styles.feature} ${styles.reverse}`}>
+                    <div className={styles.imageSection}>
+                        <img src={showWork} alt="show-work" />
+                    </div>
                     <div className={styles.textSection}>
                         <div className={styles.header}>
                             Show their work
@@ -55,9 +58,6 @@ const LandingPage = withRouter(({ history }) => (
                             {' '}
                             and add notes to explain their thinking.
                         </div>
-                    </div>
-                    <div className={styles.imageSection}>
-                        <img src={showWork} alt="show-work" />
                     </div>
                 </div>
                 <hr />
@@ -79,7 +79,10 @@ const LandingPage = withRouter(({ history }) => (
                     </div>
                 </div>
                 <hr />
-                <div className={styles.feature}>
+                <div className={`${styles.feature} ${styles.reverse}`}>
+                    <div className={styles.imageSection}>
+                        <img src={lms} alt="lms" />
+                    </div>
                     <div className={styles.textSection}>
                         <div className={styles.header}>
                             LMS Integration
@@ -91,9 +94,6 @@ const LandingPage = withRouter(({ history }) => (
                             {' '}
                             single sign on (SSO) coming soon.
                         </div>
-                    </div>
-                    <div className={styles.imageSection}>
-                        <img src={lms} alt="lms" />
                     </div>
                 </div>
                 <hr />
