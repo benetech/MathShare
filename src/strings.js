@@ -1,4 +1,7 @@
 import LocalizedStrings from 'react-localization';
+import * as dayjs from 'dayjs';
+
+const now = dayjs();
 
 
 class Locales {
@@ -94,7 +97,7 @@ class Locales {
                 diagram_center: 'DIAGRAM Center',
                 is_a: ' is a ',
                 benetech: 'Benetech',
-                footer_description: ' initiative supported by the U.S. Department of Education, Office of Special Education Programs (Cooperative Agreement #H327B100001). Opinions expressed herein are those of the authors and do not necessarily represent the position of the U.S. Department of Education. Poet™ is a trademark of Beneficent Technology, Inc. This website is copyright © 2012-2017, Beneficent Technology, Inc.',
+                footer_description: ` initiative supported by the U.S. Department of Education, Office of Special Education Programs (Cooperative Agreement #H327B100001). Opinions expressed herein are those of the authors and do not necessarily represent the position of the U.S. Department of Education. Poet™ is a trademark of Beneficent Technology, Inc. This website is copyright © 2012-${now.format('YYYY')}, Beneficent Technology, Inc.`,
                 loading: 'Loading...',
                 view_problem_description: 'view problem description',
                 back_to_problem_page: 'back to list of problems',
