@@ -272,14 +272,12 @@ function* requestSaveProblemsSaga() {
                 type: 'REQUEST_SAVE_PROBLEMS_SUCCESS',
                 payload: response.data,
             });
-            if (typeof (window) !== 'undefined') {
-                renderShareToClassroom(
-                    'shareInClassroom',
-                    `/#/app/problemSet/view/${shareCode}`, {
-                        title: set.title,
-                    },
-                );
-            }
+            renderShareToClassroom(
+                'shareInClassroom',
+                `/#/app/problemSet/view/${shareCode}`, {
+                    title: set.title,
+                },
+            );
         } catch (error) {
             yield put({
                 type: 'REQUEST_SAVE_PROBLEMS_FAILURE',
@@ -388,12 +386,10 @@ function* requestShareSolutionsSaga() {
             const {
                 reviewCode,
             } = yield call(shareSolutions, action, code);
-            if (typeof (window) !== 'undefined') {
-                renderShareToClassroom(
-                    'submitInClassroom',
-                    `/#/app/problemSet/review/${reviewCode}`,
-                );
-            }
+            renderShareToClassroom(
+                'submitInClassroom',
+                `/#/app/problemSet/review/${reviewCode}`,
+            );
             yield put(setProblemSetShareCode(reviewCode));
             if (!silent) {
                 yield put(toggleModals([SHARE_PROBLEM_SET]));
