@@ -154,7 +154,7 @@ class Home extends Component {
                                                 e.stopPropagation();
                                             }}
                                             role="link"
-                                            tabIndex="0"
+                                            tabIndex="-1"
                                         />
                                     </button>
                                     <UncontrolledTooltip placement="top" target="googleContainer1" />
@@ -193,7 +193,7 @@ class Home extends Component {
                                                         e.stopPropagation();
                                                     }}
                                                     role="link"
-                                                    tabIndex="0"
+                                                    tabIndex="-1"
                                                 />
                                             </button>
                                             <UncontrolledTooltip placement="top" target="googleContainer2" />

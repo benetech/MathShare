@@ -3,6 +3,10 @@ import {
     SERVER_URL,
 } from '../config';
 
+import {
+    renderShareToClassroom,
+} from './googleClassroom';
+
 export const getLocalSolutions = (action, code) => {
     const key = `${action}_${code}`;
     const existingSolutions = localStorage.getItem(key) || '[]';
@@ -38,11 +42,10 @@ export const shareSolutions = (action, code) => {
                 reviewCode,
             } = response.data;
             storeSolutionsLocally(action, code, solutions);
-            if (typeof (window) !== 'undefined') {
-                window.gapi.sharetoclassroom.render('submitInClassroom', {
-                    url: `${window.location.origin}/#/app/problem/review/${reviewCode}`,
-                });
-            }
+            renderShareToClassroom(
+                'submitInClassroom',
+                `/#/app/problem/review/${reviewCode}`,
+            );
             return {
                 solutions,
                 reviewCode,

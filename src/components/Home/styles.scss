@@ -4,15 +4,12 @@
     justify-content: space-between;
     flex-direction: column;
     padding-bottom: 20px;
-
     .btnContainer {
         padding: 10px;
         margin-right: 5px;
-
         .text {
             margin: auto 5px;
         }
-
         span {
             margin-left: 5px;
         }
@@ -24,18 +21,10 @@
     height: 100%;
     background-color: #FFFFFF;
     border-right: 1px solid #CCC;
-
     .googleClassroomContainer {
         display: inline-flex;
         padding: 2px;
         margin-left: 5px;
-
-        &:focus,
-        [role="link"]:focus {
-            box-shadow: none;
-            outline: none;
-        }
-
         .btnText {
             padding: 4px 5px;
         }
@@ -45,24 +34,20 @@
 .actionBar {
     padding: 10px;
     padding-bottom: 0;
-
     .left {
         width: 50%;
     }
-
     .right {
         width: 50%;
         text-align: right;
         padding: 10px 20px;
     }
-
     .actionBarText {
         font-size: 20px;
         padding-right: 10px;
         top: 2px;
         position: relative;
     }
-
     button span {
         padding-right: 5px;
     }

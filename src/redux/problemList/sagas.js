@@ -53,6 +53,9 @@ import {
     shareSolutions,
     storeSolutionsLocally,
 } from '../../services/review';
+import {
+    renderShareToClassroom,
+} from '../../services/googleClassroom';
 import Locales from '../../strings';
 
 
@@ -158,12 +161,12 @@ function* requestProblemSetByCode() {
                     console.log(action);
                     yield put(shareSolutionsAction(action, code, true));
                 } else if (action === 'edit') {
-                    if (typeof (window) !== 'undefined') {
-                        window.gapi.sharetoclassroom.render('shareInClassroom', {
-                            url: `${window.location.origin}/#/app/problemSet/view/${shareCode}`,
+                    renderShareToClassroom(
+                        'shareInClassroom',
+                        `/#/app/problemSet/view/${shareCode}`, {
                             title,
-                        });
-                    }
+                        },
+                    );
                 }
             }
         } catch (error) {
@@ -270,10 +273,12 @@ function* requestSaveProblemsSaga() {
                 payload: response.data,
             });
             if (typeof (window) !== 'undefined') {
-                window.gapi.sharetoclassroom.render('shareInClassroom', {
-                    url: `${window.location.origin}/#/app/problemSet/view/${shareCode}`,
-                    title: set.title,
-                });
+                renderShareToClassroom(
+                    'shareInClassroom',
+                    `/#/app/problemSet/view/${shareCode}`, {
+                        title: set.title,
+                    },
+                );
             }
         } catch (error) {
             yield put({
@@ -384,9 +389,10 @@ function* requestShareSolutionsSaga() {
                 reviewCode,
             } = yield call(shareSolutions, action, code);
             if (typeof (window) !== 'undefined') {
-                window.gapi.sharetoclassroom.render('submitInClassroom', {
-                    url: `${window.location.origin}/#/app/problemSet/review/${reviewCode}`,
-                });
+                renderShareToClassroom(
+                    'submitInClassroom',
+                    `/#/app/problemSet/review/${reviewCode}`,
+                );
             }
             yield put(setProblemSetShareCode(reviewCode));
             if (!silent) {
