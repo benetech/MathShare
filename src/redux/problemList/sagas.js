@@ -52,6 +52,9 @@ import {
     getSolutionObjectFromProblems,
     shareSolutions,
 } from '../../services/review';
+import {
+    renderShareToClassroom,
+} from '../../services/googleClassroom';
 import Locales from '../../strings';
 
 
@@ -157,12 +160,12 @@ function* requestProblemSetByCode() {
                         yield put(shareSolutionsAction(action, code, true));
                     }
                 } else if (action === 'edit') {
-                    if (typeof (window) !== 'undefined') {
-                        window.gapi.sharetoclassroom.render('shareInClassroom', {
-                            url: `${window.location.origin}/#/app/problemSet/view/${shareCode}`,
+                    renderShareToClassroom(
+                        'shareInClassroom',
+                        `/#/app/problemSet/view/${shareCode}`, {
                             title,
-                        });
-                    }
+                        },
+                    );
                 }
             }
         } catch (error) {
@@ -273,12 +276,12 @@ function* requestSaveProblemsSaga() {
                 type: 'REQUEST_SAVE_PROBLEMS_SUCCESS',
                 payload: response.data,
             });
-            if (typeof (window) !== 'undefined') {
-                window.gapi.sharetoclassroom.render('shareInClassroom', {
-                    url: `${window.location.origin}/#/app/problemSet/view/${shareCode}`,
+            renderShareToClassroom(
+                'shareInClassroom',
+                `/#/app/problemSet/view/${shareCode}`, {
                     title: set.title,
-                });
-            }
+                },
+            );
         } catch (error) {
             yield put({
                 type: 'REQUEST_SAVE_PROBLEMS_FAILURE',
@@ -389,12 +392,7 @@ function* requestShareSolutionsSaga() {
             } = yield select(getState);
 
             const payloadSolutions = getSolutionObjectFromProblems(set.problems);
-            const shareResponse = yield call(shareSolutions, action, code, payloadSolutions);
-            if (typeof (window) !== 'undefined') {
-                window.gapi.sharetoclassroom.render('submitInClassroom', {
-                    url: `${window.location.origin}/#/app/problemSet/review/${shareResponse.reviewCode}`,
-                });
-            }
+            const shareResponse = yield call(shareSolutions, code, payloadSolutions);
             yield put(setProblemSetShareCode(shareResponse.reviewCode));
             yield put(setReviewSolutions(shareResponse.solutions));
             if (!silent) {

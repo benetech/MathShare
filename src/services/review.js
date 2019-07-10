@@ -3,17 +3,20 @@ import {
     SERVER_URL,
 } from '../config';
 
-export const shareSolutions = (action, code, payloadSolutions) => axios.post(`${SERVER_URL}/solution/review/${code}`, payloadSolutions)
+import {
+    renderShareToClassroom,
+} from './googleClassroom';
+
+export const shareSolutions = (code, payloadSolutions) => axios.post(`${SERVER_URL}/solution/review/${code}`, payloadSolutions)
     .then((response) => {
         const {
             solutions,
             reviewCode,
         } = response.data;
-        if (typeof (window) !== 'undefined') {
-            window.gapi.sharetoclassroom.render('submitInClassroom', {
-                url: `${window.location.origin}/#/app/problem/review/${reviewCode}`,
-            });
-        }
+        renderShareToClassroom(
+            'submitInClassroom',
+            `/#/app/problemSet/review/${reviewCode}`,
+        );
         return {
             solutions,
             reviewCode,
@@ -41,6 +44,7 @@ export const createReviewProblemSetOnUpdate = (problems, shareCode) => {
 };
 
 export default {
-    shareSolutions,
     createReviewProblemSetOnUpdate,
+    getSolutionObjectFromProblems,
+    shareSolutions,
 };

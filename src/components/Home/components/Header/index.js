@@ -153,7 +153,7 @@ const MainPageHeader = (props) => {
                     <h2 id="topNavLabel" className="sROnly">{Locales.strings.header}</h2>
                     <a
                         className="navbar-brand"
-                        href="#/app"
+                        href="#/"
                         onClick={() => {
                             googleAnalytics('clicked logo');
                         }}
