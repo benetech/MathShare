@@ -19,6 +19,7 @@ import {
     finishEditing,
     updateSet,
     shareSolutions as shareSolutionsAction,
+    setReviewSolutions,
 } from './actions';
 import {
     fetchDefaultRevisionApi,
@@ -48,10 +49,8 @@ import {
 } from '../../scripts/alert';
 import {
     createReviewProblemSetOnUpdate,
-    getLocalSolutions,
     getSolutionObjectFromProblems,
     shareSolutions,
-    storeSolutionsLocally,
 } from '../../services/review';
 import Locales from '../../strings';
 
@@ -124,7 +123,7 @@ function* requestProblemSetByCode() {
                 title,
             } = response.data;
             if (action === 'review') {
-                storeSolutionsLocally(action, code, solutions);
+                yield put(setReviewSolutions(solutions));
                 yield put({
                     type: 'REQUEST_PROBLEM_SET_SUCCESS',
                     payload: {
@@ -138,13 +137,6 @@ function* requestProblemSetByCode() {
                     ...problem,
                     position,
                 }));
-                const problemSetRevisionShareCode = shareCode;
-                const existingSolutions = getLocalSolutions('view', problemSetRevisionShareCode);
-                if (!existingSolutions || existingSolutions.length === 0) {
-                    const storedSolutions = getSolutionObjectFromProblems(orderedProblems);
-                    storeSolutionsLocally('view', problemSetRevisionShareCode, storedSolutions);
-                    yield call(shareSolutions, 'view', problemSetRevisionShareCode);
-                }
                 yield put({
                     type: 'REQUEST_PROBLEM_SET_SUCCESS',
                     payload: {
@@ -155,8 +147,15 @@ function* requestProblemSetByCode() {
                     },
                 });
                 if (action === 'view') {
-                    console.log(action);
-                    yield put(shareSolutionsAction(action, code, true));
+                    const problemListState = yield select(getState);
+                    let currentShareCode = null;
+                    if (problemListState.solutions.length > 0) {
+                        const firstProblem = problemListState.solutions[0].problem;
+                        currentShareCode = firstProblem.problemSetRevisionShareCode;
+                    }
+                    if (currentShareCode !== shareCode) {
+                        yield put(shareSolutionsAction(action, code, true));
+                    }
                 } else if (action === 'edit') {
                     if (typeof (window) !== 'undefined') {
                         window.gapi.sharetoclassroom.render('shareInClassroom', {
@@ -264,7 +263,12 @@ function* requestSaveProblemsSaga() {
                 problems,
             } = response.data;
             // might not be required on save after deleted
-            createReviewProblemSetOnUpdate(problems, shareCode);
+            const {
+                solutions,
+                reviewCode,
+            } = createReviewProblemSetOnUpdate(problems, shareCode);
+            yield put(setProblemSetShareCode(reviewCode));
+            yield put(setReviewSolutions(solutions));
             yield put({
                 type: 'REQUEST_SAVE_PROBLEMS_SUCCESS',
                 payload: response.data,
@@ -381,14 +385,18 @@ function* requestShareSolutionsSaga() {
     }) {
         try {
             const {
-                reviewCode,
-            } = yield call(shareSolutions, action, code);
+                set,
+            } = yield select(getState);
+
+            const payloadSolutions = getSolutionObjectFromProblems(set.problems);
+            const shareResponse = yield call(shareSolutions, action, code, payloadSolutions);
             if (typeof (window) !== 'undefined') {
                 window.gapi.sharetoclassroom.render('submitInClassroom', {
-                    url: `${window.location.origin}/#/app/problemSet/review/${reviewCode}`,
+                    url: `${window.location.origin}/#/app/problemSet/review/${shareResponse.reviewCode}`,
                 });
             }
-            yield put(setProblemSetShareCode(reviewCode));
+            yield put(setProblemSetShareCode(shareResponse.reviewCode));
+            yield put(setReviewSolutions(shareResponse.solutions));
             if (!silent) {
                 yield put(toggleModals([SHARE_PROBLEM_SET]));
             }

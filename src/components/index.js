@@ -25,7 +25,6 @@ import googleAnalytics from '../scripts/googleAnalytics';
 import { SERVER_URL, FRONTEND_URL } from '../config';
 import problemListActions from '../redux/problemList/actions';
 import problemActions from '../redux/problem/actions';
-import { updateSolution } from '../services/review';
 
 const mathLive = DEBUG_MODE ? require('../../mathlive/src/mathlive.js').default
     : require('../lib/mathlivedist/mathlive.js');
@@ -157,8 +156,7 @@ class App extends Component {
             axios.put(`${SERVER_URL}/solution/${this.props.problemStore.solution.editCode}`, this.props.problemStore.solution)
                 .then((response) => {
                     const { problemStore } = this.props;
-                    const solution = response.data;
-                    updateSolution(solution);
+                    this.props.updateProblemSolution(response.data);
                     const editCode = problemStore.solution.editCode;
                     const steps = problemStore.solution.steps;
                     this.props.updateProblemStore({
@@ -190,7 +188,7 @@ class App extends Component {
             this.props.toggleModals([SHARE_SET]);
         } else {
             googleAnalytics('Share Problem');
-            updateSolution(this.props.problemStore.solution);
+            this.props.updateProblemSolution(this.props.problemStore.solution);
             axios.put(`${SERVER_URL}/solution/${this.props.problemStore.solution.editCode}`, this.props.problemStore.solution)
                 .then((response) => {
                     this.props.updateProblemStore({

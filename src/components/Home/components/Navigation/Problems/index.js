@@ -35,10 +35,11 @@ export default class Problems extends Component {
     render() {
         const { action } = this.props;
         const SortableItem = SortableElement(({
-            problem, number, example, addNew, code,
+            problem, number, example, addNew, code, solutions,
         }) => (
             <li>
                 <NavigationProblem
+                    solutions={solutions}
                     problem={problem}
                     number={number}
                     example={example}
@@ -72,7 +73,7 @@ export default class Problems extends Component {
             <SortableList
                 distance={5}
                 problems={this.state.problems}
-                solutions={this.state.solutions}
+                solutions={this.props.solutions}
                 onSortEnd={this.onSortEnd}
                 onSortStart={this.onSortStart}
                 axis="xy"

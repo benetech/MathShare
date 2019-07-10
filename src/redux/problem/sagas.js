@@ -12,28 +12,17 @@ import {
 import {
     setProblemNotFound,
     setSolutionData,
+    updateProblemSolution,
 } from './actions';
+import {
+    setReviewSolutions,
+} from '../problemList/actions';
 import {
     getState as getProblemListState,
 } from '../problemList/selectors';
 import {
     fetchProblemSolutionApi,
 } from './apis';
-
-import {
-    updateSolution,
-} from '../../services/review';
-
-// axios.get(path)
-// .then((response) => {
-//     if (response.status !== 200) {
-//         this.setState({ notFound: true });
-//     } else {
-
-//     }
-// }).catch(() => {
-//     this.setState({ notFound: true });
-// });
 
 function* requestLoadProblemSaga() {
     yield takeLatest('REQUEST_LOAD_PROBLEM', function* workerSaga({
@@ -48,7 +37,7 @@ function* requestLoadProblemSaga() {
                 yield put(setProblemNotFound());
             } else {
                 const solution = response.data;
-                updateSolution(solution);
+                yield put(updateProblemSolution(solution));
                 const {
                     theActiveMathField,
                 } = yield select(getProblemListState);
@@ -63,8 +52,33 @@ function* requestLoadProblemSaga() {
     });
 }
 
+function* updateProblemSolutionSaga() {
+    yield takeLatest('UPDATE_PROBLEM_SOLUTION', function* workerSaga({
+        payload: {
+            solution,
+        },
+    }) {
+        const {
+            problem,
+        } = solution;
+        const {
+            solutions,
+        } = yield select(getProblemListState);
+        const solutionIndex = solutions.findIndex(
+            sol => sol.problem.id === problem.id,
+        );
+        if (solutionIndex === -1) {
+            solutions.push(solution);
+        } else {
+            solutions[solutionIndex] = solution;
+        }
+        yield put(setReviewSolutions(solutions));
+    });
+}
+
 export default function* rootSaga() {
     yield all([
         fork(requestLoadProblemSaga),
+        fork(updateProblemSolutionSaga),
     ]);
 }

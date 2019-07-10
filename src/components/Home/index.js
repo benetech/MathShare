@@ -252,6 +252,7 @@ class Home extends Component {
                     )}
                     <NavigationProblems
                         problems={currentSet.problems}
+                        solutions={problemList.solutions}
                         editing={params.action === 'edit' || params.action === 'new'}
                         activateModals={this.props.toggleModals}
                         updatePositions={this.props.updatePositions}

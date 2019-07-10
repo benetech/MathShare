@@ -6,13 +6,12 @@ import FontAwesome from 'react-fontawesome';
 import {
     EDIT_PROBLEM, CONFIRMATION, ADD_PROBLEMS, ADD_PROBLEM_SET,
 } from '../../../../ModalContainer';
-import problem from './styles.scss';
+import problemStyle from './styles.scss';
 import buttons from '../../../../Button/styles.scss';
 import Locales from '../../../../../strings';
 import showImage from '../../../../../scripts/showImage';
 import parseMathLive from '../../../../../scripts/parseMathLive';
 import { SERVER_URL } from '../../../../../config';
-import { getSolutionByProblem } from '../../../../../services/review';
 
 const mathLive = DEBUG_MODE ? require('../../../../../../../mathlive/src/mathlive.js').default
     : require('../../../../../lib/mathlivedist/mathlive.js');
@@ -87,7 +86,7 @@ export default class Problem extends Component {
     /* eslint-disable jsx-a11y/alt-text */
     buildProblemImage = () => (
         <img
-            className={problem.image}
+            className={problemStyle.image}
             src={this.props.problem.scratchpad}
             alt={Locales.strings.scratchpad_alt}
         />
@@ -109,11 +108,13 @@ export default class Problem extends Component {
     buildProblemText = () => `$$${this.props.problem.text}$$`
 
     createNewSolution = (history) => {
-        const { action, code } = this.props;
+        const { action, solutions, problem } = this.props;
         if (this.props.example) {
             history.push('/app/problem/example/');
         } else if (action !== 'new') {
-            const currentSolution = getSolutionByProblem(action, this.props.problem, code);
+            const currentSolution = solutions.find(
+                solution => solution.problem.id === problem.id,
+            );
             if (currentSolution && (currentSolution.editCode || currentSolution.shareCode)) {
                 if (currentSolution.editCode && action !== 'review') {
                     history.push(`/app/problem/edit/${currentSolution.editCode}`);
@@ -170,8 +171,8 @@ export default class Problem extends Component {
         }
 
         const wrappedAnnotation = annotation !== undefined && (annotation.match(/\\text{/g) || []).length > 1
-            ? <span className={problem.problemAnnotationScaled}>{annotation}</span>
-            : <span className={problem.problemAnnotation}>{annotation}</span>;
+            ? <span className={problemStyle.problemAnnotationScaled}>{annotation}</span>
+            : <span className={problemStyle.problemAnnotation}>{annotation}</span>;
 
         const speechForMath = (this.props.problem && this.props.problem.text) ? (
             <span className="sROnly">
@@ -190,7 +191,7 @@ export default class Problem extends Component {
                 <FontAwesome
                     className={
                         classNames(
-                            problem.imgIcon,
+                            problemStyle.imgIcon,
                             'fa-2x',
                         )
                     }
@@ -205,7 +206,7 @@ export default class Problem extends Component {
                 <FontAwesome
                     className={
                         classNames(
-                            problem.plusIcon,
+                            problemStyle.plusIcon,
                             'fa-2x',
                         )
                     }
@@ -219,7 +220,7 @@ export default class Problem extends Component {
                 <FontAwesome
                     className={
                         classNames(
-                            problem.editIcon,
+                            problemStyle.editIcon,
                             'fa-2x',
                         )
                     }
@@ -234,7 +235,7 @@ export default class Problem extends Component {
                 <FontAwesome
                     className={
                         classNames(
-                            problem.trashIcon,
+                            problemStyle.trashIcon,
                             'fa-2x',
                         )
                     }
@@ -251,7 +252,7 @@ export default class Problem extends Component {
                     classNames(
                         'd-flex',
                         'text-center',
-                        problem.problem,
+                        problemStyle.problem,
                     )
                 }
             >
@@ -262,9 +263,9 @@ export default class Problem extends Component {
                             'btn',
                             buttons.default,
                             buttons.huge,
-                            problem.navSpan,
-                            problem.middle,
-                            problem.tile,
+                            problemStyle.navSpan,
+                            problemStyle.middle,
+                            problemStyle.tile,
                         )
                     }
                     onClick={() => (
@@ -280,8 +281,8 @@ export default class Problem extends Component {
                     <div
                         className={
                             classNames(
-                                problem.navItemButton,
-                                problem.colorInherit,
+                                problemStyle.navItemButton,
+                                problemStyle.colorInherit,
                             )
                         }
                     >
@@ -290,11 +291,11 @@ export default class Problem extends Component {
                             aria-hidden="true" // math speech is part of link
                             ref={(el) => { this.navItemContent = el; }}
                             className={classNames(
-                                this.props.example ? null : problem.equation,
+                                this.props.example ? null : problemStyle.equation,
                                 this.state.isOverflownHorizontally
-                                    ? problem.equationOverflownHorizontally : null,
+                                    ? problemStyle.equationOverflownHorizontally : null,
                                 this.state.isOverflownVertically
-                                    ? problem.equationOverflownVertically : null,
+                                    ? problemStyle.equationOverflownVertically : null,
                             )}
                         >
                             {equation}
@@ -306,11 +307,11 @@ export default class Problem extends Component {
                     {plusButton}
                     {editButton}
                     <div className={classNames(
-                        problem.navItemContent,
+                        problemStyle.navItemContent,
                         this.state.isOverflownHorizontally
-                            ? problem.contentOverflownHorizontally : null,
+                            ? problemStyle.contentOverflownHorizontally : null,
                         this.state.isOverflownVertically
-                            ? problem.contentOverflownVertically
+                            ? problemStyle.contentOverflownVertically
                             : null,
                     )}
                     >

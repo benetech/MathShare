@@ -37,6 +37,13 @@ export const updateProblemStore = payload => ({
     payload,
 });
 
+export const updateProblemSolution = solution => ({
+    type: 'UPDATE_PROBLEM_SOLUTION',
+    payload: {
+        solution,
+    },
+});
+
 export default {
     loadExampleProblem,
     loadProblem,
@@ -44,4 +51,5 @@ export default {
     setProblemNotFound,
     setSolutionData,
     updateProblemStore,
+    updateProblemSolution,
 };
