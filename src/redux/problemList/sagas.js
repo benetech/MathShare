@@ -381,7 +381,6 @@ function* requestEditProblemSaga() {
 function* requestShareSolutionsSaga() {
     yield takeLatest('REQUEST_SHARE_SOLUTIONS', function* workerSaga({
         payload: {
-            action,
             code,
             silent,
         },
