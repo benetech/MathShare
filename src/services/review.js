@@ -3,6 +3,10 @@ import {
     SERVER_URL,
 } from '../config';
 
+import {
+    renderShareToClassroom,
+} from './googleClassroom';
+
 export const getLocalSolutions = (action, code) => {
     const key = `${action}_${code}`;
     const existingSolutions = localStorage.getItem(key) || '[]';
@@ -26,7 +30,7 @@ export const storeSolutionsLocally = (action, code, solutions) => {
 
 export const shareSolutions = (action, code) => {
     const existingSolutions = getLocalSolutions(action, code);
-    if (!existingSolutions || existingSolutions.length === 0) {
+    if (!existingSolutions) {
         return new Promise((resolve, reject) => {
             reject(new Error("'No solutions saved'"));
         });
@@ -38,6 +42,10 @@ export const shareSolutions = (action, code) => {
                 reviewCode,
             } = response.data;
             storeSolutionsLocally(action, code, solutions);
+            renderShareToClassroom(
+                'submitInClassroom',
+                `/#/app/problem/review/${reviewCode}`,
+            );
             return {
                 solutions,
                 reviewCode,

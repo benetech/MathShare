@@ -8,7 +8,7 @@ import Locales from '../../../../strings';
 import {
     toggleModals,
 } from '../../../../redux/problemList/actions';
-import logo from '../../../../../images/logo.png';
+import logo from '../../../../../images/mathshare_logo_white.png';
 
 import googleAnalytics from '../../../../scripts/googleAnalytics';
 
@@ -52,6 +52,16 @@ function readBlob(optStartByte, optStopByte) {
     reader.readAsBinaryString(blob);
 } */
 
+const openNewProblemSet = () => {
+    window.open('/#/app/problemSet/new', '_blank');
+};
+
+const shareOnTwitter = () => {
+    window.open(
+        `https://twitter.com/intent/tweet?text=${encodeURIComponent(`${Locales.strings.share_with_teachers_text} ${window.location.href}`)}`, '_blank',
+    );
+};
+
 const MainPageHeader = (props) => {
     /* eslint-disable jsx-a11y/anchor-is-valid */
 
@@ -60,11 +70,11 @@ const MainPageHeader = (props) => {
             className={classNames('nav-link', header.pointer)}
             onClick={() => {
                 googleAnalytics(Locales.strings.getting_started_title);
-                history.push('/problem/example');
+                history.push('/app/problem/example');
             }}
             onKeyPress={() => {
                 googleAnalytics(Locales.strings.getting_started_title);
-                history.push('/problem/example');
+                history.push('/app/problem/example');
             }}
             role="link"
             tabIndex="0"
@@ -73,7 +83,7 @@ const MainPageHeader = (props) => {
         </a>
     ));
 
-    const shareButton = props.editing && !props.notFound
+    const shareButton = props.editing && !props.notFound && props.action
         ? (
             <a
                 className={classNames('nav-link', header.pointer)}
@@ -86,32 +96,36 @@ const MainPageHeader = (props) => {
             </a>
         )
         : null;
-    let link = props.editing
-        ? (
-            <a
-                className={classNames('nav-link', header.pointer)}
-                onClick={props.finishEditing}
-                onKeyPress={() => props.toggleModals(['shareSet'])}
-                role="link"
-                tabIndex="0"
-            >
-                {Locales.strings.finish_edit}
-            </a>
-        )
-        : (
-            <a
-                className={classNames('nav-link', header.pointer)}
-                onClick={() => {
-                    googleAnalytics(Locales.strings.edit_problem_set);
-                    props.history.push(`/problemSet/edit/${props.editCode}`);
-                }}
-                onKeyPress={() => props.toggleModals(['shareSet'])}
-                role="link"
-                tabIndex="0"
-            >
-                {Locales.strings.edit_problem_set}
-            </a>
-        );
+    let link = null;
+    // if (props.action === 'edit') {
+    //     link = (
+    //         <a
+    //             className={classNames('nav-link', header.pointer)}
+    //             onClick={props.finishEditing}
+    //             onKeyPress={() => props.toggleModals(['shareSet'])}
+    //             role="link"
+    //             tabIndex="0"
+    //         >
+    //             {Locales.strings.finish_edit}
+    //         </a>
+    //     );
+    // } else
+    // if (props.action === 'view') {
+    //     link = (
+    //         <a
+    //             className={classNames('nav-link', header.pointer)}
+    //             onClick={() => {
+    //                 googleAnalytics(Locales.strings.edit_problem_set);
+    //                 props.history.push(`/app/problemSet/edit/${props.editCode}`);
+    //             }}
+    //             onKeyPress={() => props.toggleModals(['shareSet'])}
+    //             role="link"
+    //             tabIndex="0"
+    //         >
+    //             {Locales.strings.edit_problem_set}
+    //         </a>
+    //     );
+    // }
 
     if (props.notFound) {
         link = null;
@@ -129,18 +143,6 @@ const MainPageHeader = (props) => {
         </a>
     ) : null;
 
-    const shareProblemSetButton = !props.notFound && props.action !== 'review' ? (
-        <a
-            className={classNames('nav-link', header.pointer)}
-            onClick={props.shareProblemSetCallback}
-            onKeyPress={props.shareProblemSetCallback}
-            role="button"
-            tabIndex="0"
-        >
-            {Locales.strings.share_problem_set}
-        </a>
-    ) : null;
-
     return (
         <div id="topNavigationWrapper" className={header.header}>
             <header>
@@ -149,30 +151,45 @@ const MainPageHeader = (props) => {
                     id="topNavigation"
                 >
                     <h2 id="topNavLabel" className="sROnly">{Locales.strings.header}</h2>
-                    <a className="navbar-brand" href="#">
+                    <a
+                        className="navbar-brand"
+                        href="#/"
+                        onClick={() => {
+                            googleAnalytics('clicked logo');
+                        }}
+                    >
                         <img src={logo} alt="Benetech Math Editor" height="37" />
+                        <span className={header.beta}>beta</span>
                     </a>
+                    <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+                        <span className={`${header.navbarTogglerIcon} fa fa-bars fa-lg`} />
+                    </button>
                     <div
-                        className="navbar-collapse"
+                        className="collapse navbar-collapse"
                         id="navbarNav"
                     >
                         <div className={classNames('navbar-nav', 'mr-auto')} />
                         <ul aria-labelledby="topNavLabel" className={classNames('navbar-nav', header.navItem)}>
-                            <li className="nav_item">
-                                {shareProblemSetButton}
-                            </li>
-                            <li className="nav_item">
-                                <GettingStartedButton />
-                            </li>
-                            <li className="nav_item">
-                                {addProblemSetButton}
-                            </li>
-                            <li className="nav_item">
-                                {shareButton}
-                            </li>
-                            <li className="nav_item">
-                                {link}
-                            </li>
+                            {props.action && (
+                                <li className="nav_item">
+                                    <GettingStartedButton />
+                                </li>
+                            )}
+                            {props.action && (
+                                <li className="nav_item">
+                                    {!props.action && addProblemSetButton}
+                                </li>
+                            )}
+                            {props.action && (
+                                <li className="nav_item">
+                                    {!props.action && shareButton}
+                                </li>
+                            )}
+                            {props.action && (
+                                <li className="nav_item">
+                                    {link}
+                                </li>
+                            )}
                             {/*
                             <li className={classNames('nav-item', ['dropdown'])}>
                                 <a
@@ -209,16 +226,32 @@ const MainPageHeader = (props) => {
                             </li>
                             */}
                             <li className="nav-item">
-                                <a className="nav-link" href="mailto:info@diagramcenter.org">
-                                    {Locales.strings.contact_us}
+                                <a
+                                    className="nav-link"
+                                    href="https://docs.google.com/document/d/e/2PACX-1vQOx_2OGBBrG0AQkQC1Y9K2zUpjod-YKQvK5Z6_aCEdFgy2aINtBei5Xxm8pK-UinG0glY4C8aLVXKD/pub"
+                                    onClick={() => {
+                                        googleAnalytics('click help center');
+                                    }}
+                                >
+                                    {Locales.strings.help_center}
                                 </a>
                             </li>
+                            {props.action && (
+                                <li className="nav-item">
+                                    <a className="nav-link" href="mailto:info@diagramcenter.org">
+                                        {Locales.strings.contact_us}
+                                    </a>
+                                </li>
+                            )}
                             <li className="nav-item">
                                 <a
                                     href="http://www.surveygizmo.com/s3/4048161/Benetech-s-Math-Editor-Online-Feedback"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="nav-link"
+                                    onClick={() => {
+                                        googleAnalytics('click feedback');
+                                    }}
                                 >
                                     <FontAwesome
                                         className="super-crazy-colors"
@@ -228,6 +261,62 @@ const MainPageHeader = (props) => {
                                     {Locales.strings.provide_feedback}
                                 </a>
                             </li>
+                            {(props.action === 'new' || props.action === 'edit') && (
+                                <li className="nav-item dropdown">
+                                    <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Teachers
+                                    </a>
+                                    <div className="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        <a
+                                            className="dropdown-item"
+                                            onClick={openNewProblemSet}
+                                            onKeyPress={openNewProblemSet}
+                                            role="link"
+                                            tabIndex="0"
+                                        >
+                                            <FontAwesome
+                                                size="lg"
+                                                name="plus"
+                                            />
+                                            {` ${Locales.strings.add_problem_set}`}
+                                        </a>
+                                        {props.action === 'edit' && (
+                                            <React.Fragment>
+                                                <a
+                                                    className="dropdown-item"
+                                                    onClick={props.duplicateProblemSet}
+                                                    onKeyPress={props.duplicateProblemSet}
+                                                    role="link"
+                                                    tabIndex="0"
+                                                >
+                                                    <FontAwesome
+                                                        size="lg"
+                                                        name="copy"
+                                                    />
+                                                    {` ${Locales.strings.duplicate_set}`}
+                                                </a>
+                                                <a
+                                                    className="dropdown-item"
+                                                    onClick={shareOnTwitter}
+                                                    onKeyPress={shareOnTwitter}
+                                                    role="link"
+                                                    tabIndex="0"
+                                                >
+                                                    <FontAwesome
+                                                        size="lg"
+                                                        name="twitter"
+                                                    />
+                                                    {` ${Locales.strings.share_with_teachers}`}
+                                                </a>
+                                            </React.Fragment>
+                                        )}
+                                        {/* <div className="dropdown-divider" />
+                                    <a className="dropdown-item" href="#">
+                                    Something else here
+                                    </a> */}
+                                    </div>
+                                </li>
+                            )}
                         </ul>
                     </div>
                 </nav>

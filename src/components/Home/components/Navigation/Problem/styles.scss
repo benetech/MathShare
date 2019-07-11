@@ -3,11 +3,22 @@
     margin: auto;
     margin-bottom: 30px;
 
-    >div {
-        padding: 1.0rem 1.25rem;
+    .tile {
+        background-color: #fafafa;
+    }
+
+    >button {
+        padding: 0;
         box-sizing: border-box;
-        display: flex;
-        flex-direction: column;
+        // display: flex;
+        // flex-direction: column;
+
+        >div {
+            padding: 1.0rem 1.25rem;
+            max-height: calc(100% - 10px);
+            // position: absolute;
+            // width: 100%;
+        }
     }
 }
 
@@ -17,7 +28,6 @@
     border: none;
     text-align: left;
     text-decoration: none;
-    display: inline-block;
 }
 
 .colorInherit {
@@ -84,9 +94,10 @@
 
 .equation {
     min-height: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    // display: flex;
+    text-align: center;
+    // align-items: center;
+    // justify-content: center;
     overflow: hidden;
 }
 

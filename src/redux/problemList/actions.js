@@ -4,6 +4,10 @@ export const requestDefaultRevision = () => ({
     type: 'REQUEST_DEFAULT_REVISION',
 });
 
+export const requestExampleSets = () => ({
+    type: 'REQUEST_EXAMPLE_SETS',
+});
+
 export const requestProblemSet = (action, code) => ({
     type: 'REQUEST_PROBLEM_SET',
     payload: {
@@ -62,11 +66,12 @@ export const setTempPalettes = palettes => ({
     },
 });
 
-export const shareSolutions = (action, code) => ({
+export const shareSolutions = (action, code, silent) => ({
     type: 'REQUEST_SHARE_SOLUTIONS',
     payload: {
         action,
         code,
+        silent,
     },
 });
 
@@ -77,21 +82,93 @@ export const setProblemSetShareCode = problemSetShareCode => ({
     },
 });
 
-export const saveProblemSet = problems => ({
+export const saveProblemSet = (problems, title, redirect) => ({
     type: 'REQUEST_SAVE_PROBLEM_SET',
     payload: {
         problems,
+        title,
+        redirect,
     },
 });
 
+export const resetProblemSet = () => ({
+    type: 'RESET_PROBLEM_SET',
+});
+
+export const editProblem = (imageData, title) => ({
+    type: 'REQUEST_EDIT_PROBLEM',
+    payload: {
+        imageData,
+        title,
+    },
+});
+
+export const clearProblemSet = () => ({
+    type: 'CLEAR_PROBLEM_SET',
+});
+
+export const updateTempSet = payload => ({
+    type: 'UPDATE_TEMP_SET',
+    payload,
+});
+
+export const updateSet = payload => ({
+    type: 'UPDATE_SET',
+    payload,
+});
+
+export const resetTempProblems = () => ({
+    type: 'RESET_TEMP_PROBLEMS',
+});
+
+export const setEditProblem = (index, action) => ({
+    type: 'SET_EDIT_PROBLEM',
+    payload: {
+        problemToEditIndex: index,
+        action,
+    },
+});
+
+export const finishEditing = redirect => ({
+    type: 'FINISH_EDITING',
+    payload: {
+        redirect,
+    },
+});
+
+
+export const updateProblemSetTitle = title => ({
+    type: 'UPDATE_PROBLEM_SET_TITLE',
+    payload: {
+        title,
+    },
+});
+
+export const duplicateProblemSet = () => ({
+    type: 'DUPLICATE_PROBLEM_SET',
+});
+
 export default {
+    addProblem,
+    clearProblemSet,
     deleteProblem,
+    duplicateProblemSet,
+    editProblem,
+    finishEditing,
     requestDefaultRevision,
     requestProblemSet,
+    resetProblemSet,
+    resetTempProblems,
     toggleModals,
+    saveProblems,
     saveProblemSet,
+    setEditProblem,
     setTempPalettes,
     setActiveMathField,
     shareSolutions,
     setProblemSetShareCode,
+    updateProblemList,
+    updateSet,
+    updateTempSet,
+    updateProblemSetTitle,
 };

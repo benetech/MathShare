@@ -12,6 +12,7 @@ import {
 import {
     createHashHistory,
 } from 'history';
+import ReactGA from 'react-ga';
 
 import createRootReducer from './reducers';
 import rootSaga from './sagas';
@@ -19,6 +20,7 @@ import rootSaga from './sagas';
 export const history = createHashHistory();
 
 export default function configureStore(preloadedState) {
+    ReactGA.initialize(GA_ACCOUNT_ID);
     const sagaMiddleware = createSagaMiddleware();
 
     const middlewares = [sagaMiddleware];

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import AriaModal from 'react-aria-modal';
 import FontAwesome from 'react-fontawesome';
 import { arrayMove } from 'react-sortable-hoc';
+import * as dayjs from 'dayjs';
 import Locales from '../../../../strings';
 import styles from './styles.scss';
 import MyWork from '../../../Editor/components/MyWork';
@@ -22,6 +23,7 @@ export default class NewProblemsForm extends Component {
             problems: [],
             textAreaValue: '',
             displayScratchpad: null,
+            title: `New Problem Set ${dayjs().format('MM-DD-YYYY')}`,
         };
 
         this.save = this.save.bind(this);
@@ -79,13 +81,17 @@ export default class NewProblemsForm extends Component {
         }, () => {
             if (!this.props.newProblemSet) {
                 this.props.saveCallback(this.state.problems);
+            } else {
+                this.props.updateTempSet({
+                    problems: this.state.problems,
+                });
             }
             mathLive.renderMathInDocument();
         });
     }
 
-    update(imageData, text) {
-        this.props.editProblemCallback(imageData, text);
+    update(imageData, title) {
+        this.props.editProblemCallback(imageData, title);
     }
 
     addProblem(imageData, text) {
@@ -94,7 +100,7 @@ export default class NewProblemsForm extends Component {
     }
 
     save() {
-        this.props.saveCallback(this.state.problems);
+        this.props.saveCallback(this.state.problems, this.state.title);
     }
 
     render() {
@@ -186,14 +192,16 @@ export default class NewProblemsForm extends Component {
                     onClick={this.props.deactivateModal}
                 />
             );
-        doneButton = this.props.editing ? null : doneButton;
+        doneButton = (this.props.editing || this.props.newProblemSet) ? null : doneButton;
         const cancelButton = this.props.newProblemSet
             ? (
                 <Button
                     id="bottom"
                     className="btn"
                     additionalStyles={['withRightMargin', 'default', 'right']}
-                    content={Locales.strings.cancel}
+                    content={
+                        this.props.newProblemSet ? Locales.strings.close : Locales.strings.cancel
+                    }
                     icon="times-circle"
                     onClick={this.props.deactivateModal}
                 />

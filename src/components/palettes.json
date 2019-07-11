@@ -1,11 +1,9 @@
-[
-    {
+[{
         "screenReadersTitle": "cross out and calc buttons",
         "label": "Edit",
         "commonClass": "button btn-facility paletteButton",
         "buttonsRows": [
-            [
-                {
+            [{
                     "id": "crossOutBtn",
                     "title": "Cross out",
                     "additionalOnclick": [
@@ -13,8 +11,7 @@
                         "GoogleAnalytics"
                     ],
                     "value": "$$\\enclose{updiagonalstrike downdiagonalstrike}[2px solid blue]{\\blacksquare}$$",
-                    "keys":
-                    [
+                    "keys": [
                         "Shift",
                         "Delete"
                     ]
@@ -27,16 +24,14 @@
                         "GoogleAnalytics"
                     ],
                     "value": "$$ \\enclose{updiagonalstrike downdiagonalstrike}[2px solid blue]{\\blacksquare}^{\\square} $$",
-                    "keys":
-                    [
+                    "keys": [
                         "Shift",
                         "Ctrl",
                         "Delete"
                     ]
                 }
             ],
-            [
-                {
+            [{
                     "id": "stackBelowBtn",
                     "title": "stack below",
                     "additionalOnclick": [
@@ -44,8 +39,7 @@
                         "GoogleAnalytics"
                     ],
                     "value": "$$ \\begin{array}{r} \\blacksquare \\\\ \\square\\end{array}$$",
-                    "keys":
-                    [
+                    "keys": [
                         "Ctrl",
                         "Enter"
                     ]
@@ -60,8 +54,7 @@
                     "value": "Text"
                 }
             ],
-            [
-                {
+            [{
                     "id": "calculateBtn",
                     "title": "Calculate",
                     "additionalOnclick": [
@@ -69,11 +62,18 @@
                         "GoogleAnalytics"
                     ],
                     "value": "Calc",
-                    "keys":
-                    [
+                    "keys": [
                         "Ctrl",
                         "="
                     ]
+                },
+                {
+                    "id": "colorBtn",
+                    "title": "Color",
+                    "additionalOnclick": [
+                        "OpenColorPicker"
+                    ],
+                    "value": "Color"
                 }
             ]
         ]
@@ -84,8 +84,7 @@
         "commonClass": "button btn-operator paletteButton",
         "commonOnclick": ["MathLivePasteFromButton"],
         "buttonsRows": [
-            [
-                {
+            [{
                     "id": "plusBtn",
                     "title": "Plus (⌨: +)",
                     "value": "$$+$$"
@@ -111,8 +110,7 @@
                     "value": "$$\\div$$"
                 }
             ],
-            [
-                {
+            [{
                     "id": "equalBtn",
                     "title": "Equal (⌨: =)",
                     "value": "$$=$$"
@@ -133,8 +131,7 @@
                     "value": "$$\\pm$$"
                 }
             ],
-            [
-                {
+            [{
                     "id": "notEqualBtn",
                     "title": "Not equal (⌨: !=)",
                     "value": "$$\\neq$$"
@@ -163,8 +160,7 @@
         "commonClass": "button btn-notation paletteButton",
         "commonOnclick": ["MathLivePasteFromButton"],
         "buttonsRows": [
-            [
-                {
+            [{
                     "id": "fractionBtn",
                     "title": "Fraction (⌨: /)",
                     "value": "$$\\frac{\\blacksquare}{\\square}$$"
@@ -180,8 +176,7 @@
                     "value": "$${\\blacksquare}_{\\square}$$"
                 }
             ],
-            [
-                {
+            [{
                     "id": "squareRootBtn",
                     "title": "Square root (⌨: sqrt)",
                     "value": "$$\\sqrt{\\blacksquare}$$"
@@ -202,8 +197,7 @@
                     "value": "$$\\left(\\blacksquare\\right)$$"
                 }
             ],
-            [
-                {
+            [{
                     "id": "squareBracketsBtn",
                     "title": "Square brackets (⌨: [ ])",
                     "value": "$$\\left[\\blacksquare\\right]$$"
@@ -232,8 +226,7 @@
         "commonClass": "button btn-symbol paletteButton",
         "commonOnclick": ["MathLivePasteFromButton"],
         "buttonsRows": [
-            [
-                {
+            [{
                     "id": "triangleBtn",
                     "title": "Triangle (⌨: \\triangle⏎)",
                     "value": "$$\\triangle$$"
@@ -249,8 +242,7 @@
                     "value": "$$\\cong$$"
                 }
             ],
-            [
-                {
+            [{
                     "id": "perpendicularBtn",
                     "title": "Perpendicular (⌨: \\perp⏎)",
                     "value": "$$\\perp$$"
@@ -266,13 +258,11 @@
                     "value": "$$\\degree$$"
                 }
             ],
-            [
-                {
-                    "id": "piBtn",
-                    "title": "Pi (⌨: pi⏎)",
-                    "value": "$$\\pi$$"
-                }
-            ]
+            [{
+                "id": "piBtn",
+                "title": "Pi (⌨: pi⏎)",
+                "value": "$$\\pi$$"
+            }]
         ]
     }
 ]

@@ -21,6 +21,11 @@ body {
     overflow: hidden;
 }
 
+:global(.body-container) {
+    display: table;
+    width: 100%;
+}
+
 :global(#workArea) :global(.ML__mathlive) {
     font-size: 160%;
 }
@@ -56,4 +61,72 @@ button :global(.ML__mathlive) {
     white-space: normal;
     user-select: text;
     cursor: text;
+}
+
+:global(.mainContainer) {
+    margin: auto;
+    margin-top: 75px;
+    padding-bottom: 20px;
+
+    :global(.row) {
+        :global(.title) {
+            margin-left: 12px;
+        }
+
+        ol {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 0;
+            width: 100%;
+
+            li {
+                list-style-type: none;
+                padding: 10px;
+                min-width: 150px;
+                cursor: pointer;
+
+                >div,
+                >button {
+                    margin-bottom: 30px;
+                    padding: 1.0rem 1.25rem;
+                    box-sizing: border-box;
+                    display: flex;
+                    width: 100%;
+                    flex-direction: column;
+                    white-space: normal !important;
+                    border: 1px solid hsl(0, 0%, 80%) !important;
+                    height: 120px;
+
+                    span:global(.centreText) {
+                        margin: auto;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 1020px) {
+    :global(.body-container) :global(.mainContainer) {
+        max-width: 90vw;
+    }
+}
+
+@media only screen and (min-width: 1021px) {
+    :global(.body-container) :global(.mainContainer) {
+        max-width: 970px;
+    }
+}
+
+:global(.ML__scroller) {
+    display: none;
+}
+
+nav :global(.dropdown-menu) {
+    right: 0;
+    left: auto;
+
+    >a {
+        cursor: pointer;
+    }
 }

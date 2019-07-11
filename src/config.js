@@ -5,7 +5,7 @@ let serverUrl;
 switch (hostname) {
 case 'mathshare.benetech.org':
     serverUrl = 'https://mathshare-api.benetech.org';
-    break;      
+    break;
 case 'mathshare-qa.diagramcenter.org':
     serverUrl = 'https://mathshare-api-qa.diagramcenter.org';
     break;

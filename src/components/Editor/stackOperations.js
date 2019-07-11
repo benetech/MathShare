@@ -5,7 +5,10 @@ import {
 } from './stackConstants';
 
 export const stackDeleteAction = (context, step) => {
-    const actionsStack = context.state.actionsStack;
+    const {
+        problemStore,
+    } = context.props;
+    const actionsStack = problemStore.actionsStack;
     actionsStack.push({
         type: DELETE,
         step,
@@ -16,7 +19,10 @@ export const stackDeleteAction = (context, step) => {
 };
 
 export const stackAddAction = (context, step) => {
-    const actionsStack = context.state.actionsStack;
+    const {
+        problemStore,
+    } = context.props;
+    const actionsStack = problemStore.actionsStack;
     actionsStack.push({
         type: ADD,
         step,
@@ -27,7 +33,10 @@ export const stackAddAction = (context, step) => {
 };
 
 export const stackEditAction = (context, index, oldEquation, cleanup, oldExplanation, img) => {
-    const newStack = context.state.actionsStack;
+    const {
+        problemStore,
+    } = context.props;
+    const newStack = problemStore.actionsStack;
     if (index) {
         const oldStep = {
             id: index,

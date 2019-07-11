@@ -1,24 +1,46 @@
 .header {
-    flex: 0 0 50px;
-  }
+  flex: 0 0 50px;
+}
 
 .navbar {
-    height: 75px;
-    border-radius: 0px;
-    margin-bottom: 0px;
-    background-color: #001F3F;
+  border-radius: 0px;
+  margin-bottom: 0px;
+  background-color: #001F3F;
+  height: auto;
+
+  >button {
+    border: 1px solid white;
+    padding: 0.6rem;
+
+    &,
+    &:focus {
+      outline: none;
+    }
   }
+}
 
 .feedback {
-    font-size: 1.2em; 
-    padding-top: 3px;
+  font-size: 1.2em;
+  padding-top: 3px;
 }
 
 .pointer {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .navItem>li>a {
-    color: #FFF !important;
-    margin-left: 1em;
+  color: #FFF !important;
+  margin-left: 1em;
+}
+
+.navbarTogglerIcon {
+  color: white;
+}
+
+.beta {
+  margin-left: 10px;
+  padding: 0 5px;
+  background: white;
+  border-radius: 4px;
+  font: caption;
 }

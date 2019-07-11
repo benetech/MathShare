@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import classNames from 'classnames';
+import Pickr from '@simonwep/pickr/dist/pickr.es5.min';
+
 import Button from '../../../../../../../../../../../Button';
 import mathButton from './styles.scss';
 import teXCommands from './teXCommands.json';
@@ -49,6 +51,9 @@ export default class MathButton extends Component {
         if (ids.includes('EnterTextInput')) {
             this.EnterTextInput();
         }
+        if (ids.includes('OpenColorPicker')) {
+            this.OpenColorPicker();
+        }
     }
 
     buildButtonTitle() {
@@ -87,6 +92,52 @@ export default class MathButton extends Component {
         theActiveMathField.insert('text{}');
         theActiveMathField.perform('moveToPreviousChar');
         theActiveMathField.focus();
+    }
+
+    OpenColorPicker() {
+        const theActiveMathField = this.props.theActiveMathField;
+
+        if (!this.pickr) {
+            this.pickr = Pickr.create({
+                el: '#colorBtn',
+                useAsButton: true,
+
+                components: {
+
+                    // Main components
+                    preview: true,
+                    opacity: false,
+                    hue: true,
+
+                    // Input / output Options
+                    interaction: {
+                        hex: true,
+                        rgba: true,
+                        hsla: true,
+                        hsva: true,
+                        cmyk: true,
+                        input: true,
+                        clear: true,
+                        save: true,
+                    },
+                },
+            });
+            this.pickr.on('save', (color) => {
+                let hexColor = '#000000';
+                if (color) {
+                    hexColor = color.toHEXA().toString();
+                } else {
+                    this.pickr.setColor(hexColor);
+                }
+                // eslint-disable-next-line no-underscore-dangle
+                theActiveMathField.applyStyle_({ color: hexColor });
+                theActiveMathField.focus();
+            });
+        }
+
+        this.pickr.options.disabled = false;
+        this.pickr.show();
+        this.pickr.options.disabled = true;
     }
 
     //* **************************************************************************************************************************************************
@@ -224,7 +275,7 @@ export default class MathButton extends Component {
                 </span>
                 <span id={labelId} className="sROnly">{titleFixedForSpeech}</span>
             </React.Fragment>
-            );
+        );
         const labelId = `${this.props.button.id}-label`;
         return (
             <span role="listitem">
@@ -360,8 +411,18 @@ function DoCalculation(latex) {
 
     try {
         const result = eval(expr);
+        const firstChar = expr[0];
         const rounded = Math.round(result);
-        return Math.abs(result - rounded) < 1e-15 ? rounded : result;
+        let sign = '';
+        if (firstChar === '-' || firstChar === '+') {
+            sign = '';
+            if (result > 0) {
+                sign = '+';
+            } else if (rounded === 0 && result < 1e-15) {
+                return ' ';
+            }
+        }
+        return sign + (Math.abs(result - rounded) < 1e-15 ? rounded : result);
     } catch (e) {
         return '';
     }
@@ -466,120 +527,120 @@ function ReplaceTeXCommands(str, replacements) {
 
         // Note: we can only have {} and [] at this point if we are in a command
         switch (str.charAt(i)) {
-        case '{': {
-            // check to see if there should have been an optional arg and do replacement if so
-            const top = stackTop(parseStack);
-            if (braceCount === top.nestingLevel && !top.args[top.iArg]) {
-                const defaultValue = top.defaultValues.shift() || '';
-                // substitute in default value into replacement for each pattern/replacement
-                top.patterns.forEach(
-                    (pattern) => {
-                        pattern.replacement = pattern.replacement.replace(
-                            new RegExp(`\\$${top.iArg}`, 'g'),
-                            defaultValue,
-                        );
-                    },
-                );
-                top.iArg += 1;
-            }
-            if (braceCount === top.nestingLevel) top.iArgStart = i + 1;
-            expectingOpen = false;
-            braceCount += 1;
-            break;
-        }
-        case '[': {
-            // note: optional args can't be nested
-            const top = stackTop(parseStack);
-            if (braceCount === top.nestingLevel) top.iArgStart = i + 1;
-            expectingOpen = false;
-            break;
-        }
-        case '}':
-            braceCount -= 1;
-        case ']': {
-            const top = stackTop(parseStack);
-            if (braceCount > top.nestingLevel) break;
-            if (braceCount < top.nestingLevel) throw (new Error("Bad TeX syntax: extra '}' found"));
-
-            // back to balanced -- do replacement
-            if (str.charAt(i) === ']') {
-                if (top.args[top.iArg])	{				// true if required arg ({...})
-                    throw (new Error("Bad TeX syntax: expected '{arg}' but found '[arg]'"));
-                }
-            }
-
-            MatchAndReplace(top, str, i);
-            top.iArg += 1;
-            if (top.iArg === top.args.length) {
-                // processed all the args, done with command
-                [str, i] = ReplaceInStr(top, str, i);
-                // else if no match do nothing
-                parseStack.pop();
-            } else if (top.isBegin && top.iArg + 1 === top.args.length) {
-                top.iArgStart = i + 1;
-            }
-            break;
-        }
-        case '\\': {
-            // get command name
-            const iNameStart = i + 1;
-            if (str.charAt(iNameStart) === '\\') {
-                i += 1;
-                break;	// escaped '\'
-            }
-            let iNameEnd = iNameStart;
-            for (let ch = str.charAt(iNameEnd); /[a-zA-Z]/.test(ch); iNameEnd += 1) { // skip letters
-                ch = str.charAt(iNameEnd);
-            }
-            if (iNameEnd > iNameStart) iNameEnd -= 1;								// back up to end of name
-            // note: loop might exit immediately for escaped chars, but the following still works
-            let commandName = str.slice(iNameStart, iNameEnd);
-            const commandArgs = teXCommands[commandName];// see if it is a TeX command with args
-
-            if (commandName === 'end' && parseStack.length > 0) {
-                // matching begin/end pair (hopefully) -- process contents of \begin as if it were an arg
+            case '{': {
+                // check to see if there should have been an optional arg and do replacement if so
                 const top = stackTop(parseStack);
-                if (!top.isBegin) {
-                    throw (new Error('Bad TeX syntax: \\end found without matching \\begin'));
+                if (braceCount === top.nestingLevel && !top.args[top.iArg]) {
+                    const defaultValue = top.defaultValues.shift() || '';
+                    // substitute in default value into replacement for each pattern/replacement
+                    top.patterns.forEach(
+                        (pattern) => {
+                            pattern.replacement = pattern.replacement.replace(
+                                new RegExp(`\\$${top.iArg}`, 'g'),
+                                defaultValue,
+                            );
+                        },
+                    );
+                    top.iArg += 1;
                 }
+                if (braceCount === top.nestingLevel) top.iArgStart = i + 1;
+                expectingOpen = false;
+                braceCount += 1;
+                break;
+            }
+            case '[': {
+                // note: optional args can't be nested
+                const top = stackTop(parseStack);
+                if (braceCount === top.nestingLevel) top.iArgStart = i + 1;
+                expectingOpen = false;
+                break;
+            }
+            case '}':
+                braceCount -= 1;
+            case ']': {
+                const top = stackTop(parseStack);
+                if (braceCount > top.nestingLevel) break;
+                if (braceCount < top.nestingLevel) throw (new Error("Bad TeX syntax: extra '}' found"));
+
+                // back to balanced -- do replacement
+                if (str.charAt(i) === ']') {
+                    if (top.args[top.iArg]) {				// true if required arg ({...})
+                        throw (new Error("Bad TeX syntax: expected '{arg}' but found '[arg]'"));
+                    }
+                }
+
                 MatchAndReplace(top, str, i);
-
-                const iEndOfEnd = str.indexOf('}', i + 1); // wipe out all of \begin...\end{arg}
-                [str, i] = ReplaceInStr(top, str, iEndOfEnd);
-                parseStack.pop();
-                commandName = ''; // processed \end
-            } else {
-                i = iNameEnd - 1;
-            }
-            if (!commandArgs) break; // search some more
-
-
-            const actions = replacements[commandName];
-            if (actions) {
-                // found a command we care about -- push on stack so args get handled
-                if (typeof actions.patterns === 'undefined' || typeof actions.patterns === 'string') {
-                    // simple case -> general case w/'match anything' for all args
-                    actions.patterns = [{
-                        match: Array(commandArgs.length).fill('.*'),
-                        replacement: actions.patterns,
-                    }];
+                top.iArg += 1;
+                if (top.iArg === top.args.length) {
+                    // processed all the args, done with command
+                    [str, i] = ReplaceInStr(top, str, i);
+                    // else if no match do nothing
+                    parseStack.pop();
+                } else if (top.isBegin && top.iArg + 1 === top.args.length) {
+                    top.iArgStart = i + 1;
                 }
-                parseStack.push({
-                    args: commandArgs,
-                    iCommandStart: iNameEnd - 1 - commandName.length,
-                    iArg: 0,
-                    nestingLevel: braceCount,
-                    defaultValues: actions.defaults || [],
-                    patterns: actions.patterns,
-                    iArgStart: iNameEnd + 1,
-                    isBegin: commandName === 'begin',
-                });
-                expectingOpen = true;
+                break;
             }
-            break;
-        }
-        default: // normal char
-            break;
+            case '\\': {
+                // get command name
+                const iNameStart = i + 1;
+                if (str.charAt(iNameStart) === '\\') {
+                    i += 1;
+                    break;	// escaped '\'
+                }
+                let iNameEnd = iNameStart;
+                for (let ch = str.charAt(iNameEnd); /[a-zA-Z]/.test(ch); iNameEnd += 1) { // skip letters
+                    ch = str.charAt(iNameEnd);
+                }
+                if (iNameEnd > iNameStart) iNameEnd -= 1;								// back up to end of name
+                // note: loop might exit immediately for escaped chars, but the following still works
+                let commandName = str.slice(iNameStart, iNameEnd);
+                const commandArgs = teXCommands[commandName];// see if it is a TeX command with args
+
+                if (commandName === 'end' && parseStack.length > 0) {
+                    // matching begin/end pair (hopefully) -- process contents of \begin as if it were an arg
+                    const top = stackTop(parseStack);
+                    if (!top.isBegin) {
+                        throw (new Error('Bad TeX syntax: \\end found without matching \\begin'));
+                    }
+                    MatchAndReplace(top, str, i);
+
+                    const iEndOfEnd = str.indexOf('}', i + 1); // wipe out all of \begin...\end{arg}
+                    [str, i] = ReplaceInStr(top, str, iEndOfEnd);
+                    parseStack.pop();
+                    commandName = ''; // processed \end
+                } else {
+                    i = iNameEnd - 1;
+                }
+                if (!commandArgs) break; // search some more
+
+
+                const actions = replacements[commandName];
+                if (actions) {
+                    // found a command we care about -- push on stack so args get handled
+                    if (typeof actions.patterns === 'undefined' || typeof actions.patterns === 'string') {
+                        // simple case -> general case w/'match anything' for all args
+                        actions.patterns = [{
+                            match: Array(commandArgs.length).fill('.*'),
+                            replacement: actions.patterns,
+                        }];
+                    }
+                    parseStack.push({
+                        args: commandArgs,
+                        iCommandStart: iNameEnd - 1 - commandName.length,
+                        iArg: 0,
+                        nestingLevel: braceCount,
+                        defaultValues: actions.defaults || [],
+                        patterns: actions.patterns,
+                        iArgStart: iNameEnd + 1,
+                        isBegin: commandName === 'begin',
+                    });
+                    expectingOpen = true;
+                }
+                break;
+            }
+            default: // normal char
+                break;
         }
 
         i += 1;

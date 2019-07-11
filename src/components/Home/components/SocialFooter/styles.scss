@@ -1,0 +1,23 @@
+.footer {
+  background-color: #5a5a5a;
+  text-align: right;
+  color: white;
+  font-size: 12px;
+}
+
+.footerContainer {
+  max-width: 768px;
+  margin: auto;
+  padding: 10px;
+  display: flex;
+  justify-content: flex-end;
+
+  >* {
+    padding: 0 10px;
+    color: white;
+
+    &:hover {
+      color: white;
+    }
+  }
+}

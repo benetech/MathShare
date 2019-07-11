@@ -1,5 +1,11 @@
 export default function scrollTo(containerId, elementId) {
-    $(`#${containerId}`).animate({
-        scrollTop: $(`#${elementId}`).offset().top,
-    });
+    const element = $(`#${elementId}`);
+    if (element) {
+        const offset = element.offset();
+        if (offset) {
+            $(`#${containerId}`).animate({
+                scrollTop: offset.top,
+            });
+        }
+    }
 }

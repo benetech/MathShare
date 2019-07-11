@@ -1,5 +1,7 @@
-
-import { deleteStep, addStep } from './stepsOperations';
+import {
+    deleteStep,
+    addStep,
+} from './stepsOperations';
 import {
     ADD,
     CLEAR_ALL,
@@ -9,8 +11,12 @@ import {
 import googleAnalytics from '../../scripts/googleAnalytics';
 
 function undoClearAll(context, stackEntry) {
-    const solution = context.state.solution;
-    const theActiveMathField = context.state.theActiveMathField;
+    const {
+        problemStore,
+        problemList,
+    } = context.props;
+    const solution = problemStore.solution;
+    const theActiveMathField = problemList.theActiveMathField;
     theActiveMathField.latex(stackEntry.steps[stackEntry.steps.length - 1].stepValue);
     solution.steps = stackEntry.steps;
     context.setState({
@@ -21,7 +27,7 @@ function undoClearAll(context, stackEntry) {
 }
 
 function undoDelete(context, stackEntry) {
-    const updatedMathField = context.state.theActiveMathField;
+    const updatedMathField = context.props.problemList.theActiveMathField;
     updatedMathField.latex(stackEntry.step.stepValue);
     context.setState({
         theActiveMathField: updatedMathField,
@@ -30,10 +36,14 @@ function undoDelete(context, stackEntry) {
 }
 
 function undoEdit(context, stackEntry) {
-    const step = stackEntry.step.id === context.state.solution.steps.length - 1
+    const {
+        problemStore,
+        problemList,
+    } = context.props;
+    const step = stackEntry.step.id === problemStore.solution.steps.length - 1
         ? stackEntry.step
-        : context.state.solution.steps[context.state.solution.steps.length - 1];
-    const updatedMathField = context.state.theActiveMathField;
+        : problemStore.solution.steps[problemStore.solution.steps.length - 1];
+    const updatedMathField = problemList.theActiveMathField;
     updatedMathField.latex(step.cleanup ? step.cleanup : step.stepValue);
     context.setState({
         theActiveMathField: updatedMathField,
@@ -49,9 +59,14 @@ function undoAdd(context) {
 }
 
 function undoLastAction(context) {
-    const newStack = context.state.actionsStack;
+    const {
+        problemStore,
+    } = context.props;
+    const newStack = problemStore.actionsStack;
     const stackEntry = newStack.pop();
-    context.setState({ actionsStack: newStack });
+    context.setState({
+        actionsStack: newStack,
+    });
     switch (stackEntry.type) {
     case DELETE:
         undoDelete(context, stackEntry);
@@ -72,18 +87,22 @@ function undoLastAction(context) {
 
 function clearAll(context) {
     googleAnalytics('Clear All');
-    const stack = context.state.actionsStack;
-    const steps = context.state.solution.steps;
+    const {
+        problemList,
+        problemStore,
+    } = context.props;
+    const stack = problemStore.actionsStack;
+    const steps = problemStore.solution.steps;
     stack.push({
         type: CLEAR_ALL,
         steps,
     });
 
-    const solution = context.state.solution;
+    const solution = problemStore.solution;
     const firstStep = solution.steps[0];
     solution.steps = [];
     solution.steps.push(firstStep);
-    const math = context.state.theActiveMathField;
+    const math = problemList.theActiveMathField;
     math.latex(solution.steps[0].stepValue);
     context.setState({
         textAreaValue: '',
