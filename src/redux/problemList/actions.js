@@ -148,10 +148,27 @@ export const duplicateProblemSet = () => ({
     type: 'DUPLICATE_PROBLEM_SET',
 });
 
-export const setReviewSolutions = solutions => ({
+export const setReviewSolutions = (solutions, reviewCode, editCode, title) => ({
     type: 'SET_REVIEW_SOLUTIONS',
     payload: {
         solutions,
+        reviewCode,
+        editCode,
+        title,
+    },
+});
+
+export const updateReviewSolutions = solutions => ({
+    type: 'UPDATE_REVIEW_SOLUTIONS',
+    payload: {
+        solutions,
+    },
+});
+
+export const loadProblemSetSolutionByEditCode = editCode => ({
+    type: 'LOAD_PROBLEM_SET_SOLUTION_BY_EDIT_CODE',
+    payload: {
+        editCode,
     },
 });
 
@@ -178,4 +195,6 @@ export default {
     updateSet,
     updateTempSet,
     updateProblemSetTitle,
+    updateReviewSolutions,
+    loadProblemSetSolutionByEditCode,
 };

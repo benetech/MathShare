@@ -167,7 +167,12 @@ const problems = (state = initialState, {
     case 'SET_REVIEW_SOLUTIONS':
         return {
             ...state,
-            solutions: payload.solutions,
+            ...payload,
+            set: {
+                problems: payload.solutions.map(solution => solution.problem),
+                shareCode: payload.reviewCode,
+            },
+            newSetSharecode: payload.reviewCode,
         };
     default:
         return state;

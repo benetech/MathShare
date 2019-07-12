@@ -3,23 +3,25 @@ import {
     SERVER_URL,
 } from '../config';
 
-import {
-    renderShareToClassroom,
-} from './googleClassroom';
+// import {
+//     renderShareToClassroom,
+// } from './googleClassroom';
 
 export const shareSolutions = (code, payloadSolutions) => axios.post(`${SERVER_URL}/solution/review/${code}`, payloadSolutions)
     .then((response) => {
         const {
             solutions,
+            editCode,
             reviewCode,
         } = response.data;
-        renderShareToClassroom(
-            'submitInClassroom',
-            `/#/app/problemSet/review/${reviewCode}`,
-        );
+        // renderShareToClassroom(
+        //     'submitInClassroom',
+        //     `/#/app/problemSet/review/${reviewCode}`,
+        // );
         return {
             solutions,
             reviewCode,
+            editCode,
         };
     });
 

@@ -8,3 +8,17 @@ export const countCleanups = (steps) => {
     return cleanups;
 };
 export const countEditorPosition = steps => steps.length + countCleanups(steps) - 1;
+
+export const compareStepArrays = (first, second) => {
+    if (first.length !== second.length) {
+        return false;
+    }
+    for (let i = 0; i < first.length; i += 1) {
+        if (first[i].stepValue !== second[i].stepValue
+            || first[i].explanation !== second[i].explanation
+            || first[i].scratchpad !== second[i].scratchpad) {
+            return false;
+        }
+    }
+    return true;
+};

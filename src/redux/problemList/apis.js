@@ -35,6 +35,8 @@ export const updateProblemsApi = (editCode, shareCode, problems, title) => axios
 
 export const saveProblemSetApi = set => axios.post(`${SERVER_URL}/problemSet/`, set);
 
+export const fetchEditableProblemSetSolutionApi = editCode => axios.get(`${SERVER_URL}/solution/solve/${editCode}`);
+
 export default {
     fetchDefaultRevisionApi,
     fetchProblemsByActionAndCodeApi,
@@ -42,4 +44,5 @@ export default {
     fetchProblemsByReviewCodeApi,
     updateProblemsApi,
     saveProblemSetApi,
+    fetchEditableProblemSetSolutionApi,
 };

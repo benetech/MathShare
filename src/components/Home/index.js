@@ -13,6 +13,7 @@ import home from './styles.scss';
 import Locales from '../../strings';
 import problemActions from '../../redux/problemList/actions';
 import Button from '../Button';
+import googleClassroomIcon from '../../../images/google-classroom-icon.png';
 
 class Home extends Component {
     componentDidMount() {
@@ -27,18 +28,21 @@ class Home extends Component {
             if (!problemList.tempPalettes || problemList.tempPalettes.length === 0) {
                 this.props.toggleModals([PALETTE_CHOOSER]);
             }
+        } else if (action === 'solve') {
+            this.props.loadProblemSetSolutionByEditCode(code);
         } else {
             this.props.requestProblemSet(action, code);
         }
         // mathLive.renderMathInDocument();
     }
 
+
     componentWillReceiveProps(newProps) {
         const {
             code,
         } = this.props.match.params;
         const newParams = newProps.match.params;
-        if (newParams.code !== code && newParams.action && newParams.code) {
+        if (newParams.action !== 'solve' && newParams.code !== code && newParams.action && newParams.code) {
             this.props.requestProblemSet(newParams.action, newParams.code);
         }
     }
@@ -64,7 +68,7 @@ class Home extends Component {
                 'googleClassroom',
                 popupConfig,
             );
-        } else if (action === 'view') {
+        } else if (action === 'view' || action === 'solve') {
             window.open(
                 `https://classroom.google.com/u/0/share?url=${encodeURIComponent(`${window.location.origin}/#/app/problemSet/review/${problemList.problemSetShareCode}`)}`,
                 'googleClassroom',
@@ -144,18 +148,7 @@ class Home extends Component {
                                         type="button"
                                     >
                                         <div className={home.btnText}>Google Classroom</div>
-                                        <div
-                                            id="submitInClassroom"
-                                            data-size="32"
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                            }}
-                                            onKeyPress={(e) => {
-                                                e.stopPropagation();
-                                            }}
-                                            role="link"
-                                            tabIndex="-1"
-                                        />
+                                        <img src={googleClassroomIcon} alt="google classroom" />
                                     </button>
                                     <UncontrolledTooltip placement="top" target="googleContainer1" />
                                 </span>
@@ -183,18 +176,7 @@ class Home extends Component {
                                                 type="button"
                                             >
                                                 <div className={home.btnText}>Google Classroom</div>
-                                                <div
-                                                    id="shareInClassroom"
-                                                    data-size="32"
-                                                    onClick={(e) => {
-                                                        e.stopPropagation();
-                                                    }}
-                                                    onKeyPress={(e) => {
-                                                        e.stopPropagation();
-                                                    }}
-                                                    role="link"
-                                                    tabIndex="-1"
-                                                />
+                                                <img src={googleClassroomIcon} alt="google classroom" />
                                             </button>
                                             <UncontrolledTooltip placement="top" target="googleContainer2" />
                                         </span>
