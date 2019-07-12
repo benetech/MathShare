@@ -26,6 +26,43 @@ import Locales from '../../../../../../../../../../../../strings';
 // By default, if a name is not listed, it is assumed to have no arguments (e.g., \pi).
 // Example: \sqrt[3]{10} (cube root of 10) :  "sqrt" args: [false, true]}
 
+const getDOM = (xmlstring) => {
+    const parser = new DOMParser();
+    return parser.parseFromString(xmlstring, 'text/xml');
+};
+
+const removeTags = (node) => {
+    let result = '';
+    const nodes = node.childNodes;
+    const tagName = node.tagName;
+    if (!nodes.length) {
+        if (node.nodeValue === 'π') result = 'pi';
+        else if (node.nodeValue === ' ') result = '';
+        else result = node.nodeValue;
+    } else if (tagName === 'mfrac') {
+        result = `(${removeTags(nodes[0])})/(${removeTags(nodes[1])})`;
+    } else if (tagName === 'msup') {
+        result = `Math.pow((${removeTags(nodes[0])}),(${removeTags(nodes[1])}))`;
+    } else {
+        for (let i = 0; i < nodes.length; i += 1) {
+            const innerNode = nodes[i];
+            if (innerNode.tagName) {
+                result += removeTags(nodes[i]);
+            }
+        }
+    }
+
+    if (tagName === 'mfenced') result = `(${result})`;
+    if (tagName === 'msqrt') result = `Math.sqrt(${result})`;
+    if (tagName === 'mo' || tagName === 'mn' || tagName === 'mi') result += node.textContent;
+    return result;
+};
+
+const stringifyMathML = (mml) => {
+    const xmlDoc = getDOM(mml);
+    return removeTags(xmlDoc.documentElement);
+};
+
 export default class MathButton extends Component {
     constructor(props) {
         super(props);
@@ -220,7 +257,7 @@ export default class MathButton extends Component {
             return;
         }
 
-        const selection = theActiveMathField.selectedText('latex');
+        const selection = stringifyMathML(theActiveMathField.selectedText('mathML'));
         const result = DoCalculation(this.constructor.CleanUpCrossouts(selection));
         if (result === '') {
             alertWarning('Selection must contain only numbers and operators', 'Warning');
@@ -228,7 +265,7 @@ export default class MathButton extends Component {
         }
 
         // leave crossouts in selection so it is clearer what was the input to the calculation
-        const insertionString = `${this.state.CrossoutTeXString}{${selection}}${result}`;
+        const insertionString = `${this.state.CrossoutTeXString}{${theActiveMathField.selectedText('latex')}}${result}`;
 
         theActiveMathField.perform(['insert', insertionString,
             {
