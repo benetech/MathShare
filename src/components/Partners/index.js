@@ -10,7 +10,7 @@ const Partners = () => (
     <div className={styles.container}>
         <div className={styles.logoContainer}>
             <a href="/#/">
-                <img className={styles.midLogo} src={logo} alt="mid-logo" />
+                <img className={styles.midLogo} src={logo} aria-label="Mathshare Logo, a Benetech Initiative" alt="logo" />
             </a>
         </div>
         <div className={styles.headerBottom} />
