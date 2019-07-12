@@ -26,6 +26,7 @@ const initialState = {
     newSetSharecode: '',
     newSetShareEditCode: '',
     problemSetShareCode: '',
+    solutions: [],
 };
 
 const problems = (state = initialState, {
@@ -162,6 +163,16 @@ const problems = (state = initialState, {
         return {
             ...state,
             tempPalettes: payload.palettes,
+        };
+    case 'SET_REVIEW_SOLUTIONS':
+        return {
+            ...state,
+            ...payload,
+            set: {
+                problems: payload.solutions.map(solution => solution.problem),
+                shareCode: payload.reviewCode,
+            },
+            newSetSharecode: payload.reviewCode,
         };
     default:
         return state;

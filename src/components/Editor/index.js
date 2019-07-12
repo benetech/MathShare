@@ -11,7 +11,7 @@ import {
     deleteStep, editStep, updateStep, addStep,
 } from './stepsOperations';
 import problemActions from '../../redux/problem/actions';
-import { countEditorPosition } from '../../redux/problem/helpers';
+import { compareStepArrays, countEditorPosition } from '../../redux/problem/helpers';
 import Locales from '../../strings';
 import googleAnalytics from '../../scripts/googleAnalytics';
 import exampleProblem from './example.json';
@@ -59,7 +59,7 @@ class Editor extends Component {
         const { location } = this.props;
         if (location.pathname.indexOf('/app/problem/view') === '0' // check if the open view is readonly
             || (editLink !== Locales.strings.not_saved_yet
-                && this.props.compareStepArrays(solution.steps, stepsFromLastSave))) {
+                && compareStepArrays(solution.steps, stepsFromLastSave))) {
             return null;
         }
         const e = event || window.event;

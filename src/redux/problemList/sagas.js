@@ -19,8 +19,10 @@ import {
     finishEditing,
     updateSet,
     shareSolutions as shareSolutionsAction,
+    setReviewSolutions,
 } from './actions';
 import {
+    fetchEditableProblemSetSolutionApi,
     fetchDefaultRevisionApi,
     fetchExampleSetsApi,
     fetchProblemsByActionAndCodeApi,
@@ -47,15 +49,12 @@ import {
     alertError,
 } from '../../scripts/alert';
 import {
-    createReviewProblemSetOnUpdate,
-    getLocalSolutions,
     getSolutionObjectFromProblems,
     shareSolutions,
-    storeSolutionsLocally,
 } from '../../services/review';
-import {
-    renderShareToClassroom,
-} from '../../services/googleClassroom';
+// import {
+//     renderShareToClassroom,
+// } from '../../services/googleClassroom';
 import Locales from '../../strings';
 
 
@@ -109,8 +108,10 @@ function* requestProblemSetByCode() {
         },
     }) {
         try {
+            if (action === 'solve') {
+                return;
+            }
             const response = yield call(fetchProblemsByActionAndCodeApi, action, code);
-            console.log(response);
             if (response.status > 400) {
                 yield put(push('/app/'));
                 yield put({
@@ -122,32 +123,26 @@ function* requestProblemSetByCode() {
             const {
                 solutions,
                 problems,
+                reviewCode,
                 editCode,
                 shareCode,
                 title,
             } = response.data;
             if (action === 'review') {
-                storeSolutionsLocally(action, code, solutions);
-                yield put({
-                    type: 'REQUEST_PROBLEM_SET_SUCCESS',
-                    payload: {
-                        problems: solutions.map(solution => solution.problem),
-                        shareCode: code,
-                        title,
-                    },
-                });
+                yield put(setReviewSolutions(solutions, reviewCode, editCode, title));
+                // yield put({
+                //     type: 'REQUEST_PROBLEM_SET_SUCCESS',
+                //     payload: {
+                //         problems: solutions.map(solution => solution.problem),
+                //         shareCode: reviewCode,
+                //         title,
+                //     },
+                // });
             } else {
                 const orderedProblems = problems.map((problem, position) => ({
                     ...problem,
                     position,
                 }));
-                const problemSetRevisionShareCode = shareCode;
-                const existingSolutions = getLocalSolutions('view', problemSetRevisionShareCode);
-                if (!existingSolutions || existingSolutions.length === 0) {
-                    const storedSolutions = getSolutionObjectFromProblems(orderedProblems);
-                    storeSolutionsLocally('view', problemSetRevisionShareCode, storedSolutions);
-                    yield call(shareSolutions, 'view', problemSetRevisionShareCode);
-                }
                 yield put({
                     type: 'REQUEST_PROBLEM_SET_SUCCESS',
                     payload: {
@@ -158,15 +153,14 @@ function* requestProblemSetByCode() {
                     },
                 });
                 if (action === 'view') {
-                    console.log(action);
                     yield put(shareSolutionsAction(action, code, true));
                 } else if (action === 'edit') {
-                    renderShareToClassroom(
-                        'shareInClassroom',
-                        `/#/app/problemSet/view/${shareCode}`, {
-                            title,
-                        },
-                    );
+                    // renderShareToClassroom(
+                    //     'shareInClassroom',
+                    //     `/#/app/problemSet/view/${shareCode}`, {
+                    //         title,
+                    //     },
+                    // );
                 }
             }
         } catch (error) {
@@ -262,22 +256,17 @@ function* requestSaveProblemsSaga() {
                 set.title,
             );
 
-            const {
-                shareCode,
-                problems,
-            } = response.data;
             // might not be required on save after deleted
-            createReviewProblemSetOnUpdate(problems, shareCode);
             yield put({
                 type: 'REQUEST_SAVE_PROBLEMS_SUCCESS',
                 payload: response.data,
             });
-            renderShareToClassroom(
-                'shareInClassroom',
-                `/#/app/problemSet/view/${shareCode}`, {
-                    title: set.title,
-                },
-            );
+            // renderShareToClassroom(
+            //     'shareInClassroom',
+            //     `/#/app/problemSet/view/${shareCode}`, {
+            //         title: set.title,
+            //     },
+            // );
         } catch (error) {
             yield put({
                 type: 'REQUEST_SAVE_PROBLEMS_FAILURE',
@@ -383,14 +372,25 @@ function* requestShareSolutionsSaga() {
         },
     }) {
         try {
-            const {
-                reviewCode,
-            } = yield call(shareSolutions, action, code);
-            renderShareToClassroom(
-                'submitInClassroom',
-                `/#/app/problemSet/review/${reviewCode}`,
-            );
-            yield put(setProblemSetShareCode(reviewCode));
+            if (action !== 'solve') {
+                const {
+                    set,
+                } = yield select(getState);
+
+                const payloadSolutions = getSolutionObjectFromProblems(set.problems);
+                const {
+                    reviewCode,
+                    solutions,
+                    editCode,
+                    title,
+                } = yield call(shareSolutions, code, payloadSolutions);
+                if (silent) {
+                    yield put(push(`/app/problemSet/solve/${editCode}`));
+                }
+                yield put(setReviewSolutions(solutions, reviewCode, editCode, title));
+                yield put(setProblemSetShareCode(reviewCode));
+            }
+
             if (!silent) {
                 yield put(toggleModals([SHARE_PROBLEM_SET]));
             }
@@ -556,6 +556,37 @@ function* reqestDuplicateProblemSet() {
     });
 }
 
+function* requestLoadProblemSetSolution() {
+    yield takeLatest('LOAD_PROBLEM_SET_SOLUTION_BY_EDIT_CODE', function* workerSaga({
+        payload: {
+            editCode,
+        },
+    }) {
+        try {
+            const response = yield call(fetchEditableProblemSetSolutionApi, editCode);
+            if (response.status !== 200) {
+                alertError('Unable to find problem set');
+                yield put(push('/app'));
+            }
+            const {
+                data,
+            } = response;
+            const {
+                solutions,
+                reviewCode,
+                title,
+            } = data;
+            yield put(setReviewSolutions(solutions, reviewCode, editCode, title));
+            yield put(setProblemSetShareCode(reviewCode));
+        } catch (error) {
+            yield put({
+                type: 'LOAD_PROBLEM_SET_SOLUTION_BY_EDIT_CODE_FAILURE',
+                error,
+            });
+        }
+    });
+}
+
 
 export default function* rootSaga() {
     yield all([
@@ -571,5 +602,6 @@ export default function* rootSaga() {
         fork(requestFinishEditingSaga),
         fork(requestUpdateTitleSaga),
         fork(reqestDuplicateProblemSet),
+        fork(requestLoadProblemSetSolution),
     ]);
 }

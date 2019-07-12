@@ -37,11 +37,29 @@ export const updateProblemStore = payload => ({
     payload,
 });
 
+export const updateProblemSolution = (solution, onlyLoad) => ({
+    type: 'UPDATE_PROBLEM_SOLUTION',
+    payload: {
+        solution,
+        onlyLoad,
+    },
+});
+
+export const commitProblemSolution = (redirectBack, shareModal) => ({
+    type: 'REQUEST_COMMIT_PROBLEM_SOLUTION',
+    payload: {
+        redirectBack,
+        shareModal,
+    },
+});
+
 export default {
+    commitProblemSolution,
     loadExampleProblem,
     loadProblem,
     setActiveMathFieldInProblem,
     setProblemNotFound,
     setSolutionData,
     updateProblemStore,
+    updateProblemSolution,
 };
