@@ -2,6 +2,7 @@ import React from 'react';
 import {
     withRouter,
 } from 'react-router-dom';
+import { IntercomAPI } from 'react-intercom';
 // import classNames from 'classnames';
 import styles from './styles.scss';
 // import Locales from '../../strings';
@@ -12,6 +13,15 @@ import openSource from '../../../images/open-source-software.png';
 import lms from '../../../images/lms.png';
 import syntaxHighlighthing from '../../../images/syntax-highlighting.gif';
 
+
+const clickOnTryNow = (history, isTryNow) => () => {
+    if (isTryNow) {
+        IntercomAPI('trackEvent', 'try-now');
+    } else {
+        IntercomAPI('trackEvent', 'create-account');
+    }
+    history.push('/app');
+};
 
 const LandingPage = withRouter(({ history }) => (
     <div className={styles.container}>
@@ -29,12 +39,8 @@ const LandingPage = withRouter(({ history }) => (
                 </div>
                 <div
                     className={styles.btn}
-                    onClick={() => {
-                        history.push('/app');
-                    }}
-                    onKeyPress={() => {
-                        history.push('/app');
-                    }}
+                    onClick={clickOnTryNow(history, true)}
+                    onKeyPress={clickOnTryNow(history, true)}
                     role="link"
                     tabIndex="0"
                 >
@@ -122,12 +128,8 @@ const LandingPage = withRouter(({ history }) => (
                 </div>
                 <div
                     className={`${styles.btn} ${styles.signupBtn}`}
-                    onClick={() => {
-                        history.push('/app');
-                    }}
-                    onKeyPress={() => {
-                        history.push('/app');
-                    }}
+                    onClick={clickOnTryNow(history)}
+                    onKeyPress={clickOnTryNow(history)}
                     role="link"
                     tabIndex="0"
                 >

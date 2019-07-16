@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { IntercomAPI } from 'react-intercom';
 import MainPageHeader from '../Home/components/Header';
 import { requestDefaultRevision, requestExampleSets } from '../../redux/problemList/actions';
 import googleAnalytics from '../../scripts/googleAnalytics';
@@ -16,6 +17,7 @@ class Index extends Component {
         const { problemList } = props;
         props.history.push(`/app/problemSet/view/${problemList.defaultRevisionCode}`);
         googleAnalytics('premade set - default');
+        IntercomAPI('trackEvent', 'view-example-set');
     }
 
     openPremadeSet = problemSet => () => {

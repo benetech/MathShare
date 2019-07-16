@@ -4,6 +4,7 @@ import { UncontrolledTooltip } from 'reactstrap';
 import { connect } from 'react-redux';
 import FontAwesome from 'react-fontawesome';
 import classNames from 'classnames';
+import { IntercomAPI } from 'react-intercom';
 import MainPageHeader from './components/Header';
 import NavigationHeader from './components/Navigation/Header';
 import NavigationProblems from './components/Navigation/Problems';
@@ -18,7 +19,8 @@ import googleClassroomIcon from '../../../images/google-classroom-icon.png';
 class Home extends Component {
     componentDidMount() {
         const {
-            action, code,
+            action,
+            code,
         } = this.props.match.params;
         const {
             problemList,
@@ -68,12 +70,14 @@ class Home extends Component {
                 'googleClassroom',
                 popupConfig,
             );
+            IntercomAPI('trackEvent', 'assign-a-set-google-classroom');
         } else if (action === 'view' || action === 'solve') {
             window.open(
                 `https://classroom.google.com/u/0/share?url=${encodeURIComponent(`${window.location.origin}/#/app/problemSet/review/${problemList.problemSetShareCode}`)}`,
                 'googleClassroom',
                 popupConfig,
             );
+            IntercomAPI('trackEvent', 'submit-problem-set-google-classroom');
         }
     }
 
@@ -211,6 +215,7 @@ class Home extends Component {
                                                     currentSet.problems,
                                                     currentSet.title,
                                                 );
+                                                IntercomAPI('trackEvent', 'assign-a-set-link');
                                             }}
                                         />
                                         <div className={home.text}>Assign: </div>

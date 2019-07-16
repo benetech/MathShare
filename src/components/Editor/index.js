@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { IntercomAPI } from 'react-intercom';
 import ProblemHeader from './components/ProblemHeader';
 import MyStepsHeader from './components/MySteps/components/MyStepsHeader';
 import MyStepsList from './components/MySteps/components/MyStepsList';
@@ -36,6 +37,7 @@ class Editor extends Component {
             googleAnalytics('View a Problem: Teacher');
         } else if (match.params.action === 'edit') {
             googleAnalytics('View a Problem: Student');
+            IntercomAPI('trackEvent', 'work-a-problem');
         }
     }
 

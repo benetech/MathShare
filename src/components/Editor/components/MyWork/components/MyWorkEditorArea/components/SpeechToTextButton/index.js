@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import classNames from 'classnames';
 import Watson from 'watson-speech';
+import { IntercomAPI } from 'react-intercom';
 import { SERVER_URL } from '../../../../../../../../config';
 import Button from '../../../../../../../Button';
 import editorArea from '../../styles.scss';
@@ -97,6 +98,7 @@ export default class SpeechToTextButton extends Component {
             micEnabled,
         } = this.state;
         googleAnalytics('Speech to Text');
+        IntercomAPI('trackEvent', 'stt-button');
 
         if (isChrome) {
             if (!this.recognition) {

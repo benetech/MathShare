@@ -1,4 +1,5 @@
 import React from 'react';
+import { IntercomAPI } from 'react-intercom';
 import { connect } from 'react-redux';
 import FontAwesome from 'react-fontawesome';
 import classNames from 'classnames';
@@ -111,6 +112,11 @@ class MainPageHeader extends React.Component {
                 document.querySelector('li.avatar .dropdown-menu a.logout').addEventListener('click', this.logout);
             }, 100);
         });
+        IntercomAPI('update', {
+            user_id: profile.getEmail(),
+            email: profile.getEmail(),
+            name: profile.getName(),
+        });
     }
 
     logout = () => {
@@ -120,6 +126,10 @@ class MainPageHeader extends React.Component {
                 profile: null,
                 googleSignInInitialized: false,
             }, this.initializeGoogleSignIn);
+            IntercomAPI('shutdown');
+            IntercomAPI('boot', {
+                app_id: process.env.INTERCOM_APP_ID,
+            });
         });
     }
 

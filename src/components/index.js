@@ -9,6 +9,7 @@ import {
     faSignature, faSquareRootAlt,
 } from '@fortawesome/free-solid-svg-icons';
 import * as dayjs from 'dayjs';
+import Intercom, { IntercomAPI } from 'react-intercom';
 import PageIndex from './PageIndex';
 import NotFound from './NotFound';
 import Home from './Home';
@@ -53,6 +54,7 @@ class App extends Component {
         if (!this.validateProblem(text, imageData)) {
             return false;
         }
+        IntercomAPI('trackEvent', 'create-a-problem');
         this.props.addProblem(imageData, text, index, newProblemSet);
         return true;
     }
@@ -112,6 +114,7 @@ class App extends Component {
     addProblemSet = () => {
         this.props.toggleModals([PALETTE_CHOOSER]);
         googleAnalytics('new problem set button');
+        IntercomAPI('trackEvent', 'create-a-set');
     }
 
     progressToAddingProblems = (palettes) => {
@@ -226,6 +229,9 @@ class App extends Component {
                         <Route render={p => <NotFound {...p} />} />
                     </Switch>
                 </div>
+                <Intercom
+                    appID={process.env.INTERCOM_APP_ID}
+                />
                 <footer id="footer">
                     <SiteMapFooter />
                     <MainPageFooter customClass="footer" />
