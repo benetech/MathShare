@@ -4,7 +4,7 @@ import NavigationProblem from '../Problem';
 import styles from './styles.scss';
 import Locales from '../../../../../strings';
 
-const mathLive = DEBUG_MODE ? require('../../../../../../../mathlive/src/mathlive.js').default
+const mathLive = process.env.MATHLIVE_DEBUG_MODE ? require('../../../../../../../mathlive/src/mathlive.js').default
     : require('../../../../../lib/mathlivedist/mathlive.js');
 
 export default class Problems extends Component {
@@ -35,10 +35,11 @@ export default class Problems extends Component {
     render() {
         const { action } = this.props;
         const SortableItem = SortableElement(({
-            problem, number, example, addNew, code,
+            problem, number, example, addNew, code, solutions,
         }) => (
             <li>
                 <NavigationProblem
+                    solutions={solutions}
                     problem={problem}
                     number={number}
                     example={example}
@@ -72,7 +73,7 @@ export default class Problems extends Component {
             <SortableList
                 distance={5}
                 problems={this.state.problems}
-                solutions={this.state.solutions}
+                solutions={this.props.solutions}
                 onSortEnd={this.onSortEnd}
                 onSortStart={this.onSortStart}
                 axis="xy"

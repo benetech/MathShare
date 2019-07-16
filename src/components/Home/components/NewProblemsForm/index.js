@@ -3,6 +3,7 @@ import AriaModal from 'react-aria-modal';
 import FontAwesome from 'react-fontawesome';
 import { arrayMove } from 'react-sortable-hoc';
 import * as dayjs from 'dayjs';
+import { IntercomAPI } from 'react-intercom';
 import Locales from '../../../../strings';
 import styles from './styles.scss';
 import MyWork from '../../../Editor/components/MyWork';
@@ -12,7 +13,7 @@ import parseMathLive from '../../../../scripts/parseMathLive';
 import scrollTo from '../../../../scripts/scrollTo';
 import googleAnalytics from '../../../../scripts/googleAnalytics';
 
-const mathLive = DEBUG_MODE ? require('../../../../../../mathlive/src/mathlive.js').default
+const mathLive = process.env.MATHLIVE_DEBUG_MODE ? require('../../../../../../mathlive/src/mathlive.js').default
     : require('../../../../lib/mathlivedist/mathlive.js');
 
 export default class NewProblemsForm extends Component {
@@ -54,6 +55,7 @@ export default class NewProblemsForm extends Component {
             this.state.displayScratchpad(this.props.problemToEdit.scratchpad);
             // eslint-disable-next-line react/no-did-update-set-state
             this.setState({ displayScratchpad: null });
+            IntercomAPI('trackEvent', 'sketch');
         }
     }
 

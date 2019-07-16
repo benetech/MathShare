@@ -8,8 +8,8 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import {
     faSignature, faSquareRootAlt,
 } from '@fortawesome/free-solid-svg-icons';
-import axios from 'axios';
 import * as dayjs from 'dayjs';
+import Intercom, { IntercomAPI } from 'react-intercom';
 import PageIndex from './PageIndex';
 import NotFound from './NotFound';
 import Home from './Home';
@@ -25,14 +25,14 @@ import ModalContainer, {
     CONFIRMATION, CONFIRMATION_BACK, PALETTE_CHOOSER, // ADD_PROBLEM_SET,
     EDIT_PROBLEM, SHARE_SET, VIEW_SET,
 } from './ModalContainer';
-import { alertWarning, alertSuccess } from '../scripts/alert';
+import { alertWarning } from '../scripts/alert';
 import googleAnalytics from '../scripts/googleAnalytics';
-import { SERVER_URL, FRONTEND_URL } from '../config';
+import { FRONTEND_URL } from '../config';
 import problemListActions from '../redux/problemList/actions';
 import problemActions from '../redux/problem/actions';
-import { updateSolution } from '../services/review';
+import { compareStepArrays } from '../redux/problem/helpers';
 
-const mathLive = DEBUG_MODE ? require('../../mathlive/src/mathlive.js').default
+const mathLive = process.env.MATHLIVE_DEBUG_MODE ? require('../../mathlive/src/mathlive.js').default
     : require('../lib/mathlivedist/mathlive.js');
 
 class App extends Component {
@@ -54,6 +54,7 @@ class App extends Component {
         if (!this.validateProblem(text, imageData)) {
             return false;
         }
+        IntercomAPI('trackEvent', 'create-a-problem');
         this.props.addProblem(imageData, text, index, newProblemSet);
         return true;
     }
@@ -113,6 +114,7 @@ class App extends Component {
     addProblemSet = () => {
         this.props.toggleModals([PALETTE_CHOOSER]);
         googleAnalytics('new problem set button');
+        IntercomAPI('trackEvent', 'create-a-set');
     }
 
     progressToAddingProblems = (palettes) => {
@@ -139,52 +141,18 @@ class App extends Component {
     //     this.props.history.push(`/app/problemSet/view/${set.shareCode}`);
     // }
 
-    compareStepArrays = (first, second) => {
-        if (first.length !== second.length) {
-            return false;
-        }
-        for (let i = 0; i < first.length; i += 1) {
-            if (first[i].stepValue !== second[i].stepValue
-                || first[i].explanation !== second[i].explanation
-                || first[i].scratchpad !== second[i].scratchpad) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    saveProblem = () => new Promise((resolve, reject) => {
+    saveProblem = () => new Promise((resolve) => {
         if (this.props.example) {
             this.props.updateProblemStore({ editLink: Locales.strings.example_edit_code });
             resolve(true);
         } else {
             googleAnalytics('Save Problem');
-            axios.put(`${SERVER_URL}/solution/${this.props.problemStore.solution.editCode}`, this.props.problemStore.solution)
-                .then((response) => {
-                    const { problemStore } = this.props;
-                    const solution = response.data;
-                    updateSolution(solution);
-                    const editCode = problemStore.solution.editCode;
-                    const steps = problemStore.solution.steps;
-                    this.props.updateProblemStore({
-                        editLink: `${FRONTEND_URL}/app/problem/edit/${editCode}`,
-                        stepsFromLastSave: JSON.parse(JSON.stringify(steps)),
-                        lastSaved: (new Date().toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })),
-                        isUpdated: false,
-                    });
-                    alertSuccess(Locales.strings.problem_saved_success_message,
-                        Locales.strings.success);
-                    resolve(true);
-                }).catch((error) => {
-                    reject(error);
-                });
+            this.props.commitProblemSolution();
         }
     })
 
     finishProblem = () => {
-        this.saveProblem().then(() => {
-            this.goBack();
-        });
+        this.props.commitProblemSolution(true);
     }
 
     shareProblem = () => {
@@ -195,14 +163,8 @@ class App extends Component {
             this.props.toggleModals([SHARE_SET]);
         } else {
             googleAnalytics('Share Problem');
-            updateSolution(this.props.problemStore.solution);
-            axios.put(`${SERVER_URL}/solution/${this.props.problemStore.solution.editCode}`, this.props.problemStore.solution)
-                .then((response) => {
-                    this.props.updateProblemStore({
-                        shareLink: `${FRONTEND_URL}/app/problem/view/${response.data.shareCode}`,
-                    });
-                    this.props.toggleModals([SHARE_SET]);
-                });
+            this.props.updateProblemSolution(this.props.problemStore.solution);
+            this.props.commitProblemSolution(false, true);
         }
     }
 
@@ -217,7 +179,7 @@ class App extends Component {
 
     goBack = () => {
         const { problemStore } = this.props;
-        if (!this.compareStepArrays(problemStore.solution.steps, problemStore.stepsFromLastSave)
+        if (!compareStepArrays(problemStore.solution.steps, problemStore.stepsFromLastSave)
             && !this.props.example) {
             this.props.toggleModals([CONFIRMATION_BACK]);
         } else {
@@ -267,6 +229,9 @@ class App extends Component {
                         <Route render={p => <NotFound {...p} />} />
                     </Switch>
                 </div>
+                <Intercom
+                    appID={process.env.INTERCOM_APP_ID}
+                />
                 <footer id="footer">
                     <SiteMapFooter />
                     <MainPageFooter customClass="footer" />

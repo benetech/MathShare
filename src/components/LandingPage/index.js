@@ -2,6 +2,7 @@ import React from 'react';
 import {
     withRouter,
 } from 'react-router-dom';
+import { IntercomAPI } from 'react-intercom';
 // import classNames from 'classnames';
 import styles from './styles.scss';
 // import Locales from '../../strings';
@@ -13,15 +14,24 @@ import lms from '../../../images/lms.png';
 import syntaxHighlighthing from '../../../images/syntax-highlighting.gif';
 
 
+const clickOnTryNow = (history, isTryNow) => () => {
+    if (isTryNow) {
+        IntercomAPI('trackEvent', 'try-now');
+    } else {
+        IntercomAPI('trackEvent', 'create-account');
+    }
+    history.push('/app');
+};
+
 const LandingPage = withRouter(({ history }) => (
     <div className={styles.container}>
-        <img className={styles.midLogo} src={logo} alt="mid-logo" />
+        <img className={styles.midLogo} src={logo} alt="mid-logo" aria-label="Mathshare Logo, a Benetech Initiative" />
         <div className={styles.midContainer}>
             <div className={styles.content}>
                 <div className={styles.largeText}>
                     Help students show and organize their math work
                 </div>
-                <img src={homePhoto} alt="mid-logo" />
+                <img src={homePhoto} alt="mid-logo" aria-label="Screenshot showing example problem being solved step by step" />
                 <div className={styles.midBottomText}>
                     Benetech Mathshare empowers students to solve math problems and
                     {' '}
@@ -29,12 +39,8 @@ const LandingPage = withRouter(({ history }) => (
                 </div>
                 <div
                     className={styles.btn}
-                    onClick={() => {
-                        history.push('/app');
-                    }}
-                    onKeyPress={() => {
-                        history.push('/app');
-                    }}
+                    onClick={clickOnTryNow(history, true)}
+                    onKeyPress={clickOnTryNow(history, true)}
                     role="link"
                     tabIndex="0"
                 >
@@ -47,7 +53,7 @@ const LandingPage = withRouter(({ history }) => (
                 <hr />
                 <div className={`${styles.feature} ${styles.reverse}`}>
                     <div className={styles.imageSection}>
-                        <img src={showWork} alt="show-work" />
+                        <img src={showWork} alt="show-work" aria-label="Screen shot showing math share interface" />
                     </div>
                     <div className={styles.textSection}>
                         <div className={styles.header}>
@@ -63,7 +69,7 @@ const LandingPage = withRouter(({ history }) => (
                 <hr />
                 <div className={styles.feature}>
                     <div className={styles.imageSection}>
-                        <img src={syntaxHighlighthing} alt="show-work" />
+                        <img src={syntaxHighlighthing} alt="show-work" aria-label="animation showing math with synchronized highlighting" />
                     </div>
                     <div className={styles.textSection}>
                         <div className={styles.header}>
@@ -81,7 +87,7 @@ const LandingPage = withRouter(({ history }) => (
                 <hr />
                 <div className={`${styles.feature} ${styles.reverse}`}>
                     <div className={styles.imageSection}>
-                        <img src={lms} alt="lms" />
+                        <img src={lms} alt="lms" aria-label="image showing several logos of LMS vendors" />
                     </div>
                     <div className={styles.textSection}>
                         <div className={styles.header}>
@@ -99,7 +105,7 @@ const LandingPage = withRouter(({ history }) => (
                 <hr />
                 <div className={styles.feature}>
                     <div className={styles.imageSection}>
-                        <img src={openSource} alt="open-source" />
+                        <img src={openSource} alt="open-source" aria-label="Image showing open source logo" />
                     </div>
                     <div className={styles.textSection}>
                         <div className={styles.header}>
@@ -122,12 +128,8 @@ const LandingPage = withRouter(({ history }) => (
                 </div>
                 <div
                     className={`${styles.btn} ${styles.signupBtn}`}
-                    onClick={() => {
-                        history.push('/app');
-                    }}
-                    onKeyPress={() => {
-                        history.push('/app');
-                    }}
+                    onClick={clickOnTryNow(history)}
+                    onKeyPress={clickOnTryNow(history)}
                     role="link"
                     tabIndex="0"
                 >

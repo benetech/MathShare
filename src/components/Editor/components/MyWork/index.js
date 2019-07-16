@@ -9,7 +9,7 @@ import Locales from '../../../../strings';
 import Painterro from '../../../../lib/painterro/painterro.commonjs2';
 import painterroConfiguration from './painterroConfiguration.json';
 
-const mathLive = DEBUG_MODE ? require('../../../../../../mathlive/src/mathlive.js').default
+const mathLive = process.env.MATHLIVE_DEBUG_MODE ? require('../../../../../../mathlive/src/mathlive.js').default
     : require('../../../../lib/mathlivedist/mathlive.js');
 
 export default class MyWork extends Component {

@@ -15,7 +15,11 @@ export const fetchProblemSolutionApi = (action, code) => {
     return fetchProblemSolutionEditAPi(code);
 };
 
+export const updateProblemSolutionApi = (editCode, solution) => axios.put(`${SERVER_URL}/solution/${editCode}`, solution);
+
+export const updateProblemSolutionSetApi = (editCode, solutions) => axios.put(`${SERVER_URL}/solution/solve/${editCode}`, solutions);
 
 export default {
     fetchProblemSolutionApi,
+    updateProblemSolutionApi,
 };

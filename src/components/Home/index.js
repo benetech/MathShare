@@ -4,6 +4,7 @@ import { UncontrolledTooltip } from 'reactstrap';
 import { connect } from 'react-redux';
 import FontAwesome from 'react-fontawesome';
 import classNames from 'classnames';
+import { IntercomAPI } from 'react-intercom';
 import MainPageHeader from './components/Header';
 import NavigationHeader from './components/Navigation/Header';
 import NavigationProblems from './components/Navigation/Problems';
@@ -13,11 +14,13 @@ import home from './styles.scss';
 import Locales from '../../strings';
 import problemActions from '../../redux/problemList/actions';
 import Button from '../Button';
+import googleClassroomIcon from '../../../images/google-classroom-icon.png';
 
 class Home extends Component {
     componentDidMount() {
         const {
-            action, code,
+            action,
+            code,
         } = this.props.match.params;
         const {
             problemList,
@@ -27,18 +30,21 @@ class Home extends Component {
             if (!problemList.tempPalettes || problemList.tempPalettes.length === 0) {
                 this.props.toggleModals([PALETTE_CHOOSER]);
             }
+        } else if (action === 'solve') {
+            this.props.loadProblemSetSolutionByEditCode(code);
         } else {
             this.props.requestProblemSet(action, code);
         }
         // mathLive.renderMathInDocument();
     }
 
+
     componentWillReceiveProps(newProps) {
         const {
             code,
         } = this.props.match.params;
         const newParams = newProps.match.params;
-        if (newParams.code !== code && newParams.action && newParams.code) {
+        if (newParams.action !== 'solve' && newParams.code !== code && newParams.action && newParams.code) {
             this.props.requestProblemSet(newParams.action, newParams.code);
         }
     }
@@ -64,12 +70,14 @@ class Home extends Component {
                 'googleClassroom',
                 popupConfig,
             );
-        } else if (action === 'view') {
+            IntercomAPI('trackEvent', 'assign-a-set-google-classroom');
+        } else if (action === 'view' || action === 'solve') {
             window.open(
                 `https://classroom.google.com/u/0/share?url=${encodeURIComponent(`${window.location.origin}/#/app/problemSet/review/${problemList.problemSetShareCode}`)}`,
                 'googleClassroom',
                 popupConfig,
             );
+            IntercomAPI('trackEvent', 'submit-problem-set-google-classroom');
         }
     }
 
@@ -144,18 +152,7 @@ class Home extends Component {
                                         type="button"
                                     >
                                         <div className={home.btnText}>Google Classroom</div>
-                                        <div
-                                            id="submitInClassroom"
-                                            data-size="32"
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                            }}
-                                            onKeyPress={(e) => {
-                                                e.stopPropagation();
-                                            }}
-                                            role="link"
-                                            tabIndex="-1"
-                                        />
+                                        <img src={googleClassroomIcon} alt="google classroom" />
                                     </button>
                                     <UncontrolledTooltip placement="top" target="googleContainer1" />
                                 </span>
@@ -183,18 +180,7 @@ class Home extends Component {
                                                 type="button"
                                             >
                                                 <div className={home.btnText}>Google Classroom</div>
-                                                <div
-                                                    id="shareInClassroom"
-                                                    data-size="32"
-                                                    onClick={(e) => {
-                                                        e.stopPropagation();
-                                                    }}
-                                                    onKeyPress={(e) => {
-                                                        e.stopPropagation();
-                                                    }}
-                                                    role="link"
-                                                    tabIndex="-1"
-                                                />
+                                                <img src={googleClassroomIcon} alt="google classroom" />
                                             </button>
                                             <UncontrolledTooltip placement="top" target="googleContainer2" />
                                         </span>
@@ -229,6 +215,7 @@ class Home extends Component {
                                                     currentSet.problems,
                                                     currentSet.title,
                                                 );
+                                                IntercomAPI('trackEvent', 'assign-a-set-link');
                                             }}
                                         />
                                         <div className={home.text}>Assign: </div>
@@ -265,6 +252,7 @@ class Home extends Component {
                     )}
                     <NavigationProblems
                         problems={currentSet.problems}
+                        solutions={problemList.solutions}
                         editing={params.action === 'edit' || params.action === 'new'}
                         activateModals={this.props.toggleModals}
                         updatePositions={this.props.updatePositions}

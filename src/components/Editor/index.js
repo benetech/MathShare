@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { IntercomAPI } from 'react-intercom';
 import ProblemHeader from './components/ProblemHeader';
 import MyStepsHeader from './components/MySteps/components/MyStepsHeader';
 import MyStepsList from './components/MySteps/components/MyStepsList';
@@ -11,13 +12,13 @@ import {
     deleteStep, editStep, updateStep, addStep,
 } from './stepsOperations';
 import problemActions from '../../redux/problem/actions';
-import { countEditorPosition } from '../../redux/problem/helpers';
+import { compareStepArrays, countEditorPosition } from '../../redux/problem/helpers';
 import Locales from '../../strings';
 import googleAnalytics from '../../scripts/googleAnalytics';
 import exampleProblem from './example.json';
 import scrollTo from '../../scripts/scrollTo';
 
-const mathLive = DEBUG_MODE ? require('../../../../mathlive/src/mathlive.js').default
+const mathLive = process.env.MATHLIVE_DEBUG_MODE ? require('../../../../mathlive/src/mathlive.js').default
     : require('../../lib/mathlivedist/mathlive.js');
 
 class Editor extends Component {
@@ -36,6 +37,7 @@ class Editor extends Component {
             googleAnalytics('View a Problem: Teacher');
         } else if (match.params.action === 'edit') {
             googleAnalytics('View a Problem: Student');
+            IntercomAPI('trackEvent', 'work-a-problem');
         }
     }
 
@@ -59,7 +61,7 @@ class Editor extends Component {
         const { location } = this.props;
         if (location.pathname.indexOf('/app/problem/view') === '0' // check if the open view is readonly
             || (editLink !== Locales.strings.not_saved_yet
-                && this.props.compareStepArrays(solution.steps, stepsFromLastSave))) {
+                && compareStepArrays(solution.steps, stepsFromLastSave))) {
             return null;
         }
         const e = event || window.event;

@@ -21,6 +21,7 @@ const MainPageFooter = ({ customClass }) => (
                             src={ideaLogo}
                             alt={Locales.strings.idea_logo_alt}
                             height="50"
+                            aria-label="ideas that work logo"
                         />
                     </a>
                 </div>
