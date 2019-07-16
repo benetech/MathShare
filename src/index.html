@@ -13,6 +13,7 @@
     <meta name="twitter:site" content="@mathshare">
     <meta name="twitter:title" content="Mathshare">
     <meta name="twitter:description" content="An accessible and free tool that helps all students share and organize their math work.">
+    <meta name="google-signin-client_id" content="<%= htmlWebpackPlugin.options.env.GOOGLE_SIGNIN_CLIENT_ID %>">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/pickr.min.css"/>
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-84400364-2"></script>
@@ -32,11 +33,18 @@
     };
     </script>
     <script src="//sdk.amazonaws.com/js/aws-sdk-2.249.1.min.js"></script>
-    <script src="//apis.google.com/js/platform.js" async defer></script>
+    <script src="//apis.google.com/js/platform.js?onload=gapiInit" async defer></script>
     <script>
         // Initialize the Amazon Cognito credentials provider
         AWS.config.region = 'us-east-1'; 
         AWS.config.credentials = new AWS.CognitoIdentityCredentials({IdentityPoolId: 'us-east-1:ac6523d9-ebad-4bb9-85cd-794672b83d14'});
+    </script>
+    <script>
+        function gapiInit() {
+            gapi.load('auth2', function() {
+                gapi.auth2.init();
+            });
+        }
     </script>
     </head>
 

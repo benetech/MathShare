@@ -13,7 +13,7 @@ import showImage from '../../../../../scripts/showImage';
 import parseMathLive from '../../../../../scripts/parseMathLive';
 import { SERVER_URL } from '../../../../../config';
 
-const mathLive = DEBUG_MODE ? require('../../../../../../../mathlive/src/mathlive.js').default
+const mathLive = process.env.MATHLIVE_DEBUG_MODE ? require('../../../../../../../mathlive/src/mathlive.js').default
     : require('../../../../../lib/mathlivedist/mathlive.js');
 
 const problemMathDisplayLength = 30;

@@ -12,7 +12,7 @@ import parseMathLive from '../../../../scripts/parseMathLive';
 import scrollTo from '../../../../scripts/scrollTo';
 import googleAnalytics from '../../../../scripts/googleAnalytics';
 
-const mathLive = DEBUG_MODE ? require('../../../../../../mathlive/src/mathlive.js').default
+const mathLive = process.env.MATHLIVE_DEBUG_MODE ? require('../../../../../../mathlive/src/mathlive.js').default
     : require('../../../../lib/mathlivedist/mathlive.js');
 
 export default class NewProblemsForm extends Component {

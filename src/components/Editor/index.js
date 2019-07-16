@@ -17,7 +17,7 @@ import googleAnalytics from '../../scripts/googleAnalytics';
 import exampleProblem from './example.json';
 import scrollTo from '../../scripts/scrollTo';
 
-const mathLive = DEBUG_MODE ? require('../../../../mathlive/src/mathlive.js').default
+const mathLive = process.env.MATHLIVE_DEBUG_MODE ? require('../../../../mathlive/src/mathlive.js').default
     : require('../../lib/mathlivedist/mathlive.js');
 
 class Editor extends Component {

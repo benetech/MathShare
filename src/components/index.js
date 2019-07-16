@@ -31,7 +31,7 @@ import problemListActions from '../redux/problemList/actions';
 import problemActions from '../redux/problem/actions';
 import { compareStepArrays } from '../redux/problem/helpers';
 
-const mathLive = DEBUG_MODE ? require('../../mathlive/src/mathlive.js').default
+const mathLive = process.env.MATHLIVE_DEBUG_MODE ? require('../../mathlive/src/mathlive.js').default
     : require('../lib/mathlivedist/mathlive.js');
 
 class App extends Component {
