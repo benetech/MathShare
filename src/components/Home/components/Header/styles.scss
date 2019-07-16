@@ -2,11 +2,44 @@
   flex: 0 0 50px;
 }
 
-.navbar {
+header nav.navbar {
   border-radius: 0px;
   margin-bottom: 0px;
   background-color: #001F3F;
   height: auto;
+  justify-content: unset;
+
+  :global(.navbar-brand) {
+    flex: 1;
+  }
+
+  :global(.nav-item.avatar) {
+
+    >:global(.nav-link) {
+      padding: 0;
+      padding-left: 10px;
+    }
+
+    >:global(.dropdown-menu):focus {
+      outline: none;
+    }
+
+    img {
+      height: 36px;
+    }
+
+    :global(.dropdown-header) {
+      font-size: 16px;
+
+      &.email {
+        font-size: 12px;
+      }
+    }
+  }
+
+  .googleSignInContainer {
+    padding-left: 10px;
+  }
 
   >button {
     border: 1px solid white;
@@ -43,4 +76,10 @@
   background: white;
   border-radius: 4px;
   font: caption;
+}
+
+@media only screen and (max-width: 991px) {
+  .googleSignInContainer {
+    margin-right: 15px;
+  }
 }
