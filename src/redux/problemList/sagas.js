@@ -8,6 +8,7 @@ import {
 } from 'redux-saga/effects';
 import {
     push,
+    replace,
 } from 'connected-react-router';
 import {
     resetProblemSet,
@@ -385,7 +386,7 @@ function* requestShareSolutionsSaga() {
                     title,
                 } = yield call(shareSolutions, code, payloadSolutions);
                 if (silent) {
-                    yield put(push(`/app/problemSet/solve/${editCode}`));
+                    yield put(replace(`/app/problemSet/solve/${editCode}`));
                 }
                 yield put(setReviewSolutions(solutions, reviewCode, editCode, title));
                 yield put(setProblemSetShareCode(reviewCode));
