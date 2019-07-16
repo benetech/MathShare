@@ -171,6 +171,7 @@ const problems = (state = initialState, {
             set: {
                 problems: payload.solutions.map(solution => solution.problem),
                 shareCode: payload.reviewCode,
+                title: payload.title || state.set.title,
             },
             newSetSharecode: payload.reviewCode,
         };
