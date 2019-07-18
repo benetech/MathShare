@@ -73,7 +73,7 @@ export default class ProblemHeader extends Component {
         const editOnlyControls = this.props.readOnly ? null
             : (
                 <div className={`d-flex justify-content-end flex-shrink-1 ${problem.btnContainer}`}>
-                    <Button
+                    {/* <Button
                         id="shareBtn"
                         className={classNames('btn', 'pointer', problem.button)}
                         additionalStyles={['default']}
@@ -81,7 +81,7 @@ export default class ProblemHeader extends Component {
                         icon="share-alt"
                         content={Locales.strings.share}
                         onClick={this.props.shareProblem}
-                    />
+                    /> */}
                     <Button
                         id="saveBtn"
                         className={classNames('btn', 'pointer', problem.button)}
