@@ -1,6 +1,8 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { Component } from 'react';
 import classNames from 'classnames';
 import Tour from 'reactour';
+import FontAwesome from 'react-fontawesome';
 import Button from '../../../Button';
 import problem from './styles.scss';
 import googleAnalytics from '../../../../scripts/googleAnalytics';
@@ -96,15 +98,69 @@ export default class ProblemHeader extends Component {
                             <div>{this.props.lastSaved}</div>
                         </div>
                     )}
-                    <Button
-                        id="questionBtn"
-                        className={classNames('btn', 'pointer', problem.button)}
-                        additionalStyles={['default']}
-                        ariaHidden="true"
-                        type="button"
-                        icon="question"
-                        onClick={this.openTour}
-                    />
+                    <li className="nav-item dropdown">
+                        <a
+                            className={`nav-link dropdown-toggle btn ${problem.dropDownMenu}`}
+                            id="navbarDropdownMenuLink-dropdown"
+                            data-toggle="dropdown"
+                        >
+                            <FontAwesome
+                                size="lg"
+                                name="question"
+                            />
+                        </a>
+                        <div
+                            className="dropdown-menu dropdown-menu-lg-right dropdown-secondary"
+                            aria-labelledby="navbarDropdownMenuLink-dropdown"
+                        >
+                            <a
+                                className="dropdown-item"
+                                onClick={this.openTour}
+                                onKeyPress={this.openTour}
+                                role="button"
+                                tabIndex={0}
+                            >
+                                <FontAwesome
+                                    className="super-crazy-colors"
+                                    name="hand-o-up"
+                                    style={{ textShadow: '0 1px 0 rgba(0, 0, 0, 0.1)' }}
+                                />
+                                {Locales.strings.tutorial}
+                            </a>
+                            <a
+                                className="dropdown-item"
+                                href="https://intercom.help/benetech/en"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                onClick={() => {
+                                    googleAnalytics('click help center');
+                                }}
+                            >
+                                <FontAwesome
+                                    className="super-crazy-colors"
+                                    name="comment"
+                                    style={{ textShadow: '0 1px 0 rgba(0, 0, 0, 0.1)' }}
+                                />
+                                {Locales.strings.help_center}
+                            </a>
+                            <a
+                                href="http://www.surveygizmo.com/s3/4048161/Benetech-s-Math-Editor-Online-Feedback"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="dropdown-item"
+                                onClick={() => {
+                                    googleAnalytics('click feedback');
+                                }}
+                            >
+                                <FontAwesome
+                                    className="super-crazy-colors"
+                                    name="arrow-circle-right"
+                                    style={{ textShadow: '0 1px 0 rgba(0, 0, 0, 0.1)' }}
+                                />
+                                {Locales.strings.provide_feedback}
+                            </a>
+                        </div>
+                    </li>
                 </div>
             );
 

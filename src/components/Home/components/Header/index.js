@@ -3,7 +3,6 @@ import { IntercomAPI } from 'react-intercom';
 import { connect } from 'react-redux';
 import FontAwesome from 'react-fontawesome';
 import classNames from 'classnames';
-import { withRouter } from 'react-router-dom';
 import header from './styles.scss';
 import Locales from '../../../../strings';
 import {
@@ -12,6 +11,7 @@ import {
 import logo from '../../../../../images/mathshare_logo_white.png';
 
 import googleAnalytics from '../../../../scripts/googleAnalytics';
+
 
 const GOOGLE_SIGN_IN = 'googleSignIn';
 
@@ -143,48 +143,6 @@ class MainPageHeader extends React.Component {
         const { profile } = this.state;
         /* eslint-disable jsx-a11y/anchor-is-valid */
 
-        const GettingStartedButton = withRouter(({ history }) => (
-            <a
-                className={classNames('nav-link', header.pointer)}
-                onClick={this.onClickGettingStarted(history)}
-                onKeyPress={this.onClickGettingStarted(history)}
-                role="link"
-                tabIndex="0"
-            >
-                {Locales.strings.getting_started_title}
-            </a>
-        ));
-
-        const shareButton = props.editing && !props.notFound && props.action
-            ? (
-                <a
-                    className={classNames('nav-link', header.pointer)}
-                    onClick={() => props.toggleModals(['shareSet'])}
-                    onKeyPress={() => props.toggleModals(['shareSet'])}
-                    role="button"
-                    tabIndex="0"
-                >
-                    {Locales.strings.share}
-                </a>
-            )
-            : null;
-        let link = null;
-        if (props.notFound) {
-            link = null;
-        }
-
-        const addProblemSetButton = !props.notFound ? (
-            <a
-                className={classNames('nav-link', header.pointer)}
-                onClick={props.addProblemSetCallback}
-                onKeyPress={props.addProblemSetCallback}
-                role="button"
-                tabIndex="0"
-            >
-                {Locales.strings.add_problem_set}
-            </a>
-        ) : null;
-
         return (
             <div id="topNavigationWrapper" className={header.header}>
                 <header>
@@ -193,169 +151,142 @@ class MainPageHeader extends React.Component {
                         id="topNavigation"
                     >
                         <h2 id="topNavLabel" className="sROnly">{Locales.strings.header}</h2>
-                        <a
-                            className="navbar-brand"
-                            href="#/"
-                            onClick={() => {
-                                googleAnalytics('clicked logo');
-                            }}
-                        >
-                            <img src={logo} alt="Benetech Math Editor" height="37" />
-                            <span className={header.beta}>beta</span>
-                        </a>
-                        <div
-                            className="collapse navbar-collapse"
-                            id="navbarNav"
-                        >
-                            <div className={classNames('navbar-nav', 'mr-auto')} />
-                            <ul aria-labelledby="topNavLabel" className={classNames('navbar-nav', header.navItem)}>
-                                {props.action && (
-                                    <li className="nav_item">
-                                        <GettingStartedButton />
-                                    </li>
-                                )}
-                                {props.action && (
-                                    <li className="nav_item">
-                                        {!props.action && addProblemSetButton}
-                                    </li>
-                                )}
-                                {props.action && (
-                                    <li className="nav_item">
-                                        {!props.action && shareButton}
-                                    </li>
-                                )}
-                                {props.action && (
-                                    <li className="nav_item">
-                                        {link}
-                                    </li>
-                                )}
-                                {/*
-                            <li className={classNames('nav-item', ['dropdown'])}>
-                                <a
-                                    className={classNames('nav-link', 'dropdown-toggle')}
-                                    data-toggle="dropdown"
-                                    href="#"
-                                    role="button"
-                                    aria-haspopup="true"
-                                    aria-expanded="false"
-                                >
-                                    {Locales.strings.problem_sets}
-                                </a>
-                                <Dropdown.Menu role="list" aria-label="Problem Sets">
-                                    <MenuItem onClick={() => props.changeDataSet(0)}>
-                                        {Locales.strings.problem_set_1}
-                                    </MenuItem>
-                                    <MenuItem onClick={() => props.changeDataSet(1)}>
-                                        {Locales.strings.problem_set_2}
-                                    </MenuItem>
-                                    <MenuItem onClick={() => props.changeDataSet(2)}>
-                                        {Locales.strings.problem_set_3}
-                                    </MenuItem>
-                                    {
-                                    <MenuItem onClick={uploadProblemSet.bind(this)}>
-                                        {Locales.strings.upload}
-                                    </MenuItem>
-                                     } <input
-                                            ref="fileid"
-                                            type="file"
-                                            hidden
-                                            onChange={readBlob.bind(this)}
-                                            />
-                                </Dropdown.Menu>
-                            </li>
-                            */}
-                                <li className="nav-item">
-                                    <a
-                                        className="nav-link"
-                                        href="https://docs.google.com/document/d/e/2PACX-1vQOx_2OGBBrG0AQkQC1Y9K2zUpjod-YKQvK5Z6_aCEdFgy2aINtBei5Xxm8pK-UinG0glY4C8aLVXKD/pub"
-                                        onClick={() => {
-                                            googleAnalytics('click help center');
-                                        }}
-                                    >
-                                        {Locales.strings.help_center}
-                                    </a>
-                                </li>
-                                {props.action && (
-                                    <li className="nav-item">
-                                        <a className="nav-link" href="mailto:info@diagramcenter.org">
-                                            {Locales.strings.contact_us}
-                                        </a>
-                                    </li>
-                                )}
-                                <li className="nav-item">
-                                    <a
-                                        href="http://www.surveygizmo.com/s3/4048161/Benetech-s-Math-Editor-Online-Feedback"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="nav-link"
-                                        onClick={() => {
-                                            googleAnalytics('click feedback');
-                                        }}
-                                    >
-                                        <FontAwesome
-                                            className="super-crazy-colors"
-                                            name="arrow-circle-right"
-                                            style={{ textShadow: '0 1px 0 rgba(0, 0, 0, 0.1)' }}
-                                        />
-                                        {Locales.strings.provide_feedback}
-                                    </a>
-                                </li>
-                                {(props.action === 'new' || props.action === 'edit') && (
-                                    <li className="nav-item dropdown">
-                                        <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            Teachers
-                                        </a>
-                                        <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                                            <a
-                                                className="dropdown-item"
-                                                onClick={openNewProblemSet}
-                                                onKeyPress={openNewProblemSet}
-                                                role="link"
-                                                tabIndex="0"
-                                            >
-                                                <FontAwesome
-                                                    size="lg"
-                                                    name="plus"
-                                                />
-                                                {` ${Locales.strings.add_problem_set}`}
-                                            </a>
-                                            {props.action === 'edit' && (
-                                                <React.Fragment>
-                                                    <a
-                                                        className="dropdown-item"
-                                                        onClick={props.duplicateProblemSet}
-                                                        onKeyPress={props.duplicateProblemSet}
-                                                        role="link"
-                                                        tabIndex="0"
-                                                    >
-                                                        <FontAwesome
-                                                            size="lg"
-                                                            name="copy"
-                                                        />
-                                                        {` ${Locales.strings.duplicate_set}`}
-                                                    </a>
-                                                    <a
-                                                        className="dropdown-item"
-                                                        onClick={shareOnTwitter}
-                                                        onKeyPress={shareOnTwitter}
-                                                        role="link"
-                                                        tabIndex="0"
-                                                    >
-                                                        <FontAwesome
-                                                            size="lg"
-                                                            name="twitter"
-                                                        />
-                                                        {` ${Locales.strings.share_with_teachers}`}
-                                                    </a>
-                                                </React.Fragment>
-                                            )}
-                                        </div>
-                                    </li>
-                                )}
-                            </ul>
+                        <div className={header.navbarBrandContainer}>
+                            <a
+                                className="navbar-brand"
+                                href="#/app"
+                                onClick={() => {
+                                    googleAnalytics('clicked logo');
+                                }}
+                            >
+                                <img src={logo} alt="Benetech Math Editor" height="37" />
+                                <span className={header.beta}>beta</span>
+                            </a>
                         </div>
                         <div className="navbar-header pull-right">
                             <ul className="nav pull-left">
+                                <li className="nav-item dropdown">
+                                    <a
+                                        className={`nav-link dropdown-toggle btn ${header.dropDownMenu}`}
+                                        id="navbarDropdownMenuLink-dropdown"
+                                        data-toggle="dropdown"
+                                    >
+                                        <FontAwesome
+                                            size="lg"
+                                            name="question"
+                                        />
+                                    </a>
+                                    <div
+                                        className="dropdown-menu dropdown-menu-lg-right dropdown-secondary"
+                                        aria-labelledby="navbarDropdownMenuLink-dropdown"
+                                    >
+                                        {/* {props.action && (
+                                            <GettingStartedButton />
+                                        )} */}
+                                        {(props.action === 'new' || props.action === 'edit') && (
+                                            <React.Fragment>
+                                                <a
+                                                    className="dropdown-item"
+                                                    onClick={openNewProblemSet}
+                                                    onKeyPress={openNewProblemSet}
+                                                    role="link"
+                                                    tabIndex="0"
+                                                >
+                                                    <FontAwesome
+                                                        size="lg"
+                                                        name="plus"
+                                                    />
+                                                    {` ${Locales.strings.add_problem_set}`}
+                                                </a>
+                                                {props.action === 'edit' && (
+                                                    <React.Fragment>
+                                                        <a
+                                                            className="dropdown-item"
+                                                            onClick={props.duplicateProblemSet}
+                                                            onKeyPress={props.duplicateProblemSet}
+                                                            role="link"
+                                                            tabIndex="0"
+                                                        >
+                                                            <FontAwesome
+                                                                size="lg"
+                                                                name="copy"
+                                                            />
+                                                            {` ${Locales.strings.duplicate_set}`}
+                                                        </a>
+                                                        <a
+                                                            className="dropdown-item"
+                                                            onClick={shareOnTwitter}
+                                                            onKeyPress={shareOnTwitter}
+                                                            role="link"
+                                                            tabIndex="0"
+                                                        >
+                                                            <FontAwesome
+                                                                size="lg"
+                                                                name="twitter"
+                                                            />
+                                                            {` ${Locales.strings.share_with_teachers}`}
+                                                        </a>
+                                                    </React.Fragment>
+                                                )}
+                                            </React.Fragment>
+                                        )}
+                                        {props.action && (
+                                            <a className="dropdown-item" href="mailto:info@diagramcenter.org">
+                                                <FontAwesome
+                                                    className="super-crazy-colors"
+                                                    name="mail-forward"
+                                                    style={{ textShadow: '0 1px 0 rgba(0, 0, 0, 0.1)' }}
+                                                />
+                                                {Locales.strings.contact_us}
+                                            </a>
+                                        )}
+                                        <a
+                                            className="dropdown-item"
+                                            href="/#/app/problem/example"
+                                            role="button"
+                                            tabIndex={0}
+                                        >
+                                            <FontAwesome
+                                                className="super-crazy-colors"
+                                                name="hand-o-up"
+                                                style={{ textShadow: '0 1px 0 rgba(0, 0, 0, 0.1)' }}
+                                            />
+                                            {Locales.strings.tutorial}
+                                        </a>
+                                        <a
+                                            className="dropdown-item"
+                                            href="https://intercom.help/benetech/en"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            onClick={() => {
+                                                googleAnalytics('click help center');
+                                            }}
+                                        >
+                                            <FontAwesome
+                                                className="super-crazy-colors"
+                                                name="comment"
+                                                style={{ textShadow: '0 1px 0 rgba(0, 0, 0, 0.1)' }}
+                                            />
+                                            {Locales.strings.help_center}
+                                        </a>
+                                        <a
+                                            href="http://www.surveygizmo.com/s3/4048161/Benetech-s-Math-Editor-Online-Feedback"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="dropdown-item"
+                                            onClick={() => {
+                                                googleAnalytics('click feedback');
+                                            }}
+                                        >
+                                            <FontAwesome
+                                                className="super-crazy-colors"
+                                                name="arrow-circle-right"
+                                                style={{ textShadow: '0 1px 0 rgba(0, 0, 0, 0.1)' }}
+                                            />
+                                            {Locales.strings.provide_feedback}
+                                        </a>
+                                    </div>
+                                </li>
                                 {!profile && (
                                     <li>
                                         <div
@@ -368,7 +299,7 @@ class MainPageHeader extends React.Component {
                                     <li className="nav-item avatar dropdown">
                                         <a
                                             className="nav-link dropdown-toggle"
-                                            id="navbarDropdownMenuLink-55"
+                                            id="navbarDropdownMenuLink-avatar"
                                             data-toggle="dropdown"
                                         >
                                             <img
@@ -379,7 +310,7 @@ class MainPageHeader extends React.Component {
                                         </a>
                                         <div
                                             className="dropdown-menu dropdown-menu-lg-right dropdown-secondary"
-                                            aria-labelledby="navbarDropdownMenuLink-55"
+                                            aria-labelledby="navbarDropdownMenuLink-avatar"
                                         >
                                             <div className="dropdown-header">{profile.getName()}</div>
                                             <div className={`dropdown-header ${header.email}`}>{profile.getEmail()}</div>
@@ -398,9 +329,6 @@ class MainPageHeader extends React.Component {
                                 )}
                             </ul>
                         </div>
-                        <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
-                            <span className={`${header.navbarTogglerIcon} fa fa-bars fa-lg`} />
-                        </button>
                     </nav>
                 </header>
             </div>
