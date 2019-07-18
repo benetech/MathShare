@@ -33,7 +33,7 @@
 }
 
 .content {
-    max-width: 768px;
+    max-width: 830px;
     margin: auto;
     text-align: center;
     font-size: 16px;
@@ -50,6 +50,7 @@
     background: rgb(8, 28, 214);
     background: linear-gradient(180deg, rgba(8, 28, 214, 1) 0%, rgba(99, 112, 229, 1) 50%, rgba(151, 160, 238, 1) 80%, rgba(255, 255, 255, 1) 100%);
     text-align: center;
+    padding: 10px;
 
     .largeText {
         line-height: 1;
@@ -59,13 +60,13 @@
         padding: 20px;
         font-size: 36px;
         font-weight: 600;
-        max-width: 600px;
+        max-width: 830px;
         margin-bottom: 0;
     }
 
     img {
         width: 100%;
-        max-width: 600px;
+        max-width: 830px;
         padding: 0 10px;
         margin: auto;
     }
@@ -73,14 +74,14 @@
     .midBottomText {
         margin: auto;
         margin-top: 35px;
-        max-width: 600px;
+        max-width: 830px;
         padding: 10px;
         font-weight: 500;
     }
 }
 
 .features {
-    max-width: 600px;
+    max-width: 830px;
     padding: 20px;
     margin: auto;
 
