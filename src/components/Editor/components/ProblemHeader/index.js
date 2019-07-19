@@ -18,19 +18,15 @@ export default class ProblemHeader extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            isTourOpen: false,
-        };
-
         this.onImgClick = this.onImgClick.bind(this);
         this.openTour = this.openTour.bind(this);
         this.closeTour = this.closeTour.bind(this);
     }
 
-    shouldComponentUpdate(nextProps, nextState) {
+    shouldComponentUpdate(nextProps) {
         // this prevents unnecessary re-rendering and updates of the element
         return this.props.editLink !== nextProps.editLink || this.props.title !== nextProps.title
-            || this.props.math !== nextProps.math || this.state.isTourOpen !== nextState.isTourOpen
+            || this.props.math !== nextProps.math || this.props.tourOpen !== nextProps.tourOpen
             || this.props.isUpdated !== nextProps.isUpdated
             || this.props.lastSaved !== nextProps.lastSaved;
     }
@@ -44,12 +40,12 @@ export default class ProblemHeader extends Component {
     }
 
     openTour() {
-        this.setState({ isTourOpen: true });
+        this.props.openTour();
         googleAnalytics('Help Menu');
     }
 
     closeTour() {
-        this.setState({ isTourOpen: false });
+        this.props.closeTour();
     }
 
     render() {
@@ -201,7 +197,7 @@ export default class ProblemHeader extends Component {
                     <Tour
                         onRequestClose={this.closeTour}
                         steps={tourConfig}
-                        isOpen={this.state.isTourOpen}
+                        isOpen={this.props.tourOpen}
                         rounded={5}
                         accentColor={accentColor}
                         startAt={0}

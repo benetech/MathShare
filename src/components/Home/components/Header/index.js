@@ -8,6 +8,9 @@ import Locales from '../../../../strings';
 import {
     toggleModals,
 } from '../../../../redux/problemList/actions';
+import {
+    openTour,
+} from '../../../../redux/problem/actions';
 import logo from '../../../../../images/mathshare_logo_white.png';
 
 import googleAnalytics from '../../../../scripts/googleAnalytics';
@@ -133,9 +136,9 @@ class MainPageHeader extends React.Component {
         });
     }
 
-    onClickGettingStarted = history => () => {
-        googleAnalytics(Locales.strings.getting_started_title);
-        history.push('/app/problem/example');
+    onClickTutorial = () => {
+        googleAnalytics(Locales.strings.tutorial);
+        this.props.openTour();
     }
 
     render() {
@@ -243,6 +246,8 @@ class MainPageHeader extends React.Component {
                                         <a
                                             className="dropdown-item"
                                             href="/#/app/problem/example"
+                                            onClick={this.onClickTutorial}
+                                            onKeyPress={this.onClickTutorial}
                                             role="button"
                                             tabIndex={0}
                                         >
@@ -341,5 +346,6 @@ export default connect(
     () => ({}),
     {
         toggleModals,
+        openTour,
     },
 )(MainPageHeader);
