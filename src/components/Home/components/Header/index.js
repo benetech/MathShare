@@ -233,16 +233,6 @@ class MainPageHeader extends React.Component {
                                                 )}
                                             </React.Fragment>
                                         )}
-                                        {props.action && (
-                                            <a className="dropdown-item" href="mailto:info@diagramcenter.org">
-                                                <FontAwesome
-                                                    className="super-crazy-colors"
-                                                    name="mail-forward"
-                                                    style={{ textShadow: '0 1px 0 rgba(0, 0, 0, 0.1)' }}
-                                                />
-                                                {Locales.strings.contact_us}
-                                            </a>
-                                        )}
                                         <a
                                             className="dropdown-item"
                                             href="/#/app/problem/example"
