@@ -138,7 +138,9 @@ class MainPageHeader extends React.Component {
 
     onClickTutorial = () => {
         googleAnalytics(Locales.strings.tutorial);
-        this.props.openTour();
+        setTimeout(() => {
+            this.props.openTour();
+        }, 100);
     }
 
     render() {
