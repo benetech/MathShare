@@ -39,7 +39,7 @@
     font-size: 16px;
 
     hr {
-        margin: 30px auto;
+        margin: 40px auto;
         max-width: 325px;
     }
 }
@@ -57,7 +57,7 @@
         text-align: center;
         margin: 50px auto;
         color: white;
-        padding: 20px;
+        padding: 50px 10px;
         font-size: 36px;
         font-weight: 600;
         max-width: 830px;
@@ -75,14 +75,15 @@
         margin: auto;
         margin-top: 35px;
         max-width: 830px;
-        padding: 10px;
+        padding: 50px 10px;
         font-weight: 500;
     }
 }
 
 .features {
     max-width: 830px;
-    padding: 20px;
+    padding: 40px 20px;
+    padding-top: 0;
     margin: auto;
 
     .feature {
