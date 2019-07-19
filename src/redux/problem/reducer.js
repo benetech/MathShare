@@ -53,6 +53,7 @@ const problem = (state = initialState, {
             readOnly: false,
             allowedPalettes: 'Edit;Operators;Notations;Geometry',
             tourOpen: false,
+            actionsStack: [],
         };
     case 'SET_PROBLEM_NOT_FOUND':
         return {
@@ -68,6 +69,7 @@ const problem = (state = initialState, {
             stepsFromLastSave: JSON.parse(JSON.stringify(payload.solution.steps)),
             allowedPalettes: payload.solution.palettes,
             tourOpen: false,
+            actionsStack: [],
         };
     case 'UPDATE_PROBLEM_STORE':
         return {

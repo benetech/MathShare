@@ -24,6 +24,11 @@ const mathLive = process.env.MATHLIVE_DEBUG_MODE ? require('../../../../mathlive
 class Editor extends Component {
     constructor(props) {
         super(props);
+
+        this.state = {
+            actionsStack: [],
+        };
+
         this.restoreEditorPosition = this.restoreEditorPosition.bind(this);
         this.cancelEditCallback = this.cancelEditCallback.bind(this);
         this.textAreaChanged = this.textAreaChanged.bind(this);
@@ -48,6 +53,16 @@ class Editor extends Component {
         } else {
             const { action, code } = this.props.match.params;
             this.props.loadProblem(action, code);
+        }
+        this.setState({
+            actionsStack: [],
+        });
+        const mathEditor = document.getElementById('mathEditorActive');
+        if (mathEditor && mathEditor.mathfield) {
+            const { undoManager } = mathEditor.mathfield;
+            if (undoManager) {
+                undoManager.reset();
+            }
         }
         this.scrollToBottom();
     }
