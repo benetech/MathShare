@@ -87,7 +87,7 @@ const SiteMapFooter = ({ customClass }) => (
                     </ul>
                 </div>
                 <div>
-                    <div className={footer.listTitle}>Connect</div>
+                    <div className={footer.listTitle}>Info</div>
                     <ul>
                         <li>
                             <a
