@@ -87,7 +87,7 @@ const LandingPage = withRouter(({ history }) => (
                 <hr />
                 <div className={`${styles.feature} ${styles.reverse}`}>
                     <div className={styles.imageSection}>
-                        <img src={lms} alt="lms" aria-label="image showing several logos of LMS vendors" />
+                        <img src={lms} alt="lms" aria-label="several logos of several LMS vendors, including Canvas, Google Classroom, Schoology, Moodle, OneNote, and Blackboard" />
                     </div>
                     <div className={styles.textSection}>
                         <div className={styles.header}>
