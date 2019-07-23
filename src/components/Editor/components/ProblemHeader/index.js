@@ -145,7 +145,7 @@ export default class ProblemHeader extends Component {
                                 {Locales.strings.help_center}
                             </a>
                             <a
-                                href="http://www.surveygizmo.com/s3/4048161/Benetech-s-Math-Editor-Online-Feedback"
+                                href="https://docs.google.com/forms/d/e/1FAIpQLScSZJo47vQM_5ci2MOgBbJW7WM6FbEi2xABR5qSZd8oD2RZEg/viewform?usp=sf_link"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="dropdown-item"
