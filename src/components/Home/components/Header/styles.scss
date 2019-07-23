@@ -39,6 +39,7 @@ header nav.navbar {
   .dropDownMenu {
     background-color: #fafafa;
     padding: 0.4rem 0.8rem;
+    cursor: pointer;
 
     &::after {
       display: none;
@@ -46,7 +47,7 @@ header nav.navbar {
   }
 
   .googleSignInContainer {
-    padding-left: 10px;
+    margin-left: 10px;
   }
 
   >button {
@@ -96,4 +97,8 @@ header nav.navbar {
   :global(.navbar-collapse) {
     order: 2;
   }
+}
+
+:global(.dropdonw-toggle) {
+  cursor: pointer;
 }

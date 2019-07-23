@@ -1,8 +1,10 @@
+/* eslint-disable jsx-a11y/no-noninteractive-tabindex */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { Component } from 'react';
 import classNames from 'classnames';
 import Tour from 'reactour';
 import FontAwesome from 'react-fontawesome';
+import { UncontrolledTooltip } from 'reactstrap';
 import Button from '../../../Button';
 import problem from './styles.scss';
 import googleAnalytics from '../../../../scripts/googleAnalytics';
@@ -95,16 +97,19 @@ export default class ProblemHeader extends Component {
                         </div>
                     )}
                     <li className="nav-item dropdown">
-                        <a
+                        <button
                             className={`nav-link dropdown-toggle btn ${problem.dropDownMenu}`}
                             id="navbarDropdownMenuLink-dropdown"
                             data-toggle="dropdown"
+                            type="button"
+                            tabIndex={0}
                         >
                             <FontAwesome
                                 size="lg"
                                 name="question"
                             />
-                        </a>
+                        </button>
+                        <UncontrolledTooltip placement="top" target="navbarDropdownMenuLink-dropdown" />
                         <div
                             className="dropdown-menu dropdown-menu-lg-right dropdown-secondary"
                             aria-labelledby="navbarDropdownMenuLink-dropdown"
