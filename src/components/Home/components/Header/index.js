@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/no-noninteractive-tabindex */
 import React from 'react';
+import ReactGA from 'react-ga';
 import { IntercomAPI } from 'react-intercom';
 import { connect } from 'react-redux';
 import FontAwesome from 'react-fontawesome';
@@ -144,10 +145,14 @@ class MainPageHeader extends React.Component {
                 document.querySelector('li.avatar .dropdown-menu a.logout').addEventListener('click', this.logout);
             }, 100);
         });
+        const email = profile.getEmail();
         IntercomAPI('update', {
-            user_id: profile.getEmail(),
-            email: profile.getEmail(),
+            user_id: email,
+            email,
             name: profile.getName(),
+        });
+        ReactGA.set({
+            email,
         });
     }
 
