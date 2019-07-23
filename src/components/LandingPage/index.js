@@ -126,7 +126,7 @@ const LandingPage = withRouter(({ history }) => (
                         </div>
                     </div>
                 </div>
-                <div
+                {/* <div
                     className={`${styles.btn} ${styles.signupBtn}`}
                     onClick={clickOnTryNow(history)}
                     onKeyPress={clickOnTryNow(history)}
@@ -134,7 +134,7 @@ const LandingPage = withRouter(({ history }) => (
                     tabIndex="0"
                 >
                     Create Free Account
-                </div>
+                </div> */}
             </div>
         </div>
     </div>
