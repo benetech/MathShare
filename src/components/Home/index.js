@@ -191,23 +191,6 @@ class Home extends Component {
                                             <UncontrolledTooltip placement="top" target="googleContainer2" />
                                         </span>
                                         <Button
-                                            id="viewAsStudent"
-                                            className={classNames([
-                                                'btn',
-                                                'btn-outline-dark',
-                                            ])}
-                                            type="button"
-                                            icon="eye"
-                                            content={Locales.strings.view_as_student}
-                                            onClick={() => {
-                                                this.props.saveProblemSet(
-                                                    currentSet.problems,
-                                                    currentSet.title,
-                                                    true,
-                                                );
-                                            }}
-                                        />
-                                        <Button
                                             id="shareBtn"
                                             className={classNames([
                                                 'btn',
@@ -227,6 +210,27 @@ class Home extends Component {
                                         <div className={home.text}>Assign: </div>
                                     </React.Fragment>
                                 )}
+                            </div>
+                            <div className="row flex-row-reverse">
+                                <div className={home.secondRowBtn}>
+                                    <Button
+                                        id="viewAsStudent"
+                                        className={classNames([
+                                            'btn',
+                                            'btn-outline-dark',
+                                        ])}
+                                        type="button"
+                                        icon="eye"
+                                        content={Locales.strings.view_as_student}
+                                        onClick={() => {
+                                            this.props.saveProblemSet(
+                                                currentSet.problems,
+                                                currentSet.title,
+                                                true,
+                                            );
+                                        }}
+                                    />
+                                </div>
                             </div>
                             <div className="row">
                                 <div className={classNames('col-lg-12', 'm-3', 'text-left')}>
