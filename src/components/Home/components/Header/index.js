@@ -61,12 +61,6 @@ const openNewProblemSet = () => {
     window.open('/#/app/problemSet/new', '_blank');
 };
 
-const shareOnTwitter = () => {
-    window.open(
-        `https://twitter.com/intent/tweet?text=${encodeURIComponent(`${Locales.strings.share_with_teachers_text} ${window.location.href}`)}`, '_blank',
-    );
-};
-
 class MainPageHeader extends React.Component {
     constructor(props) {
         super(props);
@@ -203,36 +197,6 @@ class MainPageHeader extends React.Component {
                                                     />
                                                     {` ${Locales.strings.add_problem_set}`}
                                                 </a>
-                                                {props.action === 'edit' && (
-                                                    <React.Fragment>
-                                                        <a
-                                                            className="dropdown-item"
-                                                            onClick={props.duplicateProblemSet}
-                                                            onKeyPress={props.duplicateProblemSet}
-                                                            role="link"
-                                                            tabIndex="0"
-                                                        >
-                                                            <FontAwesome
-                                                                size="lg"
-                                                                name="copy"
-                                                            />
-                                                            {` ${Locales.strings.duplicate_set}`}
-                                                        </a>
-                                                        <a
-                                                            className="dropdown-item"
-                                                            onClick={shareOnTwitter}
-                                                            onKeyPress={shareOnTwitter}
-                                                            role="link"
-                                                            tabIndex="0"
-                                                        >
-                                                            <FontAwesome
-                                                                size="lg"
-                                                                name="twitter"
-                                                            />
-                                                            {` ${Locales.strings.share_with_teachers}`}
-                                                        </a>
-                                                    </React.Fragment>
-                                                )}
                                             </React.Fragment>
                                         )}
                                         <a

@@ -78,3 +78,22 @@
         }
     }
 }
+
+:global(.dropdown) {
+    display: inline-grid;
+
+    .spaceInBetween {
+        display: flex;
+        flex: 1;
+    }
+
+    :global(.dropdown-toggle) {
+        &:after {
+            display: none;
+        }
+    }
+
+    :global(.dropdown-item) {
+        cursor: pointer;
+    }
+}

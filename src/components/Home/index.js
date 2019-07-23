@@ -16,6 +16,12 @@ import problemActions from '../../redux/problemList/actions';
 import Button from '../Button';
 import googleClassroomIcon from '../../../images/google-classroom-icon.png';
 
+const shareOnTwitter = () => {
+    window.open(
+        `https://twitter.com/intent/tweet?text=${encodeURIComponent(`${Locales.strings.share_with_teachers_text} ${window.location.href}`)}`, '_blank',
+    );
+};
+
 class Home extends Component {
     componentDidMount() {
         const {
@@ -238,6 +244,53 @@ class Home extends Component {
                                         }}
                                         name="edit"
                                     />
+                                    {/* <div className={home.spaceInBetween} /> */}
+                                    <div className="dropdown">
+                                        <button className="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <FontAwesome
+                                                className={
+                                                    classNames(
+                                                        'fa-2x',
+                                                    )
+                                                }
+                                                name="ellipsis-v"
+                                            />
+                                        </button>
+                                        <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            {params.action === 'edit' && (
+                                                /* eslint-disable jsx-a11y/anchor-is-valid */
+                                                <React.Fragment>
+                                                    <a
+                                                        className="dropdown-item"
+                                                        onClick={this.props.duplicateProblemSet}
+                                                        onKeyPress={this.props.duplicateProblemSet}
+                                                        role="link"
+                                                        tabIndex="0"
+                                                    >
+                                                        <FontAwesome
+                                                            size="lg"
+                                                            name="copy"
+                                                        />
+                                                        {` ${Locales.strings.duplicate_set}`}
+                                                    </a>
+                                                    <a
+                                                        className="dropdown-item"
+                                                        onClick={shareOnTwitter}
+                                                        onKeyPress={shareOnTwitter}
+                                                        role="link"
+                                                        tabIndex="0"
+                                                    >
+                                                        <FontAwesome
+                                                            size="lg"
+                                                            name="twitter"
+                                                        />
+                                                        {` ${Locales.strings.share_with_teachers}`}
+                                                    </a>
+                                                </React.Fragment>
+                                                /* eslint-enable jsx-a11y/anchor-is-valid */
+                                            )}
+                                        </div>
+                                    </div>
                                     <br aria-hidden="true" />
                                     <br aria-hidden="true" />
                                 </div>
