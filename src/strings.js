@@ -93,7 +93,7 @@ class Locales {
                 provide_feedback: ' Give Feedback',
                 upload_no_file_warning: 'Please select a file',
                 footer: 'Footer',
-                copyright: 'Copyright 2019 Benetech. ALl rights reserved.',
+                copyright: 'Copyright 2019 Benetech. All rights reserved.',
                 idea_logo_alt: 'IDEA Logo',
                 diagram_center: 'DIAGRAM Center',
                 is_a: ' is a ',
