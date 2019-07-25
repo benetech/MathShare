@@ -39,6 +39,7 @@ export default class ProblemHeader extends Component {
 
     onImgClick() {
         showImage(this.props.scratchpad);
+        googleAnalytics('viewed problem image');
     }
 
     openTour() {
@@ -55,12 +56,11 @@ export default class ProblemHeader extends Component {
             ? (
                 <Button
                     id="scratchpadBtn"
-                    className={classNames('btn', 'pointer', problem.button)}
+                    className={classNames('btn', 'pointer', problem.button, problem.imageBtn)}
                     additionalStyles={['image']}
                     ariaHidden="true"
                     type="button"
                     icon="image"
-                    iconSize="2x"
                     onClick={this.onImgClick}
                 />
             )
@@ -183,21 +183,9 @@ export default class ProblemHeader extends Component {
                             ariaLabel={Locales.strings.back_to_problem_page}
                             content={<span className="sROnly">{Locales.strings.back_to_problem_page}</span>}
                         />
-                        <Button
-                            id="viewBtn"
-                            className={classNames('btn', 'pointer', problem.button)}
-                            additionalStyles={['default']}
-                            type="button"
-                            icon="search"
-                            onClick={this.props.viewProblem}
-                            tabIndex="-1"
-                            ariaLabel={Locales.strings.view_problem_description}
-                            content={<span className="sROnly">{Locales.strings.view_problem_description}</span>}
-                        />
                     </div>
                     <span id="math-ellipsis" className={`flex-grow-1 ${problem.mathEllipsis}`}>&nbsp;</span>
                     {exampleLabel}
-                    {imgButton}
                     {editOnlyControls}
                     <Tour
                         onRequestClose={this.closeTour}
@@ -212,6 +200,7 @@ export default class ProblemHeader extends Component {
                     />
                 </div>
                 <div className={`d-flex flex-row ${problem.subHeader}`}>
+                    {imgButton}
                     <h1 id="ProblemTitle" className={problem.title}>{title}</h1>
                     <span id="ProblemMath" className={`${problem.title} ${problem.question}`}>{`$$${this.props.math}$$`}</span>
                 </div>
