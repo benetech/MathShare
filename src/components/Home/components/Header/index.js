@@ -103,7 +103,7 @@ class MainPageHeader extends React.Component {
     }
 
     initializeGoogleSignIn = () => {
-        if (!window.gapi || !window.gapi.signin2) {
+        if (!window.gapi || !window.gapi.signin2 || !window.gapi.auth2) {
             setTimeout(this.initializeGoogleSignIn, 500);
         } else if (!this.state.googleSignInInitialized) {
             this.setState({

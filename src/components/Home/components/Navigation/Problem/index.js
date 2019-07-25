@@ -197,6 +197,7 @@ export default class Problem extends Component {
                     }
                     onClick={this.onImgClick}
                     name="image"
+                    tabIndex={0}
                 />
             )
             : null;
@@ -211,6 +212,7 @@ export default class Problem extends Component {
                         )
                     }
                     name="plus-circle"
+                    tabIndex={0}
                 />
             )
             : null;
@@ -226,6 +228,7 @@ export default class Problem extends Component {
                     }
                     onClick={this.onEditClick}
                     name="edit"
+                    tabIndex={0}
                 />
             )
             : null;
@@ -241,6 +244,7 @@ export default class Problem extends Component {
                     }
                     onClick={this.onTrashClick}
                     name="trash"
+                    tabIndex={0}
                 />
             )
             : null;
@@ -303,9 +307,9 @@ export default class Problem extends Component {
                         {speechForMath}
                     </div>
                     {imgButton}
+                    {editButton}
                     {removeButton}
                     {plusButton}
-                    {editButton}
                     <div className={classNames(
                         problemStyle.navItemContent,
                         this.state.isOverflownHorizontally

@@ -167,9 +167,27 @@ class Home extends Component {
                     )}
                     {(params.action === 'new' || params.action === 'edit') && (
                         <React.Fragment>
-                            <div className={`row flex-row-reverse ${home.btnContainer}`}>
+                            <div className={`row flex-row ${home.btnContainer}`}>
                                 {((params.action === 'new' && problemList.tempSet.problems.length > 0) || params.action === 'edit') && (
                                     <React.Fragment>
+                                        <div className={home.text}>Assign: </div>
+                                        <Button
+                                            id="shareBtn"
+                                            className={classNames([
+                                                'btn',
+                                                'btn-outline-dark',
+                                            ])}
+                                            type="button"
+                                            icon="link"
+                                            content={Locales.strings.link}
+                                            onClick={() => {
+                                                this.props.saveProblemSet(
+                                                    currentSet.problems,
+                                                    currentSet.title,
+                                                );
+                                                IntercomAPI('trackEvent', 'assign-a-set-link');
+                                            }}
+                                        />
                                         <span>
                                             <button
                                                 id="googleContainer2"
@@ -190,24 +208,6 @@ class Home extends Component {
                                             </button>
                                             <UncontrolledTooltip placement="top" target="googleContainer2" />
                                         </span>
-                                        <Button
-                                            id="shareBtn"
-                                            className={classNames([
-                                                'btn',
-                                                'btn-outline-dark',
-                                            ])}
-                                            type="button"
-                                            icon="link"
-                                            content={Locales.strings.link}
-                                            onClick={() => {
-                                                this.props.saveProblemSet(
-                                                    currentSet.problems,
-                                                    currentSet.title,
-                                                );
-                                                IntercomAPI('trackEvent', 'assign-a-set-link');
-                                            }}
-                                        />
-                                        <div className={home.text}>Assign: </div>
                                     </React.Fragment>
                                 )}
                             </div>
@@ -246,6 +246,12 @@ class Home extends Component {
                                         onClick={() => {
                                             this.props.toggleModals([TITLE_EDIT_MODAL]);
                                         }}
+                                        onKeyPress={(event) => {
+                                            if (event.key === 'Enter') {
+                                                this.props.toggleModals([TITLE_EDIT_MODAL]);
+                                            }
+                                        }}
+                                        tabIndex={0}
                                         name="edit"
                                     />
                                     {/* <div className={home.spaceInBetween} /> */}
