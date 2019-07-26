@@ -5,6 +5,7 @@ import classNames from 'classnames';
 import Tour from 'reactour';
 import FontAwesome from 'react-fontawesome';
 import { UncontrolledTooltip } from 'reactstrap';
+import { IntercomAPI } from 'react-intercom';
 import Button from '../../../Button';
 import problem from './styles.scss';
 import googleAnalytics from '../../../../scripts/googleAnalytics';
@@ -21,8 +22,6 @@ export default class ProblemHeader extends Component {
         super(props);
 
         this.onImgClick = this.onImgClick.bind(this);
-        this.openTour = this.openTour.bind(this);
-        this.closeTour = this.closeTour.bind(this);
     }
 
     shouldComponentUpdate(nextProps) {
@@ -37,18 +36,23 @@ export default class ProblemHeader extends Component {
         mathLive.renderMathInDocument();
     }
 
-    onImgClick() {
+    onImgClick = () => {
         showImage(this.props.scratchpad);
         googleAnalytics('viewed problem image');
     }
 
-    openTour() {
+    openTour = () => {
         this.props.openTour();
         googleAnalytics('Help Menu');
     }
 
-    closeTour() {
+    closeTour = () => {
         this.props.closeTour();
+    }
+
+    clickOnQuestion = () => {
+        googleAnalytics('clicked help center');
+        IntercomAPI('trackEvent', 'clicked-help -center');
     }
 
     render() {
@@ -67,6 +71,8 @@ export default class ProblemHeader extends Component {
             : null;
 
         const title = `${this.props.title}: `;
+
+        const questionBtnId = 'navbarDropdownMenuLink-dropdown';
 
         const editOnlyControls = this.props.readOnly ? null
             : (
@@ -97,22 +103,26 @@ export default class ProblemHeader extends Component {
                         </div>
                     )}
                     <li className="nav-item dropdown">
+                        <span id={`${questionBtnId}-label`} className="sROnly">{Locales.strings.help_center}</span>
                         <button
                             className={`nav-link dropdown-toggle btn ${problem.dropDownMenu}`}
-                            id="navbarDropdownMenuLink-dropdown"
+                            id={questionBtnId}
                             data-toggle="dropdown"
                             type="button"
                             tabIndex={0}
+                            aria-labelledby={`${questionBtnId}-label`}
+                            onClick={this.clickOnQuestion}
+                            onKeyPress={this.clickOnQuestion}
                         >
                             <FontAwesome
                                 size="lg"
                                 name="question"
                             />
                         </button>
-                        <UncontrolledTooltip placement="top" target="navbarDropdownMenuLink-dropdown" />
+                        <UncontrolledTooltip placement="top" target={questionBtnId} />
                         <div
                             className="dropdown-menu dropdown-menu-lg-right dropdown-secondary"
-                            aria-labelledby="navbarDropdownMenuLink-dropdown"
+                            aria-labelledby={`${questionBtnId}-label`}
                         >
                             <a
                                 className="dropdown-item"

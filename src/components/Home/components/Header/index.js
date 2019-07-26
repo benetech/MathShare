@@ -177,10 +177,16 @@ class MainPageHeader extends React.Component {
         }, 100);
     }
 
+    clickOnQuestion = () => {
+        googleAnalytics('clicked help center');
+        IntercomAPI('trackEvent', 'clicked-help -center');
+    }
+
     render() {
         const { props } = this;
         const { profile } = this.state;
         /* eslint-disable jsx-a11y/anchor-is-valid */
+        const questionBtnId = 'navbarDropdownMenuLink-dropdown';
 
         return (
             <div id="topNavigationWrapper" className={header.header}>
@@ -205,24 +211,26 @@ class MainPageHeader extends React.Component {
                         <div className="navbar-header pull-right">
                             <ul className="nav pull-left">
                                 <li className="nav-item dropdown">
+                                    <span id={`${questionBtnId}-label`} className="sROnly">{Locales.strings.help_center}</span>
                                     <button
                                         className={`nav-link dropdown-toggle btn ${header.dropDownMenu}`}
-                                        id="navbarDropdownMenuLink-dropdown"
+                                        id={questionBtnId}
                                         data-toggle="dropdown"
                                         type="button"
-                                        // eslint-disable-next-line max-len
-                                        // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
                                         tabIndex={0}
+                                        aria-labelledby={`${questionBtnId}-label`}
+                                        onClick={this.clickOnQuestion}
+                                        onKeyPress={this.clickOnQuestion}
                                     >
                                         <FontAwesome
                                             size="lg"
                                             name="question"
                                         />
                                     </button>
-                                    <UncontrolledTooltip placement="top" target="navbarDropdownMenuLink-dropdown" />
+                                    <UncontrolledTooltip placement="top" target={questionBtnId} />
                                     <div
                                         className="dropdown-menu dropdown-menu-lg-right dropdown-secondary"
-                                        aria-labelledby="navbarDropdownMenuLink-dropdown"
+                                        aria-labelledby={`${questionBtnId}-label`}
                                     >
                                         {/* {props.action && (
                                             <GettingStartedButton />
