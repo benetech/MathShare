@@ -222,7 +222,7 @@ class Home extends Component {
                                         <div className={home.btnText}>Microsoft Team</div>
                                         <img src={msTeamIcon} alt="microsoft team" />
                                     </button>
-                                    <UncontrolledTooltip placement="top" target="microsoftTeamContainer2" />
+                                    <UncontrolledTooltip placement="top" target="microsoftTeamContainer1" />
                                 </span>
                             </div>
                         </div>
