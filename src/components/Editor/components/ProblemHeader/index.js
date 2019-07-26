@@ -191,7 +191,12 @@ export default class ProblemHeader extends Component {
                             onClick={this.props.goBack}
                             tabIndex="-1"
                             ariaLabel={Locales.strings.back_to_problem_page}
-                            content={<span className="sROnly">{Locales.strings.back_to_problem_page}</span>}
+                            content={(
+                                <React.Fragment>
+                                    <span className="sROnly">{Locales.strings.back_to_problem_page}</span>
+                                    <span>{Locales.strings.all_problems}</span>
+                                </React.Fragment>
+                            )}
                         />
                     </div>
                     <span id="math-ellipsis" className={`flex-grow-1 ${problem.mathEllipsis}`}>&nbsp;</span>
