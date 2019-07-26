@@ -1,84 +1,33 @@
 import React, { Component } from 'react';
-import { NotificationContainer } from 'react-notifications';
-import axios from 'axios';
+import { connect } from 'react-redux';
+import { IntercomAPI } from 'react-intercom';
 import ProblemHeader from './components/ProblemHeader';
 import MyStepsHeader from './components/MySteps/components/MyStepsHeader';
 import MyStepsList from './components/MySteps/components/MyStepsList';
-import ModalContainer, {
-    CONFIRMATION_BACK, SHARE_SET, VIEW_SET,
-    // SAVE_SET,
-} from '../ModalContainer';
 import NotFound from '../NotFound';
 import editor from './styles.scss';
-import { alertSuccess } from '../../scripts/alert';
 import { stackEditAction } from './stackOperations';
 import { clearAll, undoLastAction } from './stack';
 import {
     deleteStep, editStep, updateStep, addStep,
 } from './stepsOperations';
+import problemActions from '../../redux/problem/actions';
+import { compareStepArrays, countEditorPosition } from '../../redux/problem/helpers';
 import Locales from '../../strings';
 import googleAnalytics from '../../scripts/googleAnalytics';
-import { SERVER_URL, FRONTEND_URL } from '../../config';
-import { updateSolution } from '../../services/review';
 import exampleProblem from './example.json';
 import scrollTo from '../../scripts/scrollTo';
 
-const mathLive = DEBUG_MODE ? require('../../../../mathlive/src/mathlive.js').default
+const mathLive = process.env.MATHLIVE_DEBUG_MODE ? require('../../../../mathlive/src/mathlive.js').default
     : require('../../lib/mathlivedist/mathlive.js');
 
-export default class Editor extends Component {
+class Editor extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            solution: {
-                problem: {
-                    title: Locales.strings.loading,
-                    text: Locales.strings.loading,
-                },
-                steps: [
-                    {
-                        stepValue: '',
-                        explanation: Locales.strings.loading,
-                    },
-                ],
-                editCode: null,
-            },
-            stepsFromLastSave: [
-                {
-                    stepValue: '',
-                    explanation: Locales.strings.loading,
-                },
-            ],
-            activeModals: [],
-            editorPosition: 0,
-            editedStep: null,
-            allowedPalettes: [],
-            theActiveMathField: null,
-            textAreaValue: '',
-            actionsStack: [],
-            updateMathFieldMode: false,
-            editing: false,
-            shareLink: 'http:mathshare.com/exampleShareLink/1',
-            editLink: Locales.strings.not_saved_yet,
-            readOnly: false,
-            displayScratchpad: null,
-            notFound: false,
-            isUpdated: false,
-            lastSaved: null,
-        };
-
-        this.toggleModals = this.toggleModals.bind(this);
         this.restoreEditorPosition = this.restoreEditorPosition.bind(this);
         this.cancelEditCallback = this.cancelEditCallback.bind(this);
         this.textAreaChanged = this.textAreaChanged.bind(this);
         this.getApplicationNode = this.getApplicationNode.bind(this);
-        this.shareProblem = this.shareProblem.bind(this);
-        this.saveProblem = this.saveProblem.bind(this);
-        this.finishProblem = this.finishProblem.bind(this);
-        this.viewProblem = this.viewProblem.bind(this);
-        this.goBack = this.goBack.bind(this);
-        this.redButtonCallback = this.redButtonCallback.bind(this);
-        this.greenButtonCallback = this.greenButtonCallback.bind(this);
         this.onUnload = this.onUnload.bind(this);
     }
 
@@ -88,55 +37,17 @@ export default class Editor extends Component {
             googleAnalytics('View a Problem: Teacher');
         } else if (match.params.action === 'edit') {
             googleAnalytics('View a Problem: Student');
+            IntercomAPI('trackEvent', 'work-a-problem');
         }
     }
 
     componentDidMount() {
         window.addEventListener('beforeunload', this.onUnload);
-        let path;
         if (this.props.example) {
-            const solution = {
-                problem: exampleProblem,
-                steps: exampleProblem.steps,
-            };
-
-            this.setState({
-                solution,
-                editorPosition: this.countEditorPosition(exampleProblem.steps),
-                readOnly: false,
-                allowedPalettes: 'Edit;Operators;Notations;Geometry',
-            });
+            this.props.loadExampleProblem(exampleProblem);
         } else {
-            if (this.props.match.params.action === 'view') {
-                path = `${SERVER_URL}/solution/revision/${this.props.match.params.code}`;
-            } else {
-                path = `${SERVER_URL}/solution/${this.props.match.params.code}/`;
-            }
-            axios.get(path)
-                .then((response) => {
-                    if (response.status !== 200) {
-                        this.setState({ notFound: true });
-                    } else {
-                        const solution = response.data;
-                        updateSolution(solution);
-                        this.setState((prevState) => {
-                            const field = prevState.theActiveMathField;
-                            field.latex(
-                                response.data.steps[response.data.steps.length - 1].stepValue,
-                            );
-                            return {
-                                solution,
-                                editorPosition: this.countEditorPosition(response.data.steps),
-                                theActiveMathField: field,
-                                readOnly: this.props.match.params.action === 'view',
-                                stepsFromLastSave: JSON.parse(JSON.stringify(response.data.steps)),
-                                allowedPalettes: response.data.palettes,
-                            };
-                        });
-                    }
-                }).catch(() => {
-                    this.setState({ notFound: true });
-                });
+            const { action, code } = this.props.match.params;
+            this.props.loadProblem(action, code);
         }
         this.scrollToBottom();
     }
@@ -146,11 +57,11 @@ export default class Editor extends Component {
     }
 
     onUnload(event) {
-        const { editLink, solution, stepsFromLastSave } = this.state;
+        const { editLink, solution, stepsFromLastSave } = this.props.problemStore;
         const { location } = this.props;
-        if (location.pathname.indexOf('/problem/view') === '0' // check if the open view is readonly
+        if (location.pathname.indexOf('/app/problem/view') === '0' // check if the open view is readonly
             || (editLink !== Locales.strings.not_saved_yet
-                && this.compareStepArrays(solution.steps, stepsFromLastSave))) {
+                && compareStepArrays(solution.steps, stepsFromLastSave))) {
             return null;
         }
         const e = event || window.event;
@@ -181,92 +92,8 @@ export default class Editor extends Component {
 
     getApplicationNode = () => document.getElementById('root')
 
-    compareStepArrays = (first, second) => {
-        if (first.length !== second.length) {
-            return false;
-        }
-        for (let i = 0; i < first.length; i += 1) {
-            if (first[i].stepValue !== second[i].stepValue
-                || first[i].explanation !== second[i].explanation
-                || first[i].scratchpad !== second[i].scratchpad) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    goBack() {
-        if (!this.compareStepArrays(this.state.solution.steps, this.state.stepsFromLastSave)
-            && !this.props.example) {
-            this.toggleModals([CONFIRMATION_BACK]);
-        } else {
-            this.props.history.goBack();
-        }
-    }
-
-    saveProblem() {
-        return new Promise((resolve, reject) => {
-            if (this.props.example) {
-                this.setState({ editLink: Locales.strings.example_edit_code });
-                resolve(true);
-            } else {
-                googleAnalytics('Save Problem');
-                axios.put(`${SERVER_URL}/solution/${this.state.solution.editCode}`, this.state.solution)
-                    .then((response) => {
-                        const solution = response.data;
-                        updateSolution(solution);
-                        this.setState((prevState) => {
-                            const editCode = prevState.solution.editCode;
-                            const steps = prevState.solution.steps;
-                            // if (isInitialSave) {
-                            //     this.toggleModals([SAVE_SET]);
-                            // }
-                            return {
-                                editLink: `${FRONTEND_URL}/problem/edit/${editCode}`,
-                                stepsFromLastSave: JSON.parse(JSON.stringify(steps)),
-                                lastSaved: (new Date().toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })),
-                                isUpdated: false,
-                            };
-                        });
-                        alertSuccess(Locales.strings.problem_saved_success_message,
-                            Locales.strings.success);
-                        resolve(true);
-                    }).catch((error) => {
-                        reject(error);
-                    });
-            }
-        });
-    }
-
-    finishProblem() {
-        this.saveProblem().then(() => {
-            this.goBack();
-        });
-    }
-
-    shareProblem() {
-        if (this.props.example) {
-            this.setState({
-                shareLink: Locales.strings.example_share_code,
-            }, this.toggleModals([SHARE_SET]));
-        } else {
-            googleAnalytics('Share Problem');
-            updateSolution(this.state.solution);
-            axios.put(`${SERVER_URL}/solution/${this.state.solution.editCode}`, this.state.solution)
-                .then((response) => {
-                    this.setState({
-                        shareLink: `${FRONTEND_URL}/problem/view/${response.data.shareCode}`,
-                    }, this.toggleModals([SHARE_SET]));
-                });
-        }
-    }
-
-    viewProblem() {
-        this.toggleModals([VIEW_SET]);
-    }
-
     textAreaChanged(text) {
-        this.setState({ textAreaValue: text });
+        this.props.updateProblemStore({ textAreaValue: text });
     }
 
     countEditorPosition(steps) {
@@ -274,100 +101,71 @@ export default class Editor extends Component {
     }
 
     restoreEditorPosition() {
-        this.setState((prevState) => {
-            const updatedMathField = prevState.theActiveMathField;
-            const lastStep = prevState.solution.steps[prevState.solution.steps.length - 1];
-            updatedMathField.latex(lastStep.cleanup ? lastStep.cleanup : lastStep.stepValue);
-            return {
-                theActiveMathField: updatedMathField,
-                editorPosition: this.countEditorPosition(prevState.solution.steps),
-                editing: false,
-            };
+        const { problemStore, problemList } = this.props;
+        const updatedMathField = problemList.theActiveMathField;
+        const lastStep = problemStore.solution.steps[problemStore.solution.steps.length - 1];
+        updatedMathField.latex(lastStep.cleanup ? lastStep.cleanup : lastStep.stepValue);
+        this.props.updateProblemStore({
+            theActiveMathField: updatedMathField,
+            editorPosition: countEditorPosition(problemStore.solution.steps),
+            editing: false,
         });
-        this.state.theActiveMathField.focus();
+        problemList.theActiveMathField.focus();
     }
 
     cancelEditCallback(oldEquation, oldExplanation, cleanup, index, img) {
         this.restoreEditorPosition();
         stackEditAction(this, index, oldEquation, cleanup, oldExplanation, img);
-        this.state.displayScratchpad();
+        this.props.problemStore.displayScratchpad();
     }
 
     moveEditorBelowSpecificStep(stepNumber) {
-        const steps = this.state.solution.steps.slice();
+        const steps = this.props.problemStore.solution.steps.slice();
         const leftPartOfSteps = steps.splice(0, stepNumber);
         let editorPosition = this.countEditorPosition(leftPartOfSteps);
         if (leftPartOfSteps[leftPartOfSteps.length - 1].cleanup) {
             editorPosition -= 1;
         }
-        this.setState({ editorPosition });
+        this.props.updateProblemStore({ editorPosition });
     }
 
     updateMathEditorRow(mathContent, mathAnnotation, mathStepNumber, cleanup, scratchpad) {
-        this.setState((prevState) => {
-            const updatedHistory = prevState.solution.steps;
-            updatedHistory[mathStepNumber].stepValue = mathContent;
-            updatedHistory[mathStepNumber].explanation = mathAnnotation;
-            updatedHistory[mathStepNumber].cleanup = cleanup;
-            updatedHistory[mathStepNumber].scratchpad = scratchpad;
-            const oldSolution = prevState.solution;
-            oldSolution.steps = updatedHistory;
-            return {
-                solution: oldSolution,
-                textAreaValue: '',
-                editorPosition: this.countEditorPosition(prevState.solution.steps),
-            };
+        const { problemStore } = this.props;
+        const updatedHistory = problemStore.solution.steps;
+        updatedHistory[mathStepNumber].stepValue = mathContent;
+        updatedHistory[mathStepNumber].explanation = mathAnnotation;
+        updatedHistory[mathStepNumber].cleanup = cleanup;
+        updatedHistory[mathStepNumber].scratchpad = scratchpad;
+        const oldSolution = problemStore.solution;
+        oldSolution.steps = updatedHistory;
+        this.props.updateProblemStore({
+            solution: oldSolution,
+            textAreaValue: '',
+            editorPosition: countEditorPosition(problemStore.solution.steps),
         });
         mathLive.renderMathInDocument();
     }
 
-    toggleModals(modals) {
-        this.setState((prevState) => {
-            let oldModals = prevState.activeModals;
-            // eslint-disable-next-line no-restricted-syntax
-            for (const modal of modals) {
-                if (prevState.activeModals.indexOf(modal) !== -1) {
-                    oldModals = oldModals.filter(e => e !== modal);
-                } else {
-                    oldModals.push(modal);
-                }
-            }
-            return { activeModals: oldModals };
-        });
-    }
-
-    greenButtonCallback() {
-        this.toggleModals([CONFIRMATION_BACK]);
-        this.saveProblem();
-    }
-
-    redButtonCallback() {
-        this.toggleModals([CONFIRMATION_BACK]);
-        this.props.history.goBack();
-    }
-
     activateMathField(theActiveMathField) {
-        this.setState({ theActiveMathField },
-            () => {
-                if (this.props.example) {
-                    const field = theActiveMathField;
-                    field.latex(exampleProblem.steps[exampleProblem.steps.length - 1].stepValue);
-                    this.setState({
-                        theActiveMathField: field,
-                    });
-                }
-            });
+        const field = theActiveMathField;
+        this.props.setActiveMathFieldInProblem(field);
+        if (this.props.example) {
+            field.latex(exampleProblem.steps[exampleProblem.steps.length - 1].stepValue);
+        }
     }
 
     render() {
-        if (this.state.notFound) {
+        const { problemStore, problemList } = this.props;
+        if (problemStore.notFound) {
             return <NotFound />;
         }
 
         const myStepsList = (
             <MyStepsList
                 {...this}
-                {...this.state}
+                {...this.props}
+                {...problemStore}
+                theActiveMathField={problemList.theActiveMathField}
                 deleteStepCallback={() => deleteStep(this, true)}
                 editStepCallback={stepNumber => editStep(this, stepNumber)}
                 activateMathField={field => this.activateMathField(field)}
@@ -375,25 +173,26 @@ export default class Editor extends Component {
                 undoLastActionCallback={() => undoLastAction(this)}
                 deleteStepsCallback={() => clearAll(this)}
                 updateCallback={img => updateStep(this, img)}
-                bindDisplayFunction={f => this.setState({ displayScratchpad: f })}
-                showDelete={this.state.actionsStack.length > 0}
+                bindDisplayFunction={f => this.props.updateProblemStore({ displayScratchpad: f })}
+                showDelete={problemStore.actionsStack.length > 0}
                 newProblem={this.id === 'newEditor'}
             />
         );
 
         return (
             <div id="MainWorkWrapper" className={editor.mainWorkWrapper}>
-                <NotificationContainer />
-                <ModalContainer {...this} {...this.state} />
                 <main id="MainWorkArea" className={editor.editorAndHistoryWrapper}>
                     <ProblemHeader
                         {...this}
-                        {...this.state}
-                        {...this.state.solution.problem}
-                        math={JSON.parse(JSON.stringify(this.state.solution.problem.text))}
+                        {...this.props}
+                        {...this.props.problemStore}
+                        {...this.props.problemStore.solution.problem}
+                        math={JSON.parse(
+                            JSON.stringify(this.props.problemStore.solution.problem.text),
+                        )}
                         example={this.props.example}
                     />
-                    <MyStepsHeader readOnly={this.state.readOnly} />
+                    <MyStepsHeader readOnly={this.props.problemStore.readOnly} />
                     {myStepsList}
                     <div id="mainWorkAreaFooter" />
                 </main>
@@ -401,3 +200,12 @@ export default class Editor extends Component {
         );
     }
 }
+
+
+export default connect(
+    state => ({
+        problemStore: state.problem,
+        problemList: state.problemList,
+    }),
+    problemActions,
+)(Editor);

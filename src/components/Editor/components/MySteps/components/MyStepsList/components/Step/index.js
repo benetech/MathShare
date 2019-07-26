@@ -8,12 +8,17 @@ import showImage from '../../../../../../../../scripts/showImage';
 import '../../../../../../../../../images/pencil.png';
 import '../../../../../../../../../images/delete.png';
 
-const mathLive = DEBUG_MODE ? require('../../../../../../../../../../mathlive/src/mathlive.js').default
+const mathLive = process.env.MATHLIVE_DEBUG_MODE ? require('../../../../../../../../../../mathlive/src/mathlive.js').default
     : require('../../../../../../../../lib/mathlivedist/mathlive.js');
 
 export default class Step extends Component {
     componentDidMount() {
         mathLive.renderMathInDocument();
+    }
+
+    componentWillUpdate() {
+        mathLive.renderMathInDocument();
+        setTimeout(mathLive.renderMathInDocument, 100); // failsafe to ensure mathlive conversion
     }
 
     /**

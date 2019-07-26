@@ -3,7 +3,6 @@ import classNames from 'classnames';
 import styles from './styles.scss';
 import Locales from '../../strings';
 import MainPageHeader from '../Home/components/Header';
-import MainPageFooter from '../Home/components/Footer';
 
 const NotFound = () => (
     <div className={styles.container}>
@@ -22,7 +21,6 @@ const NotFound = () => (
                 <h3>{Locales.strings.page_was_not_found_info}</h3>
             </div>
         </div>
-        <MainPageFooter />
     </div>
 );
 

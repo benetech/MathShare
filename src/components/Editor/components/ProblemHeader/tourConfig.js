@@ -69,11 +69,6 @@ const tourConfig = [
         position: 'bottom',
     },
     {
-        selector: '#editUrl',
-        content: Locales.strings.tour_edit,
-        position: 'bottom',
-    },
-    {
         selector: '#shareBtn',
         content: Locales.strings.tour_share,
         position: 'bottom',

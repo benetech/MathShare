@@ -3,16 +3,17 @@ import { withRouter } from 'react-router-dom';
 import classNames from 'classnames';
 import axios from 'axios';
 import FontAwesome from 'react-fontawesome';
-import { EDIT_PROBLEM, CONFIRMATION, ADD_PROBLEMS } from '../../../../ModalContainer';
-import problem from './styles.scss';
+import {
+    EDIT_PROBLEM, CONFIRMATION, ADD_PROBLEMS, ADD_PROBLEM_SET,
+} from '../../../../ModalContainer';
+import problemStyle from './styles.scss';
 import buttons from '../../../../Button/styles.scss';
 import Locales from '../../../../../strings';
 import showImage from '../../../../../scripts/showImage';
 import parseMathLive from '../../../../../scripts/parseMathLive';
 import { SERVER_URL } from '../../../../../config';
-import { getSolutionByProblem } from '../../../../../services/review';
 
-const mathLive = DEBUG_MODE ? require('../../../../../../../mathlive/src/mathlive.js').default
+const mathLive = process.env.MATHLIVE_DEBUG_MODE ? require('../../../../../../../mathlive/src/mathlive.js').default
     : require('../../../../../lib/mathlivedist/mathlive.js');
 
 const problemMathDisplayLength = 30;
@@ -55,6 +56,7 @@ export default class Problem extends Component {
     }
 
     onEditClick(e) {
+        this.props.setEditProblem(this.props.number, this.props.action);
         this.props.activateModals([EDIT_PROBLEM], this.props.number);
         e.stopPropagation();
     }
@@ -64,7 +66,7 @@ export default class Problem extends Component {
         e.stopPropagation();
     }
 
-    buildComplexProblemText() {
+    buildComplexProblemText = () => {
         const text = this.props.problem.text;
         const equationParts = text.split('{');
         let result = '';
@@ -82,17 +84,15 @@ export default class Problem extends Component {
     }
 
     /* eslint-disable jsx-a11y/alt-text */
-    buildProblemImage() {
-        return (
-            <img
-                className={problem.image}
-                src={this.props.problem.scratchpad}
-                alt={Locales.strings.scratchpad_alt}
-            />
-        );
-    }
+    buildProblemImage = () => (
+        <img
+            className={problemStyle.image}
+            src={this.props.problem.scratchpad}
+            alt={Locales.strings.scratchpad_alt}
+        />
+    )
 
-    buildAnnotation() {
+    buildAnnotation = () => {
         let text = parseMathLive(this.props.problem.title);
         if ((text.match(/\\text{/g) || []).length > 1) {
             if (text.includes('\\frac')) {
@@ -105,40 +105,51 @@ export default class Problem extends Component {
         return `${this.props.number + 1}. ${this.props.problem.title}`;
     }
 
-    buildProblemText() {
-        return `$$${this.props.problem.text}$$`;
+    buildProblemText = () => `$$${this.props.problem.text}$$`
+
+    createNewSolution = (history) => {
+        const { action, solutions, problem } = this.props;
+        if (this.props.example) {
+            history.push('/app/problem/example/');
+        } else if (action !== 'new') {
+            const currentSolution = solutions.find(
+                solution => solution.problem.id === problem.id,
+            );
+            if (currentSolution && (currentSolution.editCode || currentSolution.shareCode)) {
+                if (currentSolution.editCode && action !== 'review') {
+                    history.push(`/app/problem/edit/${currentSolution.editCode}`);
+                } else {
+                    history.push(`/app/problem/view/${currentSolution.shareCode}`);
+                }
+            } else {
+                const solution = {
+                    problem: {
+                        id: this.props.problem.id,
+                        problemSetRevisionShareCode: this.props.problem.problemSetRevisionShareCode,
+                        text: this.props.problem.text,
+                        title: this.props.problem.title,
+                    },
+                    steps: [
+                        {
+                            stepValue: this.props.problem.text,
+                            explanation: this.props.problem.title,
+                        },
+                    ],
+                };
+                axios.post(`${SERVER_URL}/solution/`, solution)
+                    .then((response) => {
+                        history.push(`/app/problem/edit/${response.data.editCode}`);
+                    });
+            }
+        }
     }
 
-    createNewSolution(history) {
+    openNewProblemModal = () => {
         const { action } = this.props;
-        const currentSolution = getSolutionByProblem(action, this.props.problem, this.props.code);
-        if (this.props.example) {
-            history.push('/problem/example/');
-        } else if (currentSolution.editCode || currentSolution.shareCode) {
-            if (currentSolution.editCode && action !== 'review') {
-                history.push(`/problem/edit/${currentSolution.editCode}`);
-            } else {
-                history.push(`/problem/view/${currentSolution.shareCode}`);
-            }
+        if (action === 'new') {
+            this.props.activateModals([ADD_PROBLEM_SET]);
         } else {
-            const solution = {
-                problem: {
-                    id: this.props.problem.id,
-                    problemSetRevisionShareCode: this.props.problem.problemSetRevisionShareCode,
-                    text: this.props.problem.text,
-                    title: this.props.problem.title,
-                },
-                steps: [
-                    {
-                        stepValue: this.props.problem.text,
-                        explanation: this.props.problem.title,
-                    },
-                ],
-            };
-            axios.post(`${SERVER_URL}/solution/`, solution)
-                .then((response) => {
-                    history.push(`/problem/edit/${response.data.editCode}`);
-                });
+            this.props.activateModals([ADD_PROBLEMS]);
         }
     }
 
@@ -160,8 +171,8 @@ export default class Problem extends Component {
         }
 
         const wrappedAnnotation = annotation !== undefined && (annotation.match(/\\text{/g) || []).length > 1
-            ? <span className={problem.problemAnnotationScaled}>{annotation}</span>
-            : <span className={problem.problemAnnotation}>{annotation}</span>;
+            ? <span className={problemStyle.problemAnnotationScaled}>{annotation}</span>
+            : <span className={problemStyle.problemAnnotation}>{annotation}</span>;
 
         const speechForMath = (this.props.problem && this.props.problem.text) ? (
             <span className="sROnly">
@@ -180,7 +191,7 @@ export default class Problem extends Component {
                 <FontAwesome
                     className={
                         classNames(
-                            problem.imgIcon,
+                            problemStyle.imgIcon,
                             'fa-2x',
                         )
                     }
@@ -195,7 +206,7 @@ export default class Problem extends Component {
                 <FontAwesome
                     className={
                         classNames(
-                            problem.plusIcon,
+                            problemStyle.plusIcon,
                             'fa-2x',
                         )
                     }
@@ -209,7 +220,7 @@ export default class Problem extends Component {
                 <FontAwesome
                     className={
                         classNames(
-                            problem.editIcon,
+                            problemStyle.editIcon,
                             'fa-2x',
                         )
                     }
@@ -224,7 +235,7 @@ export default class Problem extends Component {
                 <FontAwesome
                     className={
                         classNames(
-                            problem.trashIcon,
+                            problemStyle.trashIcon,
                             'fa-2x',
                         )
                     }
@@ -241,72 +252,73 @@ export default class Problem extends Component {
                     classNames(
                         'd-flex',
                         'text-center',
-                        problem.problem,
+                        problemStyle.problem,
                     )
                 }
             >
-                <div
+                <button
+                    type="button"
                     className={
                         classNames(
                             'btn',
                             buttons.default,
                             buttons.huge,
-                            problem.navSpan,
-                            problem.middle,
+                            problemStyle.navSpan,
+                            problemStyle.middle,
+                            problemStyle.tile,
                         )
                     }
+                    onClick={() => (
+                        this.props.addNew
+                            ? this.openNewProblemModal()
+                            : this.createNewSolution(history))}
+                    onKeyPress={() => (
+                        this.props.addNew
+                            ? this.openNewProblemModal()
+                            : this.createNewSolution(history))}
+                    tabIndex="0"
                 >
-                    <button
-                        type="button"
+                    <div
                         className={
                             classNames(
-                                problem.navItemButton,
-                                problem.colorInherit,
+                                problemStyle.navItemButton,
+                                problemStyle.colorInherit,
                             )
                         }
-                        onClick={() => (
-                            this.props.addNew
-                                ? this.props.activateModals([ADD_PROBLEMS])
-                                : this.createNewSolution(history))}
-                        onKeyPress={() => (
-                            this.props.addNew
-                                ? this.props.activateModals([ADD_PROBLEMS])
-                                : this.createNewSolution(history))}
-                        tabIndex="0"
                     >
                         {wrappedAnnotation}
                         <div
                             aria-hidden="true" // math speech is part of link
                             ref={(el) => { this.navItemContent = el; }}
                             className={classNames(
-                                this.props.example ? null : problem.equation,
+                                this.props.example ? null : problemStyle.equation,
                                 this.state.isOverflownHorizontally
-                                    ? problem.equationOverflownHorizontally : null,
+                                    ? problemStyle.equationOverflownHorizontally : null,
                                 this.state.isOverflownVertically
-                                    ? problem.equationOverflownVertically : null,
+                                    ? problemStyle.equationOverflownVertically : null,
                             )}
                         >
                             {equation}
                         </div>
                         {speechForMath}
-                    </button>
+                    </div>
                     {imgButton}
                     {removeButton}
                     {plusButton}
                     {editButton}
                     <div className={classNames(
-                        problem.navItemContent,
+                        problemStyle.navItemContent,
                         this.state.isOverflownHorizontally
-                            ? problem.contentOverflownHorizontally : null,
+                            ? problemStyle.contentOverflownHorizontally : null,
                         this.state.isOverflownVertically
-                            ? problem.contentOverflownVertically
+                            ? problemStyle.contentOverflownVertically
                             : null,
                     )}
                     >
                         {equationFollowUp}
                     </div>
                     {this.props.problem && this.props.problem.scratchpad ? image : null}
-                </div>
+                </button>
             </div>
         ));
         return <NavItem />;

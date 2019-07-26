@@ -9,7 +9,7 @@ import showImage from '../../../../scripts/showImage';
 import { tourConfig, accentColor } from './tourConfig';
 // import parseMathLive from '../../../../scripts/parseMathLive';
 
-const mathLive = DEBUG_MODE ? require('../../../../../../mathlive/src/mathlive.js').default
+const mathLive = process.env.MATHLIVE_DEBUG_MODE ? require('../../../../../../mathlive/src/mathlive.js').default
     : require('../../../../../src/lib/mathlivedist/mathlive.js');
 
 export default class ProblemHeader extends Component {
@@ -23,12 +23,6 @@ export default class ProblemHeader extends Component {
         this.onImgClick = this.onImgClick.bind(this);
         this.openTour = this.openTour.bind(this);
         this.closeTour = this.closeTour.bind(this);
-        this.updateDimensionsWorker = this.updateDimensions();
-        this.debounce = null;
-    }
-
-    componentDidMount() {
-        window.addEventListener('resize', this.updateDimensionsWorker);
     }
 
     shouldComponentUpdate(nextProps, nextState) {
@@ -41,40 +35,10 @@ export default class ProblemHeader extends Component {
 
     componentDidUpdate() {
         mathLive.renderMathInDocument();
-        this.updateDimensionsWorker();
-    }
-
-    componentWillUnmount() {
-        window.removeEventListener('resize', this.updateDimensionsWorker);
-        clearTimeout(this.debounce);
     }
 
     onImgClick() {
         showImage(this.props.scratchpad);
-    }
-
-    updateDimensionsInternal = () => {
-        setTimeout(() => {
-            const containerWidth = document.getElementById('ProblemMath').offsetWidth;
-            const childrenWidths = Array.from(document.querySelectorAll('#ProblemMath > span')).map(Element => Element.offsetWidth);
-            const needEllipsis = childrenWidths.find(
-                childWidth => (childWidth - containerWidth) > 10,
-            );
-            if (needEllipsis) {
-                document.getElementById('math-ellipsis').innerText = '...';
-                document.getElementById('viewBtn').style.display = '';
-            } else {
-                document.getElementById('math-ellipsis').innerText = '';
-                document.getElementById('viewBtn').style.display = 'none';
-            }
-        }, 0);
-    }
-
-    updateDimensions(time = 300) {
-        return () => {
-            clearTimeout(this.debounce);
-            this.debounce = setTimeout(this.updateDimensionsInternal, time);
-        };
     }
 
     openTour() {

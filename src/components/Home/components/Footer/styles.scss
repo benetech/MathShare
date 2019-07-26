@@ -3,18 +3,18 @@
   justify-content: space-between;
   background-color: #ffffff;
   border-top: 2px solid #f1f1f1;
-  padding-top: 8px;
   display: flex;
-  overflow-y: auto;
 }
 
 .edGov {
   flex: 0 0 100px;
+  margin: auto;
+  text-align: center;
 }
 
 .edGovImg {
-  float: left;
-  margin: 0px 25px 0px 10px;
+  // float: left;
+  // margin: 0px 25px 0px 10px;
   background-color: #FFF;
   padding: 5px;
 }
@@ -22,6 +22,7 @@
 .footerText {
   font-size: 0.7em;
   color: #8c8c8c;
+  flex: 1;
 
   a,
   a:hover {
@@ -38,4 +39,14 @@
   margin: 0px 10px 0px 25px;
   background-color: #FFF;
   padding: 5px;
+}
+
+.footerContainer {
+  max-width: 768px;
+  margin: auto;
+  padding: 10px;
+
+  >div {
+    display: flex;
+  }
 }

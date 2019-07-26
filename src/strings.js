@@ -1,4 +1,7 @@
 import LocalizedStrings from 'react-localization';
+import * as dayjs from 'dayjs';
+
+const now = dayjs();
 
 
 class Locales {
@@ -78,20 +81,23 @@ class Locales {
                 share_problem_set: 'Share Problem Set',
                 header: ' Navigation ',
                 problems: 'Problems',
+                created_problem_set: 'Problem Set has been created',
                 problem_sets: 'Problem Sets',
                 problem_set_1: 'Problem Set 01',
                 problem_set_2: 'Problem Set 02',
                 problem_set_3: 'Problem Set 03',
                 upload: 'Upload',
                 contact_us: 'Contact Us',
-                provide_feedback: 'Provide Feedback',
+                help_center: 'Help Center',
+                provide_feedback: ' Give Feedback',
                 upload_no_file_warning: 'Please select a file',
                 footer: 'Footer',
+                copyright: 'Copyright 2019 Benetech. ALl rights reserved.',
                 idea_logo_alt: 'IDEA Logo',
                 diagram_center: 'DIAGRAM Center',
                 is_a: ' is a ',
                 benetech: 'Benetech',
-                footer_description: ' initiative supported by the U.S. Department of Education, Office of Special Education Programs (Cooperative Agreement #H327B100001). Opinions expressed herein are those of the authors and do not necessarily represent the position of the U.S. Department of Education. Poet™ is a trademark of Beneficent Technology, Inc. This website is copyright © 2012-2017, Beneficent Technology, Inc.',
+                footer_description: ` initiative supported by the U.S. Department of Education, Office of Special Education Programs (Cooperative Agreement #H327B100001). Opinions expressed herein are those of the authors and do not necessarily represent the position of the U.S. Department of Education. Poet™ is a trademark of Beneficent Technology, Inc. This website is copyright © 2012-${now.format('YYYY')}, Beneficent Technology, Inc.`,
                 loading: 'Loading...',
                 view_problem_description: 'view problem description',
                 back_to_problem_page: 'back to list of problems',
@@ -112,6 +118,7 @@ class Locales {
                 title: 'Title',
                 save_text: 'Save Text: ',
                 share_link: 'Share Link: ',
+                assign_with_a_link: 'Assign with a link: ',
                 submit_problem_link: 'Submit Problem Link: ',
                 problem_image: 'Problem image',
                 confirmation_modal_unsaved_title: 'You have unsaved changes, do you wish to save?',
@@ -130,6 +137,7 @@ class Locales {
                 delete_step: ' Delete Step',
                 undo_step: ' Undo',
                 add_problem_set: 'New Problem Set',
+                duplicate_set: 'Duplicate Set',
                 edit_problem_set: 'Edit Problem Set',
                 choose_palettes_title: 'Select button palettes available for this problem set',
                 no_palettes_chosen_warning: 'Please select at least one palette',
@@ -158,6 +166,10 @@ class Locales {
                 tour_share: 'Share your solution with others.',
                 link: ' Link',
                 submit: 'Submit',
+                update_title: 'Problem Set Title',
+                view_as_student: ' View as Student',
+                share_with_teachers: ' Share with Teachers',
+                share_with_teachers_text: 'Check out my #accessible math problems made in @mathshare_app. Supports learning styles, special needs and #4Cs. ',
             },
             es: {},
         });

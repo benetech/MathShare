@@ -4,7 +4,8 @@ import SpeechToTextButton from './components/SpeechToTextButton';
 import editorArea from './styles.scss';
 import Locales from '../../../../../../strings';
 
-const mathLive = DEBUG_MODE ? require('../../../../../../../../mathlive/src/mathlive.js').default
+const mathLive = process.env.MATHLIVE_DEBUG_MODE
+    ? require('../../../../../../../../mathlive/src/mathlive.js').default
     : require('../../../../../../../src/lib/mathlivedist/mathlive.js');
 
 /* eslint-disable react/no-string-refs, no-tabs, max-len, no-useless-concat, no-undef, no-continue, no-unused-vars */

@@ -1,26 +1,27 @@
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
 const path = require('path');
-
-const htmlWebpackPlugin = new HtmlWebPackPlugin({
-    template: './src/index.html',
-    filename: './index.html',
-});
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const getClientEnvironment = require('./env');
 
-module.exports = (env) => {
+module.exports = (env, argv) => {
     const debug = (env && env.debug);
+    // Get environment variables to inject into our app.
+    const envVars = getClientEnvironment(argv.stage);
     const plugins = [
-        htmlWebpackPlugin,
+        new HtmlWebPackPlugin({
+            template: './src/index.html',
+            filename: './index.html',
+            environment: process.env.NODE_ENV,
+            env: envVars.raw,
+        }),
         new webpack.ProvidePlugin({
             $: 'jquery',
             jQuery: 'jquery',
             'window.jQuery': 'jquery',
         }),
-        new webpack.DefinePlugin({
-            DEBUG_MODE: debug,
-        }),
+        new webpack.DefinePlugin(envVars.stringified),
         new MiniCssExtractPlugin({
             filename: debug ? '[name].css' : '[name].[hash].css',
             chunkFilename: debug ? '[id].css' : '[id].[hash].css',

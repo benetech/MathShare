@@ -27,9 +27,7 @@ export default class ProblemSetShareModal extends Component {
                         </h3>
                         <div className={editor.modalMessage}>
                             <p>
-                                Copy this link to your problem set and send
-                                {' '}
-                                to your teacher/paste in your LMS
+                                Students visit the link below to access the problem set
                             </p>
                         </div>
                         <input type="text" readOnly value={this.props.problemSetShareLink} id="shareLink" className={editor.shareLink} />

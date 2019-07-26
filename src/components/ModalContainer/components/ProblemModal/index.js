@@ -5,7 +5,7 @@ import editor from './styles.scss';
 import Locales from '../../../../strings';
 import Button from '../../../Button';
 
-const mathLive = DEBUG_MODE ? require('../../../../../../mathlive/src/mathlive.js').default
+const mathLive = process.env.MATHLIVE_DEBUG_MODE ? require('../../../../../../mathlive/src/mathlive.js').default
     : require('../../../../../src/lib/mathlivedist/mathlive.js');
 
 export default class ProblemModal extends Component {
