@@ -52,7 +52,7 @@ export default class ProblemHeader extends Component {
 
     clickOnQuestion = () => {
         googleAnalytics('clicked help center');
-        IntercomAPI('trackEvent', 'clicked-help -center');
+        IntercomAPI('trackEvent', 'clicked-help-center');
     }
 
     render() {

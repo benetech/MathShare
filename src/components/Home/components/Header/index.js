@@ -179,7 +179,7 @@ class MainPageHeader extends React.Component {
 
     clickOnQuestion = () => {
         googleAnalytics('clicked help center');
-        IntercomAPI('trackEvent', 'clicked-help -center');
+        IntercomAPI('trackEvent', 'clicked-help-center');
     }
 
     render() {
