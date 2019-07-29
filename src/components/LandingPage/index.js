@@ -23,9 +23,20 @@ const clickOnTryNow = (history, isTryNow) => () => {
     history.push('/app');
 };
 
+const clickOnSignIn = history => () => {
+    history.push('/app');
+    setTimeout(() => {
+        const signIn = document.getElementById('googleSignIn');
+        if (signIn) {
+            signIn.click();
+        }
+    }, 500);
+};
+
 const LandingPage = withRouter(({ history }) => (
     <div className={styles.container}>
         <img className={styles.midLogo} src={logo} alt="mid-logo" aria-label="Mathshare Logo, a Benetech Initiative" />
+        <span className={styles.signIn} onClick={clickOnSignIn(history)} onKeyPress={clickOnSignIn(history)} role="button" tabIndex={0}>Sign In</span>
         <div className={styles.midContainer}>
             <div className={styles.content}>
                 <div className={styles.largeText}>
