@@ -171,7 +171,7 @@ class Locales {
                 update_title: 'Problem Set Title',
                 view_as_student: ' View as Student',
                 share_with_teachers: ' Share with Teachers',
-                share_with_teachers_text: 'Check out my #accessible math problems made in @mathshare_app. Supports learning styles, special needs and #4Cs. ',
+                share_with_teachers_text: 'Check out my #accessible math problems made in @mathshare. Supports learning styles, special needs and #4Cs. ',
             },
             es: {},
         });
