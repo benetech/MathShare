@@ -219,8 +219,8 @@ class Home extends Component {
                                         tabIndex="0"
                                         type="button"
                                     >
-                                        <div className={home.btnText}>Microsoft Team</div>
-                                        <img src={msTeamIcon} alt="microsoft team" />
+                                        <div className={home.btnText}>Microsoft Teams</div>
+                                        <img src={msTeamIcon} alt="microsoft teams" />
                                     </button>
                                     <UncontrolledTooltip placement="top" target="microsoftTeamContainer1" />
                                 </span>
@@ -285,8 +285,8 @@ class Home extends Component {
                                                 tabIndex="0"
                                                 type="button"
                                             >
-                                                <div className={home.btnText}>Microsoft Team</div>
-                                                <img src={msTeamIcon} alt="microsoft team" />
+                                                <div className={home.btnText}>Microsoft Teams</div>
+                                                <img src={msTeamIcon} alt="microsoft teams" />
                                             </button>
                                             <UncontrolledTooltip placement="top" target="microsoftTeamContainer2" />
                                         </span>
