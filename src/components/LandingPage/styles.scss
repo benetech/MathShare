@@ -7,15 +7,25 @@
 
     .btn {
         background-color: #31af08;
-        max-width: 120px;
-        padding: 10px;
+        max-width: 180px;
+        padding: 10px 20px;
         color: white;
         margin: auto;
         margin-top: 15px;
         border-radius: 15px;
         margin-bottom: 15px;
         cursor: pointer;
+        font-size: 30px;
+        font-family: Verdana, Geneva, sans-serif;
     }
+}
+
+.signIn {
+    position: absolute;
+    right: 10px;
+    top: 18px;
+    font-size: 18px;
+    cursor: pointer;
 }
 
 .title {
@@ -33,12 +43,13 @@
 }
 
 .content {
-    max-width: 768px;
+    max-width: 830px;
     margin: auto;
     text-align: center;
+    font-size: 16px;
 
     hr {
-        margin: 30px auto;
+        margin: 40px auto;
         max-width: 325px;
     }
 }
@@ -49,22 +60,23 @@
     background: rgb(8, 28, 214);
     background: linear-gradient(180deg, rgba(8, 28, 214, 1) 0%, rgba(99, 112, 229, 1) 50%, rgba(151, 160, 238, 1) 80%, rgba(255, 255, 255, 1) 100%);
     text-align: center;
+    padding: 10px;
 
     .largeText {
         line-height: 1;
         text-align: center;
         margin: 50px auto;
         color: white;
-        padding: 20px;
+        padding: 50px 10px;
         font-size: 36px;
         font-weight: 600;
-        max-width: 600px;
+        max-width: 830px;
         margin-bottom: 0;
     }
 
     img {
         width: 100%;
-        max-width: 600px;
+        max-width: 830px;
         padding: 0 10px;
         margin: auto;
     }
@@ -72,25 +84,40 @@
     .midBottomText {
         margin: auto;
         margin-top: 35px;
-        max-width: 600px;
-        padding: 10px;
+        max-width: 830px;
+        padding: 50px 10px;
         font-weight: 500;
     }
 }
 
 .features {
-    max-width: 600px;
-    padding: 20px;
+    max-width: 830px;
+    padding: 40px 20px;
+    padding-top: 0;
     margin: auto;
 
     .feature {
 
         >*:first-child {
-            padding-right: 10px;
+            padding-right: 35px;
+            padding-left: 10px;
         }
 
         >*:nth-child(2) {
-            padding-left: 10px;
+            padding-right: 10px;
+            padding-left: 35px;
+        }
+
+        &.reverse {
+            >*:first-child {
+                padding-right: 10px;
+                padding-left: 35px;
+            }
+
+            >*:nth-child(2) {
+                padding-right: 35px;
+                padding-left: 10px;
+            }
         }
 
         .textSection {
@@ -102,7 +129,7 @@
 
             .textContent {
                 margin-top: 10px;
-                font-size: 14px;
+                font-size: 16px;
             }
         }
     }

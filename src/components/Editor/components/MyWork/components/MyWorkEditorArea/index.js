@@ -88,7 +88,20 @@ export default class MyWorkEditorArea extends Component {
         const ttsIntro = this.props.addingProblem ? Locales.strings.tts_intro_add_problem : Locales.strings.tts_intro;
         return (
             <section aria-labelledby="workarea-header">
-                <h2 id="workarea-header" className="sROnly">{Locales.strings.work_area_intro}</h2>
+                {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
+                <h2
+                    id="workarea-header"
+                    className="sROnly"
+                    tabIndex={0}
+                    onKeyDown={(event) => {
+                        if (event.keyCode !== 9) {
+                            const element = document.getElementById('mathEditorActive');
+                            element.focus();
+                        }
+                    }}
+                >
+                    {Locales.strings.work_area_intro}
+                </h2>
                 <div className="row col-lg-12">
                     <div
                         id="workArea"

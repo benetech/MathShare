@@ -233,7 +233,7 @@ class App extends Component {
                     appID={process.env.INTERCOM_APP_ID}
                 />
                 <footer id="footer">
-                    <SiteMapFooter />
+                    {window.location.hash === '#/' && <SiteMapFooter />}
                     <MainPageFooter customClass="footer" />
                     <SocialFooter />
                 </footer>

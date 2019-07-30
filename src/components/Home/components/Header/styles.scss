@@ -9,12 +9,11 @@ header nav.navbar {
   height: auto;
   justify-content: unset;
 
-  :global(.navbar-brand) {
+  .navbarBrandContainer {
     flex: 1;
   }
 
   :global(.nav-item.avatar) {
-
     >:global(.nav-link) {
       padding: 0;
       padding-left: 10px;
@@ -37,8 +36,18 @@ header nav.navbar {
     }
   }
 
+  .dropDownMenu {
+    background-color: #fafafa;
+    padding: 0.4rem 0.8rem;
+    cursor: pointer;
+
+    &::after {
+      display: none;
+    }
+  }
+
   .googleSignInContainer {
-    padding-left: 10px;
+    margin-left: 10px;
   }
 
   >button {
@@ -82,4 +91,14 @@ header nav.navbar {
   .googleSignInContainer {
     margin-right: 15px;
   }
+}
+
+@media (max-width: 991px) {
+  :global(.navbar-collapse) {
+    order: 2;
+  }
+}
+
+:global(.dropdonw-toggle) {
+  cursor: pointer;
 }

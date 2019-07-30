@@ -23,9 +23,20 @@ const clickOnTryNow = (history, isTryNow) => () => {
     history.push('/app');
 };
 
+const clickOnSignIn = history => () => {
+    history.push('/app');
+    setTimeout(() => {
+        const signIn = document.getElementById('googleSignIn');
+        if (signIn) {
+            signIn.click();
+        }
+    }, 500);
+};
+
 const LandingPage = withRouter(({ history }) => (
     <div className={styles.container}>
         <img className={styles.midLogo} src={logo} alt="mid-logo" aria-label="Mathshare Logo, a Benetech Initiative" />
+        <span className={styles.signIn} onClick={clickOnSignIn(history)} onKeyPress={clickOnSignIn(history)} role="button" tabIndex={0}>Sign In</span>
         <div className={styles.midContainer}>
             <div className={styles.content}>
                 <div className={styles.largeText}>
@@ -87,7 +98,7 @@ const LandingPage = withRouter(({ history }) => (
                 <hr />
                 <div className={`${styles.feature} ${styles.reverse}`}>
                     <div className={styles.imageSection}>
-                        <img src={lms} alt="lms" aria-label="image showing several logos of LMS vendors" />
+                        <img src={lms} alt="lms" aria-label="several logos of several LMS vendors, including Canvas, Google Classroom, Schoology, Moodle, OneNote, and Blackboard" />
                     </div>
                     <div className={styles.textSection}>
                         <div className={styles.header}>
@@ -126,7 +137,7 @@ const LandingPage = withRouter(({ history }) => (
                         </div>
                     </div>
                 </div>
-                <div
+                {/* <div
                     className={`${styles.btn} ${styles.signupBtn}`}
                     onClick={clickOnTryNow(history)}
                     onKeyPress={clickOnTryNow(history)}
@@ -134,7 +145,7 @@ const LandingPage = withRouter(({ history }) => (
                     tabIndex="0"
                 >
                     Create Free Account
-                </div>
+                </div> */}
             </div>
         </div>
     </div>

@@ -1,17 +1,23 @@
+/* eslint-disable jsx-a11y/no-noninteractive-tabindex */
 import React from 'react';
+import ReactGA from 'react-ga';
 import { IntercomAPI } from 'react-intercom';
 import { connect } from 'react-redux';
 import FontAwesome from 'react-fontawesome';
+import { UncontrolledTooltip } from 'reactstrap';
 import classNames from 'classnames';
-import { withRouter } from 'react-router-dom';
 import header from './styles.scss';
 import Locales from '../../../../strings';
 import {
     toggleModals,
 } from '../../../../redux/problemList/actions';
+import {
+    openTour,
+} from '../../../../redux/problem/actions';
 import logo from '../../../../../images/mathshare_logo_white.png';
 
 import googleAnalytics from '../../../../scripts/googleAnalytics';
+
 
 const GOOGLE_SIGN_IN = 'googleSignIn';
 
@@ -58,11 +64,30 @@ const openNewProblemSet = () => {
     window.open('/#/app/problemSet/new', '_blank');
 };
 
-const shareOnTwitter = () => {
-    window.open(
-        `https://twitter.com/intent/tweet?text=${encodeURIComponent(`${Locales.strings.share_with_teachers_text} ${window.location.href}`)}`, '_blank',
-    );
-};
+const renderGoogleBtn = () => (
+    <div style={{ height: 40, width: 120 }} className="abcRioButton abcRioButtonBlue">
+        <div className="abcRioButtonContentWrapper">
+            <div className="abcRioButtonIcon" style={{ padding: 10 }}>
+                <div style={{ width: 18, height: 18 }} className="abcRioButtonSvgImageWithFallback abcRioButtonIconImage abcRioButtonIconImage18">
+                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="18px" height="18px" viewBox="0 0 48 48" className="abcRioButtonSvg">
+                        <g>
+                            <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z" />
+                            <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z" />
+                            <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z" />
+                            <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z" />
+                            <path fill="none" d="M0 0h48v48H0z" />
+                        </g>
+                    </svg>
+                </div>
+            </div>
+            <span style={{ fontSize: 14, lineHeight: '38px' }} className="abcRioButtonContents">
+                <span id="not_signed_insn584fxcersa">Sign in</span>
+                <span id="connectedsn584fxcersa" style={{ display: 'none' }}>Signed in</span>
+            </span>
+        </div>
+    </div>
+);
+
 
 class MainPageHeader extends React.Component {
     constructor(props) {
@@ -78,14 +103,19 @@ class MainPageHeader extends React.Component {
     }
 
     initializeGoogleSignIn = () => {
-        if (!window.gapi || !window.gapi.signin2) {
+        if (!window.gapi || !window.gapi.signin2 || !window.gapi.auth2) {
             setTimeout(this.initializeGoogleSignIn, 500);
         } else if (!this.state.googleSignInInitialized) {
             this.setState({
                 googleSignInInitialized: true,
                 hideBtn: true,
             });
-            window.gapi.signin2.render(
+            const authInstance = window.gapi.auth2.getAuthInstance();
+            const user = authInstance.currentUser.get();
+            if (user && user.isSignedIn() && user.getBasicProfile()) {
+                this.onSuccess(user);
+            }
+            authInstance.attachClickHandler(
                 GOOGLE_SIGN_IN,
                 {
                     scope: 'profile email',
@@ -93,30 +123,46 @@ class MainPageHeader extends React.Component {
                     height: 40,
                     onsuccess: this.onSuccess,
                 },
+                this.onSuccess,
+                () => { },
             );
+            document.getElementById(GOOGLE_SIGN_IN).addEventListener('keyup', (event) => {
+                if (event.key === 'Enter') {
+                    authInstance.signIn();
+                }
+            });
         }
     }
 
     onSuccess = (googleUser) => {
         const profile = googleUser.getBasicProfile();
-        this.setState({
-            profile,
-        }, () => {
-            setTimeout(() => {
-                document.querySelectorAll('li.avatar .dropdown-menu > *').forEach((node) => {
-                    node.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        return false;
+        if (profile) {
+            this.setState({
+                profile,
+            }, () => {
+                setTimeout(() => {
+                    document.querySelectorAll('li.avatar .dropdown-menu > *').forEach((node) => {
+                        node.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            return false;
+                        });
                     });
-                });
-                document.querySelector('li.avatar .dropdown-menu a.logout').addEventListener('click', this.logout);
-            }, 100);
-        });
-        IntercomAPI('update', {
-            user_id: profile.getEmail(),
-            email: profile.getEmail(),
-            name: profile.getName(),
-        });
+                    const logout = document.querySelector('li.avatar .dropdown-menu a.logout');
+                    if (logout) {
+                        logout.addEventListener('click', this.logout);
+                    }
+                }, 100);
+            });
+            const email = profile.getEmail();
+            IntercomAPI('update', {
+                user_id: email,
+                email,
+                name: profile.getName(),
+            });
+            ReactGA.set({
+                email,
+            });
+        }
     }
 
     logout = () => {
@@ -133,57 +179,23 @@ class MainPageHeader extends React.Component {
         });
     }
 
-    onClickGettingStarted = history => () => {
-        googleAnalytics(Locales.strings.getting_started_title);
-        history.push('/app/problem/example');
+    onClickTutorial = () => {
+        googleAnalytics(Locales.strings.tutorial);
+        setTimeout(() => {
+            this.props.openTour();
+        }, 100);
+    }
+
+    clickOnQuestion = () => {
+        googleAnalytics('clicked help center');
+        IntercomAPI('trackEvent', 'clicked-help-center');
     }
 
     render() {
         const { props } = this;
         const { profile } = this.state;
         /* eslint-disable jsx-a11y/anchor-is-valid */
-
-        const GettingStartedButton = withRouter(({ history }) => (
-            <a
-                className={classNames('nav-link', header.pointer)}
-                onClick={this.onClickGettingStarted(history)}
-                onKeyPress={this.onClickGettingStarted(history)}
-                role="link"
-                tabIndex="0"
-            >
-                {Locales.strings.getting_started_title}
-            </a>
-        ));
-
-        const shareButton = props.editing && !props.notFound && props.action
-            ? (
-                <a
-                    className={classNames('nav-link', header.pointer)}
-                    onClick={() => props.toggleModals(['shareSet'])}
-                    onKeyPress={() => props.toggleModals(['shareSet'])}
-                    role="button"
-                    tabIndex="0"
-                >
-                    {Locales.strings.share}
-                </a>
-            )
-            : null;
-        let link = null;
-        if (props.notFound) {
-            link = null;
-        }
-
-        const addProblemSetButton = !props.notFound ? (
-            <a
-                className={classNames('nav-link', header.pointer)}
-                onClick={props.addProblemSetCallback}
-                onKeyPress={props.addProblemSetCallback}
-                role="button"
-                tabIndex="0"
-            >
-                {Locales.strings.add_problem_set}
-            </a>
-        ) : null;
+        const questionBtnId = 'navbarDropdownMenuLink-dropdown';
 
         return (
             <div id="topNavigationWrapper" className={header.header}>
@@ -193,182 +205,130 @@ class MainPageHeader extends React.Component {
                         id="topNavigation"
                     >
                         <h2 id="topNavLabel" className="sROnly">{Locales.strings.header}</h2>
-                        <a
-                            className="navbar-brand"
-                            href="#/"
-                            onClick={() => {
-                                googleAnalytics('clicked logo');
-                            }}
-                        >
-                            <img src={logo} alt="Benetech Math Editor" height="37" />
-                            <span className={header.beta}>beta</span>
-                        </a>
-                        <div
-                            className="collapse navbar-collapse"
-                            id="navbarNav"
-                        >
-                            <div className={classNames('navbar-nav', 'mr-auto')} />
-                            <ul aria-labelledby="topNavLabel" className={classNames('navbar-nav', header.navItem)}>
-                                {props.action && (
-                                    <li className="nav_item">
-                                        <GettingStartedButton />
-                                    </li>
-                                )}
-                                {props.action && (
-                                    <li className="nav_item">
-                                        {!props.action && addProblemSetButton}
-                                    </li>
-                                )}
-                                {props.action && (
-                                    <li className="nav_item">
-                                        {!props.action && shareButton}
-                                    </li>
-                                )}
-                                {props.action && (
-                                    <li className="nav_item">
-                                        {link}
-                                    </li>
-                                )}
-                                {/*
-                            <li className={classNames('nav-item', ['dropdown'])}>
-                                <a
-                                    className={classNames('nav-link', 'dropdown-toggle')}
-                                    data-toggle="dropdown"
-                                    href="#"
-                                    role="button"
-                                    aria-haspopup="true"
-                                    aria-expanded="false"
-                                >
-                                    {Locales.strings.problem_sets}
-                                </a>
-                                <Dropdown.Menu role="list" aria-label="Problem Sets">
-                                    <MenuItem onClick={() => props.changeDataSet(0)}>
-                                        {Locales.strings.problem_set_1}
-                                    </MenuItem>
-                                    <MenuItem onClick={() => props.changeDataSet(1)}>
-                                        {Locales.strings.problem_set_2}
-                                    </MenuItem>
-                                    <MenuItem onClick={() => props.changeDataSet(2)}>
-                                        {Locales.strings.problem_set_3}
-                                    </MenuItem>
-                                    {
-                                    <MenuItem onClick={uploadProblemSet.bind(this)}>
-                                        {Locales.strings.upload}
-                                    </MenuItem>
-                                     } <input
-                                            ref="fileid"
-                                            type="file"
-                                            hidden
-                                            onChange={readBlob.bind(this)}
-                                            />
-                                </Dropdown.Menu>
-                            </li>
-                            */}
-                                <li className="nav-item">
-                                    <a
-                                        className="nav-link"
-                                        href="https://docs.google.com/document/d/e/2PACX-1vQOx_2OGBBrG0AQkQC1Y9K2zUpjod-YKQvK5Z6_aCEdFgy2aINtBei5Xxm8pK-UinG0glY4C8aLVXKD/pub"
-                                        onClick={() => {
-                                            googleAnalytics('click help center');
-                                        }}
-                                    >
-                                        {Locales.strings.help_center}
-                                    </a>
-                                </li>
-                                {props.action && (
-                                    <li className="nav-item">
-                                        <a className="nav-link" href="mailto:info@diagramcenter.org">
-                                            {Locales.strings.contact_us}
-                                        </a>
-                                    </li>
-                                )}
-                                <li className="nav-item">
-                                    <a
-                                        href="http://www.surveygizmo.com/s3/4048161/Benetech-s-Math-Editor-Online-Feedback"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="nav-link"
-                                        onClick={() => {
-                                            googleAnalytics('click feedback');
-                                        }}
-                                    >
-                                        <FontAwesome
-                                            className="super-crazy-colors"
-                                            name="arrow-circle-right"
-                                            style={{ textShadow: '0 1px 0 rgba(0, 0, 0, 0.1)' }}
-                                        />
-                                        {Locales.strings.provide_feedback}
-                                    </a>
-                                </li>
-                                {(props.action === 'new' || props.action === 'edit') && (
-                                    <li className="nav-item dropdown">
-                                        <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            Teachers
-                                        </a>
-                                        <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                                            <a
-                                                className="dropdown-item"
-                                                onClick={openNewProblemSet}
-                                                onKeyPress={openNewProblemSet}
-                                                role="link"
-                                                tabIndex="0"
-                                            >
-                                                <FontAwesome
-                                                    size="lg"
-                                                    name="plus"
-                                                />
-                                                {` ${Locales.strings.add_problem_set}`}
-                                            </a>
-                                            {props.action === 'edit' && (
-                                                <React.Fragment>
-                                                    <a
-                                                        className="dropdown-item"
-                                                        onClick={props.duplicateProblemSet}
-                                                        onKeyPress={props.duplicateProblemSet}
-                                                        role="link"
-                                                        tabIndex="0"
-                                                    >
-                                                        <FontAwesome
-                                                            size="lg"
-                                                            name="copy"
-                                                        />
-                                                        {` ${Locales.strings.duplicate_set}`}
-                                                    </a>
-                                                    <a
-                                                        className="dropdown-item"
-                                                        onClick={shareOnTwitter}
-                                                        onKeyPress={shareOnTwitter}
-                                                        role="link"
-                                                        tabIndex="0"
-                                                    >
-                                                        <FontAwesome
-                                                            size="lg"
-                                                            name="twitter"
-                                                        />
-                                                        {` ${Locales.strings.share_with_teachers}`}
-                                                    </a>
-                                                </React.Fragment>
-                                            )}
-                                        </div>
-                                    </li>
-                                )}
-                            </ul>
+                        <div className={header.navbarBrandContainer}>
+                            <a
+                                className="navbar-brand"
+                                href="#/app"
+                                onClick={() => {
+                                    googleAnalytics('clicked logo');
+                                }}
+                            >
+                                <img src={logo} alt="Benetech Math Editor" height="37" />
+                                <span className={header.beta}>beta</span>
+                            </a>
                         </div>
                         <div className="navbar-header pull-right">
                             <ul className="nav pull-left">
+                                <li className="nav-item dropdown">
+                                    <span id={`${questionBtnId}-label`} className="sROnly">{Locales.strings.help_center}</span>
+                                    <button
+                                        className={`nav-link dropdown-toggle btn ${header.dropDownMenu}`}
+                                        id={questionBtnId}
+                                        data-toggle="dropdown"
+                                        type="button"
+                                        tabIndex={0}
+                                        aria-labelledby={`${questionBtnId}-label`}
+                                        onClick={this.clickOnQuestion}
+                                        onKeyPress={this.clickOnQuestion}
+                                    >
+                                        <FontAwesome
+                                            size="lg"
+                                            name="question"
+                                        />
+                                    </button>
+                                    <UncontrolledTooltip placement="top" target={questionBtnId} />
+                                    <div
+                                        className="dropdown-menu dropdown-menu-lg-right dropdown-secondary"
+                                        aria-labelledby={`${questionBtnId}-label`}
+                                    >
+                                        {/* {props.action && (
+                                            <GettingStartedButton />
+                                        )} */}
+                                        {(props.action === 'new' || props.action === 'edit') && (
+                                            <React.Fragment>
+                                                <a
+                                                    className="dropdown-item"
+                                                    onClick={openNewProblemSet}
+                                                    onKeyPress={openNewProblemSet}
+                                                    role="link"
+                                                    tabIndex="0"
+                                                >
+                                                    <FontAwesome
+                                                        size="lg"
+                                                        name="plus"
+                                                    />
+                                                    {` ${Locales.strings.add_problem_set}`}
+                                                </a>
+                                            </React.Fragment>
+                                        )}
+                                        <a
+                                            className="dropdown-item"
+                                            href="/#/app/problem/example"
+                                            onClick={this.onClickTutorial}
+                                            onKeyPress={this.onClickTutorial}
+                                            role="button"
+                                            tabIndex={0}
+                                        >
+                                            <FontAwesome
+                                                className="super-crazy-colors"
+                                                name="hand-o-up"
+                                                style={{ textShadow: '0 1px 0 rgba(0, 0, 0, 0.1)' }}
+                                            />
+                                            {Locales.strings.tutorial}
+                                        </a>
+                                        <a
+                                            className="dropdown-item"
+                                            href="https://intercom.help/benetech/en"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            onClick={() => {
+                                                googleAnalytics('click help center');
+                                            }}
+                                        >
+                                            <FontAwesome
+                                                className="super-crazy-colors"
+                                                name="comment"
+                                                style={{ textShadow: '0 1px 0 rgba(0, 0, 0, 0.1)' }}
+                                            />
+                                            {Locales.strings.help_center}
+                                        </a>
+                                        <a
+                                            href="https://docs.google.com/forms/d/e/1FAIpQLScSZJo47vQM_5ci2MOgBbJW7WM6FbEi2xABR5qSZd8oD2RZEg/viewform?usp=sf_link"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="dropdown-item"
+                                            onClick={() => {
+                                                googleAnalytics('click feedback');
+                                            }}
+                                        >
+                                            <FontAwesome
+                                                className="super-crazy-colors"
+                                                name="arrow-circle-right"
+                                                style={{ textShadow: '0 1px 0 rgba(0, 0, 0, 0.1)' }}
+                                            />
+                                            {Locales.strings.provide_feedback}
+                                        </a>
+                                    </div>
+                                </li>
                                 {!profile && (
                                     <li>
-                                        <div
-                                            id={GOOGLE_SIGN_IN}
-                                            className={header.googleSignInContainer}
-                                        />
+                                        <span className="">
+                                            <div
+                                                id={GOOGLE_SIGN_IN}
+                                                className={header.googleSignInContainer}
+                                                tabIndex={0}
+                                            >
+                                                {renderGoogleBtn()}
+                                            </div>
+                                            <UncontrolledTooltip placement="top" target={GOOGLE_SIGN_IN} />
+                                        </span>
                                     </li>
                                 )}
                                 {profile && (
                                     <li className="nav-item avatar dropdown">
                                         <a
                                             className="nav-link dropdown-toggle"
-                                            id="navbarDropdownMenuLink-55"
+                                            id="navbarDropdownMenuLink-avatar"
                                             data-toggle="dropdown"
                                         >
                                             <img
@@ -377,9 +337,10 @@ class MainPageHeader extends React.Component {
                                                 alt="avatar"
                                             />
                                         </a>
+                                        <UncontrolledTooltip placement="top" target="navbarDropdownMenuLink-avatar" />
                                         <div
                                             className="dropdown-menu dropdown-menu-lg-right dropdown-secondary"
-                                            aria-labelledby="navbarDropdownMenuLink-55"
+                                            aria-labelledby="navbarDropdownMenuLink-avatar"
                                         >
                                             <div className="dropdown-header">{profile.getName()}</div>
                                             <div className={`dropdown-header ${header.email}`}>{profile.getEmail()}</div>
@@ -398,9 +359,6 @@ class MainPageHeader extends React.Component {
                                 )}
                             </ul>
                         </div>
-                        <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
-                            <span className={`${header.navbarTogglerIcon} fa fa-bars fa-lg`} />
-                        </button>
                     </nav>
                 </header>
             </div>
@@ -413,5 +371,6 @@ export default connect(
     () => ({}),
     {
         toggleModals,
+        openTour,
     },
 )(MainPageHeader);

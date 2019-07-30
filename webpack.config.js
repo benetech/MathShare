@@ -29,6 +29,9 @@ module.exports = (env, argv) => {
         new CopyWebpackPlugin([{
             from: 'node_modules/speech-rule-engine/lib/sre_browser.js',
             to: 'libs/speech-rule-engine/lib/sre_browser.js',
+        }, {
+            from: 'src/lib/google-signin/style.css',
+            to: 'libs/google-signin/style.css',
         }]),
     ];
     if (!debug) {
