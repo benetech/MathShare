@@ -63,7 +63,7 @@
     "history": "^4.9.0",
     "intro.js": "^2.9.3",
     "jquery": "^3.4.1",
-    "lodash": "^4.17.10",
+    "lodash": "^4.17.15",
     "react": "^16.8.6",
     "react-aria-modal": "^3.0.1",
     "react-dom": "^16.8.6",

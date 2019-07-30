@@ -44,6 +44,11 @@
             height: 0;
         }
     }
+
+    .imageBtn {
+        background-color: #fafafa;
+        margin-right: 15px;
+    }
 }
 
 .btnContainer {
@@ -108,4 +113,15 @@
     padding: 0 5px;
     font-size: 12px;
     padding-right: 25px;
+}
+
+:global(.dropdown) {
+    .dropDownMenu {
+        background-color: #fafafa;
+        padding: 0.4rem 0.8rem;
+
+        &::after {
+            display: none;
+        }
+    }
 }

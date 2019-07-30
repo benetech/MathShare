@@ -33,6 +33,7 @@ export const initialState = {
     notFound: false,
     isUpdated: false,
     lastSaved: null,
+    tourOpen: false,
 };
 
 const problem = (state = initialState, {
@@ -51,6 +52,8 @@ const problem = (state = initialState, {
             editorPosition: countEditorPosition(payload.exampleProblem.steps),
             readOnly: false,
             allowedPalettes: 'Edit;Operators;Notations;Geometry',
+            tourOpen: false,
+            actionsStack: [],
         };
     case 'SET_PROBLEM_NOT_FOUND':
         return {
@@ -65,11 +68,28 @@ const problem = (state = initialState, {
             readOnly: (payload.action === 'view'),
             stepsFromLastSave: JSON.parse(JSON.stringify(payload.solution.steps)),
             allowedPalettes: payload.solution.palettes,
+            tourOpen: false,
+            actionsStack: [],
         };
     case 'UPDATE_PROBLEM_STORE':
         return {
             ...state,
             ...payload,
+        };
+    case 'OPEN_TOUR':
+        return {
+            ...state,
+            tourOpen: true,
+        };
+    case 'CLOSE_TOUR':
+        return {
+            ...state,
+            tourOpen: false,
+        };
+    case 'TOGGLE_TOUR':
+        return {
+            ...state,
+            tourOpen: !state.tourOpen,
         };
     default:
         return state;

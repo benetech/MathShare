@@ -53,6 +53,18 @@ export const commitProblemSolution = (redirectBack, shareModal) => ({
     },
 });
 
+export const openTour = () => ({
+    type: 'OPEN_TOUR',
+});
+
+export const closeTour = () => ({
+    type: 'CLOSE_TOUR',
+});
+
+export const toggleTour = () => ({
+    type: 'TOGGLE_TOUR',
+});
+
 export default {
     commitProblemSolution,
     loadExampleProblem,
@@ -62,4 +74,7 @@ export default {
     setSolutionData,
     updateProblemStore,
     updateProblemSolution,
+    openTour,
+    closeTour,
+    toggleTour,
 };

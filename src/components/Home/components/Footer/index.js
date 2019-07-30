@@ -3,7 +3,7 @@ import footer from './styles.scss';
 import Locales from '../../../../strings';
 
 // import benetechLogoTransparent from '../../../../../images/benetech-logo-transparent.gif';
-import ideaLogo from '../../../../../images/IDEA-logo.gif';
+import ideaLogo from '../../../../../images/ideas-that-work-logo.svg';
 
 const MainPageFooter = ({ customClass }) => (
     <div className={`${footer.footer} ${customClass || ''}`}>

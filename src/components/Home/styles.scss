@@ -8,6 +8,7 @@
     .btnContainer {
         padding: 10px;
         margin-right: 5px;
+        justify-content: flex-end;
 
         .text {
             margin: auto 5px;
@@ -69,4 +70,35 @@
 .titleHeader {
     display: inline-block;
     margin-right: 15px;
+}
+
+@media only screen and (max-width: 800px) {
+    .actionBar {
+        .right {
+            width: 100%;
+        }
+    }
+}
+
+:global(.dropdown) {
+    display: inline-grid;
+
+    .spaceInBetween {
+        display: flex;
+        flex: 1;
+    }
+
+    :global(.dropdown-toggle) {
+        &:after {
+            display: none;
+        }
+    }
+
+    :global(.dropdown-item) {
+        cursor: pointer;
+    }
+}
+
+.secondRowBtn {
+    padding-right: 30px;
 }
