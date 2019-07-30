@@ -111,6 +111,10 @@ class MainPageHeader extends React.Component {
                 hideBtn: true,
             });
             const authInstance = window.gapi.auth2.getAuthInstance();
+            const user = authInstance.currentUser.get();
+            if (user && user.isSignedIn() && user.getBasicProfile()) {
+                this.onSuccess(user);
+            }
             authInstance.attachClickHandler(
                 GOOGLE_SIGN_IN,
                 {
@@ -132,28 +136,33 @@ class MainPageHeader extends React.Component {
 
     onSuccess = (googleUser) => {
         const profile = googleUser.getBasicProfile();
-        this.setState({
-            profile,
-        }, () => {
-            setTimeout(() => {
-                document.querySelectorAll('li.avatar .dropdown-menu > *').forEach((node) => {
-                    node.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        return false;
+        if (profile) {
+            this.setState({
+                profile,
+            }, () => {
+                setTimeout(() => {
+                    document.querySelectorAll('li.avatar .dropdown-menu > *').forEach((node) => {
+                        node.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            return false;
+                        });
                     });
-                });
-                document.querySelector('li.avatar .dropdown-menu a.logout').addEventListener('click', this.logout);
-            }, 100);
-        });
-        const email = profile.getEmail();
-        IntercomAPI('update', {
-            user_id: email,
-            email,
-            name: profile.getName(),
-        });
-        ReactGA.set({
-            email,
-        });
+                    const logout = document.querySelector('li.avatar .dropdown-menu a.logout');
+                    if (logout) {
+                        logout.addEventListener('click', this.logout);
+                    }
+                }, 100);
+            });
+            const email = profile.getEmail();
+            IntercomAPI('update', {
+                user_id: email,
+                email,
+                name: profile.getName(),
+            });
+            ReactGA.set({
+                email,
+            });
+        }
     }
 
     logout = () => {
