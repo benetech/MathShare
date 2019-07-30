@@ -102,3 +102,17 @@ header nav.navbar {
 :global(.dropdonw-toggle) {
   cursor: pointer;
 }
+
+.microsoftContainer {
+  height: 100%;
+  background: white;
+  cursor: pointer;
+
+  img {
+    padding: 8px 10px;
+  }
+}
+
+:global(.abcRioButtonSvgImageWithFallback) img {
+  vertical-align: baseline;
+}

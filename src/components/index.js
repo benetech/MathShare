@@ -9,6 +9,7 @@ import {
     faSignature, faSquareRootAlt,
 } from '@fortawesome/free-solid-svg-icons';
 import * as dayjs from 'dayjs';
+import { UserAgentApplication } from 'msal';
 import Intercom, { IntercomAPI } from 'react-intercom';
 import PageIndex from './PageIndex';
 import NotFound from './NotFound';
@@ -31,6 +32,7 @@ import { FRONTEND_URL } from '../config';
 import problemListActions from '../redux/problemList/actions';
 import problemActions from '../redux/problem/actions';
 import { compareStepArrays } from '../redux/problem/helpers';
+import msalConfig from '../constants/msal';
 
 const mathLive = process.env.MATHLIVE_DEBUG_MODE ? require('../../mathlive/src/mathlive.js').default
     : require('../lib/mathlivedist/mathlive.js');
@@ -39,6 +41,12 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.initializeIcons();
+
+        if (window.location.hash.includes('id_token')) {
+            // eslint-disable-next-line no-new
+            new UserAgentApplication(msalConfig);
+            window.close();
+        }
     }
 
     shouldComponentUpdate() {
