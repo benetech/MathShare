@@ -35,8 +35,10 @@ const clickOnSignIn = history => () => {
 
 const LandingPage = withRouter(({ history }) => (
     <div className={styles.container}>
+        <div>
+            <span className={styles.signIn} onClick={clickOnSignIn(history)} onKeyPress={clickOnSignIn(history)} role="button" tabIndex={0}>Sign In</span>
+        </div>
         <img className={styles.midLogo} src={logo} alt="mid-logo" aria-label="Mathshare Logo, a Benetech Initiative" />
-        <span className={styles.signIn} onClick={clickOnSignIn(history)} onKeyPress={clickOnSignIn(history)} role="button" tabIndex={0}>Sign In</span>
         <div className={styles.midContainer}>
             <div className={styles.content}>
                 <div className={styles.largeText}>
