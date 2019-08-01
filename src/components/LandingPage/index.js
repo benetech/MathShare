@@ -35,8 +35,10 @@ const clickOnSignIn = history => () => {
 
 const LandingPage = withRouter(({ history }) => (
     <div className={styles.container}>
+        <div>
+            <span className={styles.signIn} onClick={clickOnSignIn(history)} onKeyPress={clickOnSignIn(history)} role="button" tabIndex={0}>Sign In</span>
+        </div>
         <img className={styles.midLogo} src={logo} alt="mid-logo" aria-label="Mathshare Logo, a Benetech Initiative" />
-        <span className={styles.signIn} onClick={clickOnSignIn(history)} onKeyPress={clickOnSignIn(history)} role="button" tabIndex={0}>Sign In</span>
         <div className={styles.midContainer}>
             <div className={styles.content}>
                 <div className={styles.largeText}>
@@ -46,7 +48,7 @@ const LandingPage = withRouter(({ history }) => (
                 <div className={styles.midBottomText}>
                     Benetech Mathshare empowers students to solve math problems and
                     {' '}
-                    show their work so that teachers and students can see how they got there
+                    show their work so that teachers and students can see how they got there.
                 </div>
                 <div
                     className={styles.btn}
@@ -89,7 +91,7 @@ const LandingPage = withRouter(({ history }) => (
                         <div className={styles.textContent}>
                             Students with and without learning differences can use
                             {' '}
-                            Mathshare withfeatures like text-to-speech, speech-to-text,
+                            Mathshare with features like text-to-speech, speech-to-text,
                             {' '}
                             and word-level highlighting
                         </div>
@@ -123,7 +125,7 @@ const LandingPage = withRouter(({ history }) => (
                             Free and Open Source
                         </div>
                         <div className={styles.textContent}>
-                            Mathshare is a free,open source tool developed by
+                            Mathshare is a free, open source tool developed by
                             {' '}
                             Benetech, a nonprofit that empowers communities with
                             {' '}

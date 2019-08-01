@@ -10,9 +10,15 @@ const SiteMapFooter = ({ customClass }) => (
             <div>
                 <div className="d-flex flex-row">
                     <img src={footerLogo} alt="footer-logo" aria-label="benetech logo" />
-                    <div className={footer.mAuto}>Mathshare is a Benetech Initiative</div>
+                    <div className={footer.mAuto}>
+                        Mathshare is a
+                        <br />
+                        Benetech Initiative
+                    </div>
                 </div>
-                <div>Our mission is to make math accessibility free and open to all students.</div>
+                <div className={footer.footerLine}>
+                    Our mission is to make math accessibility free and open to all students.
+                </div>
             </div>
             <div className={`d-flex flex-row ${footer.lists}`}>
                 <div>
