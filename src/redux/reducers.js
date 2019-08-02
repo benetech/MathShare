@@ -8,6 +8,7 @@ import modal from './modal/reducer';
 import problem from './problem/reducer';
 import problemList from './problemList/reducer';
 import routerHooks from './router/reducer';
+import userProfile from './userProfile/reducer';
 
 export default history => combineReducers({
     router: connectRouter(history),
@@ -15,4 +16,5 @@ export default history => combineReducers({
     problem,
     problemList,
     routerHooks,
+    userProfile,
 });

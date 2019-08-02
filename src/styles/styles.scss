@@ -24,6 +24,18 @@ body {
 :global(.body-container) {
     display: table;
     width: 100%;
+
+    &:global(.full-height) {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        margin: 0;
+        justify-content: center;
+    }
+
+    &:global(.dark-background) {
+        background-color: #001F3F;
+    }
 }
 
 :global(#workArea) :global(.ML__mathlive) {

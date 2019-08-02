@@ -1,0 +1,74 @@
+.container {
+    padding: 50px;
+
+    .content {
+        background: white;
+        max-width: 450px;
+        padding-bottom: 100px;
+        width: 100%;
+        margin: auto;
+        text-align: center;
+        border-radius: 4px;
+
+
+        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .25);
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        -webkit-transition: background-color .218s, border-color .218s, box-shadow .218s;
+        transition: background-color .218s, border-color .218s, box-shadow .218s;
+
+        .text {
+            font-size: 24px;
+            color: #5a5a5a;
+        }
+
+        .pointer {
+            cursor: pointer;
+        }
+
+        .logo {
+            max-width: 240px;
+            padding: 36px 24px;
+            background: white;
+            margin: auto;
+
+            img {
+                width: 100%;
+            }
+        }
+
+        .buttonsContainer {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 50px 0;
+
+            >div {
+                padding: 10px;
+                width: 50%;
+
+                >* {
+                    margin: auto;
+                }
+            }
+
+            .microsoftContainer {
+                height: 100%;
+                background: white;
+                outline: 1px solid #00000024;
+                cursor: pointer;
+                max-width: 132px;
+                // border: 1px solid black;
+
+                img {
+                    padding: 8px 10px;
+                }
+            }
+
+            :global(.abcRioButtonSvgImageWithFallback) img {
+                vertical-align: baseline;
+            }
+
+        }
+    }
+
+}
