@@ -9,6 +9,7 @@ import {
     faSignature, faSquareRootAlt,
 } from '@fortawesome/free-solid-svg-icons';
 import * as dayjs from 'dayjs';
+import { UserAgentApplication } from 'msal';
 import Intercom, { IntercomAPI } from 'react-intercom';
 import PageIndex from './PageIndex';
 import NotFound from './NotFound';
@@ -17,6 +18,7 @@ import Editor from './Editor';
 import LandingPage from './LandingPage';
 import Privacy from './Privacy';
 import Partners from './Partners';
+import SignIn from './SignIn';
 import MainPageFooter from './Home/components/Footer';
 import SocialFooter from './Home/components/SocialFooter';
 import SiteMapFooter from './Home/components/SiteMapFooter';
@@ -30,7 +32,9 @@ import googleAnalytics from '../scripts/googleAnalytics';
 import { FRONTEND_URL } from '../config';
 import problemListActions from '../redux/problemList/actions';
 import problemActions from '../redux/problem/actions';
+import userProfileActions from '../redux/userProfile/actions';
 import { compareStepArrays } from '../redux/problem/helpers';
+import msalConfig from '../constants/msal';
 
 const mathLive = process.env.MATHLIVE_DEBUG_MODE ? require('../../mathlive/src/mathlive.js').default
     : require('../lib/mathlivedist/mathlive.js');
@@ -39,6 +43,17 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.initializeIcons();
+
+        if (window.location.hash.includes('id_token')) {
+            // eslint-disable-next-line no-new
+            new UserAgentApplication(msalConfig);
+            window.close();
+        }
+    }
+
+    componentDidMount() {
+        this.props.checkGoogleLogin();
+        this.props.checkMsLogin();
     }
 
     shouldComponentUpdate() {
@@ -187,13 +202,20 @@ class App extends Component {
         }
     }
 
+    getAdditionalClass = () => {
+        if (window.location.hash && window.location.hash.toLowerCase() === '#/signin') {
+            return 'full-height dark-background';
+        }
+        return '';
+    }
+
     render() {
         const commonProps = this.props;
         const { modal, problemList, problemStore } = this.props;
         return (
             <React.Fragment>
                 <NotificationContainer />
-                <div className="body-container">
+                <div className={`body-container ${this.getAdditionalClass()}`}>
                     <ModalContainer
                         activeModals={modal.activeModals}
                         toggleModals={this.props.toggleModals}
@@ -223,9 +245,10 @@ class App extends Component {
                         <Route exact path="/app/problem/:action/:code" render={p => <Editor {...commonProps} {...p} {...this} />} />
                         <Route exact path="/app/problem/example" render={p => <Editor example {...commonProps} {...p} {...this} />} />
                         <Route exact path="/app" render={p => <PageIndex {...commonProps} {...p} {...this} />} />
-                        <Route exact path="/" render={p => <LandingPage {...p} />} />
+                        <Route exact path="/" render={p => <LandingPage {...p} setAuthRedirect={this.props.setAuthRedirect} userProfile={this.props.userProfile} />} />
                         <Route exact path="/privacy" render={p => <Privacy {...p} />} />
                         <Route exact path="/partners" render={p => <Partners {...p} />} />
+                        <Route exact path="/signIn" render={p => <SignIn {...p} />} />
                         <Route render={p => <NotFound {...p} />} />
                     </Switch>
                 </div>
@@ -246,10 +269,12 @@ export default withRouter(connect(
     state => ({
         problemList: state.problemList,
         problemStore: state.problem,
+        userProfile: state.userProfile,
         modal: state.modal,
     }),
     {
         ...problemActions,
         ...problemListActions,
+        ...userProfileActions,
     },
 )(App));

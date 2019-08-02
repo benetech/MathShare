@@ -64,6 +64,7 @@
     "intro.js": "^2.9.3",
     "jquery": "^3.4.1",
     "lodash": "^4.17.15",
+    "msal": "^1.1.1",
     "react": "^16.8.6",
     "react-aria-modal": "^3.0.1",
     "react-dom": "^16.8.6",

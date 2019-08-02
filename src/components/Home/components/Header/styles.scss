@@ -87,12 +87,6 @@ header nav.navbar {
   font: caption;
 }
 
-@media only screen and (max-width: 991px) {
-  .googleSignInContainer {
-    margin-right: 15px;
-  }
-}
-
 @media (max-width: 991px) {
   :global(.navbar-collapse) {
     order: 2;
@@ -101,4 +95,13 @@ header nav.navbar {
 
 :global(.dropdonw-toggle) {
   cursor: pointer;
+}
+
+a.signInLink {
+  background-color: #fafafa;
+  margin-left: 15px;
+
+  span {
+    margin-left: 12px;
+  }
 }
