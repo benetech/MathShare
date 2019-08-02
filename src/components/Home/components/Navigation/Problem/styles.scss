@@ -8,7 +8,6 @@
     }
 
     >button {
-        padding: 0;
         box-sizing: border-box;
         // display: flex;
         // flex-direction: column;
@@ -49,27 +48,20 @@
 }
 
 .trashIcon {
-    position: absolute;
-    left: 96%;
-    bottom: -7%;
+    position: relative;
+    bottom: 2px;
 }
 
 .plusIcon {
-    position: absolute;
-    left: 95%;
-    bottom: -7%;
+    // left: 95%;
 }
 
 .editIcon {
-    position: absolute;
-    left: 83%;
-    bottom: -8%;
+    // left: 83%;
 }
 
 .imgIcon {
-    position: absolute;
-    left: 93%;
-    top: -7%;
+    // left: 93%;
 }
 
 .navSpan {
@@ -90,6 +82,10 @@
 .navItemContent {
     align-items: center;
     display: flex;
+
+    &.emptyOverflow {
+        height: 56px;
+    }
 }
 
 .equation {
@@ -115,4 +111,24 @@
 
 .contentOverflownVertically {
     flex-direction: column;
+}
+
+// button {
+//     &.container {
+//         padding: 10px 15px 25px 15px;
+//     }
+// }
+
+.problem {
+    .btnContainer {
+        position: relative;
+        text-align: right;
+        bottom: 1px;
+        padding: 0;
+
+        >span {
+            padding-left: 10px;
+        }
+    }
+
 }

@@ -167,7 +167,6 @@ export default class Problem extends Component {
             annotation = this.buildAnnotation();
             equation = this.buildProblemText();
             equationFollowUp = this.state.isOverflownHorizontally || this.state.isOverflownVertically ? '...' : null;
-            image = this.buildProblemImage();
         }
 
         const wrappedAnnotation = annotation !== undefined && (annotation.match(/\\text{/g) || []).length > 1
@@ -270,6 +269,7 @@ export default class Problem extends Component {
                             problemStyle.navSpan,
                             problemStyle.middle,
                             problemStyle.tile,
+                            problemStyle.container,
                         )
                     }
                     onClick={() => (
@@ -306,20 +306,23 @@ export default class Problem extends Component {
                         </div>
                         {speechForMath}
                     </div>
-                    {imgButton}
-                    {editButton}
-                    {removeButton}
-                    {plusButton}
                     <div className={classNames(
                         problemStyle.navItemContent,
                         this.state.isOverflownHorizontally
-                            ? problemStyle.contentOverflownHorizontally : null,
+                            ? problemStyle.contentOverflownHorizontally
+                            : problemStyle.emptyOverflow,
                         this.state.isOverflownVertically
                             ? problemStyle.contentOverflownVertically
-                            : null,
+                            : problemStyle.emptyOverflow,
                     )}
                     >
                         {equationFollowUp}
+                    </div>
+                    <div className={problemStyle.btnContainer}>
+                        {imgButton}
+                        {editButton}
+                        {removeButton}
+                        {plusButton}
                     </div>
                     {this.props.problem && this.props.problem.scratchpad ? image : null}
                 </button>
