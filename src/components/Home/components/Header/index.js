@@ -1,7 +1,5 @@
 /* eslint-disable jsx-a11y/no-noninteractive-tabindex */
 import React from 'react';
-import ReactGA from 'react-ga';
-import { UserAgentApplication } from 'msal';
 import { IntercomAPI } from 'react-intercom';
 import { connect } from 'react-redux';
 import FontAwesome from 'react-fontawesome';
@@ -15,75 +13,44 @@ import {
 import {
     openTour,
 } from '../../../../redux/problem/actions';
+import {
+    logoutOfUserProfile,
+} from '../../../../redux/userProfile/actions';
 import googleAnalytics from '../../../../scripts/googleAnalytics';
 import logo from '../../../../../images/mathshare_logo_white.png';
-import googleLogo from '../../../../../images/google-logo.svg';
-import microsoftLogo from '../../../../../images/microsoft-logo.svg';
-import msalConfig from '../../../../constants/msal';
 
 
 class MainPageHeader extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            googleSignInInitialized: false,
-            profile: null,
+            googleInitialized: false,
         };
-        this.GOOGLE_SIGN_IN = 'googleSignIn';
-        this.MS_SIGN_IN = 'msSignIn';
+    }
+
+    componentWillMount() {
+        this.pollGoogleInitialization();
     }
 
     componentDidMount() {
-        this.initializeGoogleSignIn();
-        this.checkMicrosoftLogin();
+        this.logoutClickHandler();
     }
 
-    startMicrosoftSignIn = () => {
-        const myMSALObj = new UserAgentApplication(msalConfig);
-        const requestObj = {
-            scopes: ['user.read', 'User.ReadBasic.All', 'profile'],
-        };
-
-        myMSALObj.loginPopup(requestObj).then(() => {
-            this.checkMicrosoftLogin();
-        }).catch((error) => {
-            console.log(error);
-        });
+    componentDidUpdate() {
+        this.logoutClickHandler();
     }
 
-    initializeGoogleSignIn = () => {
-        if (!window.gapi || !window.gapi.signin2 || !window.gapi.auth2) {
-            setTimeout(this.initializeGoogleSignIn, 500);
-        } else if (!this.state.googleSignInInitialized) {
+    pollGoogleInitialization = () => {
+        if (window.auth2Initialized) {
             this.setState({
-                googleSignInInitialized: true,
-                hideBtn: true,
+                googleInitialized: true,
             });
-            const authInstance = window.gapi.auth2.getAuthInstance();
-            const user = authInstance.currentUser.get();
-            if (user && user.isSignedIn() && user.getBasicProfile()) {
-                this.checkGoogleLogin(user);
-            }
-            authInstance.attachClickHandler(
-                this.GOOGLE_SIGN_IN,
-                {
-                    scope: 'profile email',
-                    theme: 'dark',
-                    height: 40,
-                    onsuccess: this.onSuccess,
-                },
-                this.checkGoogleLogin,
-                () => { },
-            );
-            document.getElementById(this.GOOGLE_SIGN_IN).addEventListener('keyup', (event) => {
-                if (event.key === 'Enter') {
-                    authInstance.signIn();
-                }
-            });
+        } else {
+            setTimeout(this.pollGoogleInitialization, 100);
         }
     }
 
-    accountDropdownCallback = () => {
+    logoutClickHandler = () => {
         document.querySelectorAll('li.avatar .dropdown-menu > *').forEach((node) => {
             node.addEventListener('click', (e) => {
                 e.stopPropagation();
@@ -92,82 +59,7 @@ class MainPageHeader extends React.Component {
         });
         const logout = document.querySelector('li.avatar .dropdown-menu a.logout');
         if (logout) {
-            logout.addEventListener('click', this.logout);
-        }
-    }
-
-    checkGoogleLogin = (googleUser) => {
-        const profile = googleUser.getBasicProfile();
-        if (profile) {
-            const email = profile.getEmail();
-            const name = profile.getName();
-            this.onSuccess('google', email, name, profile.getImageUrl(), this.accountDropdownCallback);
-        }
-    }
-
-    checkMicrosoftLogin = () => {
-        const myMSALObj = new UserAgentApplication(msalConfig);
-        const microsoftAccount = myMSALObj.getAccount();
-        if (microsoftAccount) {
-            const { name, userName } = microsoftAccount;
-            const profileImage = `https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=256&name=${encodeURIComponent(name)}&rounded=true&length=1`;
-            this.onSuccess('ms', userName, name, profileImage, this.accountDropdownCallback);
-        }
-    }
-
-    onSuccess = (service, email, name, image, callback) => {
-        this.setState({
-            profile: {
-                email,
-                name,
-                image,
-                service,
-            },
-        }, () => {
-            if (callback) {
-                setTimeout(callback, 100);
-            }
-        });
-        IntercomAPI('update', {
-            user_id: email,
-            email,
-            name,
-        });
-        ReactGA.set({
-            email,
-        });
-    }
-
-    logout = () => {
-        const { profile } = this.state;
-        if (!profile) {
-            return;
-        }
-        const { service } = profile;
-        let promise = null;
-        if (service === 'google') {
-            const authInstance = window.gapi.auth2.getAuthInstance();
-            promise = authInstance.signOut();
-        } else if (service === 'ms') {
-            promise = new Promise((resolve) => {
-                resolve();
-            });
-        }
-        if (promise) {
-            promise.then(() => {
-                this.setState({
-                    profile: null,
-                    googleSignInInitialized: false,
-                }, this.initializeGoogleSignIn);
-                IntercomAPI('shutdown');
-                IntercomAPI('boot', {
-                    app_id: process.env.INTERCOM_APP_ID,
-                });
-                if (service === 'ms') {
-                    const myMSALObj = new UserAgentApplication(msalConfig);
-                    myMSALObj.logout();
-                }
-            });
+            logout.addEventListener('click', this.props.logoutOfUserProfile);
         }
     }
 
@@ -187,24 +79,9 @@ class MainPageHeader extends React.Component {
         window.open('/#/app/problemSet/new', '_blank');
     };
 
-    renderGoogleBtn = () => (
-        <div style={{ height: 40, width: 120 }} className="abcRioButton abcRioButtonBlue">
-            <div className="abcRioButtonContentWrapper">
-                <div className="abcRioButtonIcon" style={{ padding: 10 }}>
-                    <div style={{ width: 18, height: 18 }} className="abcRioButtonSvgImageWithFallback abcRioButtonIconImage abcRioButtonIconImage18">
-                        <img src={googleLogo} alt="google logo" />
-                    </div>
-                </div>
-                <span style={{ fontSize: 14, lineHeight: '38px' }} className="abcRioButtonContents">
-                    <span id="not_signed_insn584fxcersa">Sign in</span>
-                </span>
-            </div>
-        </div>
-    );
-
     render() {
         const { props } = this;
-        const { profile } = this.state;
+        const { userProfile } = props;
         /* eslint-disable jsx-a11y/anchor-is-valid */
         const questionBtnId = 'navbarDropdownMenuLink-dropdown';
 
@@ -321,38 +198,24 @@ class MainPageHeader extends React.Component {
                                         </a>
                                     </div>
                                 </li>
-                                {!profile && (
+                                {(this.state.googleInitialized && !userProfile.service) && (
                                     <li>
-                                        <span>
-                                            <div
-                                                id={this.MS_SIGN_IN}
-                                                className={`${header.googleSignInContainer} ${header.microsoftContainer}`}
-                                                role="button"
-                                                onClick={this.startMicrosoftSignIn}
-                                                onKeyPress={this.startMicrosoftSignIn}
-                                                tabIndex={0}
-                                            >
-                                                <img src={microsoftLogo} alt="microsoft logo" />
-                                            </div>
-                                            <UncontrolledTooltip placement="top" target={this.MS_SIGN_IN} />
-                                        </span>
+                                        <a
+                                            id="signIn"
+                                            className={`nav-link btn ${header.signInLink}`}
+                                            href="/#/signIn"
+                                        >
+
+                                            Sign In
+                                            <FontAwesome
+                                                size="lg"
+                                                name="user-circle-o"
+                                            />
+                                        </a>
+                                        <UncontrolledTooltip placement="top" target="signIn" />
                                     </li>
                                 )}
-                                {!profile && (
-                                    <li>
-                                        <span className="">
-                                            <div
-                                                id={this.GOOGLE_SIGN_IN}
-                                                className={header.googleSignInContainer}
-                                                tabIndex={0}
-                                            >
-                                                {this.renderGoogleBtn()}
-                                            </div>
-                                            <UncontrolledTooltip placement="top" target={this.GOOGLE_SIGN_IN} />
-                                        </span>
-                                    </li>
-                                )}
-                                {profile && (
+                                {userProfile.service && (
                                     <li className="nav-item avatar dropdown">
                                         <a
                                             className="nav-link dropdown-toggle"
@@ -360,29 +223,31 @@ class MainPageHeader extends React.Component {
                                             data-toggle="dropdown"
                                         >
                                             <img
-                                                src={profile.image}
+                                                src={userProfile.profileImage}
                                                 className="rounded-circle z-depth-0"
                                                 alt="avatar"
                                             />
                                         </a>
                                         <UncontrolledTooltip placement="top" target="navbarDropdownMenuLink-avatar" />
-                                        <div
-                                            className="dropdown-menu dropdown-menu-lg-right dropdown-secondary"
-                                            aria-labelledby="navbarDropdownMenuLink-avatar"
-                                        >
-                                            <div className="dropdown-header">{profile.name}</div>
-                                            <div className={`dropdown-header ${header.email}`}>{profile.email}</div>
-                                            <div className="dropdown-divider" />
-                                            <a
-                                                className="dropdown-item logout"
-                                                onClick={this.logout}
-                                                onKeyPress={this.logout}
-                                                role="button"
-                                                tabIndex={0}
+                                        {window.auth2Initialized && (
+                                            <div
+                                                className="dropdown-menu dropdown-menu-lg-right dropdown-secondary"
+                                                aria-labelledby="navbarDropdownMenuLink-avatar"
                                             >
-                                                Sign Out
-                                            </a>
-                                        </div>
+                                                <div className="dropdown-header">{userProfile.name}</div>
+                                                <div className={`dropdown-header ${header.email}`}>{userProfile.email}</div>
+                                                <div className="dropdown-divider" />
+                                                <a
+                                                    className="dropdown-item logout"
+                                                    onClick={this.props.logoutOfUserProfile}
+                                                    onKeyPress={this.props.logoutOfUserProfile}
+                                                    role="button"
+                                                    tabIndex={0}
+                                                >
+                                                    Sign Out
+                                                </a>
+                                            </div>
+                                        )}
                                     </li>
                                 )}
                             </ul>
@@ -396,9 +261,12 @@ class MainPageHeader extends React.Component {
 }
 
 export default connect(
-    () => ({}),
+    state => ({
+        userProfile: state.userProfile,
+    }),
     {
         toggleModals,
         openTour,
+        logoutOfUserProfile,
     },
 )(MainPageHeader);

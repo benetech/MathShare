@@ -87,12 +87,6 @@ header nav.navbar {
   font: caption;
 }
 
-@media only screen and (max-width: 991px) {
-  .googleSignInContainer {
-    margin-right: 15px;
-  }
-}
-
 @media (max-width: 991px) {
   :global(.navbar-collapse) {
     order: 2;
@@ -103,16 +97,11 @@ header nav.navbar {
   cursor: pointer;
 }
 
-.microsoftContainer {
-  height: 100%;
-  background: white;
-  cursor: pointer;
+a.signInLink {
+  background-color: #fafafa;
+  margin-left: 15px;
 
-  img {
-    padding: 8px 10px;
+  span {
+    margin-left: 12px;
   }
-}
-
-:global(.abcRioButtonSvgImageWithFallback) img {
-  vertical-align: baseline;
 }
