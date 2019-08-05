@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { UncontrolledTooltip } from 'reactstrap';
 import msalConfig from '../../constants/msal';
 import { setUserProfile, checkGoogleLogin, checkMsLogin } from '../../redux/userProfile/actions';
-import logo from '../../../images/logo-2.png';
+import logo from '../../../images/logo-black.png';
 import googleLogo from '../../../images/google-logo.svg';
 import microsoftLogo from '../../../images/microsoft-logo.svg';
 // eslint-disable-next-line no-unused-vars
