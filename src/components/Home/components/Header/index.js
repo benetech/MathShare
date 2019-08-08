@@ -101,7 +101,7 @@ class MainPageHeader extends React.Component {
                                     googleAnalytics('clicked logo');
                                 }}
                             >
-                                <img src={logo} alt="Benetech Math Editor" height="37" />
+                                <img src={logo} alt="Benetech Mathshare" height="37" />
                                 <span className={header.beta}>beta</span>
                             </a>
                         </div>
