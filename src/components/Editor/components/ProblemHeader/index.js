@@ -216,17 +216,19 @@ export default class ProblemHeader extends Component {
                 </div>
                 <div className={`d-flex flex-row ${problem.subHeader}`} tabIndex={0}>
                     {imgButton}
-                    <h1 id="ProblemTitle" className={problem.title}>{title}</h1>
+                    <h1 id="ProblemTitle" className={problem.title}>
+                        {title}
+                        <span className="sROnly">
+                            {mathLive.latexToSpeakableText(
+                                this.props.math,
+                                {
+                                    textToSpeechRules: 'sre',
+                                    textToSpeechRulesOptions: { domain: 'clearspeak', style: 'default', markup: 'none' },
+                                },
+                            )}
+                        </span>
+                    </h1>
                     <span id="ProblemMath" className={`${problem.title} ${problem.question}`}>{`$$${this.props.math}$$`}</span>
-                    <span className="sROnly">
-                        {mathLive.latexToSpeakableText(
-                            this.props.math,
-                            {
-                                textToSpeechRules: 'sre',
-                                textToSpeechRulesOptions: { domain: 'clearspeak', style: 'default', markup: 'none' },
-                            },
-                        )}
-                    </span>
                 </div>
             </React.Fragment>
         );
