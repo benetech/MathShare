@@ -1,0 +1,18 @@
+.meta {
+    font-size: 12px;
+    align-self: flex-end;
+}
+
+.title {
+    flex: 1;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-right: 10px;
+}
+
+.problemSetList {
+    margin-top: 20px;
+    margin-bottom: 40px;
+}

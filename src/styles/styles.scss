@@ -116,6 +116,26 @@ button :global(.ML__mathlive) {
             }
         }
     }
+
+    :global(.card) {
+        border-radius: 0;
+        padding: 4px;
+        box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, .12);
+    }
+
+    :global(.card):hover {
+        box-shadow: 0px 4px 2px -1px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 2px 6px 0px rgba(0, 0, 0, .12);
+    }
+
+    // :global(.card) {
+    //     background-color: #fff;
+    //     background-color: var(--mdc-theme-surface, #fff);
+    //     box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, .12);
+    //     display: flex;
+    //     flex-direction: column;
+    //     box-sizing: border-box;
+    //     margin-top: 1px;
+    // }
 }
 
 @media only screen and (max-width: 1020px) {

@@ -4,6 +4,7 @@ import { IntercomAPI } from 'react-intercom';
 import MainPageHeader from '../Home/components/Header';
 import { requestDefaultRevision, requestExampleSets } from '../../redux/problemList/actions';
 import googleAnalytics from '../../scripts/googleAnalytics';
+import pageIndex from './styles.scss';
 
 
 class Index extends Component {
@@ -44,52 +45,56 @@ class Index extends Component {
                     action={null}
                 />
                 <div className="mainContainer">
-                    <div className="row">
-                        <ol>
-                            <li className="col col-lg-3">
+                    <ol className={pageIndex.problemSetList}>
+                        <li className="card">
+                            <button
+                                type="button"
+                                className="btn d-flex"
+                                onClick={props.addProblemSet}
+                                onKeyPress={props.addProblemSet}
+                            >
+                                <span className="centreText">+ New Problem Set</span>
+                            </button>
+                        </li>
+                        <li className="card">
+                            <button
+                                type="button"
+                                className="btn d-flex"
+                                onClick={this.openExampleProblem}
+                                onKeyPress={this.openExampleProblem}
+                                role="link"
+                                tabIndex="0"
+                            >
+                                <span className="centreText">Example Problem</span>
+                            </button>
+                        </li>
+                    </ol>
+
+                    <div className="title">Pre-made Sets</div>
+                    <ol className={pageIndex.problemSetList}>
+                        {problemList.exampleProblemSets.filter(exampleProblemSet => exampleProblemSet.title !== 'Example Problem Set').map((exampleProblemSet, index) => (
+                            <li className="card" key={index}>
                                 <button
                                     type="button"
                                     className="btn d-flex"
-                                    onClick={props.addProblemSet}
-                                    onKeyPress={props.addProblemSet}
-                                >
-                                    <span className="centreText">+ New Problem Set</span>
-                                </button>
-                            </li>
-                            <li className="col col-lg-3">
-                                <button
-                                    type="button"
-                                    className="btn d-flex"
-                                    onClick={this.openExampleProblem}
-                                    onKeyPress={this.openExampleProblem}
+                                    onClick={this.openPremadeSet(exampleProblemSet)}
+                                    onKeyPress={this.openPremadeSet(exampleProblemSet)}
                                     role="link"
                                     tabIndex="0"
                                 >
-                                    <span className="centreText">Example Problem</span>
+                                    <span className={pageIndex.title}>
+                                        {exampleProblemSet.title}
+                                    </span>
+                                    <span className={pageIndex.meta}>
+                                        {exampleProblemSet.problems.length}
+                                        {' '}
+                                        Problems
+                                    </span>
                                 </button>
                             </li>
-                        </ol>
-                    </div>
-                    <div className="row">
-                        <div className="title">Pre-made Sets</div>
-                        <ol>
-                            {problemList.exampleProblemSets.filter(exampleProblemSet => exampleProblemSet.title !== 'Example Problem Set').map((exampleProblemSet, index) => (
-                                <li className="col col-lg-3" key={index}>
-                                    <button
-                                        type="button"
-                                        className="btn d-flex"
-                                        onClick={this.openPremadeSet(exampleProblemSet)}
-                                        onKeyPress={this.openPremadeSet(exampleProblemSet)}
-                                        role="link"
-                                        tabIndex="0"
-                                    >
-                                        <span className="centreText">{exampleProblemSet.title}</span>
-                                    </button>
-                                </li>
-                            ))}
+                        ))}
 
-                        </ol>
-                    </div>
+                    </ol>
                 </div>
             </div>
         );
