@@ -1,10 +1,27 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { IntercomAPI } from 'react-intercom';
+import FontAwesome from 'react-fontawesome';
+import Locales from '../../strings';
 import MainPageHeader from '../Home/components/Header';
 import { requestDefaultRevision, requestExampleSets } from '../../redux/problemList/actions';
 import googleAnalytics from '../../scripts/googleAnalytics';
 import pageIndex from './styles.scss';
+
+
+const stopEvent = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    return false;
+};
+
+const shareOnTwitter = editCode => (e) => {
+    window.open(
+        `https://twitter.com/intent/tweet?text=${encodeURIComponent(`${Locales.strings.share_with_teachers_text} ${window.location.origin}/#/app/problemSet/edit/${editCode}`)}`, '_blank',
+    );
+    return stopEvent(e);
+};
 
 
 class Index extends Component {
@@ -28,6 +45,11 @@ class Index extends Component {
 
     openByShareCode = (shareCode) => {
         this.props.history.push(`/app/problemSet/view/${shareCode}`);
+    }
+
+    duplicateProblemSet = problemSet => (e) => {
+        this.props.duplicateProblemSet(e, problemSet);
+        return stopEvent(e);
     }
 
     render() {
@@ -90,6 +112,59 @@ class Index extends Component {
                                         {' '}
                                         Problems
                                     </span>
+                                    <div className="dropdown">
+                                        <button
+                                            className={`btn dropdown-toggle ${pageIndex.problemSetDropdown}`}
+                                            type="button"
+                                            id={`dropdownMenuButton-${index}`}
+                                            data-toggle="dropdown"
+                                            aria-haspopup="true"
+                                            aria-expanded="false"
+                                            onClick={(e) => {
+                                                stopEvent(e);
+                                            }}
+                                        >
+                                            <FontAwesome
+                                                name="ellipsis-v"
+                                            />
+                                        </button>
+                                        <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <a
+                                                className="dropdown-item"
+                                                onClick={this.duplicateProblemSet(
+                                                    exampleProblemSet,
+                                                )}
+                                                onKeyPress={this.duplicateProblemSet(
+                                                    exampleProblemSet,
+                                                )}
+                                                role="link"
+                                                tabIndex="0"
+                                            >
+                                                <FontAwesome
+                                                    size="lg"
+                                                    name="copy"
+                                                />
+                                                {` ${Locales.strings.duplicate_set}`}
+                                            </a>
+                                            <a
+                                                className="dropdown-item"
+                                                onClick={shareOnTwitter(
+                                                    exampleProblemSet.editCode,
+                                                )}
+                                                onKeyPress={shareOnTwitter(
+                                                    exampleProblemSet.editCode,
+                                                )}
+                                                role="link"
+                                                tabIndex="0"
+                                            >
+                                                <FontAwesome
+                                                    size="lg"
+                                                    name="twitter"
+                                                />
+                                                {` ${Locales.strings.share_with_teachers}`}
+                                            </a>
+                                        </div>
+                                    </div>
                                 </button>
                             </li>
                         ))}

@@ -144,8 +144,9 @@ export const updateProblemSetTitle = title => ({
     },
 });
 
-export const duplicateProblemSet = () => ({
+export const duplicateProblemSet = (e, payload) => ({
     type: 'DUPLICATE_PROBLEM_SET',
+    payload: (payload || {}),
 });
 
 export const setReviewSolutions = (solutions, reviewCode, editCode, title) => ({

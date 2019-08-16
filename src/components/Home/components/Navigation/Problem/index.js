@@ -156,7 +156,6 @@ export default class Problem extends Component {
     render() {
         let annotation;
         let equation;
-        let equationFollowUp;
         let image;
         if (this.props.example) {
             annotation = Locales.strings.getting_started_title;
@@ -166,7 +165,6 @@ export default class Problem extends Component {
         } else {
             annotation = this.buildAnnotation();
             equation = this.buildProblemText();
-            equationFollowUp = this.state.isOverflownHorizontally || this.state.isOverflownVertically ? '...' : null;
         }
 
         const wrappedAnnotation = annotation !== undefined && (annotation.match(/\\text{/g) || []).length > 1
@@ -305,18 +303,6 @@ export default class Problem extends Component {
                             {equation}
                         </div>
                         {speechForMath}
-                    </div>
-                    <div className={classNames(
-                        problemStyle.navItemContent,
-                        this.state.isOverflownHorizontally
-                            ? problemStyle.contentOverflownHorizontally
-                            : problemStyle.emptyOverflow,
-                        this.state.isOverflownVertically
-                            ? problemStyle.contentOverflownVertically
-                            : problemStyle.emptyOverflow,
-                    )}
-                    >
-                        {equationFollowUp}
                     </div>
                     <div className={problemStyle.btnContainer}>
                         {imgButton}
