@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { UncontrolledTooltip } from 'reactstrap';
 import msalConfig from '../../constants/msal';
 import { setUserProfile, checkGoogleLogin, checkMsLogin } from '../../redux/userProfile/actions';
+import { SERVER_URL } from '../../config';
 import logo from '../../../images/logo-black.png';
 import googleLogo from '../../../images/google-logo.svg';
 import microsoftLogo from '../../../images/microsoft-logo.svg';
@@ -15,14 +16,14 @@ class SignIn extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            googleSignInInitialized: false,
+            googleSignInInitialized: true,
         };
         this.GOOGLE_SIGN_IN = 'googleSignIn';
         this.MS_SIGN_IN = 'msSignIn';
     }
 
     componentDidMount() {
-        this.initializeGoogleSignIn();
+        // this.initializeGoogleSignIn();
         this.props.checkMsLogin();
     }
 
@@ -48,24 +49,19 @@ class SignIn extends Component {
                 googleSignInInitialized: true,
                 hideBtn: true,
             });
-            const authInstance = window.gapi.auth2.getAuthInstance();
-            authInstance.attachClickHandler(
-                this.GOOGLE_SIGN_IN,
-                {
-                    scope: 'profile email',
-                    theme: 'dark',
-                    height: 40,
-                },
-                () => {
-                    this.props.checkGoogleLogin(true);
-                },
-                () => { },
-            );
-            document.getElementById(this.GOOGLE_SIGN_IN).addEventListener('keyup', (event) => {
-                if (event.key === 'Enter') {
-                    authInstance.signIn();
-                }
-            });
+            // const authInstance = window.gapi.auth2.getAuthInstance();
+            // authInstance.attachClickHandler(
+            //     this.GOOGLE_SIGN_IN,
+            //     {
+            //         scope: 'profile email',
+            //         theme: 'dark',
+            //         height: 40,
+            //     },
+            //     () => {
+            //         this.props.checkGoogleLogin(true);
+            //     },
+            //     () => { },
+            // );
         }
     }
 
@@ -75,7 +71,21 @@ class SignIn extends Component {
 
     renderGoogleBtn = () => (
         // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
-        <div id={this.GOOGLE_SIGN_IN} tabIndex={0} style={{ height: 40, width: 120 }} className="abcRioButton abcRioButtonBlue">
+        <div
+            id={this.GOOGLE_SIGN_IN}
+            tabIndex={0}
+            role="button"
+            style={{ height: 40, width: 120 }}
+            className="abcRioButton abcRioButtonBlue"
+            onClick={() => {
+                window.location.assign(`${SERVER_URL}/oauth2/authorize/google?redirect_uri=${encodeURIComponent(window.location.href)}`);
+            }}
+            onKeyPress={(event) => {
+                if (event.key === 'Enter') {
+                    window.location.assign(`${SERVER_URL}/oauth2/authorize/google?redirect_uri=${encodeURIComponent(window.location.href)}`);
+                }
+            }}
+        >
             <div className="abcRioButtonContentWrapper">
                 <div className="abcRioButtonIcon" style={{ padding: 10 }}>
                     <div style={{ width: 18, height: 18 }} className="abcRioButtonSvgImageWithFallback abcRioButtonIconImage abcRioButtonIconImage18">

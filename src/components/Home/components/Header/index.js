@@ -24,7 +24,7 @@ class MainPageHeader extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            googleInitialized: false,
+            googleInitialized: true,
         };
     }
 
@@ -229,7 +229,7 @@ class MainPageHeader extends React.Component {
                                             />
                                         </a>
                                         <UncontrolledTooltip placement="top" target="navbarDropdownMenuLink-avatar" />
-                                        {window.auth2Initialized && (
+                                        {true && (
                                             <div
                                                 className="dropdown-menu dropdown-menu-lg-right dropdown-secondary"
                                                 aria-labelledby="navbarDropdownMenuLink-avatar"

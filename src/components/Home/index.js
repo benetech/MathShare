@@ -156,7 +156,7 @@ class Home extends Component {
                     action={params.action}
                 />
                 <main id="LeftNavigation" className={home.leftNavigation}>
-                    {(params.action !== 'review' && (params.action !== 'edit' && params.action !== 'new')) && (
+                    {(params.action !== 'review' && (params.action !== 'edit' && params.action !== 'new')) && currentSet.problems.length > 0 && (
                         <div className={classNames([
                             'row',
                             home.actionBar,
@@ -395,6 +395,7 @@ class Home extends Component {
                             set={problemList.set}
                         />
                     )}
+                    {params.action === 'solve' && currentSet.problems.length === 0 && <div className={`${home.noProblems} text-center`}>No Problems</div>}
                     <NavigationProblems
                         problems={currentSet.problems}
                         solutions={problemList.solutions}

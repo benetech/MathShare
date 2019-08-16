@@ -19,6 +19,7 @@ import LandingPage from './LandingPage';
 import Privacy from './Privacy';
 import Partners from './Partners';
 import SignIn from './SignIn';
+import OAuth2RedirectHandler from './OAuth2RedirectHandler';
 import MainPageFooter from './Home/components/Footer';
 import SocialFooter from './Home/components/SocialFooter';
 import SiteMapFooter from './Home/components/SiteMapFooter';
@@ -214,6 +215,7 @@ class App extends Component {
         const { modal, problemList, problemStore } = this.props;
         return (
             <React.Fragment>
+                <OAuth2RedirectHandler />
                 <NotificationContainer />
                 <div className={`body-container ${this.getAdditionalClass()}`}>
                     <ModalContainer

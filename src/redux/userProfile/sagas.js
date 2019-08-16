@@ -1,7 +1,5 @@
 import {
     all,
-    call,
-    delay,
     fork,
     put,
     select,
@@ -16,11 +14,10 @@ import {
 import ReactGA from 'react-ga';
 import {
     goBack,
-    replace,
 } from 'connected-react-router';
+import jwtDecode from 'jwt-decode';
 import {
     resetUserProfile,
-    setAuthRedirect,
     setUserProfile,
 } from './actions';
 import msalConfig from '../../constants/msal';
@@ -53,35 +50,43 @@ function* checkMsLoginSaga() {
 }
 
 function* checkGoogleLoginSaga() {
-    yield takeLatest('CHECK_GOOGLE_LOGIN', function* workerSaga({
-        payload: {
-            redirect,
-        },
-    }) {
-        while (!window.gapi || !window.gapi.auth2 || !window.auth2Initialized) {
-            yield delay(100);
+    yield takeLatest('CHECK_GOOGLE_LOGIN', function* workerSaga() {
+        if (window.localStorage.access_token) {
+            const {
+                user,
+            } = jwtDecode(window.localStorage.access_token);
+            const {
+                email,
+                name,
+                picture,
+            } = user;
+            yield put(setUserProfile(email, name, picture, 'google'));
         }
-        const authInstance = window.gapi.auth2.getAuthInstance();
-        const user = authInstance.currentUser.get();
-        if (user && user.isSignedIn() && user.getBasicProfile()) {
-            const profile = user.getBasicProfile();
-            if (profile) {
-                const email = profile.getEmail();
-                const name = profile.getName();
-                yield put(setUserProfile(email, name, profile.getImageUrl(), 'google'));
-                if (redirect) {
-                    const {
-                        redirectTo,
-                    } = yield select(getState);
-                    if (redirectTo === 'app') {
-                        yield put(replace('/app'));
-                    } else {
-                        yield put(goBack());
-                    }
-                }
-                yield put(setAuthRedirect(null));
-            }
-        }
+
+        // while (!window.gapi || !window.gapi.auth2 || !window.auth2Initialized) {
+        //     yield delay(100);
+        // }
+        // const authInstance = window.gapi.auth2.getAuthInstance();
+        // const user = authInstance.currentUser.get();
+        // if (user && user.isSignedIn() && user.getBasicProfile()) {
+        //     const profile = user.getBasicProfile();
+        //     if (profile) {
+        //         const email = profile.getEmail();
+        //         const name = profile.getName();
+        //         yield put(setUserProfile(email, name, profile.getImageUrl(), 'google'));
+        //         if (redirect) {
+        //             const {
+        //                 redirectTo,
+        //             } = yield select(getState);
+        //             if (redirectTo === 'app') {
+        //                 yield put(replace('/app'));
+        //             } else {
+        //                 yield put(goBack());
+        //             }
+        //         }
+        //         yield put(setAuthRedirect(null));
+        //     }
+        // }
     });
 }
 
@@ -118,8 +123,7 @@ function* logoutSaga() {
             return;
         }
         if (service === 'google') {
-            const authInstance = window.gapi.auth2.getAuthInstance();
-            yield call(authInstance.signOut);
+            window.localStorage.clear();
         }
         yield put(resetUserProfile());
         IntercomAPI('shutdown');
