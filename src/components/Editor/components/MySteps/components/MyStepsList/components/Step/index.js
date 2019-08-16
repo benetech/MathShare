@@ -167,7 +167,8 @@ export default class Step extends Component {
         const id = this.props.cleanup ? `mathStep-${this.props.stepNumber - 1}-cleanup`
             : `mathStep-${this.props.stepNumber}`;
         return (
-            <div id={id} className={classNames('d-flex flex-column flex-md-row flex-lg-row flex-xl-row', step.step)}>
+            // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
+            <div id={id} className={classNames('d-flex flex-column flex-md-row flex-lg-row flex-xl-row', step.step)} tabIndex={0}>
                 <div className="d-flex p-2">
                     <h3>
                         {this.buildReason()}
@@ -175,6 +176,15 @@ export default class Step extends Component {
                 </div>
                 <div className={classNames('col-md-4', step.annotationEquation)}>
                     <span className="staticMath">{`$$${this.props.math}$$`}</span>
+                    <span className="sROnly">
+                        {mathLive.latexToSpeakableText(
+                            this.props.math,
+                            {
+                                textToSpeechRules: 'sre',
+                                textToSpeechRulesOptions: { domain: 'clearspeak', style: 'default', markup: 'none' },
+                            },
+                        )}
+                    </span>
                 </div>
                 <div className={classNames('flex-grow-1', step.annotationEquation)}>
                     <h4 className="sROnly">
