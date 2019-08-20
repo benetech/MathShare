@@ -1,4 +1,5 @@
 /* style to use if only the screen reader user should hear this */
+
 :global(.sROnly) {
     clip: rect(1px, 1px, 1px, 1px);
     position: absolute !important;
@@ -24,7 +25,6 @@ body {
 :global(.body-container) {
     display: table;
     width: 100%;
-
     &:global(.full-height) {
         height: 100%;
         display: flex;
@@ -32,7 +32,6 @@ body {
         margin: 0;
         justify-content: center;
     }
-
     &:global(.dark-background) {
         background-color: #001F3F;
     }
@@ -45,7 +44,7 @@ body {
 :global(.staticMath),
 :global(.mathliveModal),
 :global(button) {
-    :global(.ML__mathlive) {
+     :global(.ML__mathlive) {
         white-space: normal;
         display: inline;
         word-break: break-word;
@@ -79,24 +78,20 @@ button :global(.ML__mathlive) {
     margin: auto;
     margin-top: 75px;
     padding-bottom: 20px;
-
-    :global(.row) {
-        :global(.title) {
+     :global(.row) {
+         :global(.title) {
             margin-left: 12px;
         }
-
         ol {
             display: flex;
             flex-wrap: wrap;
             padding: 0;
             width: 100%;
-
             li {
                 list-style-type: none;
                 padding: 10px;
                 min-width: 150px;
                 cursor: pointer;
-
                 >div,
                 >button {
                     margin-bottom: 30px;
@@ -108,7 +103,6 @@ button :global(.ML__mathlive) {
                     white-space: normal !important;
                     border: 1px solid hsl(0, 0%, 80%) !important;
                     height: 120px;
-
                     span:global(.centreText) {
                         margin: auto;
                     }
@@ -116,21 +110,17 @@ button :global(.ML__mathlive) {
             }
         }
     }
-
-    :global(.card) {
+     :global(.card) {
         border-radius: 0;
         padding: 4px;
         box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, .12);
-
         button>* {
             align-self: center;
         }
     }
-
-    :global(.card):hover {
+     :global(.card):hover {
         box-shadow: 0px 4px 2px -1px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 2px 6px 0px rgba(0, 0, 0, .12);
     }
-
     // :global(.card) {
     //     background-color: #fff;
     //     background-color: var(--mdc-theme-surface, #fff);
@@ -143,13 +133,13 @@ button :global(.ML__mathlive) {
 }
 
 @media only screen and (max-width: 1020px) {
-    :global(.body-container) :global(.mainContainer) {
+     :global(.body-container) :global(.mainContainer) {
         max-width: 90vw;
     }
 }
 
 @media only screen and (min-width: 1021px) {
-    :global(.body-container) :global(.mainContainer) {
+     :global(.body-container) :global(.mainContainer) {
         max-width: 970px;
     }
 }
@@ -161,8 +151,24 @@ button :global(.ML__mathlive) {
 nav :global(.dropdown-menu) {
     right: 0;
     left: auto;
-
     >a {
         cursor: pointer;
     }
+}
+
+:global(.keymap-dialog) {
+    width: 600px;
+    padding: 10px 20px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(50, 45, 60, 0.5);
+    z-index: 100;
+    color: rgb(255, 255, 255);
+    font-weight: 600;
+}
+
+:global(.keymap-tablecell) {
+    padding: 8px;
 }

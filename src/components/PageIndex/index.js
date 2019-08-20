@@ -8,13 +8,7 @@ import MainPageHeader from '../Home/components/Header';
 import { requestDefaultRevision, requestExampleSets } from '../../redux/problemList/actions';
 import googleAnalytics from '../../scripts/googleAnalytics';
 import pageIndex from './styles.scss';
-
-
-const stopEvent = (e) => {
-    e.stopPropagation();
-    e.preventDefault();
-    return false;
-};
+import { stopEvent } from '../../services/events';
 
 const shareOnTwitter = editCode => (e) => {
     window.open(
