@@ -34,8 +34,6 @@ export default class MyWork extends Component {
         this.InitScratchPad = this.InitScratchPad.bind(this);
         this.displayScratchpadImage = this.displayScratchpadImage.bind(this);
         this.loadImage = this.loadImage.bind(this);
-
-        document.onkeydown = this.HandleKeyDown.bind(this);
     }
 
     componentDidMount() {
@@ -47,6 +45,7 @@ export default class MyWork extends Component {
                 );
             });
         }
+        document.getElementById('mathEditorActive').addEventListener('keydown', this.HandleKeyDown);
     }
 
     getScratchPadValue = () => {
@@ -73,7 +72,7 @@ export default class MyWork extends Component {
         return undefined;
     }
 
-    HandleKeyDown(event) {
+    HandleKeyDown = (event) => {
         const keyShortcuts = new Map(JSON.parse(sessionStorage.keyShortcuts));
         if (event.shiftKey && this.props.theActiveMathField.selectionIsCollapsed()) {
             // if an insertion cursor, extend the selection unless we are at an edge

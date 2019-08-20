@@ -12,6 +12,7 @@ import Locales from '../../../../../strings';
 import showImage from '../../../../../scripts/showImage';
 import parseMathLive from '../../../../../scripts/parseMathLive';
 import { SERVER_URL } from '../../../../../config';
+import { stopEvent } from '../../../../../services/events';
 
 const mathLive = process.env.MATHLIVE_DEBUG_MODE ? require('../../../../../../../mathlive/src/mathlive.js').default
     : require('../../../../../lib/mathlivedist/mathlive.js');
@@ -52,18 +53,18 @@ export default class Problem extends Component {
 
     onTrashClick(e) {
         this.props.activateModals([CONFIRMATION], this.props.number);
-        e.stopPropagation();
+        return stopEvent(e);
     }
 
     onEditClick(e) {
         this.props.setEditProblem(this.props.number, this.props.action);
         this.props.activateModals([EDIT_PROBLEM], this.props.number);
-        e.stopPropagation();
+        return stopEvent(e);
     }
 
     onImgClick(e) {
         showImage(this.props.problem.scratchpad);
-        e.stopPropagation();
+        return stopEvent(e);
     }
 
     buildComplexProblemText = () => {

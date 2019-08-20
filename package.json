@@ -70,6 +70,7 @@
     "react-dom": "^16.8.6",
     "react-fontawesome": "^1.6.1",
     "react-ga": "^2.5.7",
+    "react-hotkeys": "^2.0.0",
     "react-intercom": "^1.0.15",
     "react-localization": "^1.0.13",
     "react-notifications": "^1.4.3",
