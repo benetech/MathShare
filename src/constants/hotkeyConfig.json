@@ -48,7 +48,7 @@
         "name": "Display keyboard shortcuts",
         "sequences": [
             {
-                "sequence": "shift+?"
+                "sequence": "alt+h"
             }
         ],
         "action": "keyup"
