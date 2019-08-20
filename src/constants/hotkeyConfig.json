@@ -35,6 +35,15 @@
         ],
         "action": "keyup"
     },
+    "READ_PROBLEM_MATH": {
+        "name": "Read problem math",
+        "sequences": [
+            {
+                "sequence": "alt+p"
+            }
+        ],
+        "action": "keyup"
+    },
     "SHOW_DIALOG": {
         "name": "Display keyboard shortcuts",
         "sequences": [

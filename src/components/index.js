@@ -23,6 +23,7 @@ import LandingPage from './LandingPage';
 import Privacy from './Privacy';
 import Partners from './Partners';
 import SignIn from './SignIn';
+import AriaLiveAnnouncer from './AriaLiveAnnouncer';
 import MainPageFooter from './Home/components/Footer';
 import SocialFooter from './Home/components/SocialFooter';
 import SiteMapFooter from './Home/components/SiteMapFooter';
@@ -37,6 +38,7 @@ import { FRONTEND_URL } from '../config';
 import problemListActions from '../redux/problemList/actions';
 import problemActions from '../redux/problem/actions';
 import userProfileActions from '../redux/userProfile/actions';
+import ariaLiveAnnouncerActions from '../redux/ariaLiveAnnouncer/actions';
 import { compareStepArrays } from '../redux/problem/helpers';
 import msalConfig from '../constants/msal';
 import keyMap from '../constants/hotkeyConfig.json';
@@ -75,6 +77,7 @@ class App extends Component {
             })),
             CLOSE_DIALOG: () => this.setState({ showDialog: false }),
             MOVE_TO_DESCRIPTION_BOX: this.moveFoucsTo('mathAnnotation'),
+            READ_PROBLEM_MATH: this.readProblem,
         };
     }
 
@@ -98,6 +101,14 @@ class App extends Component {
             return stopEvent(e);
         }
         return true;
+    }
+
+    readProblem = () => {
+        const problemTitle = document.getElementById('ProblemTitle');
+        this.props.clearAriaLive();
+        if (problemTitle) {
+            this.props.announceOnAriaLive(problemTitle.innerText);
+        }
     }
 
     addProblem = (imageData, text, index, newProblemSet) => {
@@ -332,6 +343,7 @@ class App extends Component {
         return (
             <React.Fragment>
                 {this.renderDialog()}
+                <AriaLiveAnnouncer />
                 <GlobalHotKeys keyMap={keyMap} handlers={this.handlers} allowChanges />
                 <NotificationContainer />
                 <div className={`body-container ${this.getAdditionalClass()}`}>
@@ -395,5 +407,6 @@ export default withRouter(connect(
         ...problemActions,
         ...problemListActions,
         ...userProfileActions,
+        ...ariaLiveAnnouncerActions,
     },
 )(App));
