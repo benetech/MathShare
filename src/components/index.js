@@ -105,10 +105,12 @@ class App extends Component {
 
     readProblem = () => {
         const problemTitle = document.getElementById('ProblemTitle');
-        this.props.clearAriaLive();
         if (problemTitle) {
             this.props.announceOnAriaLive(problemTitle.innerText);
         }
+        setTimeout(() => {
+            this.props.clearAriaLive();
+        }, 1000);
     }
 
     addProblem = (imageData, text, index, newProblemSet) => {
