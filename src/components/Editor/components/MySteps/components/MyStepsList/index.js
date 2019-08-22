@@ -8,6 +8,7 @@ import MyWork from '../../../MyWork';
 import Locales from '../../../../../../strings';
 import Button from '../../../../../Button';
 import { stopEvent } from '../../../../../../services/events';
+import { getScreenReaderText } from '../../../../../../services/screenReader';
 import completeKeyMap from '../../../../../../constants/hotkeyConfig.json';
 
 
@@ -41,12 +42,16 @@ export default class MyStepsList extends Component {
     }
 
     readStep = index => (e) => {
-        const problemTitle = document.getElementById(`mathStep-${index}`);
-        if (problemTitle) {
-            this.props.announceOnAriaLive(problemTitle.innerText);
+        const step = document.getElementById(`mathStep-${index}`);
+        if (step) {
+            const text = getScreenReaderText(step);
+            console.log(text);
+            this.props.announceOnAriaLive(text);
             this.setState({
                 readStep: index,
             });
+        } else {
+            this.props.announceOnAriaLive(`No step number ${index}`);
         }
         setTimeout(() => {
             this.props.clearAriaLive();
