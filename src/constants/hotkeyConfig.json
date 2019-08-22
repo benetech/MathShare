@@ -12,7 +12,7 @@
         "name": "Move focus to step description box",
         "sequences": [
             {
-                "sequence": "alt+shift+d"
+                "sequence": "alt+shift+b"
             }
         ],
         "action": "keyup"
