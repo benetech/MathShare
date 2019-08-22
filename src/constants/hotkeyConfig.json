@@ -52,5 +52,32 @@
             }
         ],
         "action": "keyup"
+    },
+    "READ_STEP": {
+        "name": "Read step no (1-9)",
+        "sequences": [
+            {
+                "sequence": "ctrl+alt+[1..9]"
+            }
+        ],
+        "action": "keyup"
+    },
+    "READ_NEXT_STEP": {
+        "name": "Read next step",
+        "sequences": [
+            {
+                "sequence": "alt+shift+="
+            }
+        ],
+        "action": "keyup"
+    },
+    "READ_PREVIOUS_STEP": {
+        "name": "Read previous step",
+        "sequences": [
+            {
+                "sequence": "alt+shift+-"
+            }
+        ],
+        "action": "keyup"
     }
 }
