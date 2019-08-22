@@ -12,7 +12,7 @@
         "name": "Move focus to step description box",
         "sequences": [
             {
-                "sequence": "alt+d"
+                "sequence": "alt+shift+d"
             }
         ],
         "action": "keyup"
@@ -39,7 +39,7 @@
         "name": "Read problem math",
         "sequences": [
             {
-                "sequence": "alt+p"
+                "sequence": "alt+shift+r"
             }
         ],
         "action": "keyup"

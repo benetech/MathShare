@@ -72,9 +72,7 @@ class App extends Component {
 
         this.handlers = {
             MOVE_TO_MATH_INPUT: this.moveFoucsTo('mathEditorActive'),
-            SHOW_DIALOG: () => this.setState(prevState => ({
-                showDialog: !prevState.showDialog,
-            })),
+            SHOW_DIALOG: this.toggleDialog,
             CLOSE_DIALOG: () => this.setState({ showDialog: false }),
             MOVE_TO_DESCRIPTION_BOX: this.moveFoucsTo('mathAnnotation'),
             READ_PROBLEM_MATH: this.readProblem,
@@ -103,7 +101,14 @@ class App extends Component {
         return true;
     }
 
-    readProblem = () => {
+    toggleDialog = (e) => {
+        this.setState(prevState => ({
+            showDialog: !prevState.showDialog,
+        }));
+        return stopEvent(e);
+    }
+
+    readProblem = (e) => {
         const problemTitle = document.getElementById('ProblemTitle');
         if (problemTitle) {
             this.props.announceOnAriaLive(problemTitle.innerText);
@@ -111,6 +116,7 @@ class App extends Component {
         setTimeout(() => {
             this.props.clearAriaLive();
         }, 1000);
+        return stopEvent(e);
     }
 
     addProblem = (imageData, text, index, newProblemSet) => {
