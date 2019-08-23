@@ -36,7 +36,7 @@ const LandingPage = withRouter(({ history, setAuthRedirect, userProfile }) => (
     <div className={styles.container}>
         <div className={styles.signInLabel}>
             <span className={styles.signIn} onClick={clickOnSignIn(history, setAuthRedirect, userProfile)} onKeyPress={clickOnSignIn(history, setAuthRedirect, userProfile)} role="button" tabIndex={0}>
-                {userProfile.service ? 'Goto App' : 'Sign In'}
+                {userProfile.service ? 'Go to App' : 'Sign In'}
             </span>
         </div>
         <img className={styles.midLogo} src={logo} alt="mid-logo" aria-label="Mathshare Logo, a Benetech Initiative" />
