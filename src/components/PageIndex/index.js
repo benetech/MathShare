@@ -10,9 +10,9 @@ import googleAnalytics from '../../scripts/googleAnalytics';
 import pageIndex from './styles.scss';
 import { stopEvent } from '../../services/events';
 
-const shareOnTwitter = editCode => (e) => {
+const shareOnTwitter = shareCode => (e) => {
     window.open(
-        `https://twitter.com/intent/tweet?text=${encodeURIComponent(`${Locales.strings.share_with_teachers_text} ${window.location.origin}/#/app/problemSet/edit/${editCode}`)}`, '_blank',
+        `https://twitter.com/intent/tweet?text=${encodeURIComponent(`${Locales.strings.share_with_teachers_text} ${window.location.origin}/#/app/problemSet/view/${shareCode}`)}`, '_blank',
     );
     return stopEvent(e);
 };
@@ -143,10 +143,10 @@ class Index extends Component {
                                             <a
                                                 className="dropdown-item"
                                                 onClick={shareOnTwitter(
-                                                    exampleProblemSet.editCode,
+                                                    exampleProblemSet.shareCode,
                                                 )}
                                                 onKeyPress={shareOnTwitter(
-                                                    exampleProblemSet.editCode,
+                                                    exampleProblemSet.shareCode,
                                                 )}
                                                 role="link"
                                                 tabIndex="0"

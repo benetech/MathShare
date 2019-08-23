@@ -17,12 +17,6 @@ import Button from '../Button';
 import googleClassroomIcon from '../../../images/google-classroom-icon.png';
 import msTeamIcon from '../../../images/ms-team-icon.svg';
 
-const shareOnTwitter = () => {
-    window.open(
-        `https://twitter.com/intent/tweet?text=${encodeURIComponent(`${Locales.strings.share_with_teachers_text} ${window.location.href}`)}`, '_blank',
-    );
-};
-
 class Home extends Component {
     componentDidMount() {
         const {
@@ -59,6 +53,16 @@ class Home extends Component {
                 window.shareToMicrosoftTeams.renderButtons();
             }
         }, 0);
+    }
+
+    shareOnTwitter = () => {
+        const {
+            problemList,
+        } = this.props;
+        const shareUrl = `${window.location.origin}/#/app/problemSet/view/${problemList.newSetSharecode}`;
+        window.open(
+            `https://twitter.com/intent/tweet?text=${encodeURIComponent(`${Locales.strings.share_with_teachers_text} ${shareUrl}`)}`, '_blank',
+        );
     }
 
     shareProblemSet = () => {
@@ -367,8 +371,8 @@ class Home extends Component {
                                                     </a>
                                                     <a
                                                         className="dropdown-item"
-                                                        onClick={shareOnTwitter}
-                                                        onKeyPress={shareOnTwitter}
+                                                        onClick={this.shareOnTwitter}
+                                                        onKeyPress={this.shareOnTwitter}
                                                         role="link"
                                                         tabIndex="0"
                                                     >
