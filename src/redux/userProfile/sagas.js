@@ -19,10 +19,16 @@ import {
     replace,
 } from 'connected-react-router';
 import {
+    handleSuccessfulLogin,
+    redirectAfterLogin,
     resetUserProfile,
     setAuthRedirect,
     setUserProfile,
 } from './actions';
+import {
+    fetchUserInfoApi,
+    saveUserInfoApi,
+} from './apis';
 import msalConfig from '../../constants/msal';
 import {
     getState,
@@ -45,9 +51,7 @@ function* checkMsLoginSaga() {
             yield put(setUserProfile(
                 userName, name, profileImage, 'ms',
             ));
-            if (redirect) {
-                yield put(goBack());
-            }
+            yield put(handleSuccessfulLogin(userName, redirect));
         }
     });
 }
@@ -69,18 +73,81 @@ function* checkGoogleLoginSaga() {
                 const email = profile.getEmail();
                 const name = profile.getName();
                 yield put(setUserProfile(email, name, profile.getImageUrl(), 'google'));
-                if (redirect) {
-                    const {
-                        redirectTo,
-                    } = yield select(getState);
-                    if (redirectTo === 'app') {
-                        yield put(replace('/app'));
-                    } else {
-                        yield put(goBack());
-                    }
-                }
-                yield put(setAuthRedirect(null));
+                yield put(handleSuccessfulLogin(email, redirect));
             }
+        }
+    });
+}
+
+function* redirectAfterLoginSaga() {
+    yield takeLatest('REDIRECT_AFTER_LOGIN', function* workerSaga({
+        payload: {
+            forceBack,
+        },
+    }) {
+        const {
+            redirectTo,
+        } = yield select(getState);
+        if (redirectTo === 'back') {
+            yield put(goBack());
+        } else if (forceBack || redirectTo === 'app' || redirectTo === null) {
+            yield put(replace('/app'));
+        }
+        yield put(setAuthRedirect(null));
+    });
+}
+
+function* handleSuccessfulLoginSaga() {
+    yield takeLatest('HANDLE_SUCCESSFUL_LOGIN', function* workerSaga({
+        payload: {
+            email,
+            redirect,
+        },
+    }) {
+        const {
+            redirectTo,
+        } = yield select(getState);
+        if (redirect && !redirectTo) {
+            yield put(setAuthRedirect('app'));
+        }
+        try {
+            const response = yield call(fetchUserInfoApi, email);
+            if (response.status !== 200) {
+                yield put(replace('/userDetails'));
+            } else {
+                yield put(redirectAfterLogin());
+            }
+        } catch (error) {
+            yield put(replace('/userDetails'));
+        }
+    });
+}
+
+function* saveUserInfoSaga() {
+    yield takeLatest('SAVE_USER_INFO', function* workerSaga({
+        payload,
+    }) {
+        try {
+            const {
+                email,
+            } = yield select(getState);
+            const {
+                userType,
+                grades,
+                role,
+            } = payload;
+            IntercomAPI('trackEvent', 'user-details', {
+                userType,
+                grades,
+                role,
+            });
+            yield call(saveUserInfoApi, {
+                ...payload,
+                user_type: userType,
+                email,
+            });
+        } catch (error) {
+            console.log('Error', error);
         }
     });
 }
@@ -137,6 +204,9 @@ export default function* rootSaga() {
     yield all([
         fork(checkMsLoginSaga),
         fork(checkGoogleLoginSaga),
+        fork(redirectAfterLoginSaga),
+        fork(handleSuccessfulLoginSaga),
+        fork(saveUserInfoSaga),
         fork(setUserProfileSaga),
         fork(logoutSaga),
     ]);

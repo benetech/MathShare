@@ -37,11 +37,38 @@ export const setAuthRedirect = redirectTo => ({
     },
 });
 
+export const redirectAfterLogin = forceBack => ({
+    type: 'REDIRECT_AFTER_LOGIN',
+    payload: {
+        forceBack,
+    },
+});
+
+export const handleSuccessfulLogin = (email, redirect) => ({
+    type: 'HANDLE_SUCCESSFUL_LOGIN',
+    payload: {
+        email,
+        redirect,
+    },
+});
+
+export const saveUserInfo = (userType, grades, role) => ({
+    type: 'SAVE_USER_INFO',
+    payload: {
+        userType,
+        grades,
+        role,
+    },
+});
+
 export default {
     checkGoogleLogin,
     checkMsLogin,
     logoutOfUserProfile,
+    redirectAfterLogin,
     resetUserProfile,
+    saveUserInfo,
     setAuthRedirect,
     setUserProfile,
+    handleSuccessfulLogin,
 };

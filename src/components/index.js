@@ -23,6 +23,7 @@ import LandingPage from './LandingPage';
 import Privacy from './Privacy';
 import Partners from './Partners';
 import SignIn from './SignIn';
+import UserDetails from './UserDetails';
 import AriaLiveAnnouncer from './AriaLiveAnnouncer';
 import MainPageFooter from './Home/components/Footer';
 import SocialFooter from './Home/components/SocialFooter';
@@ -257,7 +258,7 @@ class App extends Component {
     }
 
     getAdditionalClass = () => {
-        if (window.location.hash && window.location.hash.toLowerCase() === '#/signin') {
+        if (window.location.hash && ['#/signin', '#/userdetails'].indexOf(window.location.hash.toLowerCase()) > -1) {
             return 'full-height dark-background';
         }
         return '';
@@ -388,6 +389,7 @@ class App extends Component {
                         <Route exact path="/privacy" render={p => <Privacy {...p} />} />
                         <Route exact path="/partners" render={p => <Partners {...p} />} />
                         <Route exact path="/signIn" render={p => <SignIn {...p} />} />
+                        <Route exact path="/userDetails" render={p => <UserDetails {...p} />} />
                         <Route render={p => <NotFound {...p} />} />
                     </Switch>
                 </div>
