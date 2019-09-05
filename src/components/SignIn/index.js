@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
-import { UserAgentApplication } from 'msal';
 import { connect } from 'react-redux';
+import { push } from 'connected-react-router';
 import { UncontrolledTooltip } from 'reactstrap';
-import msalConfig from '../../constants/msal';
-import { setUserProfile, checkGoogleLogin, checkMsLogin } from '../../redux/userProfile/actions';
-import { SERVER_URL } from '../../config';
+import {
+    setUserProfile,
+    checkUserLogin,
+} from '../../redux/userProfile/actions';
+import { API_URL } from '../../config';
 import logo from '../../../images/logo-black.png';
 import googleLogo from '../../../images/google-logo.svg';
 import microsoftLogo from '../../../images/microsoft-logo.svg';
 // eslint-disable-next-line no-unused-vars
 import signIn from './styles.scss';
-
 
 class SignIn extends Component {
     constructor(props) {
@@ -23,51 +24,26 @@ class SignIn extends Component {
     }
 
     componentDidMount() {
-        // this.initializeGoogleSignIn();
-        this.props.checkMsLogin();
+        this.props.checkUserLogin();
     }
 
     startMicrosoftSignIn = () => {
-        const myMSALObj = new UserAgentApplication(msalConfig);
-        const requestObj = {
-            scopes: ['user.read'],
-        };
+        const { routerHistory } = this.props;
+        window.location.assign(
+            `${API_URL}/login/azuread-openidconnect?return=${encodeURIComponent(routerHistory.prev)}`,
+        );
+    };
 
-        myMSALObj.loginPopup(requestObj).then(() => {
-            this.props.checkMsLogin(true);
-        }).catch((error) => {
-            console.log(error);
-        });
-    }
-
-    initializeGoogleSignIn = () => {
-        if (!window.gapi
-            || !window.gapi.signin2 || !window.gapi.auth2 || !window.auth2Initialized) {
-            setTimeout(this.initializeGoogleSignIn, 500);
-        } else if (!this.state.googleSignInInitialized) {
-            this.setState({
-                googleSignInInitialized: true,
-                hideBtn: true,
-            });
-            // const authInstance = window.gapi.auth2.getAuthInstance();
-            // authInstance.attachClickHandler(
-            //     this.GOOGLE_SIGN_IN,
-            //     {
-            //         scope: 'profile email',
-            //         theme: 'dark',
-            //         height: 40,
-            //     },
-            //     () => {
-            //         this.props.checkGoogleLogin(true);
-            //     },
-            //     () => { },
-            // );
-        }
+    startGoogleSignIn = () => {
+        const { routerHistory } = this.props;
+        window.location.assign(
+            `${API_URL}/login/google?return=${encodeURIComponent(routerHistory.prev)}`,
+        );
     }
 
     onSuccess = (service, email, name, image) => {
         this.props.setUserProfile(email, name, image, service);
-    }
+    };
 
     renderGoogleBtn = () => (
         // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
@@ -77,22 +53,26 @@ class SignIn extends Component {
             role="button"
             style={{ height: 40, width: 120 }}
             className="abcRioButton abcRioButtonBlue"
-            onClick={() => {
-                window.location.assign(`${SERVER_URL}/oauth2/authorize/google?redirect_uri=${encodeURIComponent(window.location.href)}`);
-            }}
+            onClick={this.startGoogleSignIn}
             onKeyPress={(event) => {
                 if (event.key === 'Enter') {
-                    window.location.assign(`${SERVER_URL}/oauth2/authorize/google?redirect_uri=${encodeURIComponent(window.location.href)}`);
+                    this.startGoogleSignIn();
                 }
             }}
         >
             <div className="abcRioButtonContentWrapper">
                 <div className="abcRioButtonIcon" style={{ padding: 10 }}>
-                    <div style={{ width: 18, height: 18 }} className="abcRioButtonSvgImageWithFallback abcRioButtonIconImage abcRioButtonIconImage18">
+                    <div
+                        style={{ width: 18, height: 18 }}
+                        className="abcRioButtonSvgImageWithFallback abcRioButtonIconImage abcRioButtonIconImage18"
+                    >
                         <img src={googleLogo} alt="google logo" />
                     </div>
                 </div>
-                <span style={{ fontSize: 14, lineHeight: '38px' }} className="abcRioButtonContents">
+                <span
+                    style={{ fontSize: 14, lineHeight: '38px' }}
+                    className="abcRioButtonContents"
+                >
                     <span id="not_signed_insn584fxcersa">Google</span>
                 </span>
             </div>
@@ -105,16 +85,20 @@ class SignIn extends Component {
             className={`abcRioButton abcRioButtonBlue ${signIn.microsoftContainer}`}
             role="button"
             onClick={this.startMicrosoftSignIn}
-            onKeyPress={this.startMicrosoftSignIn}
+            onKeyPress={(event) => {
+                if (event.key === 'Enter') {
+                    this.startMicrosoftSignIn();
+                }
+            }}
             tabIndex={0}
         >
             <img src={microsoftLogo} alt="microsoft logo" />
         </div>
-    )
+    );
 
     goBack = () => {
         this.props.history.goBack();
-    }
+    };
 
     render() {
         return (
@@ -148,10 +132,12 @@ class SignIn extends Component {
 }
 
 export default connect(
-    () => ({}),
+    state => ({
+        routerHistory: state.routerHooks,
+    }),
     {
-        checkMsLogin,
-        checkGoogleLogin,
+        checkUserLogin,
         setUserProfile,
+        push,
     },
 )(SignIn);

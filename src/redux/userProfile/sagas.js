@@ -1,92 +1,39 @@
 import {
     all,
+    call,
     fork,
     put,
-    select,
     takeLatest,
 } from 'redux-saga/effects';
-import {
-    UserAgentApplication,
-} from 'msal';
 import {
     IntercomAPI,
 } from 'react-intercom';
 import ReactGA from 'react-ga';
 import {
-    goBack,
-} from 'connected-react-router';
-import jwtDecode from 'jwt-decode';
-import {
     resetUserProfile,
     setUserProfile,
 } from './actions';
-import msalConfig from '../../constants/msal';
 import {
-    getState,
-} from './selectors';
+    fetchCurrentUserApi,
+    logoutApi,
+} from './apis';
 
-function* checkMsLoginSaga() {
-    yield takeLatest('CHECK_MS_LOGIN', function* workerSaga({
-        payload: {
-            redirect,
-        },
-    }) {
-        const myMSALObj = new UserAgentApplication(msalConfig);
-        const microsoftAccount = myMSALObj.getAccount();
-        if (microsoftAccount) {
-            const {
-                name,
-                userName,
-            } = microsoftAccount;
-            const profileImage = `https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=256&name=${encodeURIComponent(name)}&rounded=true&length=1`;
-            yield put(setUserProfile(
-                userName, name, profileImage, 'ms',
-            ));
-            if (redirect) {
-                yield put(goBack());
+function* checkUserLoginSaga() {
+    yield takeLatest('CHECK_USER_LOGIN', function* workerSaga() {
+        try {
+            const response = yield call(fetchCurrentUserApi);
+            if (response.status !== 200) {
+                throw Error('Unable to login');
             }
-        }
-    });
-}
-
-function* checkGoogleLoginSaga() {
-    yield takeLatest('CHECK_GOOGLE_LOGIN', function* workerSaga() {
-        if (window.localStorage.access_token) {
             const {
-                user,
-            } = jwtDecode(window.localStorage.access_token);
-            const {
-                email,
-                name,
-                picture,
-            } = user;
-            yield put(setUserProfile(email, name, picture, 'google'));
+                emails,
+                displayName,
+                imageUrl,
+            } = response.data;
+            yield put(setUserProfile(emails[0], displayName, imageUrl || `https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=256&name=${encodeURIComponent(displayName)}&rounded=true&length=1`, 'passport'));
+        } catch (error) {
+            yield put(resetUserProfile());
         }
-
-        // while (!window.gapi || !window.gapi.auth2 || !window.auth2Initialized) {
-        //     yield delay(100);
-        // }
-        // const authInstance = window.gapi.auth2.getAuthInstance();
-        // const user = authInstance.currentUser.get();
-        // if (user && user.isSignedIn() && user.getBasicProfile()) {
-        //     const profile = user.getBasicProfile();
-        //     if (profile) {
-        //         const email = profile.getEmail();
-        //         const name = profile.getName();
-        //         yield put(setUserProfile(email, name, profile.getImageUrl(), 'google'));
-        //         if (redirect) {
-        //             const {
-        //                 redirectTo,
-        //             } = yield select(getState);
-        //             if (redirectTo === 'app') {
-        //                 yield put(replace('/app'));
-        //             } else {
-        //                 yield put(goBack());
-        //             }
-        //         }
-        //         yield put(setAuthRedirect(null));
-        //     }
-        // }
     });
 }
 
@@ -115,32 +62,27 @@ function* setUserProfileSaga() {
 
 function* logoutSaga() {
     yield takeLatest('LOGOUT', function* workerSaga() {
-        const userProfile = yield select(getState);
-        const {
-            service,
-        } = userProfile;
-        if (!service) {
-            return;
-        }
-        if (service === 'google') {
-            window.localStorage.clear();
-        }
-        yield put(resetUserProfile());
-        IntercomAPI('shutdown');
-        IntercomAPI('boot', {
-            app_id: process.env.INTERCOM_APP_ID,
-        });
-        if (service === 'ms') {
-            const myMSALObj = new UserAgentApplication(msalConfig);
-            myMSALObj.logout();
+        try {
+            const response = yield call(logoutApi);
+            if (response.status !== 200) {
+                throw Error('Unable to login');
+            }
+            yield put(resetUserProfile());
+            IntercomAPI('shutdown');
+            IntercomAPI('boot', {
+                app_id: process.env.INTERCOM_APP_ID,
+            });
+        } catch (error) {
+            yield put({
+                type: 'LOGOUT_FAILURE',
+            });
         }
     });
 }
 
 export default function* rootSaga() {
     yield all([
-        fork(checkMsLoginSaga),
-        fork(checkGoogleLoginSaga),
+        fork(checkUserLoginSaga),
         fork(setUserProfileSaga),
         fork(logoutSaga),
     ]);

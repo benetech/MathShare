@@ -13,8 +13,9 @@ case 'mathshare-staging.diagramcenter.org':
     serverUrl = 'https://mathshare-api-staging.diagramcenter.org';
     break;
 default:
-    serverUrl = 'http://localhost:8080';
+    serverUrl = 'http://localhost';
 }
 console.log('using server URL: ' + serverUrl);
-export const SERVER_URL = serverUrl;
+export const API_URL = serverUrl;
+export const SERVER_URL = `${serverUrl}/api`;
 export const FRONTEND_URL = hostname === 'localhost' ? 'localhost:3000/#' : `${hostname}/#`;

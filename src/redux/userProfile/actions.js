@@ -8,15 +8,8 @@ export const setUserProfile = (email, name, profileImage, service) => ({
     },
 });
 
-export const checkMsLogin = redirect => ({
-    type: 'CHECK_MS_LOGIN',
-    payload: {
-        redirect,
-    },
-});
-
-export const checkGoogleLogin = redirect => ({
-    type: 'CHECK_GOOGLE_LOGIN',
+export const checkUserLogin = redirect => ({
+    type: 'CHECK_USER_LOGIN',
     payload: {
         redirect,
     },
@@ -38,8 +31,7 @@ export const setAuthRedirect = redirectTo => ({
 });
 
 export default {
-    checkGoogleLogin,
-    checkMsLogin,
+    checkUserLogin,
     logoutOfUserProfile,
     resetUserProfile,
     setAuthRedirect,
