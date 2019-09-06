@@ -75,14 +75,14 @@ class Index extends Component {
             );
         } if (userProfile.recentProblemSets === null) {
             return <div className="text-center">Loading...</div>;
-        } if (userProfile.recentProblemSets) {
+        } if (userProfile.recentProblemSets.length > 0) {
             return (
                 <ol className={pageIndex.problemSetList}>
                     {userProfile.recentProblemSets.map(this.renderProblemSet)}
                 </ol>
             );
         }
-        return null;
+        return <div className="text-center">No recent problems</div>;
     }
 
     renderProblemSet = (problemSet, index) => (
