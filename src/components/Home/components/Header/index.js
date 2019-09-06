@@ -15,9 +15,11 @@ import {
 } from '../../../../redux/problem/actions';
 import {
     logoutOfUserProfile,
+    setAuthRedirect,
 } from '../../../../redux/userProfile/actions';
 import googleAnalytics from '../../../../scripts/googleAnalytics';
 import logo from '../../../../../images/mathshare_logo_white.png';
+import { stopEvent } from '../../../../services/events';
 
 
 class MainPageHeader extends React.Component {
@@ -52,10 +54,7 @@ class MainPageHeader extends React.Component {
 
     logoutClickHandler = () => {
         document.querySelectorAll('li.avatar .dropdown-menu > *').forEach((node) => {
-            node.addEventListener('click', (e) => {
-                e.stopPropagation();
-                return false;
-            });
+            node.addEventListener('click', e => stopEvent(e));
         });
         const logout = document.querySelector('li.avatar .dropdown-menu a.logout');
         if (logout) {
@@ -78,6 +77,10 @@ class MainPageHeader extends React.Component {
     openNewProblemSet = () => {
         window.open('/#/app/problemSet/new', '_blank');
     };
+
+    setAuthRedirect = () => {
+        this.props.setAuthRedirect('back');
+    }
 
     render() {
         const { props } = this;
@@ -204,6 +207,8 @@ class MainPageHeader extends React.Component {
                                             id="signIn"
                                             className={`nav-link btn ${header.signInLink}`}
                                             href="/#/signIn"
+                                            onClick={this.setAuthRedirect}
+                                            onKeyPress={this.setAuthRedirect}
                                         >
 
                                             Sign In
@@ -267,6 +272,7 @@ export default connect(
     {
         toggleModals,
         openTour,
+        setAuthRedirect,
         logoutOfUserProfile,
     },
 )(MainPageHeader);

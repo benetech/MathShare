@@ -5,6 +5,7 @@ const initialState = {
     redirectTo: null,
     mode: null,
     service: null,
+    recentProblemSets: null,
 };
 
 const userProfile = (state = initialState, {
@@ -28,6 +29,18 @@ const userProfile = (state = initialState, {
             ...state,
             ...initialState,
         };
+    case 'FETCH_RECENT_WORK':
+        return {
+            ...state,
+            recentProblemSets: null,
+        };
+    case 'SET_RECENT_WORK': {
+        const { recentProblemSets } = payload;
+        return {
+            ...state,
+            recentProblemSets,
+        };
+    }
     default:
         return state;
     }

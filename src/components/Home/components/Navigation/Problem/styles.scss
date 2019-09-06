@@ -9,12 +9,13 @@
 
     >button {
         box-sizing: border-box;
+        padding-bottom: 2.5rem;
         // display: flex;
         // flex-direction: column;
 
         >div {
-            padding: 1.0rem 1.25rem;
-            max-height: calc(100% - 10px);
+            padding: 0 1.25rem;
+            max-height: 100%;
             // position: absolute;
             // width: 100%;
         }
@@ -121,9 +122,10 @@
 
 .problem {
     .btnContainer {
-        position: relative;
+        position: absolute;
         text-align: right;
         bottom: 1px;
+        right: 4px;
         padding: 0;
 
         >span {

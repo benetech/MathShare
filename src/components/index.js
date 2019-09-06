@@ -10,6 +10,10 @@ import {
 import * as dayjs from 'dayjs';
 import { UserAgentApplication } from 'msal';
 import Intercom, { IntercomAPI } from 'react-intercom';
+import {
+    GlobalHotKeys, ObserveKeys,
+    configure,
+} from 'react-hotkeys';
 import PageIndex from './PageIndex';
 import NotFound from './NotFound';
 import Home from './Home';
@@ -18,6 +22,8 @@ import LandingPage from './LandingPage';
 import Privacy from './Privacy';
 import Partners from './Partners';
 import SignIn from './SignIn';
+import UserDetails from './UserDetails';
+import AriaLiveAnnouncer from './AriaLiveAnnouncer';
 import MainPageFooter from './Home/components/Footer';
 import SocialFooter from './Home/components/SocialFooter';
 import SiteMapFooter from './Home/components/SiteMapFooter';
@@ -36,12 +42,22 @@ import { FRONTEND_URL } from '../config';
 import problemListActions from '../redux/problemList/actions';
 import problemActions from '../redux/problem/actions';
 import userProfileActions from '../redux/userProfile/actions';
+import ariaLiveAnnouncerActions from '../redux/ariaLiveAnnouncer/actions';
 import { compareStepArrays } from '../redux/problem/helpers';
 import msalConfig from '../constants/msal';
+import keyMap from '../constants/hotkeyConfig.json';
+import { stopEvent } from '../services/events';
+
 
 const mathLive = process.env.MATHLIVE_DEBUG_MODE
     ? require('../../mathlive/src/mathlive.js').default
     : require('../lib/mathlivedist/mathlive.js');
+
+configure({
+    // logLevel: 'verbose',
+    ignoreEventsCondition: () => false,
+    ignoreKeymapAndHandlerChangesByDefault: false,
+});
 
 class App extends Component {
     constructor(props) {
@@ -53,6 +69,19 @@ class App extends Component {
             new UserAgentApplication(msalConfig);
             window.close();
         }
+
+        this.state = {
+            showDialog: false,
+            filter: '',
+        };
+
+        this.handlers = {
+            MOVE_TO_MATH_INPUT: this.moveFoucsTo('mathEditorActive'),
+            SHOW_DIALOG: this.toggleDialog,
+            CLOSE_DIALOG: () => this.setState({ showDialog: false }),
+            MOVE_TO_DESCRIPTION_BOX: this.moveFoucsTo('mathAnnotation'),
+            READ_PROBLEM_MATH: this.readProblem,
+        };
     }
 
     componentDidMount() {
@@ -66,6 +95,33 @@ class App extends Component {
     initializeIcons = () => {
         library.add(faSignature, faSquareRootAlt);
     };
+
+    moveFoucsTo = id => (e) => {
+        const mathElement = document.getElementById(id);
+        if (mathElement) {
+            mathElement.focus();
+            return stopEvent(e);
+        }
+        return true;
+    }
+
+    toggleDialog = (e) => {
+        this.setState(prevState => ({
+            showDialog: !prevState.showDialog,
+        }));
+        return stopEvent(e);
+    }
+
+    readProblem = (e) => {
+        const problemTitle = document.getElementById('ProblemTitle');
+        if (problemTitle) {
+            this.props.announceOnAriaLive(problemTitle.innerText);
+        }
+        setTimeout(() => {
+            this.props.clearAriaLive();
+        }, 1000);
+        return stopEvent(e);
+    }
 
     addProblem = (imageData, text, index, newProblemSet) => {
         if (!this.validateProblem(text, imageData)) {
@@ -220,20 +276,101 @@ class App extends Component {
     };
 
     getAdditionalClass = () => {
-        if (
-            window.location.hash
-            && window.location.hash.toLowerCase() === '#/signin'
-        ) {
+        if (window.location.hash && ['#/signin', '#/userdetails'].indexOf(window.location.hash.toLowerCase()) > -1) {
             return 'full-height dark-background';
         }
         return '';
     };
+
+    renderDialog = () => {
+        if (this.state.showDialog) {
+            const { filter } = this.state;
+
+            const updatedKeyMap = {
+                ...keyMap,
+                CLOSE_DIALOG: {
+                    name: 'Close keymap',
+                    sequences: [{
+                        sequence: 'Escape',
+                    }],
+                    action: 'keyup',
+                },
+            };
+
+            return (
+                <GlobalHotKeys
+                    keyMap={updatedKeyMap}
+                    handlers={this.handlers}
+                    allowChanges
+                >
+                    {/* eslint-disable-next-line max-len */}
+                    {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions,jsx-a11y/click-events-have-key-events */}
+                    <div className="keymap-dialog" onClick={() => this.setState({ showDialog: false })}>
+                        <h2>
+                            Keyboard shortcuts
+                        </h2>
+
+                        <ObserveKeys only="Escape">
+                            <input
+                                onChange={
+                                    ({ target: { value } }) => this.setState({ filter: value })
+                                }
+                                onClick={e => stopEvent(e)}
+                                value={filter}
+                                placeholder="Filter"
+                            />
+                        </ObserveKeys>
+
+                        <table>
+                            <tbody>
+                                {Object.keys(updatedKeyMap).reduce((memo, actionName) => {
+                                    if (!filter
+                                        || actionName.indexOf(filter.toUpperCase()) !== -1
+                                        || (
+                                            updatedKeyMap[actionName].name
+                                            && updatedKeyMap[actionName].name.toUpperCase().indexOf(
+                                                filter.toUpperCase(),
+                                            ) !== -1)) {
+                                        const { sequences, name } = updatedKeyMap[actionName];
+
+                                        memo.push(
+                                            <tr key={name || actionName}>
+                                                <td className="keymap-tablecell">
+                                                    {name}
+                                                </td>
+                                                <td className="keymap-tablecell">
+                                                    {sequences.map(
+                                                        ({ sequence }, index) => (
+                                                            <span key={sequence}>
+                                                                {sequence}
+                                                                {(index === (sequences.length - 1) ? '' : ',')}
+                                                            </span>
+                                                        ),
+                                                    )}
+                                                </td>
+                                            </tr>,
+                                        );
+                                    }
+
+                                    return memo;
+                                }, [])}
+                            </tbody>
+                        </table>
+                    </div>
+                </GlobalHotKeys>
+            );
+        }
+        return null;
+    }
 
     render() {
         const commonProps = this.props;
         const { modal, problemList, problemStore } = this.props;
         return (
             <React.Fragment>
+                {this.renderDialog()}
+                <AriaLiveAnnouncer />
+                <GlobalHotKeys keyMap={keyMap} handlers={this.handlers} allowChanges />
                 <NotificationContainer />
                 <div className={`body-container ${this.getAdditionalClass()}`}>
                     <ModalContainer
@@ -294,6 +431,7 @@ class App extends Component {
                         <Route exact path="/privacy" render={p => <Privacy {...p} />} />
                         <Route exact path="/partners" render={p => <Partners {...p} />} />
                         <Route exact path="/signIn" render={p => <SignIn {...p} />} />
+                        <Route exact path="/userDetails" render={p => <UserDetails {...p} />} />
                         <Route render={p => <NotFound {...p} />} />
                     </Switch>
                 </div>
@@ -308,18 +446,17 @@ class App extends Component {
     }
 }
 
-export default withRouter(
-    connect(
-        state => ({
-            problemList: state.problemList,
-            problemStore: state.problem,
-            userProfile: state.userProfile,
-            modal: state.modal,
-        }),
-        {
-            ...problemActions,
-            ...problemListActions,
-            ...userProfileActions,
-        },
-    )(App),
-);
+export default withRouter(connect(
+    state => ({
+        problemList: state.problemList,
+        problemStore: state.problem,
+        userProfile: state.userProfile,
+        modal: state.modal,
+    }),
+    {
+        ...problemActions,
+        ...problemListActions,
+        ...userProfileActions,
+        ...ariaLiveAnnouncerActions,
+    },
+)(App));

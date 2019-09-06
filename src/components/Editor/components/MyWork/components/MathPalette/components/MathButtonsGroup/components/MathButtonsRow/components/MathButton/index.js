@@ -28,7 +28,12 @@ import Locales from '../../../../../../../../../../../../strings';
 
 const getDOM = (xmlstring) => {
     const parser = new DOMParser();
-    return parser.parseFromString(xmlstring, 'text/xml');
+    return parser.parseFromString(
+        xmlstring
+            .replace(/&times;/, '*')
+            .replace(/÷/, '/'),
+        'text/xml',
+    );
 };
 
 const removeTags = (node) => {
@@ -54,7 +59,7 @@ const removeTags = (node) => {
 
     if (tagName === 'mfenced') result = `(${result})`;
     if (tagName === 'msqrt') result = `Math.sqrt(${result})`;
-    if (tagName === 'mo' || tagName === 'mn' || tagName === 'mi') result += node.textContent;
+    if (tagName === 'mo' || tagName === 'mn' || tagName === 'mi' || tagName === 'mtext') result += node.textContent;
     return result;
 };
 

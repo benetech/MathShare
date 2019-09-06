@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import classNames from 'classnames';
 import Tour from 'reactour';
+import { GlobalHotKeys } from 'react-hotkeys';
 import FontAwesome from 'react-fontawesome';
 import { UncontrolledTooltip } from 'reactstrap';
 import { IntercomAPI } from 'react-intercom';
@@ -11,6 +12,8 @@ import problem from './styles.scss';
 import googleAnalytics from '../../../../scripts/googleAnalytics';
 import Locales from '../../../../strings';
 import showImage from '../../../../scripts/showImage';
+import completeKeyMap from '../../../../constants/hotkeyConfig.json';
+import { stopEvent } from '../../../../services/events';
 import { tourConfig, accentColor } from './tourConfig';
 // import parseMathLive from '../../../../scripts/parseMathLive';
 
@@ -22,6 +25,15 @@ export default class ProblemHeader extends Component {
         super(props);
 
         this.onImgClick = this.onImgClick.bind(this);
+
+        this.handlers = {
+            SAVE_PROBLEM_SOLUTION: (e) => {
+                if (this.props.isUpdated) {
+                    this.props.saveProblem(e);
+                }
+                return stopEvent(e);
+            },
+        };
     }
 
     shouldComponentUpdate(nextProps) {
@@ -180,6 +192,11 @@ export default class ProblemHeader extends Component {
 
         return (
             <React.Fragment>
+                <GlobalHotKeys
+                    keyMap={completeKeyMap}
+                    handlers={this.handlers}
+                    allowChanges
+                />
                 <div className={`d-flex flex-row ${problem.header}`}>
                     <div className={problem.backBtnContainer}>
                         <Button
@@ -214,9 +231,20 @@ export default class ProblemHeader extends Component {
                         }
                     />
                 </div>
-                <div className={`d-flex flex-row ${problem.subHeader}`}>
+                <div className={`d-flex flex-row ${problem.subHeader}`} tabIndex={0}>
                     {imgButton}
-                    <h1 id="ProblemTitle" className={problem.title}>{title}</h1>
+                    <h1 id="ProblemTitle" className={problem.title}>
+                        {title}
+                        <span className="sROnly">
+                            {mathLive.latexToSpeakableText(
+                                this.props.math,
+                                {
+                                    textToSpeechRules: 'sre',
+                                    textToSpeechRulesOptions: { domain: 'clearspeak', style: 'default', markup: 'none' },
+                                },
+                            )}
+                        </span>
+                    </h1>
                     <span id="ProblemMath" className={`${problem.title} ${problem.question}`}>{`$$${this.props.math}$$`}</span>
                 </div>
             </React.Fragment>

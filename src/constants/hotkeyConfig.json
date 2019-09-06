@@ -1,0 +1,83 @@
+{
+    "MOVE_TO_MATH_INPUT": {
+        "name": "Move focus to math input box",
+        "sequences": [
+            {
+                "sequence": "alt+m"
+            }
+        ],
+        "action": "keyup"
+    },
+    "MOVE_TO_DESCRIPTION_BOX": {
+        "name": "Move focus to step description box",
+        "sequences": [
+            {
+                "sequence": "alt+shift+b"
+            }
+        ],
+        "action": "keyup"
+    },
+    "TRIGGER_S2T": {
+        "name": "Trigger speech to text for current step description",
+        "sequences": [
+            {
+                "sequence": "alt+t"
+            }
+        ],
+        "action": "keyup"
+    },
+    "SAVE_PROBLEM_SOLUTION": {
+        "name": "Save",
+        "sequences": [
+            {
+                "sequence": "alt+s"
+            }
+        ],
+        "action": "keyup"
+    },
+    "READ_PROBLEM_MATH": {
+        "name": "Read problem math",
+        "sequences": [
+            {
+                "sequence": "alt+shift+r"
+            }
+        ],
+        "action": "keyup"
+    },
+    "SHOW_DIALOG": {
+        "name": "Display keyboard shortcuts",
+        "sequences": [
+            {
+                "sequence": "alt+h"
+            }
+        ],
+        "action": "keyup"
+    },
+    "READ_STEP": {
+        "name": "Read step no (1-9)",
+        "sequences": [
+            {
+                "sequence": "ctrl+alt+[1..9]"
+            }
+        ],
+        "action": "keyup"
+    },
+    "READ_NEXT_STEP": {
+        "name": "Read next step",
+        "sequences": [
+            {
+                "sequence": "alt+shift+="
+            }
+        ],
+        "action": "keyup"
+    },
+    "READ_PREVIOUS_STEP": {
+        "name": "Read previous step",
+        "sequences": [
+            {
+                "sequence": "alt+shift+-"
+            }
+        ],
+        "action": "keyup"
+    }
+}

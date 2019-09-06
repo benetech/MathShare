@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
 import classNames from 'classnames';
 import Watson from 'watson-speech';
+import { GlobalHotKeys } from 'react-hotkeys';
 import { IntercomAPI } from 'react-intercom';
 import { SERVER_URL } from '../../../../../../../../config';
 import Button from '../../../../../../../Button';
 import editorArea from '../../styles.scss';
 import googleAnalytics from '../../../../../../../../scripts/googleAnalytics';
 import { alertInfo, alertWarning, alertError } from '../../../../../../../../scripts/alert';
+import { stopEvent } from '../../../../../../../../services/events';
 import Locales from '../../../../../../../../strings';
+import completeKeyMap from '../../../../../../../../constants/hotkeyConfig.json';
 
 import mic from '../../../../../../../../../images/mic.gif';
 import micSlash from '../../../../../../../../../images/mic-slash.gif';
@@ -90,9 +93,15 @@ export default class SpeechToTextButton extends Component {
             micEnabled: false,
             inProgress: false,
         };
+        this.handlers = {
+            TRIGGER_S2T: (e) => {
+                this.speechToText();
+                return stopEvent(e);
+            },
+        };
     }
 
-    speechToText() {
+    speechToText = () => {
         const {
             isChrome,
             micEnabled,
@@ -165,6 +174,11 @@ export default class SpeechToTextButton extends Component {
     render() {
         return (
             <span className={editorArea.floatRight}>
+                <GlobalHotKeys
+                    keyMap={completeKeyMap}
+                    handlers={this.handlers}
+                    allowChanges
+                />
                 <Button
                     id="start_button"
                     className={

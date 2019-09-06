@@ -530,7 +530,9 @@ function* requestUpdateTitleSaga() {
 }
 
 function* reqestDuplicateProblemSet() {
-    yield takeLatest('DUPLICATE_PROBLEM_SET', function* workerSaga() {
+    yield takeLatest('DUPLICATE_PROBLEM_SET', function* workerSaga({
+        payload,
+    }) {
         try {
             const {
                 set,
@@ -538,6 +540,7 @@ function* reqestDuplicateProblemSet() {
             } = yield select(getState);
             const setPayload = {
                 ...set,
+                ...payload,
                 palettes: tempPalettes,
             };
             const {
