@@ -60,7 +60,7 @@ class Index extends Component {
                     editCode={problemList.set.editCode}
                     action={null}
                 />
-                <div className="mainContainer">
+                <div id="mainContainer" className="mainContainer">
                     <ol className={pageIndex.problemSetList}>
                         <li className="card">
                             <button

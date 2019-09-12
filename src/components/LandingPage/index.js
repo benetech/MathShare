@@ -5,13 +5,14 @@ import {
 import { IntercomAPI } from 'react-intercom';
 // import classNames from 'classnames';
 import styles from './styles.scss';
-// import Locales from '../../strings';
+import Locales from '../../strings';
 import logo from '../../../images/logo-2.png';
 import homePhoto from '../../../images/home-photo.png';
 import showWork from '../../../images/show-work.png';
 import openSource from '../../../images/open-source-software.png';
 import lms from '../../../images/lms.png';
 import syntaxHighlighthing from '../../../images/syntax-highlighting.gif';
+import { focusOnMainContent, passEventForKeys } from '../../services/events';
 
 
 const clickOnTryNow = (history, isTryNow) => () => {
@@ -34,17 +35,28 @@ const clickOnSignIn = (history, setAuthRedirect, userProfile) => () => {
 
 const LandingPage = withRouter(({ history, setAuthRedirect, userProfile }) => (
     <div className={styles.container}>
+        <div>
+            <button
+                type="button"
+                className={styles.skipBtn}
+                tabIndex={0}
+                onClick={focusOnMainContent}
+                onKeyPress={passEventForKeys(focusOnMainContent)}
+            >
+                {Locales.strings.go_to_main_content}
+            </button>
+        </div>
         <div className={styles.signInLabel}>
             <span className={styles.signIn} onClick={clickOnSignIn(history, setAuthRedirect, userProfile)} onKeyPress={clickOnSignIn(history, setAuthRedirect, userProfile)} role="button" tabIndex={0}>
                 {userProfile.service ? 'Go to App' : 'Sign In'}
             </span>
         </div>
         <img className={styles.midLogo} src={logo} alt="mid-logo" aria-label="Mathshare Logo, a Benetech Initiative" />
-        <div className={styles.midContainer}>
+        <div id="mainContainer" className={styles.midContainer}>
             <div className={styles.content}>
-                <div className={styles.largeText}>
+                <h1 className={styles.largeText} tabIndex={-1}>
                     Help students show and organize their math work
-                </div>
+                </h1>
                 <img src={homePhoto} alt="mid-logo" aria-label="Screenshot showing example problem being solved step by step" />
                 <div className={styles.midBottomText}>
                     Benetech Mathshare empowers students to solve math problems and

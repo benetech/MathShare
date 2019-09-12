@@ -11,6 +11,26 @@ header nav.navbar {
 
   .navbarBrandContainer {
     flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+
+    :global(.navbar-brand) {
+      order: 1;
+    }
+
+    .skip {
+      color: white;
+      white-space: nowrap;
+      order: 2;
+      margin: auto 0;
+
+      &:hover,
+      &:focus {
+        @extend .skip;
+        cursor: pointer;
+        text-decoration: none;
+      }
+    }
   }
 
   :global(.nav-item.avatar) {

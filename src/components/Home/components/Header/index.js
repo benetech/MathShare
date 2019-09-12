@@ -19,7 +19,7 @@ import {
 } from '../../../../redux/userProfile/actions';
 import googleAnalytics from '../../../../scripts/googleAnalytics';
 import logo from '../../../../../images/mathshare_logo_white.png';
-import { stopEvent } from '../../../../services/events';
+import { focusOnMainContent, stopEvent, passEventForKeys } from '../../../../services/events';
 
 
 class MainPageHeader extends React.Component {
@@ -98,6 +98,15 @@ class MainPageHeader extends React.Component {
                         <h2 id="topNavLabel" className="sROnly">{Locales.strings.header}</h2>
                         <div className={header.navbarBrandContainer}>
                             <a
+                                role="link"
+                                className={header.skip}
+                                tabIndex={0}
+                                onClick={focusOnMainContent}
+                                onKeyPress={passEventForKeys(focusOnMainContent)}
+                            >
+                                {Locales.strings.go_to_main_content}
+                            </a>
+                            <a
                                 className="navbar-brand"
                                 href="#/app"
                                 onClick={() => {
@@ -120,7 +129,7 @@ class MainPageHeader extends React.Component {
                                         tabIndex={0}
                                         aria-labelledby={`${questionBtnId}-label`}
                                         onClick={this.clickOnQuestion}
-                                        onKeyPress={this.clickOnQuestion}
+                                        onKeyPress={passEventForKeys(this.clickOnQuestion)}
                                     >
                                         <FontAwesome
                                             size="lg"
@@ -140,7 +149,9 @@ class MainPageHeader extends React.Component {
                                                 <a
                                                     className="dropdown-item"
                                                     onClick={this.openNewProblemSet}
-                                                    onKeyPress={this.openNewProblemSet}
+                                                    onKeyPress={
+                                                        passEventForKeys(this.openNewProblemSet)
+                                                    }
                                                     role="link"
                                                     tabIndex="0"
                                                 >
@@ -156,7 +167,7 @@ class MainPageHeader extends React.Component {
                                             className="dropdown-item"
                                             href="/#/app/problem/example"
                                             onClick={this.onClickTutorial}
-                                            onKeyPress={this.onClickTutorial}
+                                            onKeyPress={passEventForKeys(this.onClickTutorial)}
                                             role="button"
                                             tabIndex={0}
                                         >
@@ -208,7 +219,7 @@ class MainPageHeader extends React.Component {
                                             className={`nav-link btn ${header.signInLink}`}
                                             href="/#/signIn"
                                             onClick={this.setAuthRedirect}
-                                            onKeyPress={this.setAuthRedirect}
+                                            onKeyPress={passEventForKeys(this.setAuthRedirect)}
                                         >
 
                                             Sign In
@@ -245,7 +256,11 @@ class MainPageHeader extends React.Component {
                                                 <a
                                                     className="dropdown-item logout"
                                                     onClick={this.props.logoutOfUserProfile}
-                                                    onKeyPress={this.props.logoutOfUserProfile}
+                                                    onKeyPress={
+                                                        passEventForKeys(
+                                                            this.props.logoutOfUserProfile,
+                                                        )
+                                                    }
                                                     role="button"
                                                     tabIndex={0}
                                                 >
