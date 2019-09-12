@@ -9,7 +9,7 @@ const SiteMapFooter = ({ customClass }) => (
         <div className={`${footer.footerContainer} d-flex flex-row flex-wrap`}>
             <div>
                 <div className="d-flex flex-row">
-                    <img src={footerLogo} alt="footer-logo" aria-label="benetech logo" />
+                    <img src={footerLogo} alt="benetech logo" />
                     <div className={footer.mAuto}>
                         Mathshare is a
                         <br />

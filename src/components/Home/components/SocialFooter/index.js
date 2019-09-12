@@ -11,7 +11,7 @@ const SocialFooter = ({ customClass }) => (
                 target="_blank"
                 rel="noopener noreferrer"
                 className={footer.socialIcon}
-                aria-label="to mathshare twitter"
+                aria-label={Locales.strings.to_mathshare_twitter}
             >
                 <FontAwesome
                     size="lg"
@@ -23,7 +23,7 @@ const SocialFooter = ({ customClass }) => (
                 target="_blank"
                 rel="noopener noreferrer"
                 className={footer.socialIcon}
-                aria-label="to mathshare youtube"
+                aria-label={Locales.strings.to_mathshare_youtube}
             >
                 <FontAwesome
                     size="lg"

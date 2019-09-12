@@ -1,7 +1,7 @@
 import React from 'react';
 // import classNames from 'classnames';
 import styles from './styles.scss';
-// import Locales from '../../strings';
+import Locales from '../../strings';
 import logo from '../../../images/logo-2.png';
 // import homePhoto from '../../../images/home-photo.png';
 
@@ -10,7 +10,7 @@ const Partners = () => (
     <div className={styles.container}>
         <div className={styles.logoContainer}>
             <a href="/#/">
-                <img className={styles.midLogo} src={logo} aria-label="Mathshare Logo, a Benetech Initiative" alt="logo" />
+                <img className={styles.midLogo} src={logo} alt={Locales.strings.mathshare_logo} />
             </a>
         </div>
         <div className={styles.headerBottom} />

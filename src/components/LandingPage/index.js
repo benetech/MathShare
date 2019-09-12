@@ -55,13 +55,13 @@ const LandingPage = withRouter(({ history, setAuthRedirect, userProfile }) => (
                 {userProfile.service ? 'Go to App' : 'Sign In'}
             </button>
         </div>
-        <img className={styles.midLogo} src={logo} alt="mid-logo" aria-label="Mathshare Logo, a Benetech Initiative" />
+        <img className={styles.midLogo} src={logo} alt={Locales.strings.mathshare_logo} />
         <div id="mainContainer" className={styles.midContainer}>
             <div className={styles.content}>
                 <h1 className={styles.largeText} tabIndex={-1}>
                     Help students show and organize their math work
                 </h1>
-                <img src={homePhoto} alt="mid-logo" aria-label="Screenshot showing example problem being solved step by step" />
+                <img src={homePhoto} alt="mid-logo" aria-label={Locales.strings.screenshot_step_by_step} />
                 <div className={styles.midBottomText}>
                     Benetech Mathshare empowers students to solve math problems and
                     {' '}
@@ -83,7 +83,7 @@ const LandingPage = withRouter(({ history, setAuthRedirect, userProfile }) => (
                 <hr />
                 <div className={`${styles.feature} ${styles.reverse}`}>
                     <div className={styles.imageSection}>
-                        <img src={showWork} alt="show-work" aria-label="Screen shot showing math share interface" />
+                        <img src={showWork} alt={Locales.strings.screenshot_math_interface} />
                     </div>
                     <div className={styles.textSection}>
                         <div className={styles.header}>
@@ -99,7 +99,7 @@ const LandingPage = withRouter(({ history, setAuthRedirect, userProfile }) => (
                 <hr />
                 <div className={styles.feature}>
                     <div className={styles.imageSection}>
-                        <img src={syntaxHighlighthing} alt="show-work" aria-label="animation showing math with synchronized highlighting" />
+                        <img src={syntaxHighlighthing} alt={Locales.strings.mathshare_gif} />
                     </div>
                     <div className={styles.textSection}>
                         <div className={styles.header}>
@@ -117,7 +117,7 @@ const LandingPage = withRouter(({ history, setAuthRedirect, userProfile }) => (
                 <hr />
                 <div className={`${styles.feature} ${styles.reverse}`}>
                     <div className={styles.imageSection}>
-                        <img src={lms} alt="lms" aria-label="several logos of several LMS vendors, including Canvas, Google Classroom, Schoology, Moodle, OneNote, and Blackboard" />
+                        <img src={lms} alt={Locales.strings.mathshare_supported_lms} />
                     </div>
                     <div className={styles.textSection}>
                         <div className={styles.header}>
@@ -135,7 +135,7 @@ const LandingPage = withRouter(({ history, setAuthRedirect, userProfile }) => (
                 <hr />
                 <div className={styles.feature}>
                     <div className={styles.imageSection}>
-                        <img src={openSource} alt="open-source" aria-label="Image showing open source logo" />
+                        <img src={openSource} alt={Locales.strings.mathshare_open_source} />
                     </div>
                     <div className={styles.textSection}>
                         <div className={styles.header}>

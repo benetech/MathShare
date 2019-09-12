@@ -8,6 +8,12 @@ class Locales {
     constructor() {
         this.strings = new LocalizedStrings({
             en: {
+                mathshare_logo: 'Mathshare Logo, a Benetech Initiative',
+                screenshot_step_by_step: 'Screenshot showing example problem being solved step by step',
+                screenshot_math_interface: 'Screen shot showing math share interface',
+                mathshare_gif: 'animation showing math with synchronized highlighting',
+                mathshare_supported_lms: 'several logos of several LMS vendors, including Canvas, Google Classroom, Schoology, Moodle, OneNote, and Blackboard',
+                mathshare_open_source: 'Image showing open source logo',
                 my_steps: 'My Steps',
                 steps: 'Steps',
                 step: 'Step',
@@ -172,6 +178,8 @@ class Locales {
                 view_as_student: ' View as Student',
                 share_with_teachers: ' Share with Teachers',
                 share_with_teachers_text: 'Check out my #accessible math problems made in @mathshare. Supports learning styles, special needs and #4Cs. ',
+                to_mathshare_twitter: 'to mathshare twitter',
+                to_mathshare_youtube: 'to mathshare youtube',
             },
             es: {},
         });
