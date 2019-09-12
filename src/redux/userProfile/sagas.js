@@ -90,7 +90,7 @@ function* redirectAfterLoginSaga() {
         } = yield select(getState);
         if (redirectTo === 'back') {
             yield put(goBack());
-        } else if (forceBack || redirectTo === 'app' || redirectTo === null) {
+        } else if (forceBack || redirectTo === 'app' || ['#/signin', '#/userdetails'].includes(window.location.hash.toLowerCase())) {
             yield put(replace('/app'));
         }
         yield put(setAuthRedirect(null));

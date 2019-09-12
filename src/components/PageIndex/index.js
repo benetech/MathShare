@@ -8,7 +8,7 @@ import MainPageHeader from '../Home/components/Header';
 import { requestDefaultRevision, requestExampleSets } from '../../redux/problemList/actions';
 import googleAnalytics from '../../scripts/googleAnalytics';
 import pageIndex from './styles.scss';
-import { stopEvent } from '../../services/events';
+import { stopEvent, passEventForKeys } from '../../services/events';
 
 const shareOnTwitter = shareCode => (e) => {
     window.open(
@@ -67,7 +67,7 @@ class Index extends Component {
                                 type="button"
                                 className="btn d-flex"
                                 onClick={props.addProblemSet}
-                                onKeyPress={props.addProblemSet}
+                                onKeyPress={passEventForKeys(props.addProblemSet)}
                             >
                                 <span className="centreText">+ New Problem Set</span>
                             </button>
@@ -77,9 +77,8 @@ class Index extends Component {
                                 type="button"
                                 className="btn d-flex"
                                 onClick={this.openExampleProblem}
-                                onKeyPress={this.openExampleProblem}
+                                onKeyPress={passEventForKeys(this.openExampleProblem)}
                                 role="link"
-                                tabIndex="0"
                             >
                                 <span className="centreText">Example Problem</span>
                             </button>
@@ -94,9 +93,10 @@ class Index extends Component {
                                     type="button"
                                     className="btn d-flex"
                                     onClick={this.openPremadeSet(exampleProblemSet)}
-                                    onKeyPress={this.openPremadeSet(exampleProblemSet)}
+                                    onKeyPress={
+                                        passEventForKeys(this.openPremadeSet(exampleProblemSet))
+                                    }
                                     role="link"
-                                    tabIndex="0"
                                 >
                                     <span className={pageIndex.title}>
                                         {exampleProblemSet.title}
@@ -123,40 +123,42 @@ class Index extends Component {
                                             />
                                         </button>
                                         <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                            <a
-                                                className="dropdown-item"
+                                            <button
+                                                className="dropdown-item reset-btn"
                                                 onClick={this.duplicateProblemSet(
                                                     exampleProblemSet,
                                                 )}
-                                                onKeyPress={this.duplicateProblemSet(
-                                                    exampleProblemSet,
-                                                )}
-                                                role="link"
-                                                tabIndex="0"
+                                                onKeyPress={
+                                                    passEventForKeys(
+                                                        this.duplicateProblemSet(
+                                                            exampleProblemSet,
+                                                        ),
+                                                    )
+                                                }
+                                                type="button"
                                             >
                                                 <FontAwesome
                                                     size="lg"
                                                     name="copy"
                                                 />
                                                 {` ${Locales.strings.duplicate_set}`}
-                                            </a>
-                                            <a
-                                                className="dropdown-item"
+                                            </button>
+                                            <button
+                                                className="dropdown-item reset-btn"
                                                 onClick={shareOnTwitter(
                                                     exampleProblemSet.shareCode,
                                                 )}
-                                                onKeyPress={shareOnTwitter(
+                                                onKeyPress={passEventForKeys(shareOnTwitter(
                                                     exampleProblemSet.shareCode,
-                                                )}
-                                                role="link"
-                                                tabIndex="0"
+                                                ))}
+                                                type="button"
                                             >
                                                 <FontAwesome
                                                     size="lg"
                                                     name="twitter"
                                                 />
                                                 {` ${Locales.strings.share_with_teachers}`}
-                                            </a>
+                                            </button>
                                         </div>
                                     </div>
                                 </button>

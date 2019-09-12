@@ -12,7 +12,7 @@ import Locales from '../../../../../strings';
 import showImage from '../../../../../scripts/showImage';
 import parseMathLive from '../../../../../scripts/parseMathLive';
 import { SERVER_URL } from '../../../../../config';
-import { stopEvent } from '../../../../../services/events';
+import { stopEvent, passEventForKeys } from '../../../../../services/events';
 
 const mathLive = process.env.MATHLIVE_DEBUG_MODE ? require('../../../../../../../mathlive/src/mathlive.js').default
     : require('../../../../../lib/mathlivedist/mathlive.js');
@@ -275,10 +275,10 @@ export default class Problem extends Component {
                         this.props.addNew
                             ? this.openNewProblemModal()
                             : this.createNewSolution(history))}
-                    onKeyPress={() => (
+                    onKeyPress={passEventForKeys(() => (
                         this.props.addNew
                             ? this.openNewProblemModal()
-                            : this.createNewSolution(history))}
+                            : this.createNewSolution(history)))}
                     tabIndex="0"
                 >
                     <div

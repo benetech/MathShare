@@ -15,13 +15,12 @@ import syntaxHighlighthing from '../../../images/syntax-highlighting.gif';
 import { focusOnMainContent, passEventForKeys } from '../../services/events';
 
 
-const clickOnTryNow = (history, isTryNow) => () => {
+const clickOnTryNow = isTryNow => () => {
     if (isTryNow) {
         IntercomAPI('trackEvent', 'try-now');
     } else {
         IntercomAPI('trackEvent', 'create-account');
     }
-    history.push('/app');
 };
 
 const clickOnSignIn = (history, setAuthRedirect, userProfile) => () => {
@@ -47,9 +46,14 @@ const LandingPage = withRouter(({ history, setAuthRedirect, userProfile }) => (
             </button>
         </div>
         <div className={styles.signInLabel}>
-            <span className={styles.signIn} onClick={clickOnSignIn(history, setAuthRedirect, userProfile)} onKeyPress={clickOnSignIn(history, setAuthRedirect, userProfile)} role="button" tabIndex={0}>
+            <button
+                className={styles.signIn}
+                onClick={clickOnSignIn(history, setAuthRedirect, userProfile)}
+                onKeyPress={passEventForKeys(clickOnSignIn(history, setAuthRedirect, userProfile))}
+                type="button"
+            >
                 {userProfile.service ? 'Go to App' : 'Sign In'}
-            </span>
+            </button>
         </div>
         <img className={styles.midLogo} src={logo} alt="mid-logo" aria-label="Mathshare Logo, a Benetech Initiative" />
         <div id="mainContainer" className={styles.midContainer}>
@@ -63,15 +67,15 @@ const LandingPage = withRouter(({ history, setAuthRedirect, userProfile }) => (
                     {' '}
                     show their work so that teachers and students can see how they got there.
                 </div>
-                <div
+                <a
+                    href="/#/app"
                     className={styles.btn}
-                    onClick={clickOnTryNow(history, true)}
-                    onKeyPress={clickOnTryNow(history, true)}
-                    role="link"
+                    onClick={clickOnTryNow(true)}
+                    onKeyPress={passEventForKeys(clickOnTryNow(true))}
                     tabIndex="0"
                 >
                     Try now
-                </div>
+                </a>
             </div>
         </div>
         <div className={styles.features}>
@@ -152,15 +156,6 @@ const LandingPage = withRouter(({ history, setAuthRedirect, userProfile }) => (
                         </div>
                     </div>
                 </div>
-                {/* <div
-                    className={`${styles.btn} ${styles.signupBtn}`}
-                    onClick={clickOnTryNow(history)}
-                    onKeyPress={clickOnTryNow(history)}
-                    role="link"
-                    tabIndex="0"
-                >
-                    Create Free Account
-                </div> */}
             </div>
         </div>
     </div>

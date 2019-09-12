@@ -9,6 +9,7 @@ import googleLogo from '../../../images/google-logo.svg';
 import microsoftLogo from '../../../images/microsoft-logo.svg';
 // eslint-disable-next-line no-unused-vars
 import signIn from './styles.scss';
+import { passEventForKeys } from '../../services/events';
 
 
 class SignIn extends Component {
@@ -90,16 +91,15 @@ class SignIn extends Component {
     );
 
     renderMicrosoftBtn = () => (
-        <div
+        <button
             id={this.MS_SIGN_IN}
             className={`abcRioButton abcRioButtonBlue ${signIn.microsoftContainer}`}
-            role="button"
+            type="button"
             onClick={this.startMicrosoftSignIn}
-            onKeyPress={this.startMicrosoftSignIn}
-            tabIndex={0}
+            onKeyPress={passEventForKeys(this.startMicrosoftSignIn)}
         >
             <img src={microsoftLogo} alt="microsoft logo" />
-        </div>
+        </button>
     )
 
     goBack = () => {
@@ -120,16 +120,15 @@ class SignIn extends Component {
                     </div>
                     <UncontrolledTooltip placement="top" target={this.GOOGLE_SIGN_IN} />
                     <UncontrolledTooltip placement="top" target={this.MS_SIGN_IN} />
-                    <div
+                    <button
                         id="goBack"
-                        className={`${signIn.text} ${signIn.pointer}`}
+                        className={`${signIn.text} ${signIn.pointer} reset-btn`}
                         onClick={this.goBack}
                         onKeyPress={this.goBack}
-                        role="link"
-                        tabIndex={0}
+                        type="button"
                     >
                         <u>Continue without signin in</u>
-                    </div>
+                    </button>
                     <UncontrolledTooltip placement="top" target="goBack" />
                 </div>
             </div>

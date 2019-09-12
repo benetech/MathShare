@@ -182,8 +182,6 @@ class Home extends Component {
                                     onKeyPress={passEventForKeys(
                                         this.shareOnGoogleClassroom,
                                     )}
-                                    role="link"
-                                    tabIndex="0"
                                     type="button"
                                 >
                                     <div className={home.btnText}>Google Classroom</div>
@@ -202,8 +200,6 @@ class Home extends Component {
                                     ])}
                                     onClick={this.shareOnMicrosoftTeams}
                                     onKeyPress={this.shareOnMicrosoftTeams}
-                                    role="link"
-                                    tabIndex="0"
                                     type="button"
                                 >
                                     <div className={home.btnText}>Microsoft Teams</div>
@@ -240,23 +236,25 @@ class Home extends Component {
                         <h1 id="LeftNavigationHeader" className={home.titleHeader} tabIndex="-1">
                             {currentSet.title}
                         </h1>
-                        <FontAwesome
-                            className={
-                                classNames(
-                                    'fa-2x',
-                                )
-                            }
+                        <button
+                            className="reset-btn"
                             onClick={() => {
                                 this.props.toggleModals([TITLE_EDIT_MODAL]);
                             }}
-                            onKeyPress={(event) => {
-                                if (event.key === 'Enter') {
-                                    this.props.toggleModals([TITLE_EDIT_MODAL]);
+                            onKeyPress={passEventForKeys(() => {
+                                this.props.toggleModals([TITLE_EDIT_MODAL]);
+                            })}
+                            type="button"
+                        >
+                            <FontAwesome
+                                name="edit"
+                                className={
+                                    classNames(
+                                        'fa-2x',
+                                    )
                                 }
-                            }}
-                            tabIndex={0}
-                            name="edit"
-                        />
+                            />
+                        </button>
                         {/* <div className={home.spaceInBetween} /> */}
                         <div className="dropdown">
                             <button className="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -273,34 +271,33 @@ class Home extends Component {
                                 {params.action === 'edit' && (
                                     /* eslint-disable jsx-a11y/anchor-is-valid */
                                     <React.Fragment>
-                                        <a
+                                        <button
                                             className="dropdown-item"
                                             onClick={this.props.duplicateProblemSet}
-                                            onKeyPress={this.props.duplicateProblemSet}
-                                            role="link"
-                                            tabIndex="0"
+                                            onKeyPress={
+                                                passEventForKeys(this.props.duplicateProblemSet)
+                                            }
+                                            type="button"
                                         >
                                             <FontAwesome
                                                 size="lg"
                                                 name="copy"
                                             />
                                             {` ${Locales.strings.duplicate_set}`}
-                                        </a>
-                                        <a
+                                        </button>
+                                        <button
                                             className="dropdown-item"
                                             onClick={this.shareOnTwitter}
-                                            onKeyPress={this.shareOnTwitter}
-                                            role="link"
-                                            tabIndex="0"
+                                            onKeyPress={passEventForKeys(this.shareOnTwitter)}
+                                            type="button"
                                         >
                                             <FontAwesome
                                                 size="lg"
                                                 name="twitter"
                                             />
                                             {` ${Locales.strings.share_with_teachers}`}
-                                        </a>
+                                        </button>
                                     </React.Fragment>
-                                    /* eslint-enable jsx-a11y/anchor-is-valid */
                                 )}
                             </div>
                         </div>
@@ -378,9 +375,9 @@ class Home extends Component {
                                                 'pointer',
                                             ])}
                                             onClick={this.shareOnGoogleClassroom}
-                                            onKeyPress={this.shareOnGoogleClassroom}
-                                            role="link"
-                                            tabIndex="0"
+                                            onKeyPress={
+                                                passEventForKeys(this.shareOnGoogleClassroom)
+                                            }
                                             type="button"
                                         >
                                             <div className={home.btnText}>Google Classroom</div>
@@ -398,9 +395,9 @@ class Home extends Component {
                                                 'pointer',
                                             ])}
                                             onClick={this.shareOnMicrosoftTeams}
-                                            onKeyPress={this.shareOnMicrosoftTeams}
-                                            role="link"
-                                            tabIndex="0"
+                                            onKeyPress={
+                                                passEventForKeys(this.shareOnMicrosoftTeams)
+                                            }
                                             type="button"
                                         >
                                             <div className={home.btnText}>Microsoft Teams</div>

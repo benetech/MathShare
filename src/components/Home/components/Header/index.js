@@ -56,7 +56,7 @@ class MainPageHeader extends React.Component {
         document.querySelectorAll('li.avatar .dropdown-menu > *').forEach((node) => {
             node.addEventListener('click', e => stopEvent(e));
         });
-        const logout = document.querySelector('li.avatar .dropdown-menu a.logout');
+        const logout = document.querySelector('li.avatar .dropdown-menu .logout');
         if (logout) {
             logout.addEventListener('click', this.props.logoutOfUserProfile);
         }
@@ -97,15 +97,14 @@ class MainPageHeader extends React.Component {
                     >
                         <h2 id="topNavLabel" className="sROnly">{Locales.strings.header}</h2>
                         <div className={header.navbarBrandContainer}>
-                            <a
-                                role="link"
-                                className={header.skip}
-                                tabIndex={0}
+                            <button
+                                type="button"
+                                className={`${header.skip} reset-btn`}
                                 onClick={focusOnMainContent}
                                 onKeyPress={passEventForKeys(focusOnMainContent)}
                             >
                                 {Locales.strings.go_to_main_content}
-                            </a>
+                            </button>
                             <a
                                 className="navbar-brand"
                                 href="#/app"
@@ -126,7 +125,6 @@ class MainPageHeader extends React.Component {
                                         id={questionBtnId}
                                         data-toggle="dropdown"
                                         type="button"
-                                        tabIndex={0}
                                         aria-labelledby={`${questionBtnId}-label`}
                                         onClick={this.clickOnQuestion}
                                         onKeyPress={passEventForKeys(this.clickOnQuestion)}
@@ -141,26 +139,22 @@ class MainPageHeader extends React.Component {
                                         className="dropdown-menu dropdown-menu-lg-right dropdown-secondary"
                                         aria-labelledby={`${questionBtnId}-label`}
                                     >
-                                        {/* {props.action && (
-                                            <GettingStartedButton />
-                                        )} */}
                                         {(props.action === 'new' || props.action === 'edit') && (
                                             <React.Fragment>
-                                                <a
-                                                    className="dropdown-item"
+                                                <button
+                                                    className="dropdown-item reset-btn"
                                                     onClick={this.openNewProblemSet}
                                                     onKeyPress={
                                                         passEventForKeys(this.openNewProblemSet)
                                                     }
-                                                    role="link"
-                                                    tabIndex="0"
+                                                    type="button"
                                                 >
                                                     <FontAwesome
                                                         size="lg"
                                                         name="plus"
                                                     />
                                                     {` ${Locales.strings.add_problem_set}`}
-                                                </a>
+                                                </button>
                                             </React.Fragment>
                                         )}
                                         <a
@@ -168,7 +162,6 @@ class MainPageHeader extends React.Component {
                                             href="/#/app/problem/example"
                                             onClick={this.onClickTutorial}
                                             onKeyPress={passEventForKeys(this.onClickTutorial)}
-                                            role="button"
                                             tabIndex={0}
                                         >
                                             <FontAwesome
@@ -233,17 +226,18 @@ class MainPageHeader extends React.Component {
                                 )}
                                 {userProfile.service && (
                                     <li className="nav-item avatar dropdown">
-                                        <a
-                                            className="nav-link dropdown-toggle"
+                                        <button
+                                            className="nav-link dropdown-toggle reset-btn"
                                             id="navbarDropdownMenuLink-avatar"
                                             data-toggle="dropdown"
+                                            type="button"
                                         >
                                             <img
                                                 src={userProfile.profileImage}
                                                 className="rounded-circle z-depth-0"
                                                 alt="avatar"
                                             />
-                                        </a>
+                                        </button>
                                         <UncontrolledTooltip placement="top" target="navbarDropdownMenuLink-avatar" />
                                         {window.auth2Initialized && (
                                             <div
@@ -253,19 +247,18 @@ class MainPageHeader extends React.Component {
                                                 <div className="dropdown-header">{userProfile.name}</div>
                                                 <div className={`dropdown-header ${header.email}`}>{userProfile.email}</div>
                                                 <div className="dropdown-divider" />
-                                                <a
-                                                    className="dropdown-item logout"
+                                                <button
+                                                    className="dropdown-item logout reset-btn"
                                                     onClick={this.props.logoutOfUserProfile}
                                                     onKeyPress={
                                                         passEventForKeys(
                                                             this.props.logoutOfUserProfile,
                                                         )
                                                     }
-                                                    role="button"
-                                                    tabIndex={0}
+                                                    type="button"
                                                 >
                                                     Sign Out
-                                                </a>
+                                                </button>
                                             </div>
                                         )}
                                     </li>

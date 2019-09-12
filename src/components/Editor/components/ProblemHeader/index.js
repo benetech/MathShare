@@ -13,7 +13,7 @@ import googleAnalytics from '../../../../scripts/googleAnalytics';
 import Locales from '../../../../strings';
 import showImage from '../../../../scripts/showImage';
 import completeKeyMap from '../../../../constants/hotkeyConfig.json';
-import { stopEvent } from '../../../../services/events';
+import { stopEvent, passEventForKeys } from '../../../../services/events';
 import { tourConfig, accentColor } from './tourConfig';
 // import parseMathLive from '../../../../scripts/parseMathLive';
 
@@ -65,6 +65,14 @@ export default class ProblemHeader extends Component {
     clickOnQuestion = () => {
         googleAnalytics('clicked help center');
         IntercomAPI('trackEvent', 'clicked-help-center');
+    }
+
+    clickedFeedback = () => {
+        googleAnalytics('click feedback');
+    }
+
+    clickedHelpCenter = () => {
+        googleAnalytics('click help center');
     }
 
     render() {
@@ -124,7 +132,7 @@ export default class ProblemHeader extends Component {
                             tabIndex={0}
                             aria-labelledby={`${questionBtnId}-label`}
                             onClick={this.clickOnQuestion}
-                            onKeyPress={this.clickOnQuestion}
+                            onKeyPress={passEventForKeys(this.clickOnQuestion)}
                         >
                             <FontAwesome
                                 size="lg"
@@ -136,11 +144,11 @@ export default class ProblemHeader extends Component {
                             className="dropdown-menu dropdown-menu-lg-right dropdown-secondary"
                             aria-labelledby={`${questionBtnId}-label`}
                         >
-                            <a
-                                className="dropdown-item"
+                            <button
+                                className="dropdown-item reset-btn"
                                 onClick={this.openTour}
-                                onKeyPress={this.openTour}
-                                role="button"
+                                onKeyPress={passEventForKeys(this.openTour)}
+                                type="button"
                                 tabIndex={0}
                             >
                                 <FontAwesome
@@ -149,15 +157,14 @@ export default class ProblemHeader extends Component {
                                     style={{ textShadow: '0 1px 0 rgba(0, 0, 0, 0.1)' }}
                                 />
                                 {Locales.strings.tutorial}
-                            </a>
+                            </button>
                             <a
                                 className="dropdown-item"
                                 href="https://intercom.help/benetech/en"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                onClick={() => {
-                                    googleAnalytics('click help center');
-                                }}
+                                onClick={this.clickedHelpCenter}
+                                onKeyPress={passEventForKeys(this.clickedHelpCenter)}
                             >
                                 <FontAwesome
                                     className="super-crazy-colors"
@@ -171,9 +178,8 @@ export default class ProblemHeader extends Component {
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="dropdown-item"
-                                onClick={() => {
-                                    googleAnalytics('click feedback');
-                                }}
+                                onClick={this.clickedFeedback}
+                                onKeyPress={passEventForKeys(this.clickedFeedback)}
                             >
                                 <FontAwesome
                                     className="super-crazy-colors"

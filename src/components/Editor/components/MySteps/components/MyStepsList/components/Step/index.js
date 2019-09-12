@@ -7,6 +7,7 @@ import showImage from '../../../../../../../../scripts/showImage';
 
 import '../../../../../../../../../images/pencil.png';
 import '../../../../../../../../../images/delete.png';
+import { passEventForKeys } from '../../../../../../../../services/events';
 
 const mathLive = process.env.MATHLIVE_DEBUG_MODE ? require('../../../../../../../../../../mathlive/src/mathlive.js').default
     : require('../../../../../../../../lib/mathlivedist/mathlive.js');
@@ -207,7 +208,7 @@ export default class Step extends Component {
                         aria-labelledby="sketch-button-in-step"
                         style={{ display: this.props.scratchpad ? 'inline' : 'none' }}
                         onClick={() => showImage(this.props.scratchpad)}
-                        onKeyPress={() => showImage(this.props.scratchpad)}
+                        onKeyPress={passEventForKeys(() => showImage(this.props.scratchpad))}
                     >
                         <img
                             id="sketch-button-in-step"
