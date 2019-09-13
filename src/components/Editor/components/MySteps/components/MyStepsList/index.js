@@ -45,7 +45,6 @@ export default class MyStepsList extends Component {
         const step = document.getElementById(`mathStep-${index}`);
         if (step) {
             const text = getScreenReaderText(step);
-            console.log(text);
             this.props.announceOnAriaLive(text);
             this.setState({
                 readStep: index,

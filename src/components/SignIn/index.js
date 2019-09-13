@@ -35,9 +35,7 @@ class SignIn extends Component {
 
         myMSALObj.loginPopup(requestObj).then(() => {
             this.props.checkMsLogin(true);
-        }).catch((error) => {
-            console.log(error);
-        });
+        }).catch(() => {});
     }
 
     initializeGoogleSignIn = () => {

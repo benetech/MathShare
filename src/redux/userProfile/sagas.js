@@ -146,9 +146,8 @@ function* saveUserInfoSaga() {
                 user_type: userType,
                 email,
             });
-        } catch (error) {
-            console.log('Error', error);
-        }
+            // eslint-disable-next-line no-empty
+        } catch (error) { }
     });
 }
 

@@ -306,7 +306,6 @@ class App extends Component {
                         <table>
                             <tbody>
                                 {Object.keys(updatedKeyMap).reduce((memo, actionName) => {
-                                    console.log(actionName);
                                     if (!filter
                                         || actionName.indexOf(filter.toUpperCase()) !== -1
                                         || (

@@ -15,9 +15,7 @@ export const focusOnMainContent = () => {
     const main = document.getElementById('mainContainer');
     if (main) {
         const focusable = main.querySelectorAll('button, [href], input, select, textarea, h1[tabindex]');
-        console.log(focusable);
         const firstFocusable = focusable[0];
-        console.log(firstFocusable);
         if (firstFocusable) {
             firstFocusable.focus();
         }
