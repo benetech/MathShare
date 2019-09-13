@@ -47,7 +47,7 @@ const LandingPage = withRouter(({ history, setAuthRedirect, userProfile }) => (
         </div>
         <div className={styles.signInLabel}>
             <button
-                className={styles.signIn}
+                className={`${styles.signIn} reset-btn`}
                 onClick={clickOnSignIn(history, setAuthRedirect, userProfile)}
                 onKeyPress={passEventForKeys(clickOnSignIn(history, setAuthRedirect, userProfile))}
                 type="button"
