@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { IntercomAPI } from 'react-intercom';
 import FontAwesome from 'react-fontawesome';
+import { Helmet } from 'react-helmet';
 import Locales from '../../strings';
 import MainPageHeader from '../Home/components/Header';
 import { requestDefaultRevision, requestExampleSets } from '../../redux/problemList/actions';
@@ -50,6 +51,9 @@ class Index extends Component {
         const { problemList } = props;
         return (
             <div>
+                <Helmet>
+                    <title>All Problem Sets - Benetech Mathshare</title>
+                </Helmet>
                 <MainPageHeader
                     {...props}
                     editing={false}

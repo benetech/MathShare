@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { IntercomAPI } from 'react-intercom';
+import { Helmet } from 'react-helmet';
 import ProblemHeader from './components/ProblemHeader';
 import MyStepsHeader from './components/MySteps/components/MyStepsHeader';
 import MyStepsList from './components/MySteps/components/MyStepsList';
@@ -169,6 +170,39 @@ class Editor extends Component {
         }
     }
 
+    renderHelmet = () => {
+        const {
+            problemList,
+            problemStore,
+        } = this.props;
+        const { solution } = problemStore;
+        const { problem } = solution;
+        let titlePrefix = '';
+        if (problemList.set && problemList.set.title) {
+            titlePrefix = `${problemList.set.title} - `;
+        }
+        let pos = 0;
+        let count = 0;
+        if (problemList.set.problems) {
+            const idList = problemList.set.problems.map(currentProblem => currentProblem.id).sort();
+            if (idList.includes(problem.id)) {
+                pos = idList.indexOf(problem.id) + 1;
+            }
+            count = problemList.set.problems.length;
+        }
+        if (pos > 0 && count > 0) {
+            titlePrefix = `Problem ${pos} of ${count} - ${titlePrefix}`;
+        }
+        return (
+            <Helmet>
+                <title>
+                    {titlePrefix}
+                    Benetech Mathshare
+                </title>
+            </Helmet>
+        );
+    }
+
     render() {
         const { problemStore, problemList } = this.props;
         if (problemStore.notFound) {
@@ -196,6 +230,7 @@ class Editor extends Component {
 
         return (
             <div id="MainWorkWrapper" className={editor.mainWorkWrapper}>
+                {this.renderHelmet()}
                 <main id="MainWorkArea" className={editor.editorAndHistoryWrapper}>
                     <ProblemHeader
                         {...this}

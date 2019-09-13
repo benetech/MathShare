@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import FontAwesome from 'react-fontawesome';
 import classNames from 'classnames';
 import { IntercomAPI } from 'react-intercom';
+import { Helmet } from 'react-helmet';
 import MainPageHeader from './components/Header';
 import NavigationHeader from './components/Navigation/Header';
 import NavigationProblems from './components/Navigation/Problems';
@@ -335,6 +336,24 @@ class Home extends Component {
         );
     }
 
+    renderHelmet = () => {
+        const {
+            problemList,
+        } = this.props;
+        let titlePrefix = '';
+        if (problemList.set && problemList.set.title) {
+            titlePrefix = `${problemList.set.title} - `;
+        }
+        return (
+            <Helmet>
+                <title>
+                    {titlePrefix}
+                    Benetech Mathshare
+                </title>
+            </Helmet>
+        );
+    }
+
     render() {
         const {
             match,
@@ -352,6 +371,7 @@ class Home extends Component {
         }
         return (
             <div className={home.mainWrapper}>
+                {this.renderHelmet()}
                 <NotificationContainer />
                 <MainPageHeader
                     editing={params.action === 'edit' || params.action === 'new'}

@@ -71,6 +71,7 @@
     "react-dom": "^16.8.6",
     "react-fontawesome": "^1.6.1",
     "react-ga": "^2.5.7",
+    "react-helmet": "^5.2.1",
     "react-hotkeys": "^2.0.0",
     "react-intercom": "^1.0.15",
     "react-localization": "^1.0.13",
