@@ -84,11 +84,11 @@ class Editor extends Component {
         // For IE and Firefox prior to version 4
         if (e) {
             e.preventDefault();
-            e.returnValue = 'Sure?';
+            e.returnValue = Locales.strings.sure;
         }
 
         // For Safari
-        return 'Sure?';
+        return Locales.strings.sure;
     }
 
     scrollToBottom = () => {

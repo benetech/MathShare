@@ -26,9 +26,7 @@ export default class ProblemSetShareModal extends Component {
                             {Locales.strings.submit_problem_link}
                         </h3>
                         <div className={editor.modalMessage}>
-                            <p>
-                                Students visit the link below to access the problem set
-                            </p>
+                            <p>{Locales.strings.students_visit}</p>
                         </div>
                         <input type="text" readOnly value={this.props.problemSetShareLink} id="shareLink" className={editor.shareLink} />
                     </div>

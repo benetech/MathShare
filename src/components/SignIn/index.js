@@ -3,11 +3,11 @@ import { UserAgentApplication } from 'msal';
 import { connect } from 'react-redux';
 import { UncontrolledTooltip } from 'reactstrap';
 import msalConfig from '../../constants/msal';
+import Locales from '../../strings';
 import { setUserProfile, checkGoogleLogin, checkMsLogin } from '../../redux/userProfile/actions';
 import logo from '../../../images/logo-black.png';
 import googleLogo from '../../../images/google-logo.svg';
 import microsoftLogo from '../../../images/microsoft-logo.svg';
-// eslint-disable-next-line no-unused-vars
 import signIn from './styles.scss';
 import { passEventForKeys } from '../../services/events';
 
@@ -78,7 +78,7 @@ class SignIn extends Component {
             <div className="abcRioButtonContentWrapper">
                 <div className="abcRioButtonIcon" style={{ padding: 10 }}>
                     <div style={{ width: 18, height: 18 }} className="abcRioButtonSvgImageWithFallback abcRioButtonIconImage abcRioButtonIconImage18">
-                        <img src={googleLogo} alt="google logo" />
+                        <img src={googleLogo} alt={Locales.strings.google_logo} />
                     </div>
                 </div>
                 <span style={{ fontSize: 14, lineHeight: '38px' }} className="abcRioButtonContents">
@@ -96,7 +96,7 @@ class SignIn extends Component {
             onClick={this.startMicrosoftSignIn}
             onKeyPress={passEventForKeys(this.startMicrosoftSignIn)}
         >
-            <img src={microsoftLogo} alt="microsoft logo" />
+            <img src={microsoftLogo} alt={Locales.strings.ms_logo} />
         </button>
     )
 
@@ -109,9 +109,9 @@ class SignIn extends Component {
             <div className={signIn.container}>
                 <div className={signIn.content}>
                     <div className={signIn.logo}>
-                        <img src={logo} alt="logo" />
+                        <img src={logo} alt={Locales.strings.logo} />
                     </div>
-                    <div className={signIn.text}>Login using</div>
+                    <div className={signIn.text}>{Locales.strings.login_using}</div>
                     <div className={signIn.buttonsContainer}>
                         <div>{this.renderGoogleBtn()}</div>
                         <div>{this.renderMicrosoftBtn()}</div>
@@ -125,7 +125,7 @@ class SignIn extends Component {
                         onKeyPress={this.goBack}
                         type="button"
                     >
-                        <u>Continue without signin in</u>
+                        <u>{Locales.strings.continue_without_signin_in}</u>
                     </button>
                     <UncontrolledTooltip placement="top" target="goBack" />
                 </div>

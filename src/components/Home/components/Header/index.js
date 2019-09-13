@@ -110,8 +110,8 @@ class MainPageHeader extends React.Component {
                                     googleAnalytics('clicked logo');
                                 }}
                             >
-                                <img src={logo} alt="Benetech Mathshare" height="37" />
-                                <span className={header.beta}>beta</span>
+                                <img src={logo} alt={Locales.strings.mathshare_benetech} height="37" />
+                                <span className={header.beta}>{Locales.strings.beta}</span>
                             </a>
                         </div>
                         <div className="navbar-header pull-right">
@@ -217,7 +217,7 @@ class MainPageHeader extends React.Component {
                                             onKeyPress={passEventForKeys(this.setAuthRedirect)}
                                         >
 
-                                            Sign In
+                                            {Locales.strings.sign_in}
                                             <FontAwesome
                                                 size="lg"
                                                 name="user-circle-o"
@@ -259,7 +259,7 @@ class MainPageHeader extends React.Component {
                                                     }
                                                     type="button"
                                                 >
-                                                    Sign Out
+                                                    {Locales.strings.sign_out}
                                                 </button>
                                             </div>
                                         )}

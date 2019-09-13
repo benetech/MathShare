@@ -3,11 +3,9 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { UncontrolledTooltip } from 'reactstrap';
 import { alertWarning, alertSuccess } from '../../scripts/alert';
-
-// import msalConfig from '../../constants/msal';
+import Locales from '../../strings';
 import { redirectAfterLogin, saveUserInfo } from '../../redux/userProfile/actions';
 import logo from '../../../images/logo-black.png';
-// eslint-disable-next-line no-unused-vars
 import userDetails from './styles.scss';
 
 
@@ -41,13 +39,13 @@ class UserDetails extends Component {
             this.props.saveUserInfo(type, [], '');
         } else if (type === 'teacher') {
             if (Object.values(gradeStatus).filter(value => value).length === 0) {
-                alertWarning('Please make sure a grade and role is selected');
+                alertWarning(Locales.strings.grade_and_role_warning);
                 return;
             }
             const grades = Object.keys(gradeStatus).filter(gradeName => gradeStatus[gradeName]);
             this.props.saveUserInfo(type, grades, role);
         }
-        alertSuccess('Thanks for sharing your details');
+        alertSuccess(Locales.strings.thanks_for_details);
         this.props.redirectAfterLogin();
     }
 
@@ -76,7 +74,7 @@ class UserDetails extends Component {
     renderTeacherForm = () => (
         <div className={userDetails.teacherForm}>
             <div className="row">
-                <div className={`${userDetails.descText} col-5`}>What grade do you work with?</div>
+                <div className={`${userDetails.descText} col-5`}>{Locales.strings.grade_of_work}</div>
                 <div className={`${userDetails.grade} col-7`}>
                     {this.grades.map((grade) => {
                         const id = `grade-${grade.replace('-', '').replace('+', '')}`;
@@ -93,11 +91,11 @@ class UserDetails extends Component {
                 </div>
             </div>
             <div className="row">
-                <div className={`${userDetails.descText} col-5`}>Which best describes your role?</div>
+                <div className={`${userDetails.descText} col-5`}>{Locales.strings.describe_your_role}</div>
                 <div className={`${userDetails.select} col-7`}>
                     <div className="form-group">
                         <select className="form-control" id="teacherRole" onChange={this.handleRoleChange} value={this.state.role}>
-                            <option value="">Choose one</option>
+                            <option value="">{Locales.strings.choose_one}</option>
                             {this.roles.map(role => (
                                 <option key={role}>
                                     {role}
@@ -116,7 +114,7 @@ class UserDetails extends Component {
                     type="button"
                     onClick={this.finish}
                 >
-                    Finish
+                    {Locales.strings.finish.trim()}
                 </button>
                 <UncontrolledTooltip placement="top" target="finishBtn" />
             </div>
@@ -130,7 +128,7 @@ class UserDetails extends Component {
                     <div className={userDetails.logo}>
                         <img src={logo} alt="logo" />
                     </div>
-                    <div className={userDetails.text}>Let&apos;s setup your account</div>
+                    <div className={userDetails.text}>{Locales.strings.setup_your_account}</div>
                     {this.state.type === null && (
                         <div className={userDetails.buttonsContainer}>
                             <div>
@@ -140,7 +138,7 @@ class UserDetails extends Component {
                                     type="button"
                                     onClick={this.setType('teacher')}
                                 >
-                                    I&apos;m a Teacher
+                                    {Locales.strings.i_m_teacher}
                                 </button>
                             </div>
                             <div>
@@ -150,7 +148,7 @@ class UserDetails extends Component {
                                     type="button"
                                     onClick={this.setType('student')}
                                 >
-                                    I&apos;m a Student
+                                    {Locales.strings.i_m_student}
                                 </button>
                             </div>
                             <UncontrolledTooltip placement="top" target="im_a_teacher" />

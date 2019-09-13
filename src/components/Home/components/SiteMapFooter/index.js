@@ -2,7 +2,7 @@ import React from 'react';
 // import FontAwesome from 'react-fontawesome';
 import footer from './styles.scss';
 import footerLogo from '../../../../../images/footer_logo.png';
-// import Locales from '../../../../strings';
+import Locales from '../../../../strings';
 
 const SiteMapFooter = ({ customClass }) => (
     <div className={`${footer.footer} ${customClass || ''}`}>
@@ -11,18 +11,18 @@ const SiteMapFooter = ({ customClass }) => (
                 <div className="d-flex flex-row">
                     <img src={footerLogo} alt="benetech logo" />
                     <div className={footer.mAuto}>
-                        Mathshare is a
+                        {Locales.strings.mathshare_is_a}
                         <br />
-                        Benetech Initiative
+                        {Locales.strings.benetech_initiative}
                     </div>
                 </div>
                 <div className={footer.footerLine}>
-                    Our mission is to make math accessibility free and open to all students.
+                    {Locales.strings.mission}
                 </div>
             </div>
             <div className={`d-flex flex-row ${footer.lists}`}>
                 <div>
-                    <div className={footer.listTitle}>Resources</div>
+                    <div className={footer.listTitle}>{Locales.strings.resources}</div>
                     <ul>
                         <li>
                             <a
@@ -30,7 +30,7 @@ const SiteMapFooter = ({ customClass }) => (
                                 target="_blank"
                                 rel="noopener noreferrer"
                             >
-                                Workshop Materials
+                                {Locales.strings.workshop_materials}
                             </a>
                         </li>
                         <li>
@@ -39,14 +39,14 @@ const SiteMapFooter = ({ customClass }) => (
                                 target="_blank"
                                 rel="noopener noreferrer"
                             >
-                                Accessibility
+                                {Locales.strings.accessibility}
                             </a>
                         </li>
                         <li>
                             <a
                                 href="/#/partners"
                             >
-                                Partners
+                                {Locales.strings.partners}
                             </a>
                         </li>
                         <li>
@@ -55,13 +55,13 @@ const SiteMapFooter = ({ customClass }) => (
                                 target="_blank"
                                 rel="noopener noreferrer"
                             >
-                                Contact Us
+                                {Locales.strings.contact_us.trim()}
                             </a>
                         </li>
                     </ul>
                 </div>
                 <div>
-                    <div className={footer.listTitle}>Connect</div>
+                    <div className={footer.listTitle}>{Locales.strings.connect}</div>
                     <ul>
                         <li>
                             <a
@@ -69,7 +69,7 @@ const SiteMapFooter = ({ customClass }) => (
                                 target="_blank"
                                 rel="noopener noreferrer"
                             >
-                                YouTube
+                                {Locales.strings.youtube}
                             </a>
                         </li>
                         <li>
@@ -78,7 +78,7 @@ const SiteMapFooter = ({ customClass }) => (
                                 target="_blank"
                                 rel="noopener noreferrer"
                             >
-                                Twitter
+                                {Locales.strings.twitter}
                             </a>
                         </li>
                         <li>
@@ -87,20 +87,20 @@ const SiteMapFooter = ({ customClass }) => (
                                 target="_blank"
                                 rel="noopener noreferrer"
                             >
-                                Email
+                                {Locales.strings.email}
                             </a>
                         </li>
                     </ul>
                 </div>
                 <div>
-                    <div className={footer.listTitle}>Info</div>
+                    <div className={footer.listTitle}>{Locales.strings.info}</div>
                     <ul>
                         <li>
                             <a
                                 href="/#/privacy"
                                 rel="noopener noreferrer"
                             >
-                                Privacy Policy
+                                {Locales.strings.privacy_policy}
                             </a>
                         </li>
                         <li>
@@ -108,7 +108,7 @@ const SiteMapFooter = ({ customClass }) => (
                                 href="/#/privacy"
                                 rel="noopener noreferrer"
                             >
-                                FERPA/COPPA
+                                {Locales.strings.ferpa_coppa}
                             </a>
                         </li>
                         <li>
@@ -116,7 +116,7 @@ const SiteMapFooter = ({ customClass }) => (
                                 href="/#/privacy"
                                 rel="noopener noreferrer"
                             >
-                                Terms of Service
+                                {Locales.strings.tos}
                             </a>
                         </li>
                         <li>
@@ -124,7 +124,7 @@ const SiteMapFooter = ({ customClass }) => (
                                 href="/#/partners"
                                 rel="noopener noreferrer"
                             >
-                                Open Source
+                                {Locales.strings.open_source}
                             </a>
                         </li>
                     </ul>

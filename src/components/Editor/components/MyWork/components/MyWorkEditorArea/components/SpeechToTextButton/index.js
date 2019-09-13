@@ -196,8 +196,7 @@ export default class SpeechToTextButton extends Component {
                             src={this.state.imageSrc}
                         />
                     )}
-                    /* eslint-disable-next-line react/jsx-no-bind */
-                    onClick={this.speechToText.bind(this)}
+                    onClick={this.speechToText}
                 />
             </span>
         );

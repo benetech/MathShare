@@ -196,20 +196,13 @@ class App extends Component {
         // this.props.toggleModals([PALETTE_CHOOSER, ADD_PROBLEM_SET]);
         this.props.toggleModals([PALETTE_CHOOSER]);
         this.props.history.push('/app/problemSet/new');
-        this.props.saveProblemSet([], `New Problem Set ${dayjs().format('MM-DD-YYYY')}`, null);
+        this.props.saveProblemSet([], `${Locales.strings.new_problem_set} ${dayjs().format('MM-DD-YYYY')}`, null);
     }
 
     saveProblemSet = (orderedProblems, title) => {
         googleAnalytics(Locales.strings.add_problem_set);
         this.props.saveProblemSet(orderedProblems, title);
     }
-
-    // finishEditing = () => {
-    //     const {
-    //         set,
-    //     } = this.props.problemList;
-    //     this.props.history.push(`/app/problemSet/view/${set.shareCode}`);
-    // }
 
     saveProblem = () => new Promise((resolve) => {
         if (this.props.example) {
@@ -295,7 +288,7 @@ class App extends Component {
                         tabIndex={0}
                     >
                         <h2>
-                            Keyboard shortcuts
+                            {Locales.strings.keyboard_shortcuts}
                         </h2>
 
                         <ObserveKeys only="Escape">
@@ -305,7 +298,7 @@ class App extends Component {
                                 }
                                 onClick={e => stopEvent(e)}
                                 value={filter}
-                                placeholder="Filter"
+                                placeholder={Locales.strings.filter}
                             />
                         </ObserveKeys>
 

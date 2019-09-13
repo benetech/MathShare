@@ -24,7 +24,7 @@ export default class NewProblemsForm extends Component {
             problems: [],
             textAreaValue: '',
             displayScratchpad: null,
-            title: `New Problem Set ${dayjs().format('MM-DD-YYYY')}`,
+            title: `${Locales.strings.new_problem_set} ${dayjs().format('MM-DD-YYYY')}`,
         };
 
         this.save = this.save.bind(this);

@@ -68,7 +68,11 @@ class Index extends Component {
                                 onClick={props.addProblemSet}
                                 onKeyPress={passEventForKeys(props.addProblemSet)}
                             >
-                                <span className="centreText">+ New Problem Set</span>
+                                <span className="centreText">
+                                    +
+                                    {' '}
+                                    {Locales.strings.new_problem_set}
+                                </span>
                             </button>
                         </li>
                         <li className="card">
@@ -79,12 +83,12 @@ class Index extends Component {
                                 onKeyPress={passEventForKeys(this.openExampleProblem)}
                                 role="link"
                             >
-                                <span className="centreText">Example Problem</span>
+                                <span className="centreText">{Locales.strings.example_problem}</span>
                             </button>
                         </li>
                     </ol>
 
-                    <div className="title">Pre-made Sets</div>
+                    <div className="title">{Locales.strings.pre_made_sets}</div>
                     <ol className={pageIndex.problemSetList}>
                         {problemList.exampleProblemSets.filter(exampleProblemSet => exampleProblemSet.title !== 'Example Problem Set').map((exampleProblemSet, index) => (
                             <li className="card" key={index}>
@@ -103,7 +107,7 @@ class Index extends Component {
                                     <span className={pageIndex.meta}>
                                         {exampleProblemSet.problems.length}
                                         {' '}
-                                        Problems
+                                        {Locales.strings.problems}
                                     </span>
                                     <div className="dropdown">
                                         <button

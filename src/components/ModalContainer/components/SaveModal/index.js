@@ -28,12 +28,10 @@ export default class SaveModal extends Component {
                         <input type="text" readOnly value={this.props.editLink} id="saveLink" className={editor.saveLink} />
                         <div className={editor.modalMessage}>
                             <p>
-                                Use this link to save your work and return to it later
+                                {Locales.strings.use_this_link}
                             </p>
                             <p>
-                                If you want a link to submit your finished work,
-                                {' '}
-                                use the &quot;Share&quot; button instead.
+                                {Locales.strings.if_you_want_a_link}
                             </p>
                         </div>
                     </div>

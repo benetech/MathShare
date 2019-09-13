@@ -258,14 +258,14 @@ export default class MathButton extends Component {
         };
 
         if (theActiveMathField.selectionIsCollapsed()) {
-            alertWarning('You must select an arithmetic expression for calculation', 'Warning');
+            alertWarning(Locales.strings.math_button_select_exp, 'Warning');
             return;
         }
 
         const selection = stringifyMathML(theActiveMathField.selectedText('mathML'));
         const result = DoCalculation(this.constructor.CleanUpCrossouts(selection));
         if (result === '') {
-            alertWarning('Selection must contain only numbers and operators', 'Warning');
+            alertWarning(Locales.strings.math_button_invalid_selection, 'Warning');
             return;
         }
 

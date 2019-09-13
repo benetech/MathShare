@@ -15,17 +15,15 @@ const Partners = () => (
         </div>
         <div className={styles.headerBottom} />
         <div className={styles.content}>
-            <div className={styles.header}>Partnerships</div>
+            <div className={styles.header}>{Locales.strings.partnerships}</div>
             <div className={styles.textContent}>
-                Join us in making math more accessible for all students by becoming a partner.
-                Mathshare is free and open source. Integrate it into your program or become a
-                development partner. Please
+                {Locales.strings.join_us_in_1}
                 {' '}
                 <a href="https://docs.google.com/forms/d/e/1FAIpQLSeDijluYj0wyTz6OexPppVt9enX1QXpXSMPUflkdCtTBtv6HA/viewform">
-                    complete this form
+                    {Locales.strings.join_us_in_2}
                 </a>
                 {' '}
-                and we will be in touch soon.
+                {Locales.strings.join_us_in_3}
             </div>
         </div>
     </div>

@@ -52,20 +52,18 @@ const LandingPage = withRouter(({ history, setAuthRedirect, userProfile }) => (
                 onKeyPress={passEventForKeys(clickOnSignIn(history, setAuthRedirect, userProfile))}
                 type="button"
             >
-                {userProfile.service ? 'Go to App' : 'Sign In'}
+                {userProfile.service ? Locales.strings.go_to_app : Locales.strings.sign_in}
             </button>
         </div>
         <img className={styles.midLogo} src={logo} alt={Locales.strings.mathshare_logo} />
         <div id="mainContainer" className={styles.midContainer}>
             <div className={styles.content}>
                 <h1 className={styles.largeText} tabIndex={-1}>
-                    Help students show and organize their math work
+                    {Locales.strings.help_students}
                 </h1>
                 <img src={homePhoto} alt="mid-logo" aria-label={Locales.strings.screenshot_step_by_step} />
                 <div className={styles.midBottomText}>
-                    Benetech Mathshare empowers students to solve math problems and
-                    {' '}
-                    show their work so that teachers and students can see how they got there.
+                    {Locales.strings.benetech_empowers}
                 </div>
                 <a
                     href="/#/app"
@@ -74,7 +72,7 @@ const LandingPage = withRouter(({ history, setAuthRedirect, userProfile }) => (
                     onKeyPress={passEventForKeys(clickOnTryNow(true))}
                     tabIndex="0"
                 >
-                    Try now
+                    {Locales.strings.try_now}
                 </a>
             </div>
         </div>
@@ -87,12 +85,10 @@ const LandingPage = withRouter(({ history, setAuthRedirect, userProfile }) => (
                     </div>
                     <div className={styles.textSection}>
                         <div className={styles.header}>
-                            Show their work
+                            {Locales.strings.show_their_work}
                         </div>
                         <div className={styles.textContent}>
-                            Students can solve equations step-by-step
-                            {' '}
-                            and add notes to explain their thinking.
+                            {Locales.strings.students_can_solve}
                         </div>
                     </div>
                 </div>
@@ -103,14 +99,10 @@ const LandingPage = withRouter(({ history, setAuthRedirect, userProfile }) => (
                     </div>
                     <div className={styles.textSection}>
                         <div className={styles.header}>
-                            Accessible to ALL Learners
+                            {Locales.strings.accessible_to_all}
                         </div>
                         <div className={styles.textContent}>
-                            Students with and without learning differences can use
-                            {' '}
-                            Mathshare with features like text-to-speech, speech-to-text,
-                            {' '}
-                            and word-level highlighting
+                            {Locales.strings.students_with_and_without}
                         </div>
                     </div>
                 </div>
@@ -121,14 +113,10 @@ const LandingPage = withRouter(({ history, setAuthRedirect, userProfile }) => (
                     </div>
                     <div className={styles.textSection}>
                         <div className={styles.header}>
-                            LMS Integration
+                            {Locales.strings.lms_integration}
                         </div>
                         <div className={styles.textContent}>
-                            Use on your schools LMS (learning management system)
-                            {' '}
-                            through assignment links, with native integrations and
-                            {' '}
-                            single sign on (SSO) coming soon.
+                            {Locales.strings.use_on_your_lms}
                         </div>
                     </div>
                 </div>
@@ -139,20 +127,10 @@ const LandingPage = withRouter(({ history, setAuthRedirect, userProfile }) => (
                     </div>
                     <div className={styles.textSection}>
                         <div className={styles.header}>
-                            Free and Open Source
+                            {Locales.strings.free_and_open_source}
                         </div>
                         <div className={styles.textContent}>
-                            Mathshare is a free, open source tool developed by
-                            {' '}
-                            Benetech, a nonprofit that empowers communities with
-                            {' '}
-                            software for social good. Mathshare’s mission is to
-                            {' '}
-                            make math accessible for all students. Mathshare is
-                            {' '}
-                            free for schools to use and for learning management
-                            {' '}
-                            systems to integrate into their platforms.
+                            {Locales.strings.mathshare_is_a_free}
                         </div>
                     </div>
                 </div>

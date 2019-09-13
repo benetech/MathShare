@@ -151,7 +151,10 @@ class Home extends Component {
                         || params.action === 'edit'
                     ) && (
                         <React.Fragment>
-                            <div className={home.text}>Assign: </div>
+                            <div className={home.text}>
+                                {Locales.strings.assign}
+                                {'\u00A0'}
+                            </div>
                             <Button
                                 id="shareBtn"
                                 className={classNames([
@@ -209,13 +212,18 @@ class Home extends Component {
                                     type="button"
                                 >
                                     <div className={home.btnText}>
-                                        {'Microsoft Teams'}
+                                        {Locales.strings.ms_team}
                                         <span className="sROnly">
                                             {'\u00A0'}
                                             {Locales.strings.opens_in_new_window}
                                         </span>
                                     </div>
-                                    <img src={msTeamIcon} alt="microsoft teams" />
+                                    <img
+                                        src={msTeamIcon}
+                                        alt={
+                                            Locales.strings.ms_team.toLowerCase()
+                                        }
+                                    />
                                 </button>
                                 <UncontrolledTooltip placement="top" target="microsoftTeamContainer2" />
                             </span>
@@ -267,7 +275,6 @@ class Home extends Component {
                                 }
                             />
                         </button>
-                        {/* <div className={home.spaceInBetween} /> */}
                         <div className="dropdown">
                             <button className="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <FontAwesome
@@ -419,8 +426,15 @@ class Home extends Component {
                                             }
                                             type="button"
                                         >
-                                            <div className={home.btnText}>Microsoft Teams</div>
-                                            <img src={msTeamIcon} alt="microsoft teams" />
+                                            <div className={home.btnText}>
+                                                {Locales.strings.ms_team}
+                                            </div>
+                                            <img
+                                                src={msTeamIcon}
+                                                alt={
+                                                    Locales.strings.ms_team.toLowerCase()
+                                                }
+                                            />
                                         </button>
                                         <UncontrolledTooltip placement="top" target="microsoftTeamContainer1" />
                                     </span>

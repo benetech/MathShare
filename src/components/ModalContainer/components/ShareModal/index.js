@@ -38,17 +38,13 @@ export default class ShareModal extends Component {
                         <input type="text" readOnly value={this.props.shareLink} id="shareLink" className={editor.shareLink} />
                         <div className={editor.modalMessage}>
                             <p>
-                                Use this link to share your
+                                {Locales.strings.use_this_link_share}
                                 {' '}
-                                <b>finished</b>
+                                <b>{Locales.strings.finished}</b>
                                 {' '}
-                                work
+                                {Locales.strings.work}
                             </p>
-                            <p>
-                                If you want to continue working on it later,
-                                {' '}
-                                use the &quot;Save&quot; button instead
-                            </p>
+                            <p>{Locales.strings.if_you_want_to_continue}</p>
                         </div>
                     </div>
                     <footer className={editor.modalFooter}>

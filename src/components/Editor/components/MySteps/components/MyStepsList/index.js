@@ -50,7 +50,7 @@ export default class MyStepsList extends Component {
                 readStep: index,
             });
         } else {
-            this.props.announceOnAriaLive(`No step number ${index}`);
+            this.props.announceOnAriaLive(`${Locales.strings.no_step_number} ${index}`);
         }
         setTimeout(() => {
             this.props.clearAriaLive();
