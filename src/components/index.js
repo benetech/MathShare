@@ -43,7 +43,7 @@ import ariaLiveAnnouncerActions from '../redux/ariaLiveAnnouncer/actions';
 import { compareStepArrays } from '../redux/problem/helpers';
 import msalConfig from '../constants/msal';
 import keyMap from '../constants/hotkeyConfig.json';
-import { stopEvent } from '../services/events';
+import { stopEvent, passEventForKeys } from '../services/events';
 
 
 const mathLive = process.env.MATHLIVE_DEBUG_MODE ? require('../../mathlive/src/mathlive.js').default
@@ -264,6 +264,8 @@ class App extends Component {
         return '';
     }
 
+    disableHotKeyModal = () => this.setState({ showDialog: false })
+
     renderDialog = () => {
         if (this.state.showDialog) {
             const { filter } = this.state;
@@ -285,9 +287,13 @@ class App extends Component {
                     handlers={this.handlers}
                     allowChanges
                 >
-                    {/* eslint-disable-next-line max-len */}
-                    {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions,jsx-a11y/click-events-have-key-events */}
-                    <div className="keymap-dialog" onClick={() => this.setState({ showDialog: false })}>
+                    <div
+                        role="button"
+                        className="keymap-dialog"
+                        onClick={this.disableHotKeyModal}
+                        onKeyPress={passEventForKeys(this.disableHotKeyModal)}
+                        tabIndex={0}
+                    >
                         <h2>
                             Keyboard shortcuts
                         </h2>

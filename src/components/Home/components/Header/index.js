@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/no-noninteractive-tabindex */
 import React from 'react';
 import { IntercomAPI } from 'react-intercom';
 import { connect } from 'react-redux';
@@ -85,7 +84,6 @@ class MainPageHeader extends React.Component {
     render() {
         const { props } = this;
         const { userProfile } = props;
-        /* eslint-disable jsx-a11y/anchor-is-valid */
         const questionBtnId = 'navbarDropdownMenuLink-dropdown';
 
         return (
@@ -272,7 +270,6 @@ class MainPageHeader extends React.Component {
                     </nav>
                 </header>
             </div>
-            /* eslint-enable jsx-a11y/anchor-is-valid */
         );
     }
 }

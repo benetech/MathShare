@@ -84,7 +84,6 @@ export default class Problem extends Component {
         return result;
     }
 
-    /* eslint-disable jsx-a11y/alt-text */
     buildProblemImage = () => (
         <img
             className={problemStyle.image}

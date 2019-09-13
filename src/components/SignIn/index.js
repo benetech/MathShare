@@ -35,7 +35,7 @@ class SignIn extends Component {
 
         myMSALObj.loginPopup(requestObj).then(() => {
             this.props.checkMsLogin(true);
-        }).catch(() => {});
+        }).catch(() => { });
     }
 
     initializeGoogleSignIn = () => {
@@ -73,7 +73,6 @@ class SignIn extends Component {
     }
 
     renderGoogleBtn = () => (
-        // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
         <div id={this.GOOGLE_SIGN_IN} tabIndex={0} style={{ height: 40, width: 120 }} className="abcRioButton abcRioButtonBlue">
             <div className="abcRioButtonContentWrapper">
                 <div className="abcRioButtonIcon" style={{ padding: 10 }}>

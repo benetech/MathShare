@@ -281,7 +281,6 @@ class Home extends Component {
                             </button>
                             <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 {params.action === 'edit' && (
-                                    /* eslint-disable jsx-a11y/anchor-is-valid */
                                     <React.Fragment>
                                         <button
                                             className="dropdown-item"

@@ -1,5 +1,3 @@
-/* eslint-disable jsx-a11y/no-noninteractive-tabindex */
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { Component } from 'react';
 import classNames from 'classnames';
 import Tour from 'reactour';
@@ -237,6 +235,7 @@ export default class ProblemHeader extends Component {
                         }
                     />
                 </div>
+                {/* eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex */}
                 <div className={`d-flex flex-row ${problem.subHeader}`} tabIndex={0}>
                     {imgButton}
                     <h1 id="ProblemTitle" className={problem.title}>

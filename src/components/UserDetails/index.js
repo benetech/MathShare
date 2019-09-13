@@ -96,7 +96,6 @@ class UserDetails extends Component {
                 <div className={`${userDetails.descText} col-5`}>Which best describes your role?</div>
                 <div className={`${userDetails.select} col-7`}>
                     <div className="form-group">
-                        {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
                         <select className="form-control" id="teacherRole" onChange={this.handleRoleChange} value={this.state.role}>
                             <option value="">Choose one</option>
                             {this.roles.map(role => (

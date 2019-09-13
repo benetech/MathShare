@@ -144,7 +144,6 @@ export default class Step extends Component {
         return undefined;
     }
 
-    /* eslint-disable jsx-a11y/no-noninteractive-element-to-interactive-role */
     render() {
         const clearAll = this.props.stepNumber === 1 && !this.props.readOnly
             ? (
@@ -225,6 +224,5 @@ export default class Step extends Component {
                 </div>
             </div>
         );
-        /* eslint-enable jsx-a11y/no-noninteractive-element-to-interactive-role */
     }
 }
