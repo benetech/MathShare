@@ -180,6 +180,8 @@ class Locales {
                 share_with_teachers_text: 'Check out my #accessible math problems made in @mathshare. Supports learning styles, special needs and #4Cs. ',
                 to_mathshare_twitter: 'to mathshare twitter',
                 to_mathshare_youtube: 'to mathshare youtube',
+                opens_in_new_tab: '(opens in new tab)',
+                opens_in_new_window: '(opens in new window)',
             },
             es: {},
         });

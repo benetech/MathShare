@@ -142,6 +142,10 @@ class Index extends Component {
                                                     name="copy"
                                                 />
                                                 {` ${Locales.strings.duplicate_set}`}
+                                                <span className="sROnly">
+                                                    {'\u00A0'}
+                                                    {Locales.strings.opens_in_new_tab}
+                                                </span>
                                             </button>
                                             <button
                                                 className="dropdown-item reset-btn"
@@ -158,6 +162,10 @@ class Index extends Component {
                                                     name="twitter"
                                                 />
                                                 {` ${Locales.strings.share_with_teachers}`}
+                                                <span className="sROnly">
+                                                    {'\u00A0'}
+                                                    {Locales.strings.opens_in_new_window}
+                                                </span>
                                             </button>
                                         </div>
                                     </div>

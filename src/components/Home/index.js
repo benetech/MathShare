@@ -184,7 +184,13 @@ class Home extends Component {
                                     )}
                                     type="button"
                                 >
-                                    <div className={home.btnText}>Google Classroom</div>
+                                    <div className={home.btnText}>
+                                        {'Google Classroom'}
+                                        <span className="sROnly">
+                                            {'\u00A0'}
+                                            {Locales.strings.opens_in_new_window}
+                                        </span>
+                                    </div>
                                     <img src={googleClassroomIcon} alt="google classroom" />
                                 </button>
                                 <UncontrolledTooltip placement="top" target="googleContainer2" />
@@ -202,7 +208,13 @@ class Home extends Component {
                                     onKeyPress={this.shareOnMicrosoftTeams}
                                     type="button"
                                 >
-                                    <div className={home.btnText}>Microsoft Teams</div>
+                                    <div className={home.btnText}>
+                                        {'Microsoft Teams'}
+                                        <span className="sROnly">
+                                            {'\u00A0'}
+                                            {Locales.strings.opens_in_new_window}
+                                        </span>
+                                    </div>
                                     <img src={msTeamIcon} alt="microsoft teams" />
                                 </button>
                                 <UncontrolledTooltip placement="top" target="microsoftTeamContainer2" />
@@ -284,6 +296,10 @@ class Home extends Component {
                                                 name="copy"
                                             />
                                             {` ${Locales.strings.duplicate_set}`}
+                                            <span className="sROnly">
+                                                {'\u00A0'}
+                                                {Locales.strings.opens_in_new_tab}
+                                            </span>
                                         </button>
                                         <button
                                             className="dropdown-item"
@@ -296,6 +312,10 @@ class Home extends Component {
                                                 name="twitter"
                                             />
                                             {` ${Locales.strings.share_with_teachers}`}
+                                            <span className="sROnly">
+                                                {'\u00A0'}
+                                                {Locales.strings.opens_in_new_window}
+                                            </span>
                                         </button>
                                     </React.Fragment>
                                 )}
