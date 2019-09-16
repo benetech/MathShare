@@ -279,6 +279,7 @@ export default class Problem extends Component {
                             ? this.openNewProblemModal()
                             : this.createNewSolution(history)))}
                     tabIndex="0"
+                    role="link"
                 >
                     <div
                         className={
