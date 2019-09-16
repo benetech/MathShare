@@ -1,5 +1,5 @@
 import React from 'react';
-// import classNames from 'classnames';
+import { Helmet } from 'react-helmet';
 import styles from './styles.scss';
 import Locales from '../../strings';
 import logo from '../../../images/logo-2.png';
@@ -9,6 +9,15 @@ const privacyLink = 'https://benetech.org/about/privacy-policy/';
 
 const Privacy = () => (
     <div className={styles.container}>
+        <Helmet>
+            <title>
+                {Locales.strings.policies}
+                {' '}
+                -
+                {' '}
+                {Locales.strings.mathshare_benetech}
+            </title>
+        </Helmet>
         <div className={styles.logoContainer}>
             <a href="/#/">
                 <img className={styles.midLogo} src={logo} alt={Locales.strings.mathshare_logo} />

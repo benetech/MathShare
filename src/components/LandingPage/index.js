@@ -3,7 +3,7 @@ import {
     withRouter,
 } from 'react-router-dom';
 import { IntercomAPI } from 'react-intercom';
-// import classNames from 'classnames';
+import { Helmet } from 'react-helmet';
 import styles from './styles.scss';
 import Locales from '../../strings';
 import logo from '../../../images/logo-2.png';
@@ -34,6 +34,15 @@ const clickOnSignIn = (history, setAuthRedirect, userProfile) => () => {
 
 const LandingPage = withRouter(({ history, setAuthRedirect, userProfile }) => (
     <div className={styles.container}>
+        <Helmet>
+            <title>
+                {Locales.strings.overview}
+                {' '}
+                -
+                {' '}
+                {Locales.strings.mathshare_benetech}
+            </title>
+        </Helmet>
         <div>
             <button
                 type="button"

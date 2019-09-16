@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { UserAgentApplication } from 'msal';
+import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';
 import { UncontrolledTooltip } from 'reactstrap';
 import msalConfig from '../../constants/msal';
@@ -107,6 +108,15 @@ class SignIn extends Component {
     render() {
         return (
             <div className={signIn.container}>
+                <Helmet>
+                    <title>
+                        {Locales.strings.sign_in}
+                        {' '}
+                        -
+                        {' '}
+                        {Locales.strings.mathshare_benetech}
+                    </title>
+                </Helmet>
                 <div className={signIn.content}>
                     <div className={signIn.logo}>
                         <img src={logo} alt={Locales.strings.logo} />

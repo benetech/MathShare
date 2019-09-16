@@ -174,9 +174,25 @@ class Editor extends Component {
         const {
             problemList,
             problemStore,
+            example,
         } = this.props;
         const { solution } = problemStore;
         const { problem } = solution;
+
+        if (example) {
+            return (
+                <Helmet>
+                    <title>
+                        {Locales.strings.tutorial}
+                        {' '}
+                        -
+                        {' '}
+                        {Locales.strings.mathshare_benetech}
+                    </title>
+                </Helmet>
+            );
+        }
+
         let titlePrefix = '';
         if (problemList.set && problemList.set.title) {
             titlePrefix = `${problemList.set.title} - `;
@@ -191,7 +207,7 @@ class Editor extends Component {
             count = problemList.set.problems.length;
         }
         if (pos > 0 && count > 0) {
-            titlePrefix = `Problem ${pos} of ${count} - ${titlePrefix}`;
+            titlePrefix = `Problem ${pos} of ${count} | ${titlePrefix}`;
         }
         return (
             <Helmet>
