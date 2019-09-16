@@ -214,7 +214,7 @@ export default class NewProblemsForm extends Component {
         return (
             <AriaModal
                 id="modal"
-                titleText="demo one"
+                titleText={Locales.strings.add_problem_title}
                 onExit={this.props.deactivateModal}
                 getApplicationNode={this.getApplicationNode}
                 underlayStyle={{ paddingTop: '2em' }}

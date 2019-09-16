@@ -68,7 +68,7 @@ export default class PaletteChooser extends Component {
         return (
             <AriaModal
                 id="modal"
-                titleText="demo one"
+                titleText={Locales.strings.math_palette}
                 onExit={this.props.deactivateModal}
                 getApplicationNode={this.getApplicationNode}
                 focusDialog
