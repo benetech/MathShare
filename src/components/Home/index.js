@@ -270,6 +270,7 @@ class Home extends Component {
                                     )
                                 }
                             />
+                            <span className="sROnly">{Locales.strings.edit_title}</span>
                         </button>
                         <div className="dropdown">
                             <button className="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

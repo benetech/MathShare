@@ -71,6 +71,7 @@ class Locales {
                 edit_problem: 'Edit Problem',
                 edit_problem_set: 'Edit Problem Set',
                 edit_this_step: 'Edit this Step',
+                edit_title: 'Edit Problem Set Title',
                 email: 'Email',
                 equation: 'Equation',
                 example: 'example',
