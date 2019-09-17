@@ -33,13 +33,10 @@ class Index extends Component {
     }
 
     openPremadeSet = problemSet => () => {
-        this.openByShareCode(problemSet.shareCode);
         googleAnalytics(`premade set - ${problemSet.title}`);
     }
 
-    openByShareCode = (shareCode) => {
-        this.props.history.push(`/app/problemSet/view/${shareCode}`);
-    }
+    getShareLink = shareCode => `/#/app/problemSet/view/${shareCode}`
 
     duplicateProblemSet = problemSet => (e) => {
         this.props.duplicateProblemSet(e, problemSet);
@@ -96,14 +93,13 @@ class Index extends Component {
                     <ol className={pageIndex.problemSetList}>
                         {problemList.exampleProblemSets.filter(exampleProblemSet => exampleProblemSet.title !== 'Example Problem Set').map((exampleProblemSet, index) => (
                             <li className="card" key={index}>
-                                <button
-                                    type="button"
+                                <a
                                     className="btn d-flex"
+                                    href={this.getShareLink(exampleProblemSet.shareCode)}
                                     onClick={this.openPremadeSet(exampleProblemSet)}
                                     onKeyPress={
                                         passEventForKeys(this.openPremadeSet(exampleProblemSet))
                                     }
-                                    role="link"
                                 >
                                     <span className={pageIndex.title}>
                                         {exampleProblemSet.title}
@@ -176,7 +172,7 @@ class Index extends Component {
                                             </button>
                                         </div>
                                     </div>
-                                </button>
+                                </a>
                             </li>
                         ))}
 
