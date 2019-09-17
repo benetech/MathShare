@@ -135,6 +135,17 @@ class Home extends Component {
         }
     }
 
+    saveProblemSet = (currentSet, redirect) => () => {
+        this.props.saveProblemSet(
+            currentSet.problems,
+            currentSet.title,
+            redirect,
+        );
+        if (!redirect) {
+            IntercomAPI('trackEvent', 'assign-a-set-link');
+        }
+    }
+
     renderNewAndEditControls = (currentSet) => {
         const {
             match,
@@ -143,6 +154,7 @@ class Home extends Component {
         const {
             params,
         } = match;
+
         return (
             <React.Fragment>
                 <div className={`row flex-row ${home.btnContainer}`}>
@@ -152,10 +164,6 @@ class Home extends Component {
                         || params.action === 'edit'
                     ) && (
                         <React.Fragment>
-                            <div className={home.text}>
-                                {Locales.strings.assign}
-                                {'\u00A0'}
-                            </div>
                             <Button
                                 id="shareBtn"
                                 className={classNames([
@@ -164,14 +172,9 @@ class Home extends Component {
                                 ])}
                                 type="button"
                                 icon="link"
-                                content={Locales.strings.link}
-                                onClick={() => {
-                                    this.props.saveProblemSet(
-                                        currentSet.problems,
-                                        currentSet.title,
-                                    );
-                                    IntercomAPI('trackEvent', 'assign-a-set-link');
-                                }}
+                                content={<h2>{`\u00A0${Locales.strings.share_permalink}`}</h2>}
+                                onClick={this.saveProblemSet(currentSet)}
+                                onKeyPress={this.saveProblemSet(currentSet)}
                             />
                             <span>
                                 <button
@@ -188,14 +191,17 @@ class Home extends Component {
                                     )}
                                     type="button"
                                 >
-                                    <div className={home.btnText}>
-                                        {'Google Classroom'}
+                                    <h2 className={home.btnText}>
+                                        <span className="sROnly">
+                                            {Locales.strings.share_on}
+                                        </span>
+                                        {Locales.strings.google_classroom}
                                         <span className="sROnly">
                                             {'\u00A0'}
                                             {Locales.strings.opens_in_new_window}
                                         </span>
-                                    </div>
-                                    <img src={googleClassroomIcon} alt="google classroom" />
+                                    </h2>
+                                    <img src={googleClassroomIcon} alt="" />
                                 </button>
                                 <UncontrolledTooltip placement="top" target="googleContainer2" />
                             </span>
@@ -212,45 +218,34 @@ class Home extends Component {
                                     onKeyPress={this.shareOnMicrosoftTeams}
                                     type="button"
                                 >
-                                    <div className={home.btnText}>
+                                    <h2 className={home.btnText}>
+                                        <span className="sROnly">
+                                            {Locales.strings.share_on}
+                                        </span>
                                         {Locales.strings.ms_team}
                                         <span className="sROnly">
                                             {'\u00A0'}
                                             {Locales.strings.opens_in_new_window}
                                         </span>
-                                    </div>
-                                    <img
-                                        src={msTeamIcon}
-                                        alt={
-                                            Locales.strings.ms_team.toLowerCase()
-                                        }
-                                    />
+                                    </h2>
+                                    <img src={msTeamIcon} alt="" />
                                 </button>
                                 <UncontrolledTooltip placement="top" target="microsoftTeamContainer2" />
                             </span>
+                            <Button
+                                id="viewAsStudent"
+                                className={classNames([
+                                    'btn',
+                                    'btn-outline-dark',
+                                ])}
+                                type="button"
+                                icon="eye"
+                                content={<h2>{Locales.strings.view_as_student}</h2>}
+                                onClick={this.saveProblemSet(currentSet, true)}
+                                onKeyPress={this.saveProblemSet(currentSet, true)}
+                            />
                         </React.Fragment>
                     )}
-                </div>
-                <div className="row flex-row-reverse">
-                    <div className={home.secondRowBtn}>
-                        <Button
-                            id="viewAsStudent"
-                            className={classNames([
-                                'btn',
-                                'btn-outline-dark',
-                            ])}
-                            type="button"
-                            icon="eye"
-                            content={Locales.strings.view_as_student}
-                            onClick={() => {
-                                this.props.saveProblemSet(
-                                    currentSet.problems,
-                                    currentSet.title,
-                                    true,
-                                );
-                            }}
-                        />
-                    </div>
                 </div>
                 <div className="row">
                     <div className={classNames('col-lg-12', 'm-3', 'text-left')}>
@@ -348,7 +343,7 @@ class Home extends Component {
             <Helmet>
                 <title>
                     {titlePrefix}
-                    Benetech Mathshare
+                    {Locales.strings.mathshare_benetech}
                 </title>
             </Helmet>
         );
@@ -387,6 +382,7 @@ class Home extends Component {
                             <div className={classNames([
                                 'row',
                                 home.actionBar,
+                                home.btnContainer,
                             ])}
                             >
                                 <div className={classNames([
@@ -394,12 +390,11 @@ class Home extends Component {
                                     'col',
                                 ])}
                                 />
-                                <div className={home.right}>
-                                    <span className={home.actionBarText}>
-                                        {Locales.strings.submit}
-                                        :
-                                        {' '}
-                                    </span>
+                                <div className={classNames([
+                                    home.btnContainer,
+                                    home.right,
+                                ])}
+                                >
                                     <Button
                                         id="shareBtn"
                                         className={classNames([
@@ -408,7 +403,7 @@ class Home extends Component {
                                         ])}
                                         type="button"
                                         icon="link"
-                                        content={Locales.strings.link}
+                                        content={<h2>{Locales.strings.share_permalink}</h2>}
                                         onClick={this.shareProblemSet}
                                     />
                                     <span>
@@ -426,8 +421,17 @@ class Home extends Component {
                                             }
                                             type="button"
                                         >
-                                            <div className={home.btnText}>Google Classroom</div>
-                                            <img src={googleClassroomIcon} alt="google classroom" />
+                                            <h2 className={home.btnText}>
+                                                <span className="sROnly">
+                                                    {Locales.strings.share_on}
+                                                </span>
+                                                {Locales.strings.google_classroom}
+                                                <span className="sROnly">
+                                                    {'\u00A0'}
+                                                    {Locales.strings.opens_in_new_window}
+                                                </span>
+                                            </h2>
+                                            <img src={googleClassroomIcon} alt="" />
                                         </button>
                                         <UncontrolledTooltip placement="top" target="googleContainer1" />
                                     </span>
@@ -446,14 +450,19 @@ class Home extends Component {
                                             }
                                             type="button"
                                         >
-                                            <div className={home.btnText}>
+                                            <h2 className={home.btnText}>
+                                                <span className="sROnly">
+                                                    {Locales.strings.share_on}
+                                                </span>
                                                 {Locales.strings.ms_team}
-                                            </div>
+                                                <span className="sROnly">
+                                                    {'\u00A0'}
+                                                    {Locales.strings.opens_in_new_window}
+                                                </span>
+                                            </h2>
                                             <img
                                                 src={msTeamIcon}
-                                                alt={
-                                                    Locales.strings.ms_team.toLowerCase()
-                                                }
+                                                alt=""
                                             />
                                         </button>
                                         <UncontrolledTooltip placement="top" target="microsoftTeamContainer1" />

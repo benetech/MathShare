@@ -23,7 +23,7 @@ export default class ProblemSetShareModal extends Component {
                 <div id="demo-one-modal" className={editor.modal}>
                     <div className={editor.modalBody}>
                         <h3>
-                            {Locales.strings.submit_problem_link}
+                            {Locales.strings.share_permalink}
                         </h3>
                         <div className={editor.modalMessage}>
                             <p>{Locales.strings.students_visit}</p>

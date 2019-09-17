@@ -14,8 +14,16 @@
             margin: auto 5px;
         }
 
-        span {
+        >span {
             margin-left: 5px;
+        }
+
+        button {
+            h2 {
+                font-size: 1rem;
+                margin: auto;
+                display: inline-block;
+            }
         }
     }
 }

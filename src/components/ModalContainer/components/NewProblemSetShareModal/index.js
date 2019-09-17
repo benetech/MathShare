@@ -31,7 +31,9 @@ export default class NewProblemSetShareModal extends Component {
                 <div id="demo-one-modal" className={editor.modal}>
                     <div className={editor.modalBody}>
                         <h3>
-                            {Locales.strings.assign_with_a_link}
+                            {Locales.strings.share_permalink}
+                            :
+                            {'\u00A0'}
                         </h3>
                         <div className={editor.modalMessage}>
                             <p>{Locales.strings.copy_this_link}</p>
