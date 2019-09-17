@@ -43,17 +43,14 @@ const LandingPage = withRouter(({ history, setAuthRedirect, userProfile }) => (
                 {Locales.strings.mathshare_benetech}
             </title>
         </Helmet>
-        <div>
-            <button
-                type="button"
-                className={styles.skipBtn}
-                tabIndex={0}
-                onClick={focusOnMainContent}
-                onKeyPress={passEventForKeys(focusOnMainContent)}
-            >
-                {Locales.strings.go_to_main_content}
-            </button>
-        </div>
+        <button
+            data-skip-link
+            onClick={focusOnMainContent}
+            onKeyPress={passEventForKeys(focusOnMainContent)}
+            type="button"
+        >
+            {Locales.strings.go_to_main_content}
+        </button>
         <div className={styles.signInLabel}>
             <button
                 className={`${styles.signIn} reset-btn`}

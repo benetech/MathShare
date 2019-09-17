@@ -193,6 +193,35 @@ button {
     }
 }
 
-body [tabindex="-1"]:focus {
+.default-outline {
     outline: 5px auto -webkit-focus-ring-color !important;
+}
+
+body [tabindex="-1"]:focus {
+    @extend .default-outline;
+}
+
+[data-skip-link] {
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    width: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    position: absolute;
+}
+
+[data-skip-link]:focus {
+    padding: 0.7rem;
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    background: white;
+    z-index: 1;
+    width: auto;
+    height: auto;
+    clip: auto;
+    border-radius: 5px;
+    @extend .default-outline;
 }

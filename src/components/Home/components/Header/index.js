@@ -18,7 +18,11 @@ import {
 } from '../../../../redux/userProfile/actions';
 import googleAnalytics from '../../../../scripts/googleAnalytics';
 import logo from '../../../../../images/mathshare_logo_white.png';
-import { focusOnMainContent, stopEvent, passEventForKeys } from '../../../../services/events';
+import {
+    focusOnMainContent,
+    stopEvent,
+    passEventForKeys,
+} from '../../../../services/events';
 
 
 class MainPageHeader extends React.Component {
@@ -93,16 +97,16 @@ class MainPageHeader extends React.Component {
                         className={classNames(header.navbar, 'navbar-expand-lg', 'navbar')}
                         id="topNavigation"
                     >
+                        <button
+                            data-skip-link
+                            onClick={focusOnMainContent}
+                            onKeyPress={passEventForKeys(focusOnMainContent)}
+                            type="button"
+                        >
+                            {Locales.strings.go_to_main_content}
+                        </button>
                         <h2 id="topNavLabel" className="sROnly">{Locales.strings.header}</h2>
                         <div className={header.navbarBrandContainer}>
-                            <button
-                                type="button"
-                                className={`${header.skip} reset-btn`}
-                                onClick={focusOnMainContent}
-                                onKeyPress={passEventForKeys(focusOnMainContent)}
-                            >
-                                {Locales.strings.go_to_main_content}
-                            </button>
                             <a
                                 className="navbar-brand"
                                 href="#/app"
