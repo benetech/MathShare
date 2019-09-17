@@ -282,47 +282,52 @@ class Home extends Component {
                                     }
                                     name="ellipsis-v"
                                 />
+                                <span className="sROnly">{Locales.strings.more_options}</span>
                             </button>
-                            <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 {params.action === 'edit' && (
                                     <React.Fragment>
-                                        <button
-                                            className="dropdown-item"
-                                            onClick={this.props.duplicateProblemSet}
-                                            onKeyPress={
-                                                passEventForKeys(this.props.duplicateProblemSet)
-                                            }
-                                            type="button"
-                                        >
-                                            <FontAwesome
-                                                size="lg"
-                                                name="copy"
-                                            />
-                                            {` ${Locales.strings.duplicate_set}`}
-                                            <span className="sROnly">
-                                                {'\u00A0'}
-                                                {Locales.strings.opens_in_new_tab}
-                                            </span>
-                                        </button>
-                                        <button
-                                            className="dropdown-item"
-                                            onClick={this.shareOnTwitter}
-                                            onKeyPress={passEventForKeys(this.shareOnTwitter)}
-                                            type="button"
-                                        >
-                                            <FontAwesome
-                                                size="lg"
-                                                name="twitter"
-                                            />
-                                            {` ${Locales.strings.share_with_teachers}`}
-                                            <span className="sROnly">
-                                                {'\u00A0'}
-                                                {Locales.strings.opens_in_new_window}
-                                            </span>
-                                        </button>
+                                        <li>
+                                            <button
+                                                className="dropdown-item"
+                                                onClick={this.props.duplicateProblemSet}
+                                                onKeyPress={
+                                                    passEventForKeys(this.props.duplicateProblemSet)
+                                                }
+                                                type="button"
+                                            >
+                                                <FontAwesome
+                                                    size="lg"
+                                                    name="copy"
+                                                />
+                                                {` ${Locales.strings.duplicate_set}`}
+                                                <span className="sROnly">
+                                                    {'\u00A0'}
+                                                    {Locales.strings.opens_in_new_tab}
+                                                </span>
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <button
+                                                className="dropdown-item"
+                                                onClick={this.shareOnTwitter}
+                                                onKeyPress={passEventForKeys(this.shareOnTwitter)}
+                                                type="button"
+                                            >
+                                                <FontAwesome
+                                                    size="lg"
+                                                    name="twitter"
+                                                />
+                                                {` ${Locales.strings.share_with_teachers}`}
+                                                <span className="sROnly">
+                                                    {'\u00A0'}
+                                                    {Locales.strings.opens_in_new_window}
+                                                </span>
+                                            </button>
+                                        </li>
                                     </React.Fragment>
                                 )}
-                            </div>
+                            </ul>
                         </div>
                         <br aria-hidden="true" />
                         <br aria-hidden="true" />

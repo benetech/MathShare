@@ -136,57 +136,64 @@ export default class ProblemHeader extends Component {
                                 size="lg"
                                 name="question"
                             />
+                            <span className="sROnly">{Locales.strings.more_options}</span>
                         </button>
                         <UncontrolledTooltip placement="top" target={questionBtnId} />
-                        <div
+                        <ul
                             className="dropdown-menu dropdown-menu-lg-right dropdown-secondary"
                             aria-labelledby={`${questionBtnId}-label`}
                         >
-                            <button
-                                className="dropdown-item reset-btn"
-                                onClick={this.openTour}
-                                onKeyPress={passEventForKeys(this.openTour)}
-                                type="button"
-                                tabIndex={0}
-                            >
-                                <FontAwesome
-                                    className="super-crazy-colors"
-                                    name="hand-o-up"
-                                    style={{ textShadow: '0 1px 0 rgba(0, 0, 0, 0.1)' }}
-                                />
-                                {Locales.strings.tutorial}
-                            </button>
-                            <a
-                                className="dropdown-item"
-                                href="https://intercom.help/benetech/en"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                onClick={this.clickedHelpCenter}
-                                onKeyPress={passEventForKeys(this.clickedHelpCenter)}
-                            >
-                                <FontAwesome
-                                    className="super-crazy-colors"
-                                    name="comment"
-                                    style={{ textShadow: '0 1px 0 rgba(0, 0, 0, 0.1)' }}
-                                />
-                                {Locales.strings.help_center}
-                            </a>
-                            <a
-                                href="https://docs.google.com/forms/d/e/1FAIpQLScSZJo47vQM_5ci2MOgBbJW7WM6FbEi2xABR5qSZd8oD2RZEg/viewform?usp=sf_link"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="dropdown-item"
-                                onClick={this.clickedFeedback}
-                                onKeyPress={passEventForKeys(this.clickedFeedback)}
-                            >
-                                <FontAwesome
-                                    className="super-crazy-colors"
-                                    name="arrow-circle-right"
-                                    style={{ textShadow: '0 1px 0 rgba(0, 0, 0, 0.1)' }}
-                                />
-                                {Locales.strings.provide_feedback}
-                            </a>
-                        </div>
+                            <li>
+                                <button
+                                    className="dropdown-item reset-btn"
+                                    onClick={this.openTour}
+                                    onKeyPress={passEventForKeys(this.openTour)}
+                                    type="button"
+                                    tabIndex={0}
+                                >
+                                    <FontAwesome
+                                        className="super-crazy-colors"
+                                        name="hand-o-up"
+                                        style={{ textShadow: '0 1px 0 rgba(0, 0, 0, 0.1)' }}
+                                    />
+                                    {Locales.strings.tutorial}
+                                </button>
+                            </li>
+                            <li>
+                                <a
+                                    className="dropdown-item"
+                                    href="https://intercom.help/benetech/en"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    onClick={this.clickedHelpCenter}
+                                    onKeyPress={passEventForKeys(this.clickedHelpCenter)}
+                                >
+                                    <FontAwesome
+                                        className="super-crazy-colors"
+                                        name="comment"
+                                        style={{ textShadow: '0 1px 0 rgba(0, 0, 0, 0.1)' }}
+                                    />
+                                    {Locales.strings.help_center}
+                                </a>
+                            </li>
+                            <li>
+                                <a
+                                    href="https://docs.google.com/forms/d/e/1FAIpQLScSZJo47vQM_5ci2MOgBbJW7WM6FbEi2xABR5qSZd8oD2RZEg/viewform?usp=sf_link"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="dropdown-item"
+                                    onClick={this.clickedFeedback}
+                                    onKeyPress={passEventForKeys(this.clickedFeedback)}
+                                >
+                                    <FontAwesome
+                                        className="super-crazy-colors"
+                                        name="arrow-circle-right"
+                                        style={{ textShadow: '0 1px 0 rgba(0, 0, 0, 0.1)' }}
+                                    />
+                                    {Locales.strings.provide_feedback}
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                 </div>
             );

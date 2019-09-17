@@ -135,14 +135,15 @@ class MainPageHeader extends React.Component {
                                             size="lg"
                                             name="question"
                                         />
+                                        <span className="sROnly">{Locales.strings.more_options}</span>
                                     </button>
                                     <UncontrolledTooltip placement="top" target={questionBtnId} />
-                                    <div
+                                    <ul
                                         className="dropdown-menu dropdown-menu-lg-right dropdown-secondary"
                                         aria-labelledby={`${questionBtnId}-label`}
                                     >
                                         {(props.action === 'new' || props.action === 'edit') && (
-                                            <React.Fragment>
+                                            <li>
                                                 <button
                                                     className="dropdown-item reset-btn"
                                                     onClick={this.openNewProblemSet}
@@ -161,55 +162,61 @@ class MainPageHeader extends React.Component {
                                                         {Locales.strings.opens_in_new_tab}
                                                     </span>
                                                 </button>
-                                            </React.Fragment>
+                                            </li>
                                         )}
-                                        <a
-                                            className="dropdown-item"
-                                            href="/#/app/problem/example"
-                                            onClick={this.onClickTutorial}
-                                            onKeyPress={passEventForKeys(this.onClickTutorial)}
-                                            tabIndex={0}
-                                        >
-                                            <FontAwesome
-                                                className="super-crazy-colors"
-                                                name="hand-o-up"
-                                                style={{ textShadow: '0 1px 0 rgba(0, 0, 0, 0.1)' }}
-                                            />
-                                            {Locales.strings.tutorial}
-                                        </a>
-                                        <a
-                                            className="dropdown-item"
-                                            href="https://intercom.help/benetech/en"
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            onClick={() => {
-                                                googleAnalytics('click help center');
-                                            }}
-                                        >
-                                            <FontAwesome
-                                                className="super-crazy-colors"
-                                                name="comment"
-                                                style={{ textShadow: '0 1px 0 rgba(0, 0, 0, 0.1)' }}
-                                            />
-                                            {Locales.strings.help_center}
-                                        </a>
-                                        <a
-                                            href="https://docs.google.com/forms/d/e/1FAIpQLScSZJo47vQM_5ci2MOgBbJW7WM6FbEi2xABR5qSZd8oD2RZEg/viewform?usp=sf_link"
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="dropdown-item"
-                                            onClick={() => {
-                                                googleAnalytics('click feedback');
-                                            }}
-                                        >
-                                            <FontAwesome
-                                                className="super-crazy-colors"
-                                                name="arrow-circle-right"
-                                                style={{ textShadow: '0 1px 0 rgba(0, 0, 0, 0.1)' }}
-                                            />
-                                            {Locales.strings.provide_feedback}
-                                        </a>
-                                    </div>
+                                        <li>
+                                            <a
+                                                className="dropdown-item"
+                                                href="/#/app/problem/example"
+                                                onClick={this.onClickTutorial}
+                                                onKeyPress={passEventForKeys(this.onClickTutorial)}
+                                                tabIndex={0}
+                                            >
+                                                <FontAwesome
+                                                    className="super-crazy-colors"
+                                                    name="hand-o-up"
+                                                    style={{ textShadow: '0 1px 0 rgba(0, 0, 0, 0.1)' }}
+                                                />
+                                                {Locales.strings.tutorial}
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a
+                                                className="dropdown-item"
+                                                href="https://intercom.help/benetech/en"
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                onClick={() => {
+                                                    googleAnalytics('click help center');
+                                                }}
+                                            >
+                                                <FontAwesome
+                                                    className="super-crazy-colors"
+                                                    name="comment"
+                                                    style={{ textShadow: '0 1px 0 rgba(0, 0, 0, 0.1)' }}
+                                                />
+                                                {Locales.strings.help_center}
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a
+                                                href="https://docs.google.com/forms/d/e/1FAIpQLScSZJo47vQM_5ci2MOgBbJW7WM6FbEi2xABR5qSZd8oD2RZEg/viewform?usp=sf_link"
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="dropdown-item"
+                                                onClick={() => {
+                                                    googleAnalytics('click feedback');
+                                                }}
+                                            >
+                                                <FontAwesome
+                                                    className="super-crazy-colors"
+                                                    name="arrow-circle-right"
+                                                    style={{ textShadow: '0 1px 0 rgba(0, 0, 0, 0.1)' }}
+                                                />
+                                                {Locales.strings.provide_feedback}
+                                            </a>
+                                        </li>
+                                    </ul>
                                 </li>
                                 {(this.state.googleInitialized && !userProfile.service) && (
                                     <li>
@@ -246,26 +253,29 @@ class MainPageHeader extends React.Component {
                                         </button>
                                         <UncontrolledTooltip placement="top" target="navbarDropdownMenuLink-avatar" />
                                         {window.auth2Initialized && (
-                                            <div
+                                            <ul
                                                 className="dropdown-menu dropdown-menu-lg-right dropdown-secondary"
                                                 aria-labelledby="navbarDropdownMenuLink-avatar"
                                             >
-                                                <div className="dropdown-header">{userProfile.name}</div>
-                                                <div className={`dropdown-header ${header.email}`}>{userProfile.email}</div>
-                                                <div className="dropdown-divider" />
-                                                <button
-                                                    className="dropdown-item logout reset-btn"
-                                                    onClick={this.props.logoutOfUserProfile}
-                                                    onKeyPress={
-                                                        passEventForKeys(
-                                                            this.props.logoutOfUserProfile,
-                                                        )
-                                                    }
-                                                    type="button"
-                                                >
-                                                    {Locales.strings.sign_out}
-                                                </button>
-                                            </div>
+                                                <li><div className="dropdown-header">{userProfile.name}</div></li>
+                                                <li><div className={`dropdown-header ${header.email}`}>{userProfile.email}</div></li>
+                                                <li><div className="dropdown-divider" /></li>
+                                                <li>
+                                                    <button
+                                                        className="dropdown-item logout reset-btn"
+                                                        onClick={this.props.logoutOfUserProfile}
+                                                        onKeyPress={
+                                                            passEventForKeys(
+                                                                this.props.logoutOfUserProfile,
+                                                            )
+                                                        }
+                                                        type="button"
+                                                    >
+                                                        {Locales.strings.sign_out}
+                                                    </button>
+
+                                                </li>
+                                            </ul>
                                         )}
                                     </li>
                                 )}

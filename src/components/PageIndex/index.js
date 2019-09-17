@@ -130,53 +130,58 @@ class Index extends Component {
                                             <FontAwesome
                                                 name="ellipsis-v"
                                             />
+                                            <span className="sROnly">{Locales.strings.more_options}</span>
                                         </button>
-                                        <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                            <button
-                                                className="dropdown-item reset-btn"
-                                                onClick={this.duplicateProblemSet(
-                                                    exampleProblemSet,
-                                                )}
-                                                onKeyPress={
-                                                    passEventForKeys(
-                                                        this.duplicateProblemSet(
-                                                            exampleProblemSet,
-                                                        ),
-                                                    )
-                                                }
-                                                type="button"
-                                            >
-                                                <FontAwesome
-                                                    size="lg"
-                                                    name="copy"
-                                                />
-                                                {` ${Locales.strings.duplicate_set}`}
-                                                <span className="sROnly">
-                                                    {'\u00A0'}
-                                                    {Locales.strings.opens_in_new_tab}
-                                                </span>
-                                            </button>
-                                            <button
-                                                className="dropdown-item reset-btn"
-                                                onClick={shareOnTwitter(
-                                                    exampleProblemSet.shareCode,
-                                                )}
-                                                onKeyPress={passEventForKeys(shareOnTwitter(
-                                                    exampleProblemSet.shareCode,
-                                                ))}
-                                                type="button"
-                                            >
-                                                <FontAwesome
-                                                    size="lg"
-                                                    name="twitter"
-                                                />
-                                                {` ${Locales.strings.share_with_teachers}`}
-                                                <span className="sROnly">
-                                                    {'\u00A0'}
-                                                    {Locales.strings.opens_in_new_window}
-                                                </span>
-                                            </button>
-                                        </div>
+                                        <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <li>
+                                                <button
+                                                    className="dropdown-item reset-btn"
+                                                    onClick={this.duplicateProblemSet(
+                                                        exampleProblemSet,
+                                                    )}
+                                                    onKeyPress={
+                                                        passEventForKeys(
+                                                            this.duplicateProblemSet(
+                                                                exampleProblemSet,
+                                                            ),
+                                                        )
+                                                    }
+                                                    type="button"
+                                                >
+                                                    <FontAwesome
+                                                        size="lg"
+                                                        name="copy"
+                                                    />
+                                                    {` ${Locales.strings.duplicate_set}`}
+                                                    <span className="sROnly">
+                                                        {'\u00A0'}
+                                                        {Locales.strings.opens_in_new_tab}
+                                                    </span>
+                                                </button>
+                                            </li>
+                                            <li>
+                                                <button
+                                                    className="dropdown-item reset-btn"
+                                                    onClick={shareOnTwitter(
+                                                        exampleProblemSet.shareCode,
+                                                    )}
+                                                    onKeyPress={passEventForKeys(shareOnTwitter(
+                                                        exampleProblemSet.shareCode,
+                                                    ))}
+                                                    type="button"
+                                                >
+                                                    <FontAwesome
+                                                        size="lg"
+                                                        name="twitter"
+                                                    />
+                                                    {` ${Locales.strings.share_with_teachers}`}
+                                                    <span className="sROnly">
+                                                        {'\u00A0'}
+                                                        {Locales.strings.opens_in_new_window}
+                                                    </span>
+                                                </button>
+                                            </li>
+                                        </ul>
                                     </div>
                                 </a>
                             </li>

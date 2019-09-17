@@ -133,6 +133,7 @@ class Locales {
                 mathshare_privacy_updated: 'Updated 7-2-19',
                 mathshare_supported_lms: 'several logos of several LMS vendors, including Canvas, Google Classroom, Schoology, Moodle, OneNote, and Blackboard',
                 mission: 'Our mission is to make math accessibility free and open to all students.',
+                more_options: 'More Options',
                 ms_logo: 'microsoft logo',
                 ms_team: 'Microsoft Teams',
                 my_steps: 'My Steps',
