@@ -121,7 +121,7 @@ class Locales {
                 math_button_select_exp: 'You must select an arithmetic expression for calculation',
                 math_editor: 'Math editor',
                 math_input_buttons: 'math input buttons',
-                math_palette: 'Math Palette',
+                math_palette: 'Select Button Palettes',
                 mathshare_benetech: 'Benetech Mathshare',
                 mathshare_gif: 'animation showing math with synchronized highlighting',
                 mathshare_is_a: 'Mathshare is a',
