@@ -213,7 +213,7 @@ class Editor extends Component {
             <Helmet>
                 <title>
                     {titlePrefix}
-                    Benetech Mathshare
+                    {Locales.strings.mathshare_benetech}
                 </title>
             </Helmet>
         );

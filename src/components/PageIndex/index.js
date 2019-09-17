@@ -49,7 +49,13 @@ class Index extends Component {
         return (
             <div>
                 <Helmet>
-                    <title>All Problem Sets - Benetech Mathshare</title>
+                    <title>
+                        {Locales.strings.all_problem_sets}
+                        {' '}
+                        -
+                        {' '}
+                        {Locales.strings.mathshare_benetech}
+                    </title>
                 </Helmet>
                 <MainPageHeader
                     {...props}

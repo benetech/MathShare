@@ -20,6 +20,7 @@ class Locales {
                 add_step: ' Add step',
                 add_step_button_title: 'Clean up the cross outs and start a new step (⌨: shift+enter)',
                 add_step_intro: 'Clean-up your work and start a new step.',
+                all_problem_sets: 'All Problem Sets',
                 all_problems: ' All Problems',
                 assign: 'Assign:',
                 assign_with_a_link: 'Assign with a link: ',
