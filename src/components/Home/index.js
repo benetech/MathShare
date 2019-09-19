@@ -157,6 +157,90 @@ class Home extends Component {
 
         return (
             <React.Fragment>
+                <div className="row">
+                    <div className={classNames('col-lg-12', 'm-3', 'text-left')}>
+                        <h1 id="LeftNavigationHeader" className={home.titleHeader} tabIndex="-1">
+                            {currentSet.title}
+                        </h1>
+                        <button
+                            className="reset-btn"
+                            onClick={() => {
+                                this.props.toggleModals([TITLE_EDIT_MODAL]);
+                            }}
+                            onKeyPress={passEventForKeys(() => {
+                                this.props.toggleModals([TITLE_EDIT_MODAL]);
+                            })}
+                            type="button"
+                        >
+                            <FontAwesome
+                                name="edit"
+                                className={
+                                    classNames(
+                                        'fa-2x',
+                                    )
+                                }
+                            />
+                            <span className="sROnly">{Locales.strings.edit_title}</span>
+                        </button>
+                        <div className="dropdown">
+                            <button className="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <FontAwesome
+                                    className={
+                                        classNames(
+                                            'fa-2x',
+                                        )
+                                    }
+                                    name="ellipsis-v"
+                                />
+                                <span className="sROnly">{Locales.strings.more_options}</span>
+                            </button>
+                            <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                {params.action === 'edit' && (
+                                    <React.Fragment>
+                                        <li>
+                                            <button
+                                                className="dropdown-item"
+                                                onClick={this.props.duplicateProblemSet}
+                                                onKeyPress={
+                                                    passEventForKeys(this.props.duplicateProblemSet)
+                                                }
+                                                type="button"
+                                            >
+                                                <FontAwesome
+                                                    size="lg"
+                                                    name="copy"
+                                                />
+                                                {` ${Locales.strings.duplicate_set}`}
+                                                <span className="sROnly">
+                                                    {'\u00A0'}
+                                                    {Locales.strings.opens_in_new_tab}
+                                                </span>
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <button
+                                                className="dropdown-item"
+                                                onClick={this.shareOnTwitter}
+                                                onKeyPress={passEventForKeys(this.shareOnTwitter)}
+                                                type="button"
+                                            >
+                                                <FontAwesome
+                                                    size="lg"
+                                                    name="twitter"
+                                                />
+                                                {` ${Locales.strings.share_with_teachers}`}
+                                                <span className="sROnly">
+                                                    {'\u00A0'}
+                                                    {Locales.strings.opens_in_new_window}
+                                                </span>
+                                            </button>
+                                        </li>
+                                    </React.Fragment>
+                                )}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
                 <div className={`row flex-row ${home.btnContainer}`}>
                     {(
                         (
@@ -247,92 +331,6 @@ class Home extends Component {
                         </React.Fragment>
                     )}
                 </div>
-                <div className="row">
-                    <div className={classNames('col-lg-12', 'm-3', 'text-left')}>
-                        <h1 id="LeftNavigationHeader" className={home.titleHeader} tabIndex="-1">
-                            {currentSet.title}
-                        </h1>
-                        <button
-                            className="reset-btn"
-                            onClick={() => {
-                                this.props.toggleModals([TITLE_EDIT_MODAL]);
-                            }}
-                            onKeyPress={passEventForKeys(() => {
-                                this.props.toggleModals([TITLE_EDIT_MODAL]);
-                            })}
-                            type="button"
-                        >
-                            <FontAwesome
-                                name="edit"
-                                className={
-                                    classNames(
-                                        'fa-2x',
-                                    )
-                                }
-                            />
-                            <span className="sROnly">{Locales.strings.edit_title}</span>
-                        </button>
-                        <div className="dropdown">
-                            <button className="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <FontAwesome
-                                    className={
-                                        classNames(
-                                            'fa-2x',
-                                        )
-                                    }
-                                    name="ellipsis-v"
-                                />
-                                <span className="sROnly">{Locales.strings.more_options}</span>
-                            </button>
-                            <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                {params.action === 'edit' && (
-                                    <React.Fragment>
-                                        <li>
-                                            <button
-                                                className="dropdown-item"
-                                                onClick={this.props.duplicateProblemSet}
-                                                onKeyPress={
-                                                    passEventForKeys(this.props.duplicateProblemSet)
-                                                }
-                                                type="button"
-                                            >
-                                                <FontAwesome
-                                                    size="lg"
-                                                    name="copy"
-                                                />
-                                                {` ${Locales.strings.duplicate_set}`}
-                                                <span className="sROnly">
-                                                    {'\u00A0'}
-                                                    {Locales.strings.opens_in_new_tab}
-                                                </span>
-                                            </button>
-                                        </li>
-                                        <li>
-                                            <button
-                                                className="dropdown-item"
-                                                onClick={this.shareOnTwitter}
-                                                onKeyPress={passEventForKeys(this.shareOnTwitter)}
-                                                type="button"
-                                            >
-                                                <FontAwesome
-                                                    size="lg"
-                                                    name="twitter"
-                                                />
-                                                {` ${Locales.strings.share_with_teachers}`}
-                                                <span className="sROnly">
-                                                    {'\u00A0'}
-                                                    {Locales.strings.opens_in_new_window}
-                                                </span>
-                                            </button>
-                                        </li>
-                                    </React.Fragment>
-                                )}
-                            </ul>
-                        </div>
-                        <br aria-hidden="true" />
-                        <br aria-hidden="true" />
-                    </div>
-                </div>
             </React.Fragment>
         );
     }
@@ -384,6 +382,12 @@ class Home extends Component {
                 />
                 <div id="mainContainer">
                     <main id="LeftNavigation" className={home.leftNavigation}>
+                        {(params.action !== 'new' && params.action !== 'edit') && (
+                            <NavigationHeader
+                                action={params.action}
+                                set={problemList.set}
+                            />
+                        )}
                         {(params.action !== 'review' && (params.action !== 'edit' && params.action !== 'new')) && (
                             <div className={classNames([
                                 'row',
@@ -478,12 +482,6 @@ class Home extends Component {
                         )}
                         {(params.action === 'new' || params.action === 'edit') && (
                             this.renderNewAndEditControls(currentSet)
-                        )}
-                        {(params.action !== 'new' && params.action !== 'edit') && (
-                            <NavigationHeader
-                                action={params.action}
-                                set={problemList.set}
-                            />
                         )}
                         <NavigationProblems
                             problems={currentSet.problems}
