@@ -45,6 +45,9 @@ export default class PaletteChooser extends Component {
     render() {
         const mathPalette = palettes.map((palette, i) => (
             <div key={i} className={styles.paletteRow}>
+                <h2 id="paletteLabel" className={styles.paletteLabel}>
+                    {palette.label}
+                </h2>
                 <div id="paletteButtons" className={styles.paletteButtons}>
                     <MathButtonsGroup
                         palette={palette}
@@ -53,9 +56,6 @@ export default class PaletteChooser extends Component {
                         readOnly
                     />
                 </div>
-                <h5 id="paletteLabel" className={styles.paletteLabel}>
-                    {palette.label}
-                </h5>
                 <div id="checkBox" className={styles.checkBox}>
                     <input type="checkbox" name="name" onChange={() => this.handleChange(palette.label)} />
                 </div>
@@ -73,12 +73,13 @@ export default class PaletteChooser extends Component {
                 getApplicationNode={this.getApplicationNode}
                 focusDialog
                 underlayStyle={{ paddingTop: '2em' }}
+                dialogStyle={{ display: 'inline-table' }}
             >
 
                 <div className={styles.container} id="container">
-                    <h3 className={styles.title}>
+                    <h1 className={styles.title}>
                         {this.props.title}
-                    </h3>
+                    </h1>
                     <form>
                         {mathPalette}
                     </form>
