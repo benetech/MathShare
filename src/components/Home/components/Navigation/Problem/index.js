@@ -248,7 +248,7 @@ export default class Problem extends Component {
 
         const NavItem = withRouter(({ history }) => (
             <div
-                id={`problem-${this.props.number + 1}`}
+                id={`problem-${((this.props.number && this.props.number + 1) || 'new')}`}
                 className={
                     classNames(
                         'd-flex',
