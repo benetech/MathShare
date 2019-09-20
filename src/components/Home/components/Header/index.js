@@ -250,7 +250,7 @@ class MainPageHeader extends React.Component {
                                             <img
                                                 src={userProfile.profileImage}
                                                 className="rounded-circle z-depth-0"
-                                                alt="avatar"
+                                                alt={Locales.strings.user_profile}
                                             />
                                         </button>
                                         <UncontrolledTooltip placement="top" target="navbarDropdownMenuLink-avatar" />

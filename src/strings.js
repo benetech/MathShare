@@ -252,6 +252,7 @@ class Locales {
                 use_on_your_lms: 'Use on your schools LMS (learning management system) through assignment links, with native integrations and single sign on (SSO) coming soon.',
                 use_this_link: 'Use this link to save your work and return to it later',
                 use_this_link_share: 'Use this link to share your',
+                user_profile: 'User Profile',
                 view_as_student: ' View as Student',
                 view_problem_description: 'view problem description',
                 warning: 'Warning',
