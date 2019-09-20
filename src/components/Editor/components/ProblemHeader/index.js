@@ -121,14 +121,12 @@ export default class ProblemHeader extends Component {
                         </div>
                     )}
                     <li className="nav-item dropdown">
-                        <span id={`${questionBtnId}-label`} className="sROnly">{Locales.strings.help_center}</span>
                         <button
                             className={`nav-link dropdown-toggle btn ${problem.dropDownMenu}`}
                             id={questionBtnId}
                             data-toggle="dropdown"
                             type="button"
                             tabIndex={0}
-                            aria-labelledby={`${questionBtnId}-label`}
                             onClick={this.clickOnQuestion}
                             onKeyPress={passEventForKeys(this.clickOnQuestion)}
                         >
@@ -141,7 +139,6 @@ export default class ProblemHeader extends Component {
                         <UncontrolledTooltip placement="top" target={questionBtnId} />
                         <ul
                             className="dropdown-menu dropdown-menu-lg-right dropdown-secondary"
-                            aria-labelledby={`${questionBtnId}-label`}
                         >
                             <li>
                                 <button
