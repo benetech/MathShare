@@ -43,24 +43,34 @@ export default class PaletteChooser extends Component {
     }
 
     render() {
-        const mathPalette = palettes.map((palette, i) => (
-            <div key={i} className={styles.paletteRow}>
-                <h2 id="paletteLabel" className={styles.paletteLabel}>
-                    {palette.label}
-                </h2>
-                <div id="paletteButtons" className={styles.paletteButtons}>
-                    <MathButtonsGroup
-                        palette={palette}
-                        theActiveMathField={this.props.theActiveMathField}
-                        showLabel={false}
-                        readOnly
-                    />
+        const mathPalette = palettes.map((palette) => {
+            const id = `key-${palette.label}`;
+            const checkBoxId = `${id}-pallete-cb`;
+            return (
+                <div key={id} className={styles.paletteRow}>
+                    <h2 id="paletteLabel" className={styles.paletteLabel}>
+                        {palette.label}
+                    </h2>
+                    <div id="paletteButtons" className={styles.paletteButtons}>
+                        <MathButtonsGroup
+                            palette={palette}
+                            theActiveMathField={this.props.theActiveMathField}
+                            showLabel={false}
+                            readOnly
+                            hideShortcuts
+                        />
+                    </div>
+                    <div id="checkBox" className={styles.checkBox}>
+                        <input type="checkbox" name="name" id={checkBoxId} onChange={() => this.handleChange(palette.label)} />
+                        <label htmlFor={checkBoxId} className="sROnly">
+                            {(this.state.chosenPalettes.includes(palette.label)) ? 'Disable' : 'Enable'}
+                            {' '}
+                            {palette.label}
+                        </label>
+                    </div>
                 </div>
-                <div id="checkBox" className={styles.checkBox}>
-                    <input type="checkbox" name="name" onChange={() => this.handleChange(palette.label)} />
-                </div>
-            </div>
-        ));
+            );
+        });
         const btnClassNames = [
             'btn',
             'pointer',

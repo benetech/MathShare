@@ -102,7 +102,7 @@ export default class MathButton extends Component {
         const title = this.props.button.title;
         const keys = this.props.button.keys;
         let keyShortcut = '';
-        if (keys) {
+        if (keys && !this.props.hideShortcuts) {
             keyShortcut += ' (⌨: ';
             keyShortcut += keys.join('+');
             keyShortcut += ')';
@@ -323,7 +323,7 @@ export default class MathButton extends Component {
             <span role="listitem">
                 <Button
                     aria-labelledby={labelId}
-                    title={title}
+                    title={this.props.hideShortcuts ? null : title}
                     disabled={this.props.readOnly}
                     id={this.props.button.id}
                     className={this.buildClassNames()}
