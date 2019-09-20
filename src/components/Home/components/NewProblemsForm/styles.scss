@@ -7,15 +7,24 @@
     margin: auto;
 }
 
-.row,
 .header {
+    display: grid;
+    margin: 10px;
+
+    .tableHeader {
+        margin: 5px;
+    }
+}
+
+.header .tableHeader,
+.row {
     display: flex;
     justify-content: space-around;
-    margin: 5px;
 }
 
 .row {
     height: 58px;
+    margin: 10px;
     background: rgb(255, 255, 255);
 }
 

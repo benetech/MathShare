@@ -161,16 +161,21 @@ export default class NewProblemsForm extends Component {
         const header = this.props.editing ? null
             : (
                 <div className={styles.header}>
-                    <h5 className={styles.ordinal}>
-                        {Locales.strings.hash}
-                    </h5>
-                    <h5 className={styles.cell}>
-                        {Locales.strings.equation}
-                    </h5>
-                    <h5 className={styles.cell}>
-                        {Locales.strings.title}
-                    </h5>
-                    <div className={styles.rowControl} />
+                    <div>
+                        <h2>{this.props.title}</h2>
+                    </div>
+                    <div className={styles.tableHeader}>
+                        <h5 className={styles.ordinal}>
+                            {Locales.strings.hash}
+                        </h5>
+                        <h5 className={styles.cell}>
+                            {Locales.strings.equation}
+                        </h5>
+                        <h5 className={styles.cell}>
+                            {Locales.strings.title}
+                        </h5>
+                        <div className={styles.rowControl} />
+                    </div>
                 </div>
             );
         let doneButton = this.props.newProblemSet
@@ -235,7 +240,6 @@ export default class NewProblemsForm extends Component {
                         solution={this.props.solution}
                         addingProblem={this.props.addingProblem}
                         editingProblem={this.props.editing}
-                        title={this.props.title}
                         lastMathEquation={lastMathEquation}
                         updateCallback={this.update}
                         scratchpadContent={scratchpadContent}
