@@ -395,6 +395,11 @@ class App extends Component {
                     appID={process.env.INTERCOM_APP_ID}
                 />
                 <footer id="footer">
+                    <h2 className="sROnly">
+                        {' '}
+                        {Locales.strings.footer}
+                        {' '}
+                    </h2>
                     {window.location.hash === '#/' && <SiteMapFooter />}
                     <MainPageFooter customClass="footer" />
                     <SocialFooter />

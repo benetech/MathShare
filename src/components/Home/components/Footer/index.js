@@ -8,11 +8,6 @@ import ideaLogo from '../../../../../images/ideas-that-work-logo.svg';
 const MainPageFooter = ({ customClass }) => (
     <div className={`${footer.footer} ${customClass || ''}`}>
         <div className={footer.footerContainer}>
-            <h2 className="sROnly">
-                {' '}
-                {Locales.strings.footer}
-                {' '}
-            </h2>
             <div>
                 <div className={footer.edGov}>
                     <a href="https://www2.ed.gov/about/offices/list/osers/osep/index.html" target="_blank" rel="noopener noreferrer">
