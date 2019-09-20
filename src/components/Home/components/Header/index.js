@@ -130,6 +130,7 @@ class MainPageHeader extends React.Component {
                                         aria-labelledby={`${questionBtnId}-label`}
                                         onClick={this.clickOnQuestion}
                                         onKeyPress={passEventForKeys(this.clickOnQuestion)}
+                                        aria-expanded="false"
                                     >
                                         <FontAwesome
                                             size="lg"
@@ -244,6 +245,7 @@ class MainPageHeader extends React.Component {
                                             id="navbarDropdownMenuLink-avatar"
                                             data-toggle="dropdown"
                                             type="button"
+                                            aria-expanded="false"
                                         >
                                             <img
                                                 src={userProfile.profileImage}

@@ -129,6 +129,7 @@ export default class ProblemHeader extends Component {
                             tabIndex={0}
                             onClick={this.clickOnQuestion}
                             onKeyPress={passEventForKeys(this.clickOnQuestion)}
+                            aria-expanded="false"
                         >
                             <FontAwesome
                                 size="lg"
