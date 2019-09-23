@@ -258,7 +258,7 @@ class Home extends Component {
                                 icon="link"
                                 content={<h2>{`\u00A0${Locales.strings.share_permalink}`}</h2>}
                                 onClick={this.saveProblemSet(currentSet)}
-                                onKeyPress={this.saveProblemSet(currentSet)}
+                                onKeyPress={passEventForKeys(this.saveProblemSet(currentSet))}
                             />
                             <span>
                                 <button
@@ -299,7 +299,7 @@ class Home extends Component {
                                         'pointer',
                                     ])}
                                     onClick={this.shareOnMicrosoftTeams}
-                                    onKeyPress={this.shareOnMicrosoftTeams}
+                                    onKeyPress={passEventForKeys(this.shareOnMicrosoftTeams)}
                                     type="button"
                                 >
                                     <h2 className={home.btnText}>
@@ -326,7 +326,7 @@ class Home extends Component {
                                 icon="eye"
                                 content={<h2>{Locales.strings.view_as_student}</h2>}
                                 onClick={this.saveProblemSet(currentSet, true)}
-                                onKeyPress={this.saveProblemSet(currentSet, true)}
+                                onKeyPress={passEventForKeys(this.saveProblemSet(currentSet, true))}
                             />
                         </React.Fragment>
                     )}

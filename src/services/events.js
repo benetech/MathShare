@@ -4,9 +4,13 @@ export const stopEvent = (e) => {
     return false;
 };
 
-export const passEventForKeys = (callback, keys = ['Enter', ' ']) => (e) => {
+export const passEventForKeys = (callback, keys = ['Enter', ' '], mockClick = true) => (e) => {
     if (keys.includes(e.key)) {
-        return callback(e);
+        if (mockClick && e.target.tagName === 'A' && e.key === ' ') {
+            e.target.click();
+        } else {
+            return callback(e);
+        }
     }
     return false;
 };

@@ -50,7 +50,7 @@ class Locales {
                 confirmation_modal_unsaved_title: 'You have unsaved changes, do you wish to save?',
                 connect: 'Connect',
                 contact_us: ' Contact Us',
-                continue_without_signin_in: 'Continue without signin in',
+                continue_without_signing_in: 'Continue without signing in',
                 copy: ' Copy',
                 copy_this_link: 'Copy this link to the problem set and give to your students',
                 copyright: 'Copyright 2019 Benetech. All rights reserved.',

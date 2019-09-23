@@ -25,9 +25,6 @@ class Index extends Component {
     }
 
     openExampleProblem = () => {
-        const { props } = this;
-        const { problemList } = props;
-        props.history.push(`/app/problemSet/view/${problemList.defaultRevisionCode}`);
         googleAnalytics('premade set - default');
         IntercomAPI('trackEvent', 'view-example-set');
     }
@@ -74,6 +71,7 @@ class Index extends Component {
                                 className="btn d-flex"
                                 onClick={props.addProblemSet}
                                 onKeyPress={passEventForKeys(props.addProblemSet)}
+                                role="link"
                             >
                                 <span className="centreText">
                                     +
@@ -83,15 +81,14 @@ class Index extends Component {
                             </button>
                         </li>
                         <li className="card">
-                            <button
-                                type="button"
+                            <a
                                 className="btn d-flex"
+                                href={this.getShareLink(problemList.defaultRevisionCode)}
                                 onClick={this.openExampleProblem}
                                 onKeyPress={passEventForKeys(this.openExampleProblem)}
-                                role="link"
                             >
                                 <span className="centreText">{Locales.strings.example_problem}</span>
-                            </button>
+                            </a>
                         </li>
                     </ol>
 

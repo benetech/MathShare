@@ -57,6 +57,7 @@ const LandingPage = withRouter(({ history, setAuthRedirect, userProfile }) => (
                 onClick={clickOnSignIn(history, setAuthRedirect, userProfile)}
                 onKeyPress={passEventForKeys(clickOnSignIn(history, setAuthRedirect, userProfile))}
                 type="button"
+                role="link"
             >
                 {userProfile.service ? Locales.strings.go_to_app : Locales.strings.sign_in}
             </button>

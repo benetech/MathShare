@@ -174,6 +174,7 @@ export default class MyStepsList extends Component {
                                     className={classNames('btn', 'pointer')}
                                     additionalStyles={['finish']}
                                     type="button"
+                                    role="link"
                                     icon="check"
                                     content={Locales.strings.finish}
                                     onClick={this.props.finishProblem}

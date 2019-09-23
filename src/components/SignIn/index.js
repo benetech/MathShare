@@ -74,19 +74,18 @@ class SignIn extends Component {
     }
 
     renderGoogleBtn = () => (
-        // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
-        <div id={this.GOOGLE_SIGN_IN} tabIndex={0} style={{ height: 40, width: 120 }} className="abcRioButton abcRioButtonBlue">
-            <div className="abcRioButtonContentWrapper">
-                <div className="abcRioButtonIcon" style={{ padding: 10 }}>
-                    <div style={{ width: 18, height: 18 }} className="abcRioButtonSvgImageWithFallback abcRioButtonIconImage abcRioButtonIconImage18">
+        <button id={this.GOOGLE_SIGN_IN} type="button" className={`${signIn.googleBtn} abcRioButton abcRioButtonBlue`}>
+            <span className="abcRioButtonContentWrapper">
+                <span className="abcRioButtonIcon" style={{ padding: 10 }}>
+                    <span className="abcRioButtonSvgImageWithFallback abcRioButtonIconImage abcRioButtonIconImage18">
                         <img src={googleLogo} alt={Locales.strings.google_logo} />
-                    </div>
-                </div>
+                    </span>
+                </span>
                 <span style={{ fontSize: 14, lineHeight: '38px' }} className="abcRioButtonContents">
                     <span id="not_signed_insn584fxcersa">Google</span>
                 </span>
-            </div>
-        </div>
+            </span>
+        </button>
     );
 
     renderMicrosoftBtn = () => (
@@ -132,10 +131,11 @@ class SignIn extends Component {
                         id="goBack"
                         className={`${signIn.text} ${signIn.pointer} reset-btn`}
                         onClick={this.goBack}
-                        onKeyPress={this.goBack}
+                        onKeyPress={passEventForKeys(this.goBack)}
                         type="button"
+                        role="link"
                     >
-                        <u>{Locales.strings.continue_without_signin_in}</u>
+                        <u>{Locales.strings.continue_without_signing_in}</u>
                     </button>
                     <UncontrolledTooltip placement="top" target="goBack" />
                 </div>
