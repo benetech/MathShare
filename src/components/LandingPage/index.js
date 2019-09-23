@@ -67,7 +67,7 @@ const LandingPage = withRouter(({ history, setAuthRedirect, userProfile }) => (
                 <h1 className={styles.largeText} tabIndex={-1}>
                     {Locales.strings.help_students}
                 </h1>
-                <img src={homePhoto} alt="mid-logo" aria-label={Locales.strings.screenshot_step_by_step} />
+                <img src={homePhoto} alt={Locales.strings.screenshot_step_by_step} />
                 <div className={styles.midBottomText}>
                     {Locales.strings.benetech_empowers}
                 </div>
