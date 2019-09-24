@@ -21,8 +21,8 @@ const SiteMapFooter = ({ customClass }) => (
             </div>
             <div className={`d-flex flex-row ${footer.lists}`}>
                 <div>
-                    <div className={footer.listTitle}>{Locales.strings.resources}</div>
-                    <ul>
+                    <h3 id="listTitle__resources" className={footer.listTitle}>{Locales.strings.resources}</h3>
+                    <ul aria-labelledby="listTitle__resources">
                         <li>
                             <a
                                 href="https://drive.google.com/drive/folders/1wi19Sx20WOMo3nChzHbh8KwlIdvSs9gp?usp=sharing"
@@ -60,7 +60,7 @@ const SiteMapFooter = ({ customClass }) => (
                     </ul>
                 </div>
                 <div>
-                    <div className={footer.listTitle}>{Locales.strings.connect}</div>
+                    <h3 id="listTitle__connect" className={footer.listTitle}>{Locales.strings.connect}</h3>
                     <ul>
                         <li>
                             <a
@@ -92,8 +92,8 @@ const SiteMapFooter = ({ customClass }) => (
                     </ul>
                 </div>
                 <div>
-                    <div className={footer.listTitle}>{Locales.strings.info}</div>
-                    <ul>
+                    <h3 id="listTitle__info" className={footer.listTitle}>{Locales.strings.info}</h3>
+                    <ul aria-labelledby="listTitle__info">
                         <li>
                             <a
                                 href="/#/privacy"
