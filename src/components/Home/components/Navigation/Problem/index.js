@@ -303,13 +303,13 @@ export default class Problem extends Component {
                             problemStyle.container,
                         )
                     }
-                    onClick={() => (
+                    onClick={e => (
                         this.props.addNew
-                            ? this.openNewProblemModal()
+                            ? this.openNewProblemModal(e)
                             : this.createNewSolution(history))}
-                    onKeyPress={passEventForKeys(() => (
+                    onKeyPress={passEventForKeys(e => (
                         this.props.addNew
-                            ? this.openNewProblemModal()
+                            ? this.openNewProblemModal(e)
                             : this.createNewSolution(history)))}
                     tabIndex="0"
                     role="link"
