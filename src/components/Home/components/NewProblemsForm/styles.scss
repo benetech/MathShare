@@ -17,15 +17,41 @@
 }
 
 .header .tableHeader,
-.row {
+div.row {
     display: flex;
     justify-content: space-around;
 }
 
-.row {
-    height: 58px;
+
+.container table {
+    width: calc(100% - 20px);
     margin: 10px;
-    background: rgb(255, 255, 255);
+
+    th[scope='col'] {
+        font-size: 1.25rem;
+        font-weight: 500;
+        padding: 10px;
+        padding-left: 0;
+    }
+
+    .row {
+        height: 58px;
+        margin: 10px;
+        background: rgb(255, 255, 255);
+
+        &:not(:last-child) {
+            border-bottom: 10px solid #dadada;
+        }
+
+        th[scope='row'] {
+            padding-left: 15px;
+            width: 80px;
+        }
+
+        td:first-child {
+            width: 50%;
+        }
+    }
 }
 
 .cell {
@@ -53,7 +79,6 @@
 }
 
 .positionButtons {
-    margin-top: 12px;
     display: flex;
     flex-direction: column;
     margin-right: 10px;
