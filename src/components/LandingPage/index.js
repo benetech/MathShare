@@ -69,9 +69,9 @@ const LandingPage = withRouter(({ history, setAuthRedirect, userProfile }) => (
                     {Locales.strings.help_students}
                 </h1>
                 <img src={homePhoto} alt={Locales.strings.screenshot_step_by_step} />
-                <div className={styles.midBottomText}>
+                <h2 className={styles.midBottomText} tabIndex={-1}>
                     {Locales.strings.benetech_empowers}
-                </div>
+                </h2>
                 <a
                     href="/#/app"
                     className={styles.btn}
@@ -91,12 +91,12 @@ const LandingPage = withRouter(({ history, setAuthRedirect, userProfile }) => (
                         <img src={showWork} alt={Locales.strings.screenshot_math_interface} />
                     </div>
                     <div className={styles.textSection}>
-                        <div className={styles.header}>
+                        <h2 className={styles.header} tabIndex={-1}>
                             {Locales.strings.show_their_work}
-                        </div>
-                        <div className={styles.textContent}>
+                        </h2>
+                        <h3 className={styles.textContent} tabIndex={-1}>
                             {Locales.strings.students_can_solve}
-                        </div>
+                        </h3>
                     </div>
                 </div>
                 <hr />
@@ -105,12 +105,12 @@ const LandingPage = withRouter(({ history, setAuthRedirect, userProfile }) => (
                         <img src={syntaxHighlighthing} alt={Locales.strings.mathshare_gif} />
                     </div>
                     <div className={styles.textSection}>
-                        <div className={styles.header}>
+                        <h2 className={styles.header} tabIndex={-1}>
                             {Locales.strings.accessible_to_all}
-                        </div>
-                        <div className={styles.textContent}>
+                        </h2>
+                        <h3 className={styles.textContent} tabIndex={-1}>
                             {Locales.strings.students_with_and_without}
-                        </div>
+                        </h3>
                     </div>
                 </div>
                 <hr />
@@ -119,12 +119,12 @@ const LandingPage = withRouter(({ history, setAuthRedirect, userProfile }) => (
                         <img src={lms} alt={Locales.strings.mathshare_supported_lms} />
                     </div>
                     <div className={styles.textSection}>
-                        <div className={styles.header}>
+                        <h2 className={styles.header} tabIndex={-1}>
                             {Locales.strings.lms_integration}
-                        </div>
-                        <div className={styles.textContent}>
+                        </h2>
+                        <h3 className={styles.textContent} tabIndex={-1}>
                             {Locales.strings.use_on_your_lms}
-                        </div>
+                        </h3>
                     </div>
                 </div>
                 <hr />
@@ -133,12 +133,12 @@ const LandingPage = withRouter(({ history, setAuthRedirect, userProfile }) => (
                         <img src={openSource} alt={Locales.strings.mathshare_open_source} />
                     </div>
                     <div className={styles.textSection}>
-                        <div className={styles.header}>
+                        <h2 className={styles.header} tabIndex={-1}>
                             {Locales.strings.free_and_open_source}
-                        </div>
-                        <div className={styles.textContent}>
+                        </h2>
+                        <h3 className={styles.textContent} tabIndex={-1}>
                             {Locales.strings.mathshare_is_a_free}
-                        </div>
+                        </h3>
                     </div>
                 </div>
             </div>
