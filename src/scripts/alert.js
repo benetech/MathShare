@@ -1,21 +1,37 @@
-import { NotificationManager } from 'react-notifications';
+import React from 'react';
+import { toast } from 'react-toastify';
 
 const ALERT_DELAY_MS = 4000;
 
+const commonProps = {
+    position: toast.POSITION.TOP_RIGHT,
+    autoClose: ALERT_DELAY_MS,
+    closeButton: false,
+};
+
+function getCommonAlert(title, message) {
+    return (
+        <div className="toast-common" role="alert">
+            <h2 tabIndex={-1}>{title}</h2>
+            <div>{message}</div>
+        </div>
+    );
+}
+
 function alertInfo(message, title) {
-    NotificationManager.info(message, title, ALERT_DELAY_MS);
+    toast.info(getCommonAlert(title, message), commonProps);
 }
 
 function alertSuccess(message, title) {
-    NotificationManager.success(message, title, ALERT_DELAY_MS);
-}
-
-function alertWarning(message, title) {
-    NotificationManager.warning(message, title, ALERT_DELAY_MS);
+    toast.success(getCommonAlert(title, message), commonProps);
 }
 
 function alertError(message, title) {
-    NotificationManager.error(message, title, ALERT_DELAY_MS);
+    toast.error(getCommonAlert(title, message), commonProps);
+}
+
+function alertWarning(message, title) {
+    toast.warn(getCommonAlert(title, message), commonProps);
 }
 
 export {

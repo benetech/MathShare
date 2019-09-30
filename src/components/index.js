@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { NotificationContainer } from 'react-notifications';
+import { ToastContainer } from 'react-toastify';
 import {
     Switch, Route, withRouter,
 } from 'react-router-dom';
@@ -126,6 +126,7 @@ class App extends Component {
         }
         IntercomAPI('trackEvent', 'create-a-problem');
         this.props.addProblem(imageData, text, index, newProblemSet);
+        this.props.announceOnAriaLive(Locales.strings.added_problem_at_index.replace('{index}', index + 1));
         return true;
     }
 
@@ -146,6 +147,7 @@ class App extends Component {
 
         if (message) {
             alertWarning(message, Locales.strings.warning);
+            this.props.announceOnAriaLive(message);
             setTimeout(() => {
                 $('#mathAnnotation').focus();
             }, 6000);
@@ -352,7 +354,7 @@ class App extends Component {
                 {this.renderDialog()}
                 <AriaLiveAnnouncer />
                 <GlobalHotKeys keyMap={keyMap} handlers={this.handlers} allowChanges />
-                <NotificationContainer />
+                <ToastContainer />
                 <div className={`body-container ${this.getAdditionalClass()}`}>
                     <ModalContainer
                         activeModals={modal.activeModals}

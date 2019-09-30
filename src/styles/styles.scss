@@ -225,3 +225,60 @@ body [tabindex="-1"]:focus {
     border-radius: 5px;
     @extend .default-outline;
 }
+
+:global(.Toastify) {
+    position: absolute;
+
+    :global(.Toastify__toast:before) {
+        font-family: "FontAwesome";
+        font-size: 28px;
+        margin-top: 5px;
+        margin-left: 5px;
+    }
+
+    :global(.Toastify__toast--warning) {
+        background-color: #f89406;
+    }
+
+    :global(.Toastify__toast--info) {
+        background-color: #2f96b4;
+    }
+
+    :global(.Toastify__toast--info:before) {
+        content: "\f05a";
+    }
+
+    :global(.Toastify__toast--success) {
+        background-color: #51a351;
+    }
+
+    :global(.Toastify__toast--success:before) {
+        content: "\f058";
+    }
+
+    :global(.Toastify__toast--warning) {
+        background-color: #f89406;
+    }
+
+    :global(.Toastify__toast--warning:before) {
+        content: "\f06a";
+    }
+
+    :global(.Toastify__toast--error) {
+        background-color: #bd362f;
+    }
+
+    :global(.Toastify__toast--error:before) {
+        content: "\f057";
+    }
+
+}
+
+:global(.toast-common) {
+    padding: 15px;
+
+    h2 {
+        font-weight: 600;
+        font-size: 16px;
+    }
+}

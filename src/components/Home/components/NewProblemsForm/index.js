@@ -201,7 +201,7 @@ export default class NewProblemsForm extends Component {
                     <div className="sROnly">{Locales.strings.current_problems}</div>
                 </caption>
                 <thead>
-                    <tr>
+                    <tr key="header-row">
                         <th scope="col">
                             {Locales.strings.hash}
                             <div className="sROnly">

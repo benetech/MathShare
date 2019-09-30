@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { NotificationContainer } from 'react-notifications';
+import { ToastContainer } from 'react-toastify';
 import { UncontrolledTooltip } from 'reactstrap';
 import { connect } from 'react-redux';
 import FontAwesome from 'react-fontawesome';
@@ -371,7 +371,7 @@ class Home extends Component {
         return (
             <div className={home.mainWrapper}>
                 {this.renderHelmet()}
-                <NotificationContainer />
+                <ToastContainer />
                 <MainPageHeader
                     editing={params.action === 'edit' || params.action === 'new'}
                     history={this.props.history}
