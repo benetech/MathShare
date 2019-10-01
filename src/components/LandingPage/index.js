@@ -36,11 +36,7 @@ const LandingPage = withRouter(({ history, setAuthRedirect, userProfile }) => (
     <div className={styles.container}>
         <Helmet>
             <title>
-                {Locales.strings.overview}
-                {' '}
-                -
-                {' '}
-                {Locales.strings.mathshare_benetech}
+                {`${Locales.strings.overview} - ${Locales.strings.mathshare_benetech}`}
             </title>
         </Helmet>
         <button

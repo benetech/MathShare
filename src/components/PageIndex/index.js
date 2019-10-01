@@ -47,11 +47,7 @@ class Index extends Component {
             <div>
                 <Helmet>
                     <title>
-                        {Locales.strings.all_problem_sets}
-                        {' '}
-                        -
-                        {' '}
-                        {Locales.strings.mathshare_benetech}
+                        {`${Locales.strings.all_problem_sets} - ${Locales.strings.mathshare_benetech}`}
                     </title>
                 </Helmet>
                 <MainPageHeader
