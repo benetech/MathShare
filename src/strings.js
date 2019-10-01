@@ -31,6 +31,7 @@ class Locales {
                 benetech: 'Benetech',
                 benetech_empowers: 'Benetech Mathshare empowers students to solve math problems and show their work so that teachers and students can see how they got there.',
                 benetech_initiative: 'Benetech Initiative',
+                benetech_logo: 'Benetech Logo',
                 beta: 'beta',
                 cancel: ' Cancel',
                 cancel_edit_button_title: 'Cancel edit',
