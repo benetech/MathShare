@@ -126,7 +126,7 @@ class UserDetails extends Component {
             <div className={userDetails.container}>
                 <div className={userDetails.content}>
                     <div className={userDetails.logo}>
-                        <img src={logo} alt="logo" />
+                        <img src={logo} alt={Locales.strings.mathshare_logo} />
                     </div>
                     <div className={userDetails.text}>{Locales.strings.setup_your_account}</div>
                     {this.state.type === null && (

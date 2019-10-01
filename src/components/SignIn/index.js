@@ -118,7 +118,7 @@ class SignIn extends Component {
                 </Helmet>
                 <div className={signIn.content}>
                     <div className={signIn.logo}>
-                        <img src={logo} alt={Locales.strings.logo} />
+                        <img src={logo} alt={Locales.strings.mathshare_logo} />
                     </div>
                     <div className={signIn.text}>{Locales.strings.login_using}</div>
                     <div className={signIn.buttonsContainer}>
