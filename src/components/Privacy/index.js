@@ -12,11 +12,7 @@ const Privacy = () => (
     <div className={styles.container}>
         <Helmet>
             <title>
-                {Locales.strings.policies}
-                {' '}
-                -
-                {' '}
-                {Locales.strings.mathshare_benetech}
+                {`${Locales.strings.policies} - ${Locales.strings.mathshare_benetech}`}
             </title>
         </Helmet>
         <div className={styles.logoContainer}>

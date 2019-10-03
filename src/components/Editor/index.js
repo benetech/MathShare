@@ -184,11 +184,7 @@ class Editor extends Component {
             return (
                 <Helmet>
                     <title>
-                        {Locales.strings.tutorial}
-                        {' '}
-                        -
-                        {' '}
-                        {Locales.strings.mathshare_benetech}
+                        {`${Locales.strings.tutorial} - ${Locales.strings.mathshare_benetech}`}
                     </title>
                 </Helmet>
             );

@@ -11,11 +11,7 @@ const Partners = () => (
     <div className={styles.container}>
         <Helmet>
             <title>
-                {Locales.strings.partners}
-                {' '}
-                -
-                {' '}
-                {Locales.strings.mathshare_benetech}
+                {`${Locales.strings.partners} - ${Locales.strings.mathshare_benetech}`}
             </title>
         </Helmet>
         <div className={styles.logoContainer}>
