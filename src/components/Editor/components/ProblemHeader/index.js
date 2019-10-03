@@ -240,22 +240,24 @@ export default class ProblemHeader extends Component {
                         }
                     />
                 </div>
-                {/* eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex */}
-                <div className={`d-flex flex-row ${problem.subHeader}`} tabIndex={0}>
-                    {imgButton}
-                    <h1 id="ProblemTitle" className={problem.title}>
-                        {title}
-                        <span className="sROnly">
-                            {mathLive.latexToSpeakableText(
-                                this.props.math,
-                                {
-                                    textToSpeechRules: 'sre',
-                                    textToSpeechRulesOptions: { domain: 'clearspeak', style: 'default', markup: 'none' },
-                                },
-                            )}
-                        </span>
-                    </h1>
-                    <span id="ProblemMath" className={`${problem.title} ${problem.question}`}>{`$$${this.props.math}$$`}</span>
+                <div id="mainContainer">
+                    {/* eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex */}
+                    <div className={`d-flex flex-row ${problem.subHeader}`} tabIndex={0}>
+                        {imgButton}
+                        <h1 id="ProblemTitle" className={problem.title} tabIndex={-1}>
+                            {title}
+                            <span className="sROnly">
+                                {mathLive.latexToSpeakableText(
+                                    this.props.math,
+                                    {
+                                        textToSpeechRules: 'sre',
+                                        textToSpeechRulesOptions: { domain: 'clearspeak', style: 'default', markup: 'none' },
+                                    },
+                                )}
+                            </span>
+                        </h1>
+                        <span id="ProblemMath" className={`${problem.title} ${problem.question}`}>{`$$${this.props.math}$$`}</span>
+                    </div>
                 </div>
             </React.Fragment>
         );

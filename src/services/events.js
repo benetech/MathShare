@@ -18,7 +18,7 @@ export const passEventForKeys = (callback, keys = ['Enter', ' '], mockClick = tr
 export const focusOnMainContent = () => {
     const main = document.getElementById('mainContainer');
     if (main) {
-        const focusable = main.querySelectorAll('button, [href], input, select, textarea, h1[tabindex]');
+        const focusable = main.querySelectorAll('button, [href], input, select, textarea, h1[tabindex], div[tabindex');
         const firstFocusable = focusable[0];
         if (firstFocusable) {
             firstFocusable.focus();
