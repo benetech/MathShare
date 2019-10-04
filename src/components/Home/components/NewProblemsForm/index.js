@@ -228,7 +228,7 @@ export default class NewProblemsForm extends Component {
             : (
                 <div className={styles.header}>
                     <div>
-                        <h2>{this.props.title}</h2>
+                        <h1>{this.props.title}</h1>
                     </div>
                 </div>
             );

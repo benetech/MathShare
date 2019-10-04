@@ -118,7 +118,7 @@ const MyWorkFooter = (props) => {
     );
 
     return (
-        <div
+        <section
             id="control-buttons"
             className={
                 classNames(
@@ -126,11 +126,12 @@ const MyWorkFooter = (props) => {
                     'flex-wrap-reverse',
                 )
             }
+            aria-label={Locales.strings.editor_actions}
         >
             {undoButton}
             {confirmButton}
             {props.editing ? cancelButton : deleteButton}
-        </div>
+        </section>
     );
 };
 

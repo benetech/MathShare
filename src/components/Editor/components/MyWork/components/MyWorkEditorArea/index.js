@@ -117,7 +117,7 @@ export default class MyWorkEditorArea extends Component {
                         data-position="top"
                         data-intro={Locales.strings.work_area_intro}
                     >
-                        <h3 className="sROnly">{Locales.strings.math_editor}</h3>
+                        <h2 className="sROnly">{Locales.strings.math_editor}</h2>
                         <div
                             aria-label={Locales.strings.edit_equation}
                             id="mathEditorActive"
@@ -135,7 +135,7 @@ export default class MyWorkEditorArea extends Component {
                                 editorArea.annotationContainer,
                             )}
                         >
-                            <h3
+                            <h2
                                 id="mathAnnotationHeader"
                                 className={
                                     classNames(
@@ -145,8 +145,8 @@ export default class MyWorkEditorArea extends Component {
                                 }
                                 tabIndex="-1"
                             >
-                                Describe your work
-                            </h3>
+                                {Locales.strings.describe_your_work}
+                            </h2>
                             <textarea
                                 id="mathAnnotation"
                                 data-toggle="tooltip"

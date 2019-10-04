@@ -56,7 +56,7 @@ export default class MathPalette extends Component {
                         paletteStyle.mathPalette,
                     )}
                 >
-                    <h3 className="sROnly">{Locales.strings.math_input_buttons}</h3>
+                    <h2 className="sROnly">{Locales.strings.math_input_buttons}</h2>
                     {mathPalette}
                 </div>
             ) : null;

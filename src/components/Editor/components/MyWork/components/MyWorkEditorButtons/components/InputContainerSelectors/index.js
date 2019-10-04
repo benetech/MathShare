@@ -9,7 +9,7 @@ const InputContainerSelectors = (props) => {
     const symbolsClass = !props.scratchpadMode ? styles.symbolsActive : styles.disabled;
 
     return (
-        <div
+        <section
             id="inputContainersSelectors"
             className={
                 classNames([
@@ -18,6 +18,7 @@ const InputContainerSelectors = (props) => {
                     styles.container,
                 ])
             }
+            aria-label={Locales.strings.select_symbol_or_scratchpad}
         >
             <Button
                 id="switchToSymbolsBtn"
@@ -49,7 +50,7 @@ const InputContainerSelectors = (props) => {
                 title={Locales.strings.switch_to_sketchpad}
                 onClick={() => props.openScratchpad()}
             />
-        </div>
+        </section>
     );
 };
 
