@@ -1,3 +1,16 @@
+.hrCustom:before {
+    display: block;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    overflow: visible;
+    unicode-bidi: isolate;
+    margin-block-start: 2.5em;
+    margin-block-end: 2.5em;
+    margin-inline-start: auto;
+    margin-inline-end: auto;
+    content: '';
+    width: 55%;
+}
+
 .container {
     height: 100%;
     display: flex;
@@ -101,6 +114,10 @@
 
     .feature {
 
+        &:before {
+            @extend .hrCustom:before;
+        }
+
         >*:first-child {
             padding-right: 35px;
             padding-left: 10px;
@@ -151,6 +168,7 @@
             display: flex;
             align-items: center;
             align-self: center;
+            flex-wrap: wrap;
 
             .imageSection {
                 width: 50%;

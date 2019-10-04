@@ -81,7 +81,6 @@ const LandingPage = withRouter(({ history, setAuthRedirect, userProfile }) => (
         </main>
         <div className={styles.features}>
             <div className={styles.content}>
-                <hr />
                 <section className={styles.feature} aria-labelledby="show_their_work">
                     <div className={styles.textSection}>
                         <h2 id="show_their_work" className={styles.header} tabIndex={-1}>
@@ -95,7 +94,6 @@ const LandingPage = withRouter(({ history, setAuthRedirect, userProfile }) => (
                         <img src={showWork} alt={Locales.strings.screenshot_math_interface} />
                     </div>
                 </section>
-                <hr />
                 <section className={`${styles.feature} ${styles.reverse}`} aria-labelledby="accessible_to_all">
                     <div className={styles.textSection}>
                         <h2 id="accessible_to_all" className={styles.header} tabIndex={-1}>
@@ -109,7 +107,6 @@ const LandingPage = withRouter(({ history, setAuthRedirect, userProfile }) => (
                         <img src={syntaxHighlighthing} alt={Locales.strings.mathshare_gif} />
                     </div>
                 </section>
-                <hr />
                 <section className={styles.feature} aria-labelledby="lms_integration">
                     <div className={styles.textSection}>
                         <h2 id="lms_integration" className={styles.header} tabIndex={-1}>
@@ -123,7 +120,6 @@ const LandingPage = withRouter(({ history, setAuthRedirect, userProfile }) => (
                         <img src={lms} alt={Locales.strings.mathshare_supported_lms} />
                     </div>
                 </section>
-                <hr />
                 <section className={`${styles.feature} ${styles.reverse}`} aria-labelledby="free_and_open_source">
                     <div className={styles.textSection}>
                         <h2 id="free_and_open_source" className={styles.header} tabIndex={-1}>
