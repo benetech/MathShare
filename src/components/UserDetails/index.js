@@ -100,7 +100,9 @@ class UserDetails extends Component {
             </fieldset>
             <div className="row">
                 <div className={`${userDetails.descText} col-5`}>
-                    <h2 tabIndex={-1}>{Locales.strings.describe_your_role}</h2>
+                    <label htmlFor="teacherRole">
+                        <h2 tabIndex={-1}>{Locales.strings.describe_your_role}</h2>
+                    </label>
                 </div>
                 <div className={`${userDetails.select} col-7`}>
                     <div className="form-group">
