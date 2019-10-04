@@ -82,10 +82,7 @@ const LandingPage = withRouter(({ history, setAuthRedirect, userProfile }) => (
         <div className={styles.features}>
             <div className={styles.content}>
                 <hr />
-                <div className={`${styles.feature} ${styles.reverse}`}>
-                    <div className={styles.imageSection}>
-                        <img src={showWork} alt={Locales.strings.screenshot_math_interface} />
-                    </div>
+                <div className={styles.feature}>
                     <div className={styles.textSection}>
                         <h2 className={styles.header} tabIndex={-1}>
                             {Locales.strings.show_their_work}
@@ -94,12 +91,12 @@ const LandingPage = withRouter(({ history, setAuthRedirect, userProfile }) => (
                             {Locales.strings.students_can_solve}
                         </h3>
                     </div>
+                    <div className={styles.imageSection}>
+                        <img src={showWork} alt={Locales.strings.screenshot_math_interface} />
+                    </div>
                 </div>
                 <hr />
-                <div className={styles.feature}>
-                    <div className={styles.imageSection}>
-                        <img src={syntaxHighlighthing} alt={Locales.strings.mathshare_gif} />
-                    </div>
+                <div className={`${styles.feature} ${styles.reverse}`}>
                     <div className={styles.textSection}>
                         <h2 className={styles.header} tabIndex={-1}>
                             {Locales.strings.accessible_to_all}
@@ -108,12 +105,12 @@ const LandingPage = withRouter(({ history, setAuthRedirect, userProfile }) => (
                             {Locales.strings.students_with_and_without}
                         </h3>
                     </div>
+                    <div className={styles.imageSection}>
+                        <img src={syntaxHighlighthing} alt={Locales.strings.mathshare_gif} />
+                    </div>
                 </div>
                 <hr />
-                <div className={`${styles.feature} ${styles.reverse}`}>
-                    <div className={styles.imageSection}>
-                        <img src={lms} alt={Locales.strings.mathshare_supported_lms} />
-                    </div>
+                <div className={styles.feature}>
                     <div className={styles.textSection}>
                         <h2 className={styles.header} tabIndex={-1}>
                             {Locales.strings.lms_integration}
@@ -122,12 +119,12 @@ const LandingPage = withRouter(({ history, setAuthRedirect, userProfile }) => (
                             {Locales.strings.use_on_your_lms}
                         </h3>
                     </div>
+                    <div className={styles.imageSection}>
+                        <img src={lms} alt={Locales.strings.mathshare_supported_lms} />
+                    </div>
                 </div>
                 <hr />
-                <div className={styles.feature}>
-                    <div className={styles.imageSection}>
-                        <img src={openSource} alt={Locales.strings.mathshare_open_source} />
-                    </div>
+                <div className={`${styles.feature} ${styles.reverse}`}>
                     <div className={styles.textSection}>
                         <h2 className={styles.header} tabIndex={-1}>
                             {Locales.strings.free_and_open_source}
@@ -135,6 +132,9 @@ const LandingPage = withRouter(({ history, setAuthRedirect, userProfile }) => (
                         <h3 className={styles.textContent} tabIndex={-1}>
                             {Locales.strings.mathshare_is_a_free}
                         </h3>
+                    </div>
+                    <div className={styles.imageSection}>
+                        <img src={openSource} alt={Locales.strings.mathshare_open_source} />
                     </div>
                 </div>
             </div>
