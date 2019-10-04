@@ -13,8 +13,20 @@ const mathLive = process.env.MATHLIVE_DEBUG_MODE ? require('../../../../../../..
     : require('../../../../../../../../lib/mathlivedist/mathlive.js');
 
 export default class Step extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            id: this.props.cleanup ? `mathStep-${this.props.stepNumber - 1}-cleanup`
+                : `mathStep-${this.props.stepNumber}`,
+        };
+    }
+
     componentDidMount() {
         mathLive.renderMathInDocument();
+        const autoFocus = document.getElementById(this.state.id);
+        if (autoFocus) {
+            autoFocus.focus();
+        }
     }
 
     componentWillUpdate() {
@@ -164,11 +176,10 @@ export default class Step extends Component {
                 />
             ) : null;
 
-        const id = this.props.cleanup ? `mathStep-${this.props.stepNumber - 1}-cleanup`
-            : `mathStep-${this.props.stepNumber}`;
+        const { id } = this.state;
+
         return (
-            // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
-            <div id={id} className={classNames('d-flex flex-column flex-md-row flex-lg-row flex-xl-row', step.step)} tabIndex={0}>
+            <div id={id} className={classNames('d-flex flex-column flex-md-row flex-lg-row flex-xl-row', step.step)} tabIndex={-1}>
                 <div className="d-flex p-2">
                     <h3>
                         {this.buildReason()}
