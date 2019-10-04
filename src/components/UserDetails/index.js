@@ -73,8 +73,8 @@ class UserDetails extends Component {
 
     renderTeacherForm = () => (
         <div className={userDetails.teacherForm}>
-            <div className="row">
-                <div className={`${userDetails.descText} col-5`}>{Locales.strings.grade_of_work}</div>
+            <fieldset className="row">
+                <legend className={`${userDetails.descText} col-5`}>{Locales.strings.grade_of_work}</legend>
                 <div className={`${userDetails.grade} col-7`}>
                     {this.grades.map((grade) => {
                         const id = `grade-${grade.replace('-', '').replace('+', '')}`;
@@ -89,7 +89,7 @@ class UserDetails extends Component {
                         );
                     })}
                 </div>
-            </div>
+            </fieldset>
             <div className="row">
                 <div className={`${userDetails.descText} col-5`}>{Locales.strings.describe_your_role}</div>
                 <div className={`${userDetails.select} col-7`}>
