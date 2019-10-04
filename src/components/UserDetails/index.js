@@ -30,6 +30,12 @@ class UserDetails extends Component {
             if (type === 'student') {
                 this.finish();
             }
+            if (type === 'teacher') {
+                const gradeHeading = document.getElementById('gradeOfWork');
+                if (gradeHeading) {
+                    gradeHeading.focus();
+                }
+            }
         });
     }
 
@@ -74,7 +80,9 @@ class UserDetails extends Component {
     renderTeacherForm = () => (
         <div className={userDetails.teacherForm}>
             <fieldset className="row">
-                <legend className={`${userDetails.descText} col-5`}>{Locales.strings.grade_of_work}</legend>
+                <legend className={`${userDetails.descText} col-5`}>
+                    <h2 tabIndex={-1} id="gradeOfWork">{Locales.strings.grade_of_work}</h2>
+                </legend>
                 <div className={`${userDetails.grade} col-7`}>
                     {this.grades.map((grade) => {
                         const id = `grade-${grade.replace('-', '').replace('+', '')}`;
@@ -91,7 +99,9 @@ class UserDetails extends Component {
                 </div>
             </fieldset>
             <div className="row">
-                <div className={`${userDetails.descText} col-5`}>{Locales.strings.describe_your_role}</div>
+                <div className={`${userDetails.descText} col-5`}>
+                    <h2 tabIndex={-1}>{Locales.strings.describe_your_role}</h2>
+                </div>
                 <div className={`${userDetails.select} col-7`}>
                     <div className="form-group">
                         <select className="form-control" id="teacherRole" onChange={this.handleRoleChange} value={this.state.role}>
