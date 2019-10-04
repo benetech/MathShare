@@ -211,9 +211,9 @@ function UpdatePalette(mathField) {
             } catch (e) {
                 throw (new Error(
                     `Could not parse'${
-                    MathLive.getOriginalContent(elem)
-                        .replace(/\$\$/g, '')
-                        .replace('\\blacksquare', selection)}'`,
+                        MathLive.getOriginalContent(elem)
+                            .replace(/\$\$/g, '')
+                            .replace('\\blacksquare', selection)}'`,
                 ));
             }
         }
