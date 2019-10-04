@@ -34,6 +34,13 @@ export default class ProblemHeader extends Component {
         };
     }
 
+    componentDidMount() {
+        const subHeader = document.getElementById('subHeader');
+        if (subHeader) {
+            subHeader.focus();
+        }
+    }
+
     shouldComponentUpdate(nextProps) {
         // this prevents unnecessary re-rendering and updates of the element
         return this.props.editLink !== nextProps.editLink || this.props.title !== nextProps.title
@@ -241,8 +248,7 @@ export default class ProblemHeader extends Component {
                     />
                 </div>
                 <div id="mainContainer">
-                    {/* eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex */}
-                    <div className={`d-flex flex-row ${problem.subHeader}`} tabIndex={0}>
+                    <div id="subHeader" className={`d-flex flex-row ${problem.subHeader}`} tabIndex={-1}>
                         {imgButton}
                         <h1 id="ProblemTitle" className={problem.title} tabIndex={-1}>
                             {title}

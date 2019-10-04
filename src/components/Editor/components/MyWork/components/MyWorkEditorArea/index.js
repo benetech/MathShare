@@ -14,6 +14,10 @@ export default class MyWorkEditorArea extends Component {
         const mathField = this.getMathField();
         mathField.latex(this.props.lastMathEquation);
         this.props.activateMathField(mathField);
+        const mathEditorActive = document.getElementById('mathEditorActive');
+        if (mathEditorActive) {
+            mathEditorActive.focus();
+        }
     }
 
     getMathField() {
@@ -80,7 +84,9 @@ export default class MyWorkEditorArea extends Component {
     }
 
     setFocus = () => {
-        this.props.theActiveMathField.focus();
+        if (this.props.theActiveMathField && this.props.theActiveMathField.focus) {
+            this.props.theActiveMathField.focus();
+        }
     }
 
     render() {
@@ -88,17 +94,10 @@ export default class MyWorkEditorArea extends Component {
         const ttsIntro = this.props.addingProblem ? Locales.strings.tts_intro_add_problem : Locales.strings.tts_intro;
         return (
             <section aria-labelledby="workarea-header">
-                {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
                 <h2
                     id="workarea-header"
                     className="sROnly"
-                    tabIndex={0}
-                    onKeyDown={(event) => {
-                        if (event.keyCode !== 9) {
-                            const element = document.getElementById('mathEditorActive');
-                            element.focus();
-                        }
-                    }}
+                    tabIndex={-1}
                 >
                     {Locales.strings.work_area_intro}
                 </h2>
@@ -124,8 +123,7 @@ export default class MyWorkEditorArea extends Component {
                             ref="mathEditorActive"
                             className={classNames('order-1', editorArea.mathEditorActive)}
                             role="application"
-                            /* eslint jsx-a11y/no-noninteractive-tabindex: off */
-                            tabIndex="0"
+                            tabIndex={-1}
                             onFocus={this.setFocus}
                         />
                         <div
@@ -213,9 +211,9 @@ function UpdatePalette(mathField) {
             } catch (e) {
                 throw (new Error(
                     `Could not parse'${
-                        MathLive.getOriginalContent(elem)
-                            .replace(/\$\$/g, '')
-                            .replace('\\blacksquare', selection)}'`,
+                    MathLive.getOriginalContent(elem)
+                        .replace(/\$\$/g, '')
+                        .replace('\\blacksquare', selection)}'`,
                 ));
             }
         }

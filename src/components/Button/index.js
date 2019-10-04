@@ -14,11 +14,10 @@ export default class Button extends Component {
         };
     }
 
-    componentDidUpdate() {
-        if (this.props.content !== this.state.content) {
-            // eslint-disable-next-line react/no-did-update-set-state
-            this.setState({ content: this.props.content });
-        }
+    static getDerivedStateFromProps(props) {
+        return {
+            content: props.content,
+        };
     }
 
     buildClassNames() {

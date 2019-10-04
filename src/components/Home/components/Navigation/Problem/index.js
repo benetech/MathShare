@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import classNames from 'classnames';
-import axios from 'axios';
 import FontAwesome from 'react-fontawesome';
 import {
     EDIT_PROBLEM, CONFIRMATION, ADD_PROBLEMS, ADD_PROBLEM_SET,
@@ -11,7 +10,6 @@ import buttons from '../../../../Button/styles.scss';
 import Locales from '../../../../../strings';
 import showImage from '../../../../../scripts/showImage';
 import parseMathLive from '../../../../../scripts/parseMathLive';
-import { SERVER_URL } from '../../../../../config';
 import { stopEvent, passEventForKeys } from '../../../../../services/events';
 
 const mathLive = process.env.MATHLIVE_DEBUG_MODE ? require('../../../../../../../mathlive/src/mathlive.js').default
@@ -29,7 +27,6 @@ export default class Problem extends Component {
             isOverflownVertically: false,
         };
 
-        this.createNewSolution = this.createNewSolution.bind(this);
         this.onTrashClick = this.onTrashClick.bind(this);
         this.onEditClick = this.onEditClick.bind(this);
         this.onImgClick = this.onImgClick.bind(this);
@@ -107,41 +104,23 @@ export default class Problem extends Component {
 
     buildProblemText = () => `$$${this.props.problem.text}$$`
 
-    createNewSolution = (history) => {
+    getLink = () => {
         const { action, solutions, problem } = this.props;
         if (this.props.example) {
-            history.push('/app/problem/example/');
-        } else if (action !== 'new') {
+            return '/app/problem/example/';
+        }
+        if (solutions && problem) {
             const currentSolution = solutions.find(
                 solution => solution.problem.id === problem.id,
             );
             if (currentSolution && (currentSolution.editCode || currentSolution.shareCode)) {
                 if (currentSolution.editCode && action !== 'review') {
-                    history.push(`/app/problem/edit/${currentSolution.editCode}`);
-                } else {
-                    history.push(`/app/problem/view/${currentSolution.shareCode}`);
+                    return `/app/problem/edit/${currentSolution.editCode}`;
                 }
-            } else {
-                const solution = {
-                    problem: {
-                        id: this.props.problem.id,
-                        problemSetRevisionShareCode: this.props.problem.problemSetRevisionShareCode,
-                        text: this.props.problem.text,
-                        title: this.props.problem.title,
-                    },
-                    steps: [
-                        {
-                            stepValue: this.props.problem.text,
-                            explanation: this.props.problem.title,
-                        },
-                    ],
-                };
-                axios.post(`${SERVER_URL}/solution/`, solution)
-                    .then((response) => {
-                        history.push(`/app/problem/edit/${response.data.editCode}`);
-                    });
+                return `/app/problem/view/${currentSolution.shareCode}`;
             }
         }
+        return null;
     }
 
     openNewProblemModal = (e) => {
@@ -279,75 +258,79 @@ export default class Problem extends Component {
             )
             : null;
 
-        const NavItem = withRouter(({ history }) => (
-            <div
-                id={`problem-${((this.props.number && this.props.number + 1) || 'new')}`}
-                className={
-                    classNames(
-                        'd-flex',
-                        'text-center',
-                        problemStyle.problem,
-                    )
-                }
-            >
-                {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                <a
+        const NavItem = withRouter(() => {
+            const NavTag = this.props.solutions ? 'a' : 'div';
+            const additionalProps = {};
+            if (NavTag === 'a') {
+                additionalProps.href = this.getLink();
+            } else {
+                additionalProps.onClick = (e) => {
+                    if (this.props.addNew) {
+                        this.openNewProblemModal(e);
+                    }
+                };
+                additionalProps.onKeyPress = passEventForKeys(additionalProps.onClick);
+            }
+            return (
+                <div
+                    id={`problem-${((this.props.number && this.props.number + 1) || 'new')}`}
                     className={
                         classNames(
-                            'btn',
-                            buttons.default,
-                            buttons.huge,
-                            problemStyle.navSpan,
-                            problemStyle.middle,
-                            problemStyle.tile,
-                            problemStyle.container,
+                            'd-flex',
+                            'text-center',
+                            problemStyle.problem,
                         )
                     }
-                    onClick={e => (
-                        this.props.addNew
-                            ? this.openNewProblemModal(e)
-                            : this.createNewSolution(history))}
-                    onKeyPress={passEventForKeys(e => (
-                        this.props.addNew
-                            ? this.openNewProblemModal(e)
-                            : this.createNewSolution(history)))}
-                    tabIndex="0"
-                    role="link"
                 >
-                    <div
+                    <NavTag
                         className={
                             classNames(
-                                problemStyle.navItemButton,
-                                problemStyle.colorInherit,
+                                'btn',
+                                buttons.default,
+                                buttons.huge,
+                                problemStyle.navSpan,
+                                problemStyle.middle,
+                                problemStyle.tile,
+                                problemStyle.container,
                             )
                         }
+                        {...additionalProps}
                     >
-                        {wrappedAnnotation}
                         <div
-                            aria-hidden="true" // math speech is part of link
-                            ref={(el) => { this.navItemContent = el; }}
-                            className={classNames(
-                                this.props.example ? null : problemStyle.equation,
-                                this.state.isOverflownHorizontally
-                                    ? problemStyle.equationOverflownHorizontally : null,
-                                this.state.isOverflownVertically
-                                    ? problemStyle.equationOverflownVertically : null,
-                            )}
+                            className={
+                                classNames(
+                                    problemStyle.navItemButton,
+                                    problemStyle.colorInherit,
+                                )
+                            }
                         >
-                            {equation}
+                            {wrappedAnnotation}
+                            <div
+                                aria-hidden="true" // math speech is part of link
+                                ref={(el) => { this.navItemContent = el; }}
+                                className={classNames(
+                                    this.props.example ? null : problemStyle.equation,
+                                    this.state.isOverflownHorizontally
+                                        ? problemStyle.equationOverflownHorizontally : null,
+                                    this.state.isOverflownVertically
+                                        ? problemStyle.equationOverflownVertically : null,
+                                )}
+                            >
+                                {equation}
+                            </div>
+                            {speechForMath}
                         </div>
-                        {speechForMath}
-                    </div>
-                    <div className={problemStyle.btnContainer}>
-                        {imgButton}
-                        {editButton}
-                        {removeButton}
-                        {plusButton}
-                    </div>
-                    {this.props.problem && this.props.problem.scratchpad ? image : null}
-                </a>
-            </div>
-        ));
+                        <div className={problemStyle.btnContainer}>
+                            {imgButton}
+                            {editButton}
+                            {removeButton}
+                            {plusButton}
+                        </div>
+                        {this.props.problem && this.props.problem.scratchpad ? image : null}
+                    </NavTag>
+                </div>
+            );
+        });
         return <NavItem />;
     }
 }
