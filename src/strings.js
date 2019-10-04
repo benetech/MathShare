@@ -267,6 +267,7 @@ class Locales {
                 view_problem_description: 'view problem description',
                 view_sketch: 'View Sketch',
                 warning: 'Warning',
+                who_are_you: 'Who are you?',
                 work: 'work',
                 work_area_heading: 'math and description of your work',
                 work_area_intro: 'Type or edit the equation using your keyboard and the math keys below. \nTry using the cross out, replace, and calc buttons to help show your work.',

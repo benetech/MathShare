@@ -137,38 +137,45 @@ class UserDetails extends Component {
         return (
             <div className={userDetails.container}>
                 <div className={userDetails.content}>
-                    <div className={userDetails.logo}>
+                    <header className={userDetails.logo}>
                         <img src={logo} alt={Locales.strings.mathshare_logo} />
-                    </div>
-                    <div className={userDetails.text}>{Locales.strings.setup_your_account}</div>
-                    {this.state.type === null && (
-                        <div className={userDetails.buttonsContainer}>
+                    </header>
+                    <main>
+                        <h1 className={userDetails.text} tabIndex={-1}>
+                            {Locales.strings.setup_your_account}
+                        </h1>
+                        {this.state.type === null && (
                             <div>
-                                <button
-                                    className={`btn btn-primary ${userDetails.largeBtn}`}
-                                    id="im_a_teacher"
-                                    type="button"
-                                    onClick={this.setType('teacher')}
-                                >
-                                    {Locales.strings.i_m_teacher}
-                                </button>
+                                <h2 tabIndex={-1}>{Locales.strings.who_are_you}</h2>
+                                <div className={userDetails.buttonsContainer}>
+                                    <div>
+                                        <button
+                                            className={`btn btn-primary ${userDetails.largeBtn}`}
+                                            id="im_a_teacher"
+                                            type="button"
+                                            onClick={this.setType('teacher')}
+                                        >
+                                            {Locales.strings.i_m_teacher}
+                                        </button>
+                                    </div>
+                                    <div>
+                                        <button
+                                            className={`btn btn-primary ${userDetails.largeBtn}`}
+                                            id="im_a_student"
+                                            type="button"
+                                            onClick={this.setType('student')}
+                                        >
+                                            {Locales.strings.i_m_student}
+                                        </button>
+                                    </div>
+                                    <UncontrolledTooltip placement="top" target="im_a_teacher" />
+                                    <UncontrolledTooltip placement="top" target="im_a_student" />
+                                </div>
                             </div>
-                            <div>
-                                <button
-                                    className={`btn btn-primary ${userDetails.largeBtn}`}
-                                    id="im_a_student"
-                                    type="button"
-                                    onClick={this.setType('student')}
-                                >
-                                    {Locales.strings.i_m_student}
-                                </button>
-                            </div>
-                            <UncontrolledTooltip placement="top" target="im_a_teacher" />
-                            <UncontrolledTooltip placement="top" target="im_a_student" />
-                        </div>
-                    )}
+                        )}
 
-                    {this.state.type === 'teacher' && this.renderTeacherForm()}
+                        {this.state.type === 'teacher' && this.renderTeacherForm()}
+                    </main>
                 </div>
             </div>
         );
