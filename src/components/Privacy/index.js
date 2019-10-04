@@ -15,7 +15,7 @@ const Privacy = () => (
                 {`${Locales.strings.policies} - ${Locales.strings.mathshare_benetech}`}
             </title>
         </Helmet>
-        <div className={styles.logoContainer}>
+        <header>
             <button
                 data-skip-link
                 onClick={focusOnMainContent}
@@ -24,12 +24,26 @@ const Privacy = () => (
             >
                 {Locales.strings.go_to_main_content}
             </button>
-            <a href="/#/">
-                <img className={styles.midLogo} src={logo} alt={Locales.strings.mathshare_logo} />
-            </a>
-        </div>
-        <div className={styles.headerBottom} />
-        <div id="mainContainer" className={styles.content}>
+            <div className={styles.logoContainer}>
+                <button
+                    data-skip-link
+                    onClick={focusOnMainContent}
+                    onKeyPress={passEventForKeys(focusOnMainContent)}
+                    type="button"
+                >
+                    {Locales.strings.go_to_main_content}
+                </button>
+                <a href="/#/">
+                    <img
+                        className={styles.midLogo}
+                        src={logo}
+                        alt={Locales.strings.mathshare_logo}
+                    />
+                </a>
+            </div>
+            <div className={styles.headerBottom} />
+        </header>
+        <main id="mainContainer" className={styles.content}>
             <h1 className={styles.header} tabIndex={-1}>Privacy Policy</h1>
             <div className={styles.textContent}>
                 {Locales.strings.mathshare_privacy_1}
@@ -40,7 +54,7 @@ const Privacy = () => (
                 {Locales.strings.mathshare_privacy_2}
                 <div className={styles.metadata}>{Locales.strings.mathshare_privacy_updated}</div>
             </div>
-        </div>
+        </main>
     </div>
 );
 
