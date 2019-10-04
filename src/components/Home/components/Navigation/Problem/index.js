@@ -107,7 +107,7 @@ export default class Problem extends Component {
     getLink = () => {
         const { action, solutions, problem } = this.props;
         if (this.props.example) {
-            return '/app/problem/example/';
+            return '/#/app/problem/example/';
         }
         if (solutions && problem) {
             const currentSolution = solutions.find(
@@ -115,9 +115,9 @@ export default class Problem extends Component {
             );
             if (currentSolution && (currentSolution.editCode || currentSolution.shareCode)) {
                 if (currentSolution.editCode && action !== 'review') {
-                    return `/app/problem/edit/${currentSolution.editCode}`;
+                    return `/#/app/problem/edit/${currentSolution.editCode}`;
                 }
-                return `/app/problem/view/${currentSolution.shareCode}`;
+                return `/#/app/problem/view/${currentSolution.shareCode}`;
             }
         }
         return null;
