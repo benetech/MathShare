@@ -59,9 +59,9 @@ const LandingPage = withRouter(({ history, setAuthRedirect, userProfile }) => (
             </button>
         </div>
         <img className={styles.midLogo} src={logo} alt={Locales.strings.mathshare_logo} />
-        <div id="mainContainer" className={styles.midContainer}>
+        <main id="mainContainer" className={styles.midContainer} aria-labelledby="help_students">
             <div className={styles.content}>
-                <h1 className={styles.largeText} tabIndex={-1}>
+                <h1 id="help_students" className={styles.largeText} tabIndex={-1}>
                     {Locales.strings.help_students}
                 </h1>
                 <img src={homePhoto} alt={Locales.strings.screenshot_step_by_step} />
@@ -78,13 +78,13 @@ const LandingPage = withRouter(({ history, setAuthRedirect, userProfile }) => (
                     {Locales.strings.open_mathshare}
                 </a>
             </div>
-        </div>
+        </main>
         <div className={styles.features}>
             <div className={styles.content}>
                 <hr />
-                <div className={styles.feature}>
+                <section className={styles.feature} aria-labelledby="show_their_work">
                     <div className={styles.textSection}>
-                        <h2 className={styles.header} tabIndex={-1}>
+                        <h2 id="show_their_work" className={styles.header} tabIndex={-1}>
                             {Locales.strings.show_their_work}
                         </h2>
                         <h3 className={styles.textContent} tabIndex={-1}>
@@ -94,11 +94,11 @@ const LandingPage = withRouter(({ history, setAuthRedirect, userProfile }) => (
                     <div className={styles.imageSection}>
                         <img src={showWork} alt={Locales.strings.screenshot_math_interface} />
                     </div>
-                </div>
+                </section>
                 <hr />
-                <div className={`${styles.feature} ${styles.reverse}`}>
+                <section className={`${styles.feature} ${styles.reverse}`} aria-labelledby="accessible_to_all">
                     <div className={styles.textSection}>
-                        <h2 className={styles.header} tabIndex={-1}>
+                        <h2 id="accessible_to_all" className={styles.header} tabIndex={-1}>
                             {Locales.strings.accessible_to_all}
                         </h2>
                         <h3 className={styles.textContent} tabIndex={-1}>
@@ -108,11 +108,11 @@ const LandingPage = withRouter(({ history, setAuthRedirect, userProfile }) => (
                     <div className={styles.imageSection}>
                         <img src={syntaxHighlighthing} alt={Locales.strings.mathshare_gif} />
                     </div>
-                </div>
+                </section>
                 <hr />
-                <div className={styles.feature}>
+                <section className={styles.feature} aria-labelledby="lms_integration">
                     <div className={styles.textSection}>
-                        <h2 className={styles.header} tabIndex={-1}>
+                        <h2 id="lms_integration" className={styles.header} tabIndex={-1}>
                             {Locales.strings.lms_integration}
                         </h2>
                         <h3 className={styles.textContent} tabIndex={-1}>
@@ -122,11 +122,11 @@ const LandingPage = withRouter(({ history, setAuthRedirect, userProfile }) => (
                     <div className={styles.imageSection}>
                         <img src={lms} alt={Locales.strings.mathshare_supported_lms} />
                     </div>
-                </div>
+                </section>
                 <hr />
-                <div className={`${styles.feature} ${styles.reverse}`}>
+                <section className={`${styles.feature} ${styles.reverse}`} aria-labelledby="free_and_open_source">
                     <div className={styles.textSection}>
-                        <h2 className={styles.header} tabIndex={-1}>
+                        <h2 id="free_and_open_source" className={styles.header} tabIndex={-1}>
                             {Locales.strings.free_and_open_source}
                         </h2>
                         <h3 className={styles.textContent} tabIndex={-1}>
@@ -136,7 +136,7 @@ const LandingPage = withRouter(({ history, setAuthRedirect, userProfile }) => (
                     <div className={styles.imageSection}>
                         <img src={openSource} alt={Locales.strings.mathshare_open_source} />
                     </div>
-                </div>
+                </section>
             </div>
         </div>
     </div>
