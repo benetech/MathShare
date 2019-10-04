@@ -6,7 +6,6 @@ import logo from '../../../images/logo-2.png';
 import { focusOnMainContent, passEventForKeys } from '../../services/events';
 // import homePhoto from '../../../images/home-photo.png';
 
-
 const Partners = () => (
     <div className={styles.container}>
         <Helmet>
@@ -14,7 +13,7 @@ const Partners = () => (
                 {`${Locales.strings.partners} - ${Locales.strings.mathshare_benetech}`}
             </title>
         </Helmet>
-        <div className={styles.logoContainer}>
+        <header>
             <button
                 data-skip-link
                 onClick={focusOnMainContent}
@@ -23,13 +22,21 @@ const Partners = () => (
             >
                 {Locales.strings.go_to_main_content}
             </button>
-            <a href="/#/">
-                <img className={styles.midLogo} src={logo} alt={Locales.strings.mathshare_logo} />
-            </a>
-        </div>
-        <div className={styles.headerBottom} />
-        <div id="mainContainer" className={styles.content}>
-            <h1 className={styles.header} tabIndex={-1}>{Locales.strings.partnerships}</h1>
+            <div className={styles.logoContainer}>
+                <a href="/#/">
+                    <img
+                        className={styles.midLogo}
+                        src={logo}
+                        alt={Locales.strings.mathshare_logo}
+                    />
+                </a>
+            </div>
+            <div className={styles.headerBottom} />
+        </header>
+        <main id="mainContainer" className={styles.content}>
+            <h1 className={styles.header} tabIndex={-1}>
+                {Locales.strings.partnerships}
+            </h1>
             <div className={styles.textContent}>
                 {Locales.strings.join_us_in_1}
                 {' '}
@@ -39,7 +46,7 @@ const Partners = () => (
                 {' '}
                 {Locales.strings.join_us_in_3}
             </div>
-        </div>
+        </main>
     </div>
 );
 
