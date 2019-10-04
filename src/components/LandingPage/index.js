@@ -75,7 +75,7 @@ const LandingPage = withRouter(({ history, setAuthRedirect, userProfile }) => (
                     onKeyPress={passEventForKeys(clickOnTryNow(true))}
                     tabIndex="0"
                 >
-                    {Locales.strings.try_now}
+                    {Locales.strings.open_mathshare}
                 </a>
             </div>
         </div>

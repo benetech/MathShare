@@ -153,6 +153,7 @@ class Locales {
                 not_saved_yet: 'Not saved yet.',
                 number: 'Number',
                 open_image: 'Open image',
+                open_mathshare: 'Open MathShare',
                 open_source: 'Open Source',
                 opens_in_new_tab: '(opens in new tab)',
                 opens_in_new_window: '(opens in new window)',
