@@ -17,7 +17,7 @@ function undoClearAll(context, stackEntry) {
     } = context.props;
     const solution = problemStore.solution;
     const theActiveMathField = problemList.theActiveMathField;
-    theActiveMathField.latex(stackEntry.steps[stackEntry.steps.length - 1].stepValue);
+    theActiveMathField.$latex(stackEntry.steps[stackEntry.steps.length - 1].stepValue);
     solution.steps = stackEntry.steps;
     context.setState({
         solution,
@@ -28,7 +28,7 @@ function undoClearAll(context, stackEntry) {
 
 function undoDelete(context, stackEntry) {
     const updatedMathField = context.props.problemList.theActiveMathField;
-    updatedMathField.latex(stackEntry.step.stepValue);
+    updatedMathField.$latex(stackEntry.step.stepValue);
     context.setState({
         theActiveMathField: updatedMathField,
         textAreaValue: stackEntry.step.explanation,
@@ -44,7 +44,7 @@ function undoEdit(context, stackEntry) {
         ? stackEntry.step
         : problemStore.solution.steps[problemStore.solution.steps.length - 1];
     const updatedMathField = problemList.theActiveMathField;
-    updatedMathField.latex(step.cleanup ? step.cleanup : step.stepValue);
+    updatedMathField.$latex(step.cleanup ? step.cleanup : step.stepValue);
     context.setState({
         theActiveMathField: updatedMathField,
         textAreaValue: step.explanation,
@@ -103,7 +103,7 @@ function clearAll(context) {
     solution.steps = [];
     solution.steps.push(firstStep);
     const math = problemList.theActiveMathField;
-    math.latex(solution.steps[0].stepValue);
+    math.$latex(solution.steps[0].stepValue);
     context.setState({
         textAreaValue: '',
         actionsStack: stack,

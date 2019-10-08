@@ -130,10 +130,10 @@ export default class MathButton extends Component {
     EnterTextInput() {
         const theActiveMathField = this.props.theActiveMathField;
         theActiveMathField.commandMode = true;
-        theActiveMathField.perform('enterCommandMode');
-        theActiveMathField.insert('text{}');
-        theActiveMathField.perform('moveToPreviousChar');
-        theActiveMathField.focus();
+        theActiveMathField.$perform('enterCommandMode');
+        theActiveMathField.$insert('text{}');
+        theActiveMathField.$perform('moveToPreviousChar');
+        theActiveMathField.$focus();
     }
 
     OpenColorPicker() {
@@ -173,7 +173,7 @@ export default class MathButton extends Component {
                 }
                 // eslint-disable-next-line no-underscore-dangle
                 theActiveMathField.applyStyle_({ color: hexColor });
-                theActiveMathField.focus();
+                theActiveMathField.$focus();
             });
         }
 
@@ -196,24 +196,24 @@ export default class MathButton extends Component {
             .replace('\\square', '#?')
             .trim();
 
-        if (!theActiveMathField.selectionIsCollapsed()) {
+        if (!theActiveMathField.$selectionIsCollapsed()) {
             const erasedInsertionString = this.constructor.CleanUpCrossouts(insertionString, { erase: true });
             if (erasedInsertionString !== insertionString) {
                 // the insertionString contains a cross out, erase all crossout in the selection
-                const selection = this.constructor.CleanUpCrossouts(theActiveMathField.selectedText('latex'), { erase: true });
+                const selection = this.constructor.CleanUpCrossouts(theActiveMathField.$selectedText('latex'), { erase: true });
 
                 // stick the modified selection into the black square (#0) in the insertionString
                 insertionString = insertionString.replace(/#0/, selection);
             }
         }
 
-        theActiveMathField.perform(['insert', insertionString,
+        theActiveMathField.$perform(['insert', insertionString,
             {
                 insertionMode: 'replaceSelection',
                 selectionMode: 'placeholder',
             }]);
         $('#mathAnnotationHeader').focus();
-        theActiveMathField.focus();
+        theActiveMathField.$focus();
     }
 
     CalculateAndReplace() {
@@ -257,12 +257,12 @@ export default class MathButton extends Component {
             }
         };
 
-        if (theActiveMathField.selectionIsCollapsed()) {
+        if (theActiveMathField.$selectionIsCollapsed()) {
             alertWarning(Locales.strings.math_button_select_exp, 'Warning');
             return;
         }
 
-        const selection = stringifyMathML(theActiveMathField.selectedText('mathML'));
+        const selection = stringifyMathML(theActiveMathField.$selectedText('mathML'));
         const result = DoCalculation(this.constructor.CleanUpCrossouts(selection));
         if (result === '') {
             alertWarning(Locales.strings.math_button_invalid_selection, 'Warning');
@@ -270,14 +270,14 @@ export default class MathButton extends Component {
         }
 
         // leave crossouts in selection so it is clearer what was the input to the calculation
-        const insertionString = `${this.state.CrossoutTeXString}{${theActiveMathField.selectedText('latex')}}${result}`;
+        const insertionString = `${this.state.CrossoutTeXString}{${theActiveMathField.$selectedText('latex')}}${result}`;
 
-        theActiveMathField.perform(['insert', insertionString,
+        theActiveMathField.$perform(['insert', insertionString,
             {
                 insertionMode: 'replaceSelection',
                 selectionMode: 'after',
             }]);
-        theActiveMathField.focus();
+        theActiveMathField.$focus();
     }
 
 

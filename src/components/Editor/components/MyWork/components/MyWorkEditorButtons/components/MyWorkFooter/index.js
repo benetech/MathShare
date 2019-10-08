@@ -108,7 +108,7 @@ const MyWorkFooter = (props) => {
                 if (editor && editor.mathfield) {
                     const { undoManager } = editor.mathfield;
                     if (undoManager.index > 0) {
-                        editor.mathfield.perform('undo');
+                        editor.mathfield.$perform('undo');
                         return;
                     }
                 }

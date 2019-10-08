@@ -121,13 +121,13 @@ class Editor extends Component {
         const { problemStore, problemList } = this.props;
         const updatedMathField = problemList.theActiveMathField;
         const lastStep = problemStore.solution.steps[problemStore.solution.steps.length - 1];
-        updatedMathField.latex(lastStep.cleanup ? lastStep.cleanup : lastStep.stepValue);
+        updatedMathField.$latex(lastStep.cleanup ? lastStep.cleanup : lastStep.stepValue);
         this.props.updateProblemStore({
             theActiveMathField: updatedMathField,
             editorPosition: countEditorPosition(problemStore.solution.steps),
             editing: false,
         });
-        problemList.theActiveMathField.focus();
+        problemList.theActiveMathField.$focus();
     }
 
     cancelEditCallback(oldEquation, oldExplanation, cleanup, index, img) {
@@ -167,7 +167,7 @@ class Editor extends Component {
         const field = theActiveMathField;
         this.props.setActiveMathFieldInProblem(field);
         if (this.props.example) {
-            field.latex(exampleProblem.steps[exampleProblem.steps.length - 1].stepValue);
+            field.$latex(exampleProblem.steps[exampleProblem.steps.length - 1].stepValue);
         }
     }
 

@@ -136,12 +136,12 @@ class App extends Component {
         } = this.props;
         let message;
         if (text === '' || $.trim(text).length === 0) {
-            if (problemList.theActiveMathField.latex() === '' && image === null) {
+            if (problemList.theActiveMathField.$latex() === '' && image === null) {
                 message = Locales.strings.no_problem_equation_or_image_and_title_warning;
             } else {
                 message = Locales.strings.no_problem_title_warning;
             }
-        } else if (problemList.theActiveMathField.latex() === '' && image === null) {
+        } else if (problemList.theActiveMathField.$latex() === '' && image === null) {
             message = Locales.strings.no_problem_equation_or_image_warning;
         }
 

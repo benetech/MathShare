@@ -17,7 +17,7 @@ function addNewStep(context, step) {
     const newSteps = problemStore.solution.steps;
     newSteps.push(step);
     const updatedMathField = problemList.theActiveMathField;
-    updatedMathField.latex(step.cleanup);
+    updatedMathField.$latex(step.cleanup);
 
     const solution = problemStore.solution;
     solution.steps = newSteps;
@@ -62,7 +62,7 @@ function editStep(context, stepNumber) {
     googleAnalytics('Edit step');
     const mathStep = problemStore.solution.steps[stepNumber - 1];
     const updatedMathField = problemList.theActiveMathField;
-    updatedMathField.latex(mathStep.stepValue);
+    updatedMathField.$latex(mathStep.stepValue);
     problemStore.displayScratchpad(mathStep.scratchpad);
     updateProblemStore({
         editedStep: stepNumber - 1,
@@ -89,9 +89,9 @@ function updateStep(context, img) {
         return;
     }
     const mathStep = Object.assign({}, problemStore.solution.steps[index]);
-    const cleanedup = MathButton.CleanUpCrossouts(problemList.theActiveMathField.latex());
-    const cleanup = cleanedup === problemList.theActiveMathField.latex() ? null : cleanedup;
-    context.updateMathEditorRow(problemList.theActiveMathField.latex(),
+    const cleanedup = MathButton.CleanUpCrossouts(problemList.theActiveMathField.$latex());
+    const cleanup = cleanedup === problemList.theActiveMathField.$latex() ? null : cleanedup;
+    context.updateMathEditorRow(problemList.theActiveMathField.$latex(),
         problemStore.textAreaValue, index, cleanup, img);
     context.cancelEditCallback(mathStep.stepValue, mathStep.explanation,
         mathStep.cleanup, index, mathStep.scratchpad);
@@ -112,7 +112,7 @@ function addStep(context, addToHistory, img) {
         }, 6000);
         return false;
     }
-    const mathContent = problemList.theActiveMathField.latex();
+    const mathContent = problemList.theActiveMathField.$latex();
     const explanation = problemStore.textAreaValue;
     const cleanedUp = MathButton.CleanUpCrossouts(mathContent);
     const cleanup = cleanedUp !== mathContent ? cleanedUp : null;

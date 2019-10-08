@@ -12,7 +12,7 @@ const mathLive = process.env.MATHLIVE_DEBUG_MODE
 export default class MyWorkEditorArea extends Component {
     componentDidMount() {
         const mathField = this.getMathField();
-        mathField.latex(this.props.lastMathEquation);
+        mathField.$latex(this.props.lastMathEquation);
         this.props.activateMathField(mathField);
         const mathEditorActive = document.getElementById('mathEditorActive');
         if (mathEditorActive) {
@@ -52,20 +52,20 @@ export default class MyWorkEditorArea extends Component {
                 onMoveOutOf: () => false,
                 onKeystroke: (key) => {
                     if (key === 'Enter') {
-                        this.props.theActiveMathField.perform('complete');
+                        this.props.theActiveMathField.$perform('complete');
                         this.props.theActiveMathField.commandMode = false;
                     } else if (key === 'Spacebar') {
                         if (this.props.theActiveMathField.commandMode) {
-                            this.props.theActiveMathField.perform('complete');
+                            this.props.theActiveMathField.$perform('complete');
                         }
-                        this.props.theActiveMathField.insert('\\ ');
-                        this.props.theActiveMathField.insert('\\ ');
-                        this.props.theActiveMathField.perform('moveToNextChar');
-                        this.props.theActiveMathField.perform('moveToPreviousChar');
+                        this.props.theActiveMathField.$insert('\\ ');
+                        this.props.theActiveMathField.$insert('\\ ');
+                        this.props.theActiveMathField.$perform('moveToNextChar');
+                        this.props.theActiveMathField.$perform('moveToPreviousChar');
                         if (this.props.theActiveMathField.commandMode) {
-                            this.props.theActiveMathField.perform('enterCommandMode');
-                            this.props.theActiveMathField.insert('text{}');
-                            this.props.theActiveMathField.perform('moveToPreviousChar');
+                            this.props.theActiveMathField.$perform('enterCommandMode');
+                            this.props.theActiveMathField.$insert('text{}');
+                            this.props.theActiveMathField.$perform('moveToPreviousChar');
                         }
                         return false;
                     } else if (key === 'Esc') {
@@ -84,8 +84,8 @@ export default class MyWorkEditorArea extends Component {
     }
 
     setFocus = () => {
-        if (this.props.theActiveMathField && this.props.theActiveMathField.focus) {
-            this.props.theActiveMathField.focus();
+        if (this.props.theActiveMathField && this.props.theActiveMathField.$focus) {
+            this.props.theActiveMathField.$focus();
         }
     }
 
@@ -181,7 +181,7 @@ export default class MyWorkEditorArea extends Component {
 
 function UpdatePalette(mathField) {
     if (mathField.mathlist) {
-        const origSelection = mathField.selectedText('latex');
+        const origSelection = mathField.$selectedText('latex');
         const cleanedSelection = CleanUpCrossouts(origSelection, { erase: true });	// selection without crossouts (pre-compute)
 
         // probably only one palette, but future-proof and handle all
