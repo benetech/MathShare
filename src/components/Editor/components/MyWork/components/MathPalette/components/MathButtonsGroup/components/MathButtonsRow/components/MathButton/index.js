@@ -8,6 +8,7 @@ import teXCommands from './teXCommands.json';
 import googleAnalytics from '../../../../../../../../../../../../scripts/googleAnalytics';
 import { alertWarning } from '../../../../../../../../../../../../scripts/alert';
 import Locales from '../../../../../../../../../../../../strings';
+import { stopEvent } from '../../../../../../../../../../../../services/events';
 
 // those disabled check occur mainly in commented/legacy code that might be needed at some point
 /* eslint-disable no-tabs, func-names, max-len, no-use-before-define, no-eval, no-param-reassign, no-shadow, react/sort-comp, no-unused-vars, no-fallthrough */
@@ -80,7 +81,7 @@ export default class MathButton extends Component {
         };
     }
 
-    getFunctionsById = ids => function () {
+    getFunctionsById = ids => (e) => {
         if (ids.includes('MathLivePasteFromButton')) {
             this.MathLivePasteFromButton();
         }
@@ -96,6 +97,7 @@ export default class MathButton extends Component {
         if (ids.includes('OpenColorPicker')) {
             this.OpenColorPicker();
         }
+        return stopEvent(e);
     }
 
     buildButtonTitle() {
@@ -309,7 +311,7 @@ export default class MathButton extends Component {
         if (this.props.button.additionalOnclick) {
             functionIds = functionIds.concat(this.props.button.additionalOnclick);
         }
-        const functions = this.getFunctionsById(functionIds, null, null);
+        const functions = this.getFunctionsById(functionIds);
         const visualContent = (
             <React.Fragment>
                 <span aria-hidden="true">
@@ -329,7 +331,7 @@ export default class MathButton extends Component {
                     className={this.buildClassNames()}
                     data-toggle="tooltip"
                     content={visualContent}
-                    onClick={this.props.readOnly ? null : functions.bind(this)}
+                    onClick={this.props.readOnly ? null : functions}
                 />
             </span>
         );
