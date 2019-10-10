@@ -61,7 +61,7 @@ function* requestLoadProblemSaga() {
                 const {
                     theActiveMathField,
                 } = yield select(getProblemListState);
-                theActiveMathField.latex(solution.steps[solution.steps.length - 1].stepValue);
+                theActiveMathField.$latex(solution.steps[solution.steps.length - 1].stepValue);
                 yield put(setSolutionData(solution, action));
                 const {
                     problemSetSolutionEditCode,

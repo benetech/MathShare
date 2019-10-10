@@ -72,3 +72,17 @@
     }
 
 }
+
+.googleBtn {
+    height: 40px;
+    width: 120px;
+    padding: 0;
+
+    :global(.abcRioButtonIcon) {
+        margin-left: 1px;
+
+        :global(.abcRioButtonIconImage) {
+            display: grid;
+        }
+    }
+}

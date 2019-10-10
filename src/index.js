@@ -7,7 +7,7 @@ import configureStore, { history } from './redux/configureStore';
 import App from './components';
 import 'jquery/dist/jquery';
 import 'bootstrap/dist/js/bootstrap.bundle';
-import 'react-notifications/lib/notifications.css';
+import 'react-toastify/dist/ReactToastify.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import './lib/mathlivedist/mathlive.core.css';
 import './lib/mathlivedist/mathlive.css';

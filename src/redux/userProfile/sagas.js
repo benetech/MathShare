@@ -10,7 +10,7 @@ import {
     IntercomAPI,
 } from 'react-intercom';
 import ReactGA from 'react-ga';
-import { push, replace } from 'connected-react-router';
+import { goBack, push, replace } from 'connected-react-router';
 import {
     fetchRecentWork,
     resetUserProfile,
@@ -70,8 +70,27 @@ function* fetchRecentWorkSaga() {
             } = response;
             yield put(setRecentWork(data));
         } catch (error) {
-            console.log(error);
+            yield put({
+                type: 'FETCH_RECENT_WORK_FAILURE',
+            });
         }
+    });
+}
+function* redirectAfterLoginSaga() {
+    yield takeLatest('REDIRECT_AFTER_LOGIN', function* workerSaga({
+        payload: {
+            forceBack,
+        },
+    }) {
+        const {
+            redirectTo,
+        } = yield select(getState);
+        if (redirectTo === 'back') {
+            yield put(goBack());
+        } else if (forceBack || redirectTo === 'app' || ['#/signin', '#/userdetails'].includes(window.location.hash.toLowerCase())) {
+            yield put(replace('/app'));
+        }
+        yield put(setAuthRedirect(null));
     });
 }
 
@@ -101,7 +120,9 @@ function* saveUserInfoSaga() {
             });
             yield put(replace(redirectTo));
         } catch (error) {
-            console.log(error);
+            yield put({
+                type: 'SAVE_USER_INFO_FAILURE',
+            });
         }
     });
 }
@@ -153,6 +174,7 @@ export default function* rootSaga() {
     yield all([
         fork(checkUserLoginSaga),
         fork(fetchRecentWorkSaga),
+        fork(redirectAfterLoginSaga),
         fork(saveUserInfoSaga),
         fork(setUserProfileSaga),
         fork(logoutSaga),

@@ -7,13 +7,26 @@ import showImage from '../../../../../../../../scripts/showImage';
 
 import '../../../../../../../../../images/pencil.png';
 import '../../../../../../../../../images/delete.png';
+import { passEventForKeys } from '../../../../../../../../services/events';
 
 const mathLive = process.env.MATHLIVE_DEBUG_MODE ? require('../../../../../../../../../../mathlive/src/mathlive.js').default
     : require('../../../../../../../../lib/mathlivedist/mathlive.js');
 
 export default class Step extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            id: this.props.cleanup ? `mathStep-${this.props.stepNumber - 1}-cleanup`
+                : `mathStep-${this.props.stepNumber}`,
+        };
+    }
+
     componentDidMount() {
         mathLive.renderMathInDocument();
+        const autoFocus = document.getElementById(this.state.id);
+        if (autoFocus) {
+            autoFocus.focus();
+        }
     }
 
     componentWillUpdate() {
@@ -143,7 +156,6 @@ export default class Step extends Component {
         return undefined;
     }
 
-    /* eslint-disable jsx-a11y/no-noninteractive-element-to-interactive-role */
     render() {
         const clearAll = this.props.stepNumber === 1 && !this.props.readOnly
             ? (
@@ -164,11 +176,10 @@ export default class Step extends Component {
                 />
             ) : null;
 
-        const id = this.props.cleanup ? `mathStep-${this.props.stepNumber - 1}-cleanup`
-            : `mathStep-${this.props.stepNumber}`;
+        const { id } = this.state;
+
         return (
-            // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
-            <div id={id} className={classNames('d-flex flex-column flex-md-row flex-lg-row flex-xl-row', step.step)} tabIndex={0}>
+            <div id={id} className={classNames('d-flex flex-column flex-md-row flex-lg-row flex-xl-row', step.step)} tabIndex={-1}>
                 <div className="d-flex p-2">
                     <h3>
                         {this.buildReason()}
@@ -207,7 +218,7 @@ export default class Step extends Component {
                         aria-labelledby="sketch-button-in-step"
                         style={{ display: this.props.scratchpad ? 'inline' : 'none' }}
                         onClick={() => showImage(this.props.scratchpad)}
-                        onKeyPress={() => showImage(this.props.scratchpad)}
+                        onKeyPress={passEventForKeys(() => showImage(this.props.scratchpad))}
                     >
                         <img
                             id="sketch-button-in-step"
@@ -224,6 +235,5 @@ export default class Step extends Component {
                 </div>
             </div>
         );
-        /* eslint-enable jsx-a11y/no-noninteractive-element-to-interactive-role */
     }
 }

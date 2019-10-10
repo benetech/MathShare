@@ -50,7 +50,7 @@ export default class MyStepsList extends Component {
                 readStep: index,
             });
         } else {
-            this.props.announceOnAriaLive(`No step number ${index}`);
+            this.props.announceOnAriaLive(`${Locales.strings.no_step_number} ${index}`);
         }
         setTimeout(() => {
             this.props.clearAriaLive();
@@ -174,6 +174,7 @@ export default class MyStepsList extends Component {
                                     className={classNames('btn', 'pointer')}
                                     additionalStyles={['finish']}
                                     type="button"
+                                    role="link"
                                     icon="check"
                                     content={Locales.strings.finish}
                                     onClick={this.props.finishProblem}

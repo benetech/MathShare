@@ -25,6 +25,7 @@ body {
 :global(.body-container) {
     display: table;
     width: 100%;
+
     &:global(.full-height) {
         height: 100%;
         display: flex;
@@ -32,6 +33,7 @@ body {
         margin: 0;
         justify-content: center;
     }
+
     &:global(.dark-background) {
         background-color: #001F3F;
     }
@@ -44,7 +46,7 @@ body {
 :global(.staticMath),
 :global(.mathliveModal),
 :global(button) {
-     :global(.ML__mathlive) {
+    :global(.ML__mathlive) {
         white-space: normal;
         display: inline;
         word-break: break-word;
@@ -78,20 +80,24 @@ button :global(.ML__mathlive) {
     margin: auto;
     margin-top: 75px;
     padding-bottom: 20px;
-     :global(.row) {
-         :global(.title) {
+
+    :global(.row) {
+        :global(.title) {
             margin-left: 12px;
         }
+
         ol {
             display: flex;
             flex-wrap: wrap;
             padding: 0;
             width: 100%;
+
             li {
                 list-style-type: none;
                 padding: 10px;
                 min-width: 150px;
                 cursor: pointer;
+
                 >div,
                 >button {
                     margin-bottom: 30px;
@@ -103,6 +109,7 @@ button :global(.ML__mathlive) {
                     white-space: normal !important;
                     border: 1px solid hsl(0, 0%, 80%) !important;
                     height: 120px;
+
                     span:global(.centreText) {
                         margin: auto;
                     }
@@ -110,17 +117,21 @@ button :global(.ML__mathlive) {
             }
         }
     }
-     :global(.card) {
+
+    :global(.card) {
         border-radius: 0;
         padding: 4px;
         box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, .12);
+
         button>* {
             align-self: center;
         }
     }
-     :global(.card):hover {
+
+    :global(.card):hover {
         box-shadow: 0px 4px 2px -1px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 2px 6px 0px rgba(0, 0, 0, .12);
     }
+
     // :global(.card) {
     //     background-color: #fff;
     //     background-color: var(--mdc-theme-surface, #fff);
@@ -133,13 +144,13 @@ button :global(.ML__mathlive) {
 }
 
 @media only screen and (max-width: 1020px) {
-     :global(.body-container) :global(.mainContainer) {
+    :global(.body-container) :global(.mainContainer) {
         max-width: 90vw;
     }
 }
 
 @media only screen and (min-width: 1021px) {
-     :global(.body-container) :global(.mainContainer) {
+    :global(.body-container) :global(.mainContainer) {
         max-width: 970px;
     }
 }
@@ -151,6 +162,7 @@ button :global(.ML__mathlive) {
 nav :global(.dropdown-menu) {
     right: 0;
     left: auto;
+
     >a {
         cursor: pointer;
     }
@@ -171,4 +183,102 @@ nav :global(.dropdown-menu) {
 
 :global(.keymap-tablecell) {
     padding: 8px;
+}
+
+button {
+    &:global(.reset-btn) {
+        outline: none;
+        border: 0px;
+        background-color: transparent;
+    }
+}
+
+.default-outline {
+    outline: 5px auto -webkit-focus-ring-color !important;
+}
+
+body [tabindex="-1"]:focus {
+    @extend .default-outline;
+}
+
+[data-skip-link] {
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    width: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    position: absolute;
+}
+
+[data-skip-link]:focus {
+    padding: 0.7rem;
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    background: white;
+    z-index: 10;
+    width: auto;
+    height: auto;
+    clip: auto;
+    border-radius: 5px;
+    @extend .default-outline;
+}
+
+:global(.Toastify) {
+    position: absolute;
+
+    :global(.Toastify__toast:before) {
+        font-family: "FontAwesome";
+        font-size: 28px;
+        margin-top: 5px;
+        margin-left: 5px;
+    }
+
+    :global(.Toastify__toast--warning) {
+        background-color: #f89406;
+    }
+
+    :global(.Toastify__toast--info) {
+        background-color: #2f96b4;
+    }
+
+    :global(.Toastify__toast--info:before) {
+        content: "\f05a";
+    }
+
+    :global(.Toastify__toast--success) {
+        background-color: #51a351;
+    }
+
+    :global(.Toastify__toast--success:before) {
+        content: "\f058";
+    }
+
+    :global(.Toastify__toast--warning) {
+        background-color: #f89406;
+    }
+
+    :global(.Toastify__toast--warning:before) {
+        content: "\f06a";
+    }
+
+    :global(.Toastify__toast--error) {
+        background-color: #bd362f;
+    }
+
+    :global(.Toastify__toast--error:before) {
+        content: "\f057";
+    }
+
+}
+
+:global(.toast-common) {
+    padding: 15px;
+
+    h2 {
+        font-weight: 600;
+        font-size: 16px;
+    }
 }

@@ -1,3 +1,16 @@
+.hrCustom:before {
+    display: block;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    overflow: visible;
+    unicode-bidi: isolate;
+    margin-block-start: 2.5em;
+    margin-block-end: 2.5em;
+    margin-inline-start: auto;
+    margin-inline-end: auto;
+    content: '';
+    width: 55%;
+}
+
 .container {
     height: 100%;
     display: flex;
@@ -8,7 +21,7 @@
     .btn {
         background-color: #31af08;
         max-width: 180px;
-        padding: 10px 20px;
+        padding: 15px 35px;
         color: white;
         margin: auto;
         margin-top: 15px;
@@ -17,6 +30,7 @@
         cursor: pointer;
         font-size: 30px;
         font-family: Verdana, Geneva, sans-serif;
+        text-decoration: none;
     }
 }
 
@@ -88,6 +102,7 @@
         max-width: 830px;
         padding: 50px 10px;
         font-weight: 500;
+        font-size: 16px;
     }
 }
 
@@ -98,6 +113,10 @@
     margin: auto;
 
     .feature {
+
+        &:before {
+            @extend .hrCustom:before;
+        }
 
         >*:first-child {
             padding-right: 35px;
@@ -131,6 +150,7 @@
             .textContent {
                 margin-top: 10px;
                 font-size: 16px;
+                font-weight: 400;
             }
         }
     }
@@ -148,6 +168,7 @@
             display: flex;
             align-items: center;
             align-self: center;
+            flex-wrap: wrap;
 
             .imageSection {
                 width: 50%;
@@ -181,6 +202,14 @@
                 }
             }
         }
+    }
+
+    .midLogo {
+        top: 32px;
+    }
+
+    .midContainer {
+        margin-top: 0px;
     }
 }
 

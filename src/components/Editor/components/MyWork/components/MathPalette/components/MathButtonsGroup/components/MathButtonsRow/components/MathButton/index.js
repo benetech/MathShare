@@ -8,6 +8,7 @@ import teXCommands from './teXCommands.json';
 import googleAnalytics from '../../../../../../../../../../../../scripts/googleAnalytics';
 import { alertWarning } from '../../../../../../../../../../../../scripts/alert';
 import Locales from '../../../../../../../../../../../../strings';
+import { stopEvent } from '../../../../../../../../../../../../services/events';
 
 // those disabled check occur mainly in commented/legacy code that might be needed at some point
 /* eslint-disable no-tabs, func-names, max-len, no-use-before-define, no-eval, no-param-reassign, no-shadow, react/sort-comp, no-unused-vars, no-fallthrough */
@@ -80,7 +81,7 @@ export default class MathButton extends Component {
         };
     }
 
-    getFunctionsById = ids => function () {
+    getFunctionsById = ids => (e) => {
         if (ids.includes('MathLivePasteFromButton')) {
             this.MathLivePasteFromButton();
         }
@@ -96,13 +97,14 @@ export default class MathButton extends Component {
         if (ids.includes('OpenColorPicker')) {
             this.OpenColorPicker();
         }
+        return stopEvent(e);
     }
 
     buildButtonTitle() {
         const title = this.props.button.title;
         const keys = this.props.button.keys;
         let keyShortcut = '';
-        if (keys) {
+        if (keys && !this.props.hideShortcuts) {
             keyShortcut += ' (⌨: ';
             keyShortcut += keys.join('+');
             keyShortcut += ')';
@@ -130,10 +132,10 @@ export default class MathButton extends Component {
     EnterTextInput() {
         const theActiveMathField = this.props.theActiveMathField;
         theActiveMathField.commandMode = true;
-        theActiveMathField.perform('enterCommandMode');
-        theActiveMathField.insert('text{}');
-        theActiveMathField.perform('moveToPreviousChar');
-        theActiveMathField.focus();
+        theActiveMathField.$perform('enterCommandMode');
+        theActiveMathField.$insert('text{}');
+        theActiveMathField.$perform('moveToPreviousChar');
+        theActiveMathField.$focus();
     }
 
     OpenColorPicker() {
@@ -173,7 +175,7 @@ export default class MathButton extends Component {
                 }
                 // eslint-disable-next-line no-underscore-dangle
                 theActiveMathField.applyStyle_({ color: hexColor });
-                theActiveMathField.focus();
+                theActiveMathField.$focus();
             });
         }
 
@@ -196,24 +198,24 @@ export default class MathButton extends Component {
             .replace('\\square', '#?')
             .trim();
 
-        if (!theActiveMathField.selectionIsCollapsed()) {
+        if (!theActiveMathField.$selectionIsCollapsed()) {
             const erasedInsertionString = this.constructor.CleanUpCrossouts(insertionString, { erase: true });
             if (erasedInsertionString !== insertionString) {
                 // the insertionString contains a cross out, erase all crossout in the selection
-                const selection = this.constructor.CleanUpCrossouts(theActiveMathField.selectedText('latex'), { erase: true });
+                const selection = this.constructor.CleanUpCrossouts(theActiveMathField.$selectedText('latex'), { erase: true });
 
                 // stick the modified selection into the black square (#0) in the insertionString
                 insertionString = insertionString.replace(/#0/, selection);
             }
         }
 
-        theActiveMathField.perform(['insert', insertionString,
+        theActiveMathField.$perform(['insert', insertionString,
             {
                 insertionMode: 'replaceSelection',
                 selectionMode: 'placeholder',
             }]);
         $('#mathAnnotationHeader').focus();
-        theActiveMathField.focus();
+        theActiveMathField.$focus();
     }
 
     CalculateAndReplace() {
@@ -257,27 +259,27 @@ export default class MathButton extends Component {
             }
         };
 
-        if (theActiveMathField.selectionIsCollapsed()) {
-            alertWarning('You must select an arithmetic expression for calculation', 'Warning');
+        if (theActiveMathField.$selectionIsCollapsed()) {
+            alertWarning(Locales.strings.math_button_select_exp, 'Warning');
             return;
         }
 
-        const selection = stringifyMathML(theActiveMathField.selectedText('mathML'));
+        const selection = stringifyMathML(theActiveMathField.$selectedText('mathML'));
         const result = DoCalculation(this.constructor.CleanUpCrossouts(selection));
         if (result === '') {
-            alertWarning('Selection must contain only numbers and operators', 'Warning');
+            alertWarning(Locales.strings.math_button_invalid_selection, 'Warning');
             return;
         }
 
         // leave crossouts in selection so it is clearer what was the input to the calculation
-        const insertionString = `${this.state.CrossoutTeXString}{${theActiveMathField.selectedText('latex')}}${result}`;
+        const insertionString = `${this.state.CrossoutTeXString}{${theActiveMathField.$selectedText('latex')}}${result}`;
 
-        theActiveMathField.perform(['insert', insertionString,
+        theActiveMathField.$perform(['insert', insertionString,
             {
                 insertionMode: 'replaceSelection',
                 selectionMode: 'after',
             }]);
-        theActiveMathField.focus();
+        theActiveMathField.$focus();
     }
 
 
@@ -309,7 +311,7 @@ export default class MathButton extends Component {
         if (this.props.button.additionalOnclick) {
             functionIds = functionIds.concat(this.props.button.additionalOnclick);
         }
-        const functions = this.getFunctionsById(functionIds, null, null);
+        const functions = this.getFunctionsById(functionIds);
         const visualContent = (
             <React.Fragment>
                 <span aria-hidden="true">
@@ -323,13 +325,13 @@ export default class MathButton extends Component {
             <span role="listitem">
                 <Button
                     aria-labelledby={labelId}
-                    title={title}
+                    title={this.props.hideShortcuts ? null : title}
                     disabled={this.props.readOnly}
                     id={this.props.button.id}
                     className={this.buildClassNames()}
                     data-toggle="tooltip"
                     content={visualContent}
-                    onClick={this.props.readOnly ? null : functions.bind(this)}
+                    onClick={this.props.readOnly ? null : functions}
                 />
             </span>
         );

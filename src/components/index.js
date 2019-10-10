@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { NotificationContainer } from 'react-notifications';
-import { Switch, Route, withRouter } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import {
+    Switch, Route, withRouter,
+} from 'react-router-dom';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
     faSignature,
@@ -46,7 +48,7 @@ import ariaLiveAnnouncerActions from '../redux/ariaLiveAnnouncer/actions';
 import { compareStepArrays } from '../redux/problem/helpers';
 import msalConfig from '../constants/msal';
 import keyMap from '../constants/hotkeyConfig.json';
-import { stopEvent } from '../services/events';
+import { stopEvent, passEventForKeys } from '../services/events';
 
 
 const mathLive = process.env.MATHLIVE_DEBUG_MODE
@@ -129,6 +131,7 @@ class App extends Component {
         }
         IntercomAPI('trackEvent', 'create-a-problem');
         this.props.addProblem(imageData, text, index, newProblemSet);
+        this.props.announceOnAriaLive(Locales.strings.added_problem_at_index.replace('{index}', index + 1));
         return true;
     };
 
@@ -136,20 +139,18 @@ class App extends Component {
         const { problemList } = this.props;
         let message;
         if (text === '' || $.trim(text).length === 0) {
-            if (problemList.theActiveMathField.latex() === '' && image === null) {
+            if (problemList.theActiveMathField.$latex() === '' && image === null) {
                 message = Locales.strings.no_problem_equation_or_image_and_title_warning;
             } else {
                 message = Locales.strings.no_problem_title_warning;
             }
-        } else if (
-            problemList.theActiveMathField.latex() === ''
-            && image === null
-        ) {
+        } else if (problemList.theActiveMathField.$latex() === '' && image === null) {
             message = Locales.strings.no_problem_equation_or_image_warning;
         }
 
         if (message) {
             alertWarning(message, Locales.strings.warning);
+            this.props.announceOnAriaLive(message);
             setTimeout(() => {
                 $('#mathAnnotation').focus();
             }, 6000);
@@ -203,24 +204,13 @@ class App extends Component {
         // this.props.toggleModals([PALETTE_CHOOSER, ADD_PROBLEM_SET]);
         this.props.toggleModals([PALETTE_CHOOSER]);
         this.props.history.push('/app/problemSet/new');
-        this.props.saveProblemSet(
-            [],
-            `New Problem Set ${dayjs().format('MM-DD-YYYY')}`,
-            null,
-        );
-    };
+        this.props.saveProblemSet([], `${Locales.strings.new_problem_set} ${dayjs().format('MM-DD-YYYY')}`, null);
+    }
 
     saveProblemSet = (orderedProblems, title) => {
         googleAnalytics(Locales.strings.add_problem_set);
         this.props.saveProblemSet(orderedProblems, title);
     };
-
-    // finishEditing = () => {
-    //     const {
-    //         set,
-    //     } = this.props.problemList;
-    //     this.props.history.push(`/app/problemSet/view/${set.shareCode}`);
-    // }
 
     saveProblem = () => new Promise((resolve) => {
         if (this.props.example) {
@@ -282,6 +272,8 @@ class App extends Component {
         return '';
     };
 
+    disableHotKeyModal = () => this.setState({ showDialog: false })
+
     renderDialog = () => {
         if (this.state.showDialog) {
             const { filter } = this.state;
@@ -303,11 +295,15 @@ class App extends Component {
                     handlers={this.handlers}
                     allowChanges
                 >
-                    {/* eslint-disable-next-line max-len */}
-                    {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions,jsx-a11y/click-events-have-key-events */}
-                    <div className="keymap-dialog" onClick={() => this.setState({ showDialog: false })}>
+                    <div
+                        role="button"
+                        className="keymap-dialog"
+                        onClick={this.disableHotKeyModal}
+                        onKeyPress={passEventForKeys(this.disableHotKeyModal)}
+                        tabIndex={0}
+                    >
                         <h2>
-                            Keyboard shortcuts
+                            {Locales.strings.keyboard_shortcuts}
                         </h2>
 
                         <ObserveKeys only="Escape">
@@ -317,7 +313,7 @@ class App extends Component {
                                 }
                                 onClick={e => stopEvent(e)}
                                 value={filter}
-                                placeholder="Filter"
+                                placeholder={Locales.strings.filter}
                             />
                         </ObserveKeys>
 
@@ -371,7 +367,7 @@ class App extends Component {
                 {this.renderDialog()}
                 <AriaLiveAnnouncer />
                 <GlobalHotKeys keyMap={keyMap} handlers={this.handlers} allowChanges />
-                <NotificationContainer />
+                <ToastContainer />
                 <div className={`body-container ${this.getAdditionalClass()}`}>
                     <ModalContainer
                         activeModals={modal.activeModals}
@@ -437,6 +433,11 @@ class App extends Component {
                 </div>
                 <Intercom appID={process.env.INTERCOM_APP_ID} />
                 <footer id="footer">
+                    <h2 className="sROnly">
+                        {' '}
+                        {Locales.strings.footer}
+                        {' '}
+                    </h2>
                     {window.location.hash === '#/' && <SiteMapFooter />}
                     <MainPageFooter customClass="footer" />
                     <SocialFooter />

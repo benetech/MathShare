@@ -12,6 +12,7 @@ import Button from '../../../Button';
 import parseMathLive from '../../../../scripts/parseMathLive';
 import scrollTo from '../../../../scripts/scrollTo';
 import googleAnalytics from '../../../../scripts/googleAnalytics';
+import { passEventForKeys, stopEvent } from '../../../../services/events';
 
 const mathLive = process.env.MATHLIVE_DEBUG_MODE ? require('../../../../../../mathlive/src/mathlive.js').default
     : require('../../../../lib/mathlivedist/mathlive.js');
@@ -24,13 +25,8 @@ export default class NewProblemsForm extends Component {
             problems: [],
             textAreaValue: '',
             displayScratchpad: null,
-            title: `New Problem Set ${dayjs().format('MM-DD-YYYY')}`,
+            title: `${Locales.strings.new_problem_set} ${dayjs().format('MM-DD-YYYY')}`,
         };
-
-        this.save = this.save.bind(this);
-        this.update = this.update.bind(this);
-        this.addProblem = this.addProblem.bind(this);
-        this.textAreaChanged = this.textAreaChanged.bind(this);
 
         setImmediate(() => {
             mathLive.renderMathInDocument();
@@ -69,11 +65,11 @@ export default class NewProblemsForm extends Component {
         scrollTo('container', 'myWorkFooter');
     }
 
-    textAreaChanged(text) {
+    textAreaChanged = (text) => {
         this.setState({ textAreaValue: text });
     }
 
-    reorder(oldIndex, newIndex) {
+    reorder = (oldIndex, newIndex) => {
         this.setState((prevState) => {
             let problems = prevState.problems;
             problems[oldIndex].position = newIndex;
@@ -92,85 +88,148 @@ export default class NewProblemsForm extends Component {
         });
     }
 
-    update(imageData, title) {
+    update = (imageData, title) => {
         this.props.editProblemCallback(imageData, title);
     }
 
-    addProblem(imageData, text) {
-        return this.props.addProblemCallback(imageData, text, this.state.problems.length,
-            this.props.newProblemSet);
+    addProblem = (imageData, text) => this.props.addProblemCallback(
+        imageData, text, this.state.problems.length, this.props.newProblemSet,
+    )
+
+    save = () => {
+        this.props.saveCallback(this.state.problems, this.state.title);
     }
 
-    save() {
-        this.props.saveCallback(this.state.problems, this.state.title);
+    pressMoveBtn = (index, problem, isUp) => (e) => {
+        let newIndex = index;
+        if (isUp) {
+            if (index > 0) {
+                newIndex = problem.position - 1;
+            }
+        } else if (index < this.state.problems.length - 1) {
+            newIndex = problem.position + 1;
+        }
+        if (index !== newIndex) {
+            this.reorder(problem.position, newIndex);
+            setTimeout(() => {
+                const id = `${isUp ? 'moveUp' : 'moveDown'}-${newIndex}`;
+                const element = document.getElementById(id);
+                if (element) {
+                    element.focus();
+                }
+            }, 250);
+        }
+
+        return stopEvent(e);
     }
 
     render() {
         const problems = this.state.problems.map((problem, i) => {
             const img = problem.scratchpad
                 ? (
-                    <FontAwesome
-                        size="2x"
-                        className={styles.img}
-                        name="image"
+                    <button
+                        className="reset-btn"
+                        type="button"
                         onClick={() => this.onImgClick(problem.scratchpad)}
-                    />
+                        onKeyPress={passEventForKeys(() => this.onImgClick(problem.scratchpad))}
+                    >
+                        <FontAwesome
+                            size="2x"
+                            className={styles.img}
+                            name="image"
+                        />
+                    </button>
                 ) : null;
 
             const moveUpBtn = (
-                <FontAwesome
-                    size="lg"
-                    className={i === 0 ? styles.disabled : null}
-                    name="caret-up"
-                    onClick={i === 0 ? null : () => this.reorder(problem.position,
-                        problem.position - 1)}
-                />
+                <button
+                    id={`moveUp-${i}`}
+                    className="reset-btn"
+                    type="button"
+                    onClick={this.pressMoveBtn(i, problem, true)}
+                    onKeyPress={passEventForKeys(this.pressMoveBtn(i, problem, true))}
+                >
+                    <FontAwesome
+                        size="lg"
+                        className={i === 0 ? styles.disabled : null}
+                        name="caret-up"
+                    />
+                </button>
+
             );
             const moveDownBtn = (
-                <FontAwesome
-                    size="lg"
-                    className={i === this.state.problems.length - 1 ? styles.disabled : null}
-                    name="caret-down"
-                    onClick={i === this.state.problems.length - 1 ? null
-                        : () => this.reorder(problem.position, problem.position + 1)}
-                />
+                <button
+                    id={`moveDown-${i}`}
+                    className="reset-btn"
+                    type="button"
+                    onClick={this.pressMoveBtn(i, problem, false)}
+                    onKeyPress={passEventForKeys(this.pressMoveBtn(i, problem, false))}
+                >
+                    <FontAwesome
+                        size="lg"
+                        className={i === this.state.problems.length - 1 ? styles.disabled : null}
+                        name="caret-down"
+                    />
+                </button>
             );
 
             return (
-                <div className={styles.row} key={i}>
-                    <div className={styles.ordinal}>
+                <tr className={styles.row} key={problem.id}>
+                    <th scope="row" className={styles.ordinal}>
                         {i + 1}
                         .
-                    </div>
-                    <div className={styles.cell}>
+                    </th>
+                    <td className={styles.cell}>
                         {`$$${problem.text}$$`}
-                    </div>
-                    <div className={styles.cell}>
+                    </td>
+                    <td className={styles.cell}>
                         {`$$${parseMathLive(problem.title)}}$$`}
-                    </div>
-                    <div className={styles.rowControl}>
+                    </td>
+                    <td className={styles.rowControl}>
                         {img}
                         <div className={styles.positionButtons}>
                             {moveUpBtn}
                             {moveDownBtn}
                         </div>
-                    </div>
-                </div>
+                    </td>
+                </tr>
             );
         });
+        const problemTable = (
+            <table>
+                <caption>
+                    <div className="sROnly">{Locales.strings.current_problems}</div>
+                </caption>
+                <thead>
+                    <tr key="header-row">
+                        <th scope="col">
+                            {Locales.strings.hash}
+                            <div className="sROnly">
+                                {Locales.strings.number}
+                            </div>
+                        </th>
+                        <th scope="col">
+                            {Locales.strings.equation}
+                        </th>
+                        <th scope="col">
+                            {Locales.strings.title}
+                        </th>
+                        <th scope="col">
+                            <div className="sROnly">
+                                {Locales.strings.problem_row_controls}
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>{problems}</tbody>
+            </table>
+        );
         const header = this.props.editing ? null
             : (
                 <div className={styles.header}>
-                    <h5 className={styles.ordinal}>
-                        {Locales.strings.hash}
-                    </h5>
-                    <h5 className={styles.cell}>
-                        {Locales.strings.equation}
-                    </h5>
-                    <h5 className={styles.cell}>
-                        {Locales.strings.title}
-                    </h5>
-                    <div className={styles.rowControl} />
+                    <div>
+                        <h1>{this.props.title}</h1>
+                    </div>
                 </div>
             );
         let doneButton = this.props.newProblemSet
@@ -182,6 +241,7 @@ export default class NewProblemsForm extends Component {
                     icon="save"
                     content={Locales.strings.save}
                     onClick={this.save}
+
                 />
             )
             : (
@@ -214,14 +274,14 @@ export default class NewProblemsForm extends Component {
         return (
             <AriaModal
                 id="modal"
-                titleText="demo one"
+                titleText={Locales.strings.add_problem_title}
                 onExit={this.props.deactivateModal}
                 getApplicationNode={this.getApplicationNode}
                 underlayStyle={{ paddingTop: '2em' }}
             >
                 <div className={styles.container} id="container">
                     {header}
-                    {problems}
+                    {problemTable}
                     <MyWork
                         key="editor"
                         allowedPalettes={this.props.allowedPalettes}
@@ -235,7 +295,6 @@ export default class NewProblemsForm extends Component {
                         solution={this.props.solution}
                         addingProblem={this.props.addingProblem}
                         editingProblem={this.props.editing}
-                        title={this.props.title}
                         lastMathEquation={lastMathEquation}
                         updateCallback={this.update}
                         scratchpadContent={scratchpadContent}

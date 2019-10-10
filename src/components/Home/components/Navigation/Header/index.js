@@ -10,8 +10,6 @@ const NavigationHeader = ({ set }) => (
             {!set.title && (
                 <p>{Locales.strings.select_a_problem}</p>
             )}
-            <br aria-hidden="true" />
-            <br aria-hidden="true" />
         </div>
     </div>
 );

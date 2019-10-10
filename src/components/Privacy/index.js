@@ -1,39 +1,60 @@
 import React from 'react';
-// import classNames from 'classnames';
+import { Helmet } from 'react-helmet';
 import styles from './styles.scss';
-// import Locales from '../../strings';
+import Locales from '../../strings';
 import logo from '../../../images/logo-2.png';
+import { focusOnMainContent, passEventForKeys } from '../../services/events';
 // import homePhoto from '../../../images/home-photo.png';
 
+const privacyLink = 'https://benetech.org/about/privacy-policy/';
 
 const Privacy = () => (
     <div className={styles.container}>
-        <div className={styles.logoContainer}>
-            <a href="/#/">
-                <img className={styles.midLogo} src={logo} alt="logo" aria-label="Mathshare Logo, a Benetech Initiative" />
-            </a>
-        </div>
-        <div className={styles.headerBottom} />
-        <div className={styles.content}>
-            <div className={styles.header}>Privacy Policy</div>
-            <div className={styles.textContent}>
-                Mathshare shares the Benetech privacy policy which is found at
-                {' '}
-                <a href="https://benetech.org/about/privacy-policy/">
-                    https://benetech.org/about/privacy-policy/
+        <Helmet>
+            <title>
+                {`${Locales.strings.policies} - ${Locales.strings.mathshare_benetech}`}
+            </title>
+        </Helmet>
+        <header>
+            <button
+                data-skip-link
+                onClick={focusOnMainContent}
+                onKeyPress={passEventForKeys(focusOnMainContent)}
+                type="button"
+            >
+                {Locales.strings.go_to_main_content}
+            </button>
+            <div className={styles.logoContainer}>
+                <button
+                    data-skip-link
+                    onClick={focusOnMainContent}
+                    onKeyPress={passEventForKeys(focusOnMainContent)}
+                    type="button"
+                >
+                    {Locales.strings.go_to_main_content}
+                </button>
+                <a href="/#/">
+                    <img
+                        className={styles.midLogo}
+                        src={logo}
+                        alt={Locales.strings.mathshare_logo}
+                    />
                 </a>
-                . When signing in using an LMS or other
-                sign in service we request and store the following information from the service.
-                First and last name, email, and user ID.
-                Mathshare uses this data to maintain or administer our Services, perform
-                business analyses, or for other internal purposes to improve the quality of our
-                business, the Services, and other products and services we offer. We may use
-                information provided by you in other manners, as otherwise described to you at
-                the point of collection or pursuant to your consent.
-                Data is stored securely in the United States.
-                <div className={styles.metadata}>Updated 7-2-19</div>
             </div>
-        </div>
+            <div className={styles.headerBottom} />
+        </header>
+        <main id="mainContainer" className={styles.content}>
+            <h1 className={styles.header} tabIndex={-1}>Privacy Policy</h1>
+            <div className={styles.textContent}>
+                {Locales.strings.mathshare_privacy_1}
+                {' '}
+                <a href={privacyLink}>
+                    {privacyLink}
+                </a>
+                {Locales.strings.mathshare_privacy_2}
+                <div className={styles.metadata}>{Locales.strings.mathshare_privacy_updated}</div>
+            </div>
+        </main>
     </div>
 );
 

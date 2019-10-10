@@ -12,8 +12,12 @@ const mathLive = process.env.MATHLIVE_DEBUG_MODE
 export default class MyWorkEditorArea extends Component {
     componentDidMount() {
         const mathField = this.getMathField();
-        mathField.latex(this.props.lastMathEquation);
+        mathField.$latex(this.props.lastMathEquation);
         this.props.activateMathField(mathField);
+        const mathEditorActive = document.getElementById('mathEditorActive');
+        if (mathEditorActive) {
+            mathEditorActive.focus();
+        }
     }
 
     getMathField() {
@@ -48,20 +52,20 @@ export default class MyWorkEditorArea extends Component {
                 onMoveOutOf: () => false,
                 onKeystroke: (key) => {
                     if (key === 'Enter') {
-                        this.props.theActiveMathField.perform('complete');
+                        this.props.theActiveMathField.$perform('complete');
                         this.props.theActiveMathField.commandMode = false;
                     } else if (key === 'Spacebar') {
                         if (this.props.theActiveMathField.commandMode) {
-                            this.props.theActiveMathField.perform('complete');
+                            this.props.theActiveMathField.$perform('complete');
                         }
-                        this.props.theActiveMathField.insert('\\ ');
-                        this.props.theActiveMathField.insert('\\ ');
-                        this.props.theActiveMathField.perform('moveToNextChar');
-                        this.props.theActiveMathField.perform('moveToPreviousChar');
+                        this.props.theActiveMathField.$insert('\\ ');
+                        this.props.theActiveMathField.$insert('\\ ');
+                        this.props.theActiveMathField.$perform('moveToNextChar');
+                        this.props.theActiveMathField.$perform('moveToPreviousChar');
                         if (this.props.theActiveMathField.commandMode) {
-                            this.props.theActiveMathField.perform('enterCommandMode');
-                            this.props.theActiveMathField.insert('text{}');
-                            this.props.theActiveMathField.perform('moveToPreviousChar');
+                            this.props.theActiveMathField.$perform('enterCommandMode');
+                            this.props.theActiveMathField.$insert('text{}');
+                            this.props.theActiveMathField.$perform('moveToPreviousChar');
                         }
                         return false;
                     } else if (key === 'Esc') {
@@ -80,7 +84,9 @@ export default class MyWorkEditorArea extends Component {
     }
 
     setFocus = () => {
-        this.props.theActiveMathField.focus();
+        if (this.props.theActiveMathField && this.props.theActiveMathField.$focus) {
+            this.props.theActiveMathField.$focus();
+        }
     }
 
     render() {
@@ -88,17 +94,10 @@ export default class MyWorkEditorArea extends Component {
         const ttsIntro = this.props.addingProblem ? Locales.strings.tts_intro_add_problem : Locales.strings.tts_intro;
         return (
             <section aria-labelledby="workarea-header">
-                {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
                 <h2
                     id="workarea-header"
                     className="sROnly"
-                    tabIndex={0}
-                    onKeyDown={(event) => {
-                        if (event.keyCode !== 9) {
-                            const element = document.getElementById('mathEditorActive');
-                            element.focus();
-                        }
-                    }}
+                    tabIndex={-1}
                 >
                     {Locales.strings.work_area_intro}
                 </h2>
@@ -117,15 +116,14 @@ export default class MyWorkEditorArea extends Component {
                         data-position="top"
                         data-intro={Locales.strings.work_area_intro}
                     >
-                        <h3 className="sROnly">{Locales.strings.math_editor}</h3>
+                        <h2 className="sROnly">{Locales.strings.math_editor}</h2>
                         <div
                             aria-label={Locales.strings.edit_equation}
                             id="mathEditorActive"
                             ref="mathEditorActive"
                             className={classNames('order-1', editorArea.mathEditorActive)}
                             role="application"
-                            /* eslint jsx-a11y/no-noninteractive-tabindex: off */
-                            tabIndex="0"
+                            tabIndex={-1}
                             onFocus={this.setFocus}
                         />
                         <div
@@ -135,7 +133,7 @@ export default class MyWorkEditorArea extends Component {
                                 editorArea.annotationContainer,
                             )}
                         >
-                            <h3
+                            <h2
                                 id="mathAnnotationHeader"
                                 className={
                                     classNames(
@@ -145,8 +143,8 @@ export default class MyWorkEditorArea extends Component {
                                 }
                                 tabIndex="-1"
                             >
-                                Describe your work
-                            </h3>
+                                {Locales.strings.describe_your_work}
+                            </h2>
                             <textarea
                                 id="mathAnnotation"
                                 data-toggle="tooltip"
@@ -183,7 +181,7 @@ export default class MyWorkEditorArea extends Component {
 
 function UpdatePalette(mathField) {
     if (mathField.mathlist) {
-        const origSelection = mathField.selectedText('latex');
+        const origSelection = mathField.$selectedText('latex');
         const cleanedSelection = CleanUpCrossouts(origSelection, { erase: true });	// selection without crossouts (pre-compute)
 
         // probably only one palette, but future-proof and handle all

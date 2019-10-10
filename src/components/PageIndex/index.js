@@ -1,16 +1,16 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { push } from 'connected-react-router';
 import { IntercomAPI } from 'react-intercom';
 import FontAwesome from 'react-fontawesome';
+import { Helmet } from 'react-helmet';
 import Locales from '../../strings';
 import MainPageHeader from '../Home/components/Header';
 import { requestDefaultRevision, requestExampleSets } from '../../redux/problemList/actions';
 import { fetchRecentWork } from '../../redux/userProfile/actions';
 import googleAnalytics from '../../scripts/googleAnalytics';
 import pageIndex from './styles.scss';
-import { stopEvent } from '../../services/events';
+import { stopEvent, passEventForKeys } from '../../services/events';
 
 const shareOnTwitter = shareCode => (e) => {
     window.open(
@@ -28,25 +28,15 @@ class Index extends Component {
     }
 
     openExampleProblem = () => {
-        const { props } = this;
-        const { problemList } = props;
-        props.history.push(`/app/problemSet/view/${problemList.defaultRevisionCode}`);
         googleAnalytics('premade set - default');
         IntercomAPI('trackEvent', 'view-example-set');
     }
 
-    openSet = problemSet => () => {
-        if (problemSet.isExample) {
-            this.openByShareCode(problemSet.shareCode);
-            googleAnalytics(`premade set - ${problemSet.title}`);
-        } else {
-            this.openByEditCode(problemSet.editCode);
-        }
+    openPremadeSet = problemSet => () => {
+        googleAnalytics(`premade set - ${problemSet.title}`);
     }
 
-    openByShareCode = (shareCode) => {
-        this.props.history.push(`/app/problemSet/view/${shareCode}`);
-    }
+    getShareLink = shareCode => `/#/app/problemSet/view/${shareCode}`
 
     openByEditCode = (editCode) => {
         this.props.history.push(`/app/problemSet/edit/${editCode}`);
@@ -65,7 +55,7 @@ class Index extends Component {
         const { userProfile } = this.props;
         if (!userProfile.service) {
             return (
-                <div className="text-center">
+                <div className={`text-center ${pageIndex.signInContainer}`}>
                     <span className={pageIndex.signInLink} role="link" tabIndex={0} onClick={this.redirectToSignIn} onKeyPress={this.redirectToSignIn}>
                         Sign in
                     </span>
@@ -86,22 +76,22 @@ class Index extends Component {
     }
 
     renderProblemSet = (problemSet, index) => (
-        <li className="card" key={problemSet.id}>
-            <button
-                type="button"
+        <li className="card" key={index}>
+            <a
                 className="btn d-flex"
-                onClick={this.openSet(problemSet)}
-                onKeyPress={this.openSet(problemSet)}
-                role="link"
-                tabIndex="0"
+                href={this.getShareLink(problemSet.shareCode)}
+                onClick={this.openPremadeSet(problemSet)}
+                onKeyPress={
+                    passEventForKeys(this.openPremadeSet(problemSet))
+                }
             >
                 <span className={pageIndex.title}>
                     {problemSet.title}
                 </span>
                 <span className={pageIndex.meta}>
-                    {problemSet.problemCount}
+                    {problemSet.problems.length}
                     {' '}
-                    Problems
+                    {Locales.strings.problems}
                 </span>
                 <div className="dropdown">
                     <button
@@ -111,50 +101,67 @@ class Index extends Component {
                         data-toggle="dropdown"
                         aria-haspopup="true"
                         aria-expanded="false"
-                        onClick={stopEvent}
+                        onClick={(e) => {
+                            stopEvent(e);
+                        }}
                     >
                         <FontAwesome
                             name="ellipsis-v"
                         />
+                        <span className="sROnly">{Locales.strings.more_options}</span>
                     </button>
-                    <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a
-                            className="dropdown-item"
-                            onClick={this.duplicateProblemSet(
-                                problemSet,
-                            )}
-                            onKeyPress={this.duplicateProblemSet(
-                                problemSet,
-                            )}
-                            role="link"
-                            tabIndex="0"
-                        >
-                            <FontAwesome
-                                size="lg"
-                                name="copy"
-                            />
-                            {` ${Locales.strings.duplicate_set}`}
-                        </a>
-                        <a
-                            className="dropdown-item"
-                            onClick={shareOnTwitter(
-                                problemSet.shareCode,
-                            )}
-                            onKeyPress={shareOnTwitter(
-                                problemSet.shareCode,
-                            )}
-                            role="link"
-                            tabIndex="0"
-                        >
-                            <FontAwesome
-                                size="lg"
-                                name="twitter"
-                            />
-                            {` ${Locales.strings.share_with_teachers}`}
-                        </a>
-                    </div>
+                    <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <li>
+                            <button
+                                className="dropdown-item reset-btn"
+                                onClick={this.duplicateProblemSet(
+                                    problemSet,
+                                )}
+                                onKeyPress={
+                                    passEventForKeys(
+                                        this.duplicateProblemSet(
+                                            problemSet,
+                                        ),
+                                    )
+                                }
+                                type="button"
+                            >
+                                <FontAwesome
+                                    size="lg"
+                                    name="copy"
+                                />
+                                {` ${Locales.strings.duplicate_set}`}
+                                <span className="sROnly">
+                                    {'\u00A0'}
+                                    {Locales.strings.opens_in_new_tab}
+                                </span>
+                            </button>
+                        </li>
+                        <li>
+                            <button
+                                className="dropdown-item reset-btn"
+                                onClick={shareOnTwitter(
+                                    problemSet.shareCode,
+                                )}
+                                onKeyPress={passEventForKeys(shareOnTwitter(
+                                    problemSet.shareCode,
+                                ))}
+                                type="button"
+                            >
+                                <FontAwesome
+                                    size="lg"
+                                    name="twitter"
+                                />
+                                {` ${Locales.strings.share_with_teachers}`}
+                                <span className="sROnly">
+                                    {'\u00A0'}
+                                    {Locales.strings.opens_in_new_window}
+                                </span>
+                            </button>
+                        </li>
+                    </ul>
                 </div>
-            </button>
+            </a>
         </li>
     )
 
@@ -163,6 +170,11 @@ class Index extends Component {
         const { problemList } = props;
         return (
             <div>
+                <Helmet>
+                    <title>
+                        {`${Locales.strings.all_problem_sets} - ${Locales.strings.mathshare_benetech}`}
+                    </title>
+                </Helmet>
                 <MainPageHeader
                     {...props}
                     editing={false}
@@ -172,38 +184,39 @@ class Index extends Component {
                     editCode={problemList.set.editCode}
                     action={null}
                 />
-                <div className="mainContainer">
+                <div id="mainContainer" className="mainContainer">
                     <ol className={pageIndex.problemSetList}>
                         <li className="card">
                             <button
                                 type="button"
                                 className="btn d-flex"
                                 onClick={props.addProblemSet}
-                                onKeyPress={props.addProblemSet}
+                                onKeyPress={passEventForKeys(props.addProblemSet)}
+                                role="link"
                             >
-                                <span className="centreText">+ New Problem Set</span>
+                                <span className="centreText">
+                                    +
+                                    {' '}
+                                    {Locales.strings.new_problem_set}
+                                </span>
                             </button>
                         </li>
                         <li className="card">
-                            <button
-                                type="button"
+                            <a
                                 className="btn d-flex"
+                                href={this.getShareLink(problemList.defaultRevisionCode)}
                                 onClick={this.openExampleProblem}
-                                onKeyPress={this.openExampleProblem}
-                                role="link"
-                                tabIndex="0"
+                                onKeyPress={passEventForKeys(this.openExampleProblem)}
                             >
-                                <span className="centreText">Example Problem</span>
-                            </button>
+                                <span className="centreText">{Locales.strings.example_problem}</span>
+                            </a>
                         </li>
                     </ol>
                     <div className="title">Recent</div>
                     {this.renderRecent()}
-                    <br />
-                    <br />
-                    <div className="title">Pre-made Sets</div>
+                    <div className="title">{Locales.strings.pre_made_sets}</div>
                     <ol className={pageIndex.problemSetList}>
-                        {problemList.exampleProblemSets.map(set => ({ ...set, isExample: true })).filter(exampleProblemSet => exampleProblemSet.title !== 'Example Problem Set').map(this.renderProblemSet)}
+                        {problemList.exampleProblemSets.filter(exampleProblemSet => exampleProblemSet.title !== 'Example Problem Set').map(this.renderProblemSet)}
 
                     </ol>
                 </div>

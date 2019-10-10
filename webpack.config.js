@@ -107,7 +107,7 @@ module.exports = (env, argv) => {
             {
                 test: /\.css$/,
                 include: [
-                    /node_modules(\/|\\)react-notifications/,
+                    /node_modules(\/|\\)react-toastify/,
                     /node_modules(\/|\\)bootstrap/,
                     /src(\/|\\)lib/,
                     /src(\/|\\)styles/,

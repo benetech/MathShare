@@ -3,24 +3,24 @@ import {
     withRouter,
 } from 'react-router-dom';
 import { IntercomAPI } from 'react-intercom';
-// import classNames from 'classnames';
+import { Helmet } from 'react-helmet';
 import styles from './styles.scss';
-// import Locales from '../../strings';
+import Locales from '../../strings';
 import logo from '../../../images/logo-2.png';
 import homePhoto from '../../../images/home-photo.png';
 import showWork from '../../../images/show-work.png';
 import openSource from '../../../images/open-source-software.png';
 import lms from '../../../images/lms.png';
 import syntaxHighlighthing from '../../../images/syntax-highlighting.gif';
+import { focusOnMainContent, passEventForKeys } from '../../services/events';
 
 
-const clickOnTryNow = (history, isTryNow) => () => {
+const clickOnTryNow = isTryNow => () => {
     if (isTryNow) {
         IntercomAPI('trackEvent', 'try-now');
     } else {
         IntercomAPI('trackEvent', 'create-account');
     }
-    history.push('/app');
 };
 
 const clickOnSignIn = (history, setAuthRedirect, userProfile) => () => {
@@ -34,121 +34,105 @@ const clickOnSignIn = (history, setAuthRedirect, userProfile) => () => {
 
 const LandingPage = withRouter(({ history, setAuthRedirect, userProfile }) => (
     <div className={styles.container}>
+        <Helmet>
+            <title>
+                {`${Locales.strings.overview} - ${Locales.strings.mathshare_benetech}`}
+            </title>
+        </Helmet>
+        <button
+            data-skip-link
+            onClick={focusOnMainContent}
+            onKeyPress={passEventForKeys(focusOnMainContent)}
+            type="button"
+        >
+            {Locales.strings.go_to_main_content}
+        </button>
         <div className={styles.signInLabel}>
-            <span className={styles.signIn} onClick={clickOnSignIn(history, setAuthRedirect, userProfile)} onKeyPress={clickOnSignIn(history, setAuthRedirect, userProfile)} role="button" tabIndex={0}>
-                {userProfile.service ? 'Go to App' : 'Sign In'}
-            </span>
+            <button
+                className={`${styles.signIn} reset-btn`}
+                onClick={clickOnSignIn(history, setAuthRedirect, userProfile)}
+                onKeyPress={passEventForKeys(clickOnSignIn(history, setAuthRedirect, userProfile))}
+                type="button"
+                role="link"
+            >
+                {userProfile.service ? Locales.strings.go_to_app : Locales.strings.sign_in}
+            </button>
         </div>
-        <img className={styles.midLogo} src={logo} alt="mid-logo" aria-label="Mathshare Logo, a Benetech Initiative" />
-        <div className={styles.midContainer}>
+        <img className={styles.midLogo} src={logo} alt={Locales.strings.mathshare_logo} />
+        <main id="mainContainer" className={styles.midContainer} aria-labelledby="help_students">
             <div className={styles.content}>
-                <div className={styles.largeText}>
-                    Help students show and organize their math work
-                </div>
-                <img src={homePhoto} alt="mid-logo" aria-label="Screenshot showing example problem being solved step by step" />
-                <div className={styles.midBottomText}>
-                    Benetech Mathshare empowers students to solve math problems and
-                    {' '}
-                    show their work so that teachers and students can see how they got there.
-                </div>
-                <div
+                <h1 id="help_students" className={styles.largeText} tabIndex={-1}>
+                    {Locales.strings.help_students}
+                </h1>
+                <img src={homePhoto} alt={Locales.strings.screenshot_step_by_step} />
+                <h2 className={styles.midBottomText} tabIndex={-1}>
+                    {Locales.strings.benetech_empowers}
+                </h2>
+                <a
+                    href="/#/app"
                     className={styles.btn}
-                    onClick={clickOnTryNow(history, true)}
-                    onKeyPress={clickOnTryNow(history, true)}
-                    role="link"
+                    onClick={clickOnTryNow(true)}
+                    onKeyPress={passEventForKeys(clickOnTryNow(true))}
                     tabIndex="0"
                 >
-                    Try now
-                </div>
+                    {Locales.strings.open_mathshare}
+                </a>
             </div>
-        </div>
+        </main>
         <div className={styles.features}>
             <div className={styles.content}>
-                <hr />
-                <div className={`${styles.feature} ${styles.reverse}`}>
-                    <div className={styles.imageSection}>
-                        <img src={showWork} alt="show-work" aria-label="Screen shot showing math share interface" />
-                    </div>
+                <section className={styles.feature} aria-labelledby="show_their_work">
                     <div className={styles.textSection}>
-                        <div className={styles.header}>
-                            Show their work
-                        </div>
-                        <div className={styles.textContent}>
-                            Students can solve equations step-by-step
-                            {' '}
-                            and add notes to explain their thinking.
-                        </div>
+                        <h2 id="show_their_work" className={styles.header} tabIndex={-1}>
+                            {Locales.strings.show_their_work}
+                        </h2>
+                        <h3 className={styles.textContent} tabIndex={-1}>
+                            {Locales.strings.students_can_solve}
+                        </h3>
                     </div>
-                </div>
-                <hr />
-                <div className={styles.feature}>
                     <div className={styles.imageSection}>
-                        <img src={syntaxHighlighthing} alt="show-work" aria-label="animation showing math with synchronized highlighting" />
+                        <img src={showWork} alt={Locales.strings.screenshot_math_interface} />
                     </div>
+                </section>
+                <section className={`${styles.feature} ${styles.reverse}`} aria-labelledby="accessible_to_all">
                     <div className={styles.textSection}>
-                        <div className={styles.header}>
-                            Accessible to ALL Learners
-                        </div>
-                        <div className={styles.textContent}>
-                            Students with and without learning differences can use
-                            {' '}
-                            Mathshare with features like text-to-speech, speech-to-text,
-                            {' '}
-                            and word-level highlighting
-                        </div>
+                        <h2 id="accessible_to_all" className={styles.header} tabIndex={-1}>
+                            {Locales.strings.accessible_to_all}
+                        </h2>
+                        <h3 className={styles.textContent} tabIndex={-1}>
+                            {Locales.strings.students_with_and_without}
+                        </h3>
                     </div>
-                </div>
-                <hr />
-                <div className={`${styles.feature} ${styles.reverse}`}>
                     <div className={styles.imageSection}>
-                        <img src={lms} alt="lms" aria-label="several logos of several LMS vendors, including Canvas, Google Classroom, Schoology, Moodle, OneNote, and Blackboard" />
+                        <img src={syntaxHighlighthing} alt={Locales.strings.mathshare_gif} />
                     </div>
+                </section>
+                <section className={styles.feature} aria-labelledby="lms_integration">
                     <div className={styles.textSection}>
-                        <div className={styles.header}>
-                            LMS Integration
-                        </div>
-                        <div className={styles.textContent}>
-                            Use on your schools LMS (learning management system)
-                            {' '}
-                            through assignment links, with native integrations and
-                            {' '}
-                            single sign on (SSO) coming soon.
-                        </div>
+                        <h2 id="lms_integration" className={styles.header} tabIndex={-1}>
+                            {Locales.strings.lms_integration}
+                        </h2>
+                        <h3 className={styles.textContent} tabIndex={-1}>
+                            {Locales.strings.use_on_your_lms}
+                        </h3>
                     </div>
-                </div>
-                <hr />
-                <div className={styles.feature}>
                     <div className={styles.imageSection}>
-                        <img src={openSource} alt="open-source" aria-label="Image showing open source logo" />
+                        <img src={lms} alt={Locales.strings.mathshare_supported_lms} />
                     </div>
+                </section>
+                <section className={`${styles.feature} ${styles.reverse}`} aria-labelledby="free_and_open_source">
                     <div className={styles.textSection}>
-                        <div className={styles.header}>
-                            Free and Open Source
-                        </div>
-                        <div className={styles.textContent}>
-                            Mathshare is a free, open source tool developed by
-                            {' '}
-                            Benetech, a nonprofit that empowers communities with
-                            {' '}
-                            software for social good. Mathshare’s mission is to
-                            {' '}
-                            make math accessible for all students. Mathshare is
-                            {' '}
-                            free for schools to use and for learning management
-                            {' '}
-                            systems to integrate into their platforms.
-                        </div>
+                        <h2 id="free_and_open_source" className={styles.header} tabIndex={-1}>
+                            {Locales.strings.free_and_open_source}
+                        </h2>
+                        <h3 className={styles.textContent} tabIndex={-1}>
+                            {Locales.strings.mathshare_is_a_free}
+                        </h3>
                     </div>
-                </div>
-                {/* <div
-                    className={`${styles.btn} ${styles.signupBtn}`}
-                    onClick={clickOnTryNow(history)}
-                    onKeyPress={clickOnTryNow(history)}
-                    role="link"
-                    tabIndex="0"
-                >
-                    Create Free Account
-                </div> */}
+                    <div className={styles.imageSection}>
+                        <img src={openSource} alt={Locales.strings.mathshare_open_source} />
+                    </div>
+                </section>
             </div>
         </div>
     </div>

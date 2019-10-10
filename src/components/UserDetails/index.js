@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { UncontrolledTooltip } from 'reactstrap';
 import { alertWarning, alertSuccess } from '../../scripts/alert';
+import Locales from '../../strings';
 import { redirectAfterLogin, saveUserInfo } from '../../redux/userProfile/actions';
 import logo from '../../../images/logo-black.png';
-// eslint-disable-next-line no-unused-vars
 import userDetails from './styles.scss';
 
 
@@ -30,6 +30,12 @@ class UserDetails extends Component {
             if (type === 'student') {
                 this.finish();
             }
+            if (type === 'teacher') {
+                const gradeHeading = document.getElementById('gradeOfWork');
+                if (gradeHeading) {
+                    gradeHeading.focus();
+                }
+            }
         });
     }
 
@@ -39,13 +45,13 @@ class UserDetails extends Component {
             this.props.saveUserInfo(type, [], '');
         } else if (type === 'teacher') {
             if (Object.values(gradeStatus).filter(value => value).length === 0) {
-                alertWarning('Please make sure a grade and role is selected');
+                alertWarning(Locales.strings.grade_and_role_warning);
                 return;
             }
             const grades = Object.keys(gradeStatus).filter(gradeName => gradeStatus[gradeName]);
             this.props.saveUserInfo(type, grades, role);
         }
-        alertSuccess('Thanks for sharing your details');
+        alertSuccess(Locales.strings.thanks_for_details);
         this.props.redirectAfterLogin();
     }
 
@@ -73,8 +79,10 @@ class UserDetails extends Component {
 
     renderTeacherForm = () => (
         <div className={userDetails.teacherForm}>
-            <div className="row">
-                <div className={`${userDetails.descText} col-5`}>What grade do you work with?</div>
+            <fieldset className="row">
+                <legend className={`${userDetails.descText} col-5`}>
+                    <h2 tabIndex={-1} id="gradeOfWork">{Locales.strings.grade_of_work}</h2>
+                </legend>
                 <div className={`${userDetails.grade} col-7`}>
                     {this.grades.map((grade) => {
                         const id = `grade-${grade.replace('-', '').replace('+', '')}`;
@@ -89,14 +97,17 @@ class UserDetails extends Component {
                         );
                     })}
                 </div>
-            </div>
+            </fieldset>
             <div className="row">
-                <div className={`${userDetails.descText} col-5`}>Which best describes your role?</div>
+                <div className={`${userDetails.descText} col-5`}>
+                    <label htmlFor="teacherRole">
+                        <h2 tabIndex={-1}>{Locales.strings.describe_your_role}</h2>
+                    </label>
+                </div>
                 <div className={`${userDetails.select} col-7`}>
                     <div className="form-group">
-                        {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
                         <select className="form-control" id="teacherRole" onChange={this.handleRoleChange} value={this.state.role}>
-                            <option value="">Choose one</option>
+                            <option value="">{Locales.strings.choose_one}</option>
                             {this.roles.map(role => (
                                 <option key={role}>
                                     {role}
@@ -115,7 +126,7 @@ class UserDetails extends Component {
                     type="button"
                     onClick={this.finish}
                 >
-                    Finish
+                    {Locales.strings.finish.trim()}
                 </button>
                 <UncontrolledTooltip placement="top" target="finishBtn" />
             </div>
@@ -126,38 +137,45 @@ class UserDetails extends Component {
         return (
             <div className={userDetails.container}>
                 <div className={userDetails.content}>
-                    <div className={userDetails.logo}>
-                        <img src={logo} alt="logo" />
-                    </div>
-                    <div className={userDetails.text}>Let&apos;s setup your account</div>
-                    {this.state.type === null && (
-                        <div className={userDetails.buttonsContainer}>
+                    <header className={userDetails.logo}>
+                        <img src={logo} alt={Locales.strings.mathshare_logo} />
+                    </header>
+                    <main>
+                        <h1 className={userDetails.text} tabIndex={-1}>
+                            {Locales.strings.setup_your_account}
+                        </h1>
+                        {this.state.type === null && (
                             <div>
-                                <button
-                                    className={`btn btn-primary ${userDetails.largeBtn}`}
-                                    id="im_a_teacher"
-                                    type="button"
-                                    onClick={this.setType('teacher')}
-                                >
-                                    I&apos;m a Teacher
-                                </button>
+                                <h2 tabIndex={-1}>{Locales.strings.who_are_you}</h2>
+                                <div className={userDetails.buttonsContainer}>
+                                    <div>
+                                        <button
+                                            className={`btn btn-primary ${userDetails.largeBtn}`}
+                                            id="im_a_teacher"
+                                            type="button"
+                                            onClick={this.setType('teacher')}
+                                        >
+                                            {Locales.strings.i_m_teacher}
+                                        </button>
+                                    </div>
+                                    <div>
+                                        <button
+                                            className={`btn btn-primary ${userDetails.largeBtn}`}
+                                            id="im_a_student"
+                                            type="button"
+                                            onClick={this.setType('student')}
+                                        >
+                                            {Locales.strings.i_m_student}
+                                        </button>
+                                    </div>
+                                    <UncontrolledTooltip placement="top" target="im_a_teacher" />
+                                    <UncontrolledTooltip placement="top" target="im_a_student" />
+                                </div>
                             </div>
-                            <div>
-                                <button
-                                    className={`btn btn-primary ${userDetails.largeBtn}`}
-                                    id="im_a_student"
-                                    type="button"
-                                    onClick={this.setType('student')}
-                                >
-                                    I&apos;m a Student
-                                </button>
-                            </div>
-                            <UncontrolledTooltip placement="top" target="im_a_teacher" />
-                            <UncontrolledTooltip placement="top" target="im_a_student" />
-                        </div>
-                    )}
+                        )}
 
-                    {this.state.type === 'teacher' && this.renderTeacherForm()}
+                        {this.state.type === 'teacher' && this.renderTeacherForm()}
+                    </main>
                 </div>
             </div>
         );

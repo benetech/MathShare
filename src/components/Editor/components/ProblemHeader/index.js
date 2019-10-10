@@ -1,5 +1,3 @@
-/* eslint-disable jsx-a11y/no-noninteractive-tabindex */
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { Component } from 'react';
 import classNames from 'classnames';
 import Tour from 'reactour';
@@ -13,7 +11,7 @@ import googleAnalytics from '../../../../scripts/googleAnalytics';
 import Locales from '../../../../strings';
 import showImage from '../../../../scripts/showImage';
 import completeKeyMap from '../../../../constants/hotkeyConfig.json';
-import { stopEvent } from '../../../../services/events';
+import { stopEvent, passEventForKeys } from '../../../../services/events';
 import { tourConfig, accentColor } from './tourConfig';
 // import parseMathLive from '../../../../scripts/parseMathLive';
 
@@ -34,6 +32,13 @@ export default class ProblemHeader extends Component {
                 return stopEvent(e);
             },
         };
+    }
+
+    componentDidMount() {
+        const subHeader = document.getElementById('subHeader');
+        if (subHeader) {
+            subHeader.focus();
+        }
     }
 
     shouldComponentUpdate(nextProps) {
@@ -65,6 +70,14 @@ export default class ProblemHeader extends Component {
     clickOnQuestion = () => {
         googleAnalytics('clicked help center');
         IntercomAPI('trackEvent', 'clicked-help-center');
+    }
+
+    clickedFeedback = () => {
+        googleAnalytics('click feedback');
+    }
+
+    clickedHelpCenter = () => {
+        googleAnalytics('click help center');
     }
 
     render() {
@@ -115,74 +128,77 @@ export default class ProblemHeader extends Component {
                         </div>
                     )}
                     <li className="nav-item dropdown">
-                        <span id={`${questionBtnId}-label`} className="sROnly">{Locales.strings.help_center}</span>
                         <button
                             className={`nav-link dropdown-toggle btn ${problem.dropDownMenu}`}
                             id={questionBtnId}
                             data-toggle="dropdown"
                             type="button"
                             tabIndex={0}
-                            aria-labelledby={`${questionBtnId}-label`}
                             onClick={this.clickOnQuestion}
-                            onKeyPress={this.clickOnQuestion}
+                            onKeyPress={passEventForKeys(this.clickOnQuestion)}
+                            aria-expanded="false"
                         >
                             <FontAwesome
                                 size="lg"
                                 name="question"
                             />
+                            <span className="sROnly">{Locales.strings.more_options}</span>
                         </button>
                         <UncontrolledTooltip placement="top" target={questionBtnId} />
-                        <div
+                        <ul
                             className="dropdown-menu dropdown-menu-lg-right dropdown-secondary"
-                            aria-labelledby={`${questionBtnId}-label`}
                         >
-                            <a
-                                className="dropdown-item"
-                                onClick={this.openTour}
-                                onKeyPress={this.openTour}
-                                role="button"
-                                tabIndex={0}
-                            >
-                                <FontAwesome
-                                    className="super-crazy-colors"
-                                    name="hand-o-up"
-                                    style={{ textShadow: '0 1px 0 rgba(0, 0, 0, 0.1)' }}
-                                />
-                                {Locales.strings.tutorial}
-                            </a>
-                            <a
-                                className="dropdown-item"
-                                href="https://intercom.help/benetech/en"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                onClick={() => {
-                                    googleAnalytics('click help center');
-                                }}
-                            >
-                                <FontAwesome
-                                    className="super-crazy-colors"
-                                    name="comment"
-                                    style={{ textShadow: '0 1px 0 rgba(0, 0, 0, 0.1)' }}
-                                />
-                                {Locales.strings.help_center}
-                            </a>
-                            <a
-                                href="https://docs.google.com/forms/d/e/1FAIpQLScSZJo47vQM_5ci2MOgBbJW7WM6FbEi2xABR5qSZd8oD2RZEg/viewform?usp=sf_link"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="dropdown-item"
-                                onClick={() => {
-                                    googleAnalytics('click feedback');
-                                }}
-                            >
-                                <FontAwesome
-                                    className="super-crazy-colors"
-                                    name="arrow-circle-right"
-                                    style={{ textShadow: '0 1px 0 rgba(0, 0, 0, 0.1)' }}
-                                />
-                                {Locales.strings.provide_feedback}
-                            </a>
-                        </div>
+                            <li>
+                                <button
+                                    className="dropdown-item reset-btn"
+                                    onClick={this.openTour}
+                                    onKeyPress={passEventForKeys(this.openTour)}
+                                    type="button"
+                                    tabIndex={0}
+                                >
+                                    <FontAwesome
+                                        className="super-crazy-colors"
+                                        name="hand-o-up"
+                                        style={{ textShadow: '0 1px 0 rgba(0, 0, 0, 0.1)' }}
+                                    />
+                                    {Locales.strings.tutorial}
+                                </button>
+                            </li>
+                            <li>
+                                <a
+                                    className="dropdown-item"
+                                    href="https://intercom.help/benetech/en"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    onClick={this.clickedHelpCenter}
+                                    onKeyPress={passEventForKeys(this.clickedHelpCenter)}
+                                >
+                                    <FontAwesome
+                                        className="super-crazy-colors"
+                                        name="comment"
+                                        style={{ textShadow: '0 1px 0 rgba(0, 0, 0, 0.1)' }}
+                                    />
+                                    {Locales.strings.help_center}
+                                </a>
+                            </li>
+                            <li>
+                                <a
+                                    href="https://docs.google.com/forms/d/e/1FAIpQLScSZJo47vQM_5ci2MOgBbJW7WM6FbEi2xABR5qSZd8oD2RZEg/viewform?usp=sf_link"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="dropdown-item"
+                                    onClick={this.clickedFeedback}
+                                    onKeyPress={passEventForKeys(this.clickedFeedback)}
+                                >
+                                    <FontAwesome
+                                        className="super-crazy-colors"
+                                        name="arrow-circle-right"
+                                        style={{ textShadow: '0 1px 0 rgba(0, 0, 0, 0.1)' }}
+                                    />
+                                    {Locales.strings.provide_feedback}
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                 </div>
             );
@@ -231,21 +247,23 @@ export default class ProblemHeader extends Component {
                         }
                     />
                 </div>
-                <div className={`d-flex flex-row ${problem.subHeader}`} tabIndex={0}>
-                    {imgButton}
-                    <h1 id="ProblemTitle" className={problem.title}>
-                        {title}
-                        <span className="sROnly">
-                            {mathLive.latexToSpeakableText(
-                                this.props.math,
-                                {
-                                    textToSpeechRules: 'sre',
-                                    textToSpeechRulesOptions: { domain: 'clearspeak', style: 'default', markup: 'none' },
-                                },
-                            )}
-                        </span>
-                    </h1>
-                    <span id="ProblemMath" className={`${problem.title} ${problem.question}`}>{`$$${this.props.math}$$`}</span>
+                <div id="mainContainer">
+                    <div id="subHeader" className={`d-flex flex-row ${problem.subHeader}`} tabIndex={-1}>
+                        {imgButton}
+                        <h1 id="ProblemTitle" className={problem.title} tabIndex={-1}>
+                            {title}
+                            <span className="sROnly">
+                                {mathLive.latexToSpeakableText(
+                                    this.props.math,
+                                    {
+                                        textToSpeechRules: 'sre',
+                                        textToSpeechRulesOptions: { domain: 'clearspeak', style: 'default', markup: 'none' },
+                                    },
+                                )}
+                            </span>
+                        </h1>
+                        <span id="ProblemMath" className={`${problem.title} ${problem.question}`}>{`$$${this.props.math}$$`}</span>
+                    </div>
                 </div>
             </React.Fragment>
         );

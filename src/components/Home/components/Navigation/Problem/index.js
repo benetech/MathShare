@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import classNames from 'classnames';
-import axios from 'axios';
 import FontAwesome from 'react-fontawesome';
 import {
     EDIT_PROBLEM, CONFIRMATION, ADD_PROBLEMS, ADD_PROBLEM_SET,
@@ -11,8 +10,7 @@ import buttons from '../../../../Button/styles.scss';
 import Locales from '../../../../../strings';
 import showImage from '../../../../../scripts/showImage';
 import parseMathLive from '../../../../../scripts/parseMathLive';
-import { SERVER_URL } from '../../../../../config';
-import { stopEvent } from '../../../../../services/events';
+import { stopEvent, passEventForKeys } from '../../../../../services/events';
 
 const mathLive = process.env.MATHLIVE_DEBUG_MODE ? require('../../../../../../../mathlive/src/mathlive.js').default
     : require('../../../../../lib/mathlivedist/mathlive.js');
@@ -29,7 +27,6 @@ export default class Problem extends Component {
             isOverflownVertically: false,
         };
 
-        this.createNewSolution = this.createNewSolution.bind(this);
         this.onTrashClick = this.onTrashClick.bind(this);
         this.onEditClick = this.onEditClick.bind(this);
         this.onImgClick = this.onImgClick.bind(this);
@@ -84,7 +81,6 @@ export default class Problem extends Component {
         return result;
     }
 
-    /* eslint-disable jsx-a11y/alt-text */
     buildProblemImage = () => (
         <img
             className={problemStyle.image}
@@ -108,50 +104,33 @@ export default class Problem extends Component {
 
     buildProblemText = () => `$$${this.props.problem.text}$$`
 
-    createNewSolution = (history) => {
+    getLink = () => {
         const { action, solutions, problem } = this.props;
         if (this.props.example) {
-            history.push('/app/problem/example/');
-        } else if (action !== 'new') {
+            return '/#/app/problem/example/';
+        }
+        if (solutions && problem) {
             const currentSolution = solutions.find(
                 solution => solution.problem.id === problem.id,
             );
             if (currentSolution && (currentSolution.editCode || currentSolution.shareCode)) {
                 if (currentSolution.editCode && action !== 'review') {
-                    history.push(`/app/problem/edit/${currentSolution.editCode}`);
-                } else {
-                    history.push(`/app/problem/view/${currentSolution.shareCode}`);
+                    return `/#/app/problem/edit/${currentSolution.editCode}`;
                 }
-            } else {
-                const solution = {
-                    problem: {
-                        id: this.props.problem.id,
-                        problemSetRevisionShareCode: this.props.problem.problemSetRevisionShareCode,
-                        text: this.props.problem.text,
-                        title: this.props.problem.title,
-                    },
-                    steps: [
-                        {
-                            stepValue: this.props.problem.text,
-                            explanation: this.props.problem.title,
-                        },
-                    ],
-                };
-                axios.post(`${SERVER_URL}/solution/`, solution)
-                    .then((response) => {
-                        history.push(`/app/problem/edit/${response.data.editCode}`);
-                    });
+                return `/#/app/problem/view/${currentSolution.shareCode}`;
             }
         }
+        return null;
     }
 
-    openNewProblemModal = () => {
+    openNewProblemModal = (e) => {
         const { action } = this.props;
         if (action === 'new') {
             this.props.activateModals([ADD_PROBLEM_SET]);
         } else {
             this.props.activateModals([ADD_PROBLEMS]);
         }
+        return stopEvent(e);
     }
 
     render() {
@@ -186,135 +165,172 @@ export default class Problem extends Component {
 
         const imgButton = (this.props.problem && this.props.problem.scratchpad)
             ? (
-                <FontAwesome
-                    className={
-                        classNames(
-                            problemStyle.imgIcon,
-                            'fa-2x',
-                        )
-                    }
+                <button
+                    className="reset-btn"
                     onClick={this.onImgClick}
-                    name="image"
-                    tabIndex={0}
-                />
+                    onKeyPress={passEventForKeys(this.onImgClick)}
+                    type="button"
+                >
+                    <span className="sROnly">
+                        {Locales.strings.view_sketch}
+                        {'\u00A0'}
+                        {Locales.strings.opens_in_new_tab}
+                    </span>
+                    <FontAwesome
+                        className={
+                            classNames(
+                                problemStyle.imgIcon,
+                                'fa-2x',
+                            )
+                        }
+                        name="image"
+                    />
+                </button>
             )
             : null;
 
         const plusButton = this.props.addNew
             ? (
-                <FontAwesome
-                    className={
-                        classNames(
-                            problemStyle.plusIcon,
-                            'fa-2x',
-                        )
-                    }
-                    name="plus-circle"
-                    tabIndex={0}
-                />
+                <button
+                    className="reset-btn"
+                    onClick={this.openNewProblemModal}
+                    onKeyPress={passEventForKeys(this.openNewProblemModal)}
+                    type="button"
+                >
+                    <span className="sROnly">
+                        {Locales.strings.add_problem_title}
+                    </span>
+                    <FontAwesome
+                        className={
+                            classNames(
+                                problemStyle.plusIcon,
+                                'fa-2x',
+                            )
+                        }
+                        name="plus-circle"
+                    />
+                </button>
             )
             : null;
 
         const editButton = this.props.showRemove
             ? (
-                <FontAwesome
-                    className={
-                        classNames(
-                            problemStyle.editIcon,
-                            'fa-2x',
-                        )
-                    }
+                <button
+                    className="reset-btn"
                     onClick={this.onEditClick}
-                    name="edit"
-                    tabIndex={0}
-                />
+                    onKeyPress={passEventForKeys(this.onEditClick)}
+                    type="button"
+                >
+                    <FontAwesome
+                        className={
+                            classNames(
+                                problemStyle.editIcon,
+                                'fa-2x',
+                            )
+                        }
+                        name="edit"
+                    />
+                    <span className="sROnly">{Locales.strings.edit_problem}</span>
+                </button>
+
             )
             : null;
 
         const removeButton = this.props.showRemove
             ? (
-                <FontAwesome
-                    className={
-                        classNames(
-                            problemStyle.trashIcon,
-                            'fa-2x',
-                        )
-                    }
+                <button
+                    className="reset-btn"
                     onClick={this.onTrashClick}
-                    name="trash"
-                    tabIndex={0}
-                />
+                    onKeyPress={passEventForKeys(this.onTrashClick)}
+                    type="button"
+                >
+                    <FontAwesome
+                        className={
+                            classNames(
+                                problemStyle.trashIcon,
+                                'fa-2x',
+                            )
+                        }
+                        name="trash"
+                    />
+                    <span className="sROnly">{Locales.strings.remove_problem}</span>
+                </button>
             )
             : null;
 
-        const NavItem = withRouter(({ history }) => (
-            <div
-                id={`problem-${this.props.number + 1}`}
-                className={
-                    classNames(
-                        'd-flex',
-                        'text-center',
-                        problemStyle.problem,
-                    )
-                }
-            >
-                <button
-                    type="button"
+        const NavItem = withRouter(() => {
+            const NavTag = this.props.solutions ? 'a' : 'div';
+            const additionalProps = {};
+            if (NavTag === 'a') {
+                additionalProps.href = this.getLink();
+            } else {
+                additionalProps.onClick = (e) => {
+                    if (this.props.addNew) {
+                        this.openNewProblemModal(e);
+                    }
+                };
+                additionalProps.onKeyPress = passEventForKeys(additionalProps.onClick);
+            }
+            return (
+                <div
+                    id={`problem-${((this.props.number && this.props.number + 1) || 'new')}`}
                     className={
                         classNames(
-                            'btn',
-                            buttons.default,
-                            buttons.huge,
-                            problemStyle.navSpan,
-                            problemStyle.middle,
-                            problemStyle.tile,
-                            problemStyle.container,
+                            'd-flex',
+                            'text-center',
+                            problemStyle.problem,
                         )
                     }
-                    onClick={() => (
-                        this.props.addNew
-                            ? this.openNewProblemModal()
-                            : this.createNewSolution(history))}
-                    onKeyPress={() => (
-                        this.props.addNew
-                            ? this.openNewProblemModal()
-                            : this.createNewSolution(history))}
-                    tabIndex="0"
                 >
-                    <div
+                    <NavTag
                         className={
                             classNames(
-                                problemStyle.navItemButton,
-                                problemStyle.colorInherit,
+                                'btn',
+                                buttons.default,
+                                buttons.huge,
+                                problemStyle.navSpan,
+                                problemStyle.middle,
+                                problemStyle.tile,
+                                problemStyle.container,
                             )
                         }
+                        {...additionalProps}
                     >
-                        {wrappedAnnotation}
                         <div
-                            aria-hidden="true" // math speech is part of link
-                            ref={(el) => { this.navItemContent = el; }}
-                            className={classNames(
-                                this.props.example ? null : problemStyle.equation,
-                                this.state.isOverflownHorizontally
-                                    ? problemStyle.equationOverflownHorizontally : null,
-                                this.state.isOverflownVertically
-                                    ? problemStyle.equationOverflownVertically : null,
-                            )}
+                            className={
+                                classNames(
+                                    problemStyle.navItemButton,
+                                    problemStyle.colorInherit,
+                                )
+                            }
                         >
-                            {equation}
+                            {wrappedAnnotation}
+                            <div
+                                aria-hidden="true" // math speech is part of link
+                                ref={(el) => { this.navItemContent = el; }}
+                                className={classNames(
+                                    this.props.example ? null : problemStyle.equation,
+                                    this.state.isOverflownHorizontally
+                                        ? problemStyle.equationOverflownHorizontally : null,
+                                    this.state.isOverflownVertically
+                                        ? problemStyle.equationOverflownVertically : null,
+                                )}
+                            >
+                                {equation}
+                            </div>
+                            {speechForMath}
                         </div>
-                        {speechForMath}
-                    </div>
-                    <div className={problemStyle.btnContainer}>
-                        {imgButton}
-                        {editButton}
-                        {removeButton}
-                        {plusButton}
-                    </div>
-                    {this.props.problem && this.props.problem.scratchpad ? image : null}
-                </button>
-            </div>
-        ));
+                        <div className={problemStyle.btnContainer}>
+                            {imgButton}
+                            {editButton}
+                            {removeButton}
+                            {plusButton}
+                        </div>
+                        {this.props.problem && this.props.problem.scratchpad ? image : null}
+                    </NavTag>
+                </div>
+            );
+        });
         return <NavItem />;
     }
 }

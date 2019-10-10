@@ -2,51 +2,50 @@ import React from 'react';
 // import FontAwesome from 'react-fontawesome';
 import footer from './styles.scss';
 import footerLogo from '../../../../../images/footer_logo.png';
-// import Locales from '../../../../strings';
+import Locales from '../../../../strings';
 
 const SiteMapFooter = ({ customClass }) => (
     <div className={`${footer.footer} ${customClass || ''}`}>
         <div className={`${footer.footerContainer} d-flex flex-row flex-wrap`}>
             <div>
                 <div className="d-flex flex-row">
-                    <img src={footerLogo} alt="footer-logo" aria-label="benetech logo" />
+                    <img src={footerLogo} alt={Locales.strings.benetech_logo} />
                     <div className={footer.mAuto}>
-                        Mathshare is a
-                        <br />
-                        Benetech Initiative
+                        <p>{Locales.strings.mathshare_is_a}</p>
+                        <p>{Locales.strings.benetech_initiative}</p>
                     </div>
                 </div>
                 <div className={footer.footerLine}>
-                    Our mission is to make math accessibility free and open to all students.
+                    {Locales.strings.mission}
                 </div>
             </div>
             <div className={`d-flex flex-row ${footer.lists}`}>
                 <div>
-                    <div className={footer.listTitle}>Resources</div>
-                    <ul>
+                    <h3 id="listTitle__resources" className={footer.listTitle}>{Locales.strings.resources}</h3>
+                    <ul aria-labelledby="listTitle__resources">
                         <li>
                             <a
                                 href="https://drive.google.com/drive/folders/1wi19Sx20WOMo3nChzHbh8KwlIdvSs9gp?usp=sharing"
                                 target="_blank"
                                 rel="noopener noreferrer"
                             >
-                                Workshop Materials
+                                {Locales.strings.workshop_materials}
                             </a>
                         </li>
                         <li>
                             <a
-                                href="https://intercom.help/benetech/en/collections/1820806-accessibility"
+                                href="https://docs.google.com/document/d/1vYi8n9hvhBzdRayOC-grRn4j8KnFM7RB9R2aM77tjDc/edit?usp=sharing"
                                 target="_blank"
                                 rel="noopener noreferrer"
                             >
-                                Accessibility
+                                {Locales.strings.accessibility}
                             </a>
                         </li>
                         <li>
                             <a
                                 href="/#/partners"
                             >
-                                Partners
+                                {Locales.strings.partners}
                             </a>
                         </li>
                         <li>
@@ -55,13 +54,13 @@ const SiteMapFooter = ({ customClass }) => (
                                 target="_blank"
                                 rel="noopener noreferrer"
                             >
-                                Contact Us
+                                {Locales.strings.contact_us.trim()}
                             </a>
                         </li>
                     </ul>
                 </div>
                 <div>
-                    <div className={footer.listTitle}>Connect</div>
+                    <h3 id="listTitle__connect" className={footer.listTitle}>{Locales.strings.connect}</h3>
                     <ul>
                         <li>
                             <a
@@ -69,7 +68,7 @@ const SiteMapFooter = ({ customClass }) => (
                                 target="_blank"
                                 rel="noopener noreferrer"
                             >
-                                YouTube
+                                {Locales.strings.youtube}
                             </a>
                         </li>
                         <li>
@@ -78,7 +77,7 @@ const SiteMapFooter = ({ customClass }) => (
                                 target="_blank"
                                 rel="noopener noreferrer"
                             >
-                                Twitter
+                                {Locales.strings.twitter}
                             </a>
                         </li>
                         <li>
@@ -87,20 +86,28 @@ const SiteMapFooter = ({ customClass }) => (
                                 target="_blank"
                                 rel="noopener noreferrer"
                             >
-                                Email
+                                {Locales.strings.email}
                             </a>
                         </li>
                     </ul>
                 </div>
                 <div>
-                    <div className={footer.listTitle}>Info</div>
-                    <ul>
+                    <h3 id="listTitle__info" className={footer.listTitle}>{Locales.strings.info}</h3>
+                    <ul aria-labelledby="listTitle__info">
                         <li>
                             <a
                                 href="/#/privacy"
                                 rel="noopener noreferrer"
                             >
-                                Privacy Policy
+                                {Locales.strings.privacy_policy}
+                            </a>
+                        </li>
+                        {/* <li>
+                            <a
+                                href="/#/privacy"
+                                rel="noopener noreferrer"
+                            >
+                                {Locales.strings.ferpa_coppa}
                             </a>
                         </li>
                         <li>
@@ -108,23 +115,15 @@ const SiteMapFooter = ({ customClass }) => (
                                 href="/#/privacy"
                                 rel="noopener noreferrer"
                             >
-                                FERPA/COPPA
+                                {Locales.strings.tos}
                             </a>
-                        </li>
-                        <li>
-                            <a
-                                href="/#/privacy"
-                                rel="noopener noreferrer"
-                            >
-                                Terms of Service
-                            </a>
-                        </li>
+                        </li> */}
                         <li>
                             <a
                                 href="/#/partners"
                                 rel="noopener noreferrer"
                             >
-                                Open Source
+                                {Locales.strings.open_source}
                             </a>
                         </li>
                     </ul>
