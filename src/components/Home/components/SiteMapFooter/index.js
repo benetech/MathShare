@@ -34,7 +34,7 @@ const SiteMapFooter = ({ customClass }) => (
                         </li>
                         <li>
                             <a
-                                href="https://intercom.help/benetech/en/collections/1820806-accessibility"
+                                href="https://docs.google.com/document/d/1vYi8n9hvhBzdRayOC-grRn4j8KnFM7RB9R2aM77tjDc/edit?usp=sharing"
                                 target="_blank"
                                 rel="noopener noreferrer"
                             >
