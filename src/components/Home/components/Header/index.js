@@ -26,33 +26,12 @@ import {
 
 
 class MainPageHeader extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            googleInitialized: false,
-        };
-    }
-
-    componentWillMount() {
-        this.pollGoogleInitialization();
-    }
-
     componentDidMount() {
         this.logoutClickHandler();
     }
 
     componentDidUpdate() {
         this.logoutClickHandler();
-    }
-
-    pollGoogleInitialization = () => {
-        if (window.auth2Initialized) {
-            this.setState({
-                googleInitialized: true,
-            });
-        } else {
-            setTimeout(this.pollGoogleInitialization, 100);
-        }
     }
 
     logoutClickHandler = () => {
@@ -219,7 +198,7 @@ class MainPageHeader extends React.Component {
                                         </li>
                                     </ul>
                                 </li>
-                                {(this.state.googleInitialized && !userProfile.service) && (
+                                {!userProfile.service && (
                                     <li>
                                         <a
                                             id="signIn"
@@ -254,31 +233,29 @@ class MainPageHeader extends React.Component {
                                             />
                                         </button>
                                         <UncontrolledTooltip placement="top" target="navbarDropdownMenuLink-avatar" />
-                                        {window.auth2Initialized && (
-                                            <ul
-                                                className="dropdown-menu dropdown-menu-lg-right dropdown-secondary"
-                                                aria-labelledby="navbarDropdownMenuLink-avatar"
-                                            >
-                                                <li><div className="dropdown-header">{userProfile.name}</div></li>
-                                                <li><div className={`dropdown-header ${header.email}`}>{userProfile.email}</div></li>
-                                                <li><div className="dropdown-divider" /></li>
-                                                <li>
-                                                    <button
-                                                        className="dropdown-item logout reset-btn"
-                                                        onClick={this.props.logoutOfUserProfile}
-                                                        onKeyPress={
-                                                            passEventForKeys(
-                                                                this.props.logoutOfUserProfile,
-                                                            )
-                                                        }
-                                                        type="button"
-                                                    >
-                                                        {Locales.strings.sign_out}
-                                                    </button>
+                                        <ul
+                                            className="dropdown-menu dropdown-menu-lg-right dropdown-secondary"
+                                            aria-labelledby="navbarDropdownMenuLink-avatar"
+                                        >
+                                            <li><div className="dropdown-header">{userProfile.name}</div></li>
+                                            <li><div className={`dropdown-header ${header.email}`}>{userProfile.email}</div></li>
+                                            <li><div className="dropdown-divider" /></li>
+                                            <li>
+                                                <button
+                                                    className="dropdown-item logout reset-btn"
+                                                    onClick={this.props.logoutOfUserProfile}
+                                                    onKeyPress={
+                                                        passEventForKeys(
+                                                            this.props.logoutOfUserProfile,
+                                                        )
+                                                    }
+                                                    type="button"
+                                                >
+                                                    {Locales.strings.sign_out}
+                                                </button>
 
-                                                </li>
-                                            </ul>
-                                        )}
+                                            </li>
+                                        </ul>
                                     </li>
                                 )}
                             </ul>

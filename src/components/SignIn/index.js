@@ -1,80 +1,60 @@
 import React, { Component } from 'react';
-import { UserAgentApplication } from 'msal';
 import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';
+import { push } from 'connected-react-router';
 import { UncontrolledTooltip } from 'reactstrap';
-import msalConfig from '../../constants/msal';
+import {
+    setUserProfile,
+    checkUserLogin,
+} from '../../redux/userProfile/actions';
+import { API_URL } from '../../config';
 import Locales from '../../strings';
-import { setUserProfile, checkGoogleLogin, checkMsLogin } from '../../redux/userProfile/actions';
 import logo from '../../../images/logo-black.png';
 import googleLogo from '../../../images/google-logo.svg';
 import microsoftLogo from '../../../images/microsoft-logo.svg';
 import signIn from './styles.scss';
 import { passEventForKeys } from '../../services/events';
 
-
 class SignIn extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            googleSignInInitialized: false,
+            googleSignInInitialized: true,
         };
         this.GOOGLE_SIGN_IN = 'googleSignIn';
         this.MS_SIGN_IN = 'msSignIn';
     }
 
     componentDidMount() {
-        this.initializeGoogleSignIn();
-        this.props.checkMsLogin();
+        this.props.checkUserLogin();
     }
 
     startMicrosoftSignIn = () => {
-        const myMSALObj = new UserAgentApplication(msalConfig);
-        const requestObj = {
-            scopes: ['user.read'],
-        };
+        const { routerHistory } = this.props;
+        window.location.assign(
+            `${API_URL}/login/azuread-openidconnect?return=${encodeURIComponent(routerHistory.prev)}`,
+        );
+    };
 
-        myMSALObj.loginPopup(requestObj).then(() => {
-            this.props.checkMsLogin(true);
-        }).catch(() => { });
-    }
-
-    initializeGoogleSignIn = () => {
-        if (!window.gapi
-            || !window.gapi.signin2 || !window.gapi.auth2 || !window.auth2Initialized) {
-            setTimeout(this.initializeGoogleSignIn, 500);
-        } else if (!this.state.googleSignInInitialized) {
-            this.setState({
-                googleSignInInitialized: true,
-                hideBtn: true,
-            });
-            const authInstance = window.gapi.auth2.getAuthInstance();
-            authInstance.attachClickHandler(
-                this.GOOGLE_SIGN_IN,
-                {
-                    scope: 'profile email',
-                    theme: 'dark',
-                    height: 40,
-                },
-                () => {
-                    this.props.checkGoogleLogin(true);
-                },
-                () => { },
-            );
-            document.getElementById(this.GOOGLE_SIGN_IN).addEventListener('keyup', (event) => {
-                if (event.key === 'Enter') {
-                    authInstance.signIn();
-                }
-            });
-        }
+    startGoogleSignIn = () => {
+        const { routerHistory } = this.props;
+        window.location.assign(
+            `${API_URL}/login/google?return=${encodeURIComponent(routerHistory.prev)}`,
+        );
     }
 
     onSuccess = (service, email, name, image) => {
         this.props.setUserProfile(email, name, image, service);
-    }
+    };
 
     renderGoogleBtn = () => (
-        <button id={this.GOOGLE_SIGN_IN} type="button" className={`${signIn.googleBtn} abcRioButton abcRioButtonBlue`}>
+        <button
+            id={this.GOOGLE_SIGN_IN}
+            type="button"
+            className={`${signIn.googleBtn} abcRioButton abcRioButtonBlue`}
+            onClick={this.startGoogleSignIn}
+            onKeyPress={passEventForKeys(this.startGoogleSignIn)}
+        >
             <span className="abcRioButtonContentWrapper">
                 <span className="abcRioButtonIcon" style={{ padding: 10 }}>
                     <span className="abcRioButtonSvgImageWithFallback abcRioButtonIconImage abcRioButtonIconImage18">
@@ -102,7 +82,7 @@ class SignIn extends Component {
 
     goBack = () => {
         this.props.history.goBack();
-    }
+    };
 
     render() {
         return (
@@ -141,10 +121,12 @@ class SignIn extends Component {
 }
 
 export default connect(
-    () => ({}),
+    state => ({
+        routerHistory: state.routerHooks,
+    }),
     {
-        checkMsLogin,
-        checkGoogleLogin,
+        checkUserLogin,
         setUserProfile,
+        push,
     },
 )(SignIn);

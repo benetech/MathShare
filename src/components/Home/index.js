@@ -388,7 +388,7 @@ class Home extends Component {
                                 set={problemList.set}
                             />
                         )}
-                        {(params.action !== 'review' && (params.action !== 'edit' && params.action !== 'new')) && (
+                        {(params.action !== 'review' && (params.action !== 'edit' && params.action !== 'new')) && currentSet.problems.length > 0 && (
                             <div className={classNames([
                                 'row',
                                 home.actionBar,

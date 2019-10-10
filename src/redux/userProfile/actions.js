@@ -8,15 +8,8 @@ export const setUserProfile = (email, name, profileImage, service) => ({
     },
 });
 
-export const checkMsLogin = redirect => ({
-    type: 'CHECK_MS_LOGIN',
-    payload: {
-        redirect,
-    },
-});
-
-export const checkGoogleLogin = redirect => ({
-    type: 'CHECK_GOOGLE_LOGIN',
+export const checkUserLogin = redirect => ({
+    type: 'CHECK_USER_LOGIN',
     payload: {
         redirect,
     },
@@ -61,14 +54,26 @@ export const saveUserInfo = (userType, grades, role) => ({
     },
 });
 
+export const fetchRecentWork = () => ({
+    type: 'FETCH_RECENT_WORK',
+});
+
+export const setRecentWork = recentProblemSets => ({
+    type: 'SET_RECENT_WORK',
+    payload: {
+        recentProblemSets,
+    },
+});
+
 export default {
-    checkGoogleLogin,
-    checkMsLogin,
+    checkUserLogin,
+    fetchRecentWork,
     logoutOfUserProfile,
     redirectAfterLogin,
     resetUserProfile,
     saveUserInfo,
     setAuthRedirect,
+    setRecentWork,
     setUserProfile,
     handleSuccessfulLogin,
 };

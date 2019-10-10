@@ -1,84 +1,81 @@
 import {
     all,
     call,
-    delay,
     fork,
     put,
     select,
     takeLatest,
 } from 'redux-saga/effects';
 import {
-    UserAgentApplication,
-} from 'msal';
-import {
     IntercomAPI,
 } from 'react-intercom';
 import ReactGA from 'react-ga';
+import { goBack, push, replace } from 'connected-react-router';
 import {
-    goBack,
-    replace,
-} from 'connected-react-router';
-import {
-    handleSuccessfulLogin,
-    redirectAfterLogin,
+    fetchRecentWork,
     resetUserProfile,
-    setAuthRedirect,
     setUserProfile,
+    setAuthRedirect,
+    setRecentWork,
 } from './actions';
-import {
-    fetchUserInfoApi,
-    saveUserInfoApi,
-} from './apis';
-import msalConfig from '../../constants/msal';
 import {
     getState,
 } from './selectors';
+import {
+    fetchCurrentUserApi,
+    fetchUserInfoApi,
+    fetchRecentWorkApi,
+    logoutApi,
+    saveUserInfoApi,
+} from './apis';
 
-function* checkMsLoginSaga() {
-    yield takeLatest('CHECK_MS_LOGIN', function* workerSaga({
-        payload: {
-            redirect,
-        },
-    }) {
-        const myMSALObj = new UserAgentApplication(msalConfig);
-        const microsoftAccount = myMSALObj.getAccount();
-        if (microsoftAccount) {
-            const {
-                name,
-                userName,
-            } = microsoftAccount;
-            const profileImage = `https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=256&name=${encodeURIComponent(name)}&rounded=true&length=1`;
-            yield put(setUserProfile(
-                userName, name, profileImage, 'ms',
-            ));
-            yield put(handleSuccessfulLogin(userName, redirect));
-        }
-    });
-}
-
-function* checkGoogleLoginSaga() {
-    yield takeLatest('CHECK_GOOGLE_LOGIN', function* workerSaga({
-        payload: {
-            redirect,
-        },
-    }) {
-        while (!window.gapi || !window.gapi.auth2 || !window.auth2Initialized) {
-            yield delay(100);
-        }
-        const authInstance = window.gapi.auth2.getAuthInstance();
-        const user = authInstance.currentUser.get();
-        if (user && user.isSignedIn() && user.getBasicProfile()) {
-            const profile = user.getBasicProfile();
-            if (profile) {
-                const email = profile.getEmail();
-                const name = profile.getName();
-                yield put(setUserProfile(email, name, profile.getImageUrl(), 'google'));
-                yield put(handleSuccessfulLogin(email, redirect));
+function* checkUserLoginSaga() {
+    yield takeLatest('CHECK_USER_LOGIN', function* workerSaga() {
+        try {
+            const response = yield call(fetchCurrentUserApi);
+            if (response.status !== 200) {
+                throw Error('Unable to login');
             }
+            const {
+                emails,
+                displayName,
+                imageUrl,
+            } = response.data;
+            yield put(setUserProfile(emails[0], displayName, imageUrl || `https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=256&name=${encodeURIComponent(displayName)}&rounded=true&length=1`, 'passport'));
+            yield put(fetchRecentWork());
+            try {
+                const userInfoResponse = yield call(fetchUserInfoApi, emails[0]);
+                if (userInfoResponse.status !== 200) {
+                    throw Error('User info not set');
+                }
+            } catch (infoError) {
+                yield put(setAuthRedirect((window.location.hash || '').substring(1)));
+                yield put(push('/userDetails'));
+            }
+        } catch (error) {
+            yield put(resetUserProfile());
         }
     });
 }
 
+function* fetchRecentWorkSaga() {
+    yield takeLatest('FETCH_RECENT_WORK', function* workerSaga() {
+        try {
+            const response = yield call(fetchRecentWorkApi);
+            if (response.status !== 200) {
+                throw Error('Unable to fetcgh work');
+            }
+            const {
+                data,
+            } = response;
+            yield put(setRecentWork(data));
+        } catch (error) {
+            yield put({
+                type: 'FETCH_RECENT_WORK_FAILURE',
+            });
+        }
+    });
+}
 function* redirectAfterLoginSaga() {
     yield takeLatest('REDIRECT_AFTER_LOGIN', function* workerSaga({
         payload: {
@@ -97,32 +94,6 @@ function* redirectAfterLoginSaga() {
     });
 }
 
-function* handleSuccessfulLoginSaga() {
-    yield takeLatest('HANDLE_SUCCESSFUL_LOGIN', function* workerSaga({
-        payload: {
-            email,
-            redirect,
-        },
-    }) {
-        const {
-            redirectTo,
-        } = yield select(getState);
-        if (redirect && !redirectTo) {
-            yield put(setAuthRedirect('app'));
-        }
-        try {
-            const response = yield call(fetchUserInfoApi, email);
-            if (response.status !== 200) {
-                yield put(replace('/userDetails'));
-            } else {
-                yield put(redirectAfterLogin());
-            }
-        } catch (error) {
-            yield put(replace('/userDetails'));
-        }
-    });
-}
-
 function* saveUserInfoSaga() {
     yield takeLatest('SAVE_USER_INFO', function* workerSaga({
         payload,
@@ -130,6 +101,7 @@ function* saveUserInfoSaga() {
         try {
             const {
                 email,
+                redirectTo,
             } = yield select(getState);
             const {
                 userType,
@@ -146,8 +118,12 @@ function* saveUserInfoSaga() {
                 user_type: userType,
                 email,
             });
-            // eslint-disable-next-line no-empty
-        } catch (error) { }
+            yield put(replace(redirectTo));
+        } catch (error) {
+            yield put({
+                type: 'SAVE_USER_INFO_FAILURE',
+            });
+        }
     });
 }
 
@@ -176,35 +152,29 @@ function* setUserProfileSaga() {
 
 function* logoutSaga() {
     yield takeLatest('LOGOUT', function* workerSaga() {
-        const userProfile = yield select(getState);
-        const {
-            service,
-        } = userProfile;
-        if (!service) {
-            return;
-        }
-        if (service === 'google') {
-            const authInstance = window.gapi.auth2.getAuthInstance();
-            yield call(authInstance.signOut);
-        }
-        yield put(resetUserProfile());
-        IntercomAPI('shutdown');
-        IntercomAPI('boot', {
-            app_id: process.env.INTERCOM_APP_ID,
-        });
-        if (service === 'ms') {
-            const myMSALObj = new UserAgentApplication(msalConfig);
-            myMSALObj.logout();
+        try {
+            const response = yield call(logoutApi);
+            if (response.status !== 200) {
+                throw Error('Unable to login');
+            }
+            yield put(resetUserProfile());
+            IntercomAPI('shutdown');
+            IntercomAPI('boot', {
+                app_id: process.env.INTERCOM_APP_ID,
+            });
+        } catch (error) {
+            yield put({
+                type: 'LOGOUT_FAILURE',
+            });
         }
     });
 }
 
 export default function* rootSaga() {
     yield all([
-        fork(checkMsLoginSaga),
-        fork(checkGoogleLoginSaga),
+        fork(checkUserLoginSaga),
+        fork(fetchRecentWorkSaga),
         fork(redirectAfterLoginSaga),
-        fork(handleSuccessfulLoginSaga),
         fork(saveUserInfoSaga),
         fork(setUserProfileSaga),
         fork(logoutSaga),

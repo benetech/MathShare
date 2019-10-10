@@ -34,21 +34,10 @@
     };
     </script>
     <script src="//sdk.amazonaws.com/js/aws-sdk-2.249.1.min.js"></script>
-    <script src="//apis.google.com/js/platform.js?onload=gapiInit" async defer></script>
     <script>
         // Initialize the Amazon Cognito credentials provider
         AWS.config.region = 'us-east-1'; 
         AWS.config.credentials = new AWS.CognitoIdentityCredentials({IdentityPoolId: 'us-east-1:ac6523d9-ebad-4bb9-85cd-794672b83d14'});
-    </script>
-    <script>
-        function gapiInit() {
-            window.auth2Initialized = false;
-            gapi.load('auth2', function() {
-                gapi.auth2.init().then(function () {
-                    window.auth2Initialized = true;
-                });
-            });
-        }
     </script>
     </head>
 

@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { push } from 'connected-react-router';
 import { IntercomAPI } from 'react-intercom';
 import FontAwesome from 'react-fontawesome';
 import { Helmet } from 'react-helmet';
 import Locales from '../../strings';
 import MainPageHeader from '../Home/components/Header';
 import { requestDefaultRevision, requestExampleSets } from '../../redux/problemList/actions';
+import { fetchRecentWork } from '../../redux/userProfile/actions';
 import googleAnalytics from '../../scripts/googleAnalytics';
 import pageIndex from './styles.scss';
 import { stopEvent, passEventForKeys } from '../../services/events';
@@ -22,6 +24,7 @@ class Index extends Component {
     componentDidMount() {
         this.props.requestDefaultRevision();
         this.props.requestExampleSets();
+        this.props.fetchRecentWork();
     }
 
     openExampleProblem = () => {
@@ -35,10 +38,132 @@ class Index extends Component {
 
     getShareLink = shareCode => `/#/app/problemSet/view/${shareCode}`
 
+    openByEditCode = (editCode) => {
+        this.props.history.push(`/app/problemSet/edit/${editCode}`);
+    }
+
     duplicateProblemSet = problemSet => (e) => {
         this.props.duplicateProblemSet(e, problemSet);
         return stopEvent(e);
     }
+
+    redirectToSignIn = () => {
+        this.props.push('/signIn');
+    }
+
+    renderRecent = () => {
+        const { userProfile } = this.props;
+        if (!userProfile.service) {
+            return (
+                <div className={`text-center ${pageIndex.signInContainer}`}>
+                    <span className={pageIndex.signInLink} role="link" tabIndex={0} onClick={this.redirectToSignIn} onKeyPress={this.redirectToSignIn}>
+                        Sign in
+                    </span>
+                    {' '}
+                    to track your problem sets
+                </div>
+            );
+        } if (userProfile.recentProblemSets === null) {
+            return <div className="text-center">Loading...</div>;
+        } if (userProfile.recentProblemSets.length > 0) {
+            return (
+                <ol className={pageIndex.problemSetList}>
+                    {userProfile.recentProblemSets.map(this.renderProblemSet)}
+                </ol>
+            );
+        }
+        return <div className="text-center">No recent problems</div>;
+    }
+
+    renderProblemSet = (problemSet, index) => (
+        <li className="card" key={index}>
+            <a
+                className="btn d-flex"
+                href={this.getShareLink(problemSet.shareCode)}
+                onClick={this.openPremadeSet(problemSet)}
+                onKeyPress={
+                    passEventForKeys(this.openPremadeSet(problemSet))
+                }
+            >
+                <span className={pageIndex.title}>
+                    {problemSet.title}
+                </span>
+                <span className={pageIndex.meta}>
+                    {problemSet.problems.length}
+                    {' '}
+                    {Locales.strings.problems}
+                </span>
+                <div className="dropdown">
+                    <button
+                        className={`btn dropdown-toggle ${pageIndex.problemSetDropdown}`}
+                        type="button"
+                        id={`dropdownMenuButton-${index}`}
+                        data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                        onClick={(e) => {
+                            stopEvent(e);
+                        }}
+                    >
+                        <FontAwesome
+                            name="ellipsis-v"
+                        />
+                        <span className="sROnly">{Locales.strings.more_options}</span>
+                    </button>
+                    <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <li>
+                            <button
+                                className="dropdown-item reset-btn"
+                                onClick={this.duplicateProblemSet(
+                                    problemSet,
+                                )}
+                                onKeyPress={
+                                    passEventForKeys(
+                                        this.duplicateProblemSet(
+                                            problemSet,
+                                        ),
+                                    )
+                                }
+                                type="button"
+                            >
+                                <FontAwesome
+                                    size="lg"
+                                    name="copy"
+                                />
+                                {` ${Locales.strings.duplicate_set}`}
+                                <span className="sROnly">
+                                    {'\u00A0'}
+                                    {Locales.strings.opens_in_new_tab}
+                                </span>
+                            </button>
+                        </li>
+                        <li>
+                            <button
+                                className="dropdown-item reset-btn"
+                                onClick={shareOnTwitter(
+                                    problemSet.shareCode,
+                                )}
+                                onKeyPress={passEventForKeys(shareOnTwitter(
+                                    problemSet.shareCode,
+                                ))}
+                                type="button"
+                            >
+                                <FontAwesome
+                                    size="lg"
+                                    name="twitter"
+                                />
+                                {` ${Locales.strings.share_with_teachers}`}
+                                <span className="sROnly">
+                                    {'\u00A0'}
+                                    {Locales.strings.opens_in_new_window}
+                                </span>
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </a>
+        </li>
+    )
 
     render() {
         const { props } = this;
@@ -87,98 +212,11 @@ class Index extends Component {
                             </a>
                         </li>
                     </ol>
-
+                    <div className="title">Recent</div>
+                    {this.renderRecent()}
                     <div className="title">{Locales.strings.pre_made_sets}</div>
                     <ol className={pageIndex.problemSetList}>
-                        {problemList.exampleProblemSets.filter(exampleProblemSet => exampleProblemSet.title !== 'Example Problem Set').map((exampleProblemSet, index) => (
-                            <li className="card" key={index}>
-                                <a
-                                    className="btn d-flex"
-                                    href={this.getShareLink(exampleProblemSet.shareCode)}
-                                    onClick={this.openPremadeSet(exampleProblemSet)}
-                                    onKeyPress={
-                                        passEventForKeys(this.openPremadeSet(exampleProblemSet))
-                                    }
-                                >
-                                    <span className={pageIndex.title}>
-                                        {exampleProblemSet.title}
-                                    </span>
-                                    <span className={pageIndex.meta}>
-                                        {exampleProblemSet.problems.length}
-                                        {' '}
-                                        {Locales.strings.problems}
-                                    </span>
-                                    <div className="dropdown">
-                                        <button
-                                            className={`btn dropdown-toggle ${pageIndex.problemSetDropdown}`}
-                                            type="button"
-                                            id={`dropdownMenuButton-${index}`}
-                                            data-toggle="dropdown"
-                                            aria-haspopup="true"
-                                            aria-expanded="false"
-                                            onClick={(e) => {
-                                                stopEvent(e);
-                                            }}
-                                        >
-                                            <FontAwesome
-                                                name="ellipsis-v"
-                                            />
-                                            <span className="sROnly">{Locales.strings.more_options}</span>
-                                        </button>
-                                        <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                            <li>
-                                                <button
-                                                    className="dropdown-item reset-btn"
-                                                    onClick={this.duplicateProblemSet(
-                                                        exampleProblemSet,
-                                                    )}
-                                                    onKeyPress={
-                                                        passEventForKeys(
-                                                            this.duplicateProblemSet(
-                                                                exampleProblemSet,
-                                                            ),
-                                                        )
-                                                    }
-                                                    type="button"
-                                                >
-                                                    <FontAwesome
-                                                        size="lg"
-                                                        name="copy"
-                                                    />
-                                                    {` ${Locales.strings.duplicate_set}`}
-                                                    <span className="sROnly">
-                                                        {'\u00A0'}
-                                                        {Locales.strings.opens_in_new_tab}
-                                                    </span>
-                                                </button>
-                                            </li>
-                                            <li>
-                                                <button
-                                                    className="dropdown-item reset-btn"
-                                                    onClick={shareOnTwitter(
-                                                        exampleProblemSet.shareCode,
-                                                    )}
-                                                    onKeyPress={passEventForKeys(shareOnTwitter(
-                                                        exampleProblemSet.shareCode,
-                                                    ))}
-                                                    type="button"
-                                                >
-                                                    <FontAwesome
-                                                        size="lg"
-                                                        name="twitter"
-                                                    />
-                                                    {` ${Locales.strings.share_with_teachers}`}
-                                                    <span className="sROnly">
-                                                        {'\u00A0'}
-                                                        {Locales.strings.opens_in_new_window}
-                                                    </span>
-                                                </button>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </a>
-                            </li>
-                        ))}
+                        {problemList.exampleProblemSets.filter(exampleProblemSet => exampleProblemSet.title !== 'Example Problem Set').map(this.renderProblemSet)}
 
                     </ol>
                 </div>
@@ -191,5 +229,7 @@ export default connect(
     state => ({
         problemList: state.problemList,
     }),
-    { requestDefaultRevision, requestExampleSets },
+    {
+        fetchRecentWork, requestDefaultRevision, requestExampleSets, push,
+    },
 )(Index);

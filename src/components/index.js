@@ -6,7 +6,8 @@ import {
 } from 'react-router-dom';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
-    faSignature, faSquareRootAlt,
+    faSignature,
+    faSquareRootAlt,
 } from '@fortawesome/free-solid-svg-icons';
 import * as dayjs from 'dayjs';
 import { UserAgentApplication } from 'msal';
@@ -30,8 +31,12 @@ import SocialFooter from './Home/components/SocialFooter';
 import SiteMapFooter from './Home/components/SiteMapFooter';
 import Locales from '../strings';
 import ModalContainer, {
-    CONFIRMATION, CONFIRMATION_BACK, PALETTE_CHOOSER, // ADD_PROBLEM_SET,
-    EDIT_PROBLEM, SHARE_SET, VIEW_SET,
+    CONFIRMATION,
+    CONFIRMATION_BACK,
+    PALETTE_CHOOSER, // ADD_PROBLEM_SET,
+    EDIT_PROBLEM,
+    SHARE_SET,
+    VIEW_SET,
 } from './ModalContainer';
 import { alertWarning } from '../scripts/alert';
 import googleAnalytics from '../scripts/googleAnalytics';
@@ -46,7 +51,8 @@ import keyMap from '../constants/hotkeyConfig.json';
 import { stopEvent, passEventForKeys } from '../services/events';
 
 
-const mathLive = process.env.MATHLIVE_DEBUG_MODE ? require('../../mathlive/src/mathlive.js').default
+const mathLive = process.env.MATHLIVE_DEBUG_MODE
+    ? require('../../mathlive/src/mathlive.js').default
     : require('../lib/mathlivedist/mathlive.js');
 
 configure({
@@ -81,8 +87,7 @@ class App extends Component {
     }
 
     componentDidMount() {
-        this.props.checkGoogleLogin();
-        this.props.checkMsLogin();
+        this.props.checkUserLogin();
     }
 
     shouldComponentUpdate() {
@@ -91,7 +96,7 @@ class App extends Component {
 
     initializeIcons = () => {
         library.add(faSignature, faSquareRootAlt);
-    }
+    };
 
     moveFoucsTo = id => (e) => {
         const mathElement = document.getElementById(id);
@@ -128,12 +133,10 @@ class App extends Component {
         this.props.addProblem(imageData, text, index, newProblemSet);
         this.props.announceOnAriaLive(Locales.strings.added_problem_at_index.replace('{index}', index + 1));
         return true;
-    }
+    };
 
     validateProblem = (text, image) => {
-        const {
-            problemList,
-        } = this.props;
+        const { problemList } = this.props;
         let message;
         if (text === '' || $.trim(text).length === 0) {
             if (problemList.theActiveMathField.$latex() === '' && image === null) {
@@ -154,7 +157,7 @@ class App extends Component {
             return false;
         }
         return true;
-    }
+    };
 
     deleteProblem = () => {
         this.props.deleteProblem();
@@ -162,7 +165,7 @@ class App extends Component {
             mathLive.renderMathInDocument();
         }, 200);
         this.props.toggleModals([CONFIRMATION]);
-    }
+    };
 
     editProblem = (imageData, title) => {
         if (!this.validateProblem(title, imageData)) {
@@ -173,7 +176,7 @@ class App extends Component {
             mathLive.renderMathInDocument();
         }, 200);
         this.props.toggleModals([EDIT_PROBLEM]);
-    }
+    };
 
     updatePositions = (problems) => {
         const updatedProblems = problems.map((problem, position) => ({
@@ -181,17 +184,20 @@ class App extends Component {
             position,
         }));
         this.props.saveProblems(updatedProblems);
-    }
+    };
 
     addProblemSet = () => {
         this.props.toggleModals([PALETTE_CHOOSER]);
         googleAnalytics('new problem set button');
         IntercomAPI('trackEvent', 'create-a-set');
-    }
+    };
 
     progressToAddingProblems = (palettes) => {
         if (palettes.length === 0) {
-            alertWarning(Locales.strings.no_palettes_chosen_warning, Locales.strings.warning);
+            alertWarning(
+                Locales.strings.no_palettes_chosen_warning,
+                Locales.strings.warning,
+            );
             return;
         }
         this.props.setTempPalettes(palettes);
@@ -204,21 +210,23 @@ class App extends Component {
     saveProblemSet = (orderedProblems, title) => {
         googleAnalytics(Locales.strings.add_problem_set);
         this.props.saveProblemSet(orderedProblems, title);
-    }
+    };
 
     saveProblem = () => new Promise((resolve) => {
         if (this.props.example) {
-            this.props.updateProblemStore({ editLink: Locales.strings.example_edit_code });
+            this.props.updateProblemStore({
+                editLink: Locales.strings.example_edit_code,
+            });
             resolve(true);
         } else {
             googleAnalytics('Save Problem');
             this.props.commitProblemSolution();
         }
-    })
+    });
 
     finishProblem = () => {
         this.props.commitProblemSolution(true);
-    }
+    };
 
     shareProblem = () => {
         if (this.props.example) {
@@ -231,33 +239,38 @@ class App extends Component {
             this.props.updateProblemSolution(this.props.problemStore.solution);
             this.props.commitProblemSolution(false, true);
         }
-    }
+    };
 
     viewProblem = () => {
         this.props.toggleModals([VIEW_SET]);
-    }
+    };
 
     saveProblemCallback = () => {
         this.props.toggleModals([CONFIRMATION_BACK]);
         this.saveProblem();
-    }
+    };
 
     goBack = () => {
         const { problemStore } = this.props;
-        if (!compareStepArrays(problemStore.solution.steps, problemStore.stepsFromLastSave)
-            && !this.props.example) {
+        if (
+            !compareStepArrays(
+                problemStore.solution.steps,
+                problemStore.stepsFromLastSave,
+            )
+            && !this.props.example
+        ) {
             this.props.toggleModals([CONFIRMATION_BACK]);
         } else {
             this.props.history.goBack();
         }
-    }
+    };
 
     getAdditionalClass = () => {
         if (window.location.hash && ['#/signin', '#/userdetails'].indexOf(window.location.hash.toLowerCase()) > -1) {
             return 'full-height dark-background';
         }
         return '';
-    }
+    };
 
     disableHotKeyModal = () => this.setState({ showDialog: false })
 
@@ -378,14 +391,39 @@ class App extends Component {
                         updateTempSet={this.props.updateTempSet}
                         {...problemStore}
                         {...this}
-
                     />
                     <Switch>
-                        <Route exact path="/app/problemSet/:action/:code?" render={p => <Home {...commonProps} {...p} {...this} />} />
-                        <Route exact path="/app/problem/:action/:code" render={p => <Editor {...commonProps} {...p} {...this} />} />
-                        <Route exact path="/app/problem/example" render={p => <Editor example {...commonProps} {...p} {...this} />} />
-                        <Route exact path="/app" render={p => <PageIndex {...commonProps} {...p} {...this} />} />
-                        <Route exact path="/" render={p => <LandingPage {...p} setAuthRedirect={this.props.setAuthRedirect} userProfile={this.props.userProfile} />} />
+                        <Route
+                            exact
+                            path="/app/problemSet/:action/:code?"
+                            render={p => <Home {...commonProps} {...p} {...this} />}
+                        />
+                        <Route
+                            exact
+                            path="/app/problem/:action/:code"
+                            render={p => <Editor {...commonProps} {...p} {...this} />}
+                        />
+                        <Route
+                            exact
+                            path="/app/problem/example"
+                            render={p => <Editor example {...commonProps} {...p} {...this} />}
+                        />
+                        <Route
+                            exact
+                            path="/app"
+                            render={p => <PageIndex {...commonProps} {...p} {...this} />}
+                        />
+                        <Route
+                            exact
+                            path="/"
+                            render={p => (
+                                <LandingPage
+                                    {...p}
+                                    setAuthRedirect={this.props.setAuthRedirect}
+                                    userProfile={this.props.userProfile}
+                                />
+                            )}
+                        />
                         <Route exact path="/privacy" render={p => <Privacy {...p} />} />
                         <Route exact path="/partners" render={p => <Partners {...p} />} />
                         <Route exact path="/signIn" render={p => <SignIn {...p} />} />
@@ -393,9 +431,7 @@ class App extends Component {
                         <Route render={p => <NotFound {...p} />} />
                     </Switch>
                 </div>
-                <Intercom
-                    appID={process.env.INTERCOM_APP_ID}
-                />
+                <Intercom appID={process.env.INTERCOM_APP_ID} />
                 <footer id="footer">
                     <h2 className="sROnly">
                         {' '}
