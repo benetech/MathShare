@@ -102,7 +102,7 @@ const SiteMapFooter = ({ customClass }) => (
                                 {Locales.strings.privacy_policy}
                             </a>
                         </li>
-                        <li>
+                        {/* <li>
                             <a
                                 href="/#/privacy"
                                 rel="noopener noreferrer"
@@ -117,7 +117,7 @@ const SiteMapFooter = ({ customClass }) => (
                             >
                                 {Locales.strings.tos}
                             </a>
-                        </li>
+                        </li> */}
                         <li>
                             <a
                                 href="/#/partners"
