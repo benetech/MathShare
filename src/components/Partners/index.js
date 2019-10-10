@@ -39,12 +39,11 @@ const Partners = () => (
             </h1>
             <div className={styles.textContent}>
                 {Locales.strings.join_us_in_1}
-                {' '}
+            </div>
+            <div className={styles.textContent}>
                 <a href="https://docs.google.com/forms/d/e/1FAIpQLSeDijluYj0wyTz6OexPppVt9enX1QXpXSMPUflkdCtTBtv6HA/viewform">
-                    {Locales.strings.join_us_in_2}
+                    {Locales.strings.submit_a_partnership}
                 </a>
-                {' '}
-                {Locales.strings.join_us_in_3}
             </div>
         </main>
     </div>

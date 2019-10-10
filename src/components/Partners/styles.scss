@@ -20,6 +20,10 @@
     .textContent {
         font-size: 18px;
         padding: 10px 0 50px;
+
+        &:not(:last-child) {
+            padding-bottom: 0;
+        }
     }
 }
 
