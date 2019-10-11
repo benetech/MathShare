@@ -13,7 +13,7 @@ import logo from '../../../images/logo-black.png';
 import googleLogo from '../../../images/google-logo.svg';
 import microsoftLogo from '../../../images/microsoft-logo.svg';
 import signIn from './styles.scss';
-import { passEventForKeys } from '../../services/events';
+import { passEventForKeys, focusOnMainContent } from '../../services/events';
 
 class SignIn extends Component {
     constructor(props) {
@@ -70,16 +70,25 @@ class SignIn extends Component {
     render() {
         const { routerHistory } = this.props;
         return (
-            <div className={signIn.container}>
+            <main className={signIn.container}>
+                <button
+                    data-skip-link
+                    onClick={focusOnMainContent}
+                    onKeyPress={passEventForKeys(focusOnMainContent)}
+                    type="button"
+                >
+                    {Locales.strings.go_to_main_content}
+                </button>
                 <Helmet>
                     <title>
                         {`${Locales.strings.sign_in} - ${Locales.strings.mathshare_benetech}`}
                     </title>
                 </Helmet>
-                <div className={signIn.content}>
+                <div id="mainContainer" className={signIn.content}>
                     <div className={signIn.logo}>
                         <img src={logo} alt={Locales.strings.mathshare_logo} />
                     </div>
+                    <h1 className={signIn.header} tabIndex={-1}>{Locales.strings.sign_in}</h1>
                     <h2 id="signInServices" className={signIn.text}>{Locales.strings.login_using}</h2>
                     <ul className={signIn.buttonsContainer} aria-labelledby="signInServices">
                         <li>
@@ -103,7 +112,7 @@ class SignIn extends Component {
                     </button>
                     <UncontrolledTooltip placement="top" target="goBack" />
                 </div>
-            </div>
+            </main>
         );
     }
 }

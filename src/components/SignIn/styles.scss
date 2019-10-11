@@ -17,10 +17,15 @@
         -webkit-transition: background-color .218s, border-color .218s, box-shadow .218s;
         transition: background-color .218s, border-color .218s, box-shadow .218s;
 
-        .text {
-            font-size: 24px;
+        .text,
+        .header {
+            font-size: 28px;
             font-weight: 400;
             color: #5a5a5a;
+        }
+
+        .text {
+            font-size: 24px;
         }
 
         .pointer {
