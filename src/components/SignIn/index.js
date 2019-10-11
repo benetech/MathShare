@@ -96,13 +96,17 @@ class SignIn extends Component {
                     <div className={signIn.logo}>
                         <img src={logo} alt={Locales.strings.mathshare_logo} />
                     </div>
-                    <div className={signIn.text}>{Locales.strings.login_using}</div>
-                    <div className={signIn.buttonsContainer}>
-                        <div>{this.renderGoogleBtn()}</div>
-                        <div>{this.renderMicrosoftBtn()}</div>
-                    </div>
-                    <UncontrolledTooltip placement="top" target={this.GOOGLE_SIGN_IN} />
-                    <UncontrolledTooltip placement="top" target={this.MS_SIGN_IN} />
+                    <h2 id="signInServices" className={signIn.text}>{Locales.strings.login_using}</h2>
+                    <ul className={signIn.buttonsContainer} aria-labelledby="signInServices">
+                        <li>
+                            {this.renderGoogleBtn()}
+                            <UncontrolledTooltip placement="top" target={this.GOOGLE_SIGN_IN} />
+                        </li>
+                        <li>
+                            {this.renderMicrosoftBtn()}
+                            <UncontrolledTooltip placement="top" target={this.MS_SIGN_IN} />
+                        </li>
+                    </ul>
                     <button
                         id="goBack"
                         className={`${signIn.text} ${signIn.pointer} reset-btn`}
