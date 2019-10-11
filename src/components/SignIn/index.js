@@ -29,55 +29,38 @@ class SignIn extends Component {
         this.props.checkUserLogin();
     }
 
-    startMicrosoftSignIn = () => {
-        const { routerHistory } = this.props;
-        window.location.assign(
-            `${API_URL}/login/azuread-openidconnect?return=${encodeURIComponent(routerHistory.prev)}`,
-        );
-    };
-
-    startGoogleSignIn = () => {
-        const { routerHistory } = this.props;
-        window.location.assign(
-            `${API_URL}/login/google?return=${encodeURIComponent(routerHistory.prev)}`,
-        );
-    }
-
     onSuccess = (service, email, name, image) => {
         this.props.setUserProfile(email, name, image, service);
     };
 
-    renderGoogleBtn = () => (
-        <button
+    renderGoogleBtn = routerHistory => (
+        <a
             id={this.GOOGLE_SIGN_IN}
-            type="button"
             className={`${signIn.googleBtn} abcRioButton abcRioButtonBlue`}
-            onClick={this.startGoogleSignIn}
-            onKeyPress={passEventForKeys(this.startGoogleSignIn)}
+            href={`${API_URL}/login/google?return=${encodeURIComponent(routerHistory.prev)}`}
         >
             <span className="abcRioButtonContentWrapper">
                 <span className="abcRioButtonIcon" style={{ padding: 10 }}>
                     <span className="abcRioButtonSvgImageWithFallback abcRioButtonIconImage abcRioButtonIconImage18">
-                        <img src={googleLogo} alt={Locales.strings.google_logo} />
+                        <img src={googleLogo} alt="" />
                     </span>
                 </span>
                 <span style={{ fontSize: 14, lineHeight: '38px' }} className="abcRioButtonContents">
-                    <span id="not_signed_insn584fxcersa">Google</span>
+                    <span id="not_signed_insn584fxcersa">{Locales.strings.google}</span>
                 </span>
             </span>
-        </button>
+        </a>
     );
 
-    renderMicrosoftBtn = () => (
-        <button
+    renderMicrosoftBtn = routerHistory => (
+        <a
             id={this.MS_SIGN_IN}
             className={`abcRioButton abcRioButtonBlue ${signIn.microsoftContainer}`}
-            type="button"
-            onClick={this.startMicrosoftSignIn}
-            onKeyPress={passEventForKeys(this.startMicrosoftSignIn)}
+            href={`${API_URL}/login/azuread-openidconnect?return=${encodeURIComponent(routerHistory.prev)}`}
         >
-            <img src={microsoftLogo} alt={Locales.strings.ms_logo} />
-        </button>
+            <img src={microsoftLogo} alt="" />
+            <span className="sROnly">{Locales.strings.ms}</span>
+        </a>
     )
 
     goBack = () => {
@@ -85,6 +68,7 @@ class SignIn extends Component {
     };
 
     render() {
+        const { routerHistory } = this.props;
         return (
             <div className={signIn.container}>
                 <Helmet>
@@ -99,11 +83,11 @@ class SignIn extends Component {
                     <h2 id="signInServices" className={signIn.text}>{Locales.strings.login_using}</h2>
                     <ul className={signIn.buttonsContainer} aria-labelledby="signInServices">
                         <li>
-                            {this.renderGoogleBtn()}
+                            {this.renderGoogleBtn(routerHistory)}
                             <UncontrolledTooltip placement="top" target={this.GOOGLE_SIGN_IN} />
                         </li>
                         <li>
-                            {this.renderMicrosoftBtn()}
+                            {this.renderMicrosoftBtn(routerHistory)}
                             <UncontrolledTooltip placement="top" target={this.MS_SIGN_IN} />
                         </li>
                     </ul>

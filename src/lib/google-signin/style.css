@@ -81,7 +81,8 @@
 }
 
 .abcRioButtonBlue .abcRioButtonContentWrapper {
-    border: 1px solid transparent
+    border: 1px solid transparent;
+    display: block;
 }
 
 .abcRioButtonErrorWrapper,
