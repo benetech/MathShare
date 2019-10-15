@@ -5,6 +5,7 @@ import {
     put,
     select,
     takeLatest,
+    throttle,
 } from 'redux-saga/effects';
 import {
     IntercomAPI,
@@ -28,10 +29,19 @@ import {
     logoutApi,
     saveUserInfoApi,
 } from './apis';
+import {
+    alertSuccess, focusOnAlert, alertError,
+} from '../../scripts/alert';
+import { getCookie } from '../../scripts/cookie';
+import Locales from '../../strings';
 
 function* checkUserLoginSaga() {
-    yield takeLatest('CHECK_USER_LOGIN', function* workerSaga() {
+    yield throttle(60000, 'CHECK_USER_LOGIN', function* workerSaga() {
+        let loginStarted = false;
         try {
+            const cookie = getCookie('sid');
+            const session = JSON.parse(Buffer.from(cookie, 'base64').toString('utf8'));
+            loginStarted = session.loginStarted;
             const response = yield call(fetchCurrentUserApi);
             if (response.status !== 200) {
                 throw Error('Unable to login');
@@ -42,6 +52,10 @@ function* checkUserLoginSaga() {
                 imageUrl,
             } = response.data;
             yield put(setUserProfile(emails[0], displayName, imageUrl || `https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=256&name=${encodeURIComponent(displayName)}&rounded=true&length=1`, 'passport'));
+            if (loginStarted) {
+                yield call(alertSuccess, Locales.strings.you_are_signed_in.replace('{user}', displayName), Locales.strings.success, 'login-success-alert');
+                focusOnAlert('login-success-alert');
+            }
             yield put(fetchRecentWork());
             try {
                 const userInfoResponse = yield call(fetchUserInfoApi, emails[0]);
@@ -54,6 +68,18 @@ function* checkUserLoginSaga() {
             }
         } catch (error) {
             yield put(resetUserProfile());
+            if (loginStarted) {
+                alertError(
+                    Locales.strings.login_something_wrong,
+                    Locales.strings.failure,
+                    'login-error-alert',
+                    {
+                        link: '/#/app',
+                        text: Locales.strings.return_to_mathshare,
+                    },
+                );
+                focusOnAlert('login-error-alert');
+            }
         }
     });
 }
