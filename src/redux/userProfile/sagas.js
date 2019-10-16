@@ -40,8 +40,11 @@ function* checkUserLoginSaga() {
         let loginStarted = false;
         try {
             const cookie = getCookie('sid');
-            const session = JSON.parse(Buffer.from(cookie, 'base64').toString('utf8'));
-            loginStarted = session.loginStarted;
+            const stringifiedUser = Buffer.from(cookie, 'base64').toString('utf8');
+            if (stringifiedUser) {
+                const session = JSON.parse(stringifiedUser);
+                loginStarted = session.loginStarted;
+            }
             const response = yield call(fetchCurrentUserApi);
             if (response.status !== 200) {
                 throw Error('Unable to login');
@@ -68,6 +71,10 @@ function* checkUserLoginSaga() {
             }
         } catch (error) {
             yield put(resetUserProfile());
+            yield put({
+                type: 'CHECK_USER_LOGIN_ERROR',
+                error,
+            });
             if (loginStarted) {
                 alertError(
                     Locales.strings.login_something_wrong,
