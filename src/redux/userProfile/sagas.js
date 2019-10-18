@@ -48,19 +48,22 @@ function* checkUserLoginSaga() {
                         const keyValueArray = keyValue.split(/=(.+)/);
                         params[keyValueArray[0]] = keyValueArray[1];
                     });
-                    if (params.sid) {
+                    if (params.sid && params['sid.sig']) {
                         sid = params.sid;
+                        const sig = params['sid.sig'];
                         loginStarted = true;
                         const cookieDomain = `.${window.location.hostname
                             .split('.')
-                            .slice(2)
+                            .slice(1)
                             .join('.')
                             .split('/')[0]}`;
                         const d = new Date();
                         d.setTime(d.getTime() + (1 * 24 * 60 * 60 * 1000));
                         const expires = `expires=${d.toUTCString()}`;
-                        const cookie = `sid=${sid}; expires=${expires}; domain=${cookieDomain}`;
-                        document.cookie = cookie;
+                        const sidCookie = `sid=${sid}; expires=${expires}; domain=${cookieDomain}`;
+                        document.cookie = sidCookie;
+                        const sigCookie = `sid.sig=${sig}; expires=${expires}; domain=${cookieDomain}`;
+                        document.cookie = sigCookie;
                         window.location.replace(`${window.location.origin}/${window.location.hash}`);
                     }
                     // eslint-disable-next-line no-empty
