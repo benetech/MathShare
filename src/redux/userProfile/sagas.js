@@ -197,6 +197,8 @@ function* logoutSaga() {
             IntercomAPI('boot', {
                 app_id: process.env.INTERCOM_APP_ID,
             });
+            yield call(alertSuccess, Locales.strings.you_have_been_logged_out, Locales.strings.success, 'logout-success-alert');
+            focusOnAlert('logout-success-alert');
         } catch (error) {
             yield put({
                 type: 'LOGOUT_FAILURE',

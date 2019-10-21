@@ -280,6 +280,7 @@ class Locales {
                 workshop_materials: 'Workshop Materials',
                 yes: ' Yes',
                 you_are_signed_in: 'You are now signed in as {user}',
+                you_have_been_logged_out: 'You have been logged out',
                 youtube: 'YouTube',
             },
             es: {},
