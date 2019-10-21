@@ -39,36 +39,6 @@ function* checkUserLoginSaga() {
     yield throttle(60000, 'CHECK_USER_LOGIN', function* workerSaga() {
         let loginStarted = false;
         try {
-            const search = window.location.search;
-            let sid = null;
-            if (search && window.location.hostname !== 'localhost') {
-                try {
-                    const params = {};
-                    search.split('?')[1].split('&').forEach((keyValue) => {
-                        const keyValueArray = keyValue.split(/=(.+)/);
-                        params[keyValueArray[0]] = keyValueArray[1];
-                    });
-                    if (params.sid && params['sid.sig']) {
-                        sid = params.sid;
-                        const sig = params['sid.sig'];
-                        loginStarted = true;
-                        const cookieDomain = `.${window.location.hostname
-                            .split('.')
-                            .slice(1)
-                            .join('.')
-                            .split('/')[0]}`;
-                        const d = new Date();
-                        d.setTime(d.getTime() + (1 * 24 * 60 * 60 * 1000));
-                        const expires = `expires=${d.toUTCString()}`;
-                        const sidCookie = `sid=${sid}; expires=${expires}; domain=${cookieDomain}`;
-                        document.cookie = sidCookie;
-                        const sigCookie = `sid.sig=${sig}; expires=${expires}; domain=${cookieDomain}`;
-                        document.cookie = sigCookie;
-                        window.location.replace(`${window.location.origin}/${window.location.hash}`);
-                    }
-                    // eslint-disable-next-line no-empty
-                } catch (error) { }
-            }
             if (!loginStarted) {
                 const cookie = getCookie('sid');
                 const stringifiedUser = Buffer.from(cookie, 'base64').toString('utf8');
