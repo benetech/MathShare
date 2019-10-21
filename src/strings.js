@@ -113,7 +113,7 @@ class Locales {
                 if_you_want_to_continue: "If you want to continue working on it later, use the 'Save' button instead",
                 info: 'Info',
                 is_a: ' is a ',
-                join_us_in_1: 'Join us in making math more accessible for all students by becoming a partner. Mathshare is free and open source. Integrate it into your program or become a development partner.',
+                join_us_in_1: 'Join us in making math more accessible for all students by becoming a partner. Mathshare is free and open source. Integrate it into your program or become a development partner',
                 join_us_in_2: 'complete this form',
                 join_us_in_3: 'and we will be in touch soon.',
                 keyboard: 'shortcut is ',
