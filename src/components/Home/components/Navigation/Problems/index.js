@@ -57,7 +57,7 @@ export default class Problems extends Component {
         });
 
         const newProblem = this.props.editing
-            ? <SortableItem key="item-new" addNew index={this.state.problems.length + 1} disabled /> : null;
+            ? <SortableItem key="item-new" addNew index={this.state.problems.length + 1} number={this.state.problems.length + 1} disabled /> : null;
 
         const SortableList = SortableContainer(({ problems, solutions }) => (
             <div className={`${styles.container} ${styles.problemList} justify-content-around`}>

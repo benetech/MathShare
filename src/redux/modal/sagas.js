@@ -71,7 +71,9 @@ function* toggleModalSaga() {
             const container = document.getElementById('problem-new');
             if (container) {
                 const anchors = container.querySelector('a');
-                anchors.focus();
+                if (anchors) {
+                    anchors.focus();
+                }
             }
         }
     });
