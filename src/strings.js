@@ -203,6 +203,7 @@ class Locales {
                 share: ' Share',
                 share_link: 'Share Link: ',
                 share_on: 'Share on',
+                share_on_twitter: 'Share on Twitter',
                 share_permalink: 'Share Permalink',
                 share_problem_set: 'Share Problem Set',
                 share_with_teachers: ' Share with Teachers',

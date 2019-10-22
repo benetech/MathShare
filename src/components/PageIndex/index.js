@@ -152,7 +152,7 @@ class Index extends Component {
                                     size="lg"
                                     name="twitter"
                                 />
-                                {` ${Locales.strings.share_with_teachers}`}
+                                {` ${Locales.strings.share_on_twitter}`}
                                 <span className="sROnly">
                                     {'\u00A0'}
                                     {Locales.strings.opens_in_new_window}
