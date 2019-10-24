@@ -12,11 +12,13 @@ import {
 } from 'react-intercom';
 import ReactGA from 'react-ga';
 import { goBack, push, replace } from 'connected-react-router';
+import * as dayjs from 'dayjs';
 import {
     fetchRecentWork,
     resetUserProfile,
     setUserProfile,
     setAuthRedirect,
+    setMobileNotifySuccess,
     setRecentWork,
 } from './actions';
 import {
@@ -28,6 +30,7 @@ import {
     fetchRecentWorkApi,
     logoutApi,
     saveUserInfoApi,
+    updateNotifyMobileApi,
 } from './apis';
 import {
     alertSuccess, focusOnAlert, alertError,
@@ -66,6 +69,8 @@ function* checkUserLoginSaga() {
                 const userInfoResponse = yield call(fetchUserInfoApi, emails[0]);
                 if (userInfoResponse.status !== 200) {
                     throw Error('User info not set');
+                } else {
+                    yield put(setMobileNotifySuccess(userInfoResponse.data.notifyForMobile));
                 }
             } catch (infoError) {
                 yield put(setAuthRedirect((window.location.hash || '').substring(1)));
@@ -185,6 +190,42 @@ function* setUserProfileSaga() {
     });
 }
 
+function* setMobileNotifySaga() {
+    yield takeLatest('SET_MOBILE_NOTIFY', function* workerSaga({
+        payload,
+    }) {
+        try {
+            const {
+                notifyForMobile,
+                inputEmail,
+            } = payload;
+            const {
+                email,
+            } = yield select(getState);
+            if (email) {
+                yield call(updateNotifyMobileApi, notifyForMobile);
+            }
+            if (notifyForMobile === 1) {
+                IntercomAPI('trackEvent', 'notify-mobile-support', {
+                    email: email || inputEmail,
+                });
+            }
+            yield put(setMobileNotifySuccess(notifyForMobile));
+            sessionStorage.setItem('hide_mobile_support_banner', dayjs().add(1, 'hour').toISOString());
+            yield call(
+                alertSuccess,
+                Locales.strings.thanks_for_mobile_notfiy,
+                Locales.strings.success,
+            );
+        } catch (error) {
+            yield put({
+                type: 'SET_MOBILE_NOTIFY_FAILURE',
+                error,
+            });
+        }
+    });
+}
+
 function* logoutSaga() {
     yield takeLatest('LOGOUT', function* workerSaga() {
         try {
@@ -215,5 +256,6 @@ export default function* rootSaga() {
         fork(saveUserInfoSaga),
         fork(setUserProfileSaga),
         fork(logoutSaga),
+        fork(setMobileNotifySaga),
     ]);
 }

@@ -6,6 +6,8 @@ const initialState = {
     mode: null,
     service: null,
     recentProblemSets: null,
+    notifyForMobile: null,
+    checking: false,
 };
 
 const userProfile = (state = initialState, {
@@ -14,10 +16,16 @@ const userProfile = (state = initialState, {
     // error,
 }) => {
     switch (type) {
+    case 'CHECK_USER_LOGIN':
+        return {
+            ...state,
+            checking: true,
+        };
     case 'UPDATE_USER_PROFILE':
         return {
             ...state,
             ...payload,
+            checking: false,
         };
     case 'SET_AUTH_REDIRECT':
         return {
@@ -28,6 +36,7 @@ const userProfile = (state = initialState, {
         return {
             ...state,
             ...initialState,
+            checking: false,
         };
     case 'FETCH_RECENT_WORK':
         return {
@@ -39,6 +48,13 @@ const userProfile = (state = initialState, {
         return {
             ...state,
             recentProblemSets,
+        };
+    }
+    case 'SET_MOBILE_NOTIFY_SUCCESS': {
+        const { notifyForMobile } = payload;
+        return {
+            ...state,
+            notifyForMobile,
         };
     }
     default:

@@ -5,6 +5,7 @@ import FontAwesome from 'react-fontawesome';
 import { UncontrolledTooltip } from 'reactstrap';
 import classNames from 'classnames';
 import header from './styles.scss';
+import UpcomingMobile from '../UpcomingMobile';
 import Locales from '../../../../strings';
 import {
     toggleModals,
@@ -261,6 +262,7 @@ class MainPageHeader extends React.Component {
                             </ul>
                         </div>
                     </nav>
+                    <UpcomingMobile />
                 </header>
             </div>
         );

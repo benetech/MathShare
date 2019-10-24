@@ -65,6 +65,21 @@ export const setRecentWork = recentProblemSets => ({
     },
 });
 
+export const setMobileNotify = (notifyForMobile, inputEmail) => ({
+    type: 'SET_MOBILE_NOTIFY',
+    payload: {
+        inputEmail,
+        notifyForMobile,
+    },
+});
+
+export const setMobileNotifySuccess = notifyForMobile => ({
+    type: 'SET_MOBILE_NOTIFY_SUCCESS',
+    payload: {
+        notifyForMobile,
+    },
+});
+
 export default {
     checkUserLogin,
     fetchRecentWork,
@@ -73,6 +88,7 @@ export default {
     resetUserProfile,
     saveUserInfo,
     setAuthRedirect,
+    setMobileNotify,
     setRecentWork,
     setUserProfile,
     handleSuccessfulLogin,

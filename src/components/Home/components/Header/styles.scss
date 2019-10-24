@@ -79,6 +79,11 @@ header nav.navbar {
       outline: none;
     }
   }
+
+  // ul:global(.dropdown-menu) {
+  //   right: unset;
+  //   left: unset;
+  // }
 }
 
 .feedback {

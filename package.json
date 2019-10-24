@@ -68,6 +68,7 @@
     "react": "^16.8.6",
     "react-aria-live": "^2.0.5",
     "react-aria-modal": "^3.0.1",
+    "react-device-detect": "^1.9.10",
     "react-dom": "^16.8.6",
     "react-fontawesome": "^1.6.1",
     "react-ga": "^2.5.7",
