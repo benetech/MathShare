@@ -90,43 +90,40 @@ class MainPageHeader extends React.Component {
                                 <HeaderDropdown additionalClass={header.dropDownMenu}>
                                     {[
                                         (props.action === 'new' || props.action === 'edit') && (
-                                            <li>
-                                                <button
-                                                    className="dropdown-item reset-btn"
-                                                    onClick={this.openNewProblemSet}
-                                                    onKeyPress={
-                                                        passEventForKeys(this.openNewProblemSet)
-                                                    }
-                                                    type="button"
-                                                >
-                                                    <FontAwesome
-                                                        size="lg"
-                                                        name="plus"
-                                                    />
-                                                    {` ${Locales.strings.add_problem_set}`}
-                                                    <span className="sROnly">
-                                                        {'\u00A0'}
-                                                        {Locales.strings.opens_in_new_tab}
-                                                    </span>
-                                                </button>
-                                            </li>
-                                        ),
-                                        <li>
-                                            <a
-                                                className="dropdown-item"
-                                                href="/#/app/problem/example"
-                                                onClick={this.onClickTutorial}
-                                                onKeyPress={passEventForKeys(this.onClickTutorial)}
-                                                tabIndex={0}
+                                            <button
+                                                className="dropdown-item reset-btn"
+                                                onClick={this.openNewProblemSet}
+                                                onKeyPress={
+                                                    passEventForKeys(this.openNewProblemSet)
+                                                }
+                                                type="button"
+                                                key="new-problem-set"
                                             >
                                                 <FontAwesome
-                                                    className="super-crazy-colors"
-                                                    name="hand-o-up"
-                                                    style={{ textShadow: '0 1px 0 rgba(0, 0, 0, 0.1)' }}
+                                                    size="lg"
+                                                    name="plus"
                                                 />
-                                                {Locales.strings.tutorial}
-                                            </a>
-                                        </li>,
+                                                {` ${Locales.strings.add_problem_set}`}
+                                                <span className="sROnly">
+                                                    {'\u00A0'}
+                                                    {Locales.strings.opens_in_new_tab}
+                                                </span>
+                                            </button>
+                                        ),
+                                        <a
+                                            className="dropdown-item"
+                                            href="/#/app/problem/example"
+                                            onClick={this.onClickTutorial}
+                                            onKeyPress={passEventForKeys(this.onClickTutorial)}
+                                            key="example-problem"
+                                        >
+                                            <FontAwesome
+                                                className="super-crazy-colors"
+                                                name="hand-o-up"
+                                                style={{ textShadow: '0 1px 0 rgba(0, 0, 0, 0.1)' }}
+                                            />
+                                            {Locales.strings.tutorial}
+                                        </a>,
                                     ]}
                                 </HeaderDropdown>
                                 {!userProfile.service && (

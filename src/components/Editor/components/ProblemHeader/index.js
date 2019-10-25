@@ -118,6 +118,7 @@ export default class ProblemHeader extends Component {
                                 onClick={this.openTour}
                                 onKeyPress={passEventForKeys(this.openTour)}
                                 type="button"
+                                key="open-tour"
                             >
                                 <FontAwesome
                                     className="super-crazy-colors"

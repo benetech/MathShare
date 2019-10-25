@@ -43,8 +43,8 @@ const HeaderDropdown = ({ additionalClass, children }) => (
         <ul
             className="dropdown-menu dropdown-menu-lg-right dropdown-secondary"
         >
-            {children.filter(child => child).map(child => (
-                <li>
+            {children.filter(child => child).map((child, index) => (
+                <li key={child.key || `dropdown-item-${index}`}>
                     {child}
                 </li>
             ))}
