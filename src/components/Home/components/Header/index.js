@@ -1,5 +1,4 @@
 import React from 'react';
-import { IntercomAPI } from 'react-intercom';
 import { connect } from 'react-redux';
 import FontAwesome from 'react-fontawesome';
 import { UncontrolledTooltip } from 'reactstrap';
@@ -24,6 +23,7 @@ import {
     passEventForKeys,
 } from '../../../../services/events';
 import SkipContent from '../SkipContent';
+import HeaderDropdown from '../../../HeaderDropdown';
 
 
 class MainPageHeader extends React.Component {
@@ -52,11 +52,6 @@ class MainPageHeader extends React.Component {
         }, 100);
     }
 
-    clickOnQuestion = () => {
-        googleAnalytics('clicked help center');
-        IntercomAPI('trackEvent', 'clicked-help-center');
-    }
-
     openNewProblemSet = () => {
         window.open('/#/app/problemSet/new', '_blank');
     };
@@ -68,7 +63,6 @@ class MainPageHeader extends React.Component {
     render() {
         const { props } = this;
         const { userProfile } = props;
-        const questionBtnId = 'navbarDropdownMenuLink-dropdown';
 
         return (
             <div id="topNavigationWrapper" className={header.header}>
@@ -93,30 +87,9 @@ class MainPageHeader extends React.Component {
                         </div>
                         <div className="navbar-header pull-right">
                             <ul className="nav pull-left">
-                                <li className="nav-item dropdown">
-                                    <span id={`${questionBtnId}-label`} className="sROnly">{Locales.strings.help_center}</span>
-                                    <button
-                                        className={`nav-link dropdown-toggle btn ${header.dropDownMenu}`}
-                                        id={questionBtnId}
-                                        data-toggle="dropdown"
-                                        type="button"
-                                        aria-labelledby={`${questionBtnId}-label`}
-                                        onClick={this.clickOnQuestion}
-                                        onKeyPress={passEventForKeys(this.clickOnQuestion)}
-                                        aria-expanded="false"
-                                    >
-                                        <FontAwesome
-                                            size="lg"
-                                            name="question"
-                                        />
-                                        <span className="sROnly">{Locales.strings.more_options}</span>
-                                    </button>
-                                    <UncontrolledTooltip placement="top" target={questionBtnId} />
-                                    <ul
-                                        className="dropdown-menu dropdown-menu-lg-right dropdown-secondary"
-                                        aria-labelledby={`${questionBtnId}-label`}
-                                    >
-                                        {(props.action === 'new' || props.action === 'edit') && (
+                                <HeaderDropdown additionalClass={header.dropDownMenu}>
+                                    {[
+                                        (props.action === 'new' || props.action === 'edit') && (
                                             <li>
                                                 <button
                                                     className="dropdown-item reset-btn"
@@ -137,7 +110,7 @@ class MainPageHeader extends React.Component {
                                                     </span>
                                                 </button>
                                             </li>
-                                        )}
+                                        ),
                                         <li>
                                             <a
                                                 className="dropdown-item"
@@ -153,53 +126,9 @@ class MainPageHeader extends React.Component {
                                                 />
                                                 {Locales.strings.tutorial}
                                             </a>
-                                        </li>
-                                        <li>
-                                            <a
-                                                className="dropdown-item"
-                                                href="https://intercom.help/benetech/en"
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                onClick={() => {
-                                                    googleAnalytics('click help center');
-                                                }}
-                                            >
-                                                <FontAwesome
-                                                    className="super-crazy-colors"
-                                                    name="comment"
-                                                    style={{ textShadow: '0 1px 0 rgba(0, 0, 0, 0.1)' }}
-                                                />
-                                                {Locales.strings.help_center}
-                                                <span className="sROnly">
-                                                    {'\u00A0'}
-                                                    {Locales.strings.opens_in_new_window}
-                                                </span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a
-                                                href="https://docs.google.com/forms/d/e/1FAIpQLScSZJo47vQM_5ci2MOgBbJW7WM6FbEi2xABR5qSZd8oD2RZEg/viewform?usp=sf_link"
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="dropdown-item"
-                                                onClick={() => {
-                                                    googleAnalytics('click feedback');
-                                                }}
-                                            >
-                                                <FontAwesome
-                                                    className="super-crazy-colors"
-                                                    name="arrow-circle-right"
-                                                    style={{ textShadow: '0 1px 0 rgba(0, 0, 0, 0.1)' }}
-                                                />
-                                                {Locales.strings.provide_feedback}
-                                                <span className="sROnly">
-                                                    {'\u00A0'}
-                                                    {Locales.strings.opens_in_new_window}
-                                                </span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
+                                        </li>,
+                                    ]}
+                                </HeaderDropdown>
                                 {!userProfile.service && (
                                     <li>
                                         <a

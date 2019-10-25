@@ -3,7 +3,6 @@ import classNames from 'classnames';
 import Tour from 'reactour';
 import { GlobalHotKeys } from 'react-hotkeys';
 import FontAwesome from 'react-fontawesome';
-import { UncontrolledTooltip } from 'reactstrap';
 import { IntercomAPI } from 'react-intercom';
 import Button from '../../../Button';
 import problem from './styles.scss';
@@ -11,8 +10,9 @@ import googleAnalytics from '../../../../scripts/googleAnalytics';
 import Locales from '../../../../strings';
 import showImage from '../../../../scripts/showImage';
 import completeKeyMap from '../../../../constants/hotkeyConfig.json';
-import { stopEvent, passEventForKeys } from '../../../../services/events';
+import { passEventForKeys, stopEvent } from '../../../../services/events';
 import { tourConfig, accentColor } from './tourConfig';
+import HeaderDropdown from '../../../HeaderDropdown';
 // import parseMathLive from '../../../../scripts/parseMathLive';
 
 const mathLive = process.env.MATHLIVE_DEBUG_MODE ? require('../../../../../../mathlive/src/mathlive.js').default
@@ -67,19 +67,6 @@ export default class ProblemHeader extends Component {
         this.props.closeTour();
     }
 
-    clickOnQuestion = () => {
-        googleAnalytics('clicked help center');
-        IntercomAPI('trackEvent', 'clicked-help-center');
-    }
-
-    clickedFeedback = () => {
-        googleAnalytics('click feedback');
-    }
-
-    clickedHelpCenter = () => {
-        googleAnalytics('click help center');
-    }
-
     render() {
         const imgButton = this.props.scratchpad
             ? (
@@ -96,8 +83,6 @@ export default class ProblemHeader extends Component {
             : null;
 
         const title = `${this.props.title}: `;
-
-        const questionBtnId = 'navbarDropdownMenuLink-dropdown';
 
         const editOnlyControls = this.props.readOnly ? null
             : (
@@ -127,87 +112,23 @@ export default class ProblemHeader extends Component {
                             <div>{this.props.lastSaved}</div>
                         </div>
                     )}
-                    <li className="nav-item dropdown">
-                        <button
-                            className={`nav-link dropdown-toggle btn ${problem.dropDownMenu}`}
-                            id={questionBtnId}
-                            data-toggle="dropdown"
-                            type="button"
-                            tabIndex={0}
-                            onClick={this.clickOnQuestion}
-                            onKeyPress={passEventForKeys(this.clickOnQuestion)}
-                            aria-expanded="false"
-                        >
-                            <FontAwesome
-                                size="lg"
-                                name="question"
-                            />
-                            <span className="sROnly">{Locales.strings.more_options}</span>
-                        </button>
-                        <UncontrolledTooltip placement="top" target={questionBtnId} />
-                        <ul
-                            className="dropdown-menu dropdown-menu-lg-right dropdown-secondary"
-                        >
-                            <li>
-                                <button
-                                    className="dropdown-item reset-btn"
-                                    onClick={this.openTour}
-                                    onKeyPress={passEventForKeys(this.openTour)}
-                                    type="button"
-                                    tabIndex={0}
-                                >
-                                    <FontAwesome
-                                        className="super-crazy-colors"
-                                        name="hand-o-up"
-                                        style={{ textShadow: '0 1px 0 rgba(0, 0, 0, 0.1)' }}
-                                    />
-                                    {Locales.strings.tutorial}
-                                </button>
-                            </li>
-                            <li>
-                                <a
-                                    className="dropdown-item"
-                                    href="https://intercom.help/benetech/en"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    onClick={this.clickedHelpCenter}
-                                    onKeyPress={passEventForKeys(this.clickedHelpCenter)}
-                                >
-                                    <FontAwesome
-                                        className="super-crazy-colors"
-                                        name="comment"
-                                        style={{ textShadow: '0 1px 0 rgba(0, 0, 0, 0.1)' }}
-                                    />
-                                    {Locales.strings.help_center}
-                                    <span className="sROnly">
-                                        {'\u00A0'}
-                                        {Locales.strings.opens_in_new_window}
-                                    </span>
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    href="https://docs.google.com/forms/d/e/1FAIpQLScSZJo47vQM_5ci2MOgBbJW7WM6FbEi2xABR5qSZd8oD2RZEg/viewform?usp=sf_link"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="dropdown-item"
-                                    onClick={this.clickedFeedback}
-                                    onKeyPress={passEventForKeys(this.clickedFeedback)}
-                                >
-                                    <FontAwesome
-                                        className="super-crazy-colors"
-                                        name="arrow-circle-right"
-                                        style={{ textShadow: '0 1px 0 rgba(0, 0, 0, 0.1)' }}
-                                    />
-                                    {Locales.strings.provide_feedback}
-                                    <span className="sROnly">
-                                        {'\u00A0'}
-                                        {Locales.strings.opens_in_new_window}
-                                    </span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
+                    <HeaderDropdown additionalClass={problem.dropDownMenu}>
+                        {[
+                            <button
+                                className="dropdown-item reset-btn"
+                                onClick={this.openTour}
+                                onKeyPress={passEventForKeys(this.openTour)}
+                                type="button"
+                            >
+                                <FontAwesome
+                                    className="super-crazy-colors"
+                                    name="hand-o-up"
+                                    style={{ textShadow: '0 1px 0 rgba(0, 0, 0, 0.1)' }}
+                                />
+                                {Locales.strings.tutorial}
+                            </button>,
+                        ]}
+                    </HeaderDropdown>
                 </div>
             );
 
