@@ -255,7 +255,7 @@ class Home extends Component {
                                 ])}
                                 type="button"
                                 icon="link"
-                                content={<h2>{`\u00A0${Locales.strings.share_permalink}`}</h2>}
+                                content={`\u00A0${Locales.strings.share_permalink}`}
                                 onClick={this.saveProblemSet(currentSet)}
                                 onKeyPress={passEventForKeys(this.saveProblemSet(currentSet))}
                             />
@@ -274,7 +274,7 @@ class Home extends Component {
                                     )}
                                     type="button"
                                 >
-                                    <h2 className={home.btnText}>
+                                    <span className={home.btnText}>
                                         <span className="sROnly">
                                             {Locales.strings.share_on}
                                         </span>
@@ -283,7 +283,7 @@ class Home extends Component {
                                             {'\u00A0'}
                                             {Locales.strings.opens_in_new_window}
                                         </span>
-                                    </h2>
+                                    </span>
                                     <img src={googleClassroomIcon} alt="" />
                                 </button>
                                 <UncontrolledTooltip placement="top" target="googleContainer2" />
@@ -301,7 +301,7 @@ class Home extends Component {
                                     onKeyPress={passEventForKeys(this.shareOnMicrosoftTeams)}
                                     type="button"
                                 >
-                                    <h2 className={home.btnText}>
+                                    <span className={home.btnText}>
                                         <span className="sROnly">
                                             {Locales.strings.share_on}
                                         </span>
@@ -310,7 +310,7 @@ class Home extends Component {
                                             {'\u00A0'}
                                             {Locales.strings.opens_in_new_window}
                                         </span>
-                                    </h2>
+                                    </span>
                                     <img src={msTeamIcon} alt="" />
                                 </button>
                                 <UncontrolledTooltip placement="top" target="microsoftTeamContainer2" />
@@ -323,7 +323,7 @@ class Home extends Component {
                                 ])}
                                 type="button"
                                 icon="eye"
-                                content={<h2>{Locales.strings.view_as_student}</h2>}
+                                content={Locales.strings.view_as_student}
                                 onClick={this.saveProblemSet(currentSet, true)}
                                 onKeyPress={passEventForKeys(this.saveProblemSet(currentSet, true))}
                             />
@@ -411,7 +411,7 @@ class Home extends Component {
                                         ])}
                                         type="button"
                                         icon="link"
-                                        content={<h2>{Locales.strings.share_permalink}</h2>}
+                                        content={Locales.strings.share_permalink}
                                         onClick={this.shareProblemSet}
                                     />
                                     <span>
@@ -429,7 +429,7 @@ class Home extends Component {
                                             }
                                             type="button"
                                         >
-                                            <h2 className={home.btnText}>
+                                            <span className={home.btnText}>
                                                 <span className="sROnly">
                                                     {Locales.strings.share_on}
                                                 </span>
@@ -438,7 +438,7 @@ class Home extends Component {
                                                     {'\u00A0'}
                                                     {Locales.strings.opens_in_new_window}
                                                 </span>
-                                            </h2>
+                                            </span>
                                             <img src={googleClassroomIcon} alt="" />
                                         </button>
                                         <UncontrolledTooltip placement="top" target="googleContainer1" />
@@ -458,7 +458,7 @@ class Home extends Component {
                                             }
                                             type="button"
                                         >
-                                            <h2 className={home.btnText}>
+                                            <span className={home.btnText}>
                                                 <span className="sROnly">
                                                     {Locales.strings.share_on}
                                                 </span>
@@ -467,7 +467,7 @@ class Home extends Component {
                                                     {'\u00A0'}
                                                     {Locales.strings.opens_in_new_window}
                                                 </span>
-                                            </h2>
+                                            </span>
                                             <img
                                                 src={msTeamIcon}
                                                 alt=""
