@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet';
 import styles from './styles.scss';
 import Locales from '../../strings';
 import logo from '../../../images/logo-2.png';
-import { focusOnMainContent, passEventForKeys } from '../../services/events';
+import SkipContent from '../Home/components/SkipContent';
 // import homePhoto from '../../../images/home-photo.png';
 
 const Partners = () => (
@@ -14,15 +14,8 @@ const Partners = () => (
             </title>
         </Helmet>
         <header>
-            <button
-                data-skip-link
-                onClick={focusOnMainContent}
-                onKeyPress={passEventForKeys(focusOnMainContent)}
-                type="button"
-            >
-                {Locales.strings.go_to_main_content}
-            </button>
             <div className={styles.logoContainer}>
+                <SkipContent />
                 <a href="/#/">
                     <img
                         className={styles.midLogo}

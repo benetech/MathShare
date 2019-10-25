@@ -14,7 +14,8 @@ import logo from '../../../images/logo-black.png';
 import googleLogo from '../../../images/google-logo.svg';
 import microsoftLogo from '../../../images/microsoft-logo.svg';
 import signIn from './styles.scss';
-import { passEventForKeys, focusOnMainContent } from '../../services/events';
+import { passEventForKeys } from '../../services/events';
+import SkipContent from '../Home/components/SkipContent';
 
 class SignIn extends Component {
     constructor(props) {
@@ -83,14 +84,7 @@ class SignIn extends Component {
         }
         return (
             <main className={signIn.container}>
-                <button
-                    data-skip-link
-                    onClick={focusOnMainContent}
-                    onKeyPress={passEventForKeys(focusOnMainContent)}
-                    type="button"
-                >
-                    {Locales.strings.go_to_main_content}
-                </button>
+                <SkipContent />
                 <Helmet>
                     <title>
                         {`${Locales.strings.sign_in} - ${Locales.strings.mathshare_benetech}`}

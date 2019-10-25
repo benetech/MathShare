@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet';
 import styles from './styles.scss';
 import Locales from '../../strings';
 import logo from '../../../images/logo-2.png';
-import { focusOnMainContent, passEventForKeys } from '../../services/events';
+import SkipContent from '../Home/components/SkipContent';
 // import homePhoto from '../../../images/home-photo.png';
 
 const privacyLink = 'https://benetech.org/about/privacy-policy/';
@@ -16,23 +16,8 @@ const Privacy = () => (
             </title>
         </Helmet>
         <header>
-            <button
-                data-skip-link
-                onClick={focusOnMainContent}
-                onKeyPress={passEventForKeys(focusOnMainContent)}
-                type="button"
-            >
-                {Locales.strings.go_to_main_content}
-            </button>
             <div className={styles.logoContainer}>
-                <button
-                    data-skip-link
-                    onClick={focusOnMainContent}
-                    onKeyPress={passEventForKeys(focusOnMainContent)}
-                    type="button"
-                >
-                    {Locales.strings.go_to_main_content}
-                </button>
+                <SkipContent />
                 <a href="/#/">
                     <img
                         className={styles.midLogo}

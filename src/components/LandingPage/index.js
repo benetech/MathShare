@@ -12,7 +12,8 @@ import showWork from '../../../images/show-work.png';
 import openSource from '../../../images/open-source-software.png';
 import lms from '../../../images/lms.png';
 import syntaxHighlighthing from '../../../images/syntax-highlighting.gif';
-import { focusOnMainContent, passEventForKeys } from '../../services/events';
+import { passEventForKeys } from '../../services/events';
+import SkipContent from '../Home/components/SkipContent';
 
 
 const clickOnTryNow = isTryNow => () => {
@@ -39,14 +40,7 @@ const LandingPage = withRouter(({ history, setAuthRedirect, userProfile }) => (
                 {`${Locales.strings.overview} - ${Locales.strings.mathshare_benetech}`}
             </title>
         </Helmet>
-        <button
-            data-skip-link
-            onClick={focusOnMainContent}
-            onKeyPress={passEventForKeys(focusOnMainContent)}
-            type="button"
-        >
-            {Locales.strings.go_to_main_content}
-        </button>
+        <SkipContent />
         <div className={styles.signInLabel}>
             <button
                 className={`${styles.signIn} reset-btn`}

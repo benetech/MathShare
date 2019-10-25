@@ -18,7 +18,7 @@ import Locales from '../../strings';
 import googleAnalytics from '../../scripts/googleAnalytics';
 import exampleProblem from './example.json';
 import scrollTo from '../../scripts/scrollTo';
-import { focusOnMainContent, passEventForKeys } from '../../services/events';
+import SkipContent from '../Home/components/SkipContent';
 
 const mathLive = process.env.MATHLIVE_DEBUG_MODE ? require('../../../../mathlive/src/mathlive.js').default
     : require('../../lib/mathlivedist/mathlive.js');
@@ -245,14 +245,7 @@ class Editor extends Component {
             <div id="MainWorkWrapper" className={editor.mainWorkWrapper}>
                 {this.renderHelmet()}
                 <main id="MainWorkArea" className={editor.editorAndHistoryWrapper}>
-                    <button
-                        data-skip-link
-                        onClick={focusOnMainContent}
-                        onKeyPress={passEventForKeys(focusOnMainContent)}
-                        type="button"
-                    >
-                        {Locales.strings.go_to_main_content}
-                    </button>
+                    <SkipContent />
                     <ProblemHeader
                         {...this}
                         {...this.props}

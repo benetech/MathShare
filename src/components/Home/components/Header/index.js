@@ -20,10 +20,10 @@ import {
 import googleAnalytics from '../../../../scripts/googleAnalytics';
 import logo from '../../../../../images/mathshare_logo_white.png';
 import {
-    focusOnMainContent,
     stopEvent,
     passEventForKeys,
 } from '../../../../services/events';
+import SkipContent from '../SkipContent';
 
 
 class MainPageHeader extends React.Component {
@@ -77,14 +77,7 @@ class MainPageHeader extends React.Component {
                         className={classNames(header.navbar, 'navbar-expand-lg', 'navbar')}
                         id="topNavigation"
                     >
-                        <button
-                            data-skip-link
-                            onClick={focusOnMainContent}
-                            onKeyPress={passEventForKeys(focusOnMainContent)}
-                            type="button"
-                        >
-                            {Locales.strings.go_to_main_content}
-                        </button>
+                        <SkipContent />
                         <h2 id="topNavLabel" className="sROnly">{Locales.strings.header}</h2>
                         <div className={header.navbarBrandContainer}>
                             <a
