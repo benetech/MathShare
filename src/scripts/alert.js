@@ -26,11 +26,11 @@ function alertInfo(message, title) {
 }
 
 function alertSuccess(message, title, id = undefined) {
-    toast.success(getCommonAlert(title, message, id), commonProps);
+    toast.success(getCommonAlert(title, message, id), { ...commonProps, toastId: id });
 }
 
 function alertError(message, title, id = undefined, anchor = null) {
-    toast.error(getCommonAlert(title, message, id), commonProps, anchor);
+    toast.error(getCommonAlert(title, message, id, anchor), { ...commonProps, toastId: id });
 }
 
 function alertWarning(message, title) {
