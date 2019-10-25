@@ -3,7 +3,6 @@ import classNames from 'classnames';
 import Tour from 'reactour';
 import { GlobalHotKeys } from 'react-hotkeys';
 import FontAwesome from 'react-fontawesome';
-import { IntercomAPI } from 'react-intercom';
 import Button from '../../../Button';
 import problem from './styles.scss';
 import googleAnalytics from '../../../../scripts/googleAnalytics';
