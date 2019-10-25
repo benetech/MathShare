@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { ToastContainer } from 'react-toastify';
 import { UncontrolledTooltip } from 'reactstrap';
 import { connect } from 'react-redux';
 import FontAwesome from 'react-fontawesome';
@@ -371,7 +370,6 @@ class Home extends Component {
         return (
             <div className={home.mainWrapper}>
                 {this.renderHelmet()}
-                <ToastContainer />
                 <MainPageHeader
                     editing={params.action === 'edit' || params.action === 'new'}
                     history={this.props.history}

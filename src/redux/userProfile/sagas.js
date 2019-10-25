@@ -61,7 +61,7 @@ function* checkUserLoginSaga() {
             } = response.data;
             yield put(setUserProfile(emails[0], displayName, imageUrl || `https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=256&name=${encodeURIComponent(displayName)}&rounded=true&length=1`, 'passport'));
             if (loginStarted) {
-                yield call(alertSuccess, Locales.strings.you_are_signed_in.replace('{user}', displayName), Locales.strings.success, 'login-success-alert');
+                alertSuccess(Locales.strings.you_are_signed_in.replace('{user}', displayName), Locales.strings.success, 'login-success-alert');
                 focusOnAlert('login-success-alert');
             }
             yield put(fetchRecentWork());
@@ -212,11 +212,7 @@ function* setMobileNotifySaga() {
             }
             yield put(setMobileNotifySuccess(notifyForMobile));
             sessionStorage.setItem('hide_mobile_support_banner', dayjs().add(1, 'hour').toISOString());
-            yield call(
-                alertSuccess,
-                Locales.strings.thanks_for_mobile_notfiy,
-                Locales.strings.success,
-            );
+            alertSuccess(Locales.strings.thanks_for_mobile_notfiy, Locales.strings.success);
         } catch (error) {
             yield put({
                 type: 'SET_MOBILE_NOTIFY_FAILURE',
@@ -238,7 +234,7 @@ function* logoutSaga() {
             IntercomAPI('boot', {
                 app_id: process.env.INTERCOM_APP_ID,
             });
-            yield call(alertSuccess, Locales.strings.you_have_been_logged_out, Locales.strings.success, 'logout-success-alert');
+            alertSuccess(Locales.strings.you_have_been_logged_out, Locales.strings.success, 'logout-success-alert');
             focusOnAlert('logout-success-alert');
         } catch (error) {
             yield put({
