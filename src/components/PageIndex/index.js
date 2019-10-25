@@ -56,9 +56,9 @@ class Index extends Component {
         if (!userProfile.service) {
             return (
                 <div className={`text-center ${pageIndex.signInContainer}`}>
-                    <span className={pageIndex.signInLink} role="link" tabIndex={0} onClick={this.redirectToSignIn} onKeyPress={this.redirectToSignIn}>
+                    <a className={pageIndex.signInLink} href="/#/signIn">
                         Sign in
-                    </span>
+                    </a>
                     {' '}
                     to track your problem sets
                 </div>
@@ -192,7 +192,6 @@ class Index extends Component {
                                 className="btn d-flex"
                                 onClick={props.addProblemSet}
                                 onKeyPress={passEventForKeys(props.addProblemSet)}
-                                role="link"
                             >
                                 <span className="centreText">
                                     +

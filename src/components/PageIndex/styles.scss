@@ -1,3 +1,5 @@
+@import '../../styles/links.scss';
+
 .meta {
     font-size: 12px;
     align-self: flex-end;
@@ -28,6 +30,11 @@
     cursor: pointer;
     border-bottom: 1px solid;
     padding-bottom: 2px;
+
+    &,
+    &:hover {
+        @extend .resetLink;
+    }
 }
 
 .signInContainer {

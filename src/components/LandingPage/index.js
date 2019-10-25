@@ -1,7 +1,4 @@
 import React from 'react';
-import {
-    withRouter,
-} from 'react-router-dom';
 import { IntercomAPI } from 'react-intercom';
 import { Helmet } from 'react-helmet';
 import styles from './styles.scss';
@@ -24,16 +21,20 @@ const clickOnTryNow = isTryNow => () => {
     }
 };
 
-const clickOnSignIn = (history, setAuthRedirect, userProfile) => () => {
-    if (userProfile.service) {
-        history.push('/app');
-    } else {
+const clickOnSignIn = (setAuthRedirect, userProfile) => () => {
+    if (!userProfile.service) {
         setAuthRedirect('app');
-        history.push('/signIn');
     }
 };
 
-const LandingPage = withRouter(({ history, setAuthRedirect, userProfile }) => (
+const getLink = (userProfile) => {
+    if (userProfile.service) {
+        return '/#/app';
+    }
+    return '/#/signIn';
+};
+
+const LandingPage = ({ setAuthRedirect, userProfile }) => (
     <div className={styles.container}>
         <Helmet>
             <title>
@@ -42,15 +43,14 @@ const LandingPage = withRouter(({ history, setAuthRedirect, userProfile }) => (
         </Helmet>
         <SkipContent />
         <div className={styles.signInLabel}>
-            <button
-                className={`${styles.signIn} reset-btn`}
-                onClick={clickOnSignIn(history, setAuthRedirect, userProfile)}
-                onKeyPress={passEventForKeys(clickOnSignIn(history, setAuthRedirect, userProfile))}
-                type="button"
-                role="link"
+            <a
+                className={styles.signIn}
+                onClick={clickOnSignIn(setAuthRedirect, userProfile)}
+                onKeyPress={passEventForKeys(clickOnSignIn(setAuthRedirect, userProfile))}
+                href={getLink(userProfile)}
             >
                 {userProfile.service ? Locales.strings.go_to_app : Locales.strings.sign_in}
-            </button>
+            </a>
         </div>
         <img className={styles.midLogo} src={logo} alt={Locales.strings.mathshare_logo} />
         <main id="mainContainer" className={styles.midContainer} aria-labelledby="help_students">
@@ -130,6 +130,6 @@ const LandingPage = withRouter(({ history, setAuthRedirect, userProfile }) => (
             </div>
         </div>
     </div>
-));
+);
 
 export default LandingPage;
