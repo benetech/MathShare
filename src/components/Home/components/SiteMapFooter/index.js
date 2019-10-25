@@ -30,6 +30,10 @@ const SiteMapFooter = ({ customClass }) => (
                                 rel="noopener noreferrer"
                             >
                                 {Locales.strings.workshop_materials}
+                                <span className="sROnly">
+                                    {'\u00A0'}
+                                    {Locales.strings.opens_in_new_window}
+                                </span>
                             </a>
                         </li>
                         <li>
@@ -39,6 +43,10 @@ const SiteMapFooter = ({ customClass }) => (
                                 rel="noopener noreferrer"
                             >
                                 {Locales.strings.accessibility}
+                                <span className="sROnly">
+                                    {'\u00A0'}
+                                    {Locales.strings.opens_in_new_window}
+                                </span>
                             </a>
                         </li>
                         <li>
@@ -55,6 +63,10 @@ const SiteMapFooter = ({ customClass }) => (
                                 rel="noopener noreferrer"
                             >
                                 {Locales.strings.contact_us.trim()}
+                                <span className="sROnly">
+                                    {'\u00A0'}
+                                    {Locales.strings.opens_in_new_window}
+                                </span>
                             </a>
                         </li>
                     </ul>
@@ -69,6 +81,10 @@ const SiteMapFooter = ({ customClass }) => (
                                 rel="noopener noreferrer"
                             >
                                 {Locales.strings.youtube}
+                                <span className="sROnly">
+                                    {'\u00A0'}
+                                    {Locales.strings.opens_in_new_window}
+                                </span>
                             </a>
                         </li>
                         <li>
@@ -78,6 +94,10 @@ const SiteMapFooter = ({ customClass }) => (
                                 rel="noopener noreferrer"
                             >
                                 {Locales.strings.twitter}
+                                <span className="sROnly">
+                                    {'\u00A0'}
+                                    {Locales.strings.opens_in_new_window}
+                                </span>
                             </a>
                         </li>
                         <li>
@@ -87,6 +107,10 @@ const SiteMapFooter = ({ customClass }) => (
                                 rel="noopener noreferrer"
                             >
                                 {Locales.strings.email}
+                                <span className="sROnly">
+                                    {'\u00A0'}
+                                    {Locales.strings.opens_in_new_window}
+                                </span>
                             </a>
                         </li>
                     </ul>

@@ -179,6 +179,10 @@ export default class ProblemHeader extends Component {
                                         style={{ textShadow: '0 1px 0 rgba(0, 0, 0, 0.1)' }}
                                     />
                                     {Locales.strings.help_center}
+                                    <span className="sROnly">
+                                        {'\u00A0'}
+                                        {Locales.strings.opens_in_new_window}
+                                    </span>
                                 </a>
                             </li>
                             <li>
@@ -196,6 +200,10 @@ export default class ProblemHeader extends Component {
                                         style={{ textShadow: '0 1px 0 rgba(0, 0, 0, 0.1)' }}
                                     />
                                     {Locales.strings.provide_feedback}
+                                    <span className="sROnly">
+                                        {'\u00A0'}
+                                        {Locales.strings.opens_in_new_window}
+                                    </span>
                                 </a>
                             </li>
                         </ul>

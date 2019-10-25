@@ -17,12 +17,22 @@ const MainPageFooter = ({ customClass }) => (
                             alt={Locales.strings.idea_logo_alt}
                             height="50"
                         />
+                        <span className="sROnly">
+                            {'\u00A0'}
+                            {Locales.strings.opens_in_new_window}
+                        </span>
                     </a>
                 </div>
                 <div className={footer.footerText}>
                     {Locales.strings.the}
                     {' '}
-                    <a href="http://diagramcenter.org/" target="_blank" rel="noopener noreferrer">{Locales.strings.diagram_center}</a>
+                    <a href="http://diagramcenter.org/" target="_blank" rel="noopener noreferrer">
+                        {Locales.strings.diagram_center}
+                        <span className="sROnly">
+                            {'\u00A0'}
+                            {Locales.strings.opens_in_new_window}
+                        </span>
+                    </a>
                     {Locales.strings.is_a}
                     <a
                         href="http://www.benetech.org/"
@@ -30,6 +40,10 @@ const MainPageFooter = ({ customClass }) => (
                         rel="noopener noreferrer"
                     >
                         {Locales.strings.benetech}
+                        <span className="sROnly">
+                            {'\u00A0'}
+                            {Locales.strings.opens_in_new_window}
+                        </span>
                     </a>
                     {Locales.strings.footer_description}
                 </div>
@@ -42,6 +56,10 @@ const MainPageFooter = ({ customClass }) => (
                         alt="Benetech Logo"
                         height="50"
                     />
+                    <span className="sROnly">
+                        {'\u00A0'}
+                        {Locales.strings.opens_in_new_window}
+                    </span>
                 </a>
             </div> */}
 

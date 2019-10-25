@@ -17,6 +17,10 @@ const SocialFooter = ({ customClass }) => (
                     size="lg"
                     name="twitter"
                 />
+                <span className="sROnly">
+                    {'\u00A0'}
+                    {Locales.strings.opens_in_new_window}
+                </span>
             </a>
             <a
                 href="https://www.youtube.com/channel/UCfgAVftyG4bdAepSzgZvTrQ "
@@ -29,6 +33,10 @@ const SocialFooter = ({ customClass }) => (
                     size="lg"
                     name="youtube-play"
                 />
+                <span className="sROnly">
+                    {'\u00A0'}
+                    {Locales.strings.opens_in_new_window}
+                </span>
             </a>
             <div>{Locales.strings.copyright}</div>
         </div>
