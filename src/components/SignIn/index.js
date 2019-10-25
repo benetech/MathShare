@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import { push } from 'connected-react-router';
 import { UncontrolledTooltip } from 'reactstrap';
 import {
@@ -33,11 +34,19 @@ class SignIn extends Component {
         this.props.setUserProfile(email, name, image, service);
     };
 
+    getPrev = (routerHistory) => {
+        let path = '#/app';
+        if (routerHistory.prev && routerHistory.prev !== '#/signIn') {
+            path = routerHistory.prev;
+        }
+        return `${window.location.origin}/${path}`;
+    }
+
     renderGoogleBtn = routerHistory => (
         <a
             id={this.GOOGLE_SIGN_IN}
             className={`${signIn.googleBtn} abcRioButton abcRioButtonBlue`}
-            href={`${API_URL}/login/google?return=${encodeURIComponent(routerHistory.prev)}`}
+            href={`${API_URL}/login/google?return=${encodeURIComponent(this.getPrev(routerHistory))}`}
         >
             <span className="abcRioButtonContentWrapper">
                 <span className="abcRioButtonIcon" style={{ padding: 10 }}>
@@ -56,7 +65,7 @@ class SignIn extends Component {
         <a
             id={this.MS_SIGN_IN}
             className={`abcRioButton abcRioButtonBlue ${signIn.microsoftContainer}`}
-            href={`${API_URL}/login/azuread-openidconnect?return=${encodeURIComponent(routerHistory.prev)}`}
+            href={`${API_URL}/login/azuread-openidconnect?return=${encodeURIComponent(this.getPrev(routerHistory))}`}
         >
             <img src={microsoftLogo} alt="" />
             <span className="sROnly">{Locales.strings.ms}</span>
@@ -68,7 +77,10 @@ class SignIn extends Component {
     };
 
     render() {
-        const { routerHistory } = this.props;
+        const { routerHistory, userProfile } = this.props;
+        if (userProfile.email) {
+            return <Redirect to="/app" />;
+        }
         return (
             <main className={signIn.container}>
                 <button
@@ -120,6 +132,7 @@ class SignIn extends Component {
 export default connect(
     state => ({
         routerHistory: state.routerHooks,
+        userProfile: state.userProfile,
     }),
     {
         checkUserLogin,

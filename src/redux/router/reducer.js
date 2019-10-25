@@ -4,7 +4,7 @@ import {
 } from 'connected-react-router';
 
 const initialState = {
-    current: window.location.href,
+    current: window.location.hash,
     prev: null,
 };
 
@@ -22,13 +22,13 @@ const problems = (state = initialState, {
         if (action === 'REPLACE') {
             return {
                 ...state,
-                current: window.location.href,
+                current: window.location.hash,
             };
         } if (action === 'POP') {
             return {
                 ...state,
                 prev: state.current,
-                current: window.location.href,
+                current: window.location.hash,
             };
         }
         return state;
