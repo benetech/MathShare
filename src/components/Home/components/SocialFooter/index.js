@@ -11,13 +11,13 @@ const SocialFooter = ({ customClass }) => (
                 target="_blank"
                 rel="noopener noreferrer"
                 className={footer.socialIcon}
-                aria-label={Locales.strings.to_mathshare_twitter}
             >
                 <FontAwesome
                     size="lg"
                     name="twitter"
                 />
                 <span className="sROnly">
+                    {Locales.strings.to_mathshare_twitter}
                     {'\u00A0'}
                     {Locales.strings.opens_in_new_window}
                 </span>
@@ -27,13 +27,13 @@ const SocialFooter = ({ customClass }) => (
                 target="_blank"
                 rel="noopener noreferrer"
                 className={footer.socialIcon}
-                aria-label={Locales.strings.to_mathshare_youtube}
             >
                 <FontAwesome
                     size="lg"
                     name="youtube-play"
                 />
                 <span className="sROnly">
+                    {Locales.strings.to_mathshare_youtube}
                     {'\u00A0'}
                     {Locales.strings.opens_in_new_window}
                 </span>
