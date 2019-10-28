@@ -68,21 +68,23 @@ class Index extends Component {
         } if (userProfile.recentProblemSets.length > 0) {
             return (
                 <ol className={pageIndex.problemSetList}>
-                    {userProfile.recentProblemSets.map(this.renderProblemSet)}
+                    {userProfile.recentProblemSets.map(this.renderProblemSet())}
                 </ol>
             );
         }
         return <div className="text-center">No recent problems</div>;
     }
 
-    renderProblemSet = (problemSet, index) => (
+    renderProblemSet = isExample => (problemSet, index) => (
         <li className="card" key={index}>
             <a
                 className="btn d-flex"
                 href={this.getShareLink(problemSet.shareCode)}
-                onClick={this.openPremadeSet(problemSet)}
+                onClick={isExample ? this.openExampleProblem() : this.openPremadeSet(problemSet)}
                 onKeyPress={
-                    passEventForKeys(this.openPremadeSet(problemSet))
+                    passEventForKeys(
+                        isExample ? this.openExampleProblem() : this.openPremadeSet(problemSet),
+                    )
                 }
             >
                 <span className={pageIndex.title}>
@@ -200,23 +202,13 @@ class Index extends Component {
                                 </span>
                             </button>
                         </li>
-                        <li className="card">
-                            <a
-                                className="btn d-flex"
-                                href={this.getShareLink(problemList.defaultRevisionCode)}
-                                onClick={this.openExampleProblem}
-                                onKeyPress={passEventForKeys(this.openExampleProblem)}
-                            >
-                                <span className="centreText">{Locales.strings.example_problem}</span>
-                            </a>
-                        </li>
+                        {problemList.exampleProblemSets.filter(exampleProblemSet => exampleProblemSet.title === 'Example Problem Set').map(this.renderProblemSet(true))}
                     </ol>
                     <div className="title">Recent</div>
                     {this.renderRecent()}
                     <div className="title">{Locales.strings.pre_made_sets}</div>
                     <ol className={pageIndex.problemSetList}>
-                        {problemList.exampleProblemSets.filter(exampleProblemSet => exampleProblemSet.title !== 'Example Problem Set').map(this.renderProblemSet)}
-
+                        {problemList.exampleProblemSets.filter(exampleProblemSet => exampleProblemSet.title !== 'Example Problem Set').map(this.renderProblemSet())}
                     </ol>
                 </div>
             </div>

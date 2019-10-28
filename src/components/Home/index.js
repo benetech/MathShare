@@ -339,8 +339,12 @@ class Home extends Component {
             problemList,
         } = this.props;
         let titlePrefix = '';
-        if (problemList.set && problemList.set.title) {
-            titlePrefix = `${problemList.set.title} - `;
+        if (problemList.set) {
+            if (problemList.set.title) {
+                titlePrefix = `${problemList.set.title} - `;
+            } else {
+                titlePrefix = 'Untitled Problem Set - ';
+            }
         }
         return (
             <Helmet>

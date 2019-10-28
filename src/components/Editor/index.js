@@ -191,8 +191,12 @@ class Editor extends Component {
         }
 
         let titlePrefix = '';
-        if (problemList.set && problemList.set.title) {
-            titlePrefix = `${problemList.set.title} - `;
+        if (problemList.set) {
+            if (problemList.set.title) {
+                titlePrefix = `${problemList.set.title} - `;
+            } else {
+                titlePrefix = 'Untitled Problem Set - ';
+            }
         }
         let pos = 0;
         let count = 0;
