@@ -1,0 +1,57 @@
+import {
+    all,
+    call,
+    fork,
+    put,
+    select,
+    takeLatest,
+} from 'redux-saga/effects';
+
+import {
+    LOCATION_CHANGE,
+} from 'connected-react-router';
+import { announceOnAriaLive } from '../ariaLiveAnnouncer/actions';
+import { focusOnMainContent } from '../../services/events';
+import {
+    getRouterHookState,
+} from './selectors';
+import {
+    setTitle,
+} from './actions';
+
+function* changeTitleSaga() {
+    yield takeLatest('CHANGE_TITLE', function* workerSaga({
+        payload: {
+            title,
+        },
+    }) {
+        const { currentTitle } = yield select(getRouterHookState);
+        let newTitle = title;
+        if (newTitle && newTitle.join) {
+            newTitle = title.join('');
+        }
+        if (newTitle && currentTitle !== newTitle) {
+            yield put(announceOnAriaLive(newTitle));
+            yield put(setTitle(newTitle));
+        }
+    });
+}
+
+function* changeRouteSaga() {
+    yield takeLatest(LOCATION_CHANGE, function* workerSaga({
+        payload: {
+            location,
+        },
+    }) {
+        if (location.pathname !== '/') {
+            yield call(setTimeout, focusOnMainContent, 100);
+        }
+    });
+}
+
+export default function* rootSaga() {
+    yield all([
+        fork(changeTitleSaga),
+        fork(changeRouteSaga),
+    ]);
+}

@@ -187,6 +187,7 @@ class Index extends Component {
                     action={null}
                 />
                 <div id="mainContainer" className="mainContainer">
+                    <h1 className="sROnly" tabIndex={-1}>{Locales.strings.dashboard}</h1>
                     <ol className={pageIndex.problemSetList}>
                         <li className="card">
                             <button
@@ -204,7 +205,7 @@ class Index extends Component {
                         </li>
                         {problemList.exampleProblemSets.filter(exampleProblemSet => exampleProblemSet.title === 'Example Problem Set').map(this.renderProblemSet(true))}
                     </ol>
-                    <div className="title">Recent</div>
+                    <div className="title">{Locales.strings.recent}</div>
                     {this.renderRecent()}
                     <div className="title">{Locales.strings.pre_made_sets}</div>
                     <ol className={pageIndex.problemSetList}>

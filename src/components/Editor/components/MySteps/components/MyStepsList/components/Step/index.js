@@ -22,11 +22,11 @@ export default class Step extends Component {
     }
 
     componentDidMount() {
-        mathLive.renderMathInDocument();
-        const autoFocus = document.getElementById(this.state.id);
-        if (autoFocus) {
-            autoFocus.focus();
-        }
+        // mathLive.renderMathInDocument();
+        // const autoFocus = document.getElementById(this.state.id);
+        // if (autoFocus) {
+        //     autoFocus.focus();
+        // }
     }
 
     componentWillUpdate() {

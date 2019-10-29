@@ -1,5 +1,6 @@
-import LocalizedStrings from 'react-localization';
 import * as dayjs from 'dayjs';
+
+import LocalizedStrings from 'react-localization';
 
 const now = dayjs();
 
@@ -59,6 +60,7 @@ class Locales {
                 created_problem_set: 'Problem Set has been created',
                 current_problems: 'Current Problems',
                 dash: 'minus',
+                dashboard: 'Dashboard',
                 delete: 'Delete',
                 delete_step: ' Delete Step',
                 delete_this_step: 'Delete this Step',
@@ -187,6 +189,7 @@ class Locales {
                 problems_to_solve: ' Problems to solve ',
                 provide_feedback: ' Give Feedback',
                 reason: 'reason',
+                recent: 'Recent',
                 remove_problem: 'Remove Problem',
                 reset_problem_set: 'Reset Problem Set',
                 resources: 'Resources',

@@ -339,12 +339,14 @@ class Home extends Component {
             problemList,
         } = this.props;
         let titlePrefix = '';
-        if (problemList.set) {
+        if (problemList.set && problemList.set.shareCode) {
             if (problemList.set.title) {
                 titlePrefix = `${problemList.set.title} - `;
             } else {
                 titlePrefix = 'Untitled Problem Set - ';
             }
+        } else {
+            return null;
         }
         return (
             <Helmet>

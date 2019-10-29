@@ -191,12 +191,14 @@ class Editor extends Component {
         }
 
         let titlePrefix = '';
-        if (problemList.set) {
+        if (problemList.set && problemList.set.shareCode) {
             if (problemList.set.title) {
                 titlePrefix = `${problemList.set.title} - `;
             } else {
                 titlePrefix = 'Untitled Problem Set - ';
             }
+        } else {
+            return null;
         }
         let pos = 0;
         let count = 0;

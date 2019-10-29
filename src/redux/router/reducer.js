@@ -6,9 +6,10 @@ import {
 const initialState = {
     current: window.location.hash,
     prev: null,
+    currentTitle: null,
 };
 
-const problems = (state = initialState, {
+const router = (state = initialState, {
     type,
     payload,
     // error,
@@ -33,9 +34,16 @@ const problems = (state = initialState, {
         }
         return state;
     }
+    case 'SET_TITLE': {
+        const { title } = payload;
+        return {
+            ...state,
+            currentTitle: title,
+        };
+    }
     default:
         return state;
     }
 };
 
-export default problems;
+export default router;

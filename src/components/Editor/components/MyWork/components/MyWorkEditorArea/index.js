@@ -14,10 +14,10 @@ export default class MyWorkEditorArea extends Component {
         const mathField = this.getMathField();
         mathField.$latex(this.props.lastMathEquation);
         this.props.activateMathField(mathField);
-        const mathEditorActive = document.getElementById('mathEditorActive');
-        if (mathEditorActive) {
-            mathEditorActive.focus();
-        }
+        // const mathEditorActive = document.getElementById('mathEditorActive');
+        // if (mathEditorActive) {
+        //     mathEditorActive.focus();
+        // }
     }
 
     getMathField() {

@@ -34,10 +34,10 @@ export default class ProblemHeader extends Component {
     }
 
     componentDidMount() {
-        const subHeader = document.getElementById('subHeader');
-        if (subHeader) {
-            subHeader.focus();
-        }
+        // const subHeader = document.getElementById('subHeader');
+        // if (subHeader) {
+        //     subHeader.focus();
+        // }
     }
 
     shouldComponentUpdate(nextProps) {

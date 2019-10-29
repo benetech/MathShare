@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 import {
@@ -45,6 +46,7 @@ import problemListActions from '../redux/problemList/actions';
 import problemActions from '../redux/problem/actions';
 import userProfileActions from '../redux/userProfile/actions';
 import ariaLiveAnnouncerActions from '../redux/ariaLiveAnnouncer/actions';
+import routerActions from '../redux/router/actions';
 import { compareStepArrays } from '../redux/problem/helpers';
 import msalConfig from '../constants/msal';
 import keyMap from '../constants/hotkeyConfig.json';
@@ -364,6 +366,11 @@ class App extends Component {
         const { modal, problemList, problemStore } = this.props;
         return (
             <React.Fragment>
+                <Helmet
+                    onChangeClientState={(newState) => {
+                        this.props.changeTitle(newState.title);
+                    }}
+                />
                 {this.renderDialog()}
                 <AriaLiveAnnouncer />
                 <GlobalHotKeys keyMap={keyMap} handlers={this.handlers} allowChanges />
@@ -459,5 +466,6 @@ export default withRouter(connect(
         ...problemListActions,
         ...userProfileActions,
         ...ariaLiveAnnouncerActions,
+        ...routerActions,
     },
 )(App));
