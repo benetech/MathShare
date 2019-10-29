@@ -321,18 +321,32 @@ export default class MathButton extends Component {
             </React.Fragment>
         );
         const labelId = `${this.props.button.id}-label`;
+        let mathButton = (
+            <Button
+                aria-labelledby={labelId}
+                title={this.props.hideShortcuts ? null : title}
+                disabled={this.props.readOnly}
+                id={this.props.button.id}
+                className={this.buildClassNames()}
+                data-toggle="tooltip"
+                content={visualContent}
+                onClick={this.props.readOnly ? null : functions}
+            />
+        );
+        if (this.props.readOnly) {
+            mathButton = (
+                <span
+                    id={this.props.button.id}
+                    aria-labelledby={labelId}
+                    className={this.buildClassNames()}
+                >
+                    {visualContent}
+                </span>
+            );
+        }
         return (
             <span role="listitem">
-                <Button
-                    aria-labelledby={labelId}
-                    title={this.props.hideShortcuts ? null : title}
-                    disabled={this.props.readOnly}
-                    id={this.props.button.id}
-                    className={this.buildClassNames()}
-                    data-toggle="tooltip"
-                    content={visualContent}
-                    onClick={this.props.readOnly ? null : functions}
-                />
+                {mathButton}
             </span>
         );
     }
