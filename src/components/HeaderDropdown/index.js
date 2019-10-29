@@ -65,7 +65,7 @@ const HeaderDropdown = ({ additionalClass, children }) => (
                     {Locales.strings.help_center}
                     <span className="sROnly">
                         {'\u00A0'}
-                        {Locales.strings.opens_in_new_window}
+                        {Locales.strings.opens_in_new_tab}
                     </span>
                 </a>
             </li>
@@ -86,7 +86,7 @@ const HeaderDropdown = ({ additionalClass, children }) => (
                     {Locales.strings.provide_feedback}
                     <span className="sROnly">
                         {'\u00A0'}
-                        {Locales.strings.opens_in_new_window}
+                        {Locales.strings.opens_in_new_tab}
                     </span>
                 </a>
             </li>

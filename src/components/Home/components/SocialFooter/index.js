@@ -19,7 +19,7 @@ const SocialFooter = ({ customClass }) => (
                 <span className="sROnly">
                     {Locales.strings.to_mathshare_twitter}
                     {'\u00A0'}
-                    {Locales.strings.opens_in_new_window}
+                    {Locales.strings.opens_in_new_tab}
                 </span>
             </a>
             <a
@@ -35,7 +35,7 @@ const SocialFooter = ({ customClass }) => (
                 <span className="sROnly">
                     {Locales.strings.to_mathshare_youtube}
                     {'\u00A0'}
-                    {Locales.strings.opens_in_new_window}
+                    {Locales.strings.opens_in_new_tab}
                 </span>
             </a>
             <div>{Locales.strings.copyright}</div>

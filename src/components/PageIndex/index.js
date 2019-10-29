@@ -101,7 +101,6 @@ class Index extends Component {
                         type="button"
                         id={`dropdownMenuButton-${index}`}
                         data-toggle="dropdown"
-                        aria-haspopup="true"
                         aria-expanded="false"
                         onClick={(e) => {
                             stopEvent(e);
@@ -157,7 +156,7 @@ class Index extends Component {
                                 {` ${Locales.strings.share_on_twitter}`}
                                 <span className="sROnly">
                                     {'\u00A0'}
-                                    {Locales.strings.opens_in_new_window}
+                                    {Locales.strings.opens_in_new_tab}
                                 </span>
                             </button>
                         </li>

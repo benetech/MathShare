@@ -32,7 +32,7 @@ const SiteMapFooter = ({ customClass }) => (
                                 {Locales.strings.workshop_materials}
                                 <span className="sROnly">
                                     {'\u00A0'}
-                                    {Locales.strings.opens_in_new_window}
+                                    {Locales.strings.opens_in_new_tab}
                                 </span>
                             </a>
                         </li>
@@ -45,7 +45,7 @@ const SiteMapFooter = ({ customClass }) => (
                                 {Locales.strings.accessibility}
                                 <span className="sROnly">
                                     {'\u00A0'}
-                                    {Locales.strings.opens_in_new_window}
+                                    {Locales.strings.opens_in_new_tab}
                                 </span>
                             </a>
                         </li>
@@ -65,7 +65,7 @@ const SiteMapFooter = ({ customClass }) => (
                                 {Locales.strings.contact_us.trim()}
                                 <span className="sROnly">
                                     {'\u00A0'}
-                                    {Locales.strings.opens_in_new_window}
+                                    {Locales.strings.opens_in_new_tab}
                                 </span>
                             </a>
                         </li>
@@ -83,7 +83,7 @@ const SiteMapFooter = ({ customClass }) => (
                                 {Locales.strings.youtube}
                                 <span className="sROnly">
                                     {'\u00A0'}
-                                    {Locales.strings.opens_in_new_window}
+                                    {Locales.strings.opens_in_new_tab}
                                 </span>
                             </a>
                         </li>
@@ -96,7 +96,7 @@ const SiteMapFooter = ({ customClass }) => (
                                 {Locales.strings.twitter}
                                 <span className="sROnly">
                                     {'\u00A0'}
-                                    {Locales.strings.opens_in_new_window}
+                                    {Locales.strings.opens_in_new_tab}
                                 </span>
                             </a>
                         </li>
@@ -109,7 +109,7 @@ const SiteMapFooter = ({ customClass }) => (
                                 {Locales.strings.email}
                                 <span className="sROnly">
                                     {'\u00A0'}
-                                    {Locales.strings.opens_in_new_window}
+                                    {Locales.strings.opens_in_new_tab}
                                 </span>
                             </a>
                         </li>

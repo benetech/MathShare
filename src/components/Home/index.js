@@ -182,7 +182,7 @@ class Home extends Component {
                             <span className="sROnly">{Locales.strings.edit_title}</span>
                         </button>
                         <div className="dropdown">
-                            <button className="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <button className="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false">
                                 <FontAwesome
                                     className={
                                         classNames(
@@ -230,7 +230,7 @@ class Home extends Component {
                                                 {` ${Locales.strings.share_on_twitter}`}
                                                 <span className="sROnly">
                                                     {'\u00A0'}
-                                                    {Locales.strings.opens_in_new_window}
+                                                    {Locales.strings.opens_in_new_tab}
                                                 </span>
                                             </button>
                                         </li>
@@ -281,7 +281,7 @@ class Home extends Component {
                                         {Locales.strings.google_classroom}
                                         <span className="sROnly">
                                             {'\u00A0'}
-                                            {Locales.strings.opens_in_new_window}
+                                            {Locales.strings.opens_in_new_tab}
                                         </span>
                                     </span>
                                     <img src={googleClassroomIcon} alt="" />
@@ -308,7 +308,7 @@ class Home extends Component {
                                         {Locales.strings.ms_team}
                                         <span className="sROnly">
                                             {'\u00A0'}
-                                            {Locales.strings.opens_in_new_window}
+                                            {Locales.strings.opens_in_new_tab}
                                         </span>
                                     </span>
                                     <img src={msTeamIcon} alt="" />
@@ -442,7 +442,7 @@ class Home extends Component {
                                                 {Locales.strings.google_classroom}
                                                 <span className="sROnly">
                                                     {'\u00A0'}
-                                                    {Locales.strings.opens_in_new_window}
+                                                    {Locales.strings.opens_in_new_tab}
                                                 </span>
                                             </span>
                                             <img src={googleClassroomIcon} alt="" />
@@ -471,7 +471,7 @@ class Home extends Component {
                                                 {Locales.strings.ms_team}
                                                 <span className="sROnly">
                                                     {'\u00A0'}
-                                                    {Locales.strings.opens_in_new_window}
+                                                    {Locales.strings.opens_in_new_tab}
                                                 </span>
                                             </span>
                                             <img

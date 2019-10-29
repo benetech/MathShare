@@ -166,7 +166,7 @@ class Locales {
                 open_image: 'Open image',
                 open_mathshare: 'Open MathShare',
                 open_source: 'Open Source',
-                opens_in_new_tab: '(opens in new tab)',
+                opens_in_new_tab: '(open new tab)',
                 opens_in_new_window: '(opens in new window)',
                 overview: 'Overview',
                 page_was_not_found: 'We are sorry but the page you are looking for does not exist.',

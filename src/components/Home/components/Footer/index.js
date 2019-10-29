@@ -19,7 +19,7 @@ const MainPageFooter = ({ customClass }) => (
                         />
                         <span className="sROnly">
                             {'\u00A0'}
-                            {Locales.strings.opens_in_new_window}
+                            {Locales.strings.opens_in_new_tab}
                         </span>
                     </a>
                 </div>
@@ -30,7 +30,7 @@ const MainPageFooter = ({ customClass }) => (
                         {Locales.strings.diagram_center}
                         <span className="sROnly">
                             {'\u00A0'}
-                            {Locales.strings.opens_in_new_window}
+                            {Locales.strings.opens_in_new_tab}
                         </span>
                     </a>
                     {Locales.strings.is_a}
@@ -42,7 +42,7 @@ const MainPageFooter = ({ customClass }) => (
                         {Locales.strings.benetech}
                         <span className="sROnly">
                             {'\u00A0'}
-                            {Locales.strings.opens_in_new_window}
+                            {Locales.strings.opens_in_new_tab}
                         </span>
                     </a>
                     {Locales.strings.footer_description}
@@ -58,7 +58,7 @@ const MainPageFooter = ({ customClass }) => (
                     />
                     <span className="sROnly">
                         {'\u00A0'}
-                        {Locales.strings.opens_in_new_window}
+                        {Locales.strings.opens_in_new_tab}
                     </span>
                 </a>
             </div> */}
