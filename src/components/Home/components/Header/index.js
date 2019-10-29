@@ -87,7 +87,11 @@ class MainPageHeader extends React.Component {
                         </div>
                         <div className="navbar-header pull-right">
                             <ul className="nav pull-left">
-                                <HeaderDropdown additionalClass={header.dropDownMenu}>
+                                <HeaderDropdown
+                                    additionalClass={header.dropDownMenu}
+                                    dropdownName={Locales.strings.help_center}
+                                    dropdownIcon="question"
+                                >
                                     {[
                                         (props.action === 'new' || props.action === 'edit') && (
                                             <button

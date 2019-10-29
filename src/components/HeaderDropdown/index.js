@@ -22,7 +22,9 @@ const clickOnQuestion = () => {
     IntercomAPI('trackEvent', 'clicked-help-center');
 };
 
-const HeaderDropdown = ({ additionalClass, children }) => (
+const HeaderDropdown = ({
+    additionalClass, children, dropdownName, dropdownIcon,
+}) => (
     <li className="nav-item dropdown">
         <button
             className={`nav-link dropdown-toggle btn ${additionalClass}`}
@@ -35,13 +37,14 @@ const HeaderDropdown = ({ additionalClass, children }) => (
         >
             <FontAwesome
                 size="lg"
-                name="question"
+                name={dropdownIcon}
             />
-            <span className="sROnly">{Locales.strings.more_options}</span>
+            <span className="sROnly">{dropdownName}</span>
         </button>
         <UncontrolledTooltip placement="top" target={questionBtnId} />
         <ul
             className="dropdown-menu dropdown-menu-lg-right dropdown-secondary"
+            aria-labelledby={questionBtnId}
         >
             {children.filter(child => child).map((child, index) => (
                 <li key={child.key || `dropdown-item-${index}`}>

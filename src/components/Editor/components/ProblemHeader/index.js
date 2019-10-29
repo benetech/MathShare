@@ -111,7 +111,11 @@ export default class ProblemHeader extends Component {
                             <div>{this.props.lastSaved}</div>
                         </div>
                     )}
-                    <HeaderDropdown additionalClass={problem.dropDownMenu}>
+                    <HeaderDropdown
+                        additionalClass={problem.dropDownMenu}
+                        dropdownName={Locales.strings.more_options}
+                        dropdownIcon="question"
+                    >
                         {[
                             <button
                                 className="dropdown-item reset-btn"
