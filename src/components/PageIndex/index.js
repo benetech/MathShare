@@ -36,7 +36,12 @@ class Index extends Component {
         googleAnalytics(`premade set - ${problemSet.title}`);
     }
 
-    getShareLink = shareCode => `/#/app/problemSet/view/${shareCode}`
+    getLink = (problemSet, isRecent) => {
+        if (!isRecent) {
+            return `/#/app/problemSet/view/${problemSet.shareCode}`;
+        }
+        return `/#/app/problemSet/edit/${problemSet.editCode}`;
+    }
 
     openByEditCode = (editCode) => {
         this.props.history.push(`/app/problemSet/edit/${editCode}`);
@@ -68,18 +73,18 @@ class Index extends Component {
         } if (userProfile.recentProblemSets.length > 0) {
             return (
                 <ol className={pageIndex.problemSetList}>
-                    {userProfile.recentProblemSets.map(this.renderProblemSet())}
+                    {userProfile.recentProblemSets.map(this.renderProblemSet(false, true))}
                 </ol>
             );
         }
         return <div className="text-center">No recent problems</div>;
     }
 
-    renderProblemSet = isExample => (problemSet, index) => (
+    renderProblemSet = (isExample, isRecent) => (problemSet, index) => (
         <li className="card" key={index}>
             <a
                 className="btn d-flex"
-                href={this.getShareLink(problemSet.shareCode)}
+                href={this.getLink(problemSet, isRecent)}
                 onClick={isExample ? this.openExampleProblem() : this.openPremadeSet(problemSet)}
                 onKeyPress={
                     passEventForKeys(
