@@ -1,0 +1,140 @@
+.container {
+    padding: 50px;
+
+    .content {
+        background: white;
+        max-width: 550px;
+        padding-bottom: 100px;
+        width: 100%;
+        margin: auto;
+        text-align: center;
+        border-radius: 4px;
+
+
+        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .25);
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        -webkit-transition: background-color .218s, border-color .218s, box-shadow .218s;
+        transition: background-color .218s, border-color .218s, box-shadow .218s;
+
+        .text {
+            font-size: 24px;
+            font-weight: 400;
+            color: #5a5a5a;
+        }
+
+        h2 {
+            font-size: 22px;
+        }
+
+        .pointer {
+            cursor: pointer;
+        }
+
+        .logo {
+            max-width: 240px;
+            padding: 36px 24px;
+            background: white;
+            margin: auto;
+
+            img {
+                width: 100%;
+            }
+        }
+
+        .largeBtn {
+            font-size: 18px;
+            padding: 15px;
+            background: #c4d9ff;
+            color: black;
+            border-color: #c4d9ff;
+        }
+
+        .smallBtn {
+            font-size: 14px;
+            padding: 12px;
+            background: #c4d9ff;
+            color: black;
+            border-color: #c4d9ff;
+            max-width: 150px;
+            margin-left: 20px;
+        }
+
+        .teacherForm {
+            padding-top: 35px;
+            margin: 0 25px;
+
+            :global(.row):not(:first-child) {
+                padding-top: 20px;
+            }
+
+            h2 {
+                font-size: 1rem;
+                font-weight: 400;
+            }
+
+            .grade {
+                text-align: left;
+
+                >label {
+                    margin-right: 12px;
+                    padding: 2px 5px;
+                    background: lightgray;
+                    border-radius: 5px;
+                    border: 1px solid darkgray;
+                    font-size: 12px;
+
+                    input {
+                        margin-right: 10px;
+                    }
+                }
+            }
+
+            .descText {
+                text-align: right;
+            }
+
+            fieldset {
+                border: 0;
+                padding: 0.01em 0 0 0;
+                margin: 0;
+                min-width: 0;
+                display: table;
+
+
+                legend {
+                    padding: 0;
+                    display: table;
+                    float: left;
+                    padding-right: 15px;
+                }
+
+                .grade {
+                    display: table;
+                }
+            }
+
+        }
+
+        .buttonsContainer {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 50px 0;
+
+            >div {
+                padding: 10px;
+                width: 50%;
+
+                >* {
+                    margin: auto;
+                }
+            }
+
+        }
+    }
+
+}
+
+body:not(:-moz-handler-blocked) .teacherForm fieldset {
+    display: table-cell;
+}

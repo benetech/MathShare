@@ -43,24 +43,34 @@ export default class PaletteChooser extends Component {
     }
 
     render() {
-        const mathPalette = palettes.map((palette, i) => (
-            <div key={i} className={styles.paletteRow}>
-                <div id="paletteButtons" className={styles.paletteButtons}>
-                    <MathButtonsGroup
-                        palette={palette}
-                        theActiveMathField={this.props.theActiveMathField}
-                        showLabel={false}
-                        readOnly
-                    />
+        const mathPalette = palettes.map((palette) => {
+            const id = `key-${palette.label}`;
+            const checkBoxId = `${id}-pallete-cb`;
+            return (
+                <div key={id} className={styles.paletteRow}>
+                    <h2 id="paletteLabel" className={styles.paletteLabel}>
+                        {palette.label}
+                    </h2>
+                    <div id="paletteButtons" className={styles.paletteButtons}>
+                        <MathButtonsGroup
+                            palette={palette}
+                            theActiveMathField={this.props.theActiveMathField}
+                            showLabel={false}
+                            readOnly
+                            hideShortcuts
+                        />
+                    </div>
+                    <div id="checkBox" className={styles.checkBox}>
+                        <input type="checkbox" name="name" id={checkBoxId} onChange={() => this.handleChange(palette.label)} />
+                        <label htmlFor={checkBoxId} className="sROnly">
+                            {(this.state.chosenPalettes.includes(palette.label)) ? 'Disable' : 'Enable'}
+                            {' '}
+                            {palette.label}
+                        </label>
+                    </div>
                 </div>
-                <h5 id="paletteLabel" className={styles.paletteLabel}>
-                    {palette.label}
-                </h5>
-                <div id="checkBox" className={styles.checkBox}>
-                    <input type="checkbox" name="name" onChange={() => this.handleChange(palette.label)} />
-                </div>
-            </div>
-        ));
+            );
+        });
         const btnClassNames = [
             'btn',
             'pointer',
@@ -68,17 +78,18 @@ export default class PaletteChooser extends Component {
         return (
             <AriaModal
                 id="modal"
-                titleText="demo one"
+                titleText={Locales.strings.math_palette}
                 onExit={this.props.deactivateModal}
                 getApplicationNode={this.getApplicationNode}
                 focusDialog
                 underlayStyle={{ paddingTop: '2em' }}
+                dialogStyle={{ display: 'inline-table' }}
             >
 
                 <div className={styles.container} id="container">
-                    <h3 className={styles.title}>
+                    <h1 className={styles.title}>
                         {this.props.title}
-                    </h3>
+                    </h1>
                     <form>
                         {mathPalette}
                     </form>

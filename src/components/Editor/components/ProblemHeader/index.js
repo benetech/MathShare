@@ -1,17 +1,17 @@
-/* eslint-disable jsx-a11y/no-noninteractive-tabindex */
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { Component } from 'react';
 import classNames from 'classnames';
 import Tour from 'reactour';
+import { GlobalHotKeys } from 'react-hotkeys';
 import FontAwesome from 'react-fontawesome';
-import { UncontrolledTooltip } from 'reactstrap';
-import { IntercomAPI } from 'react-intercom';
 import Button from '../../../Button';
 import problem from './styles.scss';
 import googleAnalytics from '../../../../scripts/googleAnalytics';
 import Locales from '../../../../strings';
 import showImage from '../../../../scripts/showImage';
+import completeKeyMap from '../../../../constants/hotkeyConfig.json';
+import { passEventForKeys, stopEvent } from '../../../../services/events';
 import { tourConfig, accentColor } from './tourConfig';
+import HeaderDropdown from '../../../HeaderDropdown';
 // import parseMathLive from '../../../../scripts/parseMathLive';
 
 const mathLive = process.env.MATHLIVE_DEBUG_MODE ? require('../../../../../../mathlive/src/mathlive.js').default
@@ -22,6 +22,22 @@ export default class ProblemHeader extends Component {
         super(props);
 
         this.onImgClick = this.onImgClick.bind(this);
+
+        this.handlers = {
+            SAVE_PROBLEM_SOLUTION: (e) => {
+                if (this.props.isUpdated) {
+                    this.props.saveProblem(e);
+                }
+                return stopEvent(e);
+            },
+        };
+    }
+
+    componentDidMount() {
+        // const subHeader = document.getElementById('subHeader');
+        // if (subHeader) {
+        //     subHeader.focus();
+        // }
     }
 
     shouldComponentUpdate(nextProps) {
@@ -50,11 +66,6 @@ export default class ProblemHeader extends Component {
         this.props.closeTour();
     }
 
-    clickOnQuestion = () => {
-        googleAnalytics('clicked help center');
-        IntercomAPI('trackEvent', 'clicked-help-center');
-    }
-
     render() {
         const imgButton = this.props.scratchpad
             ? (
@@ -71,8 +82,6 @@ export default class ProblemHeader extends Component {
             : null;
 
         const title = `${this.props.title}: `;
-
-        const questionBtnId = 'navbarDropdownMenuLink-dropdown';
 
         const editOnlyControls = this.props.readOnly ? null
             : (
@@ -102,34 +111,18 @@ export default class ProblemHeader extends Component {
                             <div>{this.props.lastSaved}</div>
                         </div>
                     )}
-                    <li className="nav-item dropdown">
-                        <span id={`${questionBtnId}-label`} className="sROnly">{Locales.strings.help_center}</span>
-                        <button
-                            className={`nav-link dropdown-toggle btn ${problem.dropDownMenu}`}
-                            id={questionBtnId}
-                            data-toggle="dropdown"
-                            type="button"
-                            tabIndex={0}
-                            aria-labelledby={`${questionBtnId}-label`}
-                            onClick={this.clickOnQuestion}
-                            onKeyPress={this.clickOnQuestion}
-                        >
-                            <FontAwesome
-                                size="lg"
-                                name="question"
-                            />
-                        </button>
-                        <UncontrolledTooltip placement="top" target={questionBtnId} />
-                        <div
-                            className="dropdown-menu dropdown-menu-lg-right dropdown-secondary"
-                            aria-labelledby={`${questionBtnId}-label`}
-                        >
-                            <a
-                                className="dropdown-item"
+                    <HeaderDropdown
+                        additionalClass={problem.dropDownMenu}
+                        dropdownName={Locales.strings.more_options}
+                        dropdownIcon="question"
+                    >
+                        {[
+                            <button
+                                className="dropdown-item reset-btn"
                                 onClick={this.openTour}
-                                onKeyPress={this.openTour}
-                                role="button"
-                                tabIndex={0}
+                                onKeyPress={passEventForKeys(this.openTour)}
+                                type="button"
+                                key="open-tour"
                             >
                                 <FontAwesome
                                     className="super-crazy-colors"
@@ -137,41 +130,9 @@ export default class ProblemHeader extends Component {
                                     style={{ textShadow: '0 1px 0 rgba(0, 0, 0, 0.1)' }}
                                 />
                                 {Locales.strings.tutorial}
-                            </a>
-                            <a
-                                className="dropdown-item"
-                                href="https://intercom.help/benetech/en"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                onClick={() => {
-                                    googleAnalytics('click help center');
-                                }}
-                            >
-                                <FontAwesome
-                                    className="super-crazy-colors"
-                                    name="comment"
-                                    style={{ textShadow: '0 1px 0 rgba(0, 0, 0, 0.1)' }}
-                                />
-                                {Locales.strings.help_center}
-                            </a>
-                            <a
-                                href="https://docs.google.com/forms/d/e/1FAIpQLScSZJo47vQM_5ci2MOgBbJW7WM6FbEi2xABR5qSZd8oD2RZEg/viewform?usp=sf_link"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="dropdown-item"
-                                onClick={() => {
-                                    googleAnalytics('click feedback');
-                                }}
-                            >
-                                <FontAwesome
-                                    className="super-crazy-colors"
-                                    name="arrow-circle-right"
-                                    style={{ textShadow: '0 1px 0 rgba(0, 0, 0, 0.1)' }}
-                                />
-                                {Locales.strings.provide_feedback}
-                            </a>
-                        </div>
-                    </li>
+                            </button>,
+                        ]}
+                    </HeaderDropdown>
                 </div>
             );
 
@@ -180,6 +141,11 @@ export default class ProblemHeader extends Component {
 
         return (
             <React.Fragment>
+                <GlobalHotKeys
+                    keyMap={completeKeyMap}
+                    handlers={this.handlers}
+                    allowChanges
+                />
                 <div className={`d-flex flex-row ${problem.header}`}>
                     <div className={problem.backBtnContainer}>
                         <Button
@@ -214,10 +180,23 @@ export default class ProblemHeader extends Component {
                         }
                     />
                 </div>
-                <div className={`d-flex flex-row ${problem.subHeader}`}>
-                    {imgButton}
-                    <h1 id="ProblemTitle" className={problem.title}>{title}</h1>
-                    <span id="ProblemMath" className={`${problem.title} ${problem.question}`}>{`$$${this.props.math}$$`}</span>
+                <div id="mainContainer">
+                    <div id="subHeader" className={`d-flex flex-row ${problem.subHeader}`} tabIndex={-1}>
+                        {imgButton}
+                        <h1 id="ProblemTitle" className={problem.title} tabIndex={-1}>
+                            {title}
+                            <span className="sROnly">
+                                {mathLive.latexToSpeakableText(
+                                    this.props.math,
+                                    {
+                                        textToSpeechRules: 'sre',
+                                        textToSpeechRulesOptions: { domain: 'clearspeak', style: 'default', markup: 'none' },
+                                    },
+                                )}
+                            </span>
+                        </h1>
+                        <span id="ProblemMath" className={`${problem.title} ${problem.question}`}>{`$$${this.props.math}$$`}</span>
+                    </div>
                 </div>
             </React.Fragment>
         );

@@ -34,8 +34,6 @@ export default class MyWork extends Component {
         this.InitScratchPad = this.InitScratchPad.bind(this);
         this.displayScratchpadImage = this.displayScratchpadImage.bind(this);
         this.loadImage = this.loadImage.bind(this);
-
-        document.onkeydown = this.HandleKeyDown.bind(this);
     }
 
     componentDidMount() {
@@ -47,6 +45,7 @@ export default class MyWork extends Component {
                 );
             });
         }
+        document.getElementById('mathEditorActive').addEventListener('keydown', this.HandleKeyDown);
     }
 
     getScratchPadValue = () => {
@@ -73,14 +72,14 @@ export default class MyWork extends Component {
         return undefined;
     }
 
-    HandleKeyDown(event) {
+    HandleKeyDown = (event) => {
         const keyShortcuts = new Map(JSON.parse(sessionStorage.keyShortcuts));
-        if (event.shiftKey && this.props.theActiveMathField.selectionIsCollapsed()) {
+        if (event.shiftKey && this.props.theActiveMathField.$selectionIsCollapsed()) {
             // if an insertion cursor, extend the selection unless we are at an edge
-            if (event.key === 'Backspace' && !this.props.theActiveMathField.selectionAtStart()) {
-                this.props.theActiveMathField.perform('extendToPreviousChar');
-            } else if (event.key === 'Delete' && !this.props.theActiveMathField.selectionAtEnd()) {
-                this.props.theActiveMathField.perform('extendToNextChar');
+            if (event.key === 'Backspace' && !this.props.theActiveMathField.$selectionAtStart()) {
+                this.props.theActiveMathField.$perform('extendToPreviousChar');
+            } else if (event.key === 'Delete' && !this.props.theActiveMathField.$selectionAtEnd()) {
+                this.props.theActiveMathField.$perform('extendToNextChar');
             }
         }
         if (event.shiftKey && event.key === 'Enter' && $('#mathAnnotation').val() !== '') {
@@ -104,7 +103,7 @@ export default class MyWork extends Component {
             keys.push('Ctrl');
             if (event.key === ' ') {
                 // eslint-disable-next-line no-useless-escape
-                this.props.theActiveMathField.perform(['insert', '\\\ ']);
+                this.props.theActiveMathField.$perform(['insert', '\\\ ']);
             }
         }
         keys.push(event.key);

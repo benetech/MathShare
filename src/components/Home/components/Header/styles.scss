@@ -11,6 +11,26 @@ header nav.navbar {
 
   .navbarBrandContainer {
     flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+
+    :global(.navbar-brand) {
+      order: 1;
+    }
+
+    .skip {
+      color: white;
+      white-space: nowrap;
+      order: 2;
+      margin: auto 0;
+
+      &:hover,
+      &:focus {
+        @extend .skip;
+        cursor: pointer;
+        text-decoration: none;
+      }
+    }
   }
 
   :global(.nav-item.avatar) {
@@ -59,6 +79,11 @@ header nav.navbar {
       outline: none;
     }
   }
+
+  // ul:global(.dropdown-menu) {
+  //   right: unset;
+  //   left: unset;
+  // }
 }
 
 .feedback {
@@ -87,12 +112,6 @@ header nav.navbar {
   font: caption;
 }
 
-@media only screen and (max-width: 991px) {
-  .googleSignInContainer {
-    margin-right: 15px;
-  }
-}
-
 @media (max-width: 991px) {
   :global(.navbar-collapse) {
     order: 2;
@@ -101,4 +120,13 @@ header nav.navbar {
 
 :global(.dropdonw-toggle) {
   cursor: pointer;
+}
+
+a.signInLink {
+  background-color: #fafafa;
+  margin-left: 15px;
+
+  span {
+    margin-left: 12px;
+  }
 }

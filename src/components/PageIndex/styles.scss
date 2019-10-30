@@ -1,0 +1,42 @@
+@import '../../styles/links.scss';
+
+.meta {
+    font-size: 12px;
+    align-self: flex-end;
+    margin: auto;
+}
+
+.title {
+    flex: 1;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-right: 10px;
+    margin: auto;
+}
+
+.problemSetList {
+    margin-top: 20px;
+    margin-bottom: 40px;
+}
+
+.problemSetDropdown {
+    padding: 0 10px;
+    margin-left: 20px;
+}
+
+.signInLink {
+    cursor: pointer;
+    border-bottom: 1px solid;
+    padding-bottom: 2px;
+
+    &,
+    &:hover {
+        @extend .resetLink;
+    }
+}
+
+.signInContainer {
+    margin-bottom: 50px;
+}

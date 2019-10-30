@@ -1,18 +1,69 @@
 import React, { Component } from 'react';
 import classNames from 'classnames';
+import { GlobalHotKeys } from 'react-hotkeys';
 import Step from './components/Step';
 import myStepsList from './styles.scss';
 import mySteps from '../../../../styles.scss';
 import MyWork from '../../../MyWork';
 import Locales from '../../../../../../strings';
 import Button from '../../../../../Button';
+import { stopEvent } from '../../../../../../services/events';
+import { getScreenReaderText } from '../../../../../../services/screenReader';
+import completeKeyMap from '../../../../../../constants/hotkeyConfig.json';
 
 
 export default class MyStepsList extends Component {
     constructor(props) {
         super(props);
-
+        this.state = {
+            readStep: 0,
+        };
         this.buildStep = this.buildStep.bind(this);
+        this.handlers = {
+            READ_NEXT_STEP: this.readNextStep,
+            READ_PREVIOUS_STEP: this.readPreviousStep,
+        };
+        this.keyMap = {
+            READ_NEXT_STEP: completeKeyMap.READ_NEXT_STEP,
+            READ_PREVIOUS_STEP: completeKeyMap.READ_PREVIOUS_STEP,
+        };
+        for (let index = 1; index < 10; index += 1) {
+            this.handlers[`READ_STEP_${index}`] = this.readStep(index);
+            this.keyMap[`READ_STEP_${index}`] = {
+                name: `Read step no ${index}`,
+                sequences: [
+                    {
+                        sequence: `ctrl+alt+${index}`,
+                    },
+                ],
+                action: 'keyup',
+            };
+        }
+    }
+
+    readStep = index => (e) => {
+        const step = document.getElementById(`mathStep-${index}`);
+        if (step) {
+            const text = getScreenReaderText(step);
+            this.props.announceOnAriaLive(text);
+            this.setState({
+                readStep: index,
+            });
+        } else {
+            this.props.announceOnAriaLive(`${Locales.strings.no_step_number} ${index}`);
+        }
+        setTimeout(() => {
+            this.props.clearAriaLive();
+        }, 1000);
+        return stopEvent(e);
+    }
+
+    readNextStep = (e) => {
+        this.readStep(this.state.readStep + 1)(e);
+    }
+
+    readPreviousStep = (e) => {
+        this.readStep(this.state.readStep - 1)(e);
     }
 
     buildStep(i, value, explanation, isCleanup, isEdited, scratchpad, stepsSize) {
@@ -94,6 +145,11 @@ export default class MyStepsList extends Component {
 
         return (
             <div id="HistoryWrapper" className={mySteps.historyWrapper}>
+                <GlobalHotKeys
+                    keyMap={this.keyMap}
+                    handlers={this.handlers}
+                    allowChanges
+                />
                 <div
                     className="row"
                     data-step="4"

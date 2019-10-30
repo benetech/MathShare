@@ -1,0 +1,42 @@
+nav.navbar {
+    background-color: #ffffff;
+    border-bottom: 2px solid #f1f1f1;
+
+    h2 {
+        font-size: 18px;
+        width: 100%;
+        margin: 0;
+        padding: 10px;
+    }
+
+    .fullWidth {
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
+
+        .getNotified {
+            padding: 5px 18px;
+        }
+    }
+
+    button:hover {
+        cursor: pointer;
+    }
+}
+
+.inputContainer {
+    input {
+        border: 1px solid #6c757d;
+        padding: 5px 15px;
+        border-radius: 5px;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+
+    button {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        position: relative;
+        top: -2px;
+    }
+}

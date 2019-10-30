@@ -41,11 +41,9 @@ export default class TitleEditModal extends Component {
                             type="text"
                             value={this.state.title}
                             id="editTitle"
-                            className={editor.saveLink}
+                            className={editor.editTitle}
                             onChange={this.updateTitle}
                         />
-                        <br />
-                        <br />
                     </div>
                     <footer className={editor.modalFooter}>
                         <Button

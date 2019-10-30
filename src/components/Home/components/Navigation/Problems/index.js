@@ -36,36 +36,39 @@ export default class Problems extends Component {
         const { action } = this.props;
         const SortableItem = SortableElement(({
             problem, number, example, addNew, code, solutions,
-        }) => (
-            <li>
-                <NavigationProblem
-                    solutions={solutions}
-                    problem={problem}
-                    number={number}
-                    example={example}
-                    addNew={addNew}
-                    action={action}
-                    code={code}
-                    showRemove={this.props.editing && (!example && !addNew)}
-                    activateModals={this.props.activateModals}
-                    setEditProblem={this.props.setEditProblem}
-                />
-            </li>
-        ));
+        }) => {
+            const ItemTag = (addNew ? 'div' : 'li');
+            return (
+                <ItemTag>
+                    <NavigationProblem
+                        solutions={solutions}
+                        problem={problem}
+                        number={number}
+                        example={example}
+                        addNew={addNew}
+                        action={action}
+                        code={code}
+                        showRemove={this.props.editing && (!example && !addNew)}
+                        activateModals={this.props.activateModals}
+                        setEditProblem={this.props.setEditProblem}
+                    />
+                </ItemTag>
+            );
+        });
 
         const newProblem = this.props.editing
-            ? <SortableItem key="item-new" addNew index={this.state.problems.length + 1} disabled /> : null;
+            ? <SortableItem key="item-new" addNew index={this.state.problems.length + 1} number={this.state.problems.length + 1} disabled /> : null;
 
         const SortableList = SortableContainer(({ problems, solutions }) => (
-            <div className={styles.container}>
-                <ol className={`justify-content-around ${styles.problemList}`} aria-label={Locales.strings.problems}>
+            <div className={`${styles.container} ${styles.problemList} justify-content-around`}>
+                <ol aria-label={Locales.strings.problems}>
                     {problems.map((problem, index) => (
                         problem
                             ? <SortableItem key={`item-${index}`} index={index + 1} problem={problem} solutions={solutions} number={index} disabled={!this.props.editing} action={action} code={this.props.code} />
                             : null
                     ))}
-                    {newProblem}
                 </ol>
+                {newProblem}
             </div>
         ));
 

@@ -4,15 +4,19 @@ import {
     SERVER_URL,
 } from '../../config';
 
-export const fetchDefaultRevisionApi = () => axios.get(`${SERVER_URL}/problemSet/defaultRevision`);
+import {
+    commonRequestConfig,
+} from '../../constants/requestConfig';
 
-export const fetchExampleSetsApi = () => axios.get(`${SERVER_URL}/problemSet/exampleSets`);
+export const fetchDefaultRevisionApi = () => axios.get(`${SERVER_URL}/problemSet/defaultRevision`, commonRequestConfig);
 
-export const fetchProblemsByRevisionCodeApi = revisionCode => axios.get(`${SERVER_URL}/problemSet/revision/${revisionCode}`);
+export const fetchExampleSetsApi = () => axios.get(`${SERVER_URL}/problemSet/exampleSets`, commonRequestConfig);
 
-export const fetchProblemsByEditCodeApi = editCode => axios.get(`${SERVER_URL}/problemSet/${editCode}`);
+export const fetchProblemsByRevisionCodeApi = revisionCode => axios.get(`${SERVER_URL}/problemSet/revision/${revisionCode}`, commonRequestConfig);
 
-export const fetchProblemsByReviewCodeApi = reviewCode => axios.get(`${SERVER_URL}/solution/review/${reviewCode}`);
+export const fetchProblemsByEditCodeApi = editCode => axios.get(`${SERVER_URL}/problemSet/${editCode}`, commonRequestConfig);
+
+export const fetchProblemsByReviewCodeApi = reviewCode => axios.get(`${SERVER_URL}/solution/review/${reviewCode}`, commonRequestConfig);
 
 export const fetchProblemsByActionAndCodeApi = (action, code) => {
     if (action === 'view') {
@@ -31,11 +35,11 @@ export const updateProblemsApi = (editCode, shareCode, problems, title) => axios
     problems,
     shareCode,
     title,
-});
+}, commonRequestConfig);
 
-export const saveProblemSetApi = set => axios.post(`${SERVER_URL}/problemSet/`, set);
+export const saveProblemSetApi = set => axios.post(`${SERVER_URL}/problemSet/`, set, commonRequestConfig);
 
-export const fetchEditableProblemSetSolutionApi = editCode => axios.get(`${SERVER_URL}/solution/solve/${editCode}`);
+export const fetchEditableProblemSetSolutionApi = editCode => axios.get(`${SERVER_URL}/solution/solve/${editCode}`, commonRequestConfig);
 
 export default {
     fetchDefaultRevisionApi,

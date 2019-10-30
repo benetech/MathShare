@@ -189,7 +189,7 @@ function* addProblemSaga() {
             } = yield select(getState);
 
             const problem = {
-                text: theActiveMathField.latex(),
+                text: theActiveMathField.$latex(),
                 title: text,
                 scratchpad: imageData,
                 position: index,
@@ -215,7 +215,7 @@ function* addProblemSaga() {
                 });
             }
 
-            theActiveMathField.latex('$$$$');
+            theActiveMathField.$latex('$$$$');
 
             // mathLive.renderMathInDocument();
             scrollTo('container', 'myWorkFooter');
@@ -336,7 +336,7 @@ function* requestEditProblemSaga() {
                                 ...problem,
                                 title,
                                 scratchpad: imageData,
-                                text: theActiveMathField.latex(),
+                                text: theActiveMathField.$latex(),
                             };
                         }
                         return problem;
@@ -349,7 +349,7 @@ function* requestEditProblemSaga() {
                             ...problem,
                             title,
                             scratchpad: imageData,
-                            text: theActiveMathField.latex(),
+                            text: theActiveMathField.$latex(),
                         };
                     }
                     return problem;
@@ -530,7 +530,9 @@ function* requestUpdateTitleSaga() {
 }
 
 function* reqestDuplicateProblemSet() {
-    yield takeLatest('DUPLICATE_PROBLEM_SET', function* workerSaga() {
+    yield takeLatest('DUPLICATE_PROBLEM_SET', function* workerSaga({
+        payload,
+    }) {
         try {
             const {
                 set,
@@ -538,6 +540,7 @@ function* reqestDuplicateProblemSet() {
             } = yield select(getState);
             const setPayload = {
                 ...set,
+                ...payload,
                 palettes: tempPalettes,
             };
             const {

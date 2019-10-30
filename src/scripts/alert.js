@@ -1,23 +1,51 @@
-import { NotificationManager } from 'react-notifications';
+import React from 'react';
+import { toast } from 'react-toastify';
 
-const ALERT_DELAY_MS = 4000;
+const ALERT_DELAY_MS = 10000;
 
-function alertInfo(message, title) {
-    NotificationManager.info(message, title, ALERT_DELAY_MS);
+const commonProps = {
+    position: toast.POSITION.TOP_RIGHT,
+    autoClose: ALERT_DELAY_MS,
+    closeButton: false,
+};
+
+function getCommonAlert(title, message, id = undefined, anchor = null) {
+    return (
+        <div className="toast-common" role="alert">
+            <h2 id={id} tabIndex={-1}>
+                {title}
+            </h2>
+            <div>{message}</div>
+            {anchor && <a href={anchor.link}>{anchor.text}</a>}
+        </div>
+    );
 }
 
-function alertSuccess(message, title) {
-    NotificationManager.success(message, title, ALERT_DELAY_MS);
+function alertInfo(message, title) {
+    toast.info(getCommonAlert(title, message), commonProps);
+}
+
+function alertSuccess(message, title, id = undefined) {
+    toast.success(getCommonAlert(title, message, id), { ...commonProps, toastId: id });
+}
+
+function alertError(message, title, id = undefined, anchor = null) {
+    toast.error(getCommonAlert(title, message, id, anchor), { ...commonProps, toastId: id });
 }
 
 function alertWarning(message, title) {
-    NotificationManager.warning(message, title, ALERT_DELAY_MS);
+    toast.warn(getCommonAlert(title, message), commonProps);
 }
 
-function alertError(message, title) {
-    NotificationManager.error(message, title, ALERT_DELAY_MS);
+function focusOnAlert(id) {
+    setTimeout(() => {
+        const alert = document.getElementById(id);
+        if (alert) {
+            alert.focus();
+        }
+    }, 0);
 }
 
 export {
-    alertInfo, alertSuccess, alertWarning, alertError,
+    alertInfo, alertSuccess, alertWarning, alertError, focusOnAlert,
 };

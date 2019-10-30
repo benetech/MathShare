@@ -8,11 +8,6 @@ import ideaLogo from '../../../../../images/ideas-that-work-logo.svg';
 const MainPageFooter = ({ customClass }) => (
     <div className={`${footer.footer} ${customClass || ''}`}>
         <div className={footer.footerContainer}>
-            <h2 className="sROnly">
-                {' '}
-                {Locales.strings.footer}
-                {' '}
-            </h2>
             <div>
                 <div className={footer.edGov}>
                     <a href="https://www2.ed.gov/about/offices/list/osers/osep/index.html" target="_blank" rel="noopener noreferrer">
@@ -21,14 +16,23 @@ const MainPageFooter = ({ customClass }) => (
                             src={ideaLogo}
                             alt={Locales.strings.idea_logo_alt}
                             height="50"
-                            aria-label="ideas that work logo"
                         />
+                        <span className="sROnly">
+                            {'\u00A0'}
+                            {Locales.strings.opens_in_new_tab}
+                        </span>
                     </a>
                 </div>
                 <div className={footer.footerText}>
                     {Locales.strings.the}
                     {' '}
-                    <a href="http://diagramcenter.org/" target="_blank" rel="noopener noreferrer">{Locales.strings.diagram_center}</a>
+                    <a href="http://diagramcenter.org/" target="_blank" rel="noopener noreferrer">
+                        {Locales.strings.diagram_center}
+                        <span className="sROnly">
+                            {'\u00A0'}
+                            {Locales.strings.opens_in_new_tab}
+                        </span>
+                    </a>
                     {Locales.strings.is_a}
                     <a
                         href="http://www.benetech.org/"
@@ -36,6 +40,10 @@ const MainPageFooter = ({ customClass }) => (
                         rel="noopener noreferrer"
                     >
                         {Locales.strings.benetech}
+                        <span className="sROnly">
+                            {'\u00A0'}
+                            {Locales.strings.opens_in_new_tab}
+                        </span>
                     </a>
                     {Locales.strings.footer_description}
                 </div>
@@ -48,6 +56,10 @@ const MainPageFooter = ({ customClass }) => (
                         alt="Benetech Logo"
                         height="50"
                     />
+                    <span className="sROnly">
+                        {'\u00A0'}
+                        {Locales.strings.opens_in_new_tab}
+                    </span>
                 </a>
             </div> */}
 

@@ -11,7 +11,6 @@ const mathLive = process.env.MATHLIVE_DEBUG_MODE ? require('../../../../../../ma
 export default class ProblemModal extends Component {
     componentDidMount() {
         mathLive.renderMathInDocument();
-        console.log(mathLive);
     }
 
     copyShareLink = () => {

@@ -5,17 +5,26 @@
 
     .tile {
         background-color: #fafafa;
+        display: flex;
+        flex-direction: row;
+
+        .navItemButton {
+            padding-top: 24px;
+            flex: 1;
+            height: 100%;
+            margin: auto;
+        }
     }
 
-    >button {
-        padding: 0;
+    >a {
         box-sizing: border-box;
+        padding-bottom: 2.5rem;
         // display: flex;
         // flex-direction: column;
 
-        >div {
-            padding: 1.0rem 1.25rem;
-            max-height: calc(100% - 10px);
+        >.navItemContent {
+            padding: 0 1.25rem;
+            max-height: 100%;
             // position: absolute;
             // width: 100%;
         }
@@ -49,27 +58,20 @@
 }
 
 .trashIcon {
-    position: absolute;
-    left: 96%;
-    bottom: -7%;
+    position: relative;
+    bottom: 2px;
 }
 
 .plusIcon {
-    position: absolute;
-    left: 95%;
-    bottom: -7%;
+    // left: 95%;
 }
 
 .editIcon {
-    position: absolute;
-    left: 83%;
-    bottom: -8%;
+    // left: 83%;
 }
 
 .imgIcon {
-    position: absolute;
-    left: 93%;
-    top: -7%;
+    // left: 93%;
 }
 
 .navSpan {
@@ -90,6 +92,10 @@
 .navItemContent {
     align-items: center;
     display: flex;
+
+    &.emptyOverflow {
+        height: 56px;
+    }
 }
 
 .equation {
@@ -115,4 +121,25 @@
 
 .contentOverflownVertically {
     flex-direction: column;
+}
+
+// button {
+//     &.container {
+//         padding: 10px 15px 25px 15px;
+//     }
+// }
+
+.problem {
+    .btnContainer {
+        position: absolute;
+        text-align: right;
+        bottom: 1px;
+        right: 4px;
+        padding: 0;
+
+        >span {
+            padding-left: 10px;
+        }
+    }
+
 }
