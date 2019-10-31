@@ -9,7 +9,9 @@
     padding: 0;
 
     ol {
-        display: contents;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-evenly;
     }
 
     >ol li,
