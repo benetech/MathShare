@@ -372,7 +372,6 @@ class App extends Component {
                     }}
                 />
                 {this.renderDialog()}
-                <AriaLiveAnnouncer />
                 <GlobalHotKeys keyMap={keyMap} handlers={this.handlers} allowChanges />
                 <ToastContainer />
                 <div className={`body-container ${this.getAdditionalClass()}`}>
@@ -449,6 +448,7 @@ class App extends Component {
                     <MainPageFooter customClass="footer" />
                     <SocialFooter />
                 </footer>
+                <AriaLiveAnnouncer />
             </React.Fragment>
         );
     }

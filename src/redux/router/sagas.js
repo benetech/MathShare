@@ -12,6 +12,7 @@ import {
 } from 'connected-react-router';
 import { announceOnAriaLive } from '../ariaLiveAnnouncer/actions';
 import { focusOnMainContent } from '../../services/events';
+import Locales from '../../strings';
 import {
     getRouterHookState,
 } from './selectors';
@@ -31,7 +32,8 @@ function* changeTitleSaga() {
             newTitle = title.join('');
         }
         if (newTitle && currentTitle !== newTitle) {
-            yield put(announceOnAriaLive(newTitle));
+            const announceTitle = newTitle.split(` - ${Locales.strings.mathshare_benetech}`)[0];
+            yield put(announceOnAriaLive(announceTitle));
             yield put(setTitle(newTitle));
         }
     });
