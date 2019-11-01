@@ -11,8 +11,11 @@ const SiteMapFooter = ({ customClass }) => (
                 <div className="d-flex flex-row">
                     <img src={footerLogo} alt={Locales.strings.benetech_logo} />
                     <div className={footer.mAuto}>
-                        <p>{Locales.strings.mathshare_is_a}</p>
-                        <p>{Locales.strings.benetech_initiative}</p>
+                        <p>
+                            {Locales.strings.mathshare_is_a}
+                            {' '}
+                            {Locales.strings.benetech_initiative}
+                        </p>
                     </div>
                 </div>
                 <div className={footer.footerLine}>
