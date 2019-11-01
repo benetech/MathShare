@@ -73,7 +73,7 @@ const SiteMapFooter = ({ customClass }) => (
                 </div>
                 <div>
                     <h3 id="listTitle__connect" className={footer.listTitle}>{Locales.strings.connect}</h3>
-                    <ul>
+                    <ul aria-labelledby="listTitle__connect">
                         <li>
                             <a
                                 href="https://www.youtube.com/channel/UCfgAVftyG4bdAepSzgZvTrQ"
