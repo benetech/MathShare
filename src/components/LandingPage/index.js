@@ -80,9 +80,9 @@ const LandingPage = ({ setAuthRedirect, userProfile }) => (
                 <div className={styles.content}>
                     <section className={styles.feature}>
                         <div className={styles.textSection}>
-                            <p id="show_their_work" className={styles.header} tabIndex={-1}>
+                            <h2 id="show_their_work" className={styles.header} tabIndex={-1}>
                                 {Locales.strings.show_their_work}
-                            </p>
+                            </h2>
                             <p className={styles.textContent} tabIndex={-1}>
                                 {Locales.strings.students_can_solve}
                             </p>
@@ -93,9 +93,9 @@ const LandingPage = ({ setAuthRedirect, userProfile }) => (
                     </section>
                     <section className={`${styles.feature} ${styles.reverse}`}>
                         <div className={styles.textSection}>
-                            <p id="accessible_to_all" className={styles.header} tabIndex={-1}>
+                            <h2 id="accessible_to_all" className={styles.header} tabIndex={-1}>
                                 {Locales.strings.accessible_to_all}
-                            </p>
+                            </h2>
                             <p className={styles.textContent} tabIndex={-1}>
                                 {Locales.strings.students_with_and_without}
                             </p>
@@ -106,9 +106,9 @@ const LandingPage = ({ setAuthRedirect, userProfile }) => (
                     </section>
                     <section className={styles.feature}>
                         <div className={styles.textSection}>
-                            <p id="lms_integration" className={styles.header} tabIndex={-1}>
+                            <h2 id="lms_integration" className={styles.header} tabIndex={-1}>
                                 {Locales.strings.lms_integration}
-                            </p>
+                            </h2>
                             <p className={styles.textContent} tabIndex={-1}>
                                 {Locales.strings.use_on_your_lms}
                             </p>
@@ -119,9 +119,9 @@ const LandingPage = ({ setAuthRedirect, userProfile }) => (
                     </section>
                     <section className={`${styles.feature} ${styles.reverse}`}>
                         <div className={styles.textSection}>
-                            <p id="free_and_open_source" className={styles.header} tabIndex={-1}>
+                            <h2 id="free_and_open_source" className={styles.header} tabIndex={-1}>
                                 {Locales.strings.free_and_open_source}
-                            </p>
+                            </h2>
                             <p className={styles.textContent} tabIndex={-1}>
                                 {Locales.strings.mathshare_is_a_free}
                             </p>
