@@ -265,6 +265,7 @@ class Locales {
                 underbar: 'line',
                 undo_last_action: 'Undo Last Action (⌨: shift+backspace)',
                 undo_step: ' Undo',
+                untitled_problem_set: 'Untitled Problem Set',
                 update_problem: ' Update Problem',
                 update_problem_button_title: 'Update the problem (⌨: shift+enter)',
                 update_problem_intro: 'Update the problem.',

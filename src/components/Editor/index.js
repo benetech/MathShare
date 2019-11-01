@@ -195,7 +195,7 @@ class Editor extends Component {
             if (problemList.set.title) {
                 titlePrefix = `${problemList.set.title} - `;
             } else {
-                titlePrefix = 'Untitled Problem Set - ';
+                titlePrefix = `${Locales.strings.untitled_problem_set} - `;
             }
         } else {
             return null;

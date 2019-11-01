@@ -159,7 +159,7 @@ class Home extends Component {
                 <div className="row">
                     <div className={classNames('col-lg-12', 'm-3', 'text-left')}>
                         <h1 id="LeftNavigationHeader" className={home.titleHeader} tabIndex="-1">
-                            {currentSet.title}
+                            {currentSet.title || Locales.strings.untitled_problem_set}
                         </h1>
                         <button
                             className="reset-btn"
@@ -343,7 +343,7 @@ class Home extends Component {
             if (problemList.set.title) {
                 titlePrefix = `${problemList.set.title} - `;
             } else {
-                titlePrefix = 'Untitled Problem Set - ';
+                titlePrefix = `${Locales.strings.untitled_problem_set} - `;
             }
         } else {
             return null;
