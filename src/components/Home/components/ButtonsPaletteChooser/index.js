@@ -46,21 +46,23 @@ export default class PaletteChooser extends Component {
         const mathPalette = palettes.map((palette) => {
             const id = `key-${palette.label}`;
             const checkBoxId = `${id}-pallete-cb`;
+            const labelId = `paletteLabel-${id}`;
             return (
                 <div key={id} className={styles.paletteRow}>
-                    <h2 id="paletteLabel" className={styles.paletteLabel}>
+                    <h2 id={labelId} className={styles.paletteLabel}>
                         {palette.label}
                     </h2>
-                    <div id="paletteButtons" className={styles.paletteButtons}>
+                    <div id={`paletteButtons-${id}`} className={styles.paletteButtons}>
                         <MathButtonsGroup
                             palette={palette}
                             theActiveMathField={this.props.theActiveMathField}
                             showLabel={false}
+                            labelId={labelId}
                             readOnly
                             hideShortcuts
                         />
                     </div>
-                    <div id="checkBox" className={styles.checkBox}>
+                    <div id={`checkBox-${id}`} className={styles.checkBox}>
                         <input type="checkbox" name="name" id={checkBoxId} onChange={() => this.handleChange(palette.label)} />
                         <label htmlFor={checkBoxId} className="sROnly">
                             {(this.state.chosenPalettes.includes(palette.label)) ? 'Disable' : 'Enable'}
