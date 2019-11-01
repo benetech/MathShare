@@ -4,6 +4,7 @@
     font-size: 12px;
     align-self: flex-end;
     margin: auto;
+    margin-right: 50px;
 }
 
 .title {
@@ -39,4 +40,9 @@
 
 .signInContainer {
     margin-bottom: 50px;
+}
+
+:global(.card) .dropdownContainer {
+    position: absolute;
+    right: 10px;
 }

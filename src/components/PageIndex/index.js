@@ -100,74 +100,74 @@ class Index extends Component {
                     {' '}
                     {Locales.strings.problems}
                 </span>
-                <div className="dropdown">
-                    <button
-                        className={`btn dropdown-toggle ${pageIndex.problemSetDropdown}`}
-                        type="button"
-                        id={`dropdownMenuButton-${index}`}
-                        data-toggle="dropdown"
-                        aria-expanded="false"
-                        onClick={(e) => {
-                            stopEvent(e);
-                        }}
-                    >
-                        <FontAwesome
-                            name="ellipsis-v"
-                        />
-                        <span className="sROnly">{Locales.strings.more_options}</span>
-                    </button>
-                    <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <li>
-                            <button
-                                className="dropdown-item reset-btn"
-                                onClick={this.duplicateProblemSet(
-                                    problemSet,
-                                )}
-                                onKeyPress={
-                                    passEventForKeys(
-                                        this.duplicateProblemSet(
-                                            problemSet,
-                                        ),
-                                    )
-                                }
-                                type="button"
-                            >
-                                <FontAwesome
-                                    size="lg"
-                                    name="copy"
-                                />
-                                {` ${Locales.strings.duplicate_set}`}
-                                <span className="sROnly">
-                                    {'\u00A0'}
-                                    {Locales.strings.opens_in_new_tab}
-                                </span>
-                            </button>
-                        </li>
-                        <li>
-                            <button
-                                className="dropdown-item reset-btn"
-                                onClick={shareOnTwitter(
-                                    problemSet.shareCode,
-                                )}
-                                onKeyPress={passEventForKeys(shareOnTwitter(
-                                    problemSet.shareCode,
-                                ))}
-                                type="button"
-                            >
-                                <FontAwesome
-                                    size="lg"
-                                    name="twitter"
-                                />
-                                {` ${Locales.strings.share_on_twitter}`}
-                                <span className="sROnly">
-                                    {'\u00A0'}
-                                    {Locales.strings.opens_in_new_tab}
-                                </span>
-                            </button>
-                        </li>
-                    </ul>
-                </div>
             </a>
+            <div className={`dropdown ${pageIndex.dropdownContainer}`}>
+                <button
+                    className={`btn dropdown-toggle ${pageIndex.problemSetDropdown}`}
+                    type="button"
+                    id={`dropdownMenuButton-${index}`}
+                    data-toggle="dropdown"
+                    aria-expanded="false"
+                    onClick={(e) => {
+                        stopEvent(e);
+                    }}
+                >
+                    <FontAwesome
+                        name="ellipsis-v"
+                    />
+                    <span className="sROnly">{Locales.strings.more_options}</span>
+                </button>
+                <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <li>
+                        <button
+                            className="dropdown-item reset-btn"
+                            onClick={this.duplicateProblemSet(
+                                problemSet,
+                            )}
+                            onKeyPress={
+                                passEventForKeys(
+                                    this.duplicateProblemSet(
+                                        problemSet,
+                                    ),
+                                )
+                            }
+                            type="button"
+                        >
+                            <FontAwesome
+                                size="lg"
+                                name="copy"
+                            />
+                            {` ${Locales.strings.duplicate_set}`}
+                            <span className="sROnly">
+                                {'\u00A0'}
+                                {Locales.strings.opens_in_new_tab}
+                            </span>
+                        </button>
+                    </li>
+                    <li>
+                        <button
+                            className="dropdown-item reset-btn"
+                            onClick={shareOnTwitter(
+                                problemSet.shareCode,
+                            )}
+                            onKeyPress={passEventForKeys(shareOnTwitter(
+                                problemSet.shareCode,
+                            ))}
+                            type="button"
+                        >
+                            <FontAwesome
+                                size="lg"
+                                name="twitter"
+                            />
+                            {` ${Locales.strings.share_on_twitter}`}
+                            <span className="sROnly">
+                                {'\u00A0'}
+                                {Locales.strings.opens_in_new_tab}
+                            </span>
+                        </button>
+                    </li>
+                </ul>
+            </div>
         </li>
     )
 
