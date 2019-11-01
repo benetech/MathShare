@@ -112,6 +112,7 @@ class SignIn extends Component {
                         onClick={this.goBack}
                         onKeyPress={passEventForKeys(this.goBack)}
                         type="button"
+                        role="link"
                     >
                         <u>{Locales.strings.continue_without_signing_in}</u>
                     </button>
