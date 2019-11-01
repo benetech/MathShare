@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import classNames from 'classnames';
 import FontAwesome from 'react-fontawesome';
+import { isNumber } from 'util';
 import {
     EDIT_PROBLEM, CONFIRMATION, ADD_PROBLEMS, ADD_PROBLEM_SET,
 } from '../../../../ModalContainer';
@@ -263,7 +264,7 @@ export default class Problem extends Component {
             }
             return (
                 <div
-                    id={`problem-${((this.props.number && this.props.number + 1) || 'new')}`}
+                    id={`problem-${((isNumber(this.props.number) && this.props.number + 1) || 'new')}`}
                     className={
                         classNames(
                             'd-flex',

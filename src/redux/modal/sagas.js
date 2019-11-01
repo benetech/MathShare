@@ -68,13 +68,12 @@ function* toggleModalSaga() {
         }
         yield put(updateActiveModals(updatedModals));
         if (modals.includes(ADD_PROBLEMS)) {
-            const container = document.getElementById('problem-new');
-            if (container) {
-                const anchors = container.querySelector('a');
-                if (anchors) {
-                    anchors.focus();
+            setTimeout(() => {
+                const button = document.querySelector('#problem-new > button');
+                if (button) {
+                    button.focus();
                 }
-            }
+            }, 100);
         }
     });
 }
