@@ -59,9 +59,9 @@ const LandingPage = ({ setAuthRedirect, userProfile }) => (
                     {Locales.strings.help_students}
                 </h1>
                 <img src={homePhoto} alt={Locales.strings.screenshot_step_by_step} />
-                <h2 className={styles.midBottomText} tabIndex={-1}>
+                <p className={styles.midBottomText} tabIndex={-1}>
                     {Locales.strings.benetech_empowers}
-                </h2>
+                </p>
                 <a
                     href="/#/app"
                     className={styles.btn}
@@ -77,12 +77,12 @@ const LandingPage = ({ setAuthRedirect, userProfile }) => (
             <div className={styles.content}>
                 <section className={styles.feature} aria-labelledby="show_their_work">
                     <div className={styles.textSection}>
-                        <h2 id="show_their_work" className={styles.header} tabIndex={-1}>
+                        <p id="show_their_work" className={styles.header} tabIndex={-1}>
                             {Locales.strings.show_their_work}
-                        </h2>
-                        <h3 className={styles.textContent} tabIndex={-1}>
+                        </p>
+                        <p className={styles.textContent} tabIndex={-1}>
                             {Locales.strings.students_can_solve}
-                        </h3>
+                        </p>
                     </div>
                     <div className={styles.imageSection}>
                         <img src={showWork} alt={Locales.strings.screenshot_math_interface} />
@@ -90,12 +90,12 @@ const LandingPage = ({ setAuthRedirect, userProfile }) => (
                 </section>
                 <section className={`${styles.feature} ${styles.reverse}`} aria-labelledby="accessible_to_all">
                     <div className={styles.textSection}>
-                        <h2 id="accessible_to_all" className={styles.header} tabIndex={-1}>
+                        <p id="accessible_to_all" className={styles.header} tabIndex={-1}>
                             {Locales.strings.accessible_to_all}
-                        </h2>
-                        <h3 className={styles.textContent} tabIndex={-1}>
+                        </p>
+                        <p className={styles.textContent} tabIndex={-1}>
                             {Locales.strings.students_with_and_without}
-                        </h3>
+                        </p>
                     </div>
                     <div className={styles.imageSection}>
                         <img src={syntaxHighlighthing} alt={Locales.strings.mathshare_gif} />
@@ -103,12 +103,12 @@ const LandingPage = ({ setAuthRedirect, userProfile }) => (
                 </section>
                 <section className={styles.feature} aria-labelledby="lms_integration">
                     <div className={styles.textSection}>
-                        <h2 id="lms_integration" className={styles.header} tabIndex={-1}>
+                        <p id="lms_integration" className={styles.header} tabIndex={-1}>
                             {Locales.strings.lms_integration}
-                        </h2>
-                        <h3 className={styles.textContent} tabIndex={-1}>
+                        </p>
+                        <p className={styles.textContent} tabIndex={-1}>
                             {Locales.strings.use_on_your_lms}
-                        </h3>
+                        </p>
                     </div>
                     <div className={styles.imageSection}>
                         <img src={lms} alt={Locales.strings.mathshare_supported_lms} />
@@ -116,12 +116,12 @@ const LandingPage = ({ setAuthRedirect, userProfile }) => (
                 </section>
                 <section className={`${styles.feature} ${styles.reverse}`} aria-labelledby="free_and_open_source">
                     <div className={styles.textSection}>
-                        <h2 id="free_and_open_source" className={styles.header} tabIndex={-1}>
+                        <p id="free_and_open_source" className={styles.header} tabIndex={-1}>
                             {Locales.strings.free_and_open_source}
-                        </h2>
-                        <h3 className={styles.textContent} tabIndex={-1}>
+                        </p>
+                        <p className={styles.textContent} tabIndex={-1}>
                             {Locales.strings.mathshare_is_a_free}
-                        </h3>
+                        </p>
                     </div>
                     <div className={styles.imageSection}>
                         <img src={openSource} alt={Locales.strings.mathshare_open_source} />
