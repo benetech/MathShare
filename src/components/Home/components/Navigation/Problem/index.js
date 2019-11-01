@@ -191,25 +191,15 @@ export default class Problem extends Component {
 
         const plusButton = this.props.addNew
             ? (
-                <button
-                    className="reset-btn"
-                    onClick={this.openNewProblemModal}
-                    onKeyPress={passEventForKeys(this.openNewProblemModal)}
-                    type="button"
-                >
-                    <span className="sROnly">
-                        {Locales.strings.add_problem_title}
-                    </span>
-                    <FontAwesome
-                        className={
-                            classNames(
-                                problemStyle.plusIcon,
-                                'fa-2x',
-                            )
-                        }
-                        name="plus-circle"
-                    />
-                </button>
+                <FontAwesome
+                    className={
+                        classNames(
+                            problemStyle.plusIcon,
+                            'fa-2x',
+                        )
+                    }
+                    name="plus-circle"
+                />
             )
             : null;
 
@@ -259,7 +249,7 @@ export default class Problem extends Component {
             : null;
 
         const NavItem = withRouter(() => {
-            const NavTag = this.props.solutions ? 'a' : 'div';
+            const NavTag = this.props.solutions ? 'a' : 'button';
             const additionalProps = {};
             if (NavTag === 'a') {
                 additionalProps.href = this.getLink();
@@ -296,7 +286,7 @@ export default class Problem extends Component {
                         }
                         {...additionalProps}
                     >
-                        <div
+                        <span
                             className={
                                 classNames(
                                     problemStyle.navItemButton,
@@ -305,7 +295,7 @@ export default class Problem extends Component {
                             }
                         >
                             {wrappedAnnotation}
-                            <div
+                            <span
                                 aria-hidden="true" // math speech is part of link
                                 ref={(el) => { this.navItemContent = el; }}
                                 className={classNames(
@@ -317,15 +307,15 @@ export default class Problem extends Component {
                                 )}
                             >
                                 {equation}
-                            </div>
+                            </span>
                             {speechForMath}
-                        </div>
-                        <div className={problemStyle.btnContainer}>
+                        </span>
+                        <span className={problemStyle.btnContainer}>
                             {imgButton}
                             {editButton}
                             {removeButton}
                             {plusButton}
-                        </div>
+                        </span>
                         {this.props.problem && this.props.problem.scratchpad ? image : null}
                     </NavTag>
                 </div>
