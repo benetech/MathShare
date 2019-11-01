@@ -7,7 +7,7 @@ import {
 //     renderShareToClassroom,
 // } from './googleClassroom';
 
-export const shareSolutions = (code, payloadSolutions) => axios.post(`${SERVER_URL}/solution/review/${code}`, payloadSolutions)
+export const shareSolutions = (code, payloadSolutions) => axios.post(`${SERVER_URL}/solution/review/${code}`, payloadSolutions, { withCredentials: true })
     .then((response) => {
         const {
             solutions,

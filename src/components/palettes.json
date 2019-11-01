@@ -46,7 +46,7 @@
                 },
                 {
                     "id": "textInputBtn",
-                    "title": "(⌨: \\text{} & Enter to insert)",
+                    "title": "Text (⌨: \\text{} & Enter to insert)",
                     "additionalOnclick": [
                         "EnterTextInput",
                         "GoogleAnalytics"

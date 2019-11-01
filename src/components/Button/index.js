@@ -4,6 +4,7 @@ import FontAwesome from 'react-fontawesome';
 import classNames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styles from './styles.scss';
+import { passEventForKeys } from '../../services/events';
 
 export default class Button extends Component {
     constructor(props) {
@@ -13,11 +14,10 @@ export default class Button extends Component {
         };
     }
 
-    componentDidUpdate() {
-        if (this.props.content !== this.state.content) {
-            // eslint-disable-next-line react/no-did-update-set-state
-            this.setState({ content: this.props.content });
-        }
+    static getDerivedStateFromProps(props) {
+        return {
+            content: props.content,
+        };
     }
 
     buildClassNames() {
@@ -72,6 +72,7 @@ export default class Button extends Component {
                 data-intro={this.props.step}
                 data-toggle={this.props.toggle}
                 onClick={this.props.onClick}
+                onKeyPress={this.props.onKeyPress || passEventForKeys(this.props.onClick)}
                 style={this.props.hide ? { display: 'none' } : {}}
             >
                 {span}
@@ -82,10 +83,9 @@ export default class Button extends Component {
 
         return (
             <span className={this.props.spanStyle || ''}>
-                { button }
-                { tooltip }
+                {button}
+                {tooltip}
             </span>
-
         );
     }
 }

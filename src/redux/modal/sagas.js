@@ -22,6 +22,7 @@ import {
 } from '../problemList/selectors';
 
 import {
+    ADD_PROBLEMS,
     CONFIRMATION,
     TITLE_EDIT_MODAL,
 } from '../../components/ModalContainer';
@@ -66,6 +67,14 @@ function* toggleModalSaga() {
             }
         }
         yield put(updateActiveModals(updatedModals));
+        if (modals.includes(ADD_PROBLEMS)) {
+            setTimeout(() => {
+                const button = document.querySelector('#problem-new > button');
+                if (button) {
+                    button.focus();
+                }
+            }, 100);
+        }
     });
 }
 

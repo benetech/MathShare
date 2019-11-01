@@ -24,7 +24,14 @@
 
   .mAuto {
     margin: auto;
-    text-align: center;
+
+    p {
+      margin: 0;
+    }
+  }
+
+  .footerLine {
+    padding: 18px 12px;
   }
 
   >* {
@@ -40,6 +47,9 @@
       .listTitle {
         font-size: 16px;
         padding-bottom: 10px;
+        line-height: 24px;
+        font-weight: 400;
+        margin-bottom: 0;
       }
 
       ul {

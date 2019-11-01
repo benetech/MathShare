@@ -1,13 +1,21 @@
 .container {
-    width:600px;
+    width: 600px;
     background: rgb(218, 218, 218);
     padding-bottom: 20px;
+
+    h1 {
+        font-size: 1.75rem;
+    }
 }
 
 .paletteRow {
     display: flex;
     align-items: center;
     margin-bottom: 20px;
+
+    h2 {
+        font-size: 1.25rem;
+    }
 }
 
 .paletteButtons {
@@ -16,7 +24,8 @@
 }
 
 .paletteLabel {
-    flex: 4;
+    flex: 3;
+    padding-left: 20px;
 }
 
 .checkBox {

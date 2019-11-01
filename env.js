@@ -5,9 +5,6 @@ const path = require('path');
 const paths = require('./paths');
 
 delete require.cache[require.resolve('./paths')];
-// console.log('++++++++++++');
-// console.log(JSON.stringify(process.env));
-// console.log('++++++++++++');
 
 function getClientEnvironment(envStage) {
     const ENV_STAGE = envStage || 'qa';
@@ -37,7 +34,6 @@ function getClientEnvironment(envStage) {
         .filter(folder => folder && !path.isAbsolute(folder))
         .map(folder => path.resolve(appDirectory, folder))
         .join(path.delimiter);
-    console.log(process.env.ENV_STAGE);
     const raw = Object.keys(process.env)
         .reduce(
             (env, key) => ({

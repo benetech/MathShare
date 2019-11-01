@@ -4,6 +4,8 @@ import {
 
 export const getState = state => state.router;
 
+export const getRouterHookState = state => state.routerHooks;
+
 // const routes = {
 //     path: [
 //         '/app/problemSet/:action',
@@ -20,6 +22,7 @@ export const matchCurrentRoute = route => state => createMatchSelector({
 })(state);
 
 export default {
+    getRouterHookState,
     getState,
     matchCurrentRoute,
 };

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { IntercomAPI } from 'react-intercom';
+import { Helmet } from 'react-helmet';
 import ProblemHeader from './components/ProblemHeader';
 import MyStepsHeader from './components/MySteps/components/MyStepsHeader';
 import MyStepsList from './components/MySteps/components/MyStepsList';
@@ -17,6 +18,7 @@ import Locales from '../../strings';
 import googleAnalytics from '../../scripts/googleAnalytics';
 import exampleProblem from './example.json';
 import scrollTo from '../../scripts/scrollTo';
+import SkipContent from '../Home/components/SkipContent';
 
 const mathLive = process.env.MATHLIVE_DEBUG_MODE ? require('../../../../mathlive/src/mathlive.js').default
     : require('../../lib/mathlivedist/mathlive.js');
@@ -84,11 +86,11 @@ class Editor extends Component {
         // For IE and Firefox prior to version 4
         if (e) {
             e.preventDefault();
-            e.returnValue = 'Sure?';
+            e.returnValue = Locales.strings.sure;
         }
 
         // For Safari
-        return 'Sure?';
+        return Locales.strings.sure;
     }
 
     scrollToBottom = () => {
@@ -119,13 +121,13 @@ class Editor extends Component {
         const { problemStore, problemList } = this.props;
         const updatedMathField = problemList.theActiveMathField;
         const lastStep = problemStore.solution.steps[problemStore.solution.steps.length - 1];
-        updatedMathField.latex(lastStep.cleanup ? lastStep.cleanup : lastStep.stepValue);
+        updatedMathField.$latex(lastStep.cleanup ? lastStep.cleanup : lastStep.stepValue);
         this.props.updateProblemStore({
             theActiveMathField: updatedMathField,
             editorPosition: countEditorPosition(problemStore.solution.steps),
             editing: false,
         });
-        problemList.theActiveMathField.focus();
+        problemList.theActiveMathField.$focus();
     }
 
     cancelEditCallback(oldEquation, oldExplanation, cleanup, index, img) {
@@ -165,8 +167,59 @@ class Editor extends Component {
         const field = theActiveMathField;
         this.props.setActiveMathFieldInProblem(field);
         if (this.props.example) {
-            field.latex(exampleProblem.steps[exampleProblem.steps.length - 1].stepValue);
+            field.$latex(exampleProblem.steps[exampleProblem.steps.length - 1].stepValue);
         }
+    }
+
+    renderHelmet = () => {
+        const {
+            problemList,
+            problemStore,
+            example,
+        } = this.props;
+        const { solution } = problemStore;
+        const { problem } = solution;
+
+        if (example) {
+            return (
+                <Helmet>
+                    <title>
+                        {`${Locales.strings.tutorial} - ${Locales.strings.mathshare_benetech}`}
+                    </title>
+                </Helmet>
+            );
+        }
+
+        let titlePrefix = '';
+        if (problemList.set && problemList.set.shareCode) {
+            if (problemList.set.title) {
+                titlePrefix = `${problemList.set.title} - `;
+            } else {
+                titlePrefix = `${Locales.strings.untitled_problem_set} - `;
+            }
+        } else {
+            return null;
+        }
+        let pos = 0;
+        let count = 0;
+        if (problemList.set.problems) {
+            const idList = problemList.set.problems.map(currentProblem => currentProblem.id).sort();
+            if (idList.includes(problem.id)) {
+                pos = idList.indexOf(problem.id) + 1;
+            }
+            count = problemList.set.problems.length;
+        }
+        if (pos > 0 && count > 0) {
+            titlePrefix = `Problem ${pos} of ${count} | ${titlePrefix}`;
+        }
+        return (
+            <Helmet>
+                <title>
+                    {titlePrefix}
+                    {Locales.strings.mathshare_benetech}
+                </title>
+            </Helmet>
+        );
     }
 
     render() {
@@ -196,7 +249,9 @@ class Editor extends Component {
 
         return (
             <div id="MainWorkWrapper" className={editor.mainWorkWrapper}>
+                {this.renderHelmet()}
                 <main id="MainWorkArea" className={editor.editorAndHistoryWrapper}>
+                    <SkipContent />
                     <ProblemHeader
                         {...this}
                         {...this.props}
