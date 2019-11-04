@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';
+import { toast } from 'react-toastify';
 import { Redirect } from 'react-router-dom';
 import { push } from 'connected-react-router';
 import { UncontrolledTooltip } from 'reactstrap';
@@ -29,6 +30,7 @@ class SignIn extends Component {
 
     componentDidMount() {
         this.props.checkUserLogin();
+        toast.dismiss('login-alert');
     }
 
     onSuccess = (service, email, name, image) => {

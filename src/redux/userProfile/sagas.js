@@ -38,6 +38,8 @@ import {
 import { getCookie } from '../../scripts/cookie';
 import Locales from '../../strings';
 
+const loginAlertId = 'login-alert';
+
 function* checkUserLoginSaga() {
     yield throttle(60000, 'CHECK_USER_LOGIN', function* workerSaga() {
         let loginStarted = false;
@@ -61,8 +63,8 @@ function* checkUserLoginSaga() {
             } = response.data;
             yield put(setUserProfile(emails[0], displayName, imageUrl || `https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=256&name=${encodeURIComponent(displayName)}&rounded=true&length=1`, 'passport'));
             if (loginStarted) {
-                alertSuccess(Locales.strings.you_are_signed_in.replace('{user}', displayName), Locales.strings.success, 'login-success-alert');
-                focusOnAlert('login-success-alert');
+                alertSuccess(Locales.strings.you_are_signed_in.replace('{user}', displayName), Locales.strings.success, loginAlertId);
+                focusOnAlert(loginAlertId);
             }
             yield put(fetchRecentWork());
             try {
@@ -86,13 +88,13 @@ function* checkUserLoginSaga() {
                 alertError(
                     Locales.strings.login_something_wrong,
                     Locales.strings.failure,
-                    'login-error-alert',
+                    loginAlertId,
                     {
                         link: '/#/app',
                         text: Locales.strings.return_to_mathshare,
                     },
                 );
-                focusOnAlert('login-error-alert');
+                focusOnAlert(loginAlertId);
             }
         }
     });
@@ -234,8 +236,10 @@ function* logoutSaga() {
             IntercomAPI('boot', {
                 app_id: process.env.INTERCOM_APP_ID,
             });
-            alertSuccess(Locales.strings.you_have_been_logged_out, Locales.strings.success, 'logout-success-alert');
-            focusOnAlert('logout-success-alert');
+            alertSuccess(
+                Locales.strings.you_have_been_logged_out, Locales.strings.success, loginAlertId,
+            );
+            focusOnAlert(loginAlertId);
         } catch (error) {
             yield put({
                 type: 'LOGOUT_FAILURE',
