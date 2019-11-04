@@ -11,6 +11,7 @@ class Locales {
             en: {
                 accessibility: 'Accessibility',
                 accessible_to_all: 'Accessible to ALL Learners',
+                actions_for_this_problem_set: 'Actions for this Problem Set',
                 add_problem: ' Add Problem',
                 add_problem_button_title: 'Add a new problem (⌨: shift+enter)',
                 add_problem_equation: '+',
@@ -187,6 +188,7 @@ class Locales {
                 problem_set_3: 'Problem Set 03',
                 problem_sets: 'Problem Sets',
                 problems: 'Problems',
+                problems_in_this_set: 'Problems in this Set',
                 problems_to_solve: ' Problems to solve ',
                 provide_feedback: ' Give Feedback',
                 reason: 'reason',

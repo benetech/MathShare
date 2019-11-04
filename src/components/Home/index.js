@@ -18,6 +18,28 @@ import googleClassroomIcon from '../../../images/google-classroom-icon.png';
 import msTeamIcon from '../../../images/ms-team-icon.svg';
 import { passEventForKeys } from '../../services/events';
 
+
+const RenderActionButtons = ({ children }) => (
+    <React.Fragment>
+        <h2
+            id="actions_for_this_problem_set"
+            className="sROnly"
+            tabIndex={-1}
+        >
+            {Locales.strings.actions_for_this_problem_set}
+        </h2>
+        <div className={classNames([
+            home.btnContainer,
+            home.right,
+        ])}
+        >
+            <ul aria-labelledby="actions_for_this_problem_set">
+                {children.map((child, index) => (<li key={index}>{child}</li>))}
+            </ul>
+        </div>
+    </React.Fragment>
+);
+
 class Home extends Component {
     componentDidMount() {
         const {
@@ -246,7 +268,7 @@ class Home extends Component {
                             params.action === 'new' && problemList.tempSet.problems.length > 0)
                         || params.action === 'edit'
                     ) && (
-                        <React.Fragment>
+                        <RenderActionButtons>
                             <Button
                                 id="shareBtn"
                                 className={classNames([
@@ -327,7 +349,7 @@ class Home extends Component {
                                 onClick={this.saveProblemSet(currentSet, true)}
                                 onKeyPress={passEventForKeys(this.saveProblemSet(currentSet, true))}
                             />
-                        </React.Fragment>
+                        </RenderActionButtons>
                     )}
                 </div>
             </React.Fragment>
@@ -404,11 +426,7 @@ class Home extends Component {
                                     'col',
                                 ])}
                                 />
-                                <div className={classNames([
-                                    home.btnContainer,
-                                    home.right,
-                                ])}
-                                >
+                                <RenderActionButtons>
                                     <Button
                                         id="shareBtn"
                                         className={classNames([
@@ -481,12 +499,14 @@ class Home extends Component {
                                         </button>
                                         <UncontrolledTooltip placement="top" target="microsoftTeamContainer1" />
                                     </span>
-                                </div>
+                                </RenderActionButtons>
+
                             </div>
                         )}
                         {(params.action === 'new' || params.action === 'edit') && (
                             this.renderNewAndEditControls(currentSet)
                         )}
+                        <h2 id="problems_in_this_set" className="sROnly" tabIndex={-1}>{Locales.strings.problems_in_this_set}</h2>
                         <NavigationProblems
                             problems={currentSet.problems}
                             solutions={problemList.solutions}
