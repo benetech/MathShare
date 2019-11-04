@@ -65,11 +65,11 @@ class SignIn extends Component {
     renderMicrosoftBtn = routerHistory => (
         <a
             id={this.MS_SIGN_IN}
-            className={`abcRioButton abcRioButtonBlue ${signIn.microsoftContainer}`}
+            className={signIn.microsoftContainer}
             href={`${API_URL}/login/azuread-openidconnect?return=${encodeURIComponent(this.getPrev(routerHistory))}`}
         >
             <img src={microsoftLogo} alt="" />
-            <span className="sROnly">{Locales.strings.ms}</span>
+            <span>{Locales.strings.ms}</span>
         </a>
     )
 
