@@ -147,6 +147,7 @@ class Locales {
                 mission: 'Our mission is to make math accessibility free and open to all students.',
                 mobile_not_supported: 'Mobile is not currently supported',
                 more_options: 'More Options',
+                more_options_for: 'More Options for {title}',
                 ms: 'Microsoft',
                 ms_logo: 'Microsoft Logo',
                 ms_team: 'Microsoft Teams',

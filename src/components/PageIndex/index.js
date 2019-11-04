@@ -115,9 +115,11 @@ class Index extends Component {
                     <FontAwesome
                         name="ellipsis-v"
                     />
-                    <span className="sROnly">{Locales.strings.more_options}</span>
+                    <span className="sROnly">
+                        {Locales.strings.more_options_for.replace('{title}', problemSet.title)}
+                    </span>
                 </button>
-                <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <ul className="dropdown-menu" aria-labelledby={`dropdownMenuButton-${index}`}>
                     <li>
                         <button
                             className="dropdown-item reset-btn"
