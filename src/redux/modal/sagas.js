@@ -24,8 +24,12 @@ import {
 import {
     ADD_PROBLEMS,
     CONFIRMATION,
+    PALETTE_CHOOSER,
     TITLE_EDIT_MODAL,
 } from '../../components/ModalContainer';
+import { sleep } from '../../services/misc';
+
+const MAX_TRIALS = 5;
 
 function* toggleModalSaga() {
     yield takeLatest('TOGGLE_MODALS', function* workerSaga({
@@ -38,9 +42,21 @@ function* toggleModalSaga() {
             activeModals,
         } = yield select(getState);
         let updatedModals = activeModals.slice();
+        const focusDict = {
+            [ADD_PROBLEMS]: {
+                selector: '#problem-new > button',
+                isDismiss: true,
+            },
+            [PALETTE_CHOOSER]: {
+                selector: '#add_problem_set',
+                isDismiss: true,
+            },
+        };
         // eslint-disable-next-line no-restricted-syntax
         for (const modal of modals) {
+            let isDismiss = false;
             if (updatedModals.indexOf(modal) !== -1) {
+                isDismiss = true;
                 updatedModals = updatedModals.filter(e => e !== modal);
             } else {
                 if (modal === CONFIRMATION) {
@@ -65,16 +81,25 @@ function* toggleModalSaga() {
                 }
                 updatedModals.push(modal);
             }
+            if (focusDict[modal] && focusDict[modal].isDismiss === isDismiss) {
+                const tryFocus = async (selector, sleepMs = 0, trial = 1) => {
+                    await sleep(sleepMs);
+                    if (trial > MAX_TRIALS) {
+                        return false;
+                    }
+                    const button = document.querySelector(selector);
+                    if (button) {
+                        button.focus();
+                    }
+                    return document.activeElement !== button
+                        && tryFocus(selector, sleepMs + 100, trial + 1);
+                };
+                setTimeout(() => {
+                    tryFocus(focusDict[modal].selector);
+                }, 0);
+            }
         }
         yield put(updateActiveModals(updatedModals));
-        if (modals.includes(ADD_PROBLEMS)) {
-            setTimeout(() => {
-                const button = document.querySelector('#problem-new > button');
-                if (button) {
-                    button.focus();
-                }
-            }, 100);
-        }
     });
 }
 
