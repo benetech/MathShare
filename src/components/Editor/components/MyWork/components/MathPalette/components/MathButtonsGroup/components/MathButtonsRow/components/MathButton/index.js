@@ -126,6 +126,9 @@ export default class MathButton extends Component {
         classes.forEach((clazz) => {
             result.push(mathButton[clazz]);
         });
+        if (this.props.readOnly) {
+            result.push(mathButton.readOnly);
+        }
         return classNames('btn', result);
     }
 
