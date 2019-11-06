@@ -80,98 +80,103 @@ class Index extends Component {
         return <div className="text-center">No recent problems</div>;
     }
 
-    renderProblemSet = (isExample, isRecent) => (problemSet, index) => (
-        <li className="card" key={index}>
-            <a
-                className="btn d-flex"
-                href={this.getLink(problemSet, isRecent)}
-                onClick={isExample ? this.openExampleProblem() : this.openPremadeSet(problemSet)}
-                onKeyPress={
-                    passEventForKeys(
-                        isExample ? this.openExampleProblem() : this.openPremadeSet(problemSet),
-                    )
-                }
-            >
-                <span className={pageIndex.title}>
-                    {problemSet.title}
-                </span>
-                <span className={pageIndex.meta}>
-                    {problemSet.problems.length}
-                    {' '}
-                    {Locales.strings.problems}
-                </span>
-            </a>
-            <div className={`dropdown ${pageIndex.dropdownContainer}`}>
-                <button
-                    className={`btn dropdown-toggle ${pageIndex.problemSetDropdown}`}
-                    type="button"
-                    id={`dropdownMenuButton-${index}`}
-                    data-toggle="dropdown"
-                    aria-expanded="false"
-                    onClick={(e) => {
-                        stopEvent(e);
-                    }}
+    renderProblemSet = (isExample, isRecent) => (problemSet, index) => {
+        const dropdownBtnId = `dropdownMenuButton-${(problemSet.shareCode && (`id-${problemSet.shareCode}`)) || index}`;
+        return (
+            <li className="card" key={index}>
+                <a
+                    className="btn d-flex"
+                    href={this.getLink(problemSet, isRecent)}
+                    onClick={isExample ? this.openExampleProblem() : this.openPremadeSet(
+                        problemSet,
+                    )}
+                    onKeyPress={
+                        passEventForKeys(
+                            isExample ? this.openExampleProblem() : this.openPremadeSet(problemSet),
+                        )
+                    }
                 >
-                    <FontAwesome
-                        name="ellipsis-v"
-                    />
-                    <span className="sROnly">
-                        {Locales.strings.more_options_for.replace('{title}', problemSet.title)}
+                    <span className={pageIndex.title}>
+                        {problemSet.title}
                     </span>
-                </button>
-                <ul className="dropdown-menu" aria-labelledby={`dropdownMenuButton-${index}`}>
-                    <li>
-                        <button
-                            className="dropdown-item reset-btn"
-                            onClick={this.duplicateProblemSet(
-                                problemSet,
-                            )}
-                            onKeyPress={
-                                passEventForKeys(
-                                    this.duplicateProblemSet(
-                                        problemSet,
-                                    ),
-                                )
-                            }
-                            type="button"
-                        >
-                            <FontAwesome
-                                size="lg"
-                                name="copy"
-                            />
-                            {` ${Locales.strings.duplicate_set}`}
-                            <span className="sROnly">
-                                {'\u00A0'}
-                                {Locales.strings.opens_in_new_tab}
-                            </span>
-                        </button>
-                    </li>
-                    <li>
-                        <button
-                            className="dropdown-item reset-btn"
-                            onClick={shareOnTwitter(
-                                problemSet.shareCode,
-                            )}
-                            onKeyPress={passEventForKeys(shareOnTwitter(
-                                problemSet.shareCode,
-                            ))}
-                            type="button"
-                        >
-                            <FontAwesome
-                                size="lg"
-                                name="twitter"
-                            />
-                            {` ${Locales.strings.share_on_twitter}`}
-                            <span className="sROnly">
-                                {'\u00A0'}
-                                {Locales.strings.opens_in_new_tab}
-                            </span>
-                        </button>
-                    </li>
-                </ul>
-            </div>
-        </li>
-    )
+                    <span className={pageIndex.meta}>
+                        {problemSet.problems.length}
+                        {' '}
+                        {Locales.strings.problems}
+                    </span>
+                </a>
+                <div className={`dropdown ${pageIndex.dropdownContainer}`}>
+                    <button
+                        className={`btn dropdown-toggle ${pageIndex.problemSetDropdown}`}
+                        type="button"
+                        id={dropdownBtnId}
+                        data-toggle="dropdown"
+                        aria-expanded="false"
+                        onClick={(e) => {
+                            stopEvent(e);
+                        }}
+                    >
+                        <FontAwesome
+                            name="ellipsis-v"
+                        />
+                        <span className="sROnly">
+                            {Locales.strings.more_options_for.replace('{title}', problemSet.title)}
+                        </span>
+                    </button>
+                    <ul className="dropdown-menu" aria-labelledby={dropdownBtnId}>
+                        <li>
+                            <button
+                                className="dropdown-item reset-btn"
+                                onClick={this.duplicateProblemSet(
+                                    problemSet,
+                                )}
+                                onKeyPress={
+                                    passEventForKeys(
+                                        this.duplicateProblemSet(
+                                            problemSet,
+                                        ),
+                                    )
+                                }
+                                type="button"
+                            >
+                                <FontAwesome
+                                    size="lg"
+                                    name="copy"
+                                />
+                                {` ${Locales.strings.duplicate_set}`}
+                                <span className="sROnly">
+                                    {'\u00A0'}
+                                    {Locales.strings.opens_in_new_tab}
+                                </span>
+                            </button>
+                        </li>
+                        <li>
+                            <button
+                                className="dropdown-item reset-btn"
+                                onClick={shareOnTwitter(
+                                    problemSet.shareCode,
+                                )}
+                                onKeyPress={passEventForKeys(shareOnTwitter(
+                                    problemSet.shareCode,
+                                ))}
+                                type="button"
+                            >
+                                <FontAwesome
+                                    size="lg"
+                                    name="twitter"
+                                />
+                                {` ${Locales.strings.share_on_twitter}`}
+                                <span className="sROnly">
+                                    {'\u00A0'}
+                                    {Locales.strings.opens_in_new_tab}
+                                </span>
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+        );
+    }
 
     render() {
         const { props } = this;
