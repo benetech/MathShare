@@ -1,6 +1,7 @@
 import {
     all,
     call,
+    delay,
     fork,
     put,
     select,
@@ -33,12 +34,14 @@ import {
     updateNotifyMobileApi,
 } from './apis';
 import {
-    alertSuccess, focusOnAlert, alertError,
+    alertError, alertInfo, alertSuccess, dismissAlert, focusOnAlert,
 } from '../../scripts/alert';
 import { getCookie } from '../../scripts/cookie';
 import Locales from '../../strings';
 
 const loginAlertId = 'login-alert';
+const redirectAlertId = 'redirect-info';
+const redirectWait = 2500;
 
 function* checkUserLoginSaga() {
     yield throttle(60000, 'CHECK_USER_LOGIN', function* workerSaga() {
@@ -76,7 +79,15 @@ function* checkUserLoginSaga() {
                 }
             } catch (infoError) {
                 yield put(setAuthRedirect((window.location.hash || '').substring(1)));
-                yield put(push('/userDetails'));
+                if (window.location.hash !== '#/userDetails') {
+                    alertInfo(
+                        Locales.strings.redirecting_to_fill, Locales.strings.info,
+                        redirectAlertId, redirectWait,
+                    );
+                    yield delay(redirectWait);
+                    yield put(push('/userDetails'));
+                    dismissAlert(redirectAlertId);
+                }
             }
         } catch (error) {
             yield put(resetUserProfile());
@@ -165,6 +176,13 @@ function* saveUserInfoSaga() {
             yield put({
                 type: 'SAVE_USER_INFO_FAILURE',
             });
+        } finally {
+            setTimeout(() => {
+                alertSuccess(
+                    Locales.strings.thanks_for_details_redirect.replace('{pageTitle}',
+                        (document.title || '').split(` - ${Locales.strings.mathshare_benetech}`)[0]),
+                );
+            }, 100);
         }
     });
 }

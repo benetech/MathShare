@@ -26,14 +26,20 @@ function* changeTitleSaga() {
             title,
         },
     }) {
-        const { currentTitle } = yield select(getRouterHookState);
+        const { currentTitle, prevReplaced } = yield select(getRouterHookState);
         let newTitle = title;
         if (newTitle && newTitle.join) {
             newTitle = title.join('');
         }
         if (newTitle && currentTitle !== newTitle) {
             const announceTitle = newTitle.split(` - ${Locales.strings.mathshare_benetech}`)[0];
-            yield put(announceOnAriaLive(announceTitle));
+            if (prevReplaced !== '#/userDetails') {
+                yield put(announceOnAriaLive(announceTitle));
+            } else {
+                yield put({
+                    type: 'CLEAR_PREV_REPLACED',
+                });
+            }
             yield put(setTitle(newTitle));
         }
     });

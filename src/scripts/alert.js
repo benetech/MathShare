@@ -21,8 +21,8 @@ function getCommonAlert(title, message, id = undefined, anchor = null) {
     );
 }
 
-function alertInfo(message, title) {
-    toast.info(getCommonAlert(title, message), commonProps);
+function alertInfo(message, title, id = undefined, autoClose = commonProps.autoClose) {
+    toast.info(getCommonAlert(title, message), { ...commonProps, autoClose, toastId: id });
 }
 
 function alertSuccess(message, title, id = undefined) {
@@ -37,6 +37,10 @@ function alertWarning(message, title) {
     toast.warn(getCommonAlert(title, message), commonProps);
 }
 
+function dismissAlert(id) {
+    toast.dismiss(id);
+}
+
 function focusOnAlert(id) {
     setTimeout(() => {
         const alert = document.getElementById(id);
@@ -47,5 +51,5 @@ function focusOnAlert(id) {
 }
 
 export {
-    alertInfo, alertSuccess, alertWarning, alertError, focusOnAlert,
+    alertInfo, alertSuccess, alertWarning, alertError, dismissAlert, focusOnAlert,
 };
