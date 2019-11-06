@@ -245,7 +245,7 @@ class Locales {
                 symbols: ' Symbols',
                 tos: 'Terms of Service',
                 thanks_for_details: 'Thanks for sharing your details',
-                thanks_for_details_redirect: 'Thanks for sharing your details. You are now on "{pageTitle}" page',
+                thanks_for_details_redirect: 'Thanks for sharing your details. You are now on the "{pageTitle}" page',
                 thanks_for_mobile_notfiy: 'Thanks, we will notify you once we add mobile compatibility',
                 the: 'The',
                 title: 'Title',

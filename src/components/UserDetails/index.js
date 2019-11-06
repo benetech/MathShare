@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import { withRouter } from 'react-router-dom';
 import { UncontrolledTooltip } from 'reactstrap';
-import { alertWarning, alertInfo } from '../../scripts/alert';
+import { alertWarning } from '../../scripts/alert';
 import Locales from '../../strings';
 import { redirectAfterLogin, saveUserInfo } from '../../redux/userProfile/actions';
 import { announceOnAriaLive } from '../../redux/ariaLiveAnnouncer/actions';
@@ -34,9 +34,6 @@ class UserDetails extends Component {
                 this.finish();
             }
             if (type === 'teacher') {
-                alertInfo(
-                    Locales.strings.please_fill_your_details, Locales.strings.info, undefined, 1500,
-                );
                 const gradeHeading = document.getElementById('gradeOfWork');
                 if (gradeHeading) {
                     gradeHeading.focus();
