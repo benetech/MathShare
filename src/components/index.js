@@ -47,6 +47,7 @@ import problemActions from '../redux/problem/actions';
 import userProfileActions from '../redux/userProfile/actions';
 import ariaLiveAnnouncerActions from '../redux/ariaLiveAnnouncer/actions';
 import routerActions from '../redux/router/actions';
+import uiActions from '../redux/ui/actions';
 import { compareStepArrays } from '../redux/problem/helpers';
 import msalConfig from '../constants/msal';
 import keyMap from '../constants/hotkeyConfig.json';
@@ -86,6 +87,12 @@ class App extends Component {
             MOVE_TO_DESCRIPTION_BOX: this.moveFoucsTo('mathAnnotation'),
             READ_PROBLEM_MATH: this.readProblem,
         };
+
+        document.body.addEventListener('click', (e) => {
+            if (e.target.className.indexOf('dropdown-item') === -1) {
+                this.props.setDropdownId(null);
+            }
+        });
     }
 
     componentDidMount() {
@@ -467,5 +474,6 @@ export default withRouter(connect(
         ...userProfileActions,
         ...ariaLiveAnnouncerActions,
         ...routerActions,
+        ...uiActions,
     },
 )(App));

@@ -50,7 +50,9 @@ class CommonDropdown extends Component {
                     {btnContent}
                 </button>
                 <ul className={`dropdown-menu ${showClass} ${listClass}`} aria-labelledby={btnId}>
-                    {((children.map && children) || (children.props.children) || [])
+                    {((children.map && children)
+                        || (children.props ? children.props.children : null)
+                        || [])
                         .map((child, index) => (
                             <li key={child.key || `dropdown-item-${index}`}>
                                 {child}
