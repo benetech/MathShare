@@ -179,8 +179,9 @@ function* saveUserInfoSaga() {
         } finally {
             setTimeout(() => {
                 alertSuccess(
-                    Locales.strings.thanks_for_details_redirect.replace('{pageTitle}',
+                    Locales.strings.you_are_now_on.replace('{pageTitle}',
                         (document.title || '').split(` - ${Locales.strings.mathshare_benetech}`)[0]),
+                    Locales.strings.thanks_for_details,
                 );
             }, 100);
         }
