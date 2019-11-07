@@ -171,12 +171,6 @@ function* saveUserInfoSaga() {
                 user_type: userType,
                 email,
             });
-            yield put(replace(redirectTo));
-        } catch (error) {
-            yield put({
-                type: 'SAVE_USER_INFO_FAILURE',
-            });
-        } finally {
             setTimeout(() => {
                 alertSuccess(
                     Locales.strings.you_are_now_on.replace('{pageTitle}',
@@ -184,6 +178,11 @@ function* saveUserInfoSaga() {
                     Locales.strings.thanks_for_details,
                 );
             }, 100);
+            yield put(replace(redirectTo));
+        } catch (error) {
+            yield put({
+                type: 'SAVE_USER_INFO_FAILURE',
+            });
         }
     });
 }
