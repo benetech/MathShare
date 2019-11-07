@@ -24,6 +24,7 @@ import {
 } from '../../../../services/events';
 import SkipContent from '../SkipContent';
 import HeaderDropdown from '../../../HeaderDropdown';
+import CommonDropdown from '../../../CommonDropdown';
 
 
 class MainPageHeader extends React.Component {
@@ -150,45 +151,39 @@ class MainPageHeader extends React.Component {
                                     </li>
                                 )}
                                 {userProfile.service && (
-                                    <li className="nav-item avatar dropdown">
-                                        <button
-                                            className="nav-link dropdown-toggle reset-btn"
-                                            id="navbarDropdownMenuLink-avatar"
-                                            data-toggle="dropdown"
-                                            type="button"
-                                            aria-expanded="false"
+                                    <React.Fragment>
+                                        <CommonDropdown
+                                            btnId="navbarDropdownMenuLink-avatar"
+                                            btnClass="nav-link reset-btn"
+                                            containerClass="nav-item avatar"
+                                            containerTag="li"
+                                            btnContent={(
+                                                <img
+                                                    src={userProfile.profileImage}
+                                                    className="rounded-circle z-depth-0"
+                                                    alt={Locales.strings.user_profile}
+                                                />
+                                            )}
+                                            listClass="dropdown-menu-lg-right dropdown-secondary"
                                         >
-                                            <img
-                                                src={userProfile.profileImage}
-                                                className="rounded-circle z-depth-0"
-                                                alt={Locales.strings.user_profile}
-                                            />
-                                        </button>
+                                            <div className="dropdown-header">{userProfile.name}</div>
+                                            <div className={`dropdown-header ${header.email}`}>{userProfile.email}</div>
+                                            <div className="dropdown-divider" />
+                                            <button
+                                                className="dropdown-item logout reset-btn"
+                                                onClick={this.props.logoutOfUserProfile}
+                                                onKeyPress={
+                                                    passEventForKeys(
+                                                        this.props.logoutOfUserProfile,
+                                                    )
+                                                }
+                                                type="button"
+                                            >
+                                                {Locales.strings.sign_out}
+                                            </button>
+                                        </CommonDropdown>
                                         <UncontrolledTooltip placement="top" target="navbarDropdownMenuLink-avatar" />
-                                        <ul
-                                            className="dropdown-menu dropdown-menu-lg-right dropdown-secondary"
-                                            aria-labelledby="navbarDropdownMenuLink-avatar"
-                                        >
-                                            <li><div className="dropdown-header">{userProfile.name}</div></li>
-                                            <li><div className={`dropdown-header ${header.email}`}>{userProfile.email}</div></li>
-                                            <li><div className="dropdown-divider" /></li>
-                                            <li>
-                                                <button
-                                                    className="dropdown-item logout reset-btn"
-                                                    onClick={this.props.logoutOfUserProfile}
-                                                    onKeyPress={
-                                                        passEventForKeys(
-                                                            this.props.logoutOfUserProfile,
-                                                        )
-                                                    }
-                                                    type="button"
-                                                >
-                                                    {Locales.strings.sign_out}
-                                                </button>
-
-                                            </li>
-                                        </ul>
-                                    </li>
+                                    </React.Fragment>
                                 )}
                             </ul>
                         </div>

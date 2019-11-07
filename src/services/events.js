@@ -6,7 +6,7 @@ export const stopEvent = (e) => {
 
 export const passEventForKeys = (callback, keys = ['Enter', ' '], mockClick = true) => (e) => {
     if (keys.includes(e.key)) {
-        if (mockClick && e.target.tagName === 'A' && e.key === ' ') {
+        if (mockClick && ((e.target.tagName === 'A' && e.key === ' ') || (e.target.tagName === 'BUTTON'))) {
             e.target.click();
         } else {
             return callback(e);

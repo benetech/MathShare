@@ -7,10 +7,12 @@ import { Helmet } from 'react-helmet';
 import Locales from '../../strings';
 import MainPageHeader from '../Home/components/Header';
 import { requestDefaultRevision, requestExampleSets } from '../../redux/problemList/actions';
+import { setDropdownId } from '../../redux/ui/actions';
 import { fetchRecentWork } from '../../redux/userProfile/actions';
 import googleAnalytics from '../../scripts/googleAnalytics';
 import pageIndex from './styles.scss';
 import { stopEvent, passEventForKeys } from '../../services/events';
+import CommonDropdown from '../CommonDropdown';
 
 const shareOnTwitter = shareCode => (e) => {
     window.open(
@@ -80,6 +82,16 @@ class Index extends Component {
         return <div className="text-center">No recent problems</div>;
     }
 
+    dropdownOnClick = dropdownBtnId => (e) => {
+        stopEvent(e);
+        const { dropdownOpen } = this.props.ui;
+        if (dropdownOpen === dropdownBtnId) {
+            this.props.setDropdownId(null);
+        } else {
+            this.props.setDropdownId(dropdownBtnId);
+        }
+    }
+
     renderProblemSet = (isExample, isRecent) => (problemSet, index) => {
         const dropdownBtnId = `dropdownMenuButton-${(problemSet.shareCode && (`id-${problemSet.shareCode}`)) || index}`;
         return (
@@ -105,75 +117,63 @@ class Index extends Component {
                         {Locales.strings.problems}
                     </span>
                 </a>
-                <div className={`dropdown ${pageIndex.dropdownContainer}`}>
-                    <button
-                        className={`btn dropdown-toggle ${pageIndex.problemSetDropdown}`}
-                        type="button"
-                        id={dropdownBtnId}
-                        data-toggle="dropdown"
-                        aria-expanded="false"
-                        onClick={(e) => {
-                            stopEvent(e);
-                        }}
-                    >
-                        <FontAwesome
-                            name="ellipsis-v"
-                        />
+                <CommonDropdown
+                    btnId={dropdownBtnId}
+                    btnClass={pageIndex.problemSetDropdown}
+                    containerClass={pageIndex.dropdownContainer}
+                    btnContent={(
                         <span className="sROnly">
                             {Locales.strings.more_options_for.replace('{title}', problemSet.title)}
                         </span>
-                    </button>
-                    <ul className="dropdown-menu" aria-labelledby={dropdownBtnId}>
-                        <li>
-                            <button
-                                className="dropdown-item reset-btn"
-                                onClick={this.duplicateProblemSet(
+                    )}
+                    btnIcon="ellipsis-v"
+                    listClass={pageIndex.dropdownList}
+                >
+                    <button
+                        className="dropdown-item reset-btn"
+                        onClick={this.duplicateProblemSet(
+                            problemSet,
+                        )}
+                        onKeyPress={
+                            passEventForKeys(
+                                this.duplicateProblemSet(
                                     problemSet,
-                                )}
-                                onKeyPress={
-                                    passEventForKeys(
-                                        this.duplicateProblemSet(
-                                            problemSet,
-                                        ),
-                                    )
-                                }
-                                type="button"
-                            >
-                                <FontAwesome
-                                    size="lg"
-                                    name="copy"
-                                />
-                                {` ${Locales.strings.duplicate_set}`}
-                                <span className="sROnly">
-                                    {'\u00A0'}
-                                    {Locales.strings.opens_in_new_tab}
-                                </span>
-                            </button>
-                        </li>
-                        <li>
-                            <button
-                                className="dropdown-item reset-btn"
-                                onClick={shareOnTwitter(
-                                    problemSet.shareCode,
-                                )}
-                                onKeyPress={passEventForKeys(shareOnTwitter(
-                                    problemSet.shareCode,
-                                ))}
-                                type="button"
-                            >
-                                <FontAwesome
-                                    size="lg"
-                                    name="twitter"
-                                />
-                                {` ${Locales.strings.share_on_twitter}`}
-                                <span className="sROnly">
-                                    {'\u00A0'}
-                                    {Locales.strings.opens_in_new_tab}
-                                </span>
-                            </button>
-                        </li>
-                    </ul>
-                </div>
+                                ),
+                            )
+                        }
+                        type="button"
+                    >
+                        <FontAwesome
+                            size="lg"
+                            name="copy"
+                        />
+                        {` ${Locales.strings.duplicate_set}`}
+                        <span className="sROnly">
+                            {'\u00A0'}
+                            {Locales.strings.opens_in_new_tab}
+                        </span>
+                    </button>
+                    <button
+                        className="dropdown-item reset-btn"
+                        onClick={shareOnTwitter(
+                            problemSet.shareCode,
+                        )}
+                        onKeyPress={passEventForKeys(shareOnTwitter(
+                            problemSet.shareCode,
+                        ))}
+                        type="button"
+                    >
+                        <FontAwesome
+                            size="lg"
+                            name="twitter"
+                        />
+                        {` ${Locales.strings.share_on_twitter}`}
+                        <span className="sROnly">
+                            {'\u00A0'}
+                            {Locales.strings.opens_in_new_tab}
+                        </span>
+                    </button>
+                </CommonDropdown>
             </li>
         );
     }
@@ -232,8 +232,9 @@ class Index extends Component {
 export default connect(
     state => ({
         problemList: state.problemList,
+        ui: state.ui,
     }),
     {
-        fetchRecentWork, requestDefaultRevision, requestExampleSets, push,
+        fetchRecentWork, requestDefaultRevision, requestExampleSets, push, setDropdownId,
     },
 )(Index);
