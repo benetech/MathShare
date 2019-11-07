@@ -151,11 +151,11 @@ function* saveUserInfoSaga() {
     yield takeLatest('SAVE_USER_INFO', function* workerSaga({
         payload,
     }) {
+        const {
+            email,
+            redirectTo,
+        } = yield select(getState);
         try {
-            const {
-                email,
-                redirectTo,
-            } = yield select(getState);
             const {
                 userType,
                 grades,
@@ -171,6 +171,11 @@ function* saveUserInfoSaga() {
                 user_type: userType,
                 email,
             });
+        } catch (error) {
+            yield put({
+                type: 'SAVE_USER_INFO_FAILURE',
+            });
+        } finally {
             setTimeout(() => {
                 alertSuccess(
                     Locales.strings.you_are_now_on.replace('{pageTitle}',
@@ -179,10 +184,6 @@ function* saveUserInfoSaga() {
                 );
             }, 100);
             yield put(replace(redirectTo));
-        } catch (error) {
-            yield put({
-                type: 'SAVE_USER_INFO_FAILURE',
-            });
         }
     });
 }
