@@ -38,6 +38,7 @@ class UserDetails extends Component {
                 if (gradeHeading) {
                     gradeHeading.focus();
                 }
+                this.props.announceOnAriaLive(Locales.strings.grade_of_work);
             }
         });
     }
