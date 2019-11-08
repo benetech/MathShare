@@ -1,5 +1,6 @@
 import {
     all,
+    delay,
     fork,
     put,
     select,
@@ -29,7 +30,7 @@ import {
 } from '../../components/ModalContainer';
 import { sleep } from '../../services/misc';
 
-const MAX_TRIALS = 5;
+const MAX_TRIALS = 10;
 
 function* toggleModalSaga() {
     yield takeLatest('TOGGLE_MODALS', function* workerSaga({
@@ -92,13 +93,14 @@ function* toggleModalSaga() {
                         button.focus();
                     }
                     return document.activeElement !== button
-                        && tryFocus(selector, sleepMs + 100, trial + 1);
+                        && tryFocus(selector, sleepMs + 50, trial + 1);
                 };
-                setTimeout(() => {
+                setImmediate(() => {
                     tryFocus(focusDict[modal].selector);
                 }, 0);
             }
         }
+        yield delay(100);
         yield put(updateActiveModals(updatedModals));
     });
 }
