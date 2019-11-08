@@ -65,8 +65,6 @@ export default class PaletteChooser extends Component {
                     <div id={`checkBox-${id}`} className={styles.checkBox}>
                         <input type="checkbox" name="name" id={checkBoxId} onChange={() => this.handleChange(palette.label)} />
                         <label htmlFor={checkBoxId} className="sROnly">
-                            {(this.state.chosenPalettes.includes(palette.label)) ? 'Disable' : 'Enable'}
-                            {' '}
                             {palette.label}
                         </label>
                     </div>
