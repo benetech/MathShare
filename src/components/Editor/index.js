@@ -107,7 +107,7 @@ class Editor extends Component {
         return cleanups;
     }
 
-    getApplicationNode = () => document.getElementById('root')
+    getApplicationNode = () => document.getElementById('contentContainer')
 
     textAreaChanged(text) {
         this.props.updateProblemStore({ textAreaValue: text });

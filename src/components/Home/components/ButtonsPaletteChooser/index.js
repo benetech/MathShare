@@ -24,7 +24,7 @@ export default class PaletteChooser extends Component {
         mathLive.renderMathInDocument();
     }
 
-    getApplicationNode = () => document.getElementById('root')
+    getApplicationNode = () => document.getElementById('contentContainer')
 
     handleChange(key) {
         if (this.state.chosenPalettes.indexOf(key) !== -1) {
