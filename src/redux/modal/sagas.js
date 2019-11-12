@@ -28,9 +28,7 @@ import {
     PALETTE_CHOOSER,
     TITLE_EDIT_MODAL,
 } from '../../components/ModalContainer';
-import { sleep } from '../../services/misc';
-
-const MAX_TRIALS = 10;
+import { commonFocusHandler } from '../../services/misc';
 
 function* toggleModalSaga() {
     yield takeLatest('TOGGLE_MODALS', function* workerSaga({
@@ -83,20 +81,8 @@ function* toggleModalSaga() {
                 updatedModals.push(modal);
             }
             if (focusDict[modal] && focusDict[modal].isDismiss === isDismiss) {
-                const tryFocus = async (selector, sleepMs = 0, trial = 1) => {
-                    await sleep(sleepMs);
-                    if (trial > MAX_TRIALS) {
-                        return false;
-                    }
-                    const button = document.querySelector(selector);
-                    if (button) {
-                        button.focus();
-                    }
-                    return document.activeElement !== button
-                        && tryFocus(selector, sleepMs + 50, trial + 1);
-                };
                 setImmediate(() => {
-                    tryFocus(focusDict[modal].selector);
+                    commonFocusHandler.tryToFocus(focusDict[modal].selector);
                 }, 0);
             }
         }
