@@ -59,7 +59,7 @@ export default class NewProblemsForm extends Component {
         showImage(img);
     }
 
-    getApplicationNode = () => document.getElementById('root');
+    getApplicationNode = () => document.getElementById('contentContainer');
 
     scrollToBottom = () => {
         scrollTo('container', 'myWorkFooter');
