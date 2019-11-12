@@ -209,7 +209,7 @@ class SpeechToTextButton extends Component {
                         <>
                             <img
                                 id="mic_img"
-                                alt={Locales.strings.start_speaking}
+                                alt=""
                                 src={this.state.imageSrc}
                             />
                             <span className={styles.ttsLabel}>
