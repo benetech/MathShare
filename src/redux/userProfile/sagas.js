@@ -20,6 +20,7 @@ import {
     setUserProfile,
     setAuthRedirect,
     setMobileNotifySuccess,
+    setPersonalizationSettings,
     setRecentWork,
 } from './actions';
 import {
@@ -29,8 +30,10 @@ import {
     fetchCurrentUserApi,
     fetchUserInfoApi,
     fetchRecentWorkApi,
+    getConfigApi,
     logoutApi,
     saveUserInfoApi,
+    setConfigApi,
     updateNotifyMobileApi,
 } from './apis';
 import {
@@ -88,6 +91,14 @@ function* checkUserLoginSaga() {
                     yield put(push('/userDetails'));
                     dismissAlert(redirectAlertId);
                 }
+            } finally {
+                const configResponse = yield call(getConfigApi);
+                if (configResponse.status === 200) {
+                    const {
+                        data,
+                    } = configResponse;
+                    yield put(setPersonalizationSettings(data));
+                }
             }
         } catch (error) {
             yield put(resetUserProfile());
@@ -116,7 +127,7 @@ function* fetchRecentWorkSaga() {
         try {
             const response = yield call(fetchRecentWorkApi);
             if (response.status !== 200) {
-                throw Error('Unable to fetcgh work');
+                throw Error('Unable to fetch work');
             }
             const {
                 data,
@@ -243,6 +254,37 @@ function* setMobileNotifySaga() {
     });
 }
 
+function* savePersonalizationSettingsSaga() {
+    yield takeLatest('SAVE_PERSONALIZATION_SETTINGS', function* workerSaga({
+        payload,
+    }) {
+        try {
+            const {
+                email,
+            } = yield select(getState);
+            if (email) {
+                const response = yield call(setConfigApi, payload);
+                if (response.status !== 200) {
+                    throw Error('Unable to update config');
+                }
+                const {
+                    data,
+                } = response;
+                yield put(setPersonalizationSettings(data));
+                alertSuccess(
+                    Locales.strings.personalization_config_has_been_updated,
+                    Locales.strings.success,
+                );
+            }
+        } catch (error) {
+            yield put({
+                type: 'SAVE_PERSONALIZATION_SETTINGS_FAILURE',
+                error,
+            });
+        }
+    });
+}
+
 function* logoutSaga() {
     yield takeLatest('LOGOUT', function* workerSaga() {
         try {
@@ -276,5 +318,6 @@ export default function* rootSaga() {
         fork(setUserProfileSaga),
         fork(logoutSaga),
         fork(setMobileNotifySaga),
+        fork(savePersonalizationSettingsSaga),
     ]);
 }

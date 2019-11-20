@@ -16,8 +16,11 @@ import {
     logoutOfUserProfile,
     setAuthRedirect,
 } from '../../../../redux/userProfile/actions';
+import { setDropdownId } from '../../../../redux/ui/actions';
 import googleAnalytics from '../../../../scripts/googleAnalytics';
 import logo from '../../../../../images/mathshare_logo_white.png';
+import logoutIcon from '../../../../../images/logout.svg';
+import personalizationIcon from '../../../../../images/personalization.svg';
 import {
     stopEvent,
     passEventForKeys,
@@ -25,25 +28,22 @@ import {
 import SkipContent from '../SkipContent';
 import HeaderDropdown from '../../../HeaderDropdown';
 import CommonDropdown from '../../../CommonDropdown';
+import { PERSONALIZATION_SETTINGS } from '../../../ModalContainer';
 
 
 class MainPageHeader extends React.Component {
     componentDidMount() {
-        this.logoutClickHandler();
+        this.profileDropdownHandler();
     }
 
     componentDidUpdate() {
-        this.logoutClickHandler();
+        this.profileDropdownHandler();
     }
 
-    logoutClickHandler = () => {
-        document.querySelectorAll('li.avatar .dropdown-menu > *').forEach((node) => {
+    profileDropdownHandler = () => {
+        document.querySelectorAll('li.avatar .dropdown-menu .dropdown-header').forEach((node) => {
             node.addEventListener('click', e => stopEvent(e));
         });
-        const logout = document.querySelector('li.avatar .dropdown-menu .logout');
-        if (logout) {
-            logout.addEventListener('click', this.props.logoutOfUserProfile);
-        }
     }
 
     onClickTutorial = () => {
@@ -59,6 +59,13 @@ class MainPageHeader extends React.Component {
 
     setAuthRedirect = () => {
         this.props.setAuthRedirect('back');
+    }
+
+    openPersonalizationSettings = () => {
+        this.props.toggleModals([
+            PERSONALIZATION_SETTINGS,
+        ]);
+        this.props.setDropdownId();
     }
 
     render() {
@@ -170,6 +177,19 @@ class MainPageHeader extends React.Component {
                                             <div className={`dropdown-header ${header.email}`}>{userProfile.email}</div>
                                             <div className="dropdown-divider" />
                                             <button
+                                                className="dropdown-item reset-btn"
+                                                onClick={this.openPersonalizationSettings}
+                                                onKeyPress={
+                                                    passEventForKeys(
+                                                        this.openPersonalizationSettings,
+                                                    )
+                                                }
+                                                type="button"
+                                            >
+                                                <img src={personalizationIcon} alt="" height="5" />
+                                                {Locales.strings.personalization}
+                                            </button>
+                                            <button
                                                 className="dropdown-item logout reset-btn"
                                                 onClick={this.props.logoutOfUserProfile}
                                                 onKeyPress={
@@ -179,6 +199,7 @@ class MainPageHeader extends React.Component {
                                                 }
                                                 type="button"
                                             >
+                                                <img src={logoutIcon} alt="" height="5" />
                                                 {Locales.strings.sign_out}
                                             </button>
                                         </CommonDropdown>
@@ -203,6 +224,7 @@ export default connect(
         toggleModals,
         openTour,
         setAuthRedirect,
+        setDropdownId,
         logoutOfUserProfile,
     },
 )(MainPageHeader);

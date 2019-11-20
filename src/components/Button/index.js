@@ -72,7 +72,7 @@ export default class Button extends Component {
                 data-intro={this.props.step}
                 data-toggle={this.props.toggle}
                 onClick={this.props.onClick}
-                onKeyPress={this.props.onKeyPress || passEventForKeys(this.props.onClick)}
+                onKeyPress={this.props.onKeyPress || passEventForKeys(undefined, undefined, true)}
                 style={this.props.hide ? { display: 'none' } : {}}
             >
                 {span}

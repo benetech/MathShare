@@ -13,6 +13,10 @@ export const fetchCurrentUserApi = () => axios.get(`${API_URL}/user`, commonRequ
 
 export const logoutApi = () => axios.get(`${API_URL}/logout`, commonRequestConfig);
 
+export const getConfigApi = () => axios.get(`${API_URL}/config`, commonRequestConfig);
+
+export const setConfigApi = config => axios.post(`${API_URL}/config`, config, commonRequestConfig);
+
 export const fetchUserInfoApi = () => axios.get(`${SERVER_URL}/userInfo/fetch`, commonRequestConfig);
 
 export const saveUserInfoApi = userInfo => axios.post(`${SERVER_URL}/userInfo/submit`, userInfo, commonRequestConfig);
@@ -27,7 +31,9 @@ export default {
     fetchCurrentUserApi,
     fetchRecentWorkApi,
     fetchUserInfoApi,
+    getConfigApi,
     logoutApi,
     saveUserInfoApi,
+    setConfigApi,
     updateNotifyMobileApi,
 };

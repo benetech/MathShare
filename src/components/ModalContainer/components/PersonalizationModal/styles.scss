@@ -1,0 +1,49 @@
+.modal {
+    background: rgb(255, 255, 255);
+    outline: 0;
+    border-radius: 4px;
+}
+
+.modalHeader,
+.modalBody,
+.modalFooter {
+    padding: 0.5em 1.5em;
+}
+
+.modalHeader {
+    border-bottom: 1px solid rgb(238, 238, 238);
+}
+
+.modalTitle {
+    margin: 0;
+}
+
+.modalFooter {
+    border-top: 1px solid rgb(238, 238, 238);
+    text-align: right;
+}
+
+.modalMessage {
+    margin-top: 15px;
+}
+
+.button {
+    margin-right: 10px;
+}
+
+.editTitle {
+    width: 400px;
+    margin-bottom: 15px;
+}
+
+.formContainer {
+    padding-top: 15px;
+    min-width: 350px;
+    max-width: 500px;
+
+    h4 {
+        font-size: 18px;
+        font-weight: 400;
+        padding-right: 15px;
+    }
+}

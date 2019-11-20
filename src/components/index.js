@@ -64,6 +64,13 @@ configure({
     ignoreKeymapAndHandlerChangesByDefault: false,
 });
 
+// TODO: add font to class map
+const configClassMap = {
+    font: {
+
+    },
+};
+
 class App extends Component {
     constructor(props) {
         super(props);
@@ -283,6 +290,24 @@ class App extends Component {
 
     disableHotKeyModal = () => this.setState({ showDialog: false })
 
+    getClassFromUserConfig = () => {
+        const { userProfile } = this.props;
+        const uiConfig = userProfile.config && userProfile.config.ui;
+        const classList = [];
+        if (uiConfig) {
+            if (uiConfig.font) {
+                classList.push(configClassMap[uiConfig.font]);
+            }
+            if (typeof (uiConfig.letterSpacing) === 'number') {
+                classList.push(`userConfig-letterSpacing-${uiConfig.letterSpacing}`);
+            }
+            if (typeof (uiConfig.lineHeight) === 'number') {
+                classList.push(`userConfig-lineHeight-${uiConfig.lineHeight}`);
+            }
+        }
+        return classList.join(' ');
+    }
+
     renderDialog = () => {
         if (this.state.showDialog) {
             const { filter } = this.state;
@@ -378,7 +403,7 @@ class App extends Component {
                         this.props.changeTitle(newState.title);
                     }}
                 />
-                <div id="contentContainer">
+                <div id="contentContainer" className={this.getClassFromUserConfig()}>
                     {this.renderDialog()}
                     <GlobalHotKeys keyMap={keyMap} handlers={this.handlers} allowChanges />
                     <ToastContainer />

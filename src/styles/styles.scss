@@ -282,3 +282,23 @@ body [tabindex="-1"]:focus {
         font-size: 16px;
     }
 }
+
+$letterSpacings: 0, 1, 2, 3, 5, 10;
+$lineHeights: 1, 1.5, 2;
+
+
+@each $letterSpacing in $letterSpacings {
+    :global(.userConfig-letterSpacing-#{$letterSpacing}) {
+        &, button {
+            letter-spacing: #{$letterSpacing}px!important;
+        }
+    }
+}
+
+@each $lineHeight in $lineHeights {
+    :global(.userConfig-lineHeight-#{$lineHeight}) {
+        &, button {
+            line-height: #{$lineHeight}!important;
+        }
+    }
+}
