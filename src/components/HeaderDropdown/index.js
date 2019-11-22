@@ -42,6 +42,25 @@ const HeaderDropdown = ({
         >
             {children}
             <a
+                key="accessibility"
+                className="dropdown-item"
+                href="https://docs.google.com/document/d/1vYi8n9hvhBzdRayOC-grRn4j8KnFM7RB9R2aM77tjDc/edit?usp=sharing"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                <FontAwesome
+                    className="super-crazy-colors"
+                    name="universal-access"
+                    style={{ textShadow: '0 1px 0 rgba(0, 0, 0, 0.1)' }}
+                />
+                {'\u00A0'}
+                {Locales.strings.accessibility}
+                <span className="sROnly">
+                    {'\u00A0'}
+                    {Locales.strings.opens_in_new_tab}
+                </span>
+            </a>
+            <a
                 className="dropdown-item"
                 href="https://intercom.help/benetech/en"
                 target="_blank"
