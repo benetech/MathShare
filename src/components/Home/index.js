@@ -401,119 +401,117 @@ class Home extends Component {
                     editCode={problemList.set.editCode}
                     action={params.action}
                 />
-                <div id="mainContainer">
-                    <main id="LeftNavigation" className={home.leftNavigation}>
-                        {(params.action !== 'new' && params.action !== 'edit') && (
-                            <NavigationHeader
-                                action={params.action}
-                                set={problemList.set}
-                            />
-                        )}
-                        {(params.action !== 'review' && (params.action !== 'edit' && params.action !== 'new')) && currentSet.problems.length > 0 && (
+                <main id="mainContainer" className={home.leftNavigation}>
+                    {(params.action !== 'new' && params.action !== 'edit') && (
+                        <NavigationHeader
+                            action={params.action}
+                            set={problemList.set}
+                        />
+                    )}
+                    {(params.action !== 'review' && (params.action !== 'edit' && params.action !== 'new')) && currentSet.problems.length > 0 && (
+                        <div className={classNames([
+                            'row',
+                            home.actionBar,
+                            home.btnContainer,
+                        ])}
+                        >
                             <div className={classNames([
-                                'row',
-                                home.actionBar,
-                                home.btnContainer,
+                                'align-self-end',
+                                'col',
                             ])}
-                            >
-                                <div className={classNames([
-                                    'align-self-end',
-                                    'col',
-                                ])}
+                            />
+                            <RenderActionButtons>
+                                <Button
+                                    id="shareBtn"
+                                    className={classNames([
+                                        'btn',
+                                        'btn-outline-dark',
+                                    ])}
+                                    type="button"
+                                    icon="link"
+                                    content={Locales.strings.share_permalink}
+                                    onClick={this.shareProblemSet}
                                 />
-                                <RenderActionButtons>
-                                    <Button
-                                        id="shareBtn"
+                                <span>
+                                    <button
+                                        id="googleContainer1"
                                         className={classNames([
                                             'btn',
                                             'btn-outline-dark',
+                                            home.googleClassroomContainer,
+                                            'pointer',
                                         ])}
+                                        onClick={this.shareOnGoogleClassroom}
+                                        onKeyPress={
+                                            passEventForKeys(this.shareOnGoogleClassroom)
+                                        }
                                         type="button"
-                                        icon="link"
-                                        content={Locales.strings.share_permalink}
-                                        onClick={this.shareProblemSet}
-                                    />
-                                    <span>
-                                        <button
-                                            id="googleContainer1"
-                                            className={classNames([
-                                                'btn',
-                                                'btn-outline-dark',
-                                                home.googleClassroomContainer,
-                                                'pointer',
-                                            ])}
-                                            onClick={this.shareOnGoogleClassroom}
-                                            onKeyPress={
-                                                passEventForKeys(this.shareOnGoogleClassroom)
-                                            }
-                                            type="button"
-                                        >
-                                            <span className={home.btnText}>
-                                                <span className="sROnly">
-                                                    {Locales.strings.share_on}
-                                                </span>
-                                                {Locales.strings.google_classroom}
-                                                <span className="sROnly">
-                                                    {'\u00A0'}
-                                                    {Locales.strings.opens_in_new_tab}
-                                                </span>
+                                    >
+                                        <span className={home.btnText}>
+                                            <span className="sROnly">
+                                                {Locales.strings.share_on}
                                             </span>
-                                            <img src={googleClassroomIcon} alt="" />
-                                        </button>
-                                        <UncontrolledTooltip placement="top" target="googleContainer1" />
-                                    </span>
-                                    <span>
-                                        <button
-                                            id="microsoftTeamContainer1"
-                                            className={classNames([
-                                                'btn',
-                                                'btn-outline-dark',
-                                                home.googleClassroomContainer,
-                                                'pointer',
-                                            ])}
-                                            onClick={this.shareOnMicrosoftTeams}
-                                            onKeyPress={
-                                                passEventForKeys(this.shareOnMicrosoftTeams)
-                                            }
-                                            type="button"
-                                        >
-                                            <span className={home.btnText}>
-                                                <span className="sROnly">
-                                                    {Locales.strings.share_on}
-                                                </span>
-                                                {Locales.strings.ms_team}
-                                                <span className="sROnly">
-                                                    {'\u00A0'}
-                                                    {Locales.strings.opens_in_new_tab}
-                                                </span>
+                                            {Locales.strings.google_classroom}
+                                            <span className="sROnly">
+                                                {'\u00A0'}
+                                                {Locales.strings.opens_in_new_tab}
                                             </span>
-                                            <img
-                                                src={msTeamIcon}
-                                                alt=""
-                                            />
-                                        </button>
-                                        <UncontrolledTooltip placement="top" target="microsoftTeamContainer1" />
-                                    </span>
-                                </RenderActionButtons>
+                                        </span>
+                                        <img src={googleClassroomIcon} alt="" />
+                                    </button>
+                                    <UncontrolledTooltip placement="top" target="googleContainer1" />
+                                </span>
+                                <span>
+                                    <button
+                                        id="microsoftTeamContainer1"
+                                        className={classNames([
+                                            'btn',
+                                            'btn-outline-dark',
+                                            home.googleClassroomContainer,
+                                            'pointer',
+                                        ])}
+                                        onClick={this.shareOnMicrosoftTeams}
+                                        onKeyPress={
+                                            passEventForKeys(this.shareOnMicrosoftTeams)
+                                        }
+                                        type="button"
+                                    >
+                                        <span className={home.btnText}>
+                                            <span className="sROnly">
+                                                {Locales.strings.share_on}
+                                            </span>
+                                            {Locales.strings.ms_team}
+                                            <span className="sROnly">
+                                                {'\u00A0'}
+                                                {Locales.strings.opens_in_new_tab}
+                                            </span>
+                                        </span>
+                                        <img
+                                            src={msTeamIcon}
+                                            alt=""
+                                        />
+                                    </button>
+                                    <UncontrolledTooltip placement="top" target="microsoftTeamContainer1" />
+                                </span>
+                            </RenderActionButtons>
 
-                            </div>
-                        )}
-                        {(params.action === 'new' || params.action === 'edit') && (
-                            this.renderNewAndEditControls(currentSet)
-                        )}
-                        <h2 id="problems_in_this_set" className="sROnly" tabIndex={-1}>{Locales.strings.problems_in_this_set}</h2>
-                        <NavigationProblems
-                            problems={currentSet.problems}
-                            solutions={problemList.solutions}
-                            editing={params.action === 'edit' || params.action === 'new'}
-                            activateModals={this.props.toggleModals}
-                            updatePositions={this.props.updatePositions}
-                            action={params.action}
-                            code={params.code}
-                            setEditProblem={this.props.setEditProblem}
-                        />
-                    </main>
-                </div>
+                        </div>
+                    )}
+                    {(params.action === 'new' || params.action === 'edit') && (
+                        this.renderNewAndEditControls(currentSet)
+                    )}
+                    <h2 id="problems_in_this_set" className="sROnly" tabIndex={-1}>{Locales.strings.problems_in_this_set}</h2>
+                    <NavigationProblems
+                        problems={currentSet.problems}
+                        solutions={problemList.solutions}
+                        editing={params.action === 'edit' || params.action === 'new'}
+                        activateModals={this.props.toggleModals}
+                        updatePositions={this.props.updatePositions}
+                        action={params.action}
+                        code={params.code}
+                        setEditProblem={this.props.setEditProblem}
+                    />
+                </main>
             </div>
         );
     }

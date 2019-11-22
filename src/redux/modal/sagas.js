@@ -25,6 +25,7 @@ import {
 import {
     ADD_PROBLEMS,
     CONFIRMATION,
+    EDIT_PROBLEM,
     PALETTE_CHOOSER,
     TITLE_EDIT_MODAL,
 } from '../../components/ModalContainer';
@@ -40,6 +41,11 @@ function* toggleModalSaga() {
         const {
             activeModals,
         } = yield select(getState);
+        const {
+            set,
+            problemToDeleteIndex,
+            problemToEditIndex,
+        } = yield select(getProblemListState);
         let updatedModals = activeModals.slice();
         const focusDict = {
             [ADD_PROBLEMS]: {
@@ -51,6 +57,22 @@ function* toggleModalSaga() {
                 isDismiss: true,
             },
         };
+        if (problemToDeleteIndex) {
+            let gotoAfterDelete = problemToDeleteIndex;
+            if (set.problems.length === gotoAfterDelete) {
+                gotoAfterDelete = set.problems.length - 1;
+            }
+            focusDict[CONFIRMATION] = {
+                selector: `#problem-dropdown-${gotoAfterDelete}`,
+                isDismiss: true,
+            };
+        }
+        if (problemToEditIndex) {
+            focusDict[EDIT_PROBLEM] = {
+                selector: `#problem-dropdown-${problemToEditIndex}`,
+                isDismiss: true,
+            };
+        }
         // eslint-disable-next-line no-restricted-syntax
         for (const modal of modals) {
             let isDismiss = false;
@@ -66,9 +88,6 @@ function* toggleModalSaga() {
                         },
                     });
                 } else if (modal === TITLE_EDIT_MODAL) {
-                    const {
-                        set,
-                    } = yield select(getProblemListState);
                     const {
                         params,
                     } = yield select(matchCurrentRoute('/app/problemSet/:action'));

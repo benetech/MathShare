@@ -38,7 +38,7 @@ export default class Problems extends Component {
         }) => {
             const ItemTag = (addNew ? 'div' : 'li');
             return (
-                <ItemTag>
+                <ItemTag className={addNew && styles.newContainer}>
                     <NavigationProblem
                         solutions={solutions}
                         problem={problem}
