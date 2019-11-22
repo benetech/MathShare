@@ -252,6 +252,19 @@ class Home extends Component {
                                             {Locales.strings.opens_in_new_tab}
                                         </span>
                                     </button>
+                                    <Button
+                                        id="viewAsStudent"
+                                        className={classNames([
+                                            'dropdown-item',
+                                        ])}
+                                        type="button"
+                                        icon="eye"
+                                        content={Locales.strings.view_as_student}
+                                        onClick={this.saveProblemSet(currentSet, true)}
+                                        onKeyPress={passEventForKeys(
+                                            this.saveProblemSet(currentSet, true),
+                                        )}
+                                    />
                                 </React.Fragment>
                             )}
                         </CommonDropdown>
@@ -332,18 +345,6 @@ class Home extends Component {
                                 </button>
                                 <UncontrolledTooltip placement="top" target="microsoftTeamContainer2" />
                             </span>
-                            <Button
-                                id="viewAsStudent"
-                                className={classNames([
-                                    'btn',
-                                    'btn-outline-dark',
-                                ])}
-                                type="button"
-                                icon="eye"
-                                content={Locales.strings.view_as_student}
-                                onClick={this.saveProblemSet(currentSet, true)}
-                                onKeyPress={passEventForKeys(this.saveProblemSet(currentSet, true))}
-                            />
                         </RenderActionButtons>
                     )}
                 </div>
