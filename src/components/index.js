@@ -282,7 +282,7 @@ class App extends Component {
     };
 
     getAdditionalClass = () => {
-        if (window.location.hash && ['#/signin', '#/userdetails'].indexOf(window.location.hash.toLowerCase()) > -1) {
+        if (window.location.hash && ['#/signin', '#/signup', '#/userdetails'].indexOf(window.location.hash.toLowerCase()) > -1) {
             return 'full-height dark-background';
         }
         return '';
@@ -466,6 +466,7 @@ class App extends Component {
                             <Route exact path="/privacy" render={p => <Privacy {...p} />} />
                             <Route exact path="/partners" render={p => <Partners {...p} />} />
                             <Route exact path="/signIn" render={p => <SignIn {...p} />} />
+                            <Route exact path="/signUp" render={p => <SignIn {...p} isSignUp />} />
                             <Route exact path="/userDetails" render={p => <UserDetails {...p} />} />
                             <Route render={p => <NotFound {...p} />} />
                         </Switch>

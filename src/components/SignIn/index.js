@@ -39,7 +39,7 @@ class SignIn extends Component {
 
     getPrev = (routerHistory) => {
         let path = '#/app';
-        if (routerHistory.prev && routerHistory.prev !== '#/signIn') {
+        if (routerHistory.prev && routerHistory.prev !== '#/signIn' && routerHistory.prev !== '#/signUp') {
             path = routerHistory.prev;
         }
         return `${window.location.origin}/${path}`;
@@ -80,7 +80,11 @@ class SignIn extends Component {
     };
 
     render() {
-        const { routerHistory, userProfile } = this.props;
+        const { isSignUp, routerHistory, userProfile } = this.props;
+        let mainText = Locales.strings.sign_in;
+        if (isSignUp) {
+            mainText = Locales.strings.sign_up;
+        }
         if (userProfile.email) {
             return <Redirect to="/app" />;
         }
@@ -89,15 +93,17 @@ class SignIn extends Component {
                 <SkipContent />
                 <Helmet>
                     <title>
-                        {`${Locales.strings.sign_in} - ${Locales.strings.mathshare_benetech}`}
+                        {`${mainText} - ${Locales.strings.mathshare_benetech}`}
                     </title>
                 </Helmet>
                 <div id="mainContainer" className={signIn.content}>
                     <div className={signIn.logo}>
                         <img src={logo} alt={Locales.strings.mathshare_logo} />
                     </div>
-                    <h1 className={signIn.header} tabIndex={-1}>{Locales.strings.sign_in}</h1>
-                    <h2 id="signInServices" className={signIn.text}>{Locales.strings.login_using}</h2>
+                    <h1 className={signIn.header} tabIndex={-1}>{mainText}</h1>
+                    <h2 id="signInServices" className={signIn.text}>
+                        {isSignUp ? Locales.strings.sign_up_using : Locales.strings.login_using}
+                    </h2>
                     <ul className={signIn.buttonsContainer} aria-labelledby="signInServices">
                         <li>
                             {this.renderGoogleBtn(routerHistory)}
@@ -116,7 +122,10 @@ class SignIn extends Component {
                         type="button"
                         role="link"
                     >
-                        <u>{Locales.strings.continue_without_signing_in}</u>
+                        <u>
+                            {isSignUp ? Locales.strings.continue_without_signing_up
+                                : Locales.strings.continue_without_signing_in}
+                        </u>
                     </button>
                     <UncontrolledTooltip placement="top" target="goBack" />
                 </div>

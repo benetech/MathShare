@@ -28,15 +28,50 @@ const clickOnSignIn = (setAuthRedirect, userProfile) => () => {
     }
 };
 
-const getLink = (userProfile) => {
+const renderButtons = (userProfile, setAuthRedirect) => {
     if (userProfile.service) {
-        return '/#/app';
+        return (
+            <div className={styles.headerBtnContainer}>
+                <a
+                    className={styles.signIn}
+                    onClick={clickOnSignIn(setAuthRedirect, userProfile)}
+                    onKeyPress={passEventForKeys(
+                        clickOnSignIn(setAuthRedirect, userProfile),
+                    )}
+                    href="/#/app"
+                >
+                    {Locales.strings.go_to_app}
+                </a>
+            </div>
+        );
     }
-    return '/#/signIn';
+    return (
+        <div className={styles.headerBtnContainer}>
+            <a
+                className={styles.signIn}
+                onClick={clickOnSignIn(setAuthRedirect, userProfile)}
+                onKeyPress={passEventForKeys(
+                    clickOnSignIn(setAuthRedirect, userProfile),
+                )}
+                href="/#/signIn"
+            >
+                {Locales.strings.sign_in}
+            </a>
+            <a
+                className={styles.signIn}
+                onClick={clickOnSignIn(setAuthRedirect, userProfile)}
+                onKeyPress={passEventForKeys(
+                    clickOnSignIn(setAuthRedirect, userProfile),
+                )}
+                href="/#/signUp"
+            >
+                {Locales.strings.sign_up}
+            </a>
+        </div>
+    );
 };
 
 const LandingPage = ({ setAuthRedirect, userProfile }) => {
-    console.log('userProfile', userProfile);
     if (userProfile.email) {
         return <Redirect to="/app" />;
     }
@@ -50,14 +85,7 @@ const LandingPage = ({ setAuthRedirect, userProfile }) => {
             <header>
                 <SkipContent />
                 <div className={styles.signInLabel}>
-                    <a
-                        className={styles.signIn}
-                        onClick={clickOnSignIn(setAuthRedirect, userProfile)}
-                        onKeyPress={passEventForKeys(clickOnSignIn(setAuthRedirect, userProfile))}
-                        href={getLink(userProfile)}
-                    >
-                        {userProfile.service ? Locales.strings.go_to_app : Locales.strings.sign_in}
-                    </a>
+                    {renderButtons(userProfile, setAuthRedirect)}
                 </div>
                 <div className={styles.logoContainer}>
                     <img
