@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';
+import { toast } from 'react-toastify';
 import { Redirect } from 'react-router-dom';
 import { push } from 'connected-react-router';
 import { UncontrolledTooltip } from 'reactstrap';
@@ -29,6 +30,7 @@ class SignIn extends Component {
 
     componentDidMount() {
         this.props.checkUserLogin();
+        toast.dismiss('login-alert');
     }
 
     onSuccess = (service, email, name, image) => {
@@ -37,7 +39,7 @@ class SignIn extends Component {
 
     getPrev = (routerHistory) => {
         let path = '#/app';
-        if (routerHistory.prev && routerHistory.prev !== '#/signIn') {
+        if (routerHistory.prev && routerHistory.prev !== '#/signIn' && routerHistory.prev !== '#/signUp') {
             path = routerHistory.prev;
         }
         return `${window.location.origin}/${path}`;
@@ -65,11 +67,11 @@ class SignIn extends Component {
     renderMicrosoftBtn = routerHistory => (
         <a
             id={this.MS_SIGN_IN}
-            className={`abcRioButton abcRioButtonBlue ${signIn.microsoftContainer}`}
+            className={signIn.microsoftContainer}
             href={`${API_URL}/login/azuread-openidconnect?return=${encodeURIComponent(this.getPrev(routerHistory))}`}
         >
             <img src={microsoftLogo} alt="" />
-            <span className="sROnly">{Locales.strings.ms}</span>
+            <span>{Locales.strings.ms}</span>
         </a>
     )
 
@@ -78,7 +80,11 @@ class SignIn extends Component {
     };
 
     render() {
-        const { routerHistory, userProfile } = this.props;
+        const { isSignUp, routerHistory, userProfile } = this.props;
+        let mainText = Locales.strings.sign_in;
+        if (isSignUp) {
+            mainText = Locales.strings.sign_up;
+        }
         if (userProfile.email) {
             return <Redirect to="/app" />;
         }
@@ -87,15 +93,17 @@ class SignIn extends Component {
                 <SkipContent />
                 <Helmet>
                     <title>
-                        {`${Locales.strings.sign_in} - ${Locales.strings.mathshare_benetech}`}
+                        {`${mainText} - ${Locales.strings.mathshare_benetech}`}
                     </title>
                 </Helmet>
                 <div id="mainContainer" className={signIn.content}>
                     <div className={signIn.logo}>
                         <img src={logo} alt={Locales.strings.mathshare_logo} />
                     </div>
-                    <h1 className={signIn.header} tabIndex={-1}>{Locales.strings.sign_in}</h1>
-                    <h2 id="signInServices" className={signIn.text}>{Locales.strings.login_using}</h2>
+                    <h1 className={signIn.header} tabIndex={-1}>{mainText}</h1>
+                    <h2 id="signInServices" className={signIn.text}>
+                        {isSignUp ? Locales.strings.sign_up_using : Locales.strings.login_using}
+                    </h2>
                     <ul className={signIn.buttonsContainer} aria-labelledby="signInServices">
                         <li>
                             {this.renderGoogleBtn(routerHistory)}
@@ -114,7 +122,10 @@ class SignIn extends Component {
                         type="button"
                         role="link"
                     >
-                        <u>{Locales.strings.continue_without_signing_in}</u>
+                        <u>
+                            {isSignUp ? Locales.strings.continue_without_signing_up
+                                : Locales.strings.continue_without_signing_in}
+                        </u>
                     </button>
                     <UncontrolledTooltip placement="top" target="goBack" />
                 </div>

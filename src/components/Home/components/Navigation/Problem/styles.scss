@@ -2,6 +2,7 @@
     list-style: none;
     margin: auto;
     margin-bottom: 30px;
+    position: relative;
 
     .tile {
         background-color: #fafafa;
@@ -139,6 +140,28 @@
 
         >span {
             padding-left: 10px;
+        }
+    }
+
+    :global(.dropdown) {
+        > ul {
+            min-width: 12rem;
+            padding: 0;
+
+            > li {
+                > button {
+                    padding: 5px;
+                    text-align: left;
+                    width: 100%;
+                    .text {
+                        vertical-align: super;
+                    }
+                    :global(.fa) {
+                        padding-right: 10px;
+                        width: 40px;
+                    }
+                }
+            }
         }
     }
 

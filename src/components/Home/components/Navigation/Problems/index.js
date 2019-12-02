@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { SortableContainer, SortableElement, arrayMove } from 'react-sortable-hoc';
 import NavigationProblem from '../Problem';
 import styles from './styles.scss';
-import Locales from '../../../../../strings';
 
 const mathLive = process.env.MATHLIVE_DEBUG_MODE ? require('../../../../../../../mathlive/src/mathlive.js').default
     : require('../../../../../lib/mathlivedist/mathlive.js');
@@ -39,7 +38,7 @@ export default class Problems extends Component {
         }) => {
             const ItemTag = (addNew ? 'div' : 'li');
             return (
-                <ItemTag>
+                <ItemTag className={addNew && styles.newContainer}>
                     <NavigationProblem
                         solutions={solutions}
                         problem={problem}
@@ -60,7 +59,7 @@ export default class Problems extends Component {
             ? <SortableItem key="item-new" addNew index={this.state.problems.length + 1} disabled /> : null;
 
         const SortableList = SortableContainer(({ problems, solutions }) => (
-            <ol aria-label={Locales.strings.problems}>
+            <ol aria-labelledby="problems_in_this_set">
                 {problems.map((problem, index) => (
                     problem
                         ? <SortableItem key={`item-${index}`} index={index + 1} problem={problem} solutions={solutions} number={index} disabled={!this.props.editing} action={action} code={this.props.code} />

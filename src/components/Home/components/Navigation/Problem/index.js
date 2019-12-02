@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { UncontrolledTooltip } from 'reactstrap';
 import { withRouter } from 'react-router-dom';
 import classNames from 'classnames';
 import FontAwesome from 'react-fontawesome';
@@ -12,6 +13,7 @@ import Locales from '../../../../../strings';
 import showImage from '../../../../../scripts/showImage';
 import parseMathLive from '../../../../../scripts/parseMathLive';
 import { stopEvent, passEventForKeys } from '../../../../../services/events';
+import CommonDropdown from '../../../../CommonDropdown';
 
 const mathLive = process.env.MATHLIVE_DEBUG_MODE ? require('../../../../../../../mathlive/src/mathlive.js').default
     : require('../../../../../lib/mathlivedist/mathlive.js');
@@ -134,36 +136,8 @@ export default class Problem extends Component {
         return stopEvent(e);
     }
 
-    render() {
-        let annotation;
-        let equation;
-        let image;
-        if (this.props.example) {
-            annotation = Locales.strings.getting_started_title;
-            equation = Locales.strings.getting_started_equation;
-        } else if (this.props.addNew) {
-            annotation = Locales.strings.add_problem_title;
-        } else {
-            annotation = this.buildAnnotation();
-            equation = this.buildProblemText();
-        }
-
-        const wrappedAnnotation = annotation !== undefined && (annotation.match(/\\text{/g) || []).length > 1
-            ? <span className={problemStyle.problemAnnotationScaled}>{annotation}</span>
-            : <span className={problemStyle.problemAnnotation}>{annotation}</span>;
-
-        const speechForMath = (this.props.problem && this.props.problem.text) ? (
-            <span className="sROnly">
-                {mathLive.latexToSpeakableText(
-                    this.props.problem.text,
-                    {
-                        textToSpeechRules: 'sre',
-                        textToSpeechRulesOptions: { domain: 'clearspeak', style: 'default', markup: 'none' },
-                    },
-                )}
-            </span>
-        ) : null;
-
+    renderButtons = () => {
+        const dropdownId = `problem-dropdown-${this.props.number}`;
         const imgButton = (this.props.problem && this.props.problem.scratchpad)
             ? (
                 <button
@@ -171,6 +145,7 @@ export default class Problem extends Component {
                     onClick={this.onImgClick}
                     onKeyPress={passEventForKeys(this.onImgClick)}
                     type="button"
+                    key={`${dropdownId}-imgBtn`}
                 >
                     <span className="sROnly">
                         {Locales.strings.view_sketch}
@@ -200,6 +175,7 @@ export default class Problem extends Component {
                         )
                     }
                     name="plus-circle"
+                    key={`${dropdownId}-plusBtn`}
                 />
             )
             : null;
@@ -211,6 +187,7 @@ export default class Problem extends Component {
                     onClick={this.onEditClick}
                     onKeyPress={passEventForKeys(this.onEditClick)}
                     type="button"
+                    key={`${dropdownId}-editBtn`}
                 >
                     <FontAwesome
                         className={
@@ -221,7 +198,7 @@ export default class Problem extends Component {
                         }
                         name="edit"
                     />
-                    <span className="sROnly">{Locales.strings.edit_problem}</span>
+                    <span className={problemStyle.text}>{Locales.strings.edit_problem}</span>
                 </button>
 
             )
@@ -234,6 +211,7 @@ export default class Problem extends Component {
                     onClick={this.onTrashClick}
                     onKeyPress={passEventForKeys(this.onTrashClick)}
                     type="button"
+                    key={`${dropdownId}-removeBtn`}
                 >
                     <FontAwesome
                         className={
@@ -244,10 +222,68 @@ export default class Problem extends Component {
                         }
                         name="trash"
                     />
-                    <span className="sROnly">{Locales.strings.remove_problem}</span>
+                    <span className={problemStyle.text}>{Locales.strings.remove_problem}</span>
                 </button>
             )
             : null;
+        const buttonsList = [editButton, removeButton].filter(button => button);
+        return (
+            <span className={problemStyle.btnContainer}>
+                {imgButton}
+                {plusButton}
+                {buttonsList.length > 0
+                    && (
+                        <>
+                            <CommonDropdown
+                                btnId={dropdownId}
+                                btnClass="reset-btn"
+                                btnContent={(
+                                    <span className="sROnly">
+                                        {Locales.strings.more_options_for.replace('{title}', this.props.problem.title)}
+                                    </span>
+                                )}
+                                btnIcon="ellipsis-v"
+                                listClass="dropdown-menu-lg-right dropdown-secondary"
+                            >
+                                {buttonsList}
+                            </CommonDropdown>
+                            <UncontrolledTooltip placement="top" target={dropdownId} />
+                        </>
+                    )
+                }
+            </span>
+        );
+    }
+
+    render() {
+        let annotation;
+        let equation;
+        let image;
+        if (this.props.example) {
+            annotation = Locales.strings.getting_started_title;
+            equation = Locales.strings.getting_started_equation;
+        } else if (this.props.addNew) {
+            annotation = Locales.strings.add_problem_title;
+        } else {
+            annotation = this.buildAnnotation();
+            equation = this.buildProblemText();
+        }
+
+        const wrappedAnnotation = annotation !== undefined && (annotation.match(/\\text{/g) || []).length > 1
+            ? <span className={problemStyle.problemAnnotationScaled}>{annotation}</span>
+            : <span className={problemStyle.problemAnnotation}>{annotation}</span>;
+
+        const speechForMath = (this.props.problem && this.props.problem.text) ? (
+            <span className="sROnly">
+                {mathLive.latexToSpeakableText(
+                    this.props.problem.text,
+                    {
+                        textToSpeechRules: 'sre',
+                        textToSpeechRulesOptions: { domain: 'clearspeak', style: 'default', markup: 'none' },
+                    },
+                )}
+            </span>
+        ) : null;
 
         const NavItem = withRouter(() => {
             const NavTag = this.props.solutions ? 'a' : 'button';
@@ -311,14 +347,9 @@ export default class Problem extends Component {
                             </span>
                             {speechForMath}
                         </span>
-                        <span className={problemStyle.btnContainer}>
-                            {imgButton}
-                            {editButton}
-                            {removeButton}
-                            {plusButton}
-                        </span>
                         {this.props.problem && this.props.problem.scratchpad ? image : null}
                     </NavTag>
+                    {this.renderButtons()}
                 </div>
             );
         });

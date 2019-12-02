@@ -47,6 +47,7 @@ import problemActions from '../redux/problem/actions';
 import userProfileActions from '../redux/userProfile/actions';
 import ariaLiveAnnouncerActions from '../redux/ariaLiveAnnouncer/actions';
 import routerActions from '../redux/router/actions';
+import uiActions from '../redux/ui/actions';
 import { compareStepArrays } from '../redux/problem/helpers';
 import msalConfig from '../constants/msal';
 import keyMap from '../constants/hotkeyConfig.json';
@@ -62,6 +63,13 @@ configure({
     ignoreEventsCondition: () => false,
     ignoreKeymapAndHandlerChangesByDefault: false,
 });
+
+// TODO: add font to class map
+const configClassMap = {
+    font: {
+
+    },
+};
 
 class App extends Component {
     constructor(props) {
@@ -86,6 +94,12 @@ class App extends Component {
             MOVE_TO_DESCRIPTION_BOX: this.moveFoucsTo('mathAnnotation'),
             READ_PROBLEM_MATH: this.readProblem,
         };
+
+        document.body.addEventListener('click', (e) => {
+            if (e.target.className.indexOf('dropdown-item') === -1) {
+                this.props.setDropdownId(null);
+            }
+        });
     }
 
     componentDidMount() {
@@ -268,13 +282,31 @@ class App extends Component {
     };
 
     getAdditionalClass = () => {
-        if (window.location.hash && ['#/signin', '#/userdetails'].indexOf(window.location.hash.toLowerCase()) > -1) {
+        if (window.location.hash && ['#/signin', '#/signup', '#/userdetails'].indexOf(window.location.hash.toLowerCase()) > -1) {
             return 'full-height dark-background';
         }
         return '';
     };
 
     disableHotKeyModal = () => this.setState({ showDialog: false })
+
+    getClassFromUserConfig = () => {
+        const { userProfile } = this.props;
+        const uiConfig = userProfile.config && userProfile.config.ui;
+        const classList = [];
+        if (uiConfig) {
+            if (uiConfig.font) {
+                classList.push(configClassMap[uiConfig.font]);
+            }
+            if (typeof (uiConfig.letterSpacing) === 'number') {
+                classList.push(`userConfig-letterSpacing-${uiConfig.letterSpacing}`);
+            }
+            if (typeof (uiConfig.lineHeight) === 'number') {
+                classList.push(`userConfig-lineHeight-${uiConfig.lineHeight}`);
+            }
+        }
+        return classList.join(' ');
+    }
 
     renderDialog = () => {
         if (this.state.showDialog) {
@@ -371,83 +403,86 @@ class App extends Component {
                         this.props.changeTitle(newState.title);
                     }}
                 />
-                {this.renderDialog()}
-                <GlobalHotKeys keyMap={keyMap} handlers={this.handlers} allowChanges />
-                <ToastContainer />
-                <div className={`body-container ${this.getAdditionalClass()}`}>
-                    <ModalContainer
-                        activeModals={modal.activeModals}
-                        toggleModals={this.props.toggleModals}
-                        updateProblemSetTitle={this.props.updateProblemSetTitle}
-                        progressToAddingProblems={this.progressToAddingProblems}
-                        deleteProblem={this.deleteProblem}
-                        shareLink={problemStore.shareLink}
-                        newSetShareLink={`${FRONTEND_URL}/app/problemSet/view/${problemList.newSetSharecode}`}
-                        problemSetShareLink={`${FRONTEND_URL}/app/problemSet/review/${problemList.problemSetShareCode}`}
-                        activateMathField={field => this.props.setActiveMathField(field)}
-                        theActiveMathField={problemList.theActiveMathField}
-                        addProblemCallback={this.addProblem}
-                        problems={problemList.set.problems}
-                        tempSet={problemList.tempSet}
-                        saveProblemSet={this.saveProblemSet}
-                        saveProblems={this.props.saveProblems}
-                        problemToEdit={problemList.problemToEdit}
-                        editProblemCallback={this.editProblem}
-                        history={this.props.history}
-                        updateTempSet={this.props.updateTempSet}
-                        {...problemStore}
-                        {...this}
-                    />
-                    <Switch>
-                        <Route
-                            exact
-                            path="/app/problemSet/:action/:code?"
-                            render={p => <Home {...commonProps} {...p} {...this} />}
+                <div id="contentContainer" className={this.getClassFromUserConfig()}>
+                    {this.renderDialog()}
+                    <GlobalHotKeys keyMap={keyMap} handlers={this.handlers} allowChanges />
+                    <ToastContainer />
+                    <div className={`body-container ${this.getAdditionalClass()}`}>
+                        <ModalContainer
+                            activeModals={modal.activeModals}
+                            toggleModals={this.props.toggleModals}
+                            updateProblemSetTitle={this.props.updateProblemSetTitle}
+                            progressToAddingProblems={this.progressToAddingProblems}
+                            deleteProblem={this.deleteProblem}
+                            shareLink={problemStore.shareLink}
+                            newSetShareLink={`${FRONTEND_URL}/app/problemSet/view/${problemList.newSetSharecode}`}
+                            problemSetShareLink={`${FRONTEND_URL}/app/problemSet/review/${problemList.problemSetShareCode}`}
+                            activateMathField={field => this.props.setActiveMathField(field)}
+                            theActiveMathField={problemList.theActiveMathField}
+                            addProblemCallback={this.addProblem}
+                            problems={problemList.set.problems}
+                            tempSet={problemList.tempSet}
+                            saveProblemSet={this.saveProblemSet}
+                            saveProblems={this.props.saveProblems}
+                            problemToEdit={problemList.problemToEdit}
+                            editProblemCallback={this.editProblem}
+                            history={this.props.history}
+                            updateTempSet={this.props.updateTempSet}
+                            {...problemStore}
+                            {...this}
                         />
-                        <Route
-                            exact
-                            path="/app/problem/:action/:code"
-                            render={p => <Editor {...commonProps} {...p} {...this} />}
-                        />
-                        <Route
-                            exact
-                            path="/app/problem/example"
-                            render={p => <Editor example {...commonProps} {...p} {...this} />}
-                        />
-                        <Route
-                            exact
-                            path="/app"
-                            render={p => <PageIndex {...commonProps} {...p} {...this} />}
-                        />
-                        <Route
-                            exact
-                            path="/"
-                            render={p => (
-                                <LandingPage
-                                    {...p}
-                                    setAuthRedirect={this.props.setAuthRedirect}
-                                    userProfile={this.props.userProfile}
-                                />
-                            )}
-                        />
-                        <Route exact path="/privacy" render={p => <Privacy {...p} />} />
-                        <Route exact path="/partners" render={p => <Partners {...p} />} />
-                        <Route exact path="/signIn" render={p => <SignIn {...p} />} />
-                        <Route exact path="/userDetails" render={p => <UserDetails {...p} />} />
-                        <Route render={p => <NotFound {...p} />} />
-                    </Switch>
+                        <Switch>
+                            <Route
+                                exact
+                                path="/app/problemSet/:action/:code?"
+                                render={p => <Home {...commonProps} {...p} {...this} />}
+                            />
+                            <Route
+                                exact
+                                path="/app/problem/:action/:code"
+                                render={p => <Editor {...commonProps} {...p} {...this} />}
+                            />
+                            <Route
+                                exact
+                                path="/app/problem/example"
+                                render={p => <Editor example {...commonProps} {...p} {...this} />}
+                            />
+                            <Route
+                                exact
+                                path="/app"
+                                render={p => <PageIndex {...commonProps} {...p} {...this} />}
+                            />
+                            <Route
+                                exact
+                                path="/"
+                                render={p => (
+                                    <LandingPage
+                                        {...p}
+                                        setAuthRedirect={this.props.setAuthRedirect}
+                                        userProfile={this.props.userProfile}
+                                    />
+                                )}
+                            />
+                            <Route exact path="/privacy" render={p => <Privacy {...p} />} />
+                            <Route exact path="/partners" render={p => <Partners {...p} />} />
+                            <Route exact path="/signIn" render={p => <SignIn {...p} />} />
+                            <Route exact path="/signUp" render={p => <SignIn {...p} isSignUp />} />
+                            <Route exact path="/userDetails" render={p => <UserDetails {...p} />} />
+                            <Route render={p => <NotFound {...p} />} />
+                        </Switch>
+                    </div>
+                    <Intercom appID={process.env.INTERCOM_APP_ID} />
+                    <footer id="footer">
+                        <h2 className="sROnly">
+                            {' '}
+                            {Locales.strings.footer}
+                            {' '}
+                        </h2>
+                        {window.location.hash === '#/' && <SiteMapFooter />}
+                        <MainPageFooter customClass="footer" />
+                        <SocialFooter />
+                    </footer>
                 </div>
-                <Intercom appID={process.env.INTERCOM_APP_ID} />
-                <footer id="footer">
-                    <h2 className="sROnly">
-                        {' '}
-                        {Locales.strings.footer}
-                        {' '}
-                    </h2>
-                    {window.location.hash === '#/' && <SiteMapFooter />}
-                    <MainPageFooter customClass="footer" />
-                    <SocialFooter />
-                </footer>
                 <AriaLiveAnnouncer />
             </React.Fragment>
         );
@@ -467,5 +502,6 @@ export default withRouter(connect(
         ...userProfileActions,
         ...ariaLiveAnnouncerActions,
         ...routerActions,
+        ...uiActions,
     },
 )(App));

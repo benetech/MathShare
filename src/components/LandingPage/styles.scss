@@ -38,8 +38,7 @@
 
 .signIn {
     position: relative;
-    float: right;
-    right: 24px;
+    margin-right: 10px;
     top: 18px;
     font-size: 18px;
     cursor: pointer;
@@ -225,4 +224,10 @@
 
 .signInLabel {
     height: 27px;
+    right: 24px;
+}
+
+.headerBtnContainer {
+    float: right;
+    padding-right: 18px;
 }

@@ -7,6 +7,7 @@ import ProblemModal from './components/ProblemModal';
 import ProblemSetShareModal from './components/ProblemSetShareModal';
 import ConfirmationModal from './components/ConfirmationModal';
 import TitleEditModal from './components/TitleEditModal';
+import PersonalizationModal from './components/PersonalizationModal';
 import PaletteChooser from '../Home/components/ButtonsPaletteChooser';
 import Locales from '../../strings';
 
@@ -22,6 +23,7 @@ const VIEW_SET = 'viewSet';
 const EDIT_PROBLEM = 'editProblem';
 const CONFIRMATION_BACK = 'confirmationBack';
 const TITLE_EDIT_MODAL = 'titleEditModal';
+const PERSONALIZATION_SETTINGS = 'personalizationSettings';
 
 const ModalContainer = (props) => {
     const { activeModals } = props;
@@ -177,8 +179,16 @@ const ModalContainer = (props) => {
         )
         : null;
 
+    const personalizationModal = activeModals.includes(PERSONALIZATION_SETTINGS)
+        ? (
+            <PersonalizationModal
+                deactivateModal={() => props.toggleModals([PERSONALIZATION_SETTINGS])}
+            />
+        )
+        : null;
+
     return (
-        <div>
+        <>
             {saveModal}
             {shareModal}
             {confirmationModal}
@@ -191,7 +201,8 @@ const ModalContainer = (props) => {
             {viewProblem}
             {shareProblemSet}
             {titleEditModal}
-        </div>
+            {personalizationModal}
+        </>
     );
 };
 
@@ -200,4 +211,5 @@ export default ModalContainer;
 export {
     CONFIRMATION, PALETTE_CHOOSER, ADD_PROBLEM_SET, ADD_PROBLEMS, SHARE_PROBLEM_SET,
     SHARE_NEW_SET, SAVE_SET, SHARE_SET, VIEW_SET, EDIT_PROBLEM, CONFIRMATION_BACK, TITLE_EDIT_MODAL,
+    PERSONALIZATION_SETTINGS,
 };

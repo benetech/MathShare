@@ -1,5 +1,4 @@
 @import '../../styles/links.scss';
-
 .meta {
     font-size: 12px;
     align-self: flex-end;
@@ -31,7 +30,6 @@
     cursor: pointer;
     border-bottom: 1px solid;
     padding-bottom: 2px;
-
     &,
     &:hover {
         @extend .resetLink;
@@ -45,4 +43,8 @@
 :global(.card) .dropdownContainer {
     position: absolute;
     right: 10px;
+    .dropdownList {
+        margin-left: -360%;
+        margin-top: -45px;
+    }
 }
