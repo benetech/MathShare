@@ -92,12 +92,16 @@ function* checkUserLoginSaga() {
                     dismissAlert(redirectAlertId);
                 }
             } finally {
-                const configResponse = yield call(getConfigApi);
-                if (configResponse.status === 200) {
-                    const {
-                        data,
-                    } = configResponse;
-                    yield put(setPersonalizationSettings(data));
+                try {
+                    const configResponse = yield call(getConfigApi);
+                    if (configResponse.status === 200) {
+                        const {
+                            data,
+                        } = configResponse;
+                        yield put(setPersonalizationSettings(data));
+                    }
+                } catch (configError) {
+                    console.log('configError', configError);
                 }
             }
         } catch (error) {
