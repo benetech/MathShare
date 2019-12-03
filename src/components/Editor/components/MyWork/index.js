@@ -218,7 +218,7 @@ export default class MyWork extends Component {
                                 myWork.marginTop,
                             )}
                         >
-                            {this.props.title}
+                            {this.props.title || Locales.strings.mathshare_benetech}
                         </h2>
                     </div>
                     <div className={myWork.editorWrapper}>

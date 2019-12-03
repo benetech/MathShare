@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import { UncontrolledTooltip } from 'reactstrap';
 import { withRouter } from 'react-router-dom';
 import classNames from 'classnames';
 import FontAwesome from 'react-fontawesome';
+import { isNumber } from 'util';
 import {
     EDIT_PROBLEM, CONFIRMATION, ADD_PROBLEMS, ADD_PROBLEM_SET,
 } from '../../../../ModalContainer';
@@ -11,6 +13,7 @@ import Locales from '../../../../../strings';
 import showImage from '../../../../../scripts/showImage';
 import parseMathLive from '../../../../../scripts/parseMathLive';
 import { stopEvent, passEventForKeys } from '../../../../../services/events';
+import CommonDropdown from '../../../../CommonDropdown';
 
 const mathLive = process.env.MATHLIVE_DEBUG_MODE ? require('../../../../../../../mathlive/src/mathlive.js').default
     : require('../../../../../lib/mathlivedist/mathlive.js');
@@ -133,6 +136,125 @@ export default class Problem extends Component {
         return stopEvent(e);
     }
 
+    renderButtons = () => {
+        const dropdownId = `problem-dropdown-${this.props.number}`;
+        const imgButton = (this.props.problem && this.props.problem.scratchpad)
+            ? (
+                <button
+                    className="reset-btn"
+                    onClick={this.onImgClick}
+                    onKeyPress={passEventForKeys(this.onImgClick)}
+                    type="button"
+                    key={`${dropdownId}-imgBtn`}
+                >
+                    <span className="sROnly">
+                        {Locales.strings.view_sketch}
+                        {'\u00A0'}
+                        {Locales.strings.opens_in_new_tab}
+                    </span>
+                    <FontAwesome
+                        className={
+                            classNames(
+                                problemStyle.imgIcon,
+                                'fa-2x',
+                            )
+                        }
+                        name="image"
+                    />
+                </button>
+            )
+            : null;
+
+        const plusButton = this.props.addNew
+            ? (
+                <FontAwesome
+                    className={
+                        classNames(
+                            problemStyle.plusIcon,
+                            'fa-2x',
+                        )
+                    }
+                    name="plus-circle"
+                    key={`${dropdownId}-plusBtn`}
+                />
+            )
+            : null;
+
+        const editButton = this.props.showRemove
+            ? (
+                <button
+                    className="reset-btn"
+                    onClick={this.onEditClick}
+                    onKeyPress={passEventForKeys(this.onEditClick)}
+                    type="button"
+                    key={`${dropdownId}-editBtn`}
+                >
+                    <FontAwesome
+                        className={
+                            classNames(
+                                problemStyle.editIcon,
+                                'fa-2x',
+                            )
+                        }
+                        name="edit"
+                    />
+                    <span className={problemStyle.text}>{Locales.strings.edit_problem}</span>
+                </button>
+
+            )
+            : null;
+
+        const removeButton = this.props.showRemove
+            ? (
+                <button
+                    className="reset-btn"
+                    onClick={this.onTrashClick}
+                    onKeyPress={passEventForKeys(this.onTrashClick)}
+                    type="button"
+                    key={`${dropdownId}-removeBtn`}
+                >
+                    <FontAwesome
+                        className={
+                            classNames(
+                                problemStyle.trashIcon,
+                                'fa-2x',
+                            )
+                        }
+                        name="trash"
+                    />
+                    <span className={problemStyle.text}>{Locales.strings.remove_problem}</span>
+                </button>
+            )
+            : null;
+        const buttonsList = [editButton, removeButton].filter(button => button);
+        return (
+            <span className={problemStyle.btnContainer}>
+                {imgButton}
+                {plusButton}
+                {buttonsList.length > 0
+                    && (
+                        <>
+                            <CommonDropdown
+                                btnId={dropdownId}
+                                btnClass="reset-btn"
+                                btnContent={(
+                                    <span className="sROnly">
+                                        {Locales.strings.more_options_for.replace('{title}', this.props.problem.title)}
+                                    </span>
+                                )}
+                                btnIcon="ellipsis-v"
+                                listClass="dropdown-menu-lg-right dropdown-secondary"
+                            >
+                                {buttonsList}
+                            </CommonDropdown>
+                            <UncontrolledTooltip placement="top" target={dropdownId} />
+                        </>
+                    )
+                }
+            </span>
+        );
+    }
+
     render() {
         let annotation;
         let equation;
@@ -163,103 +285,8 @@ export default class Problem extends Component {
             </span>
         ) : null;
 
-        const imgButton = (this.props.problem && this.props.problem.scratchpad)
-            ? (
-                <button
-                    className="reset-btn"
-                    onClick={this.onImgClick}
-                    onKeyPress={passEventForKeys(this.onImgClick)}
-                    type="button"
-                >
-                    <span className="sROnly">
-                        {Locales.strings.view_sketch}
-                        {'\u00A0'}
-                        {Locales.strings.opens_in_new_tab}
-                    </span>
-                    <FontAwesome
-                        className={
-                            classNames(
-                                problemStyle.imgIcon,
-                                'fa-2x',
-                            )
-                        }
-                        name="image"
-                    />
-                </button>
-            )
-            : null;
-
-        const plusButton = this.props.addNew
-            ? (
-                <button
-                    className="reset-btn"
-                    onClick={this.openNewProblemModal}
-                    onKeyPress={passEventForKeys(this.openNewProblemModal)}
-                    type="button"
-                >
-                    <span className="sROnly">
-                        {Locales.strings.add_problem_title}
-                    </span>
-                    <FontAwesome
-                        className={
-                            classNames(
-                                problemStyle.plusIcon,
-                                'fa-2x',
-                            )
-                        }
-                        name="plus-circle"
-                    />
-                </button>
-            )
-            : null;
-
-        const editButton = this.props.showRemove
-            ? (
-                <button
-                    className="reset-btn"
-                    onClick={this.onEditClick}
-                    onKeyPress={passEventForKeys(this.onEditClick)}
-                    type="button"
-                >
-                    <FontAwesome
-                        className={
-                            classNames(
-                                problemStyle.editIcon,
-                                'fa-2x',
-                            )
-                        }
-                        name="edit"
-                    />
-                    <span className="sROnly">{Locales.strings.edit_problem}</span>
-                </button>
-
-            )
-            : null;
-
-        const removeButton = this.props.showRemove
-            ? (
-                <button
-                    className="reset-btn"
-                    onClick={this.onTrashClick}
-                    onKeyPress={passEventForKeys(this.onTrashClick)}
-                    type="button"
-                >
-                    <FontAwesome
-                        className={
-                            classNames(
-                                problemStyle.trashIcon,
-                                'fa-2x',
-                            )
-                        }
-                        name="trash"
-                    />
-                    <span className="sROnly">{Locales.strings.remove_problem}</span>
-                </button>
-            )
-            : null;
-
         const NavItem = withRouter(() => {
-            const NavTag = this.props.solutions ? 'a' : 'div';
+            const NavTag = this.props.solutions ? 'a' : 'button';
             const additionalProps = {};
             if (NavTag === 'a') {
                 additionalProps.href = this.getLink();
@@ -273,7 +300,7 @@ export default class Problem extends Component {
             }
             return (
                 <div
-                    id={`problem-${((this.props.number && this.props.number + 1) || 'new')}`}
+                    id={`problem-${((isNumber(this.props.number) && this.props.number + 1) || 'new')}`}
                     className={
                         classNames(
                             'd-flex',
@@ -296,7 +323,7 @@ export default class Problem extends Component {
                         }
                         {...additionalProps}
                     >
-                        <div
+                        <span
                             className={
                                 classNames(
                                     problemStyle.navItemButton,
@@ -305,7 +332,7 @@ export default class Problem extends Component {
                             }
                         >
                             {wrappedAnnotation}
-                            <div
+                            <span
                                 aria-hidden="true" // math speech is part of link
                                 ref={(el) => { this.navItemContent = el; }}
                                 className={classNames(
@@ -317,17 +344,12 @@ export default class Problem extends Component {
                                 )}
                             >
                                 {equation}
-                            </div>
+                            </span>
                             {speechForMath}
-                        </div>
-                        <div className={problemStyle.btnContainer}>
-                            {imgButton}
-                            {editButton}
-                            {removeButton}
-                            {plusButton}
-                        </div>
+                        </span>
                         {this.props.problem && this.props.problem.scratchpad ? image : null}
                     </NavTag>
+                    {this.renderButtons()}
                 </div>
             );
         });

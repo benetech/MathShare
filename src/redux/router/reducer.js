@@ -5,8 +5,9 @@ import {
 
 const initialState = {
     current: window.location.hash,
-    prev: null,
     currentTitle: null,
+    prev: null,
+    prevReplaced: null,
 };
 
 const router = (state = initialState, {
@@ -23,6 +24,7 @@ const router = (state = initialState, {
         if (action === 'REPLACE') {
             return {
                 ...state,
+                prevReplaced: state.current,
                 current: window.location.hash,
             };
         } if (action === 'POP') {
@@ -41,6 +43,11 @@ const router = (state = initialState, {
             currentTitle: title,
         };
     }
+    case 'CLEAR_PREV_REPLACED':
+        return {
+            ...state,
+            prevReplaced: null,
+        };
     default:
         return state;
     }

@@ -12,6 +12,8 @@ import {
 } from 'connected-react-router';
 import { announceOnAriaLive } from '../ariaLiveAnnouncer/actions';
 import { focusOnMainContent } from '../../services/events';
+import { commonFocusHandler } from '../../services/misc';
+import Locales from '../../strings';
 import {
     getRouterHookState,
 } from './selectors';
@@ -25,13 +27,20 @@ function* changeTitleSaga() {
             title,
         },
     }) {
-        const { currentTitle } = yield select(getRouterHookState);
+        const { currentTitle, prevReplaced } = yield select(getRouterHookState);
         let newTitle = title;
         if (newTitle && newTitle.join) {
             newTitle = title.join('');
         }
         if (newTitle && currentTitle !== newTitle) {
-            yield put(announceOnAriaLive(newTitle));
+            const announceTitle = newTitle.split(` - ${Locales.strings.mathshare_benetech}`)[0];
+            if (prevReplaced !== '#/userDetails') {
+                yield put(announceOnAriaLive(announceTitle));
+            } else {
+                yield put({
+                    type: 'CLEAR_PREV_REPLACED',
+                });
+            }
             yield put(setTitle(newTitle));
         }
     });
@@ -43,8 +52,18 @@ function* changeRouteSaga() {
             location,
         },
     }) {
-        if (location.pathname !== '/') {
-            yield call(setTimeout, focusOnMainContent, 100);
+        const { pathname } = location;
+        const {
+            prev,
+            prevReplaced,
+        } = yield select(getRouterHookState);
+        let selector = `a[href='/${prev}']`;
+        if (prevReplaced && prev.startsWith('#/app/problemSet/solve/')) {
+            selector = `a[href='/${prevReplaced}']`;
+        }
+        const notAbleToFocus = yield call(commonFocusHandler.tryToFocus, selector);
+        if (notAbleToFocus && pathname !== '/') {
+            yield call(focusOnMainContent);
         }
     });
 }

@@ -17,6 +17,29 @@ import Button from '../Button';
 import googleClassroomIcon from '../../../images/google-classroom-icon.png';
 import msTeamIcon from '../../../images/ms-team-icon.svg';
 import { passEventForKeys } from '../../services/events';
+import CommonDropdown from '../CommonDropdown';
+
+
+const RenderActionButtons = ({ children }) => (
+    <React.Fragment>
+        <h2
+            id="actions_for_this_problem_set"
+            className="sROnly"
+            tabIndex={-1}
+        >
+            {Locales.strings.actions_for_this_problem_set}
+        </h2>
+        <div className={classNames([
+            home.btnContainer,
+            home.right,
+        ])}
+        >
+            <ul aria-labelledby="actions_for_this_problem_set">
+                {children.map((child, index) => (<li key={index}>{child}</li>))}
+            </ul>
+        </div>
+    </React.Fragment>
+);
 
 class Home extends Component {
     componentDidMount() {
@@ -159,7 +182,7 @@ class Home extends Component {
                 <div className="row">
                     <div className={classNames('col-lg-12', 'm-3', 'text-left')}>
                         <h1 id="LeftNavigationHeader" className={home.titleHeader} tabIndex="-1">
-                            {currentSet.title}
+                            {currentSet.title || Locales.strings.untitled_problem_set}
                         </h1>
                         <button
                             className="reset-btn"
@@ -181,63 +204,70 @@ class Home extends Component {
                             />
                             <span className="sROnly">{Locales.strings.edit_title}</span>
                         </button>
-                        <div className="dropdown">
-                            <button className="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false">
-                                <FontAwesome
-                                    className={
-                                        classNames(
-                                            'fa-2x',
-                                        )
-                                    }
-                                    name="ellipsis-v"
-                                />
+                        <CommonDropdown
+                            btnId="dropdownMenuButton"
+                            btnClass="nav-link reset-btn"
+                            btnIcon="ellipsis-v"
+                            btnIconSize="2x"
+                            containerClass=""
+                            containerTag="li"
+                            btnContent={(
                                 <span className="sROnly">{Locales.strings.more_options}</span>
-                            </button>
-                            <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                {params.action === 'edit' && (
-                                    <React.Fragment>
-                                        <li>
-                                            <button
-                                                className="dropdown-item"
-                                                onClick={this.props.duplicateProblemSet}
-                                                onKeyPress={
-                                                    passEventForKeys(this.props.duplicateProblemSet)
-                                                }
-                                                type="button"
-                                            >
-                                                <FontAwesome
-                                                    size="lg"
-                                                    name="copy"
-                                                />
-                                                {` ${Locales.strings.duplicate_set}`}
-                                                <span className="sROnly">
-                                                    {'\u00A0'}
-                                                    {Locales.strings.opens_in_new_tab}
-                                                </span>
-                                            </button>
-                                        </li>
-                                        <li>
-                                            <button
-                                                className="dropdown-item"
-                                                onClick={this.shareOnTwitter}
-                                                onKeyPress={passEventForKeys(this.shareOnTwitter)}
-                                                type="button"
-                                            >
-                                                <FontAwesome
-                                                    size="lg"
-                                                    name="twitter"
-                                                />
-                                                {` ${Locales.strings.share_on_twitter}`}
-                                                <span className="sROnly">
-                                                    {'\u00A0'}
-                                                    {Locales.strings.opens_in_new_tab}
-                                                </span>
-                                            </button>
-                                        </li>
-                                    </React.Fragment>
-                                )}
-                            </ul>
-                        </div>
+                            )}
+                            listClass="dropdown-menu-lg-right dropdown-secondary"
+                        >
+                            {params.action === 'edit' && (
+                                <React.Fragment>
+                                    <button
+                                        className="dropdown-item"
+                                        onClick={this.props.duplicateProblemSet}
+                                        onKeyPress={
+                                            passEventForKeys(this.props.duplicateProblemSet)
+                                        }
+                                        type="button"
+                                    >
+                                        <FontAwesome
+                                            size="lg"
+                                            name="copy"
+                                        />
+                                        {` ${Locales.strings.duplicate_set}`}
+                                        <span className="sROnly">
+                                            {'\u00A0'}
+                                            {Locales.strings.opens_in_new_tab}
+                                        </span>
+                                    </button>
+                                    <button
+                                        className="dropdown-item"
+                                        onClick={this.shareOnTwitter}
+                                        onKeyPress={passEventForKeys(this.shareOnTwitter)}
+                                        type="button"
+                                    >
+                                        <FontAwesome
+                                            size="lg"
+                                            name="twitter"
+                                        />
+                                        {` ${Locales.strings.share_on_twitter}`}
+                                        <span className="sROnly">
+                                            {'\u00A0'}
+                                            {Locales.strings.opens_in_new_tab}
+                                        </span>
+                                    </button>
+                                    <Button
+                                        id="viewAsStudent"
+                                        className={classNames([
+                                            'dropdown-item',
+                                        ])}
+                                        type="button"
+                                        icon="eye"
+                                        content={Locales.strings.view_as_student}
+                                        onClick={this.saveProblemSet(currentSet, true)}
+                                        onKeyPress={passEventForKeys(
+                                            this.saveProblemSet(currentSet, true),
+                                        )}
+                                    />
+                                </React.Fragment>
+                            )}
+                        </CommonDropdown>
                     </div>
                 </div>
                 <div className={`row flex-row ${home.btnContainer}`}>
@@ -246,7 +276,7 @@ class Home extends Component {
                             params.action === 'new' && problemList.tempSet.problems.length > 0)
                         || params.action === 'edit'
                     ) && (
-                        <React.Fragment>
+                        <RenderActionButtons>
                             <Button
                                 id="shareBtn"
                                 className={classNames([
@@ -315,19 +345,7 @@ class Home extends Component {
                                 </button>
                                 <UncontrolledTooltip placement="top" target="microsoftTeamContainer2" />
                             </span>
-                            <Button
-                                id="viewAsStudent"
-                                className={classNames([
-                                    'btn',
-                                    'btn-outline-dark',
-                                ])}
-                                type="button"
-                                icon="eye"
-                                content={Locales.strings.view_as_student}
-                                onClick={this.saveProblemSet(currentSet, true)}
-                                onKeyPress={passEventForKeys(this.saveProblemSet(currentSet, true))}
-                            />
-                        </React.Fragment>
+                        </RenderActionButtons>
                     )}
                 </div>
             </React.Fragment>
@@ -343,7 +361,7 @@ class Home extends Component {
             if (problemList.set.title) {
                 titlePrefix = `${problemList.set.title} - `;
             } else {
-                titlePrefix = 'Untitled Problem Set - ';
+                titlePrefix = `${Locales.strings.untitled_problem_set} - `;
             }
         } else {
             return null;
@@ -384,121 +402,117 @@ class Home extends Component {
                     editCode={problemList.set.editCode}
                     action={params.action}
                 />
-                <div id="mainContainer">
-                    <main id="LeftNavigation" className={home.leftNavigation}>
-                        {(params.action !== 'new' && params.action !== 'edit') && (
-                            <NavigationHeader
-                                action={params.action}
-                                set={problemList.set}
-                            />
-                        )}
-                        {(params.action !== 'review' && (params.action !== 'edit' && params.action !== 'new')) && currentSet.problems.length > 0 && (
+                <main id="mainContainer" className={home.leftNavigation}>
+                    {(params.action !== 'new' && params.action !== 'edit') && (
+                        <NavigationHeader
+                            action={params.action}
+                            set={problemList.set}
+                        />
+                    )}
+                    {(params.action !== 'review' && (params.action !== 'edit' && params.action !== 'new')) && currentSet.problems.length > 0 && (
+                        <div className={classNames([
+                            'row',
+                            home.actionBar,
+                            home.btnContainer,
+                        ])}
+                        >
                             <div className={classNames([
-                                'row',
-                                home.actionBar,
-                                home.btnContainer,
+                                'align-self-end',
+                                'col',
                             ])}
-                            >
-                                <div className={classNames([
-                                    'align-self-end',
-                                    'col',
-                                ])}
+                            />
+                            <RenderActionButtons>
+                                <Button
+                                    id="shareBtn"
+                                    className={classNames([
+                                        'btn',
+                                        'btn-outline-dark',
+                                    ])}
+                                    type="button"
+                                    icon="link"
+                                    content={Locales.strings.share_permalink}
+                                    onClick={this.shareProblemSet}
                                 />
-                                <div className={classNames([
-                                    home.btnContainer,
-                                    home.right,
-                                ])}
-                                >
-                                    <Button
-                                        id="shareBtn"
+                                <span>
+                                    <button
+                                        id="googleContainer1"
                                         className={classNames([
                                             'btn',
                                             'btn-outline-dark',
+                                            home.googleClassroomContainer,
+                                            'pointer',
                                         ])}
+                                        onClick={this.shareOnGoogleClassroom}
+                                        onKeyPress={
+                                            passEventForKeys(this.shareOnGoogleClassroom)
+                                        }
                                         type="button"
-                                        icon="link"
-                                        content={Locales.strings.share_permalink}
-                                        onClick={this.shareProblemSet}
-                                    />
-                                    <span>
-                                        <button
-                                            id="googleContainer1"
-                                            className={classNames([
-                                                'btn',
-                                                'btn-outline-dark',
-                                                home.googleClassroomContainer,
-                                                'pointer',
-                                            ])}
-                                            onClick={this.shareOnGoogleClassroom}
-                                            onKeyPress={
-                                                passEventForKeys(this.shareOnGoogleClassroom)
-                                            }
-                                            type="button"
-                                        >
-                                            <span className={home.btnText}>
-                                                <span className="sROnly">
-                                                    {Locales.strings.share_on}
-                                                </span>
-                                                {Locales.strings.google_classroom}
-                                                <span className="sROnly">
-                                                    {'\u00A0'}
-                                                    {Locales.strings.opens_in_new_tab}
-                                                </span>
+                                    >
+                                        <span className={home.btnText}>
+                                            <span className="sROnly">
+                                                {Locales.strings.share_on}
                                             </span>
-                                            <img src={googleClassroomIcon} alt="" />
-                                        </button>
-                                        <UncontrolledTooltip placement="top" target="googleContainer1" />
-                                    </span>
-                                    <span>
-                                        <button
-                                            id="microsoftTeamContainer1"
-                                            className={classNames([
-                                                'btn',
-                                                'btn-outline-dark',
-                                                home.googleClassroomContainer,
-                                                'pointer',
-                                            ])}
-                                            onClick={this.shareOnMicrosoftTeams}
-                                            onKeyPress={
-                                                passEventForKeys(this.shareOnMicrosoftTeams)
-                                            }
-                                            type="button"
-                                        >
-                                            <span className={home.btnText}>
-                                                <span className="sROnly">
-                                                    {Locales.strings.share_on}
-                                                </span>
-                                                {Locales.strings.ms_team}
-                                                <span className="sROnly">
-                                                    {'\u00A0'}
-                                                    {Locales.strings.opens_in_new_tab}
-                                                </span>
+                                            {Locales.strings.google_classroom}
+                                            <span className="sROnly">
+                                                {'\u00A0'}
+                                                {Locales.strings.opens_in_new_tab}
                                             </span>
-                                            <img
-                                                src={msTeamIcon}
-                                                alt=""
-                                            />
-                                        </button>
-                                        <UncontrolledTooltip placement="top" target="microsoftTeamContainer1" />
-                                    </span>
-                                </div>
-                            </div>
-                        )}
-                        {(params.action === 'new' || params.action === 'edit') && (
-                            this.renderNewAndEditControls(currentSet)
-                        )}
-                        <NavigationProblems
-                            problems={currentSet.problems}
-                            solutions={problemList.solutions}
-                            editing={params.action === 'edit' || params.action === 'new'}
-                            activateModals={this.props.toggleModals}
-                            updatePositions={this.props.updatePositions}
-                            action={params.action}
-                            code={params.code}
-                            setEditProblem={this.props.setEditProblem}
-                        />
-                    </main>
-                </div>
+                                        </span>
+                                        <img src={googleClassroomIcon} alt="" />
+                                    </button>
+                                    <UncontrolledTooltip placement="top" target="googleContainer1" />
+                                </span>
+                                <span>
+                                    <button
+                                        id="microsoftTeamContainer1"
+                                        className={classNames([
+                                            'btn',
+                                            'btn-outline-dark',
+                                            home.googleClassroomContainer,
+                                            'pointer',
+                                        ])}
+                                        onClick={this.shareOnMicrosoftTeams}
+                                        onKeyPress={
+                                            passEventForKeys(this.shareOnMicrosoftTeams)
+                                        }
+                                        type="button"
+                                    >
+                                        <span className={home.btnText}>
+                                            <span className="sROnly">
+                                                {Locales.strings.share_on}
+                                            </span>
+                                            {Locales.strings.ms_team}
+                                            <span className="sROnly">
+                                                {'\u00A0'}
+                                                {Locales.strings.opens_in_new_tab}
+                                            </span>
+                                        </span>
+                                        <img
+                                            src={msTeamIcon}
+                                            alt=""
+                                        />
+                                    </button>
+                                    <UncontrolledTooltip placement="top" target="microsoftTeamContainer1" />
+                                </span>
+                            </RenderActionButtons>
+
+                        </div>
+                    )}
+                    {(params.action === 'new' || params.action === 'edit') && (
+                        this.renderNewAndEditControls(currentSet)
+                    )}
+                    <h2 id="problems_in_this_set" className="sROnly" tabIndex={-1}>{Locales.strings.problems_in_this_set}</h2>
+                    <NavigationProblems
+                        problems={currentSet.problems}
+                        solutions={problemList.solutions}
+                        editing={params.action === 'edit' || params.action === 'new'}
+                        activateModals={this.props.toggleModals}
+                        updatePositions={this.props.updatePositions}
+                        action={params.action}
+                        code={params.code}
+                        setEditProblem={this.props.setEditProblem}
+                    />
+                </main>
             </div>
         );
     }

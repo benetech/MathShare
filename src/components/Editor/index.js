@@ -107,7 +107,7 @@ class Editor extends Component {
         return cleanups;
     }
 
-    getApplicationNode = () => document.getElementById('root')
+    getApplicationNode = () => document.getElementById('contentContainer')
 
     textAreaChanged(text) {
         this.props.updateProblemStore({ textAreaValue: text });
@@ -195,7 +195,7 @@ class Editor extends Component {
             if (problemList.set.title) {
                 titlePrefix = `${problemList.set.title} - `;
             } else {
-                titlePrefix = 'Untitled Problem Set - ';
+                titlePrefix = `${Locales.strings.untitled_problem_set} - `;
             }
         } else {
             return null;

@@ -9,12 +9,18 @@
     padding: 0;
 
     ol {
-        display: contents;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-evenly;
     }
 
     >ol li,
     >div {
         padding: 8px;
+    }
+
+    .newContainer {
+        padding-left: 48px;
     }
 }
 

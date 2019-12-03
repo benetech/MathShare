@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Helmet } from 'react-helmet';
 import { withRouter } from 'react-router-dom';
 import { UncontrolledTooltip } from 'reactstrap';
-import { alertWarning, alertSuccess } from '../../scripts/alert';
+import { alertWarning } from '../../scripts/alert';
 import Locales from '../../strings';
 import { redirectAfterLogin, saveUserInfo } from '../../redux/userProfile/actions';
+import { announceOnAriaLive } from '../../redux/ariaLiveAnnouncer/actions';
 import logo from '../../../images/logo-black.png';
 import userDetails from './styles.scss';
+import SkipContent from '../Home/components/SkipContent';
 
 
 class UserDetails extends Component {
@@ -35,6 +38,7 @@ class UserDetails extends Component {
                 if (gradeHeading) {
                     gradeHeading.focus();
                 }
+                this.props.announceOnAriaLive(Locales.strings.grade_of_work);
             }
         });
     }
@@ -51,7 +55,6 @@ class UserDetails extends Component {
             const grades = Object.keys(gradeStatus).filter(gradeName => gradeStatus[gradeName]);
             this.props.saveUserInfo(type, grades, role);
         }
-        alertSuccess(Locales.strings.thanks_for_details);
         this.props.redirectAfterLogin();
     }
 
@@ -136,44 +139,47 @@ class UserDetails extends Component {
     render() {
         return (
             <div className={userDetails.container}>
+                <Helmet>
+                    <title>
+                        {`${Locales.strings.setup_your_account} - ${Locales.strings.mathshare_benetech}`}
+                    </title>
+                </Helmet>
                 <div className={userDetails.content}>
                     <header className={userDetails.logo}>
+                        <SkipContent />
                         <img src={logo} alt={Locales.strings.mathshare_logo} />
                     </header>
-                    <main>
+                    <main id="mainContainer">
                         <h1 className={userDetails.text} tabIndex={-1}>
                             {Locales.strings.setup_your_account}
                         </h1>
                         {this.state.type === null && (
-                            <div>
-                                <h2 tabIndex={-1}>{Locales.strings.who_are_you}</h2>
+                            <fieldset className="row">
+                                <legend className={userDetails.descText}>
+                                    <h2 tabIndex={-1} id="who_are_you">{Locales.strings.who_are_you}</h2>
+                                </legend>
                                 <div className={userDetails.buttonsContainer}>
-                                    <div>
-                                        <button
-                                            className={`btn btn-primary ${userDetails.largeBtn}`}
-                                            id="im_a_teacher"
-                                            type="button"
-                                            onClick={this.setType('teacher')}
-                                        >
-                                            {Locales.strings.i_m_teacher}
-                                        </button>
-                                    </div>
-                                    <div>
-                                        <button
-                                            className={`btn btn-primary ${userDetails.largeBtn}`}
-                                            id="im_a_student"
-                                            type="button"
-                                            onClick={this.setType('student')}
-                                        >
-                                            {Locales.strings.i_m_student}
-                                        </button>
-                                    </div>
+                                    <button
+                                        className={`btn btn-primary ${userDetails.largeBtn}`}
+                                        id="im_a_teacher"
+                                        type="button"
+                                        onClick={this.setType('teacher')}
+                                    >
+                                        {Locales.strings.i_m_teacher}
+                                    </button>
                                     <UncontrolledTooltip placement="top" target="im_a_teacher" />
+                                    <button
+                                        className={`btn btn-primary ${userDetails.largeBtn}`}
+                                        id="im_a_student"
+                                        type="button"
+                                        onClick={this.setType('student')}
+                                    >
+                                        {Locales.strings.i_m_student}
+                                    </button>
                                     <UncontrolledTooltip placement="top" target="im_a_student" />
                                 </div>
-                            </div>
+                            </fieldset>
                         )}
-
                         {this.state.type === 'teacher' && this.renderTeacherForm()}
                     </main>
                 </div>
@@ -187,5 +193,6 @@ export default withRouter(connect(
     {
         redirectAfterLogin,
         saveUserInfo,
+        announceOnAriaLive,
     },
 )(UserDetails));

@@ -44,7 +44,16 @@ header nav.navbar {
     }
 
     img {
-      height: 36px;
+        height: 18px;
+        padding-right: 12px;
+        vertical-align: text-top;
+    }
+
+    :global(.dropdown-toggle) {
+        img {
+            height: 36px;
+            padding-right: unset;
+        }
     }
 
     :global(.dropdown-header) {

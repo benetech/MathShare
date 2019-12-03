@@ -80,6 +80,18 @@ export const setMobileNotifySuccess = notifyForMobile => ({
     },
 });
 
+export const savePersonalizationSettings = ui => ({
+    type: 'SAVE_PERSONALIZATION_SETTINGS',
+    payload: {
+        ui,
+    },
+});
+
+export const setPersonalizationSettings = payload => ({
+    type: 'SET_PERSONALIZATION_SETTINGS',
+    payload,
+});
+
 export default {
     checkUserLogin,
     fetchRecentWork,
@@ -92,4 +104,6 @@ export default {
     setRecentWork,
     setUserProfile,
     handleSuccessfulLogin,
+    savePersonalizationSettings,
+    setPersonalizationSettings,
 };

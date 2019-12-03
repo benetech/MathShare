@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { SortableContainer, SortableElement, arrayMove } from 'react-sortable-hoc';
 import NavigationProblem from '../Problem';
 import styles from './styles.scss';
-import Locales from '../../../../../strings';
 
 const mathLive = process.env.MATHLIVE_DEBUG_MODE ? require('../../../../../../../mathlive/src/mathlive.js').default
     : require('../../../../../lib/mathlivedist/mathlive.js');
@@ -39,7 +38,7 @@ export default class Problems extends Component {
         }) => {
             const ItemTag = (addNew ? 'div' : 'li');
             return (
-                <ItemTag>
+                <ItemTag className={addNew && styles.newContainer}>
                     <NavigationProblem
                         solutions={solutions}
                         problem={problem}
@@ -57,31 +56,32 @@ export default class Problems extends Component {
         });
 
         const newProblem = this.props.editing
-            ? <SortableItem key="item-new" addNew index={this.state.problems.length + 1} number={this.state.problems.length + 1} disabled /> : null;
+            ? <SortableItem key="item-new" addNew index={this.state.problems.length + 1} disabled /> : null;
 
         const SortableList = SortableContainer(({ problems, solutions }) => (
-            <div className={`${styles.container} ${styles.problemList} justify-content-around`}>
-                <ol aria-label={Locales.strings.problems}>
-                    {problems.map((problem, index) => (
-                        problem
-                            ? <SortableItem key={`item-${index}`} index={index + 1} problem={problem} solutions={solutions} number={index} disabled={!this.props.editing} action={action} code={this.props.code} />
-                            : null
-                    ))}
-                </ol>
-                {newProblem}
-            </div>
+            <ol aria-labelledby="problems_in_this_set">
+                {problems.map((problem, index) => (
+                    problem
+                        ? <SortableItem key={`item-${index}`} index={index + 1} problem={problem} solutions={solutions} number={index} disabled={!this.props.editing} action={action} code={this.props.code} />
+                        : null
+                ))}
+            </ol>
         ));
 
         return (
-            <SortableList
-                distance={5}
-                problems={this.state.problems}
-                solutions={this.props.solutions}
-                onSortEnd={this.onSortEnd}
-                onSortStart={this.onSortStart}
-                axis="xy"
-                transitionDuration={800}
-            />
+            <div className={`${styles.container} ${styles.problemList} justify-content-around`}>
+                <SortableList
+                    distance={5}
+                    problems={this.state.problems}
+                    solutions={this.props.solutions}
+                    onSortEnd={this.onSortEnd}
+                    onSortStart={this.onSortStart}
+                    axis="xy"
+                    transitionDuration={800}
+                />
+                {newProblem}
+            </div>
+
         );
     }
 }

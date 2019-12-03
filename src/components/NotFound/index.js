@@ -4,7 +4,6 @@ import classNames from 'classnames';
 import styles from './styles.scss';
 import Locales from '../../strings';
 import MainPageHeader from '../Home/components/Header';
-import SkipContent from '../Home/components/SkipContent';
 
 const NotFound = () => (
     <div className={styles.container}>
@@ -13,10 +12,7 @@ const NotFound = () => (
                 {`${Locales.strings.page_was_not_found_title} - ${Locales.strings.mathshare_benetech}`}
             </title>
         </Helmet>
-        <header>
-            <SkipContent />
-            <MainPageHeader notFound />
-        </header>
+        <MainPageHeader notFound />
         <main id="mainContainer" className={classNames('row')}>
             <div className={classNames('col-lg-12', 'text-center', styles.title)}>
                 <h1 tabIndex={-1}>{Locales.strings.page_was_not_found_title}</h1>

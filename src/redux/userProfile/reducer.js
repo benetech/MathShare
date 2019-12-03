@@ -8,6 +8,7 @@ const initialState = {
     recentProblemSets: null,
     notifyForMobile: null,
     checking: false,
+    config: null,
 };
 
 const userProfile = (state = initialState, {
@@ -57,6 +58,11 @@ const userProfile = (state = initialState, {
             notifyForMobile,
         };
     }
+    case 'SET_PERSONALIZATION_SETTINGS':
+        return {
+            ...state,
+            config: payload,
+        };
     default:
         return state;
     }

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import classNames from 'classnames';
 import Watson from 'watson-speech';
 import { GlobalHotKeys } from 'react-hotkeys';
@@ -10,11 +11,13 @@ import googleAnalytics from '../../../../../../../../scripts/googleAnalytics';
 import { alertInfo, alertWarning, alertError } from '../../../../../../../../scripts/alert';
 import { stopEvent } from '../../../../../../../../services/events';
 import Locales from '../../../../../../../../strings';
+import { announceOnAriaLive } from '../../../../../../../../redux/ariaLiveAnnouncer/actions';
 import completeKeyMap from '../../../../../../../../constants/hotkeyConfig.json';
 
 import mic from '../../../../../../../../../images/mic.gif';
 import micSlash from '../../../../../../../../../images/mic-slash.gif';
 import micAnimate from '../../../../../../../../../images/mic-animate.gif';
+import styles from './styles.scss';
 
 function initializeRecognitionChrome(component) {
     // eslint-disable-next-line new-cap, no-undef
@@ -70,7 +73,7 @@ function initializeRecognitionOther(component, callback) {
         });
 }
 
-export default class SpeechToTextButton extends Component {
+class SpeechToTextButton extends Component {
     constructor(props) {
         super(props);
         const isChrome = (/Chrome/.test(navigator.userAgent)
@@ -117,6 +120,7 @@ export default class SpeechToTextButton extends Component {
                     micEnabled: false,
                     imageSrc: mic,
                 }, () => {
+                    this.props.announceOnAriaLive(Locales.strings.dictatation_complete);
                     this.recognition.stop();
                 });
             } else {
@@ -124,10 +128,20 @@ export default class SpeechToTextButton extends Component {
                     micEnabled: true,
                     imageSrc: micAnimate,
                 }, () => {
-                    this.recognition.start();
+                    try {
+                        this.recognition.start();
+                        this.props.announceOnAriaLive(Locales.strings.dictatation_started);
+                    } catch (error) {
+                        this.setState({
+                            micEnabled: false,
+                            imageSrc: mic,
+                        });
+                        alertInfo(Locales.strings.speech_recongition_error, Locales.strings.error);
+                    }
                 });
             }
         } else if (micEnabled) {
+            this.props.announceOnAriaLive(Locales.strings.dictatation_complete);
             if (this.recognition) {
                 this.recognition.stop();
                 this.recognition = null;
@@ -162,6 +176,8 @@ export default class SpeechToTextButton extends Component {
                                 micEnabled: true,
                                 imageSrc: micAnimate,
                                 inProgress: false,
+                            }, () => {
+                                this.props.announceOnAriaLive(Locales.strings.dictatation_started);
                             });
                         });
                 } catch (e) {
@@ -190,11 +206,18 @@ export default class SpeechToTextButton extends Component {
                     additionalStyles={['mic']}
                     data-toggle="tooltip"
                     content={(
-                        <img
-                            id="mic_img"
-                            alt={Locales.strings.start_speaking}
-                            src={this.state.imageSrc}
-                        />
+                        <>
+                            <img
+                                id="mic_img"
+                                alt=""
+                                src={this.state.imageSrc}
+                            />
+                            <span className={styles.ttsLabel}>
+                                {this.state.micEnabled
+                                    ? Locales.strings.stop_dictation : Locales.strings.dictate
+                                }
+                            </span>
+                        </>
                     )}
                     onClick={this.speechToText}
                 />
@@ -202,3 +225,10 @@ export default class SpeechToTextButton extends Component {
         );
     }
 }
+
+export default connect(
+    () => ({}),
+    {
+        announceOnAriaLive,
+    },
+)(SpeechToTextButton);

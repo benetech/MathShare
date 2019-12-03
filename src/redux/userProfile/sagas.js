@@ -1,6 +1,7 @@
 import {
     all,
     call,
+    delay,
     fork,
     put,
     select,
@@ -19,6 +20,7 @@ import {
     setUserProfile,
     setAuthRedirect,
     setMobileNotifySuccess,
+    setPersonalizationSettings,
     setRecentWork,
 } from './actions';
 import {
@@ -28,15 +30,21 @@ import {
     fetchCurrentUserApi,
     fetchUserInfoApi,
     fetchRecentWorkApi,
+    getConfigApi,
     logoutApi,
     saveUserInfoApi,
+    setConfigApi,
     updateNotifyMobileApi,
 } from './apis';
 import {
-    alertSuccess, focusOnAlert, alertError,
+    alertError, alertInfo, alertSuccess, dismissAlert, focusOnAlert,
 } from '../../scripts/alert';
 import { getCookie } from '../../scripts/cookie';
 import Locales from '../../strings';
+
+const loginAlertId = 'login-alert';
+const redirectAlertId = 'redirect-info';
+const redirectWait = 2500;
 
 function* checkUserLoginSaga() {
     yield throttle(60000, 'CHECK_USER_LOGIN', function* workerSaga() {
@@ -61,8 +69,8 @@ function* checkUserLoginSaga() {
             } = response.data;
             yield put(setUserProfile(emails[0], displayName, imageUrl || `https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=256&name=${encodeURIComponent(displayName)}&rounded=true&length=1`, 'passport'));
             if (loginStarted) {
-                alertSuccess(Locales.strings.you_are_signed_in.replace('{user}', displayName), Locales.strings.success, 'login-success-alert');
-                focusOnAlert('login-success-alert');
+                alertSuccess(Locales.strings.you_are_signed_in.replace('{user}', displayName), Locales.strings.success, loginAlertId);
+                focusOnAlert(loginAlertId);
             }
             yield put(fetchRecentWork());
             try {
@@ -74,7 +82,23 @@ function* checkUserLoginSaga() {
                 }
             } catch (infoError) {
                 yield put(setAuthRedirect((window.location.hash || '').substring(1)));
-                yield put(push('/userDetails'));
+                if (window.location.hash !== '#/userDetails') {
+                    alertInfo(
+                        Locales.strings.redirecting_to_fill, Locales.strings.info,
+                        redirectAlertId, redirectWait,
+                    );
+                    yield delay(redirectWait);
+                    yield put(push('/userDetails'));
+                    dismissAlert(redirectAlertId);
+                }
+            } finally {
+                const configResponse = yield call(getConfigApi);
+                if (configResponse.status === 200) {
+                    const {
+                        data,
+                    } = configResponse;
+                    yield put(setPersonalizationSettings(data));
+                }
             }
         } catch (error) {
             yield put(resetUserProfile());
@@ -86,13 +110,13 @@ function* checkUserLoginSaga() {
                 alertError(
                     Locales.strings.login_something_wrong,
                     Locales.strings.failure,
-                    'login-error-alert',
+                    loginAlertId,
                     {
                         link: '/#/app',
                         text: Locales.strings.return_to_mathshare,
                     },
                 );
-                focusOnAlert('login-error-alert');
+                focusOnAlert(loginAlertId);
             }
         }
     });
@@ -103,7 +127,7 @@ function* fetchRecentWorkSaga() {
         try {
             const response = yield call(fetchRecentWorkApi);
             if (response.status !== 200) {
-                throw Error('Unable to fetcgh work');
+                throw Error('Unable to fetch work');
             }
             const {
                 data,
@@ -138,11 +162,11 @@ function* saveUserInfoSaga() {
     yield takeLatest('SAVE_USER_INFO', function* workerSaga({
         payload,
     }) {
+        const {
+            email,
+            redirectTo,
+        } = yield select(getState);
         try {
-            const {
-                email,
-                redirectTo,
-            } = yield select(getState);
             const {
                 userType,
                 grades,
@@ -158,11 +182,19 @@ function* saveUserInfoSaga() {
                 user_type: userType,
                 email,
             });
-            yield put(replace(redirectTo));
         } catch (error) {
             yield put({
                 type: 'SAVE_USER_INFO_FAILURE',
             });
+        } finally {
+            setTimeout(() => {
+                alertSuccess(
+                    Locales.strings.you_are_now_on.replace('{pageTitle}',
+                        (document.title || '').split(` - ${Locales.strings.mathshare_benetech}`)[0]),
+                    Locales.strings.thanks_for_details,
+                );
+            }, 100);
+            yield put(replace(redirectTo));
         }
     });
 }
@@ -222,6 +254,37 @@ function* setMobileNotifySaga() {
     });
 }
 
+function* savePersonalizationSettingsSaga() {
+    yield takeLatest('SAVE_PERSONALIZATION_SETTINGS', function* workerSaga({
+        payload,
+    }) {
+        try {
+            const {
+                email,
+            } = yield select(getState);
+            if (email) {
+                const response = yield call(setConfigApi, payload);
+                if (response.status !== 200) {
+                    throw Error('Unable to update config');
+                }
+                const {
+                    data,
+                } = response;
+                yield put(setPersonalizationSettings(data));
+                alertSuccess(
+                    Locales.strings.personalization_config_has_been_updated,
+                    Locales.strings.success,
+                );
+            }
+        } catch (error) {
+            yield put({
+                type: 'SAVE_PERSONALIZATION_SETTINGS_FAILURE',
+                error,
+            });
+        }
+    });
+}
+
 function* logoutSaga() {
     yield takeLatest('LOGOUT', function* workerSaga() {
         try {
@@ -234,8 +297,10 @@ function* logoutSaga() {
             IntercomAPI('boot', {
                 app_id: process.env.INTERCOM_APP_ID,
             });
-            alertSuccess(Locales.strings.you_have_been_logged_out, Locales.strings.success, 'logout-success-alert');
-            focusOnAlert('logout-success-alert');
+            alertSuccess(
+                Locales.strings.you_have_been_logged_out, Locales.strings.success, loginAlertId,
+            );
+            focusOnAlert(loginAlertId);
         } catch (error) {
             yield put({
                 type: 'LOGOUT_FAILURE',
@@ -253,5 +318,6 @@ export default function* rootSaga() {
         fork(setUserProfileSaga),
         fork(logoutSaga),
         fork(setMobileNotifySaga),
+        fork(savePersonalizationSettingsSaga),
     ]);
 }

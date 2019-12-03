@@ -38,8 +38,7 @@
 
 .signIn {
     position: relative;
-    float: right;
-    right: 24px;
+    margin-right: 10px;
     top: 18px;
     font-size: 18px;
     cursor: pointer;
@@ -52,6 +51,10 @@
 
 .title {
     margin-bottom: 120px;
+}
+
+.logoContainer {
+    text-align: center;
 }
 
 .midLogo {
@@ -79,8 +82,7 @@
 .midContainer {
     position: relative;
     margin-top: -42px;
-    background: rgb(8, 28, 214);
-    background: linear-gradient(180deg, rgba(8, 28, 214, 1) 0%, rgba(99, 112, 229, 1) 50%, rgba(151, 160, 238, 1) 80%, rgba(255, 255, 255, 1) 100%);
+    background: linear-gradient(180deg, rgba(8, 28, 214, 1) 0%, rgba(99, 112, 229, 1) 15%, rgba(151, 160, 238, 1) 30%, rgba(255, 255, 255, 1) 40%, rgba(255, 255, 255, 1) 0);
     text-align: center;
     padding: 10px;
 
@@ -222,4 +224,10 @@
 
 .signInLabel {
     height: 27px;
+    right: 24px;
+}
+
+.headerBtnContainer {
+    float: right;
+    padding-right: 18px;
 }

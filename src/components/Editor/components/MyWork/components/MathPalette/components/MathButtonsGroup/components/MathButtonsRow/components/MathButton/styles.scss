@@ -11,13 +11,23 @@
         opacity: 1 !important;
         cursor: default;
     }
+
+    &.readOnly {
+
+        &,
+        * {
+            cursor: unset !important;
+        }
+    }
 }
 
 span[role='listitem'] {
     margin: 2px;
+
     :global(.btn) {
         display: table-cell;
         cursor: pointer;
+
         &.btn-facility {
             background-color: rgb(246, 255, 93);
         }

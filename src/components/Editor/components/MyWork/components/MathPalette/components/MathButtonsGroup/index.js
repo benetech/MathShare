@@ -13,7 +13,7 @@ const MathButtonsGroup = (props) => {
     ));
     return (
         <div>
-            <div role="list" className={props.order}>
+            <div role="list" className={props.order} aria-labelledby={props.labelId}>
                 {rows}
             </div>
         </div>
