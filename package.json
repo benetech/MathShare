@@ -54,7 +54,7 @@
     "bootstrap": "^4.2.1",
     "classnames": "^2.2.6",
     "connected-react-router": "^6.5.2",
-    "copy-webpack-plugin": "^5.0.3",
+    "copy-webpack-plugin": "^5.1.0",
     "dayjs": "^1.8.14",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-loader": "^2.1.2",
