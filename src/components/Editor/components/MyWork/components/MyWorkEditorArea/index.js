@@ -47,7 +47,6 @@ export default class MyWorkEditorArea extends Component {
                     cuberoot: '\\sqrt[3]{#0}', // cube root
                     root: '\\sqrt[{#?}]{#0}', // general root
                 },
-                inlineShortcutBackspaceCommand: 'delete', // make deleting multichar shortcut be atomic
                 removeExtraneousParentheses: false, // if typed, keep parens around
                 onMoveOutOf: () => false,
                 onKeystroke: (key) => {
