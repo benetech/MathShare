@@ -32,6 +32,9 @@ module.exports = (env, argv) => {
         }, {
             from: 'src/lib/google-signin/style.css',
             to: 'libs/google-signin/style.css',
+        }, {
+            from: 'static/microsoft-identity-association.json',
+            to: '.well-known/microsoft-identity-association.json',
         }]),
     ];
     if (!debug) {

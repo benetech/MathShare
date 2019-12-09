@@ -177,7 +177,7 @@ export default class MathButton extends Component {
                     this.pickr.setColor(hexColor);
                 }
                 // eslint-disable-next-line no-underscore-dangle
-                theActiveMathField.applyStyle_({ color: hexColor });
+                theActiveMathField.$applyStyle({ color: hexColor });
                 theActiveMathField.$focus();
             });
         }
