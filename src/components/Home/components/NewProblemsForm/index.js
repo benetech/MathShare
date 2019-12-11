@@ -250,11 +250,11 @@ export default class NewProblemsForm extends Component {
                     className="btn"
                     additionalStyles={['withRightMargin', 'default', 'right']}
                     icon="check"
-                    content={Locales.strings.done}
+                    content={this.props.editing ? Locales.strings.close : Locales.strings.done}
                     onClick={this.props.deactivateModal}
                 />
             );
-        doneButton = (this.props.editing || this.props.newProblemSet) ? null : doneButton;
+        doneButton = (this.props.newProblemSet) ? null : doneButton;
         const cancelButton = this.props.newProblemSet
             ? (
                 <Button
