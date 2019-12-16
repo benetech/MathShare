@@ -4,11 +4,12 @@
   "description": "This is a step by step editor built on top of mathlive.",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --mode development --stage=local --open",
+    "start": "webpack-dev-server --mode development --stage=local --port 1234 --open",
     "debug": "webpack-dev-server --mode development --open --env.debug",
     "build": "webpack --mode production --stage=production",
-    "build_qa": "webpack --mode production --stage=qa",
-    "build_staging": "webpack --mode production --stage=staging"
+    "build_qa": "node axe/index.js && webpack --mode production --stage=qa",
+    "build_staging": "webpack --mode production --stage=staging",
+    "axe_audit": "node axe/index.js"
   },
   "repository": {
     "type": "git",
@@ -28,6 +29,7 @@
     "@babel/plugin-transform-runtime": "^7.4.4",
     "@babel/preset-env": "^7.4.5",
     "@babel/preset-react": "^7.0.0",
+    "axe-puppeteer": "^1.0.0",
     "babel-eslint": "^10.0.1",
     "babel-loader": "^8.0.6",
     "css-loader": "^2.1.1",
@@ -38,6 +40,7 @@
     "html-webpack-plugin": "^3.2.0",
     "mini-css-extract-plugin": "^0.6.0",
     "node-sass": "^4.12.0",
+    "puppeteer": "^2.0.0",
     "react-axe": "^3.3.0",
     "sass-loader": "^7.1.0",
     "style-loader": "^0.21.0",
