@@ -1,0 +1,582 @@
+{
+    "defaultRevision": {},
+    "user": {
+        "id": "81212bdc6-1234-11e9-4521-db7c7b5ccb01",
+        "displayName": "John Doe",
+        "imageUrl": "",
+        "emails": [
+            "johndoe@test.com"
+        ],
+        "isLogin": false
+    },
+    "userProfile": {
+        "email": "johndoe@test.com",
+        "userType": "teacher",
+        "grades": [
+            "6-8",
+            "9-12"
+        ],
+        "notifyForMobile": 0,
+        "role": "Technology Coach"
+    },
+    "config": {
+        "ui": {}
+    },
+    "recent": [
+        {
+            "problems": [
+                {
+                    "id": 1030,
+                    "problemSetRevisionShareCode": "LQTXJULLGCQQC",
+                    "text": "\\text{test }1",
+                    "title": "test 1",
+                    "scratchpad": null,
+                    "position": 0
+                }
+            ],
+            "editCode": "TNCQESDC3JVGS",
+            "shareCode": "LQTXJULLGCQQC",
+            "palettes": [
+                "Edit",
+                "Operators",
+                "Notations",
+                "Geometry"
+            ],
+            "title": "New Problem Set 11-13-2019",
+            "userId": "81212bdc6-1234-11e9-4521-db7c7b5ccb01",
+            "problemCount": 1
+        },
+        {
+            "problems": [],
+            "editCode": "QTNNRKP24DAOS",
+            "shareCode": "RZTDQVOA3QOYS",
+            "palettes": [
+                "Edit",
+                "Operators",
+                "Notations",
+                "Geometry"
+            ],
+            "title": "New Problem Set 11-07-2019",
+            "userId": "81212bdc6-1234-11e9-4521-db7c7b5ccb01",
+            "problemCount": 0
+        },
+        {
+            "problems": [
+                {
+                    "id": 1009,
+                    "problemSetRevisionShareCode": "MEDI6BWKRN7KM",
+                    "text": "\\text{asd}",
+                    "title": "asdasd",
+                    "scratchpad": null,
+                    "position": 0
+                },
+                {
+                    "id": 1010,
+                    "problemSetRevisionShareCode": "MEDI6BWKRN7KM",
+                    "text": "asd",
+                    "title": "asdasd",
+                    "scratchpad": null,
+                    "position": 1
+                }
+            ],
+            "editCode": "ZFPDGBLQUD5OI",
+            "shareCode": "MEDI6BWKRN7KM",
+            "palettes": [
+                "Edit",
+                "Operators",
+                "Notations",
+                "Geometry"
+            ],
+            "title": "New Problem Set 11-01-2019",
+            "userId": "81212bdc6-1234-11e9-4521-db7c7b5ccb01",
+            "problemCount": 2
+        },
+        {
+            "problems": [
+                {
+                    "id": 1005,
+                    "problemSetRevisionShareCode": "2E2DRP7O5ZEQI",
+                    "text": "asdasdasdasd\\text{ }asdasd\\text{ }asdasdasdasd\\text{ }asdasd\\text{ }asdasdasdasd\\text{ }asdasd",
+                    "title": "asdasd",
+                    "scratchpad": "data:image/png;base64,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",
+                    "position": 0
+                },
+                {
+                    "id": 1006,
+                    "problemSetRevisionShareCode": "2E2DRP7O5ZEQI",
+                    "text": "\\text{  test test test test test   test test test test test}",
+                    "title": "tes",
+                    "scratchpad": null,
+                    "position": 1
+                },
+                {
+                    "id": 1007,
+                    "problemSetRevisionShareCode": "2E2DRP7O5ZEQI",
+                    "text": "sadsd",
+                    "title": "asddsad",
+                    "scratchpad": null,
+                    "position": 2
+                }
+            ],
+            "editCode": "R37NGMYIXRQEI",
+            "shareCode": "2E2DRP7O5ZEQI",
+            "palettes": [
+                "Edit",
+                "Operators",
+                "Notations",
+                "Geometry"
+            ],
+            "title": "New Problem Set 11-01-2019",
+            "userId": "81212bdc6-1234-11e9-4521-db7c7b5ccb01",
+            "problemCount": 3
+        },
+        {
+            "problems": [
+                {
+                    "id": 979,
+                    "problemSetRevisionShareCode": "LO4DGY3D32A6W",
+                    "text": "120\\text{ miles/hour, }3\\text{ hours, solve for }x\\text{ (distance)}",
+                    "title": "An airplane moves at a constant speed of 120 miles per hour for 3 hours. How far does it go?",
+                    "scratchpad": null,
+                    "position": 0
+                },
+                {
+                    "id": 980,
+                    "problemSetRevisionShareCode": "LO4DGY3D32A6W",
+                    "text": "\\frac{6\\text{ miles}}{4\\text{ minutes}}=x",
+                    "title": "A train moves at constant speed and travels 6 miles in 4 minutes. What is its speed in miles per minute?=",
+                    "scratchpad": null,
+                    "position": 0
+                },
+                {
+                    "id": 981,
+                    "problemSetRevisionShareCode": "LO4DGY3D32A6W",
+                    "text": "\\text{solve for x}",
+                    "title": "A car moves at a constant speed of 50 miles per hour. How long does it take the car to go 200 miles?",
+                    "scratchpad": null,
+                    "position": 0
+                }
+            ],
+            "editCode": "GBT7YN24DNPFW",
+            "shareCode": "LO4DGY3D32A6W",
+            "palettes": [
+                ""
+            ],
+            "title": "Distance Rate and Time",
+            "userId": "81212bdc6-1234-11e9-4521-db7c7b5ccb01",
+            "problemCount": 3
+        },
+        {
+            "problems": [
+                {
+                    "id": 983,
+                    "problemSetRevisionShareCode": "VOB2O7TTIWW6M",
+                    "text": "120\\text{ miles/hour, }3\\text{ hours, solve for }x\\text{ (distance)}",
+                    "title": "An airplane moves at a constant speed of 120 miles per hour for 3 hours. How far does it go?",
+                    "scratchpad": null,
+                    "position": 0
+                },
+                {
+                    "id": 984,
+                    "problemSetRevisionShareCode": "VOB2O7TTIWW6M",
+                    "text": "\\frac{6\\text{ miles}}{4\\text{ minutes}}=x",
+                    "title": "A train moves at constant speed and travels 6 miles in 4 minutes. What is its speed in miles per minute?=",
+                    "scratchpad": null,
+                    "position": 1
+                },
+                {
+                    "id": 985,
+                    "problemSetRevisionShareCode": "VOB2O7TTIWW6M",
+                    "text": "\\text{solve for x}",
+                    "title": "A car moves at a constant speed of 50 miles per hour. How long does it take the car to go 200 miles?",
+                    "scratchpad": null,
+                    "position": 2
+                }
+            ],
+            "editCode": "ZUL6VMMII2DV6",
+            "shareCode": "VOB2O7TTIWW6M",
+            "palettes": [
+                ""
+            ],
+            "title": "Distance Rate and Time sdsadasd",
+            "userId": "81212bdc6-1234-11e9-4521-db7c7b5ccb01",
+            "problemCount": 3
+        }
+    ],
+    "exampleSets": [
+        {
+            "problems": [
+                {
+                    "id": 565,
+                    "problemSetRevisionShareCode": "57OUXOC5PLJRU",
+                    "text": "\\frac{b}{9}-34\\leq -36",
+                    "title": "Solve the inequality",
+                    "scratchpad": null,
+                    "position": 0
+                },
+                {
+                    "id": 564,
+                    "problemSetRevisionShareCode": "57OUXOC5PLJRU",
+                    "text": "7x-13=1",
+                    "title": "Solve for x",
+                    "scratchpad": null,
+                    "position": 0
+                },
+                {
+                    "id": 563,
+                    "problemSetRevisionShareCode": "57OUXOC5PLJRU",
+                    "text": "Sarah\\ works\\ at\\ a\\ coffee\\ shop.\\ Her\\ weekly\\ salary\\ is\\ $325\\ and\\ she\\ earns\\ 11.5%\\ commission\\ on\\ sales.\\How\\ much\\ does\\ she\\ make\\ if\\ she\\ sells\\ $2800\\ in\\ merchandise?",
+                    "title": "Answer the question",
+                    "scratchpad": null,
+                    "position": 0
+                },
+                {
+                    "id": 562,
+                    "problemSetRevisionShareCode": "57OUXOC5PLJRU",
+                    "text": "\\frac{3}{10}\\div (\\frac{5}{8})",
+                    "title": "Find the quotient",
+                    "scratchpad": null,
+                    "position": 0
+                },
+                {
+                    "id": 561,
+                    "problemSetRevisionShareCode": "57OUXOC5PLJRU",
+                    "text": "\\frac{55}{\\frac{1}{2}}",
+                    "title": "Find the quotient",
+                    "scratchpad": null,
+                    "position": 0
+                },
+                {
+                    "id": 560,
+                    "problemSetRevisionShareCode": "57OUXOC5PLJRU",
+                    "text": "-\\frac{2}{5}(-\\frac{1}{2})(-\\frac{5}{6})",
+                    "title": "Find the product",
+                    "scratchpad": null,
+                    "position": 0
+                },
+                {
+                    "id": 559,
+                    "problemSetRevisionShareCode": "57OUXOC5PLJRU",
+                    "text": "3(-\\frac{1}{6})(-\\frac{2}{5})",
+                    "title": "Find the product",
+                    "scratchpad": null,
+                    "position": 0
+                }
+            ],
+            "editCode": "DGMYFEUC6DGKM",
+            "shareCode": "57OUXOC5PLJRU",
+            "palettes": null,
+            "title": "Example Problem Set",
+            "userId": null,
+            "problemCount": 7
+        },
+        {
+            "problems": [
+                {
+                    "id": 573,
+                    "problemSetRevisionShareCode": "327PMZX6C234W",
+                    "text": "120\\text{ miles/hour, }3\\text{ hours, solve for }x\\text{ (distance)}",
+                    "title": "An airplane moves at a constant speed of 120 miles per hour for 3 hours. How far does it go?",
+                    "scratchpad": null,
+                    "position": 0
+                },
+                {
+                    "id": 574,
+                    "problemSetRevisionShareCode": "327PMZX6C234W",
+                    "text": "\\frac{6\\text{ miles}}{4\\text{ minutes}}=x",
+                    "title": "A train moves at constant speed and travels 6 miles in 4 minutes. What is its speed in miles per minute?=",
+                    "scratchpad": null,
+                    "position": 0
+                },
+                {
+                    "id": 575,
+                    "problemSetRevisionShareCode": "327PMZX6C234W",
+                    "text": "\\text{solve for x}",
+                    "title": "A car moves at a constant speed of 50 miles per hour. How long does it take the car to go 200 miles?",
+                    "scratchpad": null,
+                    "position": 0
+                }
+            ],
+            "editCode": "2J6M4BQ2OF2UC",
+            "shareCode": "327PMZX6C234W",
+            "palettes": null,
+            "title": "Distance Rate and Time",
+            "userId": null,
+            "problemCount": 3
+        },
+        {
+            "problems": [
+                {
+                    "id": 576,
+                    "problemSetRevisionShareCode": "J5MM2XT2PPTRC",
+                    "text": "5+2+3=5+\\left(2+3\\right)",
+                    "title": "Explain why this statement is true",
+                    "scratchpad": null,
+                    "position": 0
+                },
+                {
+                    "id": 577,
+                    "problemSetRevisionShareCode": "J5MM2XT2PPTRC",
+                    "text": "9a\\text{ is equivalent to }11a-2a",
+                    "title": "Explain why this statement is true",
+                    "scratchpad": null,
+                    "position": 0
+                },
+                {
+                    "id": 578,
+                    "problemSetRevisionShareCode": "J5MM2XT2PPTRC",
+                    "text": "7a+4-2a\\text{ is equivalent to }11a-2a",
+                    "title": "Explain why this statement is true",
+                    "scratchpad": null,
+                    "position": 0
+                },
+                {
+                    "id": 579,
+                    "problemSetRevisionShareCode": "J5MM2XT2PPTRC",
+                    "text": "8a-\\left(8a-8\\right)\\text{ is equivalent to }8",
+                    "title": "Explain why this statement is true",
+                    "scratchpad": null,
+                    "position": 0
+                },
+                {
+                    "id": 580,
+                    "problemSetRevisionShareCode": "J5MM2XT2PPTRC",
+                    "text": "7a+5b-3a+4b",
+                    "title": "\"Diego and Jada are both trying to write an expression with fewer terms that is equivalent to. Jada thinks 10a+1b is equivalent to the original expression. Diego thinks 4a+9b is equivalent to the original expression.  Who is correct and show why.",
+                    "scratchpad": null,
+                    "position": 0
+                },
+                {
+                    "id": 581,
+                    "problemSetRevisionShareCode": "J5MM2XT2PPTRC",
+                    "text": "6x+?=10x",
+                    "title": "Replace each ? with an expression that will make the left side of the equation equivalent to the right side.",
+                    "scratchpad": null,
+                    "position": 0
+                },
+                {
+                    "id": 582,
+                    "problemSetRevisionShareCode": "J5MM2XT2PPTRC",
+                    "text": "6x+?=2x",
+                    "title": "Replace each ? with an expression that will make the left side of the equation equivalent to the right side.",
+                    "scratchpad": null,
+                    "position": 0
+                },
+                {
+                    "id": 583,
+                    "problemSetRevisionShareCode": "J5MM2XT2PPTRC",
+                    "text": "6x-?=4x-10",
+                    "title": "Replace each ? with an expression that will make the left side of the equation equivalent to the right side.",
+                    "scratchpad": null,
+                    "position": 0
+                }
+            ],
+            "editCode": "6ZSAYUDOGA3F4",
+            "shareCode": "J5MM2XT2PPTRC",
+            "palettes": null,
+            "title": "Combining Like Terms",
+            "userId": null,
+            "problemCount": 8
+        },
+        {
+            "problems": [
+                {
+                    "id": 589,
+                    "problemSetRevisionShareCode": "2MBMO74XBV5TK",
+                    "text": "\\text{solve}",
+                    "title": "How many tickets will they have to sell to make $5,000,000?",
+                    "scratchpad": null,
+                    "position": 0
+                },
+                {
+                    "id": 588,
+                    "problemSetRevisionShareCode": "2MBMO74XBV5TK",
+                    "text": "\\text{solve}",
+                    "title": "If they make $379,420, how many tickets have they sold?",
+                    "scratchpad": null,
+                    "position": 0
+                },
+                {
+                    "id": 587,
+                    "problemSetRevisionShareCode": "2MBMO74XBV5TK",
+                    "text": "\\text{solve}",
+                    "title": "How much will they make if they sell 10,000 tickets? 50,000? 120,000? a million? x tickets?",
+                    "scratchpad": null,
+                    "position": 0
+                },
+                {
+                    "id": 586,
+                    "problemSetRevisionShareCode": "2MBMO74XBV5TK",
+                    "text": "\\text{solve}",
+                    "title": "How much will they make if they sell 7,000 tickets?",
+                    "scratchpad": null,
+                    "position": 0
+                },
+                {
+                    "id": 585,
+                    "problemSetRevisionShareCode": "2MBMO74XBV5TK",
+                    "text": "\\text{solve}",
+                    "title": "Assuming that all tickets have the same price, what is the price for one ticket?",
+                    "scratchpad": null,
+                    "position": 0
+                },
+                {
+                    "id": 584,
+                    "problemSetRevisionShareCode": "2MBMO74XBV5TK",
+                    "text": "\\text{Solve each problem}",
+                    "title": "A performer expects to sell 5,000 tickets for an upcoming concert. They want to make a total of $311,000 in sales from these tickets.",
+                    "scratchpad": null,
+                    "position": 0
+                }
+            ],
+            "editCode": "H36BYPX5W6YQU",
+            "shareCode": "2MBMO74XBV5TK",
+            "palettes": null,
+            "title": "Using equations to solve problems",
+            "userId": null,
+            "problemCount": 6
+        },
+        {
+            "problems": [
+                {
+                    "id": 572,
+                    "problemSetRevisionShareCode": "MPJDCRRYO5JVU",
+                    "text": "\\frac{1}{2}\\left(-8+5x\\right)=-20",
+                    "title": "Predict whether the solution will be positive, negative, or zero and then solve for x",
+                    "scratchpad": null,
+                    "position": 0
+                },
+                {
+                    "id": 571,
+                    "problemSetRevisionShareCode": "MPJDCRRYO5JVU",
+                    "text": "-8+5x=-20",
+                    "title": "Predict whether the solution will be positive, negative, or zero and then solve for x",
+                    "scratchpad": null,
+                    "position": 0
+                },
+                {
+                    "id": 570,
+                    "problemSetRevisionShareCode": "MPJDCRRYO5JVU",
+                    "text": "9-4x=4",
+                    "title": "Predict whether the solution will be positive, negative, or zero and then solve for x",
+                    "scratchpad": null,
+                    "position": 0
+                },
+                {
+                    "id": 569,
+                    "problemSetRevisionShareCode": "MPJDCRRYO5JVU",
+                    "text": "3x+11=11",
+                    "title": "Predict whether the solution will be positive, negative, or zero and then solve for x",
+                    "scratchpad": null,
+                    "position": 0
+                },
+                {
+                    "id": 568,
+                    "problemSetRevisionShareCode": "MPJDCRRYO5JVU",
+                    "text": "7x=32.5",
+                    "title": "Predict whether the solution will be positive, negative, or zero and then solve for x",
+                    "scratchpad": null,
+                    "position": 0
+                },
+                {
+                    "id": 567,
+                    "problemSetRevisionShareCode": "MPJDCRRYO5JVU",
+                    "text": "7x=3.25",
+                    "title": "Predict whether the solution will be positive, negative, or zero and then solve for x",
+                    "scratchpad": null,
+                    "position": 0
+                },
+                {
+                    "id": 566,
+                    "problemSetRevisionShareCode": "MPJDCRRYO5JVU",
+                    "text": "\\frac{x}{6}=\\frac{3x}{4}",
+                    "title": "Solve for X",
+                    "scratchpad": null,
+                    "position": 0
+                }
+            ],
+            "editCode": "FORCKC23FND6M",
+            "shareCode": "MPJDCRRYO5JVU",
+            "palettes": null,
+            "title": "Solve for X",
+            "userId": null,
+            "problemCount": 7
+        }
+    ],
+    "solve": {
+        "solutions": [
+            {
+                "problem": {
+                    "id": 573,
+                    "problemSetRevisionShareCode": "327PMZX6C234W",
+                    "text": "120\\text{ miles/hour, }3\\text{ hours, solve for }x\\text{ (distance)}",
+                    "title": "An airplane moves at a constant speed of 120 miles per hour for 3 hours. How far does it go?",
+                    "scratchpad": null,
+                    "position": 0
+                },
+                "editCode": "7JIR3PRKKY56W",
+                "shareCode": "TTQMXFXNFVNOU",
+                "problemSetSolutionEditCode": null,
+                "steps": [
+                    {
+                        "explanation": "An airplane moves at a constant speed of 120 miles per hour for 3 hours. How far does it go?",
+                        "stepValue": "120\\text{ miles/hour, }3\\text{ hours, solve for }x\\text{ (distance)}",
+                        "deleted": false,
+                        "cleanup": null,
+                        "scratchpad": null
+                    }
+                ],
+                "palettes": null
+            },
+            {
+                "problem": {
+                    "id": 574,
+                    "problemSetRevisionShareCode": "327PMZX6C234W",
+                    "text": "\\frac{6\\text{ miles}}{4\\text{ minutes}}=x",
+                    "title": "A train moves at constant speed and travels 6 miles in 4 minutes. What is its speed in miles per minute?=",
+                    "scratchpad": null,
+                    "position": 0
+                },
+                "editCode": "JCVR36L5KXLBI",
+                "shareCode": "2STIQV3DEPP7M",
+                "problemSetSolutionEditCode": null,
+                "steps": [
+                    {
+                        "explanation": "A train moves at constant speed and travels 6 miles in 4 minutes. What is its speed in miles per minute?=",
+                        "stepValue": "\\frac{6\\text{ miles}}{4\\text{ minutes}}=x",
+                        "deleted": false,
+                        "cleanup": null,
+                        "scratchpad": null
+                    }
+                ],
+                "palettes": null
+            },
+            {
+                "problem": {
+                    "id": 575,
+                    "problemSetRevisionShareCode": "327PMZX6C234W",
+                    "text": "\\text{solve for x}",
+                    "title": "A car moves at a constant speed of 50 miles per hour. How long does it take the car to go 200 miles?",
+                    "scratchpad": null,
+                    "position": 0
+                },
+                "editCode": "JK5X5OOBDX7X6",
+                "shareCode": "GEMX4G7U4KIRW",
+                "problemSetSolutionEditCode": null,
+                "steps": [
+                    {
+                        "explanation": "A car moves at a constant speed of 50 miles per hour. How long does it take the car to go 200 miles?",
+                        "stepValue": "\\text{solve for x}",
+                        "deleted": false,
+                        "cleanup": null,
+                        "scratchpad": null
+                    }
+                ],
+                "palettes": null
+            }
+        ],
+        "reviewCode": "MIVSDQGYWGKVI",
+        "editCode": "SIOIZ7QOFW4DW",
+        "title": "Distance Rate and Time"
+    }
+}

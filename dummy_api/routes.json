@@ -1,0 +1,9 @@
+{
+    "/api/private/*": "/$1",
+    "/api/*": "/$1",
+    "/:resource/:id/show": "/:resource/:id",
+    "/userInfo/fetch": "/userProfile",
+    "/problemSet/exampleSets": "/exampleSets",
+    "/problemSet/defaultRevision": "/defaultRevision",
+    "/solution/solve/*": "/solve"
+}
