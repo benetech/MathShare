@@ -398,92 +398,96 @@ class App extends Component {
         const { modal, problemList, problemStore } = this.props;
         return (
             <React.Fragment>
-                <Helmet
-                    onChangeClientState={(newState) => {
-                        this.props.changeTitle(newState.title);
-                    }}
-                />
-                <div id="contentContainer" className={this.getClassFromUserConfig()}>
-                    {this.renderDialog()}
-                    <GlobalHotKeys keyMap={keyMap} handlers={this.handlers} allowChanges />
-                    <ToastContainer />
-                    <div className={`body-container ${this.getAdditionalClass()}`}>
-                        <ModalContainer
-                            activeModals={modal.activeModals}
-                            toggleModals={this.props.toggleModals}
-                            updateProblemSetTitle={this.props.updateProblemSetTitle}
-                            progressToAddingProblems={this.progressToAddingProblems}
-                            deleteProblem={this.deleteProblem}
-                            shareLink={problemStore.shareLink}
-                            newSetShareLink={`${FRONTEND_URL}/app/problemSet/view/${problemList.newSetSharecode}`}
-                            problemSetShareLink={`${FRONTEND_URL}/app/problemSet/review/${problemList.problemSetShareCode}`}
-                            activateMathField={field => this.props.setActiveMathField(field)}
-                            theActiveMathField={problemList.theActiveMathField}
-                            addProblemCallback={this.addProblem}
-                            problems={problemList.set.problems}
-                            tempSet={problemList.tempSet}
-                            saveProblemSet={this.saveProblemSet}
-                            saveProblems={this.props.saveProblems}
-                            problemToEdit={problemList.problemToEdit}
-                            editProblemCallback={this.editProblem}
-                            history={this.props.history}
-                            updateTempSet={this.props.updateTempSet}
-                            {...problemStore}
-                            {...this}
-                        />
-                        <Switch>
-                            <Route
-                                exact
-                                path="/app/problemSet/:action/:code?"
-                                render={p => <Home {...commonProps} {...p} {...this} />}
+                <main className={this.getAdditionalClass()}>
+                    <Helmet
+                        onChangeClientState={(newState) => {
+                            this.props.changeTitle(newState.title);
+                        }}
+                    />
+                    <div id="contentContainer" className={this.getClassFromUserConfig()}>
+                        {this.renderDialog()}
+                        <GlobalHotKeys keyMap={keyMap} handlers={this.handlers} allowChanges />
+                        <ToastContainer />
+                        <div className="body-container">
+                            <ModalContainer
+                                activeModals={modal.activeModals}
+                                toggleModals={this.props.toggleModals}
+                                updateProblemSetTitle={this.props.updateProblemSetTitle}
+                                progressToAddingProblems={this.progressToAddingProblems}
+                                deleteProblem={this.deleteProblem}
+                                shareLink={problemStore.shareLink}
+                                newSetShareLink={`${FRONTEND_URL}/app/problemSet/view/${problemList.newSetSharecode}`}
+                                problemSetShareLink={`${FRONTEND_URL}/app/problemSet/review/${problemList.problemSetShareCode}`}
+                                activateMathField={field => this.props.setActiveMathField(field)}
+                                theActiveMathField={problemList.theActiveMathField}
+                                addProblemCallback={this.addProblem}
+                                problems={problemList.set.problems}
+                                tempSet={problemList.tempSet}
+                                saveProblemSet={this.saveProblemSet}
+                                saveProblems={this.props.saveProblems}
+                                problemToEdit={problemList.problemToEdit}
+                                editProblemCallback={this.editProblem}
+                                history={this.props.history}
+                                updateTempSet={this.props.updateTempSet}
+                                {...problemStore}
+                                {...this}
                             />
-                            <Route
-                                exact
-                                path="/app/problem/:action/:code"
-                                render={p => <Editor {...commonProps} {...p} {...this} />}
-                            />
-                            <Route
-                                exact
-                                path="/app/problem/example"
-                                render={p => <Editor example {...commonProps} {...p} {...this} />}
-                            />
-                            <Route
-                                exact
-                                path="/app"
-                                render={p => <PageIndex {...commonProps} {...p} {...this} />}
-                            />
-                            <Route
-                                exact
-                                path="/"
-                                render={p => (
-                                    <LandingPage
-                                        {...p}
-                                        setAuthRedirect={this.props.setAuthRedirect}
-                                        userProfile={this.props.userProfile}
-                                    />
-                                )}
-                            />
-                            <Route exact path="/privacy" render={p => <Privacy {...p} />} />
-                            <Route exact path="/partners" render={p => <Partners {...p} />} />
-                            <Route exact path="/signIn" render={p => <SignIn {...p} />} />
-                            <Route exact path="/signUp" render={p => <SignIn {...p} isSignUp />} />
-                            <Route exact path="/userDetails" render={p => <UserDetails {...p} />} />
-                            <Route render={p => <NotFound {...p} />} />
-                        </Switch>
+                            <Switch>
+                                <Route
+                                    exact
+                                    path="/app/problemSet/:action/:code?"
+                                    render={p => <Home {...commonProps} {...p} {...this} />}
+                                />
+                                <Route
+                                    exact
+                                    path="/app/problem/:action/:code"
+                                    render={p => <Editor {...commonProps} {...p} {...this} />}
+                                />
+                                <Route
+                                    exact
+                                    path="/app/problem/example"
+                                    render={
+                                        p => <Editor example {...commonProps} {...p} {...this} />
+                                    }
+                                />
+                                <Route
+                                    exact
+                                    path="/app"
+                                    render={p => <PageIndex {...commonProps} {...p} {...this} />}
+                                />
+                                <Route
+                                    exact
+                                    path="/"
+                                    render={p => (
+                                        <LandingPage
+                                            {...p}
+                                            setAuthRedirect={this.props.setAuthRedirect}
+                                            userProfile={this.props.userProfile}
+                                        />
+                                    )}
+                                />
+                                <Route exact path="/privacy" render={p => <Privacy {...p} />} />
+                                <Route exact path="/partners" render={p => <Partners {...p} />} />
+                                <Route exact path="/signIn" render={p => <SignIn {...p} />} />
+                                <Route exact path="/signUp" render={p => <SignIn {...p} isSignUp />} />
+                                <Route exact path="/userDetails" render={p => <UserDetails {...p} />} />
+                                <Route render={p => <NotFound {...p} />} />
+                            </Switch>
+                        </div>
+                        <Intercom appID={process.env.INTERCOM_APP_ID} />
                     </div>
-                    <Intercom appID={process.env.INTERCOM_APP_ID} />
-                    <footer id="footer">
-                        <h2 className="sROnly">
-                            {' '}
-                            {Locales.strings.footer}
-                            {' '}
-                        </h2>
-                        {window.location.hash === '#/' && <SiteMapFooter />}
-                        <MainPageFooter customClass="footer" />
-                        <SocialFooter />
-                    </footer>
-                </div>
-                <AriaLiveAnnouncer />
+                    <AriaLiveAnnouncer />
+                </main>
+                <footer id="footer">
+                    <h2 className="sROnly">
+                        {' '}
+                        {Locales.strings.footer}
+                        {' '}
+                    </h2>
+                    {window.location.hash === '#/' && <SiteMapFooter />}
+                    <MainPageFooter customClass="footer" />
+                    <SocialFooter />
+                </footer>
             </React.Fragment>
         );
     }

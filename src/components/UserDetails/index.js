@@ -149,7 +149,7 @@ class UserDetails extends Component {
                         <SkipContent />
                         <img src={logo} alt={Locales.strings.mathshare_logo} />
                     </header>
-                    <main id="mainContainer">
+                    <div id="mainContainer">
                         <h1 className={userDetails.text} tabIndex={-1}>
                             {Locales.strings.setup_your_account}
                         </h1>
@@ -181,7 +181,7 @@ class UserDetails extends Component {
                             </fieldset>
                         )}
                         {this.state.type === 'teacher' && this.renderTeacherForm()}
-                    </main>
+                    </div>
                 </div>
             </div>
         );

@@ -89,7 +89,7 @@ class SignIn extends Component {
             return <Redirect to="/app" />;
         }
         return (
-            <main className={signIn.container}>
+            <div className={signIn.container}>
                 <SkipContent />
                 <Helmet>
                     <title>
@@ -129,7 +129,7 @@ class SignIn extends Component {
                     </button>
                     <UncontrolledTooltip placement="top" target="goBack" />
                 </div>
-            </main>
+            </div>
         );
     }
 }

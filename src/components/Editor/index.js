@@ -250,7 +250,7 @@ class Editor extends Component {
         return (
             <div id="MainWorkWrapper" className={editor.mainWorkWrapper}>
                 {this.renderHelmet()}
-                <main id="MainWorkArea" className={editor.editorAndHistoryWrapper}>
+                <div id="MainWorkArea" className={editor.editorAndHistoryWrapper}>
                     <SkipContent />
                     <ProblemHeader
                         {...this}
@@ -265,7 +265,7 @@ class Editor extends Component {
                     <MyStepsHeader readOnly={this.props.problemStore.readOnly} />
                     {myStepsList}
                     <div id="mainWorkAreaFooter" />
-                </main>
+                </div>
             </div>
         );
     }
