@@ -13,7 +13,7 @@ const NotFound = () => (
             </title>
         </Helmet>
         <MainPageHeader notFound />
-        <main id="mainContainer" className={classNames('row')}>
+        <div id="mainContainer" className={classNames('row')}>
             <div className={classNames('col-lg-12', 'text-center', styles.title)}>
                 <h1 tabIndex={-1}>{Locales.strings.page_was_not_found_title}</h1>
             </div>
@@ -21,7 +21,7 @@ const NotFound = () => (
                 <p className={styles.h2}>{Locales.strings.page_was_not_found}</p>
                 <p className={styles.h3}>{Locales.strings.page_was_not_found_info}</p>
             </div>
-        </main>
+        </div>
     </div>
 );
 

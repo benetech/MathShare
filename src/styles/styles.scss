@@ -29,8 +29,10 @@ body {
 :global(.body-container) {
     display: table;
     width: 100%;
+}
 
-    &:global(.full-height) {
+body {
+    :global(.full-height) {
         height: 100%;
         display: flex;
         flex-direction: column;
@@ -38,7 +40,7 @@ body {
         justify-content: center;
     }
 
-    &:global(.dark-background) {
+    :global(.dark-background) {
         background-color: #001F3F;
     }
 }

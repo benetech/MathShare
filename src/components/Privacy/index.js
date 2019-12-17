@@ -28,7 +28,7 @@ const Privacy = () => (
             </div>
             <div className={styles.headerBottom} />
         </header>
-        <main id="mainContainer" className={styles.content}>
+        <div id="mainContainer" className={styles.content}>
             <h1 className={styles.header} tabIndex={-1}>Privacy Policy</h1>
             <div className={styles.textContent}>
                 {Locales.strings.mathshare_privacy_1}
@@ -39,7 +39,7 @@ const Privacy = () => (
                 {Locales.strings.mathshare_privacy_2}
                 <div className={styles.metadata}>{Locales.strings.mathshare_privacy_updated}</div>
             </div>
-        </main>
+        </div>
     </div>
 );
 

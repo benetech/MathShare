@@ -95,7 +95,7 @@ const LandingPage = ({ setAuthRedirect, userProfile }) => {
                     />
                 </div>
             </header>
-            <main id="mainContainer" className={styles.midContainer}>
+            <div id="mainContainer" className={styles.midContainer}>
                 <div className={styles.content}>
                     <h1 id="help_students" className={styles.largeText} tabIndex={-1}>
                         {Locales.strings.help_students}
@@ -176,7 +176,7 @@ const LandingPage = ({ setAuthRedirect, userProfile }) => {
                         </section>
                     </div>
                 </div>
-            </main>
+            </div>
         </div>
     );
 };
