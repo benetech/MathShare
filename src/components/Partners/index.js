@@ -26,7 +26,7 @@ const Partners = () => (
             </div>
             <div className={styles.headerBottom} />
         </header>
-        <div id="mainContainer" className={styles.content}>
+        <main id="mainContainer" className={styles.content}>
             <h1 className={styles.header} tabIndex={-1}>
                 {Locales.strings.partnerships}
             </h1>
@@ -38,7 +38,7 @@ const Partners = () => (
                     {Locales.strings.submit_a_partnership}
                 </a>
             </div>
-        </div>
+        </main>
     </div>
 );
 

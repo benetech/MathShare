@@ -402,7 +402,7 @@ class Home extends Component {
                     editCode={problemList.set.editCode}
                     action={params.action}
                 />
-                <div id="mainContainer" className={home.leftNavigation}>
+                <main id="mainContainer" className={home.leftNavigation}>
                     {(params.action !== 'new' && params.action !== 'edit') && (
                         <NavigationHeader
                             action={params.action}
@@ -512,7 +512,7 @@ class Home extends Component {
                         code={params.code}
                         setEditProblem={this.props.setEditProblem}
                     />
-                </div>
+                </main>
             </div>
         );
     }
