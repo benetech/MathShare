@@ -57,7 +57,7 @@ const routes = [
 
         for (let index = 0; index < routes.length; index += 1) {
             const route = routes[index];
-            const routeLog = `Route ${route}`;
+            const routeLog = `Route /${route}`;
             console.log(routeLog);
             await page.goto(`http://localhost:${PORT}/${route}`);
 
