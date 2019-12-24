@@ -8,11 +8,12 @@ export const requestExampleSets = () => ({
     type: 'REQUEST_EXAMPLE_SETS',
 });
 
-export const requestProblemSet = (action, code) => ({
+export const requestProblemSet = (action, code, position) => ({
     type: 'REQUEST_PROBLEM_SET',
     payload: {
         action,
         code,
+        position,
     },
 });
 

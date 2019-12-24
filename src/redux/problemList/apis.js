@@ -39,6 +39,8 @@ export const updateProblemsApi = (editCode, shareCode, problems, title) => axios
 
 export const saveProblemSetApi = set => axios.post(`${SERVER_URL}/problemSet/`, set, commonRequestConfig);
 
+export const updateProblemStepsInSet = (editCode, problemId, steps) => axios.put(`${SERVER_URL}/problemSet/${editCode}/steps/${problemId}`, steps, commonRequestConfig);
+
 export const fetchEditableProblemSetSolutionApi = editCode => axios.get(`${SERVER_URL}/solution/solve/${editCode}`, commonRequestConfig);
 
 export default {
@@ -47,6 +49,7 @@ export default {
     fetchProblemsByRevisionCodeApi,
     fetchProblemsByReviewCodeApi,
     updateProblemsApi,
+    updateProblemStepsInSet,
     saveProblemSetApi,
     fetchEditableProblemSetSolutionApi,
 };
