@@ -439,6 +439,11 @@ class App extends Component {
                             />
                             <Route
                                 exact
+                                path="/app/problemSet/:action/:code/:position"
+                                render={p => <Editor {...commonProps} {...p} {...this} />}
+                            />
+                            <Route
+                                exact
                                 path="/app/problem/:action/:code"
                                 render={p => <Editor {...commonProps} {...p} {...this} />}
                             />

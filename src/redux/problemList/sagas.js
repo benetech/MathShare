@@ -9,6 +9,7 @@ import {
 import {
     push,
     replace,
+    goBack,
 } from 'connected-react-router';
 import {
     resetProblemSet,
@@ -106,6 +107,7 @@ function* requestProblemSetByCode() {
         payload: {
             action,
             code,
+            position,
         },
     }) {
         try {
@@ -128,6 +130,7 @@ function* requestProblemSetByCode() {
                 editCode,
                 shareCode,
                 title,
+                palettes,
             } = response.data;
             if (action === 'review') {
                 yield put(setReviewSolutions(solutions, reviewCode, editCode, title));
@@ -140,9 +143,9 @@ function* requestProblemSetByCode() {
                 //     },
                 // });
             } else {
-                const orderedProblems = problems.map((problem, position) => ({
+                const orderedProblems = problems.map((problem, index) => ({
                     ...problem,
-                    position,
+                    position: index,
                 }));
                 yield put({
                     type: 'REQUEST_PROBLEM_SET_SUCCESS',
@@ -151,6 +154,7 @@ function* requestProblemSetByCode() {
                         editCode,
                         shareCode,
                         title,
+                        palettes,
                     },
                 });
                 if (action === 'view') {
@@ -162,6 +166,42 @@ function* requestProblemSetByCode() {
                     //         title,
                     //     },
                     // );
+                    if (position && orderedProblems.length > 0) {
+                        const selectedProblem = orderedProblems.find(
+                            problem => String(problem.position) === position,
+                        );
+                        if (!selectedProblem) {
+                            yield put(goBack());
+                            yield put({
+                                type: 'REQUEST_PROBLEM_SET_FAILURE',
+                            });
+                            alertError('Unable to edit problem');
+                        }
+                        let steps = [{
+                            explanation: selectedProblem.title,
+                            stepValue: selectedProblem.text,
+                            deleted: false,
+                            cleanup: null,
+                            scratchpad: null,
+                        }];
+                        if (selectedProblem.steps.length > 0) {
+                            steps = selectedProblem.steps;
+                        }
+                        yield put({
+                            type: 'PROCESS_FETCHED_PROBLEM',
+                            payload: {
+                                action,
+                                solution: {
+                                    problem: selectedProblem,
+                                    editCode: null,
+                                    shareCode: null,
+                                    problemSetSolutionEditCode: null,
+                                    steps,
+                                    palettes,
+                                },
+                            },
+                        });
+                    }
                 }
             }
         } catch (error) {
