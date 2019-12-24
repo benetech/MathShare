@@ -76,7 +76,12 @@ class SignIn extends Component {
     )
 
     goBack = () => {
-        this.props.history.goBack();
+        const { routerHistory } = this.props;
+        if (routerHistory.prev === '#/' || routerHistory.prev === window.location.hash) {
+            this.props.history.push('app');
+        } else {
+            this.props.history.goBack();
+        }
     };
 
     render() {

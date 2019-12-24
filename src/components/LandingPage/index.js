@@ -57,16 +57,6 @@ const renderButtons = (userProfile, setAuthRedirect) => {
             >
                 {Locales.strings.sign_in}
             </a>
-            <a
-                className={styles.signIn}
-                onClick={clickOnSignIn(setAuthRedirect, userProfile)}
-                onKeyPress={passEventForKeys(
-                    clickOnSignIn(setAuthRedirect, userProfile),
-                )}
-                href="/#/signUp"
-            >
-                {Locales.strings.sign_up}
-            </a>
         </div>
     );
 };
@@ -148,6 +138,18 @@ const LandingPage = ({ setAuthRedirect, userProfile }) => {
                                 />
                             </div>
                         </section>
+                        <div className={styles.content}>
+                            <a
+                                href="/#/signUp"
+                                className={styles.btn}
+                                onClick={clickOnSignIn(setAuthRedirect, userProfile)}
+                                onKeyPress={passEventForKeys(
+                                    clickOnSignIn(setAuthRedirect, userProfile),
+                                )}
+                            >
+                                {Locales.strings.sign_up}
+                            </a>
+                        </div>
                         <section className={styles.feature}>
                             <div className={styles.textSection}>
                                 <h2 id="lms_integration" className={styles.header} tabIndex={-1}>
