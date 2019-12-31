@@ -15,11 +15,20 @@ const defaultValues = {
 
 const fields = ['font', 'lineHeight', 'letterSpacing'];
 
+export const configClassMap = {
+    font: {
+        'Open Dyslexic': 'open-dyslexic',
+        'Comic Neue': 'comic-neue',
+        'Courier Prime': 'courier-prime',
+        'Open Sans': 'open-sans',
+    },
+};
+
 class PersonalizationModal extends Component {
     constructor(props) {
         super(props);
         this.optionList = {
-            font: ['Calibri', 'Sitka', 'Comic Sans'],
+            font: Object.keys(configClassMap.font),
             lineHeight: [1, 1.5, 2],
             letterSpacing: [0, 1, 2, 3, 5, 10],
         };

@@ -39,6 +39,7 @@ import ModalContainer, {
     SHARE_SET,
     VIEW_SET,
 } from './ModalContainer';
+import { configClassMap } from './ModalContainer/components/PersonalizationModal';
 import { alertWarning } from '../scripts/alert';
 import googleAnalytics from '../scripts/googleAnalytics';
 import { FRONTEND_URL } from '../config';
@@ -65,11 +66,6 @@ configure({
 });
 
 // TODO: add font to class map
-const configClassMap = {
-    font: {
-
-    },
-};
 
 class App extends Component {
     constructor(props) {
@@ -296,7 +292,7 @@ class App extends Component {
         const classList = [];
         if (uiConfig) {
             if (uiConfig.font) {
-                classList.push(configClassMap[uiConfig.font]);
+                classList.push(`userConfig-font-${configClassMap.font[uiConfig.font]}`);
             }
             if (typeof (uiConfig.letterSpacing) === 'number') {
                 classList.push(`userConfig-letterSpacing-${uiConfig.letterSpacing}`);

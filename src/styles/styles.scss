@@ -159,6 +159,20 @@ button :global(.ML__mathlive) {
     }
 }
 
+@font-face {
+    font-family: 'opendyslexic3';
+    src: url('https://cdn.jsdelivr.net/npm/open-dyslexic@1.0.3/ttf/OpenDyslexic-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'comicneue';
+    src: url('https://cdn.jsdelivr.net/npm/@typopro/web-comic-neue@3.7.5/TypoPRO-ComicNeue-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 :global(.ML__scroller) {
     display: none;
 }
@@ -304,5 +318,20 @@ $lineHeights: 1, 1.5, 2;
         &, button {
             line-height: #{$lineHeight}!important;
         }
+    }
+}
+
+:global(.userConfig-font-) {
+    &open-dyslexic {
+        font-family: OpenDyslexic3, OpenDyslexic;
+    }
+    &comic-neue {
+        font-family: comicneue, monospace;
+    }
+    &courier-prime {
+        font-family: 'Courier Prime', monospace;
+    }
+    &open-sans {
+        font-family: 'Open Sans', sans-serif;
     }
 }
