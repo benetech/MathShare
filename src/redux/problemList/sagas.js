@@ -24,6 +24,7 @@ import {
     setReviewSolutions,
 } from './actions';
 import {
+    archiveProblemSetApi,
     fetchEditableProblemSetSolutionApi,
     fetchDefaultRevisionApi,
     fetchExampleSetsApi,
@@ -131,9 +132,10 @@ function* requestProblemSetByCode() {
                 shareCode,
                 title,
                 palettes,
+                archiveMode,
             } = response.data;
             if (action === 'review') {
-                yield put(setReviewSolutions(solutions, reviewCode, editCode, title));
+                yield put(setReviewSolutions(solutions, reviewCode, editCode, title, archiveMode));
                 // yield put({
                 //     type: 'REQUEST_PROBLEM_SET_SUCCESS',
                 //     payload: {
@@ -155,6 +157,7 @@ function* requestProblemSetByCode() {
                         shareCode,
                         title,
                         palettes,
+                        archiveMode,
                     },
                 });
                 if (action === 'view') {
@@ -424,11 +427,12 @@ function* requestShareSolutionsSaga() {
                     solutions,
                     editCode,
                     title,
+                    archiveMode,
                 } = yield call(shareSolutions, code, payloadSolutions);
                 if (silent) {
                     yield put(replace(`/app/problemSet/solve/${editCode}`));
                 }
-                yield put(setReviewSolutions(solutions, reviewCode, editCode, title));
+                yield put(setReviewSolutions(solutions, reviewCode, editCode, title, archiveMode));
                 yield put(setProblemSetShareCode(reviewCode));
             }
 
@@ -619,8 +623,9 @@ function* requestLoadProblemSetSolution() {
                 solutions,
                 reviewCode,
                 title,
+                archiveMode,
             } = data;
-            yield put(setReviewSolutions(solutions, reviewCode, editCode, title));
+            yield put(setReviewSolutions(solutions, reviewCode, editCode, title, archiveMode));
             yield put(setProblemSetShareCode(reviewCode));
         } catch (error) {
             yield put({
@@ -631,10 +636,32 @@ function* requestLoadProblemSetSolution() {
     });
 }
 
+function* requestArchiveProblemSet() {
+    yield takeLatest('ARCHIVE_PROBLEM_SET', function* workerSaga({
+        payload: {
+            editCode,
+        },
+    }) {
+        try {
+            yield call(archiveProblemSetApi, editCode, 'archived');
+            yield put({
+                type: 'ARCHIVE_PROBLEM_SET_SUCCESS',
+                payload: {
+                    editCode,
+                },
+            });
+            alertSuccess(Locales.strings.archived_problem_set, Locales.strings.success);
+        } catch (error) {
+            alertError(Locales.strings.archived_problem_set_failure, Locales.strings.failure);
+        }
+    });
+}
+
 
 export default function* rootSaga() {
     yield all([
         fork(addProblemSaga),
+        fork(requestArchiveProblemSet),
         fork(requestDeleteProblemSaga),
         fork(requestDefaultRevisionSaga),
         fork(requestExampleSetSaga),

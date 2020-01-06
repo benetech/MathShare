@@ -6,7 +6,7 @@ import FontAwesome from 'react-fontawesome';
 import { Helmet } from 'react-helmet';
 import Locales from '../../strings';
 import MainPageHeader from '../Home/components/Header';
-import { requestDefaultRevision, requestExampleSets } from '../../redux/problemList/actions';
+import { archiveProblemSet, requestDefaultRevision, requestExampleSets } from '../../redux/problemList/actions';
 import { setDropdownId } from '../../redux/ui/actions';
 import { fetchRecentWork } from '../../redux/userProfile/actions';
 import googleAnalytics from '../../scripts/googleAnalytics';
@@ -51,6 +51,11 @@ class Index extends Component {
 
     duplicateProblemSet = problemSet => (e) => {
         this.props.duplicateProblemSet(e, problemSet);
+        return stopEvent(e);
+    }
+
+    archiveProblemSet = problemSet => (e) => {
+        this.props.archiveProblemSet(problemSet.editCode);
         return stopEvent(e);
     }
 
@@ -173,6 +178,28 @@ class Index extends Component {
                             {Locales.strings.opens_in_new_tab}
                         </span>
                     </button>
+                    {isRecent && (
+                        <button
+                            className="dropdown-item reset-btn"
+                            onClick={this.archiveProblemSet(
+                                problemSet,
+                            )}
+                            onKeyPress={
+                                passEventForKeys(
+                                    this.archiveProblemSet(
+                                        problemSet,
+                                    ),
+                                )
+                            }
+                            type="button"
+                        >
+                            <FontAwesome
+                                size="lg"
+                                name="trash"
+                            />
+                            {` ${Locales.strings.archive}`}
+                        </button>
+                    )}
                 </CommonDropdown>
             </li>
         );
@@ -235,6 +262,11 @@ export default connect(
         ui: state.ui,
     }),
     {
-        fetchRecentWork, requestDefaultRevision, requestExampleSets, push, setDropdownId,
+        archiveProblemSet,
+        fetchRecentWork,
+        requestDefaultRevision,
+        requestExampleSets,
+        push,
+        setDropdownId,
     },
 )(Index);

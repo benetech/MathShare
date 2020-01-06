@@ -51,6 +51,13 @@ const userProfile = (state = initialState, {
             recentProblemSets,
         };
     }
+    case 'ARCHIVE_PROBLEM_SET_SUCCESS': {
+        const { editCode } = payload;
+        return {
+            ...state,
+            recentProblemSets: state.recentProblemSets.filter(set => set.editCode !== editCode),
+        };
+    }
     case 'SET_MOBILE_NOTIFY_SUCCESS': {
         const { notifyForMobile } = payload;
         return {

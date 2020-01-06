@@ -167,12 +167,13 @@ function* requestCommitProblemSolutionSaga() {
                     return;
                 }
                 const {
+                    archiveMode,
                     reviewCode,
                     solutions,
                     editCode,
                     title,
                 } = response.data;
-                yield put(setReviewSolutions(solutions, reviewCode, editCode, title));
+                yield put(setReviewSolutions(solutions, reviewCode, editCode, title, archiveMode));
                 yield put(setProblemSetShareCode(reviewCode));
                 const updatedSolution = solutions.find(currentSolution => (
                     solution.problem.id === currentSolution.problem.id));

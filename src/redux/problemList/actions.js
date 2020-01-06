@@ -145,18 +145,26 @@ export const updateProblemSetTitle = title => ({
     },
 });
 
+export const archiveProblemSet = editCode => ({
+    type: 'ARCHIVE_PROBLEM_SET',
+    payload: {
+        editCode,
+    },
+});
+
 export const duplicateProblemSet = (e, payload) => ({
     type: 'DUPLICATE_PROBLEM_SET',
     payload: (payload || {}),
 });
 
-export const setReviewSolutions = (solutions, reviewCode, editCode, title) => ({
+export const setReviewSolutions = (solutions, reviewCode, editCode, title, archiveMode) => ({
     type: 'SET_REVIEW_SOLUTIONS',
     payload: {
         solutions,
         reviewCode,
         editCode,
         title,
+        archiveMode,
     },
 });
 
@@ -176,6 +184,7 @@ export const loadProblemSetSolutionByEditCode = editCode => ({
 
 export default {
     addProblem,
+    archiveProblemSet,
     clearProblemSet,
     deleteProblem,
     duplicateProblemSet,

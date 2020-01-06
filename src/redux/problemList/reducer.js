@@ -172,6 +172,7 @@ const problems = (state = initialState, {
                 problems: payload.solutions.map(solution => solution.problem),
                 shareCode: payload.reviewCode,
                 title: payload.title || state.set.title,
+                archiveMode: payload.archiveMode,
             },
             newSetSharecode: payload.reviewCode,
         };
