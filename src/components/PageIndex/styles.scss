@@ -48,3 +48,22 @@
         margin-top: -45px;
     }
 }
+
+:global(.mainContainer) {
+    .archivedList {
+        background-color: #5a6268;
+        border-color: #5a6268;
+
+        &:hover {
+            @extend .archivedList;
+        }
+    }
+}
+
+.backBtn {
+    margin-bottom: 10px;
+
+    :global(.fa) {
+        padding-right: 10px;
+    }
+}

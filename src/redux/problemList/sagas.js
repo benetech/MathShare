@@ -33,6 +33,9 @@ import {
     updateProblemsApi,
 } from './apis';
 import {
+    fetchRecentWorkApi,
+} from '../userProfile/apis';
+import {
     getState,
 } from './selectors';
 import {
@@ -97,6 +100,26 @@ function* requestExampleSetSaga() {
         } catch (error) {
             yield put({
                 type: 'REQUEST_EXAMPLE_SETS_FAILURE',
+                error,
+            });
+        }
+    });
+}
+
+function* requestArchivedSetSaga() {
+    yield takeLatest('REQUEST_ARCHIVED_SETS', function* workerSaga() {
+        try {
+            const response = yield call(fetchRecentWorkApi, { 'x-archive-mode': 'archived' });
+            const archivedProblemSets = response.data;
+            yield put({
+                type: 'REQUEST_ARCHIVED_SETS_SUCCESS',
+                payload: {
+                    archivedProblemSets,
+                },
+            });
+        } catch (error) {
+            yield put({
+                type: 'REQUEST_ARCHIVED_SETS_FAILURE',
                 error,
             });
         }
@@ -640,19 +663,30 @@ function* requestArchiveProblemSet() {
     yield takeLatest('ARCHIVE_PROBLEM_SET', function* workerSaga({
         payload: {
             editCode,
+            archiveMode,
+            title,
         },
     }) {
         try {
-            yield call(archiveProblemSetApi, editCode, 'archived');
+            yield call(archiveProblemSetApi, editCode, archiveMode);
             yield put({
                 type: 'ARCHIVE_PROBLEM_SET_SUCCESS',
                 payload: {
                     editCode,
+                    key: (archiveMode === 'archived' ? 'recentProblemSets' : 'archivedProblemSets'),
                 },
             });
-            alertSuccess(Locales.strings.archived_problem_set, Locales.strings.success);
+            if (archiveMode === 'archived') {
+                alertSuccess(Locales.strings.archived_problem_set.replace('{title}', title), Locales.strings.success);
+            } else {
+                alertSuccess(Locales.strings.reactivate_success.replace('{title}', title), Locales.strings.success);
+            }
         } catch (error) {
-            alertError(Locales.strings.archived_problem_set_failure, Locales.strings.failure);
+            if (archiveMode === 'archived') {
+                alertError(Locales.strings.archived_problem_set_failure.replace('{title}', title), Locales.strings.failure);
+            } else {
+                alertError(Locales.strings.reactivate_failure.replace('{title}', title), Locales.strings.failure);
+            }
         }
     });
 }
@@ -661,6 +695,7 @@ function* requestArchiveProblemSet() {
 export default function* rootSaga() {
     yield all([
         fork(addProblemSaga),
+        fork(requestArchivedSetSaga),
         fork(requestArchiveProblemSet),
         fork(requestDeleteProblemSaga),
         fork(requestDefaultRevisionSaga),

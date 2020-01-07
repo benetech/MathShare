@@ -8,6 +8,10 @@ export const requestExampleSets = () => ({
     type: 'REQUEST_EXAMPLE_SETS',
 });
 
+export const requestArchivedSets = () => ({
+    type: 'REQUEST_ARCHIVED_SETS',
+});
+
 export const requestProblemSet = (action, code, position) => ({
     type: 'REQUEST_PROBLEM_SET',
     payload: {
@@ -145,10 +149,12 @@ export const updateProblemSetTitle = title => ({
     },
 });
 
-export const archiveProblemSet = editCode => ({
+export const archiveProblemSet = (editCode, archiveMode, title) => ({
     type: 'ARCHIVE_PROBLEM_SET',
     payload: {
         editCode,
+        archiveMode,
+        title,
     },
 });
 
@@ -190,6 +196,7 @@ export default {
     duplicateProblemSet,
     editProblem,
     finishEditing,
+    requestArchivedSets,
     requestDefaultRevision,
     requestProblemSet,
     resetProblemSet,

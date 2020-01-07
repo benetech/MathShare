@@ -52,7 +52,10 @@ const userProfile = (state = initialState, {
         };
     }
     case 'ARCHIVE_PROBLEM_SET_SUCCESS': {
-        const { editCode } = payload;
+        const { editCode, key } = payload;
+        if (key !== 'recentProblemSets') {
+            return state;
+        }
         return {
             ...state,
             recentProblemSets: state.recentProblemSets.filter(set => set.editCode !== editCode),
