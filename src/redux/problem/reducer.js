@@ -34,6 +34,11 @@ export const initialState = {
     isUpdated: false,
     lastSaved: null,
     tourOpen: false,
+    work: {
+        isScratchpadUsed: false,
+        scratchpadMode: false,
+        scratchpadContent: null,
+    },
 };
 
 const problem = (state = initialState, {
@@ -54,6 +59,8 @@ const problem = (state = initialState, {
             allowedPalettes: 'Edit;Operators;Notations;Geometry',
             tourOpen: false,
             actionsStack: [],
+            textAreaValue: '',
+            work: initialState.work,
         };
     case 'SET_PROBLEM_NOT_FOUND':
         return {
@@ -70,6 +77,8 @@ const problem = (state = initialState, {
             allowedPalettes: payload.solution.palettes,
             tourOpen: false,
             actionsStack: [],
+            textAreaValue: '',
+            work: initialState.work,
         };
     case 'UPDATE_PROBLEM_STORE':
         return {
@@ -90,6 +99,14 @@ const problem = (state = initialState, {
         return {
             ...state,
             tourOpen: !state.tourOpen,
+        };
+    case 'UPDATE_WORK':
+        return {
+            ...state,
+            work: {
+                ...state.work,
+                ...payload,
+            },
         };
     default:
         return state;

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import classNames from 'classnames';
 import MyWorkEditorArea from './components/MyWorkEditorArea';
 import MathPalette from './components/MathPalette';
@@ -6,22 +7,16 @@ import MyWorkEditorButtons from './components/MyWorkEditorButtons';
 import myWork from './styles.scss';
 import editor from '../../styles.scss';
 import Locales from '../../../../strings';
+import { updateWork } from '../../../../redux/problem/actions';
 import Painterro from '../../../../lib/painterro/painterro.commonjs2';
 import painterroConfiguration from './painterroConfiguration.json';
 
 const mathLive = process.env.MATHLIVE_DEBUG_MODE ? require('../../../../../../mathlive/src/mathlive.js').default
     : require('../../../../lib/mathlivedist/mathlive.js');
 
-export default class MyWork extends Component {
+class MyWork extends Component {
     constructor(props) {
         super(props);
-
-        this.state = {
-            isScratchpadUsed: false,
-            isScratchpadInitialized: false,
-            scratchpadMode: false,
-            scratchpadContent: null,
-        };
         // eslint-disable-next-line no-unused-expressions
         this.scratchPadPainterro;
 
@@ -39,19 +34,18 @@ export default class MyWork extends Component {
     componentDidMount() {
         if (this.props.bindDisplayFunction) {
             this.props.bindDisplayFunction((scratchpadContent) => {
-                this.setState(
-                    { scratchpadContent },
-                    this.displayScratchpadImage,
-                );
+                this.props.updateWork({ scratchpadContent });
+                this.displayScratchpadImage();
             });
         }
         document.getElementById('mathEditorActive').addEventListener('keydown', this.HandleKeyDown);
     }
 
     getScratchPadValue = () => {
-        let { scratchPadValue, height, width } = this.state;
+        const { problem } = this.props;
+        let { scratchPadValue, height, width } = problem.work;
 
-        if (this.state.isScratchpadUsed) {
+        if (problem.work.isScratchpadUsed) {
             scratchPadValue = this.scratchPadPainterro.imageSaver.asDataURL();
             height = this.scratchPadPainterro.canvas.height;
             width = this.scratchPadPainterro.canvas.width;
@@ -114,8 +108,9 @@ export default class MyWork extends Component {
     }
 
     scratchpadChangeHandler() {
-        if (!this.state.isScratchpadUsed) {
-            this.setState({ isScratchpadUsed: true });
+        const { problem } = this.props;
+        if (!problem.work.isScratchpadUsed) {
+            this.props.updateWork({ isScratchpadUsed: true });
         }
     }
 
@@ -140,7 +135,7 @@ export default class MyWork extends Component {
         $('.ptro-bordered-btn').css('border-radius', '.5rem');
         $('.ptro-info').hide();
 
-        this.setState({ isScratchpadUsed: false });
+        this.props.updateWork({ isScratchpadUsed: false });
     }
 
     loadImage(event) {
@@ -150,23 +145,26 @@ export default class MyWork extends Component {
         }
         const reader = new FileReader();
         reader.onload = (e) => {
-            this.setState({ scratchpadContent: e.target.result },
-                () => this.scratchPadPainterro.show(this.state.scratchpadContent));
+            const scratchpadContent = e.target.result;
+            this.props.updateWork({ scratchpadContent });
+            this.scratchPadPainterro.show(scratchpadContent);
         };
         reader.readAsDataURL(file);
     }
 
     displayScratchpadImage() {
-        if (this.state.scratchpadMode) {
-            this.clearAndResizeScratchPad(this.state.scratchpadContent);
-            this.scratchPadPainterro.show(this.state.scratchpadContent);
+        const { work } = this.props.problem;
+        if (work.scratchpadMode) {
+            this.clearAndResizeScratchPad(work.scratchpadContent);
+            this.scratchPadPainterro.show(work.scratchpadContent);
         }
     }
 
     clearAndResizeScratchPad(content) {
-        if (this.state.scratchpadMode) {
+        const { work } = this.props;
+        if (work.scratchpadMode) {
             this.scratchPadPainterro.clear();
-            this.setState({
+            this.props.updateWork({
                 isScratchpadUsed: false,
                 scratchpadContent: content,
             });
@@ -174,24 +172,20 @@ export default class MyWork extends Component {
     }
 
     openScratchpad() {
-        this.setState(
-            { scratchpadMode: true }, () => {
-                $('#scratch-pad-containter').show();
-                this.displayScratchpadImage();
-            },
-        );
+        this.props.updateWork({ scratchpadMode: true });
+        $('#scratch-pad-containter').show();
+        this.displayScratchpadImage();
     }
 
     hideScratchpad() {
-        this.setState({
+        this.props.updateWork({
             scratchpadMode: false,
             scratchpadContent: this.scratchPadPainterro.imageSaver.asDataURL(),
             scratchpadHeight: this.scratchPadPainterro.canvas.height,
             scratchpadWidth: this.scratchPadPainterro.canvas.width,
-        }, () => {
-            $('#scratch-pad-containter').hide();
-            mathLive.renderMathInDocument();
         });
+        $('#scratch-pad-containter').hide();
+        mathLive.renderMathInDocument();
     }
 
     addStepCallback() {
@@ -208,6 +202,7 @@ export default class MyWork extends Component {
     }
 
     render() {
+        const { problem } = this.props;
         return (
             <div id="EditorArea" className={myWork.editorArea}>
                 <div className={myWork.myWorkArea}>
@@ -231,11 +226,11 @@ export default class MyWork extends Component {
                                 'pt-2',
                             )}
                         >
-                            <MathPalette {...this} {...this.props} {...this.state} />
+                            <MathPalette {...this} {...this.props} {...problem.work} />
                             <MyWorkEditorButtons
                                 {...this}
                                 {...this.props}
-                                {...this.state}
+                                {...problem.work}
                                 addStepCallback={this.addStepCallback}
                                 updateCallback={this.updateCallback}
                                 openScratchpad={this.openScratchpad}
@@ -256,3 +251,12 @@ export default class MyWork extends Component {
         );
     }
 }
+
+export default connect(
+    state => ({
+        problem: state.problem,
+    }),
+    {
+        updateWork,
+    },
+)(MyWork);

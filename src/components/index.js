@@ -224,7 +224,7 @@ class App extends Component {
         this.props.saveProblemSet(orderedProblems, title);
     };
 
-    saveProblem = () => new Promise((resolve) => {
+    saveProblem = goBack => new Promise((resolve) => {
         if (this.props.example) {
             this.props.updateProblemStore({
                 editLink: Locales.strings.example_edit_code,
@@ -232,12 +232,13 @@ class App extends Component {
             resolve(true);
         } else {
             googleAnalytics('Save Problem');
-            this.props.commitProblemSolution();
+            this.props.commitProblemSolution(goBack === true);
         }
     });
 
     finishProblem = () => {
         this.props.commitProblemSolution(true);
+        googleAnalytics('Finish Problem');
     };
 
     shareProblem = () => {
@@ -259,15 +260,25 @@ class App extends Component {
 
     saveProblemCallback = () => {
         this.props.toggleModals([CONFIRMATION_BACK]);
-        this.saveProblem();
+        this.saveProblem(true);
     };
 
     goBack = () => {
-        const { problemStore } = this.props;
+        const { problemStore, problemList } = this.props;
         if (
-            !compareStepArrays(
-                problemStore.solution.steps,
-                problemStore.stepsFromLastSave,
+            (
+                !compareStepArrays(
+                    problemStore.solution.steps,
+                    problemStore.stepsFromLastSave,
+                )
+                || problemStore.textAreaValue
+                || (
+                    problemStore.solution.steps.length > 0
+                    && (
+                        (problemStore.theActiveMathField || problemList.theActiveMathField).$latex()
+                            !== problemStore.solution.steps.slice(-1).pop().stepValue
+                    )
+                )
             )
             && !this.props.example
         ) {
