@@ -39,6 +39,11 @@ class MyWork extends Component {
             });
         }
         document.getElementById('mathEditorActive').addEventListener('keydown', this.HandleKeyDown);
+        const { problem, isStepView } = this.props;
+        const { scratchpadMode } = problem.work;
+        if (scratchpadMode && !isStepView) {
+            setTimeout(this.openScratchpad, 0);
+        }
     }
 
     getScratchPadValue = () => {
@@ -135,7 +140,10 @@ class MyWork extends Component {
         $('.ptro-bordered-btn').css('border-radius', '.5rem');
         $('.ptro-info').hide();
 
-        this.props.updateWork({ isScratchpadUsed: false });
+        this.props.updateWork({
+            isScratchpadUsed: false,
+            scratchPadPainterro: this.scratchPadPainterro,
+        });
     }
 
     loadImage(event) {
@@ -161,7 +169,7 @@ class MyWork extends Component {
     }
 
     clearAndResizeScratchPad(content) {
-        const { work } = this.props;
+        const { work } = this.props.problem;
         if (work.scratchpadMode) {
             this.scratchPadPainterro.clear();
             this.props.updateWork({

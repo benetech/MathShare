@@ -24,6 +24,9 @@ import {
     setReviewSolutions,
 } from './actions';
 import {
+    updateProblemStore,
+} from '../problem/actions';
+import {
     archiveProblemSetApi,
     fetchEditableProblemSetSolutionApi,
     fetchDefaultRevisionApi,
@@ -255,6 +258,12 @@ function* addProblemSaga() {
                 yield put(saveProblems());
                 yield put({
                     type: 'SAVE_PROBLEM_SUCCESS',
+                });
+                yield put(updateProblemStore({
+                    textAreaValue: '',
+                }));
+                yield put({
+                    type: 'CLEAR_SCRATCH_PAD_CONTENT',
                 });
             }
 

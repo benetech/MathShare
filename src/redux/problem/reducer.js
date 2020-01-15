@@ -108,6 +108,21 @@ const problem = (state = initialState, {
                 ...payload,
             },
         };
+    case 'CLEAR_SCRATCH_PAD_CONTENT': {
+        try {
+            if (state.work.scratchPadPainterro) {
+                state.work.scratchPadPainterro.clear();
+            }
+        // eslint-disable-next-line no-empty
+        } catch (error) { }
+        return {
+            ...state,
+            work: {
+                ...state.work,
+                scratchpadContent: initialState.work.scratchpadContent,
+            },
+        };
+    }
     default:
         return state;
     }

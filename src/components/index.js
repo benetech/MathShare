@@ -435,6 +435,7 @@ class App extends Component {
                             editProblemCallback={this.editProblem}
                             history={this.props.history}
                             updateTempSet={this.props.updateTempSet}
+                            updateProblemStore={this.props.updateProblemStore}
                             {...problemStore}
                             {...this}
                         />
