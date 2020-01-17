@@ -53,6 +53,7 @@ import { compareStepArrays } from '../redux/problem/helpers';
 import msalConfig from '../constants/msal';
 import keyMap from '../constants/hotkeyConfig.json';
 import { stopEvent, passEventForKeys } from '../services/events';
+import { getPathTo } from '../services/dom';
 
 
 const mathLive = process.env.MATHLIVE_DEBUG_MODE
@@ -92,7 +93,11 @@ class App extends Component {
         };
 
         document.body.addEventListener('click', (e) => {
-            if (e.target.className.indexOf('dropdown-item') === -1) {
+            const { target } = e;
+            if (target.tagName === 'A') {
+                this.props.storeXPathToAnchor(getPathTo(target), target.attributes.href.value);
+            }
+            if (target.className.indexOf('dropdown-item') === -1) {
                 this.props.setDropdownId(null);
             }
         });

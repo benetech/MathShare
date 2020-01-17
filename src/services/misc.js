@@ -1,3 +1,5 @@
+import { findElementByXPath } from './dom';
+
 export const sleep = milliseconds => new Promise(resolve => setTimeout(resolve, milliseconds));
 
 export class FocusHandler {
@@ -6,10 +8,13 @@ export class FocusHandler {
         this.currentSelector = null;
     }
 
-    tryToFocus = async (selector, sleepMs = 50, trial = 1, maxTrials = 10, focusId = null) => {
+    tryToFocus = async (
+        selector, isXPath, sleepMs = 50, trial = 1, maxTrials = 10, focusId = null,
+    ) => {
         if (trial === 1 && document.activeElement) {
             this.ongoingId = Date.now();
             this.currentSelector = selector;
+            this.isXPath = isXPath;
             document.activeElement.blur();
             await sleep(maxTrials * sleepMs * 0.25);
         } else if (focusId !== this.ongoingId || selector !== this.currentSelector) {
@@ -19,13 +24,18 @@ export class FocusHandler {
         if (trial > maxTrials) {
             return true;
         }
-        const element = document.querySelector(selector);
+        let element = null;
+        if (this.isXPath) {
+            element = findElementByXPath(selector);
+        } else {
+            element = document.querySelector(selector);
+        }
         if (element) {
             element.focus();
         }
 
         return document.activeElement !== element
-            && this.tryToFocus(selector, sleepMs + 50, trial + 1, maxTrials, focusId
+            && this.tryToFocus(selector, isXPath, sleepMs + 50, trial + 1, maxTrials, focusId
                 || this.ongoingId);
     };
 }

@@ -8,6 +8,10 @@ const initialState = {
     currentTitle: null,
     prev: null,
     prevReplaced: null,
+    xPath: {
+        path: null,
+        href: null,
+    },
 };
 
 const router = (state = initialState, {
@@ -25,16 +29,22 @@ const router = (state = initialState, {
             return {
                 ...state,
                 prevReplaced: state.current,
-                current: window.location.hash,
+                current: `/${window.location.hash}`,
             };
         } if (action === 'POP') {
             return {
                 ...state,
                 prev: state.current,
-                current: window.location.hash,
+                current: `/${window.location.hash}`,
             };
         }
         return state;
+    }
+    case 'STORE_X_PATH': {
+        return {
+            ...state,
+            xPath: payload,
+        };
     }
     case 'SET_TITLE': {
         const { title } = payload;
