@@ -33,6 +33,7 @@ export default class MathPalette extends Component {
 
     render() {
         const allowedPalettes = palettes.filter(palette => (!this.props.allowedPalettes
+            || this.props.allowedPalettes.length === 0
             || this.props.allowedPalettes.includes(palette.label)));
         this.initializeKeyShortcuts(allowedPalettes);
         const mathPalette = allowedPalettes.map((palette, i) => (
