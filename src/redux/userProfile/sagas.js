@@ -102,6 +102,7 @@ function* checkUserLoginSaga() {
                         yield put(setPersonalizationSettings(data));
                     }
                 } catch (configError) {
+                    // eslint-disable-next-line no-console
                     console.log('configError', configError);
                 }
             }

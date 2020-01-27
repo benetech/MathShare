@@ -29,7 +29,7 @@ export default class MathPalette extends Component {
                 });
             });
         });
-        sessionStore.setItem('keyShortcuts', JSON.stringify(Array.from(keyShortcuts.entries())))
+        sessionStore.setItem('keyShortcuts', JSON.stringify(Array.from(keyShortcuts.entries())));
     }
 
     render() {
