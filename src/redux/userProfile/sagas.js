@@ -41,6 +41,7 @@ import {
 } from '../../scripts/alert';
 import { getCookie } from '../../scripts/cookie';
 import Locales from '../../strings';
+import { sessionStore } from '../../scripts/storage';
 
 const loginAlertId = 'login-alert';
 const redirectAlertId = 'redirect-info';
@@ -247,7 +248,7 @@ function* setMobileNotifySaga() {
                 });
             }
             yield put(setMobileNotifySuccess(notifyForMobile));
-            sessionStorage.setItem('hide_mobile_support_banner', dayjs().add(1, 'hour').toISOString());
+            sessionStore.setItem('hide_mobile_support_banner', dayjs().add(1, 'hour').toISOString());
             alertSuccess(Locales.strings.thanks_for_mobile_notfiy, Locales.strings.success);
         } catch (error) {
             yield put({

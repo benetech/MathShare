@@ -7,6 +7,7 @@ import MyWorkEditorButtons from './components/MyWorkEditorButtons';
 import myWork from './styles.scss';
 import editor from '../../styles.scss';
 import Locales from '../../../../strings';
+import { sessionStore } from '../../../../scripts/storage';
 import { updateWork } from '../../../../redux/problem/actions';
 import Painterro from '../../../../lib/painterro/painterro.commonjs2';
 import painterroConfiguration from './painterroConfiguration.json';
@@ -72,7 +73,7 @@ class MyWork extends Component {
     }
 
     HandleKeyDown = (event) => {
-        const keyShortcuts = new Map(JSON.parse(sessionStorage.keyShortcuts));
+        const keyShortcuts = new Map(JSON.parse(sessionStore.getItem('keyShortcuts')));
         if (event.shiftKey && this.props.theActiveMathField.$selectionIsCollapsed()) {
             // if an insertion cursor, extend the selection unless we are at an edge
             if (event.key === 'Backspace' && !this.props.theActiveMathField.$selectionAtStart()) {
