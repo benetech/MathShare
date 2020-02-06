@@ -186,13 +186,19 @@ function* requestCommitProblemSolutionSaga() {
                     return;
                 }
                 const {
+                    id,
                     archiveMode,
                     reviewCode,
                     solutions,
                     editCode,
                     title,
+                    source,
                 } = response.data;
-                yield put(setReviewSolutions(solutions, reviewCode, editCode, title, archiveMode));
+                yield put(
+                    setReviewSolutions(
+                        id, solutions, reviewCode, editCode, title, archiveMode, source,
+                    ),
+                );
                 yield put(setProblemSetShareCode(reviewCode));
                 const updatedSolution = solutions.find(currentSolution => (
                     solution.problem.id === currentSolution.problem.id));

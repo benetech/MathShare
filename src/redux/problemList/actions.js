@@ -157,14 +157,18 @@ export const duplicateProblemSet = (e, payload) => ({
     payload: (payload || {}),
 });
 
-export const setReviewSolutions = (solutions, reviewCode, editCode, title, archiveMode) => ({
+export const setReviewSolutions = (
+    id, solutions, reviewCode, editCode, title, archiveMode, source,
+) => ({
     type: 'SET_REVIEW_SOLUTIONS',
     payload: {
+        id,
         solutions,
         reviewCode,
         editCode,
         title,
         archiveMode,
+        source,
     },
 });
 
@@ -179,6 +183,15 @@ export const loadProblemSetSolutionByEditCode = editCode => ({
     type: 'LOAD_PROBLEM_SET_SOLUTION_BY_EDIT_CODE',
     payload: {
         editCode,
+    },
+});
+
+export const submitToPartner = (id, editCode, shareCode) => ({
+    type: 'REQUEST_SUBMIT_TO_PARTNER',
+    payload: {
+        id,
+        editCode,
+        shareCode,
     },
 });
 
@@ -208,4 +221,5 @@ export default {
     updateProblemSetTitle,
     updateReviewSolutions,
     loadProblemSetSolutionByEditCode,
+    submitToPartner,
 };

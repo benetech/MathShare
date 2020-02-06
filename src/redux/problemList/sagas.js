@@ -31,9 +31,11 @@ import {
     fetchEditableProblemSetSolutionApi,
     fetchDefaultRevisionApi,
     fetchExampleSetsApi,
+    fetchPartnerSubmitOptionsApi,
     fetchProblemsByActionAndCodeApi,
     saveProblemSetApi,
     updateProblemsApi,
+    submitToPartnerApi,
 } from './apis';
 import {
     getState,
@@ -128,6 +130,7 @@ function* requestProblemSetByCode() {
                 return;
             }
             const {
+                id,
                 solutions,
                 problems,
                 reviewCode,
@@ -136,9 +139,14 @@ function* requestProblemSetByCode() {
                 title,
                 palettes,
                 archiveMode,
+                source,
             } = response.data;
             if (action === 'review') {
-                yield put(setReviewSolutions(solutions, reviewCode, editCode, title, archiveMode));
+                yield put(
+                    setReviewSolutions(
+                        id, solutions, reviewCode, editCode, title, archiveMode, source,
+                    ),
+                );
                 // yield put({
                 //     type: 'REQUEST_PROBLEM_SET_SUCCESS',
                 //     payload: {
@@ -161,6 +169,7 @@ function* requestProblemSetByCode() {
                         title,
                         palettes,
                         archiveMode,
+                        source,
                     },
                 });
                 if (action === 'view') {
@@ -432,16 +441,22 @@ function* requestShareSolutionsSaga() {
 
                 const payloadSolutions = getSolutionObjectFromProblems(set.problems);
                 const {
+                    id,
                     reviewCode,
                     solutions,
                     editCode,
                     title,
                     archiveMode,
+                    source,
                 } = yield call(shareSolutions, code, payloadSolutions);
                 if (silent) {
                     yield put(replace(`/app/problemSet/solve/${editCode}`));
                 }
-                yield put(setReviewSolutions(solutions, reviewCode, editCode, title, archiveMode));
+                yield put(
+                    setReviewSolutions(
+                        id, solutions, reviewCode, editCode, title, archiveMode, source,
+                    ),
+                );
                 yield put(setProblemSetShareCode(reviewCode));
             }
 
@@ -629,12 +644,16 @@ function* requestLoadProblemSetSolution() {
                 data,
             } = response;
             const {
+                id,
                 solutions,
                 reviewCode,
                 title,
                 archiveMode,
+                source,
             } = data;
-            yield put(setReviewSolutions(solutions, reviewCode, editCode, title, archiveMode));
+            yield put(
+                setReviewSolutions(id, solutions, reviewCode, editCode, title, archiveMode, source),
+            );
             yield put(setProblemSetShareCode(reviewCode));
         } catch (error) {
             yield put({
@@ -666,6 +685,50 @@ function* requestArchiveProblemSet() {
     });
 }
 
+function* requestPartnerSubmitOptions() {
+    yield takeLatest('SET_REVIEW_SOLUTIONS', function* workerSaga({
+        payload: {
+            source,
+        },
+    }) {
+        if (!source) { return; }
+        try {
+            const response = yield call(fetchPartnerSubmitOptionsApi, source);
+            if (response.status === 200) {
+                yield put({
+                    type: 'PARTNER_SUBMIT_OPTIONS_SUCCESS',
+                    payload: response.data,
+                });
+            }
+        } catch (error) {
+            console.log('error', error);
+        }
+    });
+}
+
+function* requestSubmitToPartner() {
+    yield takeLatest('REQUEST_SUBMIT_TO_PARTNER', function* workerSaga({
+        payload: {
+            id,
+            editCode,
+            shareCode,
+        },
+    }) {
+        let success = false;
+        try {
+            const response = yield call(submitToPartnerApi, id, editCode, shareCode);
+            success = response.status === 200;
+        } catch (error) {
+            success = false;
+        }
+        if (success) {
+            alertSuccess(Locales.strings.submit_to_partner_success, Locales.strings.success);
+        } else {
+            alertError(Locales.strings.submit_to_partner_failure, Locales.strings.failure);
+        }
+    });
+}
+
 
 export default function* rootSaga() {
     yield all([
@@ -683,5 +746,7 @@ export default function* rootSaga() {
         fork(requestUpdateTitleSaga),
         fork(reqestDuplicateProblemSet),
         fork(requestLoadProblemSetSolution),
+        fork(requestPartnerSubmitOptions),
+        fork(requestSubmitToPartner),
     ]);
 }

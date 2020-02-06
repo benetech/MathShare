@@ -494,6 +494,24 @@ class Home extends Component {
                                     </button>
                                     <UncontrolledTooltip placement="top" target="microsoftTeamContainer1" />
                                 </span>
+                                {currentSet.partner && currentSet.partner.canSubmit && (
+                                    <Button
+                                        id="partnerBtn"
+                                        className={classNames([
+                                            'btn',
+                                            'btn-outline-dark',
+                                        ])}
+                                        type="button"
+                                        content={Locales.strings.submit_to_partner.replace('{partner}', currentSet.partner.name)}
+                                        onClick={() => {
+                                            this.props.submitToPartner(
+                                                currentSet.id,
+                                                problemList.editCode,
+                                                problemList.reviewCode,
+                                            );
+                                        }}
+                                    />
+                                )}
                             </RenderActionButtons>
 
                         </div>
