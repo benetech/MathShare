@@ -193,13 +193,6 @@ function* saveUserInfoSaga() {
                 type: 'SAVE_USER_INFO_FAILURE',
             });
         } finally {
-            setTimeout(() => {
-                alertSuccess(
-                    Locales.strings.you_are_now_on.replace('{pageTitle}',
-                        (document.title || '').split(` - ${Locales.strings.mathshare_benetech}`)[0]),
-                    Locales.strings.thanks_for_details,
-                );
-            }, 100);
             yield put(replace(redirectTo));
         }
     });

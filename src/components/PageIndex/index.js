@@ -205,6 +205,20 @@ class Index extends Component {
         );
     }
 
+    renderHeader = () => {
+        const { routerHistory } = this.props;
+        if (routerHistory.prev === '#/userDetails') {
+            return (
+                <h1 className={pageIndex.thanksHeader} tabIndex={-1}>
+                    {Locales.strings.thanks_for_details}
+                </h1>
+            );
+        }
+        return (
+            <h1 className="sROnly" tabIndex={-1}>{Locales.strings.dashboard}</h1>
+        );
+    }
+
     render() {
         const { props } = this;
         const { problemList } = props;
@@ -225,7 +239,7 @@ class Index extends Component {
                     action={null}
                 />
                 <div id="mainContainer" className="mainContainer">
-                    <h1 className="sROnly" tabIndex={-1}>{Locales.strings.dashboard}</h1>
+                    {this.renderHeader()}
                     <ol className={pageIndex.problemSetList}>
                         <li className="card">
                             <button
@@ -260,6 +274,7 @@ export default connect(
     state => ({
         problemList: state.problemList,
         ui: state.ui,
+        routerHistory: state.routerHooks,
     }),
     {
         archiveProblemSet,
