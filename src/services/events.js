@@ -20,6 +20,9 @@ export const focusOnMainContent = () => {
     if (main) {
         const focusable = main.querySelectorAll('button, [href], input, select, textarea, h1[tabindex], div[tabindex');
         const firstFocusable = focusable[0];
+        if (document.activeElement && document.activeElement.getAttribute('data-trap-focus')) {
+            return;
+        }
         if (firstFocusable) {
             firstFocusable.focus();
         }

@@ -9,10 +9,10 @@ const commonProps = {
     closeButton: false,
 };
 
-function getCommonAlert(title, message, id = undefined, anchor = null) {
+function getCommonAlert(title, message, id = undefined, anchor = null, trapFocus = true) {
     return (
         <div className="toast-common" role="alert">
-            <h2 id={id} tabIndex={-1}>
+            <h2 id={id} tabIndex={-1} data-trap-focus={trapFocus}>
                 {title}
             </h2>
             <div>{message}</div>
