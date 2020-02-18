@@ -66,6 +66,9 @@ const userProfile = (state = initialState, {
         };
     }
     case 'SET_PERSONALIZATION_SETTINGS':
+        if (payload && payload.ui) {
+            window.alertAutoClose = payload.ui.alertAutoClose;
+        }
         return {
             ...state,
             config: payload,

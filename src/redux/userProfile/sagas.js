@@ -86,7 +86,7 @@ function* checkUserLoginSaga() {
                 if (window.location.hash !== '#/userDetails') {
                     alertInfo(
                         Locales.strings.redirecting_to_fill, Locales.strings.info,
-                        redirectAlertId, redirectWait,
+                        redirectAlertId,
                     );
                     yield delay(redirectWait);
                     yield put(push('/userDetails'));

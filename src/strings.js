@@ -23,6 +23,7 @@ class Locales {
                 add_step_button_title: 'Clean up the cross outs and start a new step (⌨: shift+enter)',
                 add_step_intro: 'Clean-up your work and start a new step.',
                 added_problem_at_index: 'Added new problem in position {index}',
+                alertAutoClose: 'Alert close time (in secs)',
                 all_problem_sets: 'All Problem Sets',
                 all_problems: ' All Problems',
                 archive: 'Archive',
