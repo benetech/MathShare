@@ -104,7 +104,7 @@ class Locales {
                 finished: 'finished',
                 font: 'Font',
                 footer: 'Footer',
-                footer_description: ` initiative supported by the U.S. Department of Education, Office of Special Education Programs (Cooperative Agreement #H327B100001). Opinions expressed herein are those of the authors and do not necessarily represent the position of the U.S. Department of Education. Poet™ is a trademark of Beneficent Technology, Inc. This website is copyright © 2012-${now.format('YYYY')}, Beneficent Technology, Inc.`,
+                footer_description: ` initiative supported by the U.S. Department of Education, Office of Special Education Programs (Cooperative Agreement #H327B100001). Opinions expressed herein are those of the authors and do not necessarily represent the position of the U.S. Department of Education. This website is copyright © 2012-${now.format('YYYY')}, Beneficent Technology, Inc.`,
                 free_and_open_source: 'Free and Open Source',
                 get_notified_about_mobile: ' Get notified about mobile',
                 getting_started_equation: 'Click here to see an example problem and learn how to use the editor',
