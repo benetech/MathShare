@@ -252,7 +252,7 @@ class Home extends Component {
                                             {Locales.strings.opens_in_new_tab}
                                         </span>
                                     </button>
-                                    <Button
+                                    {/* <Button
                                         id="viewAsStudent"
                                         className={classNames([
                                             'dropdown-item',
@@ -264,7 +264,7 @@ class Home extends Component {
                                         onKeyPress={passEventForKeys(
                                             this.saveProblemSet(currentSet, true),
                                         )}
-                                    />
+                                    /> */}
                                 </React.Fragment>
                             )}
                         </CommonDropdown>
