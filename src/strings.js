@@ -96,6 +96,7 @@ class Locales {
                 example_edit_code: 'Here you could find an URL with edit code',
                 example_problem: 'Example Problem',
                 example_share_code: 'Here you could find an URL with share code',
+                explore_problem_set: 'Explore Problem Set Library',
                 failure: 'Failure',
                 ferpa_coppa: 'FERPA/COPPA',
                 filter: 'Filter',

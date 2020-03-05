@@ -256,6 +256,14 @@ class Index extends Component {
                                 </span>
                             </button>
                         </li>
+                        <li className="card">
+                            <a
+                                className="btn d-flex"
+                                href="https://docs.google.com/spreadsheets/d/1lI8NSnMWzt0K8hJDYDtxmL9fGHI8J2ku85P7uT3tp-0/edit?usp=sharing"
+                            >
+                                {Locales.strings.explore_problem_set}
+                            </a>
+                        </li>
                         {problemList.exampleProblemSets.filter(exampleProblemSet => exampleProblemSet.title === 'Example Problem Set').map(this.renderProblemSet(true))}
                     </ol>
                     <div className="title">{Locales.strings.recent}</div>
