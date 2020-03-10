@@ -199,7 +199,7 @@ function* requestProblemSetByCode() {
                             cleanup: null,
                             scratchpad: null,
                         }];
-                        if (selectedProblem.steps.length > 0) {
+                        if (selectedProblem.steps && selectedProblem.steps.length > 0) {
                             steps = selectedProblem.steps;
                         }
                         yield put({
