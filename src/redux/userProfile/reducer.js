@@ -9,6 +9,7 @@ const initialState = {
     notifyForMobile: null,
     checking: false,
     config: null,
+    info: {},
 };
 
 const userProfile = (state = initialState, {
@@ -72,6 +73,11 @@ const userProfile = (state = initialState, {
         return {
             ...state,
             config: payload,
+        };
+    case 'SET_USER_INFO':
+        return {
+            ...state,
+            info: payload,
         };
     default:
         return state;

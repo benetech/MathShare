@@ -22,6 +22,7 @@ import {
     setMobileNotifySuccess,
     setPersonalizationSettings,
     setRecentWork,
+    setUserInfo,
 } from './actions';
 import {
     getState,
@@ -79,6 +80,7 @@ function* checkUserLoginSaga() {
                 if (userInfoResponse.status !== 200) {
                     throw Error('User info not set');
                 } else {
+                    yield put(setUserInfo(userInfoResponse.data));
                     yield put(setMobileNotifySuccess(userInfoResponse.data.notifyForMobile));
                 }
             } catch (infoError) {
