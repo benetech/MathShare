@@ -407,7 +407,7 @@ class App extends Component {
 
     render() {
         const commonProps = this.props;
-        const { modal, problemList, problemStore } = this.props;
+        const { modal, problemList, problemStore, userProfile } = this.props;
         return (
             <React.Fragment>
                 <Helmet
@@ -489,7 +489,7 @@ class App extends Component {
                             <Route render={p => <NotFound {...p} />} />
                         </Switch>
                     </div>
-                    <Intercom appID={process.env.INTERCOM_APP_ID} />
+                    {userProfile.info.userType === 'teacher' && <Intercom appID={process.env.INTERCOM_APP_ID} />}
                     <footer id="footer">
                         <h2 className="sROnly">
                             {' '}
