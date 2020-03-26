@@ -407,7 +407,9 @@ class App extends Component {
 
     render() {
         const commonProps = this.props;
-        const { modal, problemList, problemStore, userProfile } = this.props;
+        const {
+            modal, problemList, problemStore, userProfile,
+        } = this.props;
         return (
             <React.Fragment>
                 <Helmet
