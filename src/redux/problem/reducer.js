@@ -1,3 +1,6 @@
+import {
+    LOCATION_CHANGE,
+} from 'connected-react-router';
 import Locales from '../../strings';
 import {
     countEditorPosition,
@@ -123,6 +126,16 @@ const problem = (state = initialState, {
             },
         };
     }
+    case LOCATION_CHANGE:
+        if (payload.action === 'POP' && payload.location.pathname.indexOf('/app/problemSet/') > -1) {
+            return {
+                ...state,
+                textAreaValue: initialState.textAreaValue,
+                stepsFromLastSave: initialState.stepsFromLastSave,
+                solution: initialState.solution,
+            };
+        }
+        return state;
     default:
         return state;
     }
