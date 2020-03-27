@@ -10,7 +10,7 @@
                         "MathLivePasteFromButton",
                         "GoogleAnalytics"
                     ],
-                    "value": "$$\\enclose{updiagonalstrike downdiagonalstrike}[2px solid blue]{\\blacksquare}$$",
+                    "value": "$$\\enclose{updiagonalstrike downdiagonalstrike}[2px solid #4040ff]{\\blacksquare}$$",
                     "keys": [
                         "Shift",
                         "Delete"
@@ -23,7 +23,7 @@
                         "MathLivePasteFromButton",
                         "GoogleAnalytics"
                     ],
-                    "value": "$$ \\enclose{updiagonalstrike downdiagonalstrike}[2px solid blue]{\\blacksquare}^{\\square} $$",
+                    "value": "$$ \\enclose{updiagonalstrike downdiagonalstrike}[2px solid #4040ff]{\\blacksquare}^{\\square} $$",
                     "keys": [
                         "Shift",
                         "Ctrl",

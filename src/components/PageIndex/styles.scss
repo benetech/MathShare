@@ -40,6 +40,10 @@
     margin-bottom: 50px;
 }
 
+.thanksHeader {
+    font-size: 24px;
+}
+
 :global(.card) .dropdownContainer {
     position: absolute;
     right: 10px;
@@ -47,4 +51,9 @@
         margin-left: -360%;
         margin-top: -45px;
     }
+}
+
+:global(.mainContainer) :global(.title) {
+    font-size: 1rem;
+    font-weight: 400;
 }

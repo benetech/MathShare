@@ -11,17 +11,28 @@ import { savePersonalizationSettings } from '../../../../redux/userProfile/actio
 const defaultValues = {
     lineHeight: 1.5,
     letterSpacing: 0,
+    alertAutoClose: 10,
 };
 
-const fields = ['font', 'lineHeight', 'letterSpacing'];
+const fields = ['font', 'lineHeight', 'letterSpacing', 'alertAutoClose'];
+
+export const configClassMap = {
+    font: {
+        'Open Dyslexic': 'open-dyslexic',
+        'Comic Neue': 'comic-neue',
+        'Courier Prime': 'courier-prime',
+        'Open Sans': 'open-sans',
+    },
+};
 
 class PersonalizationModal extends Component {
     constructor(props) {
         super(props);
         this.optionList = {
-            font: ['Calibri', 'Sitka', 'Comic Sans'],
+            font: Object.keys(configClassMap.font),
             lineHeight: [1, 1.5, 2],
             letterSpacing: [0, 1, 2, 3, 5, 10],
+            alertAutoClose: [5, 10, 15, 20],
         };
         let uiConfig = {};
         if (props.userProfile.config) {
@@ -53,7 +64,7 @@ class PersonalizationModal extends Component {
         const target = event.target;
         const value = target.value;
         let processedValue = value;
-        if (['lineHeight', 'letterSpacing'].includes(key)) {
+        if (['lineHeight', 'letterSpacing', 'alertAutoClose'].includes(key)) {
             processedValue = Number(value);
         }
         this.setState({

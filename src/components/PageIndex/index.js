@@ -6,7 +6,7 @@ import FontAwesome from 'react-fontawesome';
 import { Helmet } from 'react-helmet';
 import Locales from '../../strings';
 import MainPageHeader from '../Home/components/Header';
-import { requestDefaultRevision, requestExampleSets } from '../../redux/problemList/actions';
+import { archiveProblemSet, requestDefaultRevision, requestExampleSets } from '../../redux/problemList/actions';
 import { setDropdownId } from '../../redux/ui/actions';
 import { fetchRecentWork } from '../../redux/userProfile/actions';
 import googleAnalytics from '../../scripts/googleAnalytics';
@@ -51,6 +51,11 @@ class Index extends Component {
 
     duplicateProblemSet = problemSet => (e) => {
         this.props.duplicateProblemSet(e, problemSet);
+        return stopEvent(e);
+    }
+
+    archiveProblemSet = problemSet => (e) => {
+        this.props.archiveProblemSet(problemSet.editCode);
         return stopEvent(e);
     }
 
@@ -173,8 +178,44 @@ class Index extends Component {
                             {Locales.strings.opens_in_new_tab}
                         </span>
                     </button>
+                    {isRecent && (
+                        <button
+                            className="dropdown-item reset-btn"
+                            onClick={this.archiveProblemSet(
+                                problemSet,
+                            )}
+                            onKeyPress={
+                                passEventForKeys(
+                                    this.archiveProblemSet(
+                                        problemSet,
+                                    ),
+                                )
+                            }
+                            type="button"
+                        >
+                            <FontAwesome
+                                size="lg"
+                                name="trash"
+                            />
+                            {` ${Locales.strings.archive}`}
+                        </button>
+                    )}
                 </CommonDropdown>
             </li>
+        );
+    }
+
+    renderHeader = () => {
+        const { routerHistory } = this.props;
+        if (routerHistory.prev === '#/userDetails') {
+            return (
+                <h1 className={pageIndex.thanksHeader} tabIndex={-1}>
+                    {Locales.strings.thanks_for_details}
+                </h1>
+            );
+        }
+        return (
+            <h1 className="sROnly" tabIndex={-1}>{Locales.strings.dashboard}</h1>
         );
     }
 
@@ -198,7 +239,7 @@ class Index extends Component {
                     action={null}
                 />
                 <div id="mainContainer" className="mainContainer">
-                    <h1 className="sROnly" tabIndex={-1}>{Locales.strings.dashboard}</h1>
+                    {this.renderHeader()}
                     <ol className={pageIndex.problemSetList}>
                         <li className="card">
                             <button
@@ -217,10 +258,19 @@ class Index extends Component {
                         </li>
                         {problemList.exampleProblemSets.filter(exampleProblemSet => exampleProblemSet.title === 'Example Problem Set').map(this.renderProblemSet(true))}
                     </ol>
-                    <div className="title">{Locales.strings.recent}</div>
+                    <div className="text-center">
+                        <h2 className="sROnly" tabIndex={-1}>{Locales.strings.problem_set_library}</h2>
+                        <span role="img" aria-label="" aria-hidden="true">📓</span>
+                        <a
+                            href="https://docs.google.com/spreadsheets/d/1lI8NSnMWzt0K8hJDYDtxmL9fGHI8J2ku85P7uT3tp-0/edit?usp=sharing"
+                        >
+                            {Locales.strings.explore_problem_set}
+                        </a>
+                    </div>
+                    <h2 className="title">{Locales.strings.recent_sets}</h2>
                     {this.renderRecent()}
-                    <div className="title">{Locales.strings.pre_made_sets}</div>
-                    <ol className={pageIndex.problemSetList}>
+                    <h2 id="pre-made-sets-header" className="title">{Locales.strings.pre_made_sets}</h2>
+                    <ol className={pageIndex.problemSetList} aria-labelledby="pre-made-sets-header">
                         {problemList.exampleProblemSets.filter(exampleProblemSet => exampleProblemSet.title !== 'Example Problem Set').map(this.renderProblemSet())}
                     </ol>
                 </div>
@@ -233,8 +283,14 @@ export default connect(
     state => ({
         problemList: state.problemList,
         ui: state.ui,
+        routerHistory: state.routerHooks,
     }),
     {
-        fetchRecentWork, requestDefaultRevision, requestExampleSets, push, setDropdownId,
+        archiveProblemSet,
+        fetchRecentWork,
+        requestDefaultRevision,
+        requestExampleSets,
+        push,
+        setDropdownId,
     },
 )(Index);

@@ -23,7 +23,6 @@ export default class NewProblemsForm extends Component {
 
         this.state = {
             problems: [],
-            textAreaValue: '',
             displayScratchpad: null,
             title: `${Locales.strings.new_problem_set} ${dayjs().format('MM-DD-YYYY')}`,
         };
@@ -34,9 +33,7 @@ export default class NewProblemsForm extends Component {
     }
 
     componentWillReceiveProps(newProps) {
-        const text = newProps.editing ? newProps.problemToEdit.title : '';
         this.setState({
-            textAreaValue: text,
             problems: newProps.problems,
         });
     }
@@ -66,7 +63,7 @@ export default class NewProblemsForm extends Component {
     }
 
     textAreaChanged = (text) => {
-        this.setState({ textAreaValue: text });
+        this.props.updateProblemStore({ textAreaValue: text });
     }
 
     reorder = (oldIndex, newIndex) => {
@@ -288,7 +285,7 @@ export default class NewProblemsForm extends Component {
                         activateMathField={this.props.activateMathField}
                         theActiveMathField={this.props.theActiveMathField}
                         textAreaChanged={this.textAreaChanged}
-                        textAreaValue={this.state.textAreaValue}
+                        textAreaValue={this.props.textAreaValue}
                         addStepCallback={this.addProblem}
                         editing={false}
                         history={[]}

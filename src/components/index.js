@@ -39,6 +39,7 @@ import ModalContainer, {
     SHARE_SET,
     VIEW_SET,
 } from './ModalContainer';
+import { configClassMap } from './ModalContainer/components/PersonalizationModal';
 import { alertWarning } from '../scripts/alert';
 import googleAnalytics from '../scripts/googleAnalytics';
 import { FRONTEND_URL } from '../config';
@@ -52,6 +53,7 @@ import { compareStepArrays } from '../redux/problem/helpers';
 import msalConfig from '../constants/msal';
 import keyMap from '../constants/hotkeyConfig.json';
 import { stopEvent, passEventForKeys } from '../services/events';
+import { getPathTo } from '../services/dom';
 
 
 const mathLive = process.env.MATHLIVE_DEBUG_MODE
@@ -65,11 +67,6 @@ configure({
 });
 
 // TODO: add font to class map
-const configClassMap = {
-    font: {
-
-    },
-};
 
 class App extends Component {
     constructor(props) {
@@ -96,7 +93,11 @@ class App extends Component {
         };
 
         document.body.addEventListener('click', (e) => {
-            if (e.target.className.indexOf('dropdown-item') === -1) {
+            const { target } = e;
+            if (target.tagName === 'A') {
+                this.props.storeXPathToAnchor(getPathTo(target), target.attributes.href.value);
+            }
+            if (target.className.indexOf('dropdown-item') === -1) {
                 this.props.setDropdownId(null);
             }
         });
@@ -228,7 +229,7 @@ class App extends Component {
         this.props.saveProblemSet(orderedProblems, title);
     };
 
-    saveProblem = () => new Promise((resolve) => {
+    saveProblem = goBack => new Promise((resolve) => {
         if (this.props.example) {
             this.props.updateProblemStore({
                 editLink: Locales.strings.example_edit_code,
@@ -236,12 +237,13 @@ class App extends Component {
             resolve(true);
         } else {
             googleAnalytics('Save Problem');
-            this.props.commitProblemSolution();
+            this.props.commitProblemSolution(goBack === true);
         }
     });
 
     finishProblem = () => {
         this.props.commitProblemSolution(true);
+        googleAnalytics('Finish Problem');
     };
 
     shareProblem = () => {
@@ -263,15 +265,25 @@ class App extends Component {
 
     saveProblemCallback = () => {
         this.props.toggleModals([CONFIRMATION_BACK]);
-        this.saveProblem();
+        this.saveProblem(true);
     };
 
     goBack = () => {
-        const { problemStore } = this.props;
+        const { problemStore, problemList } = this.props;
         if (
-            !compareStepArrays(
-                problemStore.solution.steps,
-                problemStore.stepsFromLastSave,
+            (
+                !compareStepArrays(
+                    problemStore.solution.steps,
+                    problemStore.stepsFromLastSave,
+                )
+                || problemStore.textAreaValue
+                || (
+                    problemStore.solution.steps.length > 0
+                    && (
+                        (problemStore.theActiveMathField || problemList.theActiveMathField).$latex()
+                            !== problemStore.solution.steps.slice(-1).pop().stepValue
+                    )
+                )
             )
             && !this.props.example
         ) {
@@ -296,7 +308,7 @@ class App extends Component {
         const classList = [];
         if (uiConfig) {
             if (uiConfig.font) {
-                classList.push(configClassMap[uiConfig.font]);
+                classList.push(`userConfig-font-${configClassMap.font[uiConfig.font]}`);
             }
             if (typeof (uiConfig.letterSpacing) === 'number') {
                 classList.push(`userConfig-letterSpacing-${uiConfig.letterSpacing}`);
@@ -395,7 +407,9 @@ class App extends Component {
 
     render() {
         const commonProps = this.props;
-        const { modal, problemList, problemStore } = this.props;
+        const {
+            modal, problemList, problemStore, userProfile,
+        } = this.props;
         return (
             <React.Fragment>
                 <Helmet
@@ -428,6 +442,7 @@ class App extends Component {
                             editProblemCallback={this.editProblem}
                             history={this.props.history}
                             updateTempSet={this.props.updateTempSet}
+                            updateProblemStore={this.props.updateProblemStore}
                             {...problemStore}
                             {...this}
                         />
@@ -476,7 +491,7 @@ class App extends Component {
                             <Route render={p => <NotFound {...p} />} />
                         </Switch>
                     </div>
-                    <Intercom appID={process.env.INTERCOM_APP_ID} />
+                    {userProfile.info.userType === 'teacher' && <Intercom appID={process.env.INTERCOM_APP_ID} />}
                     <footer id="footer">
                         <h2 className="sROnly">
                             {' '}

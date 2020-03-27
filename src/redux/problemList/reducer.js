@@ -10,6 +10,11 @@ const initialState = {
         editCode: null,
         shareCode: null,
         title: '',
+        source: null,
+        partner: {
+            canSubmit: false,
+            name: null,
+        },
     },
     notFound: false,
     problemToEditIndex: null,
@@ -169,11 +174,22 @@ const problems = (state = initialState, {
             ...state,
             ...payload,
             set: {
+                id: payload.id,
                 problems: payload.solutions.map(solution => solution.problem),
                 shareCode: payload.reviewCode,
                 title: payload.title || state.set.title,
+                archiveMode: payload.archiveMode,
+                source: payload.source || null,
             },
             newSetSharecode: payload.reviewCode,
+        };
+    case 'PARTNER_SUBMIT_OPTIONS_SUCCESS':
+        return {
+            ...state,
+            set: {
+                ...state.set,
+                partner: payload,
+            },
         };
     default:
         return state;

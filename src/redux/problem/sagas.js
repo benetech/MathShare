@@ -134,14 +134,33 @@ function* requestCommitProblemSolutionSaga() {
         try {
             const {
                 solution,
+                textAreaValue,
+                work,
+                editorPosition,
             } = yield select(getState);
+            let finalEditorPosition = editorPosition;
+            const {
+                theActiveMathField,
+            } = yield select(getProblemListState);
+            const { steps } = solution;
+            if (textAreaValue
+                || (
+                    solution.steps.length > 0
+                    && theActiveMathField.$latex() !== solution.steps.slice(-1).pop().stepValue
+                )) {
+                steps.push({
+                    scratchpad: work.scratchpadContent,
+                    explanation: textAreaValue,
+                    stepValue: theActiveMathField.$latex(),
+                });
+                finalEditorPosition = steps.length;
+            }
             const problemListState = yield select(getProblemListState);
             let shareCode = '';
             const matchedRoute = yield select(
                 matchCurrentRoute('/app/problemSet/:action/:editCode/:position'),
             );
             if (matchedRoute) {
-                const { steps } = solution;
                 const { params } = matchedRoute;
                 const { editCode } = params;
                 const problemId = solution.problem.id;
@@ -167,12 +186,19 @@ function* requestCommitProblemSolutionSaga() {
                     return;
                 }
                 const {
+                    id,
+                    archiveMode,
                     reviewCode,
                     solutions,
                     editCode,
                     title,
+                    source,
                 } = response.data;
-                yield put(setReviewSolutions(solutions, reviewCode, editCode, title));
+                yield put(
+                    setReviewSolutions(
+                        id, solutions, reviewCode, editCode, title, archiveMode, source,
+                    ),
+                );
                 yield put(setProblemSetShareCode(reviewCode));
                 const updatedSolution = solutions.find(currentSolution => (
                     solution.problem.id === currentSolution.problem.id));
@@ -192,7 +218,7 @@ function* requestCommitProblemSolutionSaga() {
                 shareCode = response.data.shareCode;
             }
             let problemStorePayload = {
-                stepsFromLastSave: JSON.parse(JSON.stringify(solution.steps)),
+                stepsFromLastSave: JSON.parse(JSON.stringify(steps)),
                 lastSaved: (new Date().toLocaleString('en-US', {
                     hour: 'numeric',
                     minute: 'numeric',
@@ -205,6 +231,8 @@ function* requestCommitProblemSolutionSaga() {
                     ...problemStorePayload,
                     editLink: `${FRONTEND_URL}/app/problem/edit/${solution.editCode}`,
                     shareLink: `${FRONTEND_URL}/app/problem/view/${shareCode}`,
+                    editorPosition: finalEditorPosition,
+                    textAreaValue: '',
                 };
             }
             yield put(updateProblemStore(problemStorePayload));

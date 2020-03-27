@@ -159,6 +159,20 @@ button :global(.ML__mathlive) {
     }
 }
 
+@font-face {
+    font-family: 'opendyslexic3';
+    src: url('https://cdn.jsdelivr.net/npm/open-dyslexic@1.0.3/ttf/OpenDyslexic-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'comicneue';
+    src: url('https://cdn.jsdelivr.net/npm/@typopro/web-comic-neue@3.7.5/TypoPRO-ComicNeue-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 :global(.ML__scroller) {
     display: none;
 }
@@ -241,11 +255,11 @@ body [tabindex="-1"]:focus {
     }
 
     :global(.Toastify__toast--warning) {
-        background-color: #f89406;
+        background-color: #CD0E15;
     }
 
     :global(.Toastify__toast--info) {
-        background-color: #2f96b4;
+        background-color: #267992;
     }
 
     :global(.Toastify__toast--info:before) {
@@ -253,7 +267,7 @@ body [tabindex="-1"]:focus {
     }
 
     :global(.Toastify__toast--success) {
-        background-color: #51a351;
+        background-color: #3D7B3D;
     }
 
     :global(.Toastify__toast--success:before) {
@@ -261,7 +275,7 @@ body [tabindex="-1"]:focus {
     }
 
     :global(.Toastify__toast--warning) {
-        background-color: #f89406;
+        background-color: #CD0E15;
     }
 
     :global(.Toastify__toast--warning:before) {
@@ -305,4 +319,34 @@ $lineHeights: 1, 1.5, 2;
             line-height: #{$lineHeight}!important;
         }
     }
+}
+
+:global(.userConfig-font-) {
+    &open-dyslexic {
+        font-family: OpenDyslexic3, OpenDyslexic;
+    }
+    &comic-neue {
+        font-family: comicneue, monospace;
+    }
+    &courier-prime {
+        font-family: 'Courier Prime', monospace;
+    }
+    &open-sans {
+        font-family: 'Open Sans', sans-serif;
+    }
+}
+
+:global(#scratch-pad-containter) {
+	:global(.ptro-icon-btn),
+	:global(.ptro-named-btn),
+	:global(.color-diwget-btn),
+    :global(.ptro-color-btn),
+    :global(.ptro-input),
+	:global(.ptro-selector-btn) {
+		&:focus {
+			outline: 1px dotted;
+			outline-offset: -5px;
+			outline: 5px auto -webkit-focus-ring-color;
+		}
+	}
 }

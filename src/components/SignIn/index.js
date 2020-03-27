@@ -38,11 +38,11 @@ class SignIn extends Component {
     };
 
     getPrev = (routerHistory) => {
-        let path = '#/app';
-        if (routerHistory.prev && routerHistory.prev !== '#/signIn' && routerHistory.prev !== '#/signUp') {
+        let path = '/#/app';
+        if (routerHistory.prev && routerHistory.prev !== '/#/signIn' && routerHistory.prev !== '/#/signUp') {
             path = routerHistory.prev;
         }
-        return `${window.location.origin}/${path}`;
+        return `${window.location.origin}${path}`;
     }
 
     renderGoogleBtn = routerHistory => (
