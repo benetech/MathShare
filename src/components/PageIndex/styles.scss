@@ -57,6 +57,7 @@
     .archivedList {
         background-color: #5a6268;
         border-color: #5a6268;
+        margin-top: -8px;
 
         &:hover {
             @extend .archivedList;
@@ -70,7 +71,7 @@
 }
 
 .backBtn {
-    margin-bottom: 10px;
+    margin-bottom: 30px;
 
     :global(.fa) {
         padding-right: 10px;

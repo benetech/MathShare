@@ -348,6 +348,10 @@ class Index extends Component {
     }
 
     renderLibrary = () => {
+        const { archiveMode } = this.props;
+        if (archiveMode) {
+            return null;
+        }
         return (
             <div className="text-center">
                 <h2 className="sROnly" tabIndex={-1}>{Locales.strings.problem_set_library}</h2>
@@ -358,8 +362,18 @@ class Index extends Component {
                     {Locales.strings.explore_problem_set}
                 </a>
             </div>
-        )
+        );
     }
+
+    renderMainDashboard = () => (
+        <>
+            {this.renderExample()}
+            {this.renderLibrary()}
+            {this.renderRecent()}
+            {this.renderArchived()}
+            {this.renderPremadeSets()}
+        </>
+    )
 
     render() {
         const { props } = this;
@@ -386,11 +400,7 @@ class Index extends Component {
                 />
                 <div id="mainContainer" className="mainContainer">
                     {this.renderHeader()}
-                    {this.renderExample()}
-                    {this.renderLibrary()}
-                    {this.renderRecent()}
-                    {this.renderArchived()}
-                    {this.renderPremadeSets()}
+                    {archiveMode ? this.renderArchived() : this.renderMainDashboard()}
                 </div>
             </div>
         );
