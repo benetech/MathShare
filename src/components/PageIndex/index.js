@@ -260,7 +260,7 @@ class Index extends Component {
                     </ol>
                     <div className="text-center">
                         <h2 className="sROnly" tabIndex={-1}>{Locales.strings.problem_set_library}</h2>
-                        <span role="img" aria-label="">📓</span>
+                        <span role="img" aria-label="" alt="">📓</span>
                         <a
                             href="https://docs.google.com/spreadsheets/d/1lI8NSnMWzt0K8hJDYDtxmL9fGHI8J2ku85P7uT3tp-0/edit?usp=sharing"
                         >
