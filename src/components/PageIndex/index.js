@@ -259,17 +259,18 @@ class Index extends Component {
                         {problemList.exampleProblemSets.filter(exampleProblemSet => exampleProblemSet.title === 'Example Problem Set').map(this.renderProblemSet(true))}
                     </ol>
                     <div className="text-center">
-                        <span role="img" aria-label="Library">📓</span>
+                        <h2 className="sROnly" tabIndex={-1}>{Locales.strings.problem_set_library}</h2>
+                        <span role="img" aria-label="" aria-hidden="true">📓</span>
                         <a
                             href="https://docs.google.com/spreadsheets/d/1lI8NSnMWzt0K8hJDYDtxmL9fGHI8J2ku85P7uT3tp-0/edit?usp=sharing"
                         >
                             {Locales.strings.explore_problem_set}
                         </a>
                     </div>
-                    <div className="title">{Locales.strings.recent}</div>
+                    <h2 className="title">{Locales.strings.recent_sets}</h2>
                     {this.renderRecent()}
-                    <div className="title">{Locales.strings.pre_made_sets}</div>
-                    <ol className={pageIndex.problemSetList}>
+                    <h2 id="pre-made-sets-header" className="title">{Locales.strings.pre_made_sets}</h2>
+                    <ol className={pageIndex.problemSetList} aria-labelledby="pre-made-sets-header">
                         {problemList.exampleProblemSets.filter(exampleProblemSet => exampleProblemSet.title !== 'Example Problem Set').map(this.renderProblemSet())}
                     </ol>
                 </div>
