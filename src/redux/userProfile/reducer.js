@@ -9,6 +9,7 @@ const initialState = {
     notifyForMobile: null,
     checking: false,
     config: null,
+    info: {},
 };
 
 const userProfile = (state = initialState, {
@@ -69,9 +70,17 @@ const userProfile = (state = initialState, {
         };
     }
     case 'SET_PERSONALIZATION_SETTINGS':
+        if (payload && payload.ui) {
+            window.alertAutoClose = payload.ui.alertAutoClose;
+        }
         return {
             ...state,
             config: payload,
+        };
+    case 'SET_USER_INFO':
+        return {
+            ...state,
+            info: payload,
         };
     default:
         return state;

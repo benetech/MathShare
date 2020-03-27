@@ -107,6 +107,8 @@ const ModalContainer = (props) => {
                 addingProblem
                 cancelCallback={() => props.toggleModals([ADD_PROBLEM_SET])}
                 title={Locales.strings.add_problems_new_set}
+                updateProblemStore={props.updateProblemStore}
+                textAreaValue={props.textAreaValue}
                 newProblemSet
             />
         )
@@ -126,6 +128,8 @@ const ModalContainer = (props) => {
                 addingProblem
                 cancelCallback={() => props.toggleModals([ADD_PROBLEMS])}
                 title={Locales.strings.add_problems}
+                updateProblemStore={props.updateProblemStore}
+                textAreaValue={props.textAreaValue}
             />
         )
         : null;
@@ -147,6 +151,7 @@ const ModalContainer = (props) => {
                 addingProblem
                 problemToEdit={props.problemToEdit}
                 title={Locales.strings.edit_problem}
+                updateProblemStore={props.updateProblemStore}
             />
         )
         : null;

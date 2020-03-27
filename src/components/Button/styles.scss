@@ -55,7 +55,7 @@ button.undo {
 
     &,
     &:hover {
-        background-color: rgb(126, 126, 126);
+        background-color: #767676;
         color: rgb(255, 255, 255);
     }
 }
@@ -64,7 +64,7 @@ button.addStep {
 
     &,
     &:hover {
-        background-color: rgb(72, 204, 112);
+        background-color: #206F39;
         color: rgb(255, 255, 255);
     }
 }
@@ -77,7 +77,7 @@ button.addStep {
 button.finish {
     margin: auto;
     color: rgb(255, 255, 255);
-    background-color: rgb(72, 204, 112);
+    background-color: #206F39;
     font-size: 22px;
 
     span {

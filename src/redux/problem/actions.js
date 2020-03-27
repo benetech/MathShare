@@ -65,6 +65,11 @@ export const toggleTour = () => ({
     type: 'TOGGLE_TOUR',
 });
 
+export const updateWork = payload => ({
+    type: 'UPDATE_WORK',
+    payload,
+});
+
 export default {
     commitProblemSolution,
     loadExampleProblem,
@@ -77,4 +82,5 @@ export default {
     openTour,
     closeTour,
     toggleTour,
+    updateWork,
 };

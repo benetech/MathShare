@@ -255,11 +255,11 @@ body [tabindex="-1"]:focus {
     }
 
     :global(.Toastify__toast--warning) {
-        background-color: #f89406;
+        background-color: #CD0E15;
     }
 
     :global(.Toastify__toast--info) {
-        background-color: #2f96b4;
+        background-color: #267992;
     }
 
     :global(.Toastify__toast--info:before) {
@@ -267,7 +267,7 @@ body [tabindex="-1"]:focus {
     }
 
     :global(.Toastify__toast--success) {
-        background-color: #51a351;
+        background-color: #3D7B3D;
     }
 
     :global(.Toastify__toast--success:before) {
@@ -275,7 +275,7 @@ body [tabindex="-1"]:focus {
     }
 
     :global(.Toastify__toast--warning) {
-        background-color: #f89406;
+        background-color: #CD0E15;
     }
 
     :global(.Toastify__toast--warning:before) {
@@ -334,4 +334,19 @@ $lineHeights: 1, 1.5, 2;
     &open-sans {
         font-family: 'Open Sans', sans-serif;
     }
+}
+
+:global(#scratch-pad-containter) {
+	:global(.ptro-icon-btn),
+	:global(.ptro-named-btn),
+	:global(.color-diwget-btn),
+    :global(.ptro-color-btn),
+    :global(.ptro-input),
+	:global(.ptro-selector-btn) {
+		&:focus {
+			outline: 1px dotted;
+			outline-offset: -5px;
+			outline: 5px auto -webkit-focus-ring-color;
+		}
+	}
 }

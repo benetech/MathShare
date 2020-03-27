@@ -2,6 +2,7 @@ import axios from 'axios';
 
 import {
     SERVER_URL,
+    API_URL,
 } from '../../config';
 
 import {
@@ -45,6 +46,10 @@ export const archiveProblemSetApi = (editCode, archiveMode) => axios.put(`${SERV
 
 export const fetchEditableProblemSetSolutionApi = editCode => axios.get(`${SERVER_URL}/solution/solve/${editCode}`, commonRequestConfig);
 
+export const fetchPartnerSubmitOptionsApi = partnerCode => axios.post(`${API_URL}/partner/submitOptions`, { partnerCode }, commonRequestConfig);
+
+export const submitToPartnerApi = (id, editCode, shareCode) => axios.post(`${API_URL}/partner/submit`, { id, editCode, shareCode }, commonRequestConfig);
+
 export default {
     archiveProblemSetApi,
     fetchDefaultRevisionApi,
@@ -55,4 +60,6 @@ export default {
     updateProblemStepsInSet,
     saveProblemSetApi,
     fetchEditableProblemSetSolutionApi,
+    fetchPartnerSubmitOptionsApi,
+    submitToPartnerApi,
 };

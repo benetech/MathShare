@@ -34,7 +34,7 @@ function* changeTitleSaga() {
         }
         if (newTitle && currentTitle !== newTitle) {
             const announceTitle = newTitle.split(` - ${Locales.strings.mathshare_benetech}`)[0];
-            if (prevReplaced !== '#/userDetails') {
+            if (prevReplaced !== '/#/userDetails') {
                 yield put(announceOnAriaLive(announceTitle));
             } else {
                 yield put({
@@ -56,12 +56,24 @@ function* changeRouteSaga() {
         const {
             prev,
             prevReplaced,
+            xPath,
         } = yield select(getRouterHookState);
-        let selector = `a[href='/${prev}']`;
-        if (prevReplaced && prev.startsWith('#/app/problemSet/solve/')) {
-            selector = `a[href='/${prevReplaced}']`;
+        let selector = `a[href='${prev}']`;
+        let isXpath = false;
+        if (prev === xPath.href) {
+            isXpath = true;
+            selector = xPath.path;
         }
-        const notAbleToFocus = yield call(commonFocusHandler.tryToFocus, selector);
+        if (prevReplaced && prev.startsWith('/#/app/problemSet/solve/')) {
+            selector = `a[href='${prevReplaced}']`;
+            if (prevReplaced === xPath.href) {
+                isXpath = true;
+                selector = xPath.path;
+            } else {
+                isXpath = false;
+            }
+        }
+        const notAbleToFocus = yield call(commonFocusHandler.tryToFocus, selector, isXpath);
         if (notAbleToFocus && pathname !== '/') {
             yield call(focusOnMainContent);
         }

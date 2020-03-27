@@ -122,7 +122,7 @@ class Index extends Component {
                         {Locales.strings.archived_sets}
                     </a>
                 )}
-                <div className="title">{Locales.strings.recent}</div>
+                <h2 className="title">{Locales.strings.recent_sets}</h2>
                 {recentContent}
             </>
         );
@@ -258,7 +258,7 @@ class Index extends Component {
         }
         return (
             <>
-                <div className="title">{Locales.strings.pre_made_sets}</div>
+                <h2 className="title">{Locales.strings.pre_made_sets}</h2>
                 <ol className={pageIndex.problemSetList}>
                     {problemList.exampleProblemSets.filter(exampleProblemSet => exampleProblemSet.title !== 'Example Problem Set').map(this.renderProblemSet())}
                 </ol>
@@ -290,9 +290,9 @@ class Index extends Component {
                     ariaLabel={Locales.strings.back}
                     content={Locales.strings.back}
                 />
-                <div className="title">
+                <h2 className="title">
                     {Locales.strings.archived_sets}
-                </div>
+                </h2>
                 {problemList.archivedProblemSets && (
                     <ol className={pageIndex.problemSetList}>
                         {problemList.archivedProblemSets.map(this.renderProblemSet(false, true))}
@@ -333,6 +333,34 @@ class Index extends Component {
         );
     }
 
+    renderHeader = () => {
+        const { routerHistory } = this.props;
+        if (routerHistory.prev === '#/userDetails') {
+            return (
+                <h1 className={pageIndex.thanksHeader} tabIndex={-1}>
+                    {Locales.strings.thanks_for_details}
+                </h1>
+            );
+        }
+        return (
+            <h1 className="sROnly" tabIndex={-1}>{Locales.strings.dashboard}</h1>
+        );
+    }
+
+    renderLibrary = () => {
+        return (
+            <div className="text-center">
+                <h2 className="sROnly" tabIndex={-1}>{Locales.strings.problem_set_library}</h2>
+                <span role="img" aria-label="" aria-hidden="true">📓</span>
+                <a
+                    href="https://docs.google.com/spreadsheets/d/1lI8NSnMWzt0K8hJDYDtxmL9fGHI8J2ku85P7uT3tp-0/edit?usp=sharing"
+                >
+                    {Locales.strings.explore_problem_set}
+                </a>
+            </div>
+        )
+    }
+
     render() {
         const { props } = this;
         const { problemList, archiveMode } = props;
@@ -357,8 +385,9 @@ class Index extends Component {
                     action={null}
                 />
                 <div id="mainContainer" className="mainContainer">
-                    <h1 className="sROnly" tabIndex={-1}>{Locales.strings.dashboard}</h1>
+                    {this.renderHeader()}
                     {this.renderExample()}
+                    {this.renderLibrary()}
                     {this.renderRecent()}
                     {this.renderArchived()}
                     {this.renderPremadeSets()}

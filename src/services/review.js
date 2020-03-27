@@ -26,7 +26,7 @@ export const shareSolutions = (code, payloadSolutions) => axios.post(`${SERVER_U
     });
 
 export const getSolutionObjectFromProblems = problems => problems.map((problem) => {
-    if (problem.steps.length > 0) {
+    if (problem.steps && problem.steps.length > 0) {
         return {
             problem,
             steps: problem.steps,
