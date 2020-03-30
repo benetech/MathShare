@@ -107,7 +107,7 @@ class SignIn extends Component {
                     </div>
                     <h1 className={signIn.header} tabIndex={-1}>{mainText}</h1>
                     <h2 id="signInServices" className={signIn.text}>
-                        {isSignUp ? Locales.strings.sign_up_using : Locales.strings.login_using}
+                        {isSignUp ? Locales.strings.sign_up_using : Locales.strings.sign_in_using}
                     </h2>
                     <ul className={signIn.buttonsContainer} aria-labelledby="signInServices">
                         <li>
