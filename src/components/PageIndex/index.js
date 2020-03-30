@@ -108,7 +108,7 @@ class Index extends Component {
             recentContent = <div className="text-center">{Locales.strings.loading}</div>;
         } else if (userProfile.recentProblemSets.length > 0) {
             recentContent = (
-                <ol className={pageIndex.problemSetList}>
+                <ol className={pageIndex.problemSetList} aria-labelledby="recent-sets-header">
                     {userProfile.recentProblemSets.map(this.renderProblemSet(false, true))}
                 </ol>
             );
@@ -122,7 +122,7 @@ class Index extends Component {
                         {Locales.strings.archived_sets}
                     </a>
                 )}
-                <h2 className="title">{Locales.strings.recent_sets}</h2>
+                <h2 id="recent-sets-header" className="title">{Locales.strings.recent_sets}</h2>
                 {recentContent}
             </>
         );
@@ -258,8 +258,8 @@ class Index extends Component {
         }
         return (
             <>
-                <h2 className="title">{Locales.strings.pre_made_sets}</h2>
-                <ol className={pageIndex.problemSetList}>
+                <h2 id="pre-made-sets-header" className="title">{Locales.strings.pre_made_sets}</h2>
+                <ol className={pageIndex.problemSetList} aria-labelledby="pre-made-sets-header">
                     {problemList.exampleProblemSets.filter(exampleProblemSet => exampleProblemSet.title !== 'Example Problem Set').map(this.renderProblemSet())}
                 </ol>
             </>
@@ -290,11 +290,11 @@ class Index extends Component {
                     ariaLabel={Locales.strings.back}
                     content={Locales.strings.back}
                 />
-                <h2 className="title">
+                <h2 id="archived-sets-header" className="title">
                     {Locales.strings.archived_sets}
                 </h2>
                 {problemList.archivedProblemSets && (
-                    <ol className={pageIndex.problemSetList}>
+                    <ol className={pageIndex.problemSetList} aria-labelledby="archived-sets-header">
                         {problemList.archivedProblemSets.map(this.renderProblemSet(false, true))}
                     </ol>
                 )}
