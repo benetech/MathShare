@@ -217,26 +217,24 @@ class Home extends Component {
                             listClass="dropdown-menu-lg-right dropdown-secondary"
                         >
                             {params.action === 'edit' && (
-                                <React.Fragment>
-                                    <button
-                                        className="dropdown-item"
-                                        onClick={this.props.duplicateProblemSet}
-                                        onKeyPress={
-                                            passEventForKeys(this.props.duplicateProblemSet)
-                                        }
-                                        type="button"
-                                    >
-                                        <FontAwesome
-                                            size="lg"
-                                            name="copy"
-                                        />
-                                        {` ${Locales.strings.duplicate_set}`}
-                                        <span className="sROnly">
-                                            {'\u00A0'}
-                                            {Locales.strings.opens_in_new_tab}
-                                        </span>
-                                    </button>
-                                </React.Fragment>
+                                <button
+                                    className="dropdown-item"
+                                    onClick={this.props.duplicateProblemSet}
+                                    onKeyPress={
+                                        passEventForKeys(this.props.duplicateProblemSet)
+                                    }
+                                    type="button"
+                                >
+                                    <FontAwesome
+                                        size="lg"
+                                        name="copy"
+                                    />
+                                    {` ${Locales.strings.duplicate_set}`}
+                                    <span className="sROnly">
+                                        {'\u00A0'}
+                                        {Locales.strings.opens_in_new_tab}
+                                    </span>
+                                </button>
                             )}
                         </CommonDropdown>
                     </div>
