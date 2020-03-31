@@ -115,7 +115,7 @@ class MainPageHeader extends React.Component {
                                                     size="lg"
                                                     name="plus"
                                                 />
-                                                {` ${Locales.strings.add_problem_set}`}
+                                                {` ${Locales.strings.create_a_problem_set}`}
                                                 <span className="sROnly">
                                                     {'\u00A0'}
                                                     {Locales.strings.opens_in_new_tab}
