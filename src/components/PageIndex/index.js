@@ -292,8 +292,8 @@ class Index extends Component {
         }
         return (
             <>
-                <ol className={pageIndex.problemSetList}>
-                    <li className="card">
+                <div className={pageIndex.problemSetList}>
+                    <div className="card">
                         <button
                             id="add_problem_set"
                             type="button"
@@ -307,8 +307,8 @@ class Index extends Component {
                                 {Locales.strings.create_a_problem_set}
                             </span>
                         </button>
-                    </li>
-                </ol>
+                    </div>
+                </div>
             </>
         );
     }
