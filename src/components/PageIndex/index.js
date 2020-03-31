@@ -203,26 +203,6 @@ class Index extends Component {
                             {Locales.strings.opens_in_new_tab}
                         </span>
                     </button>
-                    <button
-                        className="dropdown-item reset-btn"
-                        onClick={shareOnTwitter(
-                            problemSet.shareCode,
-                        )}
-                        onKeyPress={passEventForKeys(shareOnTwitter(
-                            problemSet.shareCode,
-                        ))}
-                        type="button"
-                    >
-                        <FontAwesome
-                            size="lg"
-                            name="twitter"
-                        />
-                        {` ${Locales.strings.share_on_twitter}`}
-                        <span className="sROnly">
-                            {'\u00A0'}
-                            {Locales.strings.opens_in_new_tab}
-                        </span>
-                    </button>
                     {isRecent && (
                         <button
                             className="dropdown-item reset-btn"
@@ -323,7 +303,7 @@ class Index extends Component {
                             <span className="centreText">
                                 +
                                 {' '}
-                                {Locales.strings.new_problem_set}
+                                {Locales.strings.create_a_problem_set}
                             </span>
                         </button>
                     </li>
