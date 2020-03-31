@@ -474,6 +474,11 @@ class App extends Component {
                             />
                             <Route
                                 exact
+                                path="/app/archived"
+                                render={p => <PageIndex archiveMode="archived" {...commonProps} {...p} {...this} />}
+                            />
+                            <Route
+                                exact
                                 path="/"
                                 render={p => (
                                     <LandingPage

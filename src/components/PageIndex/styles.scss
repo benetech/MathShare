@@ -53,7 +53,27 @@
     }
 }
 
-:global(.mainContainer) :global(.title) {
-    font-size: 1rem;
-    font-weight: 400;
+:global(.mainContainer) {
+    .archivedList {
+        background-color: #5a6268;
+        border-color: #5a6268;
+        margin-top: -8px;
+
+        &:hover {
+            @extend .archivedList;
+        }
+    }
+
+    :global(.title) {
+        font-size: 1rem;
+        font-weight: 400;
+    }
+}
+
+.backBtn {
+    margin-bottom: 30px;
+
+    :global(.fa) {
+        padding-right: 10px;
+    }
 }

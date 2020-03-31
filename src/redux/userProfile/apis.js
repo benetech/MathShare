@@ -25,7 +25,10 @@ export const updateNotifyMobileApi = notifyForMobile => axios.put(`${SERVER_URL}
     notifyForMobile,
 }, commonRequestConfig);
 
-export const fetchRecentWorkApi = () => axios.get(`${SERVER_URL}/private/recent`, commonRequestConfig);
+export const fetchRecentWorkApi = headers => axios.get(`${SERVER_URL}/private/recent`, {
+    ...commonRequestConfig,
+    headers,
+});
 
 export default {
     fetchCurrentUserApi,
