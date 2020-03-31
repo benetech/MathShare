@@ -284,7 +284,7 @@ class Index extends Component {
         );
     }
 
-    renderExample() {
+    renderTopButtons() {
         const { props } = this;
         const { archiveMode } = props;
         if (archiveMode) {
@@ -347,7 +347,7 @@ class Index extends Component {
 
     renderMainDashboard = () => (
         <>
-            {this.renderExample()}
+            {this.renderTopButtons()}
             {this.renderLibrary()}
             {this.renderRecent()}
             {this.renderArchived()}
