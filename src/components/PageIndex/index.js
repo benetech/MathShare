@@ -21,12 +21,12 @@ import pageIndex from './styles.scss';
 import { stopEvent, passEventForKeys } from '../../services/events';
 import CommonDropdown from '../CommonDropdown';
 
-const shareOnTwitter = shareCode => (e) => {
-    window.open(
-        `https://twitter.com/intent/tweet?text=${encodeURIComponent(`${Locales.strings.share_with_teachers_text} ${window.location.origin}/#/app/problemSet/view/${shareCode}`)}`, '_blank',
-    );
-    return stopEvent(e);
-};
+// const shareOnTwitter = shareCode => (e) => {
+//     window.open(
+//         `https://twitter.com/intent/tweet?text=${encodeURIComponent(`${Locales.strings.share_with_teachers_text} ${window.location.origin}/#/app/problemSet/view/${shareCode}`)}`, '_blank',
+//     );
+//     return stopEvent(e);
+// };
 
 
 class Index extends Component {
