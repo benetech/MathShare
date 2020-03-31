@@ -707,13 +707,13 @@ function* requestArchiveProblemSet() {
             if (archiveMode === 'archived') {
                 alertSuccess(Locales.strings.archived_problem_set.replace('{title}', title), Locales.strings.success);
             } else {
-                alertSuccess(Locales.strings.reactivate_success.replace('{title}', title), Locales.strings.success);
+                alertSuccess(Locales.strings.restore_success.replace('{title}', title), Locales.strings.success);
             }
         } catch (error) {
             if (archiveMode === 'archived') {
                 alertError(Locales.strings.archived_problem_set_failure.replace('{title}', title), Locales.strings.failure);
             } else {
-                alertError(Locales.strings.reactivate_failure.replace('{title}', title), Locales.strings.failure);
+                alertError(Locales.strings.restore_failure.replace('{title}', title), Locales.strings.failure);
             }
         }
     });

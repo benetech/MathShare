@@ -222,7 +222,7 @@ class Index extends Component {
                                 size="lg"
                                 name={problemSet.archiveMode === 'archived' ? 'refresh' : 'trash'}
                             />
-                            {` ${problemSet.archiveMode === 'archived' ? Locales.strings.reactivate : Locales.strings.archive}`}
+                            {` ${problemSet.archiveMode === 'archived' ? Locales.strings.restore : Locales.strings.archive}`}
                         </button>
                     )}
                 </CommonDropdown>
