@@ -105,10 +105,7 @@ class SignIn extends Component {
                     <div className={signIn.logo}>
                         <img src={logo} alt={Locales.strings.mathshare_logo} />
                     </div>
-                    <h1 className={signIn.header} tabIndex={-1}>{mainText}</h1>
-                    <h2 id="signInServices" className={signIn.text}>
-                        {isSignUp ? Locales.strings.sign_up_using : Locales.strings.sign_in_using}
-                    </h2>
+                    <h1 id="signInServices" className={signIn.header} tabIndex={-1}>{mainText}</h1>
                     <ul className={signIn.buttonsContainer} aria-labelledby="signInServices">
                         <li>
                             {this.renderGoogleBtn(routerHistory)}
