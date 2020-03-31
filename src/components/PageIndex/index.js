@@ -142,7 +142,8 @@ class Index extends Component {
         this.props.replace('/app');
     }
 
-    renderProblemSet = (isExample, isRecent) => (problemSet, index) => {
+    renderProblemSet = (isPremade, isRecent) => (problemSet, index) => {
+        const isExample = isPremade && problemSet.title === 'Example Problem Set';
         const dropdownBtnId = `dropdownMenuButton-${(problemSet.shareCode && (`id-${problemSet.shareCode}`)) || index}`;
         return (
             <li className="card" key={index}>
@@ -240,7 +241,7 @@ class Index extends Component {
             <>
                 <h2 id="pre-made-sets-header" className="title">{Locales.strings.pre_made_sets}</h2>
                 <ol className={pageIndex.problemSetList} aria-labelledby="pre-made-sets-header">
-                    {problemList.exampleProblemSets.filter(exampleProblemSet => exampleProblemSet.title !== 'Example Problem Set').map(this.renderProblemSet())}
+                    {problemList.exampleProblemSets.map(this.renderProblemSet(true))}
                 </ol>
             </>
         );
@@ -285,7 +286,7 @@ class Index extends Component {
 
     renderExample() {
         const { props } = this;
-        const { problemList, archiveMode } = props;
+        const { archiveMode } = props;
         if (archiveMode) {
             return null;
         }
@@ -307,7 +308,6 @@ class Index extends Component {
                             </span>
                         </button>
                     </li>
-                    {problemList.exampleProblemSets.filter(exampleProblemSet => exampleProblemSet.title === 'Example Problem Set').map(this.renderProblemSet(true))}
                 </ol>
             </>
         );
