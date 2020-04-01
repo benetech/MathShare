@@ -185,11 +185,12 @@ function* saveUserInfoSaga() {
                 grades,
                 role,
             });
-            yield call(saveUserInfoApi, {
+            const userInfoResponse = yield call(saveUserInfoApi, {
                 ...payload,
                 user_type: userType,
                 email,
             });
+            yield put(setUserInfo(userInfoResponse.data));
         } catch (error) {
             yield put({
                 type: 'SAVE_USER_INFO_FAILURE',
