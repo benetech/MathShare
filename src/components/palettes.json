@@ -43,15 +43,6 @@
                         "Ctrl",
                         "Enter"
                     ]
-                },
-                {
-                    "id": "textInputBtn",
-                    "title": "Text (⌨: \\text{} & Enter to insert)",
-                    "additionalOnclick": [
-                        "EnterTextInput",
-                        "GoogleAnalytics"
-                    ],
-                    "value": "Text"
                 }
             ],
             [{
