@@ -30,7 +30,7 @@ class UserDetails extends Component {
 
     setType = type => () => {
         this.setState({ type }, () => {
-            if (type === 'student') {
+            if (type === 'student' || type === 'other') {
                 this.finish();
             }
             if (type === 'teacher') {
@@ -45,7 +45,7 @@ class UserDetails extends Component {
 
     finish = () => {
         const { role, gradeStatus, type } = this.state;
-        if (type === 'student') {
+        if (type === 'student' || type === 'other') {
             this.props.saveUserInfo(type, [], '');
         } else if (type === 'teacher') {
             if (Object.values(gradeStatus).filter(value => value).length === 0) {
@@ -177,6 +177,15 @@ class UserDetails extends Component {
                                         {Locales.strings.i_m_student}
                                     </button>
                                     <UncontrolledTooltip placement="top" target="im_a_student" />
+                                    <button
+                                        className={`btn btn-primary ${userDetails.largeBtn} ${userDetails.otherBtn}`}
+                                        id="other"
+                                        type="button"
+                                        onClick={this.setType('other')}
+                                    >
+                                        {Locales.strings.other}
+                                    </button>
+                                    <UncontrolledTooltip placement="top" target="other" />
                                 </div>
                             </fieldset>
                         )}

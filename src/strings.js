@@ -187,6 +187,7 @@ class Locales {
                 open_source: 'Open Source',
                 opens_in_new_tab: '(opens new tab)',
                 opens_in_new_window: '(opens in new window)',
+                other: 'Other',
                 overview: 'Overview',
                 page_was_not_found: 'We are sorry but the page you are looking for does not exist.',
                 page_was_not_found_info: 'Please visit the homepage or contact us about the problem.',

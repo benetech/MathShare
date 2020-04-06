@@ -81,7 +81,6 @@ function* checkUserLoginSaga() {
                     throw Error('User info not set');
                 } else {
                     yield put(setUserInfo(userInfoResponse.data));
-                    yield put(setMobileNotifySuccess(userInfoResponse.data.notifyForMobile));
                 }
             } catch (infoError) {
                 yield put(setAuthRedirect((window.location.hash || '').substring(1)));
@@ -311,6 +310,21 @@ function* logoutSaga() {
     });
 }
 
+function* setUserInfoSaga() {
+    yield takeLatest('SET_USER_INFO', function* workerSaga({
+        payload,
+    }) {
+        yield put(setMobileNotifySuccess(payload.notifyForMobile));
+        let UserType = 'Undefined';
+        if (payload.userType === 'teacher') {
+            UserType = 'Teacher';
+        } else if (payload.userType === 'student') {
+            UserType = 'Student';
+        }
+        ReactGA.set({ UserType });
+    });
+}
+
 export default function* rootSaga() {
     yield all([
         fork(checkUserLoginSaga),
@@ -321,5 +335,6 @@ export default function* rootSaga() {
         fork(logoutSaga),
         fork(setMobileNotifySaga),
         fork(savePersonalizationSettingsSaga),
+        fork(setUserInfoSaga),
     ]);
 }
