@@ -24,6 +24,6 @@
     "checkJs": false
   },
   "files": [
-    "automation-test-case-1.ts"
+    "test-case-1.ts"
   ]
 }
