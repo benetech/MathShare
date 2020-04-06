@@ -1,7 +1,7 @@
 {
-  "name": "my-first-test",
+  "name": "mathshare-automation",
   "version": "1.0.0",
-  "description": "Flood Element test script",
+  "description": "Automation test script",
   "private": true,
   "prettier": {
     "semi": false,
