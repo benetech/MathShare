@@ -12,7 +12,7 @@ import {
 } from 'connected-react-router';
 import { announceOnAriaLive } from '../ariaLiveAnnouncer/actions';
 import { focusOnMainContent } from '../../services/events';
-import { commonFocusHandler } from '../../services/misc';
+import { commonElementFinder } from '../../services/misc';
 import Locales from '../../strings';
 import {
     getRouterHookState,
@@ -50,6 +50,8 @@ function* changeRouteSaga() {
     yield takeLatest(LOCATION_CHANGE, function* workerSaga({
         payload: {
             location,
+            action,
+            isFirstRendering,
         },
     }) {
         const { pathname } = location;
@@ -73,7 +75,10 @@ function* changeRouteSaga() {
                 isXpath = false;
             }
         }
-        const notAbleToFocus = yield call(commonFocusHandler.tryToFocus, selector, isXpath);
+        let notAbleToFocus = true;
+        if (action === 'POP' && !isFirstRendering && pathname.indexOf('/app/problemSet/view/') === -1) {
+            notAbleToFocus = !(yield call(commonElementFinder.tryToFind, selector, isXpath));
+        }
         if (notAbleToFocus && pathname !== '/') {
             yield call(focusOnMainContent);
         }

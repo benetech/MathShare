@@ -1,3 +1,5 @@
+import { commonElementFinder } from './misc';
+
 export const stopEvent = (e) => {
     e.stopPropagation();
     e.preventDefault();
@@ -15,8 +17,8 @@ export const passEventForKeys = (callback, keys = ['Enter', ' '], mockClick = tr
     return false;
 };
 
-export const focusOnMainContent = () => {
-    const main = document.getElementById('mainContainer');
+export const focusOnMainContent = async () => {
+    const main = await commonElementFinder.tryToFind('#mainContainer', false, false, 1000);
     if (main) {
         const focusable = main.querySelectorAll('button, [href], input, select, textarea, h1[tabindex], div[tabindex');
         const firstFocusable = focusable[0];
