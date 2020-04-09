@@ -48,6 +48,16 @@ const loginAlertId = 'login-alert';
 const redirectAlertId = 'redirect-info';
 const redirectWait = 2500;
 
+const getFormattedUserType = (userType) => {
+    if (userType === 'teacher') {
+        return 'Teacher';
+    }
+    if (userType === 'student') {
+        return 'Student';
+    }
+    return 'Undefined';
+};
+
 function* checkUserLoginSaga() {
     yield throttle(60000, 'CHECK_USER_LOGIN', function* workerSaga() {
         let loginStarted = false;
@@ -180,7 +190,7 @@ function* saveUserInfoSaga() {
                 role,
             } = payload;
             IntercomAPI('trackEvent', 'user-details', {
-                userType,
+                userType: getFormattedUserType(userType),
                 grades,
                 role,
             });
@@ -315,13 +325,7 @@ function* setUserInfoSaga() {
         payload,
     }) {
         yield put(setMobileNotifySuccess(payload.notifyForMobile));
-        let UserType = 'Undefined';
-        if (payload.userType === 'teacher') {
-            UserType = 'Teacher';
-        } else if (payload.userType === 'student') {
-            UserType = 'Student';
-        }
-        ReactGA.set({ UserType });
+        ReactGA.set({ UserType: getFormattedUserType(payload.userType) });
     });
 }
 
