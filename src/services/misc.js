@@ -19,9 +19,9 @@ export class ElementFinder {
             this.isXPath = isXPath;
             this.focus = focus;
             this.cutoff = cutoff;
-            if (this.focus) {
-                document.activeElement.blur();
-            }
+//             if (this.focus) {
+//                 document.activeElement.blur();
+//             }
             await sleep(sleepMs);
         } else if (elementId !== this.ongoingId || selector !== this.currentSelector) {
             return false;
