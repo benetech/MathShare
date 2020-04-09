@@ -55,11 +55,13 @@ function* changeRouteSaga() {
         },
     }) {
         const { pathname } = location;
+        const routerState = yield select(getRouterHookState);
         const {
             prev,
             prevReplaced,
             xPath,
-        } = yield select(getRouterHookState);
+            isBack,
+        } = routerState;
         let selector = `a[href='${prev}']`;
         let isXpath = false;
         if (prev === xPath.href) {
@@ -76,7 +78,7 @@ function* changeRouteSaga() {
             }
         }
         let notAbleToFocus = true;
-        if (action === 'POP' && !isFirstRendering && pathname.indexOf('/app/problemSet/view/') === -1) {
+        if (action === 'POP' && isBack && !isFirstRendering) {
             notAbleToFocus = !(yield call(commonElementFinder.tryToFind, selector, isXpath));
         }
         if (notAbleToFocus && pathname !== '/') {
