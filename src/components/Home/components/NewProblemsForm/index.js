@@ -179,7 +179,7 @@ export default class NewProblemsForm extends Component {
                     <td className={styles.cell}>
                         {`$$${problem.text}$$`}
                     </td>
-                    <td className={styles.cell}>
+                    <td className={`${styles.cell} ${styles.titleCell}`}>
                         {`$$${parseMathLive(problem.title)}}$$`}
                     </td>
                     <td className={styles.rowControl}>
@@ -198,9 +198,8 @@ export default class NewProblemsForm extends Component {
                     <div className="sROnly">{Locales.strings.current_problems}</div>
                 </caption>
                 <thead>
-                    <tr key="header-row">
+                    <tr className={styles.headerRow} key="header-row">
                         <th scope="col">
-                            {Locales.strings.hash}
                             <div className="sROnly">
                                 {Locales.strings.number}
                             </div>
@@ -208,10 +207,10 @@ export default class NewProblemsForm extends Component {
                         <th scope="col">
                             {Locales.strings.equation}
                         </th>
-                        <th scope="col">
-                            {Locales.strings.title}
+                        <th className={styles.titleCell} scope="col">
+                            {Locales.strings.prompt}
                         </th>
-                        <th scope="col">
+                        <th className={styles.tableControlHeader} scope="col">
                             <div className="sROnly">
                                 {Locales.strings.problem_row_controls}
                             </div>
