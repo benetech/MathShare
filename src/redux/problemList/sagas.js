@@ -22,6 +22,7 @@ import {
     updateSet,
     shareSolutions as shareSolutionsAction,
     setReviewSolutions,
+    requestProblemSetSuccess,
 } from './actions';
 import {
     updateProblemStore,
@@ -183,18 +184,15 @@ function* requestProblemSetByCode() {
                     ...problem,
                     position: index,
                 }));
-                yield put({
-                    type: 'REQUEST_PROBLEM_SET_SUCCESS',
-                    payload: {
-                        problems: orderedProblems,
-                        editCode,
-                        shareCode,
-                        title,
-                        palettes,
-                        archiveMode,
-                        source,
-                    },
-                });
+                yield put(requestProblemSetSuccess({
+                    problems: orderedProblems,
+                    editCode,
+                    shareCode,
+                    title,
+                    palettes,
+                    archiveMode,
+                    source,
+                }));
                 if (action === 'view') {
                     yield put(shareSolutionsAction(action, code, true));
                 } else if (action === 'edit') {

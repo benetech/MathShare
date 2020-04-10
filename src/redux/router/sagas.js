@@ -72,6 +72,7 @@ function* changeRouteSaga() {
         const problemEditMatch = prev && /\/#\/app\/problemSet\/edit\/[A-Z0-9]*/.exec(prev);
         if (prevReplaced && (
             prev.startsWith('/#/app/problemSet/solve/')
+            || prev.startsWith('/#/app/problemSet/review/')
             || (problemEditMatch && problemEditMatch[0] === prev)
         )) {
             selector = `a[href='${prevReplaced}']`;

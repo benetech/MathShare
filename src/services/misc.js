@@ -11,7 +11,7 @@ export class ElementFinder {
 
     tryToFind = async (
         selector, isXPath, focus = true, cutoff = null,
-        elementId = null, sleepMs = 50, trial = 1, maxTrials = 25,
+        elementId = null, sleepMs = 50, trial = 1, maxTrials = 10,
     ) => {
         if (trial === 1 && document.activeElement) {
             this.startTime = (new Date()).getTime();
