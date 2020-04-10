@@ -5,6 +5,10 @@
     padding: 5px;
     overflow: auto;
     margin: auto;
+
+    caption {
+        padding: 0;
+    }
 }
 
 .header {
@@ -31,12 +35,19 @@ div.row {
 .container table {
     width: calc(100% - 20px);
     margin: 10px;
+    min-width: 950px;
 
-    th[scope='col'] {
-        font-size: 1.25rem;
-        font-weight: 500;
-        padding: 10px;
-        padding-left: 0;
+    .headerRow {
+        th[scope='col'] {
+            font-size: 1.25rem;
+            font-weight: 500;
+            padding: 10px;
+            padding-left: 0;
+
+            &:first-child {
+                width: 35px;
+            }
+        }
     }
 
     .row {
@@ -50,7 +61,6 @@ div.row {
 
         th[scope='row'] {
             padding-left: 15px;
-            width: 80px;
         }
 
         td:first-child {
@@ -62,7 +72,14 @@ div.row {
 .cell {
     overflow: auto;
     flex: 1;
-    max-width: 500px;
+}
+
+.titleCell {
+    width: 320px;
+}
+
+.tableControlHeader {
+    width: 50px;
 }
 
 .cell,
