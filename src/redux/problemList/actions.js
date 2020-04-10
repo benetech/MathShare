@@ -21,6 +21,11 @@ export const requestProblemSet = (action, code, position) => ({
     },
 });
 
+export const requestProblemSetSuccess = payload => ({
+    type: 'REQUEST_PROBLEM_SET_SUCCESS',
+    payload,
+});
+
 export const addProblem = (imageData, text, index, newProblemSet) => ({
     type: 'REQUEST_ADD_PROBLEM',
     payload: {
@@ -212,6 +217,7 @@ export default {
     requestArchivedSets,
     requestDefaultRevision,
     requestProblemSet,
+    requestProblemSetSuccess,
     resetProblemSet,
     resetTempProblems,
     toggleModals,
@@ -222,6 +228,7 @@ export default {
     setActiveMathField,
     shareSolutions,
     setProblemSetShareCode,
+    setReviewSolutions,
     updateProblemList,
     updateSet,
     updateTempSet,
