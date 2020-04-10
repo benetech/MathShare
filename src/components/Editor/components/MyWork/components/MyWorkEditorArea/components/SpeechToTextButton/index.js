@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 import Watson from 'watson-speech';
-// import { GlobalHotKeys } from 'react-hotkeys';
+import { GlobalHotKeys } from 'react-hotkeys';
 import { IntercomAPI } from 'react-intercom';
 import { SERVER_URL } from '../../../../../../../../config';
 import Button from '../../../../../../../Button';
@@ -12,7 +12,7 @@ import { alertInfo, alertWarning, alertError } from '../../../../../../../../scr
 import { stopEvent } from '../../../../../../../../services/events';
 import Locales from '../../../../../../../../strings';
 import { announceOnAriaLive } from '../../../../../../../../redux/ariaLiveAnnouncer/actions';
-// import completeKeyMap from '../../../../../../../../constants/hotkeyConfig.json';
+import completeKeyMap from '../../../../../../../../constants/hotkeyConfig.json';
 
 import mic from '../../../../../../../../../images/mic.gif';
 import micSlash from '../../../../../../../../../images/mic-slash.gif';
@@ -190,11 +190,11 @@ class SpeechToTextButton extends Component {
     render() {
         return (
             <span className={editorArea.floatRight}>
-                {/* <GlobalHotKeys
+                <GlobalHotKeys
                     keyMap={completeKeyMap}
                     handlers={this.handlers}
                     allowChanges
-                /> */}
+                />
                 <Button
                     id="start_button"
                     className={
