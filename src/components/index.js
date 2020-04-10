@@ -204,12 +204,22 @@ class App extends Component {
     };
 
     addProblemSet = () => {
-        this.props.toggleModals([PALETTE_CHOOSER]);
+        const { userProfile } = this.props;
+        if (userProfile.info && userProfile.info.userType === 'student') {
+            this.progressToAddingProblems([
+                'Edit',
+                'Operators',
+                'Notations',
+                'Geometry',
+            ], true);
+        } else {
+            this.props.toggleModals([PALETTE_CHOOSER]);
+        }
         googleAnalytics('new problem set button');
         IntercomAPI('trackEvent', 'create-a-set');
     };
 
-    progressToAddingProblems = (palettes) => {
+    progressToAddingProblems = (palettes, dontToggleModal = false) => {
         if (palettes.length === 0) {
             alertWarning(
                 Locales.strings.no_palettes_chosen_warning,
@@ -219,7 +229,9 @@ class App extends Component {
         }
         this.props.setTempPalettes(palettes);
         // this.props.toggleModals([PALETTE_CHOOSER, ADD_PROBLEM_SET]);
-        this.props.toggleModals([PALETTE_CHOOSER]);
+        if (!dontToggleModal) {
+            this.props.toggleModals([PALETTE_CHOOSER]);
+        }
         this.props.history.push('/app/problemSet/new');
         this.props.saveProblemSet([], `${Locales.strings.new_problem_set} ${dayjs().format('MM-DD-YYYY')}`, null);
     }
@@ -471,6 +483,11 @@ class App extends Component {
                                 exact
                                 path="/app"
                                 render={p => <PageIndex {...commonProps} {...p} {...this} />}
+                            />
+                            <Route
+                                exact
+                                path="/app/archived"
+                                render={p => <PageIndex archiveMode="archived" {...commonProps} {...p} {...this} />}
                             />
                             <Route
                                 exact

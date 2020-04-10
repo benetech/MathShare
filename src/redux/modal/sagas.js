@@ -29,7 +29,7 @@ import {
     PALETTE_CHOOSER,
     TITLE_EDIT_MODAL,
 } from '../../components/ModalContainer';
-import { commonFocusHandler } from '../../services/misc';
+import { commonElementFinder } from '../../services/misc';
 
 function* toggleModalSaga() {
     yield takeLatest('TOGGLE_MODALS', function* workerSaga({
@@ -101,7 +101,7 @@ function* toggleModalSaga() {
             }
             if (focusDict[modal] && focusDict[modal].isDismiss === isDismiss) {
                 setImmediate(() => {
-                    commonFocusHandler.tryToFocus(focusDict[modal].selector);
+                    commonElementFinder.tryToFind(focusDict[modal].selector);
                 }, 0);
             }
         }

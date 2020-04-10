@@ -1,12 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { push } from 'connected-react-router';
+import classNames from 'classnames';
+import { push, replace } from 'connected-react-router';
 import { IntercomAPI } from 'react-intercom';
 import FontAwesome from 'react-fontawesome';
 import { Helmet } from 'react-helmet';
 import Locales from '../../strings';
 import MainPageHeader from '../Home/components/Header';
-import { archiveProblemSet, requestDefaultRevision, requestExampleSets } from '../../redux/problemList/actions';
+import Button from '../Button';
+import {
+    archiveProblemSet,
+    requestArchivedSets,
+    requestDefaultRevision,
+    requestExampleSets,
+} from '../../redux/problemList/actions';
 import { setDropdownId } from '../../redux/ui/actions';
 import { fetchRecentWork } from '../../redux/userProfile/actions';
 import googleAnalytics from '../../scripts/googleAnalytics';
@@ -14,16 +21,29 @@ import pageIndex from './styles.scss';
 import { stopEvent, passEventForKeys } from '../../services/events';
 import CommonDropdown from '../CommonDropdown';
 
-const shareOnTwitter = shareCode => (e) => {
-    window.open(
-        `https://twitter.com/intent/tweet?text=${encodeURIComponent(`${Locales.strings.share_with_teachers_text} ${window.location.origin}/#/app/problemSet/view/${shareCode}`)}`, '_blank',
-    );
-    return stopEvent(e);
-};
+// const shareOnTwitter = shareCode => (e) => {
+//     window.open(
+//         `https://twitter.com/intent/tweet?text=${encodeURIComponent(`${Locales.strings.share_with_teachers_text} ${window.location.origin}/#/app/problemSet/view/${shareCode}`)}`, '_blank',
+//     );
+//     return stopEvent(e);
+// };
 
 
 class Index extends Component {
     componentDidMount() {
+        this.loadData();
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (this.props.archiveMode === nextProps.archiveMode
+            && this.props.router.location.pathname === nextProps.router.location.pathname) {
+            return;
+        }
+        this.loadData();
+    }
+
+    loadData = () => {
+        this.props.requestArchivedSets();
         this.props.requestDefaultRevision();
         this.props.requestExampleSets();
         this.props.fetchRecentWork();
@@ -55,7 +75,11 @@ class Index extends Component {
     }
 
     archiveProblemSet = problemSet => (e) => {
-        this.props.archiveProblemSet(problemSet.editCode);
+        let archiveMode = null;
+        if (!problemSet.archiveMode) {
+            archiveMode = 'archived';
+        }
+        this.props.archiveProblemSet(problemSet.editCode, archiveMode, problemSet.title);
         return stopEvent(e);
     }
 
@@ -64,9 +88,14 @@ class Index extends Component {
     }
 
     renderRecent = () => {
-        const { userProfile } = this.props;
+        const { props } = this;
+        const { userProfile, archiveMode } = props;
+        if (archiveMode) {
+            return null;
+        }
+        let recentContent = null;
         if (!userProfile.service) {
-            return (
+            recentContent = (
                 <div className={`text-center ${pageIndex.signInContainer}`}>
                     <a className={pageIndex.signInLink} href="/#/signIn">
                         Sign in
@@ -75,16 +104,28 @@ class Index extends Component {
                     to track your problem sets
                 </div>
             );
-        } if (userProfile.recentProblemSets === null) {
-            return <div className="text-center">Loading...</div>;
-        } if (userProfile.recentProblemSets.length > 0) {
-            return (
-                <ol className={pageIndex.problemSetList}>
+        } else if (userProfile.recentProblemSets === null) {
+            recentContent = <div className="text-center">{Locales.strings.loading}</div>;
+        } else if (userProfile.recentProblemSets.length > 0) {
+            recentContent = (
+                <ol className={pageIndex.problemSetList} aria-labelledby="recent-sets-header">
                     {userProfile.recentProblemSets.map(this.renderProblemSet(false, true))}
                 </ol>
             );
+        } else {
+            recentContent = <div className="text-center">No recent problems</div>;
         }
-        return <div className="text-center">No recent problems</div>;
+        return (
+            <>
+                {userProfile.email && (
+                    <a className={`pull-right btn btn-primary ${pageIndex.archivedList}`} href="/#/app/archived">
+                        {Locales.strings.archived_sets}
+                    </a>
+                )}
+                <h2 id="recent-sets-header" className="title">{Locales.strings.recent_sets}</h2>
+                {recentContent}
+            </>
+        );
     }
 
     dropdownOnClick = dropdownBtnId => (e) => {
@@ -97,7 +138,12 @@ class Index extends Component {
         }
     }
 
-    renderProblemSet = (isExample, isRecent) => (problemSet, index) => {
+    goBack = () => {
+        this.props.replace('/app');
+    }
+
+    renderProblemSet = (isPremade, isRecent) => (problemSet, index) => {
+        const isExample = isPremade && problemSet.title === 'Example Problem Set';
         const dropdownBtnId = `dropdownMenuButton-${(problemSet.shareCode && (`id-${problemSet.shareCode}`)) || index}`;
         return (
             <li className="card" key={index}>
@@ -158,26 +204,6 @@ class Index extends Component {
                             {Locales.strings.opens_in_new_tab}
                         </span>
                     </button>
-                    <button
-                        className="dropdown-item reset-btn"
-                        onClick={shareOnTwitter(
-                            problemSet.shareCode,
-                        )}
-                        onKeyPress={passEventForKeys(shareOnTwitter(
-                            problemSet.shareCode,
-                        ))}
-                        type="button"
-                    >
-                        <FontAwesome
-                            size="lg"
-                            name="twitter"
-                        />
-                        {` ${Locales.strings.share_on_twitter}`}
-                        <span className="sROnly">
-                            {'\u00A0'}
-                            {Locales.strings.opens_in_new_tab}
-                        </span>
-                    </button>
                     {isRecent && (
                         <button
                             className="dropdown-item reset-btn"
@@ -195,13 +221,95 @@ class Index extends Component {
                         >
                             <FontAwesome
                                 size="lg"
-                                name="trash"
+                                name={problemSet.archiveMode === 'archived' ? 'refresh' : 'trash'}
                             />
-                            {` ${Locales.strings.archive}`}
+                            {` ${problemSet.archiveMode === 'archived' ? Locales.strings.restore : Locales.strings.archive}`}
                         </button>
                     )}
                 </CommonDropdown>
             </li>
+        );
+    }
+
+    renderPremadeSets() {
+        const { props } = this;
+        const { problemList, archiveMode } = props;
+        if (archiveMode) {
+            return null;
+        }
+        return (
+            <>
+                <h2 id="pre-made-sets-header" className="title">{Locales.strings.pre_made_sets}</h2>
+                <ol className={pageIndex.problemSetList} aria-labelledby="pre-made-sets-header">
+                    {problemList.exampleProblemSets.map(this.renderProblemSet(true))}
+                </ol>
+            </>
+        );
+    }
+
+    renderArchived() {
+        const { props } = this;
+        const { problemList, archiveMode } = props;
+        if (!archiveMode) {
+            return null;
+        }
+        let emptyList = null;
+        if (problemList.archivedProblemSets === null) {
+            emptyList = <div className="text-center">{Locales.strings.loading}</div>;
+        } else if (problemList.archivedProblemSets.length === 0) {
+            emptyList = <div className="text-center">{Locales.strings.archived_sets_empty}</div>;
+        }
+        return (
+            <>
+                <Button
+                    id="backBtn"
+                    className={classNames('btn', 'btn-primary', 'pointer', pageIndex.backBtn)}
+                    type="button"
+                    icon="arrow-left"
+                    onClick={this.goBack}
+                    tabIndex="-1"
+                    ariaLabel={Locales.strings.back}
+                    content={Locales.strings.back}
+                />
+                <h2 id="archived-sets-header" className="title">
+                    {Locales.strings.archived_sets}
+                </h2>
+                {problemList.archivedProblemSets && (
+                    <ol className={pageIndex.problemSetList} aria-labelledby="archived-sets-header">
+                        {problemList.archivedProblemSets.map(this.renderProblemSet(false, true))}
+                    </ol>
+                )}
+                {emptyList}
+            </>
+        );
+    }
+
+    renderTopButtons() {
+        const { props } = this;
+        const { archiveMode } = props;
+        if (archiveMode) {
+            return null;
+        }
+        return (
+            <>
+                <div className={pageIndex.problemSetList}>
+                    <div className="card">
+                        <button
+                            id="add_problem_set"
+                            type="button"
+                            className="btn d-flex"
+                            onClick={props.addProblemSet}
+                            onKeyPress={passEventForKeys(props.addProblemSet)}
+                        >
+                            <span className="centreText">
+                                +
+                                {' '}
+                                {Locales.strings.create_a_problem_set}
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            </>
         );
     }
 
@@ -219,14 +327,46 @@ class Index extends Component {
         );
     }
 
+    renderLibrary = () => {
+        const { archiveMode } = this.props;
+        if (archiveMode) {
+            return null;
+        }
+        return (
+            <div className="text-center">
+                <h2 className="sROnly" tabIndex={-1}>{Locales.strings.problem_set_library}</h2>
+                <span role="img" aria-label="" aria-hidden="true">📓</span>
+                <a
+                    href="https://docs.google.com/spreadsheets/d/1lI8NSnMWzt0K8hJDYDtxmL9fGHI8J2ku85P7uT3tp-0/edit?usp=sharing"
+                >
+                    {Locales.strings.explore_problem_set}
+                </a>
+            </div>
+        );
+    }
+
+    renderMainDashboard = () => (
+        <>
+            {this.renderTopButtons()}
+            {this.renderLibrary()}
+            {this.renderRecent()}
+            {this.renderArchived()}
+            {this.renderPremadeSets()}
+        </>
+    )
+
     render() {
         const { props } = this;
-        const { problemList } = props;
+        const { problemList, archiveMode } = props;
+        let title = Locales.strings.all_problem_sets;
+        if (archiveMode === 'archived') {
+            title = Locales.strings.archived_sets;
+        }
         return (
             <div>
                 <Helmet>
                     <title>
-                        {`${Locales.strings.all_problem_sets} - ${Locales.strings.mathshare_benetech}`}
+                        {`${title} - ${Locales.strings.mathshare_benetech}`}
                     </title>
                 </Helmet>
                 <MainPageHeader
@@ -240,39 +380,7 @@ class Index extends Component {
                 />
                 <div id="mainContainer" className="mainContainer">
                     {this.renderHeader()}
-                    <ol className={pageIndex.problemSetList}>
-                        <li className="card">
-                            <button
-                                id="add_problem_set"
-                                type="button"
-                                className="btn d-flex"
-                                onClick={props.addProblemSet}
-                                onKeyPress={passEventForKeys(props.addProblemSet)}
-                            >
-                                <span className="centreText">
-                                    +
-                                    {' '}
-                                    {Locales.strings.new_problem_set}
-                                </span>
-                            </button>
-                        </li>
-                        {problemList.exampleProblemSets.filter(exampleProblemSet => exampleProblemSet.title === 'Example Problem Set').map(this.renderProblemSet(true))}
-                    </ol>
-                    <div className="text-center">
-                        <h2 className="sROnly" tabIndex={-1}>{Locales.strings.problem_set_library}</h2>
-                        <span role="img" aria-label="" aria-hidden="true">📓</span>
-                        <a
-                            href="https://docs.google.com/spreadsheets/d/1lI8NSnMWzt0K8hJDYDtxmL9fGHI8J2ku85P7uT3tp-0/edit?usp=sharing"
-                        >
-                            {Locales.strings.explore_problem_set}
-                        </a>
-                    </div>
-                    <h2 className="title">{Locales.strings.recent_sets}</h2>
-                    {this.renderRecent()}
-                    <h2 id="pre-made-sets-header" className="title">{Locales.strings.pre_made_sets}</h2>
-                    <ol className={pageIndex.problemSetList} aria-labelledby="pre-made-sets-header">
-                        {problemList.exampleProblemSets.filter(exampleProblemSet => exampleProblemSet.title !== 'Example Problem Set').map(this.renderProblemSet())}
-                    </ol>
+                    {archiveMode ? this.renderArchived() : this.renderMainDashboard()}
                 </div>
             </div>
         );
@@ -284,11 +392,14 @@ export default connect(
         problemList: state.problemList,
         ui: state.ui,
         routerHistory: state.routerHooks,
+        router: state.router,
     }),
     {
         archiveProblemSet,
         fetchRecentWork,
+        replace,
         requestDefaultRevision,
+        requestArchivedSets,
         requestExampleSets,
         push,
         setDropdownId,

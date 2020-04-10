@@ -7,6 +7,7 @@ import { passEventForKeys } from '../../services/events';
 import googleAnalytics from '../../scripts/googleAnalytics';
 import Locales from '../../strings';
 import CommonDropdown from '../CommonDropdown';
+import styles from './styles.scss';
 
 const questionBtnId = 'navbarDropdownMenuLink-dropdown';
 
@@ -31,7 +32,7 @@ const HeaderDropdown = ({
             btnId={questionBtnId}
             btnClass={`nav-link ${additionalClass}`}
             btnClickHandler={clickOnQuestion}
-            containerClass="nav-item"
+            containerClass={`nav-item ${styles.dropdownContainer}`}
             containerTag="li"
             btnContent={(
 

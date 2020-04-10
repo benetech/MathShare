@@ -62,11 +62,15 @@ function* requestLoadProblemSaga() {
             if (response.status !== 200) {
                 yield put(setProblemNotFound());
             } else {
+                const { data } = response;
+                if (action === 'view') {
+                    data.shareCode = code;
+                }
                 yield put({
                     type: 'PROCESS_FETCHED_PROBLEM',
                     payload: {
                         action,
-                        solution: response.data,
+                        solution: data,
                     },
                 });
             }

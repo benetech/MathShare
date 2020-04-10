@@ -5,6 +5,7 @@ const initialState = {
     revisionCode: null,
     defaultRevisionCode: null,
     exampleProblemSets: [],
+    archivedProblemSets: [],
     set: {
         problems: [],
         editCode: null,
@@ -45,11 +46,27 @@ const problems = (state = initialState, {
             ...state,
             defaultRevisionCode: payload.revisionCode,
         };
-    case 'REQUEST_EXAMPLE_SETS_SUCCESS':
+    case 'REQUEST_ARCHIVED_SETS':
         return {
             ...state,
-            exampleProblemSets: payload.exampleProblemSets,
+            archivedProblemSets: null,
         };
+    case 'REQUEST_EXAMPLE_SETS_SUCCESS':
+    case 'REQUEST_ARCHIVED_SETS_SUCCESS':
+        return {
+            ...state,
+            ...payload,
+        };
+    case 'ARCHIVE_PROBLEM_SET_SUCCESS': {
+        const { editCode, key } = payload;
+        if (key !== 'archivedProblemSets') {
+            return state;
+        }
+        return {
+            ...state,
+            archivedProblemSets: state.archivedProblemSets.filter(set => set.editCode !== editCode),
+        };
+    }
     case 'CLEAR_PROBLEM_SET':
         return {
             ...state,
@@ -176,6 +193,7 @@ const problems = (state = initialState, {
             set: {
                 id: payload.id,
                 problems: payload.solutions.map(solution => solution.problem),
+                editCode: payload.editCode,
                 shareCode: payload.reviewCode,
                 title: payload.title || state.set.title,
                 archiveMode: payload.archiveMode,
