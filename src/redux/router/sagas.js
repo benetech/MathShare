@@ -1,6 +1,7 @@
 import {
     all,
     call,
+    delay,
     fork,
     put,
     select,
@@ -79,6 +80,9 @@ function* changeRouteSaga() {
         }
         let notAbleToFocus = true;
         if (action === 'POP' && isBack && !isFirstRendering) {
+            if (window.location.hash.startsWith('#/app/problemSet/solve/')) {
+                yield delay(500);
+            }
             notAbleToFocus = !(yield call(commonElementFinder.tryToFind, selector, isXpath));
         }
         if (notAbleToFocus && pathname !== '/') {
