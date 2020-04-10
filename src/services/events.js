@@ -1,4 +1,4 @@
-import { commonElementFinder } from './misc';
+import { commonElementFinder, sleep } from './misc';
 
 export const stopEvent = (e) => {
     e.stopPropagation();
@@ -18,7 +18,12 @@ export const passEventForKeys = (callback, keys = ['Enter', ' '], mockClick = tr
 };
 
 export const focusOnMainContent = async () => {
-    const main = await commonElementFinder.tryToFind('#mainContainer', false, false, 1000);
+    const startTime = new Date().getTime();
+    while (document.readyState !== 'ready' && document.readyState !== 'complete' && (new Date().getTime() - startTime) < 2000) {
+        // eslint-disable-next-line no-await-in-loop
+        await sleep(100);
+    }
+    const main = await commonElementFinder.tryToFind('#mainContainer', false, false, 2000);
     if (main) {
         const focusable = main.querySelectorAll('button, [href], input, select, textarea, h1[tabindex], div[tabindex');
         const firstFocusable = focusable[0];
