@@ -8,9 +8,9 @@ import {
     takeLatest,
     throttle,
 } from 'redux-saga/effects';
-import {
-    IntercomAPI,
-} from 'react-intercom';
+// import {
+//     IntercomAPI,
+// } from 'react-intercom';
 import ReactGA from 'react-ga';
 import { goBack, push, replace } from 'connected-react-router';
 import * as dayjs from 'dayjs';
@@ -177,14 +177,14 @@ function* saveUserInfoSaga() {
         try {
             const {
                 userType,
-                grades,
-                role,
+                // grades,
+                // role,
             } = payload;
-            IntercomAPI('trackEvent', 'user-details', {
-                userType,
-                grades,
-                role,
-            });
+            // IntercomAPI('trackEvent', 'user-details', {
+            //     userType,
+            //     grades,
+            //     role,
+            // });
             const userInfoResponse = yield call(saveUserInfoApi, {
                 ...payload,
                 user_type: userType,
@@ -211,13 +211,13 @@ function* setUserProfileSaga() {
         });
         const {
             email,
-            name,
+            // name,
         } = payload;
-        IntercomAPI('update', {
-            user_id: email,
-            email,
-            name,
-        });
+        // IntercomAPI('update', {
+        //     user_id: email,
+        //     email,
+        //     name,
+        // });
         ReactGA.set({
             email,
         });
@@ -231,7 +231,7 @@ function* setMobileNotifySaga() {
         try {
             const {
                 notifyForMobile,
-                inputEmail,
+                // inputEmail,
             } = payload;
             const {
                 email,
@@ -239,11 +239,11 @@ function* setMobileNotifySaga() {
             if (email) {
                 yield call(updateNotifyMobileApi, notifyForMobile);
             }
-            if (notifyForMobile === 1) {
-                IntercomAPI('trackEvent', 'notify-mobile-support', {
-                    email: email || inputEmail,
-                });
-            }
+            // if (notifyForMobile === 1) {
+            //     IntercomAPI('trackEvent', 'notify-mobile-support', {
+            //         email: email || inputEmail,
+            //     });
+            // }
             yield put(setMobileNotifySuccess(notifyForMobile));
             sessionStore.setItem('hide_mobile_support_banner', dayjs().add(1, 'hour').toISOString());
             alertSuccess(Locales.strings.thanks_for_mobile_notfiy, Locales.strings.success);
@@ -295,10 +295,10 @@ function* logoutSaga() {
                 throw Error('Unable to login');
             }
             yield put(resetUserProfile());
-            IntercomAPI('shutdown');
-            IntercomAPI('boot', {
-                app_id: process.env.INTERCOM_APP_ID,
-            });
+            // IntercomAPI('shutdown');
+            // IntercomAPI('boot', {
+            //     app_id: process.env.INTERCOM_APP_ID,
+            // });
             alertSuccess(
                 Locales.strings.you_have_been_logged_out, Locales.strings.success, loginAlertId,
             );

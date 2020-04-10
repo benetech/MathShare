@@ -12,7 +12,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import * as dayjs from 'dayjs';
 import { UserAgentApplication } from 'msal';
-import Intercom, { IntercomAPI } from 'react-intercom';
+// import Intercom, { IntercomAPI } from 'react-intercom';
 import {
     GlobalHotKeys, ObserveKeys,
     configure,
@@ -146,7 +146,7 @@ class App extends Component {
         if (!this.validateProblem(text, imageData)) {
             return false;
         }
-        IntercomAPI('trackEvent', 'create-a-problem');
+        // IntercomAPI('trackEvent', 'create-a-problem');
         this.props.addProblem(imageData, text, index, newProblemSet);
         this.props.announceOnAriaLive(Locales.strings.added_problem_at_index.replace('{index}', index + 1));
         return true;
@@ -216,7 +216,7 @@ class App extends Component {
             this.props.toggleModals([PALETTE_CHOOSER]);
         }
         googleAnalytics('new problem set button');
-        IntercomAPI('trackEvent', 'create-a-set');
+        // IntercomAPI('trackEvent', 'create-a-set');
     };
 
     progressToAddingProblems = (palettes, dontToggleModal = false) => {
@@ -420,7 +420,7 @@ class App extends Component {
     render() {
         const commonProps = this.props;
         const {
-            modal, problemList, problemStore, userProfile,
+            modal, problemList, problemStore, // userProfile,
         } = this.props;
         return (
             <React.Fragment>
@@ -508,7 +508,9 @@ class App extends Component {
                             <Route render={p => <NotFound {...p} />} />
                         </Switch>
                     </div>
-                    {userProfile.info.userType === 'teacher' && <Intercom appID={process.env.INTERCOM_APP_ID} />}
+                    {/* {userProfile.info.userType === 'teacher' && (
+                        <Intercom appID={process.env.INTERCOM_APP_ID} />
+                    )} */}
                     <footer id="footer">
                         <h2 className="sROnly">
                             {' '}
