@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import classNames from 'classnames';
 import Tour from 'reactour';
-// import { GlobalHotKeys } from 'react-hotkeys';
+import { GlobalHotKeys } from 'react-hotkeys';
 import FontAwesome from 'react-fontawesome';
 import Button from '../../../Button';
 import problem from './styles.scss';
 import googleAnalytics from '../../../../scripts/googleAnalytics';
 import Locales from '../../../../strings';
 import showImage from '../../../../scripts/showImage';
-// import completeKeyMap from '../../../../constants/hotkeyConfig.json';
+import completeKeyMap from '../../../../constants/hotkeyConfig.json';
 import { passEventForKeys, stopEvent } from '../../../../services/events';
 import { tourConfig, accentColor } from './tourConfig';
 import HeaderDropdown from '../../../HeaderDropdown';
@@ -141,11 +141,11 @@ export default class ProblemHeader extends Component {
 
         return (
             <React.Fragment>
-                {/* <GlobalHotKeys
+                <GlobalHotKeys
                     keyMap={completeKeyMap}
                     handlers={this.handlers}
                     allowChanges
-                /> */}
+                />
                 <div className={`d-flex flex-row ${problem.header}`}>
                     <div className={problem.backBtnContainer}>
                         <Button
