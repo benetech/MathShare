@@ -47,8 +47,9 @@ export class ElementFinder {
                 elementId || this.ongoingId, sleepMs + 25, trial + 1, this.maxTrials);
             return result;
         }
-        const result = await this.verifyIfFocusStays();
-        return result;
+        // const result = await this.verifyIfFocusStays();
+        // return result;
+        return true;
     };
 
     isPastCutoff = () => (
@@ -59,6 +60,11 @@ export class ElementFinder {
         let element = null;
         if (this.isXPath) {
             element = findElementByXPath(this.currentSelector);
+        } else if (this.currentSelector.indexOf(', ') > -1) {
+            const elements = document.querySelectorAll(this.currentSelector);
+            if (elements.length > 0) {
+                element = elements[0];
+            }
         } else {
             element = document.querySelector(this.currentSelector);
         }
@@ -66,7 +72,7 @@ export class ElementFinder {
     };
 
     verifyIfFocusStays = async () => {
-        await sleep(this.initialSleepTime * 2);
+        await sleep(500);
         const element = this.findElement(this.currentSelector);
         if (element && document.activeElement !== element) {
             const result = await this.tryToFind(this.currentSelector, this.isXPath, this.focus,
