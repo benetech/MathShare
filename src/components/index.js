@@ -430,8 +430,8 @@ class App extends Component {
                     }}
                 />
                 <div id="contentContainer" className={this.getClassFromUserConfig()}>
-                    {this.renderDialog()}
-                    <GlobalHotKeys keyMap={keyMap} handlers={this.handlers} allowChanges />
+                    {/* {this.renderDialog()}
+                    <GlobalHotKeys keyMap={keyMap} handlers={this.handlers} allowChanges /> */}
                     <ToastContainer />
                     <div className={`body-container ${this.getAdditionalClass()}`}>
                         <ModalContainer
