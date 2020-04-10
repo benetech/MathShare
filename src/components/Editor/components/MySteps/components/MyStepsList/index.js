@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import classNames from 'classnames';
-import { GlobalHotKeys } from 'react-hotkeys';
+// import { GlobalHotKeys } from 'react-hotkeys';
 import Step from './components/Step';
 import myStepsList from './styles.scss';
 import mySteps from '../../../../styles.scss';
@@ -146,11 +146,11 @@ export default class MyStepsList extends Component {
 
         return (
             <div id="HistoryWrapper" className={mySteps.historyWrapper}>
-                <GlobalHotKeys
+                {/* <GlobalHotKeys
                     keyMap={this.keyMap}
                     handlers={this.handlers}
                     allowChanges
-                />
+                /> */}
                 <div
                     className="row"
                     data-step="4"
