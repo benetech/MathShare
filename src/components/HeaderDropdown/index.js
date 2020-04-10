@@ -1,6 +1,6 @@
 
 import React from 'react';
-// import { IntercomAPI } from 'react-intercom';
+import { IntercomAPI } from 'react-intercom';
 import FontAwesome from 'react-fontawesome';
 import { UncontrolledTooltip } from 'reactstrap';
 import { passEventForKeys } from '../../services/events';
@@ -21,7 +21,7 @@ const clickedFeedback = () => {
 
 const clickOnQuestion = () => {
     googleAnalytics('clicked help center');
-    // IntercomAPI('trackEvent', 'clicked-help-center');
+    IntercomAPI('trackEvent', 'clicked-help-center');
 };
 
 const HeaderDropdown = ({

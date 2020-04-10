@@ -3,7 +3,7 @@ import { UncontrolledTooltip } from 'reactstrap';
 import { connect } from 'react-redux';
 import FontAwesome from 'react-fontawesome';
 import classNames from 'classnames';
-// import { IntercomAPI } from 'react-intercom';
+import { IntercomAPI } from 'react-intercom';
 import { Helmet } from 'react-helmet';
 import MainPageHeader from './components/Header';
 import NavigationHeader from './components/Navigation/Header';
@@ -110,14 +110,14 @@ class Home extends Component {
                 'googleClassroom',
                 popupConfig,
             );
-            // IntercomAPI('trackEvent', 'assign-a-set-google-classroom');
+            IntercomAPI('trackEvent', 'assign-a-set-google-classroom');
         } else if (action === 'view' || action === 'solve') {
             window.open(
                 `https://classroom.google.com/u/0/share?url=${encodeURIComponent(this.getShareUrl())}`,
                 'googleClassroom',
                 popupConfig,
             );
-            // IntercomAPI('trackEvent', 'submit-problem-set-google-classroom');
+            IntercomAPI('trackEvent', 'submit-problem-set-google-classroom');
         }
     }
 
@@ -138,23 +138,23 @@ class Home extends Component {
     }
 
     shareOnMicrosoftTeams = () => {
-        // const {
-        //     match,
-        // } = this.props;
-        // const {
-        //     action,
-        // } = match.params;
+        const {
+            match,
+        } = this.props;
+        const {
+            action,
+        } = match.params;
         const popupConfig = 'height=578,width=700,top=100,left=100,target=msTeamPopup,toolbar=yes,scrollbars=yes,menubar=yes,location=no,resizable=yes';
         window.open(
             `https://teams.microsoft.com/share?href=${encodeURIComponent(this.getShareUrl())}&preview=true&referrer=${window.location.hostname}`,
             'microsoftTeam',
             popupConfig,
         );
-        // if (action === 'edit') {
-        //     IntercomAPI('trackEvent', 'assign-a-set-microsoft-team');
-        // } else if (action === 'view' || action === 'solve') {
-        //     IntercomAPI('trackEvent', 'submit-problem-set-microsoft-team');
-        // }
+        if (action === 'edit') {
+            IntercomAPI('trackEvent', 'assign-a-set-microsoft-team');
+        } else if (action === 'view' || action === 'solve') {
+            IntercomAPI('trackEvent', 'submit-problem-set-microsoft-team');
+        }
     }
 
     saveProblemSet = (currentSet, redirect) => () => {
@@ -163,9 +163,9 @@ class Home extends Component {
             currentSet.title,
             redirect,
         );
-        // if (!redirect) {
-        //     IntercomAPI('trackEvent', 'assign-a-set-link');
-        // }
+        if (!redirect) {
+            IntercomAPI('trackEvent', 'assign-a-set-link');
+        }
     }
 
     renderNewAndEditControls = (currentSet) => {
