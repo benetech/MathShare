@@ -11,7 +11,7 @@ export class ElementFinder {
 
     tryToFind = async (
         selector, isXPath, focus = true, cutoff = null,
-        elementId = null, sleepMs = 50, trial = 1, maxTrials = 10,
+        elementId = null, sleepMs = 50, trial = 1, maxTrials = 25,
     ) => {
         if (trial === 1 && document.activeElement) {
             this.startTime = (new Date()).getTime();
@@ -44,7 +44,9 @@ export class ElementFinder {
 
         if (document.activeElement !== element) {
             const result = await this.tryToFind(selector, isXPath, focus, cutoff,
-                elementId || this.ongoingId, sleepMs + 25, trial + 1, this.maxTrials);
+                elementId || this.ongoingId,
+                Math.min(this.initialSleepTime * 5, sleepMs + 25),
+                trial + 1, this.maxTrials);
             return result;
         }
         // const result = await this.verifyIfFocusStays();
