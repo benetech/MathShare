@@ -1,6 +1,7 @@
 import {
     all,
     call,
+    delay,
     fork,
     put,
     select,
@@ -12,7 +13,7 @@ import {
 } from 'connected-react-router';
 import { announceOnAriaLive } from '../ariaLiveAnnouncer/actions';
 import { focusOnMainContent } from '../../services/events';
-import { commonFocusHandler } from '../../services/misc';
+import { commonElementFinder } from '../../services/misc';
 import Locales from '../../strings';
 import {
     getRouterHookState,
@@ -50,21 +51,30 @@ function* changeRouteSaga() {
     yield takeLatest(LOCATION_CHANGE, function* workerSaga({
         payload: {
             location,
+            action,
+            isFirstRendering,
         },
     }) {
         const { pathname } = location;
+        const routerState = yield select(getRouterHookState);
         const {
             prev,
             prevReplaced,
             xPath,
-        } = yield select(getRouterHookState);
+            isBack,
+        } = routerState;
         let selector = `a[href='${prev}']`;
         let isXpath = false;
         if (prev === xPath.href) {
             isXpath = true;
             selector = xPath.path;
         }
-        if (prevReplaced && prev.startsWith('/#/app/problemSet/solve/')) {
+        const problemEditMatch = prev && /\/#\/app\/problemSet\/edit\/[A-Z0-9]*/.exec(prev);
+        if (prevReplaced && (
+            prev.startsWith('/#/app/problemSet/solve/')
+            || prev.startsWith('/#/app/problemSet/review/')
+            || (problemEditMatch && problemEditMatch[0] === prev)
+        )) {
             selector = `a[href='${prevReplaced}']`;
             if (prevReplaced === xPath.href) {
                 isXpath = true;
@@ -73,7 +83,13 @@ function* changeRouteSaga() {
                 isXpath = false;
             }
         }
-        const notAbleToFocus = yield call(commonFocusHandler.tryToFocus, selector, isXpath);
+        let notAbleToFocus = true;
+        if (action === 'POP' && isBack && !isFirstRendering) {
+            if (window.location.hash.startsWith('#/app/problemSet/solve/')) {
+                yield delay(800);
+            }
+            notAbleToFocus = !(yield call(commonElementFinder.tryToFind, selector, isXpath));
+        }
         if (notAbleToFocus && pathname !== '/') {
             yield call(focusOnMainContent);
         }

@@ -193,6 +193,7 @@ const problems = (state = initialState, {
             set: {
                 id: payload.id,
                 problems: payload.solutions.map(solution => solution.problem),
+                editCode: payload.editCode,
                 shareCode: payload.reviewCode,
                 title: payload.title || state.set.title,
                 archiveMode: payload.archiveMode,
