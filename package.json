@@ -80,6 +80,7 @@
     "react-ga": "^2.5.7",
     "react-helmet": "^5.2.1",
     "react-hotkeys": "^2.0.0",
+    "react-intercom": "^1.0.15",
     "react-localization": "^1.0.13",
     "react-redux": "^7.0.3",
     "react-router-dom": "^4.3.1",

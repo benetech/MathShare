@@ -1,5 +1,5 @@
 import React from 'react';
-// import { IntercomAPI } from 'react-intercom';
+import { IntercomAPI } from 'react-intercom';
 import { Redirect } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import styles from './styles.scss';
@@ -14,13 +14,13 @@ import { passEventForKeys } from '../../services/events';
 import SkipContent from '../Home/components/SkipContent';
 
 
-// const clickOnTryNow = isTryNow => () => {
-//     if (isTryNow) {
-//         IntercomAPI('trackEvent', 'try-now');
-//     } else {
-//         IntercomAPI('trackEvent', 'create-account');
-//     }
-// };
+const clickOnTryNow = isTryNow => () => {
+    if (isTryNow) {
+        IntercomAPI('trackEvent', 'try-now');
+    } else {
+        IntercomAPI('trackEvent', 'create-account');
+    }
+};
 
 const clickOnSignIn = (setAuthRedirect, userProfile) => () => {
     if (!userProfile.service) {
@@ -107,8 +107,8 @@ const LandingPage = ({ setAuthRedirect, userProfile }) => {
                     <a
                         href="/#/app"
                         className={styles.btn}
-                        // onClick={clickOnTryNow(true)}
-                        // onKeyPress={passEventForKeys(clickOnTryNow(true))}
+                        onClick={clickOnTryNow(true)}
+                        onKeyPress={passEventForKeys(clickOnTryNow(true))}
                         tabIndex="0"
                     >
                         {Locales.strings.open_mathshare}

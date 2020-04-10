@@ -3,7 +3,7 @@ import AriaModal from 'react-aria-modal';
 import FontAwesome from 'react-fontawesome';
 import { arrayMove } from 'react-sortable-hoc';
 import * as dayjs from 'dayjs';
-// import { IntercomAPI } from 'react-intercom';
+import { IntercomAPI } from 'react-intercom';
 import Locales from '../../../../strings';
 import styles from './styles.scss';
 import MyWork from '../../../Editor/components/MyWork';
@@ -48,7 +48,7 @@ export default class NewProblemsForm extends Component {
             this.state.displayScratchpad(this.props.problemToEdit.scratchpad);
             // eslint-disable-next-line react/no-did-update-set-state
             this.setState({ displayScratchpad: null });
-            // IntercomAPI('trackEvent', 'sketch');
+            IntercomAPI('trackEvent', 'sketch');
         }
     }
 

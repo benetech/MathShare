@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import AriaModal from 'react-aria-modal';
 import classNames from 'classnames';
-// import { IntercomAPI } from 'react-intercom';
+import { IntercomAPI } from 'react-intercom';
 import editor from './styles.scss';
 import Locales from '../../../../strings';
 import Button from '../../../Button';
@@ -12,7 +12,7 @@ export default class ShareModal extends Component {
         const { shareLink } = this.props;
         if (shareLink) {
             googleAnalytics(Locales.strings.share_problem_set);
-            // IntercomAPI('trackEvent', 'submit-problem-set-link');
+            IntercomAPI('trackEvent', 'submit-problem-set-link');
         }
     }
 
