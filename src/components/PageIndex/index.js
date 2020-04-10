@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 import { push, replace } from 'connected-react-router';
-import { IntercomAPI } from 'react-intercom';
+// import { IntercomAPI } from 'react-intercom';
 import FontAwesome from 'react-fontawesome';
 import { Helmet } from 'react-helmet';
 import Locales from '../../strings';
@@ -51,7 +51,7 @@ class Index extends Component {
 
     openExampleProblem = () => {
         googleAnalytics('premade set - default');
-        IntercomAPI('trackEvent', 'view-example-set');
+        // IntercomAPI('trackEvent', 'view-example-set');
     }
 
     openPremadeSet = problemSet => () => {
