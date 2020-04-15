@@ -62,7 +62,11 @@ class Index extends Component {
         if (!isRecent) {
             return `/#/app/problemSet/view/${problemSet.shareCode}`;
         }
-        return `/#/app/problemSet/edit/${problemSet.editCode}`;
+        let action = 'edit';
+        if (problemSet.solutions) {
+            action = 'solve';
+        }
+        return `/#/app/problemSet/${action}/${problemSet.editCode}`;
     }
 
     openByEditCode = (editCode) => {
@@ -117,7 +121,7 @@ class Index extends Component {
         }
         return (
             <>
-                {userProfile.email && (
+                {userProfile.email && userProfile.info.userType !== 'student' && (
                     <a className={`pull-right btn btn-primary ${pageIndex.archivedList}`} href="/#/app/archived">
                         {Locales.strings.archived_sets}
                     </a>
@@ -163,56 +167,32 @@ class Index extends Component {
                         {problemSet.title}
                     </span>
                     <span className={pageIndex.meta}>
-                        {problemSet.problems.length}
+                        {(problemSet.problems || problemSet.solutions).length}
                         {' '}
                         {Locales.strings.problems}
                     </span>
                 </a>
-                <CommonDropdown
-                    btnId={dropdownBtnId}
-                    btnClass={pageIndex.problemSetDropdown}
-                    containerClass={pageIndex.dropdownContainer}
-                    btnContent={(
-                        <span className="sROnly">
-                            {Locales.strings.more_options_for.replace('{title}', problemSet.title)}
-                        </span>
-                    )}
-                    btnIcon="ellipsis-v"
-                    listClass={pageIndex.dropdownList}
-                >
-                    <button
-                        className="dropdown-item reset-btn"
-                        onClick={this.duplicateProblemSet(
-                            problemSet,
+                {problemSet.problems && (
+                    <CommonDropdown
+                        btnId={dropdownBtnId}
+                        btnClass={pageIndex.problemSetDropdown}
+                        containerClass={pageIndex.dropdownContainer}
+                        btnContent={(
+                            <span className="sROnly">
+                                {Locales.strings.more_options_for.replace('{title}', problemSet.title)}
+                            </span>
                         )}
-                        onKeyPress={
-                            passEventForKeys(
-                                this.duplicateProblemSet(
-                                    problemSet,
-                                ),
-                            )
-                        }
-                        type="button"
+                        btnIcon="ellipsis-v"
+                        listClass={pageIndex.dropdownList}
                     >
-                        <FontAwesome
-                            size="lg"
-                            name="copy"
-                        />
-                        {` ${Locales.strings.duplicate_set}`}
-                        <span className="sROnly">
-                            {'\u00A0'}
-                            {Locales.strings.opens_in_new_tab}
-                        </span>
-                    </button>
-                    {isRecent && (
                         <button
                             className="dropdown-item reset-btn"
-                            onClick={this.archiveProblemSet(
+                            onClick={this.duplicateProblemSet(
                                 problemSet,
                             )}
                             onKeyPress={
                                 passEventForKeys(
-                                    this.archiveProblemSet(
+                                    this.duplicateProblemSet(
                                         problemSet,
                                     ),
                                 )
@@ -221,12 +201,38 @@ class Index extends Component {
                         >
                             <FontAwesome
                                 size="lg"
-                                name={problemSet.archiveMode === 'archived' ? 'refresh' : 'trash'}
+                                name="copy"
                             />
-                            {` ${problemSet.archiveMode === 'archived' ? Locales.strings.restore : Locales.strings.archive}`}
+                            {` ${Locales.strings.duplicate_set}`}
+                            <span className="sROnly">
+                                {'\u00A0'}
+                                {Locales.strings.opens_in_new_tab}
+                            </span>
                         </button>
-                    )}
-                </CommonDropdown>
+                        {isRecent && (
+                            <button
+                                className="dropdown-item reset-btn"
+                                onClick={this.archiveProblemSet(
+                                    problemSet,
+                                )}
+                                onKeyPress={
+                                    passEventForKeys(
+                                        this.archiveProblemSet(
+                                            problemSet,
+                                        ),
+                                    )
+                                }
+                                type="button"
+                            >
+                                <FontAwesome
+                                    size="lg"
+                                    name={problemSet.archiveMode === 'archived' ? 'refresh' : 'trash'}
+                                />
+                                {` ${problemSet.archiveMode === 'archived' ? Locales.strings.restore : Locales.strings.archive}`}
+                            </button>
+                        )}
+                    </CommonDropdown>
+                )}
             </li>
         );
     }
