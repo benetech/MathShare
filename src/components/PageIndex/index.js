@@ -292,8 +292,8 @@ class Index extends Component {
 
     renderTopButtons() {
         const { props } = this;
-        const { archiveMode } = props;
-        if (archiveMode) {
+        const { archiveMode, userProfile } = props;
+        if (archiveMode || (userProfile.email && userProfile.info.userType === 'student')) {
             return null;
         }
         return (
@@ -334,8 +334,8 @@ class Index extends Component {
     }
 
     renderLibrary = () => {
-        const { archiveMode } = this.props;
-        if (archiveMode) {
+        const { archiveMode, userProfile } = this.props;
+        if (archiveMode || (userProfile.email && userProfile.info.userType === 'student')) {
             return null;
         }
         return (
