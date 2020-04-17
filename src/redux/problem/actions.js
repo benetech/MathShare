@@ -45,11 +45,12 @@ export const updateProblemSolution = (solution, onlyLoad) => ({
     },
 });
 
-export const commitProblemSolution = (redirectBack, shareModal) => ({
+export const commitProblemSolution = (redirectBack, shareModal, finished) => ({
     type: 'REQUEST_COMMIT_PROBLEM_SOLUTION',
     payload: {
         redirectBack,
         shareModal,
+        finished,
     },
 });
 
