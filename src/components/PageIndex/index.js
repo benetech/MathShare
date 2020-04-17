@@ -363,8 +363,12 @@ class Index extends Component {
 
     render() {
         const { props } = this;
-        const { problemList, archiveMode } = props;
+        const { problemList, archiveMode, userProfile } = props;
         let title = Locales.strings.all_problem_sets;
+        let isStudent = false;
+        if (userProfile.email && userProfile.info.userType === 'student') {
+            isStudent = true;
+        }
         if (archiveMode === 'archived') {
             title = Locales.strings.archived_sets;
         }
@@ -384,7 +388,7 @@ class Index extends Component {
                     editCode={problemList.set.editCode}
                     action={null}
                 />
-                <div id="mainContainer" className="mainContainer">
+                <div id="mainContainer" className={`mainContainer ${isStudent ? pageIndex.isStudent : ''}`}>
                     {this.renderHeader()}
                     {archiveMode ? this.renderArchived() : this.renderMainDashboard()}
                 </div>
