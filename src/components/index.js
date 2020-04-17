@@ -254,7 +254,7 @@ class App extends Component {
     });
 
     finishProblem = () => {
-        this.props.commitProblemSolution(true);
+        this.props.commitProblemSolution(true, false, true);
         googleAnalytics('Finish Problem');
     };
 
