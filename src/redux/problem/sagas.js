@@ -133,6 +133,7 @@ function* requestCommitProblemSolutionSaga() {
         payload: {
             redirectBack,
             shareModal,
+            finished,
         },
     }) {
         try {
@@ -178,7 +179,10 @@ function* requestCommitProblemSolutionSaga() {
             } else if (problemListState.editCode) {
                 const payloadSolutions = problemListState.solutions.map((currentSolution) => {
                     if (currentSolution.problem.id === solution.problem.id) {
-                        return solution;
+                        return {
+                            ...solution,
+                            finished: finished || solution.finished,
+                        };
                     }
                     return currentSolution;
                 });
