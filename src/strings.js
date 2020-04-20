@@ -229,6 +229,7 @@ class Locales {
                 save_changes: ' Save Changes',
                 save_intro: 'Save your work or close out to try again from the beginning.',
                 save_text: 'Save Text: ',
+                save_work_by_signing_in: 'Save where you left by signing in',
                 scratchpad: ' Sketch',
                 scratchpad_alt: 'Problem sketch',
                 scratchpad_enlarge: 'Enlarge sketch',
