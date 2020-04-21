@@ -114,6 +114,9 @@ class SignIn extends Component {
                             <UncontrolledTooltip placement="top" target={this.MS_SIGN_IN} />
                         </li>
                     </ul>
+                    <a className={signIn.benefitsLink} href="https://intercom.help/benetech/en/articles/3754980-benefits-of-having-a-user-account">
+                        {Locales.strings.benefits_of_signing_in}
+                    </a>
                     <button
                         id="goBack"
                         className={`${signIn.text} ${signIn.pointer} reset-btn`}
