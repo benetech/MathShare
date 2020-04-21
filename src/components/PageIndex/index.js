@@ -98,6 +98,7 @@ class Index extends Component {
             return null;
         }
         let recentContent = null;
+        const recentContentClass = `text-center ${pageIndex.recentContent}`;
         if (!userProfile.service) {
             recentContent = (
                 <div className={`text-center ${pageIndex.signInContainer}`}>
@@ -109,7 +110,7 @@ class Index extends Component {
                 </div>
             );
         } else if (userProfile.recentProblemSets === null) {
-            recentContent = <div className="text-center">{Locales.strings.loading}</div>;
+            recentContent = <div className={recentContentClass}>{Locales.strings.loading}</div>;
         } else if (userProfile.recentProblemSets.length > 0) {
             recentContent = (
                 <ol className={pageIndex.problemSetList} aria-labelledby="recent-sets-header">
@@ -117,7 +118,7 @@ class Index extends Component {
                 </ol>
             );
         } else {
-            recentContent = <div className="text-center">No recent problems</div>;
+            recentContent = <div className={recentContentClass}>No recent problems</div>;
         }
         return (
             <>
@@ -292,8 +293,8 @@ class Index extends Component {
 
     renderTopButtons() {
         const { props } = this;
-        const { archiveMode, userProfile } = props;
-        if (archiveMode || (userProfile.email && userProfile.info.userType === 'student')) {
+        const { archiveMode } = props;
+        if (archiveMode) {
             return null;
         }
         return (
@@ -339,7 +340,7 @@ class Index extends Component {
             return null;
         }
         return (
-            <div className="text-center">
+            <div className={`text-center ${pageIndex.problemSetLibrary}`}>
                 <h2 className="sROnly" tabIndex={-1}>{Locales.strings.problem_set_library}</h2>
                 <span role="img" aria-label="" aria-hidden="true">📓</span>
                 <a
