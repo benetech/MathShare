@@ -267,7 +267,6 @@ class Editor extends Component {
                     action={params.action}
                 />
                 <main id="MainWorkArea" className={editor.editorAndHistoryWrapper}>
-                    <SkipContent />
                     <ProblemHeader
                         {...this}
                         {...this.props}
