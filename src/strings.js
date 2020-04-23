@@ -320,7 +320,7 @@ class Locales {
                 user_profile: 'User Profile',
                 view_as_student: ' View as Student',
                 view_problem_description: 'view problem description',
-                view_sketch: 'View Sketch',
+                view_sketch: 'View Sketch for Problem {no}',
                 warning: 'Warning',
                 who_are_you: 'Who are you?',
                 work: 'work',
