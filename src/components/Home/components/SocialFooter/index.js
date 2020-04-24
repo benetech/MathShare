@@ -38,6 +38,7 @@ const SocialFooter = ({ customClass }) => (
                     {Locales.strings.opens_in_new_tab}
                 </span>
             </a>
+            <a href="/#/privacy">{Locales.strings.privacy_policy}</a>
             <div>{Locales.strings.copyright}</div>
         </div>
     </div>
