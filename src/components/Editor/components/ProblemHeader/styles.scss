@@ -19,17 +19,18 @@
 
 .header {
     z-index: 1;
-    min-height: 60px;
+    min-height: 50px;
     align-items: center;
-    background-color: rgb(0, 98, 217);
-    padding: 7px;
+    background-color: #b05e00;
+    padding: 0px;
     display: flex;
 }
 
 .subHeader {
     background: #b05e00;
-    padding: 10px 50px;
+    padding-left: 50px;
     font-size: 14px;
+    width: 100%;
 
     span.question {
         overflow-x: auto;
@@ -77,7 +78,6 @@
 .label {
     display: inline;
     padding: .2em .6em .3em;
-    font-size: 75%;
     font-weight: 700;
     line-height: 1;
     color: rgb(255, 255, 255);
@@ -86,6 +86,8 @@
     vertical-align: baseline;
     border-radius: .25em;
     background-color: rgb(92, 184, 92);
+    margin: auto;
+    margin-right: 10px;
 }
 
 .btnDelete {

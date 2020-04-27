@@ -41,7 +41,8 @@ div.problemSetList {
 }
 
 .signInContainer {
-    margin-bottom: 50px;
+    padding-bottom: 50px;
+    padding-top: 15px;
 }
 
 .thanksHeader {
@@ -68,6 +69,10 @@ div.problemSetList {
         }
     }
 
+    // &.isStudent {
+    //     margin-top: 35px;
+    // }
+
     :global(.title) {
         font-size: 1rem;
         font-weight: 400;
@@ -80,4 +85,13 @@ div.problemSetList {
     :global(.fa) {
         padding-right: 10px;
     }
+}
+
+.problemSetLibrary {
+    padding-bottom: 30px;
+}
+
+.recentContent {
+    padding-top: 15px;
+    padding-bottom: 30px;
 }
