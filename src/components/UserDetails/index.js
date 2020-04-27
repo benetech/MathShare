@@ -16,6 +16,20 @@ class UserDetails extends Component {
     constructor(props) {
         super(props);
         this.grades = ['K-5', '6-8', '9-12', '13+', 'none'];
+        this.userTypes = [
+            {
+                label: 'Teacher',
+                value: 'teacher',
+            },
+            {
+                label: 'Student',
+                value: 'student',
+            },
+            {
+                label: 'Other',
+                value: 'other',
+            },
+        ];
         const gradeMap = {};
         this.grades.forEach((grade) => {
             gradeMap[grade] = false;
@@ -28,7 +42,7 @@ class UserDetails extends Component {
         };
     }
 
-    setType = type => () => {
+    setType = (type) => {
         this.setState({ type }, () => {
             if (type === 'student' || type === 'other') {
                 this.finish();
@@ -65,6 +79,13 @@ class UserDetails extends Component {
         this.setState({
             role: value,
         });
+    }
+
+    handleUserTypeChange = (event) => {
+        const target = event.target;
+        const value = target.value;
+
+        this.setType(value);
     }
 
     handleGradeChange = (event) => {
@@ -154,40 +175,26 @@ class UserDetails extends Component {
                             {Locales.strings.setup_your_account}
                         </h1>
                         {this.state.type === null && (
-                            <fieldset className="row">
-                                <legend className={userDetails.descText}>
-                                    <h2 tabIndex={-1} id="who_are_you">{Locales.strings.who_are_you}</h2>
-                                </legend>
-                                <div className={userDetails.buttonsContainer}>
-                                    <button
-                                        className={`btn btn-primary ${userDetails.largeBtn}`}
-                                        id="im_a_teacher"
-                                        type="button"
-                                        onClick={this.setType('teacher')}
-                                    >
-                                        {Locales.strings.i_m_teacher}
-                                    </button>
-                                    <UncontrolledTooltip placement="top" target="im_a_teacher" />
-                                    <button
-                                        className={`btn btn-primary ${userDetails.largeBtn}`}
-                                        id="im_a_student"
-                                        type="button"
-                                        onClick={this.setType('student')}
-                                    >
-                                        {Locales.strings.i_m_student}
-                                    </button>
-                                    <UncontrolledTooltip placement="top" target="im_a_student" />
-                                    <button
-                                        className={`btn btn-primary ${userDetails.largeBtn} ${userDetails.otherBtn}`}
-                                        id="other"
-                                        type="button"
-                                        onClick={this.setType('other')}
-                                    >
-                                        {Locales.strings.other}
-                                    </button>
-                                    <UncontrolledTooltip placement="top" target="other" />
+                            <div className={`${userDetails.userType} row`}>
+                                <div className={`${userDetails.descText} col-5`}>
+                                    <label htmlFor="who_are_you">
+                                        <h2 tabIndex={-1}>{Locales.strings.who_are_you}</h2>
+                                    </label>
                                 </div>
-                            </fieldset>
+                                <div className={`${userDetails.userTypeSelect} col-7`}>
+                                    <div className="form-group">
+                                        <select className="form-control" id="who_are_you" onChange={this.handleUserTypeChange} value={this.state.type}>
+                                            <option value="">{Locales.strings.choose_one}</option>
+                                            {this.userTypes.map(userType => (
+                                                <option key={userType.value} value={userType.value}>
+                                                    {userType.label}
+                                                </option>
+                                            ))}
+                                        </select>
+                                        <UncontrolledTooltip placement="top" target="who_are_you" />
+                                    </div>
+                                </div>
+                            </div>
                         )}
                         {this.state.type === 'teacher' && this.renderTeacherForm()}
                     </main>
