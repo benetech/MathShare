@@ -51,9 +51,13 @@ import {
     getState as getModalState,
 } from '../modal/selectors';
 import {
+    getState as getStateFromUserProfile,
+} from '../userProfile/selectors';
+import {
     ADD_PROBLEM_SET,
     SHARE_NEW_SET,
     SHARE_PROBLEM_SET,
+    SIGN_IN_MODAL,
 } from '../../components/ModalContainer';
 import scrollTo from '../../scripts/scrollTo';
 import {
@@ -460,6 +464,10 @@ function* requestShareSolutionsSaga() {
                     set,
                 } = yield select(getState);
 
+                const {
+                    email,
+                } = yield select(getStateFromUserProfile);
+
                 const payloadSolutions = getSolutionObjectFromProblems(set.problems);
                 const {
                     id,
@@ -472,6 +480,9 @@ function* requestShareSolutionsSaga() {
                 } = yield call(shareSolutions, code, payloadSolutions);
                 if (silent) {
                     yield put(replace(`/app/problemSet/solve/${editCode}`));
+                    if (!email) {
+                        yield put(toggleModals([SIGN_IN_MODAL]));
+                    }
                 }
                 yield put(
                     setReviewSolutions(

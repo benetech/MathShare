@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { IntercomAPI } from 'react-intercom';
 import { Helmet } from 'react-helmet';
+import MainPageHeader from '../Home/components/Header';
 import ProblemHeader from './components/ProblemHeader';
 import MyStepsHeader from './components/MySteps/components/MyStepsHeader';
 import MyStepsList from './components/MySteps/components/MyStepsList';
@@ -227,7 +228,10 @@ class Editor extends Component {
     }
 
     render() {
-        const { problemStore, problemList } = this.props;
+        const { match, problemStore, problemList } = this.props;
+        const {
+            params,
+        } = match;
         if (problemStore.notFound) {
             return <NotFound />;
         }
@@ -254,6 +258,14 @@ class Editor extends Component {
         return (
             <div id="MainWorkWrapper" className={editor.mainWorkWrapper}>
                 {this.renderHelmet()}
+                <MainPageHeader
+                    editing={params.action === 'edit' || params.action === 'new'}
+                    history={this.props.history}
+                    addProblemSetCallback={this.props.addProblemSet}
+                    duplicateProblemSet={this.props.duplicateProblemSet}
+                    editCode={problemList.set.editCode}
+                    action={params.action}
+                />
                 <main id="MainWorkArea" className={editor.editorAndHistoryWrapper}>
                     <SkipContent />
                     <ProblemHeader

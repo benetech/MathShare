@@ -16,81 +16,79 @@
         box-sizing: border-box;
         -webkit-transition: background-color .218s, border-color .218s, box-shadow .218s;
         transition: background-color .218s, border-color .218s, box-shadow .218s;
+    }
+}
 
-        .text,
-        .header {
-            font-size: 28px;
-            font-weight: 400;
-            color: #5a5a5a;
-        }
+.text,
+.header {
+    font-size: 28px;
+    font-weight: 400;
+    color: #5a5a5a;
+}
 
-        .text {
-            font-size: 24px;
-        }
+.text {
+    font-size: 24px;
+}
 
-        .pointer {
-            cursor: pointer;
-        }
+.pointer {
+    cursor: pointer;
+}
 
-        .logo {
-            max-width: 240px;
-            padding: 36px 24px;
-            background: white;
+.logo {
+    max-width: 240px;
+    padding: 36px 24px;
+    background: white;
+    margin: auto;
+
+    img {
+        width: 100%;
+    }
+}
+
+.buttonsContainer {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 50px 0;
+
+    >li {
+        padding: 10px;
+        width: 50%;
+
+        >* {
             margin: auto;
+            display: block;
+            text-decoration: none;
 
-            img {
-                width: 100%;
+            &:hover {
+                color: white;
             }
         }
+    }
 
-        .buttonsContainer {
-            display: flex;
-            flex-wrap: wrap;
-            padding: 50px 0;
-            padding-bottom: 0;
+    .microsoftContainer {
+        height: 100%;
+        background: white;
+        outline: 1px solid #00000024;
+        cursor: pointer;
+        max-width: 132px;
+        // border: 1px solid black;
 
-            >li {
-                padding: 10px;
-                width: 50%;
-
-                >* {
-                    margin: auto;
-                    display: block;
-                    text-decoration: none;
-
-                    &:hover {
-                        color: white;
-                    }
-                }
-            }
-
-            .microsoftContainer {
-                height: 100%;
-                background: white;
-                outline: 1px solid #00000024;
-                cursor: pointer;
-                max-width: 132px;
-                // border: 1px solid black;
-
-                img {
-                    padding: 8px 10px;
-                    margin-left: -10px;
-                }
-
-                span {
-                    color: #737373;
-                    font-family: 'Open Sans', sans-serif;
-                    font-size: 16px;
-                    font-weight: 600;
-                    vertical-align: middle;
-                }
-            }
-
-            :global(.abcRioButtonSvgImageWithFallback) img {
-                vertical-align: baseline;
-            }
-
+        img {
+            padding: 8px 10px;
+            margin-left: -10px;
         }
+
+        span {
+            color: #737373;
+            font-family: 'Open Sans', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            vertical-align: middle;
+        }
+    }
+
+    :global(.abcRioButtonSvgImageWithFallback) img {
+        vertical-align: baseline;
     }
 
 }
