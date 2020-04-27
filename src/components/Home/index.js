@@ -48,14 +48,9 @@ class Home extends Component {
             action,
             code,
         } = this.props.match.params;
-        const {
-            problemList,
-        } = this.props;
         if (action === 'new') {
             this.props.clearProblemSet();
-            if (!problemList.tempPalettes || problemList.tempPalettes.length === 0) {
-                this.props.toggleModals([PALETTE_CHOOSER]);
-            }
+            this.newProblemSet();
         } else {
             this.loadData(action, code);
         }
@@ -78,6 +73,27 @@ class Home extends Component {
                 window.shareToMicrosoftTeams.renderButtons();
             }
         }, 0);
+    }
+
+    newProblemSet = () => {
+        const {
+            problemList,
+            userProfile,
+        } = this.props;
+        if (userProfile.checking) {
+            setTimeout(this.newProblemSet, 500);
+        } else if (!problemList.tempPalettes || problemList.tempPalettes.length === 0) {
+            if (userProfile.info && userProfile.info.userType === 'student') {
+                this.props.progressToAddingProblems([
+                    'Edit',
+                    'Operators',
+                    'Notations',
+                    'Geometry',
+                ], true);
+            } else {
+                this.props.toggleModals([PALETTE_CHOOSER]);
+            }
+        }
     }
 
     loadData = (action, code) => {
@@ -545,6 +561,7 @@ class Home extends Component {
 export default connect(
     state => ({
         problemList: state.problemList,
+        userProfile: state.userProfile,
     }),
     {
         ...problemActions,

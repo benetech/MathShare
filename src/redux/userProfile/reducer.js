@@ -7,7 +7,7 @@ const initialState = {
     service: null,
     recentProblemSets: null,
     notifyForMobile: null,
-    checking: false,
+    checking: true,
     config: null,
     info: {},
 };
