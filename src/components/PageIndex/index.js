@@ -264,7 +264,7 @@ class Index extends Component {
         if (problemList.archivedProblemSets === null) {
             emptyList = <div className="text-center">{Locales.strings.loading}</div>;
         } else if (problemList.archivedProblemSets.length === 0) {
-            emptyList = <div className="text-center">{Locales.strings.archived_sets_empty}</div>;
+            emptyList = <div className={`text-center ${pageIndex.noArchivedSets}`}>{Locales.strings.archived_sets_empty}</div>;
         }
         return (
             <>
