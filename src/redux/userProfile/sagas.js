@@ -84,7 +84,6 @@ function* checkUserLoginSaga() {
                 alertSuccess(Locales.strings.you_are_signed_in.replace('{user}', displayName), Locales.strings.success, loginAlertId);
                 focusOnAlert(loginAlertId);
             }
-            yield put(fetchRecentWork());
             try {
                 const userInfoResponse = yield call(fetchUserInfoApi, emails[0]);
                 if (userInfoResponse.status !== 200) {
@@ -105,6 +104,7 @@ function* checkUserLoginSaga() {
                 }
             } finally {
                 try {
+                    yield put(fetchRecentWork());
                     const configResponse = yield call(getConfigApi);
                     if (configResponse.status === 200) {
                         const {
@@ -142,7 +142,10 @@ function* checkUserLoginSaga() {
 function* fetchRecentWorkSaga() {
     yield takeLatest('FETCH_RECENT_WORK', function* workerSaga() {
         try {
-            const response = yield call(fetchRecentWorkApi, {});
+            const {
+                info,
+            } = yield select(getState);
+            const response = yield call(fetchRecentWorkApi(info.userType), {});
             if (response.status !== 200) {
                 throw Error('Unable to fetch work');
             }

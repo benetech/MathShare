@@ -1,0 +1,40 @@
+.modal {
+    background: rgb(255, 255, 255);
+    outline: 0;
+    width: 500px;
+    border-radius: 4px;
+
+    background: white;
+    margin: auto;
+    text-align: center;
+    border-radius: 4px;
+
+
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .25);
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-transition: background-color .218s, border-color .218s, box-shadow .218s;
+    transition: background-color .218s, border-color .218s, box-shadow .218s;
+
+    h1 {
+        margin-top: 20px;
+        margin-bottom: 0;
+    }
+
+    ul {
+        margin-bottom: 0;
+    }
+}
+
+.modalFooter {
+    border-top: 1px solid rgb(238, 238, 238);
+    padding: 0.5em 1.5em;
+    text-align: right;
+
+    .dismissBtn {
+        &, &:hover {
+            color: #5a5a5a;
+            text-decoration: underline;
+        }
+    }
+}
