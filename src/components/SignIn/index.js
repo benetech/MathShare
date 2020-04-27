@@ -43,6 +43,7 @@ class SignIn extends Component {
                         subHeader={
                             isSignUp ? Locales.strings.sign_up_using : Locales.strings.login_using
                         }
+                        subHeadingSrOnly
                     >
                         <button
                             id="goBack"
