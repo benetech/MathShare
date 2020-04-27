@@ -251,6 +251,7 @@ class Locales {
                 sign_in: 'Sign In',
                 sign_out: 'Sign Out',
                 sign_up: 'Sign Up',
+                sign_up_using: 'Signup using',
                 sketchpad_loading_warning: "Sketchpad library wasn't loaded properly",
                 speech_recongition_error: 'Speech recognition is not supported on your device',
                 speech_recongition_permission_denied: "We couldn't access your audio stream",
