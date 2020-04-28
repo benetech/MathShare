@@ -147,7 +147,6 @@ export default class ProblemHeader extends Component {
                             type="button"
                             icon="arrow-left"
                             onClick={this.props.goBack}
-                            tabIndex="-1"
                             ariaLabel={Locales.strings.back_to_problem_page}
                             content={(
                                 <React.Fragment>
