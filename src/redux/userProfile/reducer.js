@@ -31,7 +31,7 @@ const userProfile = (state = initialState, {
     case 'MARK_USER_RESOLVED':
         return {
             ...state,
-            checking: payload.resolved,
+            checking: !payload.resolved,
         };
     case 'SET_AUTH_REDIRECT':
         return {
