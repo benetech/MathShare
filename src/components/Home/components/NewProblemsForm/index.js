@@ -130,6 +130,11 @@ export default class NewProblemsForm extends Component {
                         onClick={() => this.onImgClick(problem.scratchpad)}
                         onKeyPress={passEventForKeys(() => this.onImgClick(problem.scratchpad))}
                     >
+                        <span className="sROnly">
+                            {Locales.strings.view_sketch.replace('{no}', i + 1)}
+                            {'\u00A0'}
+                            {Locales.strings.opens_in_new_tab}
+                        </span>
                         <FontAwesome
                             size="2x"
                             className={styles.img}

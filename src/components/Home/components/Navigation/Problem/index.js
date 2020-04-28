@@ -146,7 +146,7 @@ export default class Problem extends Component {
                     key={`${dropdownId}-imgBtn`}
                 >
                     <span className="sROnly">
-                        {Locales.strings.view_sketch}
+                        {Locales.strings.view_sketch.replace('{no}', this.props.number + 1)}
                         {'\u00A0'}
                         {Locales.strings.opens_in_new_tab}
                     </span>

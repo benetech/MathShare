@@ -205,18 +205,22 @@ class App extends Component {
 
     addProblemSet = () => {
         const { userProfile } = this.props;
-        if (userProfile.info && userProfile.info.userType === 'student') {
-            this.progressToAddingProblems([
-                'Edit',
-                'Operators',
-                'Notations',
-                'Geometry',
-            ], true);
+        if (userProfile.checking) {
+            setTimeout(this.addProblemSet, 500);
         } else {
-            this.props.toggleModals([PALETTE_CHOOSER]);
+            if (userProfile.info && userProfile.info.userType === 'student') {
+                this.progressToAddingProblems([
+                    'Edit',
+                    'Operators',
+                    'Notations',
+                    'Geometry',
+                ], true);
+            } else {
+                this.props.toggleModals([PALETTE_CHOOSER]);
+            }
+            googleAnalytics('new problem set button');
+            IntercomAPI('trackEvent', 'create-a-set');
         }
-        googleAnalytics('new problem set button');
-        IntercomAPI('trackEvent', 'create-a-set');
     };
 
     progressToAddingProblems = (palettes, dontToggleModal = false) => {

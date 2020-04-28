@@ -48,14 +48,9 @@ class Home extends Component {
             action,
             code,
         } = this.props.match.params;
-        const {
-            problemList,
-        } = this.props;
         if (action === 'new') {
             this.props.clearProblemSet();
-            if (!problemList.tempPalettes || problemList.tempPalettes.length === 0) {
-                this.props.toggleModals([PALETTE_CHOOSER]);
-            }
+            this.newProblemSet();
         } else {
             this.loadData(action, code);
         }
@@ -78,6 +73,27 @@ class Home extends Component {
                 window.shareToMicrosoftTeams.renderButtons();
             }
         }, 0);
+    }
+
+    newProblemSet = () => {
+        const {
+            problemList,
+            userProfile,
+        } = this.props;
+        if (userProfile.checking) {
+            setTimeout(this.newProblemSet, 500);
+        } else if (!problemList.tempPalettes || problemList.tempPalettes.length === 0) {
+            if (userProfile.info && userProfile.info.userType === 'student') {
+                this.props.progressToAddingProblems([
+                    'Edit',
+                    'Operators',
+                    'Notations',
+                    'Geometry',
+                ], true);
+            } else {
+                this.props.toggleModals([PALETTE_CHOOSER]);
+            }
+        }
     }
 
     loadData = (action, code) => {
@@ -254,24 +270,26 @@ class Home extends Component {
                             listClass="dropdown-menu-lg-right dropdown-secondary"
                         >
                             {params.action === 'edit' && (
-                                <button
-                                    className="dropdown-item"
-                                    onClick={this.props.duplicateProblemSet}
-                                    onKeyPress={
-                                        passEventForKeys(this.props.duplicateProblemSet)
-                                    }
-                                    type="button"
-                                >
-                                    <FontAwesome
-                                        size="lg"
-                                        name="copy"
-                                    />
-                                    {` ${Locales.strings.duplicate_set}`}
-                                    <span className="sROnly">
-                                        {'\u00A0'}
-                                        {Locales.strings.opens_in_new_tab}
-                                    </span>
-                                </button>
+                                [
+                                    <button
+                                        className="dropdown-item"
+                                        onClick={this.props.duplicateProblemSet}
+                                        onKeyPress={
+                                            passEventForKeys(this.props.duplicateProblemSet)
+                                        }
+                                        type="button"
+                                    >
+                                        <FontAwesome
+                                            size="lg"
+                                            name="copy"
+                                        />
+                                        {` ${Locales.strings.duplicate_set}`}
+                                        <span className="sROnly">
+                                            {'\u00A0'}
+                                            {Locales.strings.opens_in_new_tab}
+                                        </span>
+                                    </button>,
+                                ]
                             )}
                         </CommonDropdown>
                     </div>
@@ -545,6 +563,7 @@ class Home extends Component {
 export default connect(
     state => ({
         problemList: state.problemList,
+        userProfile: state.userProfile,
     }),
     {
         ...problemActions,

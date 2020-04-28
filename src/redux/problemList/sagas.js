@@ -119,7 +119,10 @@ function* requestExampleSetSaga() {
 function* requestArchivedSetSaga() {
     yield takeLatest('REQUEST_ARCHIVED_SETS', function* workerSaga() {
         try {
-            const response = yield call(fetchRecentWorkApi, { 'x-archive-mode': 'archived' });
+            const {
+                info,
+            } = yield select(getStateFromUserProfile);
+            const response = yield call(fetchRecentWorkApi(info.userType), { 'x-archive-mode': 'archived' });
             const archivedProblemSets = response.data;
             yield put({
                 type: 'REQUEST_ARCHIVED_SETS_SUCCESS',
