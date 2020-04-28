@@ -94,7 +94,9 @@ function* processFetchedProblem() {
         const {
             theActiveMathField,
         } = yield select(getProblemListState);
-        theActiveMathField.$latex(solution.steps[solution.steps.length - 1].stepValue);
+        if (theActiveMathField) {
+            theActiveMathField.$latex(solution.steps[solution.steps.length - 1].stepValue);
+        }
         yield put(setSolutionData(solution, action));
         const {
             problemSetSolutionEditCode,

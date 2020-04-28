@@ -282,6 +282,9 @@ class App extends Component {
 
     isEdited = () => {
         const { problemStore, problemList } = this.props;
+        if (window.location.hash.startsWith('#/app/problem/view/')) {
+            return false;
+        }
         return !compareStepArrays(
             problemStore.solution.steps,
             problemStore.stepsFromLastSave,

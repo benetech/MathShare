@@ -5,7 +5,7 @@ export const getMathshareLink = (params, currentSolution, problem) => {
         return `/app/problemSet/edit/${code}/${problem.position}`;
     }
     if (currentSolution && (currentSolution.editCode || currentSolution.shareCode)) {
-        if (currentSolution.editCode && action !== 'review') {
+        if (currentSolution.editCode && action !== 'review' && action !== 'view') {
             return `/app/problem/edit/${currentSolution.editCode}`;
         }
         return `/app/problem/view/${currentSolution.shareCode}`;

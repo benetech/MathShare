@@ -45,6 +45,16 @@ export default class MyStepsList extends Component {
         }
     }
 
+    isReadonly = () => {
+        const { match, readOnly } = this.props;
+        const { params } = match;
+        const { action } = params;
+        if (readOnly || action === 'view') {
+            return true;
+        }
+        return false;
+    }
+
     readStep = index => (e) => {
         const step = document.getElementById(`mathStep-${index}`);
         if (step) {
@@ -115,12 +125,12 @@ export default class MyStepsList extends Component {
     buildStep(i, value, explanation, isCleanup, isEdited, scratchpad, stepsSize) {
         let showTrash = false;
         let showEdit = false;
-        if (i > 0 && !this.props.readOnly && !isEdited) {
+        if (i > 0 && !this.isReadonly() && !isEdited) {
             showEdit = true;
         }
 
         if (i === this.props.solution.steps.length - 1
-            && this.props.solution.steps.length > 1 && !this.props.readOnly) {
+            && this.props.solution.steps.length > 1 && !this.isReadonly()) {
             showTrash = true;
         }
 
@@ -137,7 +147,7 @@ export default class MyStepsList extends Component {
                     deleteStepCallback={this.props.deleteStepCallback}
                     editStepCallback={this.props.editStepCallback}
                     deleteStepsCallback={this.props.deleteStepsCallback}
-                    readOnly={this.props.readOnly}
+                    readOnly={this.isReadonly()}
                     scratchpad={scratchpad}
                 />
             </div>
@@ -159,7 +169,7 @@ export default class MyStepsList extends Component {
             }
         });
 
-        const myWork = this.props.readOnly ? null
+        const myWork = this.isReadonly() ? null
             : (
                 <MyWork
                     allowedPalettes={this.props.allowedPalettes}
@@ -214,7 +224,7 @@ export default class MyStepsList extends Component {
                         >
                             {steps}
                         </div>
-                        {!this.props.readOnly && (
+                        {!this.isReadonly() && (
                             <div className={myStepsList.btnRow}>
                                 <Button
                                     id="prevProblem"
