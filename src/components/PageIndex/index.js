@@ -103,10 +103,13 @@ class Index extends Component {
             recentContent = (
                 <div className={`text-center ${pageIndex.signInContainer}`}>
                     <a className={pageIndex.signInLink} href="/#/signIn">
-                        Sign in
+                        {Locales.strings.sign_in}
                     </a>
                     {' '}
-                    to track your problem sets
+                    {Locales.strings.to_track}
+                    <a className={pageIndex.benefitsLink} href="https://intercom.help/benetech/en/articles/3754980-benefits-of-having-a-user-account">
+                        {Locales.strings.benefits_of_signing_in}
+                    </a>
                 </div>
             );
         } else if (userProfile.recentProblemSets === null) {
