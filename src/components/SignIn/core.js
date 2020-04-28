@@ -32,6 +32,7 @@ class SignInCore extends Component {
 
     onSuccess = (service, email, name, image) => {
         this.props.setUserProfile(email, name, image, service);
+        this.props.markUserResolved(true);
     };
 
     getReturnUrl = (routerHistory) => {
