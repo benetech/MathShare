@@ -94,7 +94,7 @@ class App extends Component {
 
         document.body.addEventListener('click', (e) => {
             const { target } = e;
-            if (target.tagName === 'A') {
+            if (target.tagName === 'A' && target.attributes && target.attributes.href) {
                 this.props.storeXPathToAnchor(getPathTo(target), target.attributes.href.value);
             }
             if (target.className.indexOf('dropdown-item') === -1) {
@@ -241,7 +241,7 @@ class App extends Component {
         this.props.saveProblemSet(orderedProblems, title);
     };
 
-    saveProblem = goBack => new Promise((resolve) => {
+    saveProblem = goTo => new Promise((resolve) => {
         if (this.props.example) {
             this.props.updateProblemStore({
                 editLink: Locales.strings.example_edit_code,
@@ -249,12 +249,12 @@ class App extends Component {
             resolve(true);
         } else {
             googleAnalytics('Save Problem');
-            this.props.commitProblemSolution(goBack === true);
+            this.props.commitProblemSolution(goTo);
         }
     });
 
     finishProblem = () => {
-        this.props.commitProblemSolution(true, false, true);
+        this.props.commitProblemSolution('back', false, true);
         googleAnalytics('Finish Problem');
     };
 
@@ -267,7 +267,7 @@ class App extends Component {
         } else {
             googleAnalytics('Share Problem');
             this.props.updateProblemSolution(this.props.problemStore.solution);
-            this.props.commitProblemSolution(false, true);
+            this.props.commitProblemSolution(null, true);
         }
     };
 
@@ -275,30 +275,29 @@ class App extends Component {
         this.props.toggleModals([VIEW_SET]);
     };
 
-    saveProblemCallback = () => {
+    saveProblemCallback = goTo => () => {
         this.props.toggleModals([CONFIRMATION_BACK]);
-        this.saveProblem(true);
+        this.saveProblem(goTo);
     };
 
-    goBack = () => {
+    isEdited = () => {
         const { problemStore, problemList } = this.props;
-        if (
-            (
-                !compareStepArrays(
-                    problemStore.solution.steps,
-                    problemStore.stepsFromLastSave,
-                )
-                || problemStore.textAreaValue
-                || (
-                    problemStore.solution.steps.length > 0
-                    && (
-                        (problemStore.theActiveMathField || problemList.theActiveMathField).$latex()
-                            !== problemStore.solution.steps.slice(-1).pop().stepValue
-                    )
-                )
+        return !compareStepArrays(
+            problemStore.solution.steps,
+            problemStore.stepsFromLastSave,
+        )
+        || problemStore.textAreaValue
+        || (
+            problemStore.solution.steps.length > 0
+            && (
+                (problemStore.theActiveMathField || problemList.theActiveMathField).$latex()
+                    !== problemStore.solution.steps.slice(-1).pop().stepValue
             )
-            && !this.props.example
-        ) {
+        );
+    }
+
+    goBack = () => {
+        if (this.isEdited() && !this.props.example) {
             this.props.toggleModals([CONFIRMATION_BACK]);
         } else {
             this.props.history.goBack();
@@ -436,6 +435,7 @@ class App extends Component {
                     <div className={`body-container ${this.getAdditionalClass()}`}>
                         <ModalContainer
                             activeModals={modal.activeModals}
+                            link={modal.link}
                             toggleModals={this.props.toggleModals}
                             updateProblemSetTitle={this.props.updateProblemSetTitle}
                             progressToAddingProblems={this.progressToAddingProblems}
@@ -532,6 +532,7 @@ export default withRouter(connect(
         problemStore: state.problem,
         userProfile: state.userProfile,
         modal: state.modal,
+        routerHooks: state.routerHooks,
     }),
     {
         ...problemActions,

@@ -5,11 +5,15 @@ import Step from './components/Step';
 import myStepsList from './styles.scss';
 import mySteps from '../../../../styles.scss';
 import MyWork from '../../../MyWork';
+import {
+    CONFIRMATION_BACK,
+} from '../../../../../ModalContainer';
 import Locales from '../../../../../../strings';
 import Button from '../../../../../Button';
 import { stopEvent } from '../../../../../../services/events';
 import { getScreenReaderText } from '../../../../../../services/screenReader';
 import completeKeyMap from '../../../../../../constants/hotkeyConfig.json';
+import { getMathshareLink } from '../../../../../../services/mathshare';
 
 
 export default class MyStepsList extends Component {
@@ -64,6 +68,48 @@ export default class MyStepsList extends Component {
 
     readPreviousStep = (e) => {
         this.readStep(this.state.readStep - 1)(e);
+    }
+
+    findProblem = stepCount => () => {
+        const {
+            problemList, problemStore, match,
+        } = this.props;
+        const { solutions, set } = problemList;
+        const { problems } = set;
+        const { solution } = problemStore;
+        const { params } = match;
+        const { action, position } = params;
+
+        let currentIndex = -1;
+        let link = null;
+        if (action !== 'edit' || !position) {
+            currentIndex = solutions && solutions.findIndex(
+                currentSolution => currentSolution.problem.id === solution.problem.id,
+            );
+            if (currentIndex > -1) {
+                const nextSolution = solutions[
+                    (solutions.length + currentIndex + stepCount) % solutions.length
+                ];
+                link = getMathshareLink(params, nextSolution, nextSolution.problem);
+            }
+        }
+        if (!link) {
+            currentIndex = problems && problems.findIndex(
+                currentProblem => currentProblem.position === Number(position),
+            );
+            if (currentIndex > -1) {
+                link = getMathshareLink(params, null, problems[
+                    (problems.length + currentIndex + stepCount) % problems.length
+                ]);
+            }
+        }
+        if (link) {
+            if (this.props.isEdited()) {
+                this.props.toggleModals([CONFIRMATION_BACK], null, link);
+            } else {
+                this.props.history.replace(link);
+            }
+        }
     }
 
     buildStep(i, value, explanation, isCleanup, isEdited, scratchpad, stepsSize) {
@@ -169,7 +215,16 @@ export default class MyStepsList extends Component {
                             {steps}
                         </div>
                         {!this.props.readOnly && (
-                            <div>
+                            <div className={myStepsList.btnRow}>
+                                <Button
+                                    id="prevProblem"
+                                    className={classNames('btn', 'default', 'pointer', myStepsList.carouselBtn)}
+                                    type="button"
+                                    icon="arrow-left"
+                                    content={Locales.strings.previous_problem}
+                                    onClick={this.findProblem(-1)}
+                                    spanStyle={myStepsList.btnContainer}
+                                />
                                 <Button
                                     id="finishBtn"
                                     className={classNames('btn', 'pointer')}
@@ -179,6 +234,16 @@ export default class MyStepsList extends Component {
                                     content={Locales.strings.finish}
                                     onClick={this.props.finishProblem}
                                     spanStyle={myStepsList.finishContainer}
+                                />
+                                <Button
+                                    id="nextProblem"
+                                    className={classNames('btn', 'default', 'pointer', myStepsList.carouselBtn)}
+                                    type="button"
+                                    icon="arrow-right"
+                                    content={Locales.strings.next_problem}
+                                    onClick={this.findProblem(1)}
+                                    spanStyle={myStepsList.btnContainer}
+                                    iconAfterContent
                                 />
                             </div>
                         )}

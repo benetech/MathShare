@@ -32,7 +32,7 @@ export const initialState = {
     shareLink: 'http:mathshare.com/exampleShareLink/1',
     editLink: Locales.strings.not_saved_yet,
     readOnly: false,
-    displayScratchpad: null,
+    displayScratchpad: () => {},
     notFound: false,
     isUpdated: false,
     lastSaved: null,
@@ -50,6 +50,8 @@ const problem = (state = initialState, {
     // error,
 }) => {
     switch (type) {
+    case 'RESET_PROBLEM':
+        return initialState;
     case 'LOAD_EXAMPLE_PROBLEM':
         return {
             ...state,

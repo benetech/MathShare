@@ -155,7 +155,7 @@ export default class ProblemHeader extends Component {
                                 )}
                             </span>
                         </h1>
-                        <span id="ProblemMath" className={`${problem.title} ${problem.question}`}>{`$$${this.props.math}$$`}</span>
+                        {this.props.math !== Locales.strings.loading && (<span id="ProblemMath" className={`${problem.title} ${problem.question}`}>{`$$${this.props.math}$$`}</span>)}
                         <span id="math-ellipsis" className={`flex-grow-1 ${problem.mathEllipsis}`}>&nbsp;</span>
                         {exampleLabel}
                         {editOnlyControls}

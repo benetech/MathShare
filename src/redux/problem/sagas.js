@@ -8,6 +8,7 @@ import {
 } from 'redux-saga/effects';
 import {
     goBack,
+    replace,
 } from 'connected-react-router';
 import {
     setProblemNotFound,
@@ -131,7 +132,7 @@ function* updateProblemSolutionSaga() {
 function* requestCommitProblemSolutionSaga() {
     yield takeLatest('REQUEST_COMMIT_PROBLEM_SOLUTION', function* workerSaga({
         payload: {
-            redirectBack,
+            redirectTo,
             shareModal,
             finished,
         },
@@ -248,8 +249,10 @@ function* requestCommitProblemSolutionSaga() {
             alertSuccess(Locales.strings.problem_saved_success_message,
                 Locales.strings.success);
 
-            if (redirectBack) {
+            if (redirectTo === 'back') {
                 yield put(goBack());
+            } else if (typeof (redirectTo) === 'string') {
+                yield put(replace(redirectTo));
             }
             if (!matchedRoute && shareCode) {
                 if (shareModal) {
