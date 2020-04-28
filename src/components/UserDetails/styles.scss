@@ -62,6 +62,10 @@
             border-color: #c4d9ff;
             max-width: 150px;
             margin-left: 20px;
+
+            &.confirmBtn {
+                margin-top: 50px;
+            }
         }
 
         .userType {
