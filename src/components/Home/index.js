@@ -239,26 +239,28 @@ class Home extends Component {
                         <h1 id="LeftNavigationHeader" className={home.titleHeader} tabIndex="-1">
                             {currentSet.title || Locales.strings.untitled_problem_set}
                         </h1>
-                        <button
-                            className="reset-btn"
-                            onClick={() => {
-                                this.props.toggleModals([TITLE_EDIT_MODAL]);
-                            }}
-                            onKeyPress={passEventForKeys(() => {
-                                this.props.toggleModals([TITLE_EDIT_MODAL]);
-                            })}
-                            type="button"
-                        >
-                            <FontAwesome
-                                name="edit"
-                                className={
-                                    classNames(
-                                        'fa-2x',
-                                    )
-                                }
-                            />
-                            <span className="sROnly">{Locales.strings.edit_title}</span>
-                        </button>
+                        {params.action !== 'solve' && (
+                            <button
+                                className="reset-btn"
+                                onClick={() => {
+                                    this.props.toggleModals([TITLE_EDIT_MODAL]);
+                                }}
+                                onKeyPress={passEventForKeys(() => {
+                                    this.props.toggleModals([TITLE_EDIT_MODAL]);
+                                })}
+                                type="button"
+                            >
+                                <FontAwesome
+                                    name="edit"
+                                    className={
+                                        classNames(
+                                            'fa-2x',
+                                        )
+                                    }
+                                />
+                                <span className="sROnly">{Locales.strings.edit_title}</span>
+                            </button>
+                        )}
                         <CommonDropdown
                             btnId="dropdownMenuButton"
                             btnClass="nav-link reset-btn"
@@ -271,7 +273,7 @@ class Home extends Component {
                             )}
                             listClass="dropdown-menu-lg-right dropdown-secondary"
                         >
-                            {params.action === 'edit' && (
+                            {(params.action === 'edit' || params.action === 'solve') && (
                                 [
                                     <button
                                         className="dropdown-item"
@@ -296,12 +298,12 @@ class Home extends Component {
                         </CommonDropdown>
                     </div>
                 </div>
-                <div className={`row flex-row ${home.btnContainer}`}>
-                    {(
-                        (
-                            params.action === 'new' && problemList.tempSet.problems.length > 0)
-                        || params.action === 'edit'
-                    ) && (
+                {(
+                    (
+                        params.action === 'new' && problemList.tempSet.problems.length > 0)
+                    || params.action === 'edit'
+                ) && (
+                    <div className={`row flex-row ${home.btnContainer}`}>
                         <RenderActionButtons>
                             <Button
                                 id="shareBtn"
@@ -372,8 +374,8 @@ class Home extends Component {
                                 <UncontrolledTooltip placement="top" target="microsoftTeamContainer2" />
                             </span>
                         </RenderActionButtons>
-                    )}
-                </div>
+                    </div>
+                )}
             </React.Fragment>
         );
     }
@@ -429,12 +431,16 @@ class Home extends Component {
                     action={params.action}
                 />
                 <main id="mainContainer" className={home.leftNavigation}>
-                    {(params.action !== 'new' && params.action !== 'edit') && (
+                    {(params.action !== 'new' && params.action !== 'edit' && params.action !== 'solve') && (
                         <NavigationHeader
                             action={params.action}
                             set={problemList.set}
                         />
                     )}
+                    {(params.action === 'new' || params.action === 'edit' || params.action === 'solve') && (
+                        this.renderNewAndEditControls(currentSet)
+                    )}
+                    <h2 id="problems_in_this_set" className="sROnly" tabIndex={-1}>{Locales.strings.problems_in_this_set}</h2>
                     {(params.action !== 'review' && (params.action !== 'edit' && params.action !== 'new')) && currentSet.problems.length > 0 && (
                         <div className={classNames([
                             'row',
@@ -542,10 +548,6 @@ class Home extends Component {
 
                         </div>
                     )}
-                    {(params.action === 'new' || params.action === 'edit') && (
-                        this.renderNewAndEditControls(currentSet)
-                    )}
-                    <h2 id="problems_in_this_set" className="sROnly" tabIndex={-1}>{Locales.strings.problems_in_this_set}</h2>
                     <NavigationProblems
                         problems={currentSet.problems}
                         solutions={problemList.solutions}
