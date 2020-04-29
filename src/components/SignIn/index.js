@@ -39,11 +39,9 @@ class SignIn extends Component {
                 </Helmet>
                 <div id="mainContainer" className={signIn.content}>
                     <SignInCore
-                        header={isSignUp ? Locales.strings.sign_up : Locales.strings.sign_in}
-                        subHeader={
+                        header={
                             isSignUp ? Locales.strings.sign_up_using : Locales.strings.login_using
                         }
-                        subHeadingSrOnly
                     >
                         <button
                             id="goBack"
