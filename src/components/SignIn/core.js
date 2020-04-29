@@ -32,6 +32,7 @@ class SignInCore extends Component {
 
     onSuccess = (service, email, name, image) => {
         this.props.setUserProfile(email, name, image, service);
+        this.props.markUserResolved(true);
     };
 
     getReturnUrl = (routerHistory) => {
@@ -101,6 +102,9 @@ class SignInCore extends Component {
                         <UncontrolledTooltip placement="top" target={this.MS_SIGN_IN} />
                     </li>
                 </ul>
+                <a className={signIn.benefitsLink} href="https://intercom.help/benetech/en/articles/3754980-benefits-of-having-a-user-account">
+                    {Locales.strings.benefits_of_signing_in}
+                </a>
                 {this.props.children}
             </>
         );

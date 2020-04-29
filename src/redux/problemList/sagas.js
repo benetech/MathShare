@@ -1,6 +1,7 @@
 import {
     all,
     call,
+    delay,
     fork,
     put,
     select,
@@ -119,7 +120,10 @@ function* requestExampleSetSaga() {
 function* requestArchivedSetSaga() {
     yield takeLatest('REQUEST_ARCHIVED_SETS', function* workerSaga() {
         try {
-            const response = yield call(fetchRecentWorkApi, { 'x-archive-mode': 'archived' });
+            const {
+                info,
+            } = yield select(getStateFromUserProfile);
+            const response = yield call(fetchRecentWorkApi(info.userType), { 'x-archive-mode': 'archived' });
             const archivedProblemSets = response.data;
             yield put({
                 type: 'REQUEST_ARCHIVED_SETS_SUCCESS',
@@ -464,10 +468,6 @@ function* requestShareSolutionsSaga() {
                     set,
                 } = yield select(getState);
 
-                const {
-                    email,
-                } = yield select(getStateFromUserProfile);
-
                 const payloadSolutions = getSolutionObjectFromProblems(set.problems);
                 const {
                     id,
@@ -480,9 +480,9 @@ function* requestShareSolutionsSaga() {
                 } = yield call(shareSolutions, code, payloadSolutions);
                 if (silent) {
                     yield put(replace(`/app/problemSet/solve/${editCode}`));
-                    if (!email) {
-                        yield put(toggleModals([SIGN_IN_MODAL]));
-                    }
+                    yield put({
+                        type: 'SHOW_SIGN_IN_PROMPT',
+                    });
                 }
                 yield put(
                     setReviewSolutions(
@@ -772,6 +772,24 @@ function* requestSubmitToPartner() {
     });
 }
 
+function* showSignInPrompt() {
+    yield takeLatest('SHOW_SIGN_IN_PROMPT', function* workerSaga() {
+        while (true) {
+            const {
+                email,
+                checking,
+            } = yield select(getStateFromUserProfile);
+            if (!checking) {
+                if (!email) {
+                    yield put(toggleModals([SIGN_IN_MODAL]));
+                }
+                break;
+            }
+            yield delay(500);
+        }
+    });
+}
+
 
 export default function* rootSaga() {
     yield all([
@@ -792,5 +810,6 @@ export default function* rootSaga() {
         fork(requestLoadProblemSetSolution),
         fork(requestPartnerSubmitOptions),
         fork(requestSubmitToPartner),
+        fork(showSignInPrompt),
     ]);
 }

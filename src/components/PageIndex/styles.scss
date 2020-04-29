@@ -87,6 +87,12 @@ div.problemSetList {
     }
 }
 
+.benefitsLink {
+    display: block;
+    border: none;
+    font-size: 14px;
+}
+
 .problemSetLibrary {
     padding-bottom: 30px;
 }
@@ -94,4 +100,8 @@ div.problemSetList {
 .recentContent {
     padding-top: 15px;
     padding-bottom: 30px;
+}
+
+.noArchivedSets {
+    padding-bottom: 50px;
 }
