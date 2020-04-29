@@ -37,7 +37,7 @@ class Locales {
                 back_to_problem_page: 'Go back to all problems',
                 backslash: 'backslash ',
                 bang: 'exclamation point',
-                benefits_of_signing_in: 'benefits of signing in',
+                benefits_of_signing_in: 'Benefits of signing in',
                 benetech: 'Benetech',
                 benetech_empowers: 'Benetech Mathshare empowers students to solve math problems and show their work so that teachers and students can see how they got there.',
                 benetech_initiative: 'Benetech Initiative',
