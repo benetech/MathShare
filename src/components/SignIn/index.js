@@ -12,7 +12,12 @@ import SignInCore from './core';
 
 class SignIn extends Component {
     goBack = () => {
-        this.props.history.goBack();
+        const { routerHistory } = this.props;
+        if (routerHistory.prev === '#/' || routerHistory.prev === window.location.hash) {
+            this.props.history.push('app');
+        } else {
+            this.props.history.goBack();
+        }
     };
 
     render() {
@@ -34,8 +39,7 @@ class SignIn extends Component {
                 </Helmet>
                 <div id="mainContainer" className={signIn.content}>
                     <SignInCore
-                        header={isSignUp ? Locales.strings.sign_up : Locales.strings.sign_in}
-                        subHeader={
+                        header={
                             isSignUp ? Locales.strings.sign_up_using : Locales.strings.login_using
                         }
                     >

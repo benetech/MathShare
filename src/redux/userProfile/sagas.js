@@ -16,6 +16,7 @@ import { goBack, push, replace } from 'connected-react-router';
 import * as dayjs from 'dayjs';
 import {
     fetchRecentWork,
+    markUserResolved,
     resetUserProfile,
     setUserProfile,
     setAuthRedirect,
@@ -83,6 +84,7 @@ function* checkUserLoginSaga() {
                     yield put(setMobileNotifySuccess(userInfoResponse.data.notifyForMobile));
                 }
             } catch (infoError) {
+                yield put(markUserResolved(true));
                 yield put(setAuthRedirect((window.location.hash || '').substring(1)));
                 if (window.location.hash !== '#/userDetails') {
                     alertInfo(

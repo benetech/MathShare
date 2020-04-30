@@ -32,6 +32,7 @@ class SignInCore extends Component {
 
     onSuccess = (service, email, name, image) => {
         this.props.setUserProfile(email, name, image, service);
+        this.props.markUserResolved(true);
     };
 
     getReturnUrl = (routerHistory) => {
@@ -76,7 +77,7 @@ class SignInCore extends Component {
 
     render() {
         const {
-            routerHistory, userProfile, header, subHeader, subHeadingSrOnly,
+            routerHistory, userProfile, header,
         } = this.props;
 
         if (userProfile.email) {
@@ -87,10 +88,7 @@ class SignInCore extends Component {
                 <div className={signIn.logo}>
                     <img src={logo} alt={Locales.strings.mathshare_logo} />
                 </div>
-                <h1 className={signIn.header} tabIndex={-1}>{header}</h1>
-                <h2 id="signInServices" className={`${signIn.text} ${subHeadingSrOnly ? 'sROnly' : ''}`}>
-                    {subHeader}
-                </h2>
+                <h1 id="signInServices" className={signIn.header} tabIndex={-1}>{header}</h1>
                 <ul className={signIn.buttonsContainer} aria-labelledby="signInServices">
                     <li>
                         {this.renderGoogleBtn(routerHistory)}

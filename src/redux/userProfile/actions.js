@@ -8,6 +8,13 @@ export const setUserProfile = (email, name, profileImage, service) => ({
     },
 });
 
+export const markUserResolved = resolved => ({
+    type: 'MARK_USER_RESOLVED',
+    payload: {
+        resolved,
+    },
+});
+
 export const checkUserLogin = redirect => ({
     type: 'CHECK_USER_LOGIN',
     payload: {
@@ -112,4 +119,5 @@ export default {
     savePersonalizationSettings,
     setPersonalizationSettings,
     setUserInfo,
+    markUserResolved,
 };
