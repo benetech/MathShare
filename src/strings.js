@@ -66,7 +66,7 @@ class Locales {
                 continue_without_signing_up: 'Continue without signing up',
                 copy: ' Copy',
                 copy_this_link: 'Copy this link to the problem set and give to your students',
-                copyright: 'Copyright 2019 Benetech. All rights reserved.',
+                copyright: `Copyright ${new Date().getFullYear()} Benetech. All rights reserved.`,
                 create_a_problem_set: 'Create a Problem Set',
                 created_problem_set: 'Problem Set has been created',
                 current_problems: 'Current Problems',
