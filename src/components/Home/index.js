@@ -80,8 +80,6 @@ class Home extends Component {
             problemList,
             userProfile,
         } = this.props;
-        console.log('newProblemSet userProfile', userProfile);
-        console.log('newProblemSet problemList.tempPalettes', problemList.tempPalettes);
         if (userProfile.checking) {
             setTimeout(this.newProblemSet, 500);
         } else if (!problemList.tempPalettes || problemList.tempPalettes.length === 0) {

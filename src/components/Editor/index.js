@@ -19,7 +19,6 @@ import Locales from '../../strings';
 import googleAnalytics from '../../scripts/googleAnalytics';
 import exampleProblem from './example.json';
 import scrollTo from '../../scripts/scrollTo';
-import SkipContent from '../Home/components/SkipContent';
 
 const mathLive = process.env.MATHLIVE_DEBUG_MODE ? require('../../../../mathlive/src/mathlive.js').default
     : require('../../lib/mathlivedist/mathlive.js');
@@ -267,7 +266,6 @@ class Editor extends Component {
                     action={params.action}
                 />
                 <main id="MainWorkArea" className={editor.editorAndHistoryWrapper}>
-                    <SkipContent />
                     <ProblemHeader
                         {...this}
                         {...this.props}

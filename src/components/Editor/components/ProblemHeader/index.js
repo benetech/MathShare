@@ -123,24 +123,6 @@ export default class ProblemHeader extends Component {
                     allowChanges
                 />
                 <div className={`d-flex flex-row ${problem.header}`}>
-                    <div className={problem.backBtnContainer}>
-                        <Button
-                            id="backBtn"
-                            className={classNames('btn', 'pointer', problem.button)}
-                            additionalStyles={['default']}
-                            type="button"
-                            icon="arrow-left"
-                            onClick={this.props.goBack}
-                            tabIndex="-1"
-                            ariaLabel={Locales.strings.back_to_problem_page}
-                            content={(
-                                <React.Fragment>
-                                    <span className="sROnly">{Locales.strings.back_to_problem_page}</span>
-                                    <span>{Locales.strings.all_problems}</span>
-                                </React.Fragment>
-                            )}
-                        />
-                    </div>
                     <div id="mainContainer" className={`d-flex flex-row ${problem.subHeader}`}>
                         {imgButton}
                         <h1 id="ProblemTitle" className={problem.title} tabIndex={-1}>
@@ -158,6 +140,21 @@ export default class ProblemHeader extends Component {
                         <span id="ProblemMath" className={`${problem.title} ${problem.question}`}>{`$$${this.props.math}$$`}</span>
                         <span id="math-ellipsis" className={`flex-grow-1 ${problem.mathEllipsis}`}>&nbsp;</span>
                         {exampleLabel}
+                        <Button
+                            id="backBtn"
+                            className={classNames('btn', 'pointer', problem.button)}
+                            additionalStyles={['default']}
+                            type="button"
+                            icon="arrow-left"
+                            onClick={this.props.goBack}
+                            ariaLabel={Locales.strings.back_to_problem_page}
+                            content={(
+                                <React.Fragment>
+                                    <span className="sROnly">{Locales.strings.back_to_problem_page}</span>
+                                    <span>{Locales.strings.all_problems}</span>
+                                </React.Fragment>
+                            )}
+                        />
                         {editOnlyControls}
                         <Tour
                             onRequestClose={this.closeTour}

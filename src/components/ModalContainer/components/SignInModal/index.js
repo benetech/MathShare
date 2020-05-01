@@ -18,9 +18,7 @@ export default class SignInModal extends Component {
                 <div className={signInModal.modal}>
                     <div className={signInModal.content}>
                         <SignInCore
-                            header={Locales.strings.save_work_by_signing_in}
-                            subHeader={Locales.strings.login_using}
-                            subHeadingSrOnly
+                            header={Locales.strings.login_using}
                         />
                     </div>
                     <footer className={signInModal.modalFooter}>
