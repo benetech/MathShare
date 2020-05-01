@@ -49,6 +49,16 @@ const loginAlertId = 'login-alert';
 const redirectAlertId = 'redirect-info';
 const redirectWait = 2500;
 
+const getFormattedUserType = (userType) => {
+    if (userType === 'teacher') {
+        return 'Teacher';
+    }
+    if (userType === 'student') {
+        return 'Student';
+    }
+    return 'Undefined';
+};
+
 function* checkUserLoginSaga() {
     yield throttle(60000, 'CHECK_USER_LOGIN', function* workerSaga() {
         let loginStarted = false;
@@ -81,7 +91,6 @@ function* checkUserLoginSaga() {
                     throw Error('User info not set');
                 } else {
                     yield put(setUserInfo(userInfoResponse.data));
-                    yield put(setMobileNotifySuccess(userInfoResponse.data.notifyForMobile));
                 }
             } catch (infoError) {
                 yield put(markUserResolved(true));
@@ -186,7 +195,7 @@ function* saveUserInfoSaga() {
                 role,
             } = payload;
             IntercomAPI('trackEvent', 'user-details', {
-                userType,
+                userType: getFormattedUserType(userType),
                 grades,
                 role,
             });
@@ -316,6 +325,15 @@ function* logoutSaga() {
     });
 }
 
+function* setUserInfoSaga() {
+    yield takeLatest('SET_USER_INFO', function* workerSaga({
+        payload,
+    }) {
+        yield put(setMobileNotifySuccess(payload.notifyForMobile));
+        ReactGA.set({ UserType: getFormattedUserType(payload.userType) });
+    });
+}
+
 export default function* rootSaga() {
     yield all([
         fork(checkUserLoginSaga),
@@ -326,5 +344,6 @@ export default function* rootSaga() {
         fork(logoutSaga),
         fork(setMobileNotifySaga),
         fork(savePersonalizationSettingsSaga),
+        fork(setUserInfoSaga),
     ]);
 }
