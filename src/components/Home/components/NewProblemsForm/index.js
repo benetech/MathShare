@@ -23,7 +23,6 @@ export default class NewProblemsForm extends Component {
 
         this.state = {
             problems: [],
-            textAreaValue: '',
             displayScratchpad: null,
             title: `${Locales.strings.new_problem_set} ${dayjs().format('MM-DD-YYYY')}`,
         };
@@ -34,9 +33,7 @@ export default class NewProblemsForm extends Component {
     }
 
     componentWillReceiveProps(newProps) {
-        const text = newProps.editing ? newProps.problemToEdit.title : '';
         this.setState({
-            textAreaValue: text,
             problems: newProps.problems,
         });
     }
@@ -66,7 +63,7 @@ export default class NewProblemsForm extends Component {
     }
 
     textAreaChanged = (text) => {
-        this.setState({ textAreaValue: text });
+        this.props.updateProblemStore({ textAreaValue: text });
     }
 
     reorder = (oldIndex, newIndex) => {
@@ -182,7 +179,7 @@ export default class NewProblemsForm extends Component {
                     <td className={styles.cell}>
                         {`$$${problem.text}$$`}
                     </td>
-                    <td className={styles.cell}>
+                    <td className={`${styles.cell} ${styles.titleCell}`}>
                         {`$$${parseMathLive(problem.title)}}$$`}
                     </td>
                     <td className={styles.rowControl}>
@@ -201,9 +198,8 @@ export default class NewProblemsForm extends Component {
                     <div className="sROnly">{Locales.strings.current_problems}</div>
                 </caption>
                 <thead>
-                    <tr key="header-row">
+                    <tr className={styles.headerRow} key="header-row">
                         <th scope="col">
-                            {Locales.strings.hash}
                             <div className="sROnly">
                                 {Locales.strings.number}
                             </div>
@@ -211,10 +207,10 @@ export default class NewProblemsForm extends Component {
                         <th scope="col">
                             {Locales.strings.equation}
                         </th>
-                        <th scope="col">
-                            {Locales.strings.title}
+                        <th className={styles.titleCell} scope="col">
+                            {Locales.strings.prompt}
                         </th>
-                        <th scope="col">
+                        <th className={styles.tableControlHeader} scope="col">
                             <div className="sROnly">
                                 {Locales.strings.problem_row_controls}
                             </div>
@@ -250,11 +246,11 @@ export default class NewProblemsForm extends Component {
                     className="btn"
                     additionalStyles={['withRightMargin', 'default', 'right']}
                     icon="check"
-                    content={Locales.strings.done}
+                    content={this.props.editing ? Locales.strings.close : Locales.strings.done}
                     onClick={this.props.deactivateModal}
                 />
             );
-        doneButton = (this.props.editing || this.props.newProblemSet) ? null : doneButton;
+        doneButton = (this.props.newProblemSet) ? null : doneButton;
         const cancelButton = this.props.newProblemSet
             ? (
                 <Button
@@ -288,7 +284,7 @@ export default class NewProblemsForm extends Component {
                         activateMathField={this.props.activateMathField}
                         theActiveMathField={this.props.theActiveMathField}
                         textAreaChanged={this.textAreaChanged}
-                        textAreaValue={this.state.textAreaValue}
+                        textAreaValue={this.props.textAreaValue}
                         addStepCallback={this.addProblem}
                         editing={false}
                         history={[]}

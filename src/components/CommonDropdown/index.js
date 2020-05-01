@@ -53,6 +53,7 @@ class CommonDropdown extends Component {
                     {((children.map && children)
                         || (children.props ? children.props.children : null)
                         || [])
+                        .filter(child => child)
                         .map((child, index) => (
                             <li key={child.key || `dropdown-item-${index}`}>
                                 {child}

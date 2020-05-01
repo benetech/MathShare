@@ -108,7 +108,9 @@ export default class Problem extends Component {
     buildProblemText = () => `$$${this.props.problem.text}$$`
 
     getLink = () => {
-        const { action, solutions, problem } = this.props;
+        const {
+            action, solutions, problem, code,
+        } = this.props;
         if (this.props.example) {
             return '/#/app/problem/example/';
         }
@@ -121,6 +123,9 @@ export default class Problem extends Component {
                     return `/#/app/problem/edit/${currentSolution.editCode}`;
                 }
                 return `/#/app/problem/view/${currentSolution.shareCode}`;
+            }
+            if (action === 'edit') {
+                return `/#/app/problemSet/edit/${code}/${problem.position}`;
             }
         }
         return null;

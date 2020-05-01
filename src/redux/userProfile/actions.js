@@ -92,6 +92,11 @@ export const setPersonalizationSettings = payload => ({
     payload,
 });
 
+export const setUserInfo = payload => ({
+    type: 'SET_USER_INFO',
+    payload,
+});
+
 export default {
     checkUserLogin,
     fetchRecentWork,
@@ -106,4 +111,5 @@ export default {
     handleSuccessfulLogin,
     savePersonalizationSettings,
     setPersonalizationSettings,
+    setUserInfo,
 };

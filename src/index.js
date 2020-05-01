@@ -1,6 +1,5 @@
 import React from 'react';
-import { render } from 'react-dom';
-import { HashRouter } from 'react-router-dom';
+import ReactDOM, { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
 import configureStore, { history } from './redux/configureStore';
@@ -16,12 +15,19 @@ import './styles/styles.scss';
 
 import '../images/favicon.png';
 
-render((
+const app = (
     <Provider store={configureStore()}>
         <ConnectedRouter history={history}>
-            <HashRouter>
-                <App />
-            </HashRouter>
+            <App />
         </ConnectedRouter>
     </Provider>
-), document.getElementById('root'));
+);
+
+if (process.env.NODE_ENV === 'development') {
+    import('react-axe').then((axe) => {
+        axe.default(React, ReactDOM, 1000);
+        render(app, document.getElementById('root'));
+    });
+} else {
+    render(app, document.getElementById('root'));
+}

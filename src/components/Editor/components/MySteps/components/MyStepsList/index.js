@@ -134,6 +134,7 @@ export default class MyStepsList extends Component {
                     showDelete={this.props.showDelete}
                     title={Locales.strings.my_work}
                     bindDisplayFunction={this.props.bindDisplayFunction}
+                    isStepView
                 />
             );
 

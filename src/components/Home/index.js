@@ -12,7 +12,8 @@ import { TITLE_EDIT_MODAL, PALETTE_CHOOSER } from '../ModalContainer';
 import NotFound from '../NotFound';
 import home from './styles.scss';
 import Locales from '../../strings';
-import problemActions from '../../redux/problemList/actions';
+import problemListActions from '../../redux/problemList/actions';
+import problemActions from '../../redux/problem/actions';
 import Button from '../Button';
 import googleClassroomIcon from '../../../images/google-classroom-icon.png';
 import msTeamIcon from '../../../images/ms-team-icon.svg';
@@ -55,28 +56,64 @@ class Home extends Component {
             if (!problemList.tempPalettes || problemList.tempPalettes.length === 0) {
                 this.props.toggleModals([PALETTE_CHOOSER]);
             }
-        } else if (action === 'solve') {
-            this.props.loadProblemSetSolutionByEditCode(code);
         } else {
-            this.props.requestProblemSet(action, code);
+            this.loadData(action, code);
         }
-        // mathLive.renderMathInDocument();
     }
 
 
     componentWillReceiveProps(newProps) {
         const {
+            action,
             code,
         } = this.props.match.params;
         const newParams = newProps.match.params;
-        if (newParams.action !== 'solve' && newParams.code !== code && newParams.action && newParams.code) {
-            this.props.requestProblemSet(newParams.action, newParams.code);
+        if (newParams.code !== code && newParams.action !== action
+            && newParams.action && newParams.code
+            && action !== 'view' && newParams.action !== 'solve') {
+            this.loadData(newParams.action, newParams.code);
         }
         setTimeout(() => {
             if (window && window.shareToMicrosoftTeams) {
                 window.shareToMicrosoftTeams.renderButtons();
             }
         }, 0);
+    }
+
+    loadData = (action, code) => {
+        const {
+            problemList,
+        } = this.props;
+        const {
+            set, solutions, title, archiveMode, source, reviewCode,
+        } = problemList;
+        const { editCode } = set;
+        if (action === 'edit' || action === 'solve') {
+            if (editCode === code) {
+                if (action === 'edit') {
+                    this.props.requestProblemSetSuccess(set);
+                }
+                if (action === 'solve') {
+                    this.props.setReviewSolutions(
+                        set.id, solutions, reviewCode, editCode, title, archiveMode, source,
+                    );
+                }
+                return;
+            }
+        }
+
+        if (action === 'review' && reviewCode === code) {
+            this.props.setReviewSolutions(
+                set.id, solutions, reviewCode, editCode, title, archiveMode, source,
+            );
+            return;
+        }
+
+        if (action === 'solve') {
+            this.props.loadProblemSetSolutionByEditCode(code);
+        } else {
+            this.props.requestProblemSet(action, code);
+        }
     }
 
     shareOnTwitter = () => {
@@ -217,55 +254,24 @@ class Home extends Component {
                             listClass="dropdown-menu-lg-right dropdown-secondary"
                         >
                             {params.action === 'edit' && (
-                                <React.Fragment>
-                                    <button
-                                        className="dropdown-item"
-                                        onClick={this.props.duplicateProblemSet}
-                                        onKeyPress={
-                                            passEventForKeys(this.props.duplicateProblemSet)
-                                        }
-                                        type="button"
-                                    >
-                                        <FontAwesome
-                                            size="lg"
-                                            name="copy"
-                                        />
-                                        {` ${Locales.strings.duplicate_set}`}
-                                        <span className="sROnly">
-                                            {'\u00A0'}
-                                            {Locales.strings.opens_in_new_tab}
-                                        </span>
-                                    </button>
-                                    <button
-                                        className="dropdown-item"
-                                        onClick={this.shareOnTwitter}
-                                        onKeyPress={passEventForKeys(this.shareOnTwitter)}
-                                        type="button"
-                                    >
-                                        <FontAwesome
-                                            size="lg"
-                                            name="twitter"
-                                        />
-                                        {` ${Locales.strings.share_on_twitter}`}
-                                        <span className="sROnly">
-                                            {'\u00A0'}
-                                            {Locales.strings.opens_in_new_tab}
-                                        </span>
-                                    </button>
-                                    <Button
-                                        id="viewAsStudent"
-                                        className={classNames([
-                                            'dropdown-item',
-                                        ])}
-                                        type="button"
-                                        icon="eye"
-                                        content={Locales.strings.view_as_student}
-                                        onClick={this.saveProblemSet(currentSet, true)}
-                                        onKeyPress={passEventForKeys(
-                                            this.saveProblemSet(currentSet, true),
-                                        )}
+                                <button
+                                    className="dropdown-item"
+                                    onClick={this.props.duplicateProblemSet}
+                                    onKeyPress={
+                                        passEventForKeys(this.props.duplicateProblemSet)
+                                    }
+                                    type="button"
+                                >
+                                    <FontAwesome
+                                        size="lg"
+                                        name="copy"
                                     />
-                                </React.Fragment>
+                                    {` ${Locales.strings.duplicate_set}`}
+                                    <span className="sROnly">
+                                        {'\u00A0'}
+                                        {Locales.strings.opens_in_new_tab}
+                                    </span>
+                                </button>
                             )}
                         </CommonDropdown>
                     </div>
@@ -494,6 +500,24 @@ class Home extends Component {
                                     </button>
                                     <UncontrolledTooltip placement="top" target="microsoftTeamContainer1" />
                                 </span>
+                                {currentSet.partner && currentSet.partner.canSubmit && (
+                                    <Button
+                                        id="partnerBtn"
+                                        className={classNames([
+                                            'btn',
+                                            'btn-outline-dark',
+                                        ])}
+                                        type="button"
+                                        content={Locales.strings.submit_to_partner.replace('{partner}', currentSet.partner.name)}
+                                        onClick={() => {
+                                            this.props.submitToPartner(
+                                                currentSet.id,
+                                                problemList.editCode,
+                                                problemList.reviewCode,
+                                            );
+                                        }}
+                                    />
+                                )}
                             </RenderActionButtons>
 
                         </div>
@@ -522,5 +546,8 @@ export default connect(
     state => ({
         problemList: state.problemList,
     }),
-    problemActions,
+    {
+        ...problemActions,
+        ...problemListActions,
+    },
 )(Home);

@@ -19,10 +19,16 @@ import {
     getState,
 } from './selectors';
 import {
+    matchCurrentRoute,
+} from '../router/selectors';
+import {
     fetchProblemSolutionApi,
     updateProblemSolutionApi,
     updateProblemSolutionSetApi,
 } from './apis';
+import {
+    updateProblemStepsInSet,
+} from '../problemList/apis';
 import {
     getState as getProblemListState,
 } from '../problemList/selectors';
@@ -56,24 +62,44 @@ function* requestLoadProblemSaga() {
             if (response.status !== 200) {
                 yield put(setProblemNotFound());
             } else {
-                const solution = response.data;
-                yield put(updateProblemSolution(solution, true));
-                const {
-                    theActiveMathField,
-                } = yield select(getProblemListState);
-                theActiveMathField.$latex(solution.steps[solution.steps.length - 1].stepValue);
-                yield put(setSolutionData(solution, action));
-                const {
-                    problemSetSolutionEditCode,
-                } = solution;
-                if (problemSetSolutionEditCode) {
-                    yield put(loadProblemSetSolutionByEditCode(problemSetSolutionEditCode));
+                const { data } = response;
+                if (action === 'view') {
+                    data.shareCode = code;
                 }
+                yield put({
+                    type: 'PROCESS_FETCHED_PROBLEM',
+                    payload: {
+                        action,
+                        solution: data,
+                    },
+                });
             }
             // yield put(push(`/app/problemSet/view/${revisionCode}`));
         } catch (error) {
             // dispatch a failure action to the store with the error
             yield put(setProblemNotFound());
+        }
+    });
+}
+
+function* processFetchedProblem() {
+    yield takeLatest('PROCESS_FETCHED_PROBLEM', function* workerSaga({
+        payload: {
+            action,
+            solution,
+        },
+    }) {
+        yield put(updateProblemSolution(solution, true));
+        const {
+            theActiveMathField,
+        } = yield select(getProblemListState);
+        theActiveMathField.$latex(solution.steps[solution.steps.length - 1].stepValue);
+        yield put(setSolutionData(solution, action));
+        const {
+            problemSetSolutionEditCode,
+        } = solution;
+        if (problemSetSolutionEditCode) {
+            yield put(loadProblemSetSolutionByEditCode(problemSetSolutionEditCode));
         }
     });
 }
@@ -112,10 +138,44 @@ function* requestCommitProblemSolutionSaga() {
         try {
             const {
                 solution,
+                textAreaValue,
+                work,
+                editorPosition,
             } = yield select(getState);
+            let finalEditorPosition = editorPosition;
+            const {
+                theActiveMathField,
+            } = yield select(getProblemListState);
+            const { steps } = solution;
+            if (textAreaValue
+                || (
+                    solution.steps.length > 0
+                    && theActiveMathField.$latex() !== solution.steps.slice(-1).pop().stepValue
+                )) {
+                steps.push({
+                    scratchpad: work.scratchpadContent,
+                    explanation: textAreaValue,
+                    stepValue: theActiveMathField.$latex(),
+                });
+                finalEditorPosition = steps.length;
+            }
             const problemListState = yield select(getProblemListState);
             let shareCode = '';
-            if (problemListState.editCode) {
+            const matchedRoute = yield select(
+                matchCurrentRoute('/app/problemSet/:action/:editCode/:position'),
+            );
+            if (matchedRoute) {
+                const { params } = matchedRoute;
+                const { editCode } = params;
+                const problemId = solution.problem.id;
+                const response = yield call(
+                    updateProblemStepsInSet, editCode, problemId, steps,
+                );
+                if (response.status !== 201) {
+                    alertError('Unable to save problem', 'Error');
+                    return;
+                }
+            } else if (problemListState.editCode) {
                 const payloadSolutions = problemListState.solutions.map((currentSolution) => {
                     if (currentSolution.problem.id === solution.problem.id) {
                         return solution;
@@ -130,12 +190,19 @@ function* requestCommitProblemSolutionSaga() {
                     return;
                 }
                 const {
+                    id,
+                    archiveMode,
                     reviewCode,
                     solutions,
                     editCode,
                     title,
+                    source,
                 } = response.data;
-                yield put(setReviewSolutions(solutions, reviewCode, editCode, title));
+                yield put(
+                    setReviewSolutions(
+                        id, solutions, reviewCode, editCode, title, archiveMode, source,
+                    ),
+                );
                 yield put(setProblemSetShareCode(reviewCode));
                 const updatedSolution = solutions.find(currentSolution => (
                     solution.problem.id === currentSolution.problem.id));
@@ -144,38 +211,49 @@ function* requestCommitProblemSolutionSaga() {
                     shareCode = updatedSolution.shareCode;
                 }
             } else {
-                const response = yield call(updateProblemSolutionApi, solution.editCode, solution);
-                if (response.status !== 200) {
+                const response = yield call(
+                    updateProblemSolutionApi, solution.editCode, solution,
+                );
+                if (response.status !== 201) {
                     alertError('Unable to update problem set solution', 'Error');
                     return;
                 }
                 yield put(updateProblemSolution(response.data));
                 shareCode = response.data.shareCode;
             }
+            let problemStorePayload = {
+                stepsFromLastSave: JSON.parse(JSON.stringify(steps)),
+                lastSaved: (new Date().toLocaleString('en-US', {
+                    hour: 'numeric',
+                    minute: 'numeric',
+                    hour12: true,
+                })),
+                isUpdated: false,
+            };
             if (!shareModal) {
-                yield put(updateProblemStore({
+                problemStorePayload = {
+                    ...problemStorePayload,
                     editLink: `${FRONTEND_URL}/app/problem/edit/${solution.editCode}`,
                     shareLink: `${FRONTEND_URL}/app/problem/view/${shareCode}`,
-                    stepsFromLastSave: JSON.parse(JSON.stringify(solution.steps)),
-                    lastSaved: (new Date().toLocaleString('en-US', {
-                        hour: 'numeric',
-                        minute: 'numeric',
-                        hour12: true,
-                    })),
-                    isUpdated: false,
-                }));
+                    editorPosition: finalEditorPosition,
+                    textAreaValue: '',
+                };
             }
+            yield put(updateProblemStore(problemStorePayload));
+
             alertSuccess(Locales.strings.problem_saved_success_message,
                 Locales.strings.success);
 
             if (redirectBack) {
                 yield put(goBack());
             }
-            if (shareModal) {
-                yield put(updateProblemStore({
-                    shareLink: `${FRONTEND_URL}/app/problem/view/${shareCode}`,
-                }));
-                yield put(toggleModals([SHARE_SET]));
+            if (!matchedRoute && shareCode) {
+                if (shareModal) {
+                    yield put(updateProblemStore({
+                        shareLink: `${FRONTEND_URL}/app/problem/view/${shareCode}`,
+                    }));
+                    yield put(toggleModals([SHARE_SET]));
+                }
             }
         } catch (error) {
             // dispatch a failure action to the store with the error
@@ -191,6 +269,7 @@ function* requestCommitProblemSolutionSaga() {
 
 export default function* rootSaga() {
     yield all([
+        fork(processFetchedProblem),
         fork(requestLoadProblemSaga),
         fork(updateProblemSolutionSaga),
         fork(requestCommitProblemSolutionSaga),

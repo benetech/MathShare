@@ -8,11 +8,12 @@ import Button from '../../../Button';
 import { setMobileNotify } from '../../../../redux/userProfile/actions';
 import { alertWarning } from '../../../../scripts/alert';
 import Locales from '../../../../strings';
+import { sessionStore } from '../../../../scripts/storage';
 
 class UpcomingMobileHeader extends React.Component {
     constructor(props) {
         super(props);
-        const expiry = sessionStorage.getItem('hide_mobile_support_banner');
+        const expiry = sessionStore.getItem('hide_mobile_support_banner');
         let hide = !isMobile;
         if (!hide && expiry && dayjs().isBefore(dayjs(expiry))) {
             hide = true;
@@ -119,7 +120,7 @@ class UpcomingMobileHeader extends React.Component {
                                 this.setState({
                                     hide: true,
                                 }, () => {
-                                    sessionStorage.setItem('hide_mobile_support_banner', dayjs().add(1, 'hour').toISOString());
+                                    sessionStore.setItem('hide_mobile_support_banner', dayjs().add(1, 'hour').toISOString());
                                 });
                             }
                         }}

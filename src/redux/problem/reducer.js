@@ -1,3 +1,6 @@
+import {
+    LOCATION_CHANGE,
+} from 'connected-react-router';
 import Locales from '../../strings';
 import {
     countEditorPosition,
@@ -34,6 +37,11 @@ export const initialState = {
     isUpdated: false,
     lastSaved: null,
     tourOpen: false,
+    work: {
+        isScratchpadUsed: false,
+        scratchpadMode: false,
+        scratchpadContent: null,
+    },
 };
 
 const problem = (state = initialState, {
@@ -54,6 +62,8 @@ const problem = (state = initialState, {
             allowedPalettes: 'Edit;Operators;Notations;Geometry',
             tourOpen: false,
             actionsStack: [],
+            textAreaValue: '',
+            work: initialState.work,
         };
     case 'SET_PROBLEM_NOT_FOUND':
         return {
@@ -70,6 +80,8 @@ const problem = (state = initialState, {
             allowedPalettes: payload.solution.palettes,
             tourOpen: false,
             actionsStack: [],
+            textAreaValue: '',
+            work: initialState.work,
         };
     case 'UPDATE_PROBLEM_STORE':
         return {
@@ -91,6 +103,39 @@ const problem = (state = initialState, {
             ...state,
             tourOpen: !state.tourOpen,
         };
+    case 'UPDATE_WORK':
+        return {
+            ...state,
+            work: {
+                ...state.work,
+                ...payload,
+            },
+        };
+    case 'CLEAR_SCRATCH_PAD_CONTENT': {
+        try {
+            if (state.work.scratchPadPainterro) {
+                state.work.scratchPadPainterro.clear();
+            }
+        // eslint-disable-next-line no-empty
+        } catch (error) { }
+        return {
+            ...state,
+            work: {
+                ...state.work,
+                scratchpadContent: initialState.work.scratchpadContent,
+            },
+        };
+    }
+    case LOCATION_CHANGE:
+        if (payload.action === 'POP' && payload.location.pathname.indexOf('/app/problemSet/') > -1) {
+            return {
+                ...state,
+                textAreaValue: initialState.textAreaValue,
+                stepsFromLastSave: initialState.stepsFromLastSave,
+                solution: initialState.solution,
+            };
+        }
+        return state;
     default:
         return state;
     }

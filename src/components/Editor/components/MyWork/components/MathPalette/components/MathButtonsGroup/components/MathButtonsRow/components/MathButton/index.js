@@ -76,7 +76,7 @@ export default class MathButton extends Component {
         this.state = {
             // Global var to share the representation used for crossouts
             // The crossout style properties are defined in CSS styles file
-            CrossoutTeXString: '\\enclose{updiagonalstrike downdiagonalstrike}[2px solid blue]',
+            CrossoutTeXString: '\\enclose{updiagonalstrike downdiagonalstrike}[2px solid #4040ff]',
             UpdateMathFieldMode: false,
         };
     }
@@ -177,7 +177,7 @@ export default class MathButton extends Component {
                     this.pickr.setColor(hexColor);
                 }
                 // eslint-disable-next-line no-underscore-dangle
-                theActiveMathField.applyStyle_({ color: hexColor });
+                theActiveMathField.$applyStyle({ color: hexColor });
                 theActiveMathField.$focus();
             });
         }

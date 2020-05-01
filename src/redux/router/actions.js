@@ -12,7 +12,16 @@ export const changeTitle = title => ({
     },
 });
 
+export const storeXPathToAnchor = (path, href) => ({
+    type: 'STORE_X_PATH',
+    payload: {
+        path,
+        href,
+    },
+});
+
 export default {
     changeTitle,
     setTitle,
+    storeXPathToAnchor,
 };

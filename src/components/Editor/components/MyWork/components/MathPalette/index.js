@@ -4,6 +4,7 @@ import MathButtonsGroup from './components/MathButtonsGroup';
 import paletteStyle from './styles.scss';
 import palettes from '../../../../../palettes.json';
 import Locales from '../../../../../../strings';
+import { sessionStore } from '../../../../../../scripts/storage';
 import { alertWarning } from '../../../../../../scripts/alert';
 
 /* eslint-disable react/no-string-refs */
@@ -28,11 +29,12 @@ export default class MathPalette extends Component {
                 });
             });
         });
-        sessionStorage.keyShortcuts = JSON.stringify(Array.from(keyShortcuts.entries()));
+        sessionStore.setItem('keyShortcuts', JSON.stringify(Array.from(keyShortcuts.entries())));
     }
 
     render() {
         const allowedPalettes = palettes.filter(palette => (!this.props.allowedPalettes
+            || this.props.allowedPalettes.length === 0
             || this.props.allowedPalettes.includes(palette.label)));
         this.initializeKeyShortcuts(allowedPalettes);
         const mathPalette = allowedPalettes.map((palette, i) => (
