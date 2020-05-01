@@ -9,6 +9,7 @@ import MainPageHeader from './components/Header';
 import NavigationHeader from './components/Navigation/Header';
 import NavigationProblems from './components/Navigation/Problems';
 import { TITLE_EDIT_MODAL, PALETTE_CHOOSER } from '../ModalContainer';
+import googleAnalytics from '../../scripts/googleAnalytics';
 import NotFound from '../NotFound';
 import home from './styles.scss';
 import Locales from '../../strings';
@@ -221,6 +222,23 @@ class Home extends Component {
         }
     }
 
+    copyResumeWorkUrl = () => {
+        this.focusTextInput();
+        document.execCommand('copy');
+        googleAnalytics('pressed copy resume work link button');
+        IntercomAPI('trackEvent', 'pressed-copy-resume-work-link-button');
+    }
+
+    focusTextInput = () => {
+        const copyText = document.getElementById('resumeWorkUrl');
+        copyText.select();
+    }
+
+    sendResumeLinkClickEvent = () => {
+        googleAnalytics('clicked on resume work link');
+        IntercomAPI('trackEvent', 'clicked-resume-work-link');
+    }
+
     renderNewAndEditControls = (currentSet) => {
         const {
             match,
@@ -400,6 +418,55 @@ class Home extends Component {
         );
     }
 
+    renderNotLoggedInWarning = () => {
+        const { userProfile, match } = this.props;
+        const { params } = match;
+        if (params.action !== 'edit' && params.action !== 'solve') {
+            return null;
+        }
+        if (userProfile.checking || userProfile.email) {
+            return null;
+        }
+        return (
+            <>
+                <div className="row">
+                    <h2 id="resumeWorkDesc" className={home.loginWarning}>
+                        <span className={home.warningText}>
+                            {Locales.strings.warning}
+                            {': '}
+                        </span>
+                        {params.action === 'solve' ? Locales.strings.return_to_your_work_later : Locales.strings.return_to_your_problem_later}
+                    </h2>
+                </div>
+                <div className="row">
+                    <div className={home.shareLink}>
+                        <input
+                            id="resumeWorkUrl"
+                            type="text"
+                            aria-labelledby="resumeWorkDesc"
+                            value={window.location.href}
+                            readOnly
+                            onFocus={this.focusTextInput}
+                            onClick={this.sendResumeLinkClickEvent}
+                        />
+                        <Button
+                            id="copyBtn"
+                            iconSize="sm"
+                            className={classNames([
+                                'btn',
+                                'btn-outline-dark',
+                            ])}
+                            type="button"
+                            icon="copy"
+                            content={`\u00A0${Locales.strings.copy}`}
+                            onClick={this.copyResumeWorkUrl}
+                        />
+                    </div>
+                </div>
+            </>
+        );
+    }
+
     render() {
         const {
             match,
@@ -543,6 +610,7 @@ class Home extends Component {
                     {(params.action === 'new' || params.action === 'edit') && (
                         this.renderNewAndEditControls(currentSet)
                     )}
+                    {this.renderNotLoggedInWarning()}
                     <h2 id="problems_in_this_set" className="sROnly" tabIndex={-1}>{Locales.strings.problems_in_this_set}</h2>
                     <NavigationProblems
                         problems={currentSet.problems}

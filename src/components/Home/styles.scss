@@ -105,3 +105,30 @@
 .noProblems {
     padding-top: 80px;
 }
+
+.loginWarning, .shareLink {
+    text-align: center;
+    margin: auto;
+}
+
+.loginWarning {
+    margin-bottom: 10px;
+    font-size: 14px;
+    .warningText {
+        color: #CD4C1D;
+        font-weight: 600;
+    }
+}
+
+.shareLink {
+    margin-bottom: 30px;
+    input {
+        font-size: 12px;
+        padding: 3px;
+        margin-right: 25px;
+        width: 480px;
+    }
+    button {
+        padding: 2px 7px;
+    }
+}

@@ -226,6 +226,8 @@ class Locales {
                 restore_success: 'Restored Problem Set - {title}',
                 restore_failure: 'Failed to Restore Problem Set - {title}',
                 return_to_mathshare: 'Return to MathShare as a guest',
+                return_to_your_problem_later: 'You are not logged in. Save this link to return to your problem set later',
+                return_to_your_work_later: 'You are not logged in. Save this link to return to your work later',
                 save: ' Save',
                 save_changes: ' Save Changes',
                 save_intro: 'Save your work or close out to try again from the beginning.',
