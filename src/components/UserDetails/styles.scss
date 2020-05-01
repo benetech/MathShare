@@ -50,6 +50,10 @@
             border-color: #c4d9ff;
         }
 
+        .largeBtn.otherBtn {
+            padding: 10px 25px;
+        }
+
         .smallBtn {
             font-size: 14px;
             padding: 12px;
@@ -58,6 +62,18 @@
             border-color: #c4d9ff;
             max-width: 150px;
             margin-left: 20px;
+
+            &.confirmBtn {
+                margin-top: 50px;
+            }
+        }
+
+        .userType {
+            padding-top: 50px;
+
+            .userTypeSelect {
+                padding-right: 50px;
+            }
         }
 
         .teacherForm {
