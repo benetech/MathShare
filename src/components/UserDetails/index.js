@@ -16,36 +16,36 @@ class UserDetails extends Component {
     constructor(props) {
         super(props);
         this.grades = ['K-5', '6-8', '9-12', '13+', 'none'];
+        this.userTypes = [
+            {
+                label: Locales.strings.teacher,
+                value: 'teacher',
+            },
+            {
+                label: Locales.strings.student,
+                value: 'student',
+            },
+            {
+                label: Locales.strings.other,
+                value: 'other',
+            },
+        ];
         const gradeMap = {};
         this.grades.forEach((grade) => {
             gradeMap[grade] = false;
         });
         this.roles = ['Teacher', 'Technology Coach', 'Media Specialist', 'Special Education', 'Educator', 'Curriculum', 'Developer', 'Administrator'];
         this.state = {
-            type: null,
+            type: 'teacher',
+            typeConfirmed: false,
             role: '',
             gradeStatus: gradeMap,
         };
     }
 
-    setType = type => () => {
-        this.setState({ type }, () => {
-            if (type === 'student') {
-                this.finish();
-            }
-            if (type === 'teacher') {
-                const gradeHeading = document.getElementById('gradeOfWork');
-                if (gradeHeading) {
-                    gradeHeading.focus();
-                }
-                this.props.announceOnAriaLive(Locales.strings.grade_of_work);
-            }
-        });
-    }
-
     finish = () => {
         const { role, gradeStatus, type } = this.state;
-        if (type === 'student') {
+        if (type === 'student' || type === 'other') {
             this.props.saveUserInfo(type, [], '');
         } else if (type === 'teacher') {
             if (Object.values(gradeStatus).filter(value => value).length === 0) {
@@ -65,6 +65,29 @@ class UserDetails extends Component {
         this.setState({
             role: value,
         });
+    }
+
+    confirmType = () => {
+        this.setState({ typeConfirmed: true }, () => {
+            const { type } = this.state;
+            if (type === 'student' || type === 'other') {
+                this.finish();
+            }
+            if (type === 'teacher') {
+                const gradeHeading = document.getElementById('gradeOfWork');
+                if (gradeHeading) {
+                    gradeHeading.focus();
+                }
+                this.props.announceOnAriaLive(Locales.strings.grade_of_work);
+            }
+        });
+    }
+
+    handleUserTypeChange = (event) => {
+        const target = event.target;
+        const value = target.value;
+
+        this.setState({ type: value });
     }
 
     handleGradeChange = (event) => {
@@ -153,34 +176,45 @@ class UserDetails extends Component {
                         <h1 className={userDetails.text} tabIndex={-1}>
                             {Locales.strings.setup_your_account}
                         </h1>
-                        {this.state.type === null && (
-                            <fieldset className="row">
-                                <legend className={userDetails.descText}>
-                                    <h2 tabIndex={-1} id="who_are_you">{Locales.strings.who_are_you}</h2>
-                                </legend>
-                                <div className={userDetails.buttonsContainer}>
-                                    <button
-                                        className={`btn btn-primary ${userDetails.largeBtn}`}
-                                        id="im_a_teacher"
-                                        type="button"
-                                        onClick={this.setType('teacher')}
-                                    >
-                                        {Locales.strings.i_m_teacher}
-                                    </button>
-                                    <UncontrolledTooltip placement="top" target="im_a_teacher" />
-                                    <button
-                                        className={`btn btn-primary ${userDetails.largeBtn}`}
-                                        id="im_a_student"
-                                        type="button"
-                                        onClick={this.setType('student')}
-                                    >
-                                        {Locales.strings.i_m_student}
-                                    </button>
-                                    <UncontrolledTooltip placement="top" target="im_a_student" />
+                        {!this.state.typeConfirmed && (
+                            <>
+                                <div className={`${userDetails.userType} row`}>
+                                    <div className={`${userDetails.descText} col-5`}>
+                                        <label htmlFor="who_are_you">
+                                            <h2 tabIndex={-1}>{Locales.strings.who_are_you}</h2>
+                                        </label>
+                                    </div>
+                                    <div className={`${userDetails.userTypeSelect} col-7`}>
+                                        <div className="form-group">
+                                            <select className="form-control" id="who_are_you" onChange={this.handleUserTypeChange} value={this.state.type}>
+                                                {this.userTypes.map(userType => (
+                                                    <option
+                                                        key={userType.value}
+                                                        value={userType.value}
+                                                    >
+                                                        {userType.label}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                            <UncontrolledTooltip placement="top" target="who_are_you" />
+                                        </div>
+                                    </div>
                                 </div>
-                            </fieldset>
+                                <div className="row">
+                                    <div className="col-5" />
+                                    <button
+                                        className={`btn btn-primary col-7 ${userDetails.smallBtn} ${userDetails.confirmBtn}`}
+                                        id="confirmBtn"
+                                        type="button"
+                                        onClick={this.confirmType}
+                                    >
+                                        {Locales.strings.next}
+                                    </button>
+                                    <UncontrolledTooltip placement="top" target="confirmBtn" />
+                                </div>
+                            </>
                         )}
-                        {this.state.type === 'teacher' && this.renderTeacherForm()}
+                        {this.state.typeConfirmed && this.state.type === 'teacher' && this.renderTeacherForm()}
                     </main>
                 </div>
             </div>

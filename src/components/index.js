@@ -515,7 +515,7 @@ class App extends Component {
                             <Route render={p => <NotFound {...p} />} />
                         </Switch>
                     </div>
-                    {userProfile.info.userType === 'teacher' && <Intercom appID={process.env.INTERCOM_APP_ID} />}
+                    {['teacher', 'other'].includes(userProfile.info.userType) && <Intercom appID={process.env.INTERCOM_APP_ID} />}
                     <footer id="footer">
                         <h2 className="sROnly">
                             {' '}
