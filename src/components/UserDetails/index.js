@@ -208,7 +208,7 @@ class UserDetails extends Component {
                                         type="button"
                                         onClick={this.confirmType}
                                     >
-                                        {Locales.strings.confirm}
+                                        {Locales.strings.next}
                                     </button>
                                     <UncontrolledTooltip placement="top" target="confirmBtn" />
                                 </div>
