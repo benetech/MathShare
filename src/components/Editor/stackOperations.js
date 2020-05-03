@@ -51,8 +51,10 @@ export const stackEditAction = (context, index, oldEquation, cleanup, oldExplana
         });
     }
     context.setState({
-        textAreaValue: '',
         actionsStack: newStack,
         updateMathFieldMode: false,
+    });
+    context.props.updateProblemStore({
+        textAreaValue: '',
     });
 };

@@ -5,11 +5,17 @@ const initialState = {
     revisionCode: null,
     defaultRevisionCode: null,
     exampleProblemSets: [],
+    archivedProblemSets: [],
     set: {
         problems: [],
         editCode: null,
         shareCode: null,
         title: '',
+        source: null,
+        partner: {
+            canSubmit: false,
+            name: null,
+        },
     },
     notFound: false,
     problemToEditIndex: null,
@@ -40,11 +46,27 @@ const problems = (state = initialState, {
             ...state,
             defaultRevisionCode: payload.revisionCode,
         };
-    case 'REQUEST_EXAMPLE_SETS_SUCCESS':
+    case 'REQUEST_ARCHIVED_SETS':
         return {
             ...state,
-            exampleProblemSets: payload.exampleProblemSets,
+            archivedProblemSets: null,
         };
+    case 'REQUEST_EXAMPLE_SETS_SUCCESS':
+    case 'REQUEST_ARCHIVED_SETS_SUCCESS':
+        return {
+            ...state,
+            ...payload,
+        };
+    case 'ARCHIVE_PROBLEM_SET_SUCCESS': {
+        const { editCode, key } = payload;
+        if (key !== 'archivedProblemSets') {
+            return state;
+        }
+        return {
+            ...state,
+            archivedProblemSets: state.archivedProblemSets.filter(set => set.editCode !== editCode),
+        };
+    }
     case 'CLEAR_PROBLEM_SET':
         return {
             ...state,
@@ -169,11 +191,23 @@ const problems = (state = initialState, {
             ...state,
             ...payload,
             set: {
+                id: payload.id,
                 problems: payload.solutions.map(solution => solution.problem),
+                editCode: payload.editCode,
                 shareCode: payload.reviewCode,
                 title: payload.title || state.set.title,
+                archiveMode: payload.archiveMode,
+                source: payload.source || null,
             },
             newSetSharecode: payload.reviewCode,
+        };
+    case 'PARTNER_SUBMIT_OPTIONS_SUCCESS':
+        return {
+            ...state,
+            set: {
+                ...state.set,
+                partner: payload,
+            },
         };
     default:
         return state;

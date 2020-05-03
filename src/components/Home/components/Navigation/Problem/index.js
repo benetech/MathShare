@@ -108,7 +108,9 @@ export default class Problem extends Component {
     buildProblemText = () => `$$${this.props.problem.text}$$`
 
     getLink = () => {
-        const { action, solutions, problem } = this.props;
+        const {
+            action, solutions, problem, code,
+        } = this.props;
         if (this.props.example) {
             return '/#/app/problem/example/';
         }
@@ -121,6 +123,9 @@ export default class Problem extends Component {
                     return `/#/app/problem/edit/${currentSolution.editCode}`;
                 }
                 return `/#/app/problem/view/${currentSolution.shareCode}`;
+            }
+            if (action === 'edit') {
+                return `/#/app/problemSet/edit/${code}/${problem.position}`;
             }
         }
         return null;
@@ -148,7 +153,7 @@ export default class Problem extends Component {
                     key={`${dropdownId}-imgBtn`}
                 >
                     <span className="sROnly">
-                        {Locales.strings.view_sketch}
+                        {Locales.strings.view_sketch.replace('{no}', this.props.number + 1)}
                         {'\u00A0'}
                         {Locales.strings.opens_in_new_tab}
                     </span>

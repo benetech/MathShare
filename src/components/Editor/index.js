@@ -53,8 +53,12 @@ class Editor extends Component {
         if (this.props.example) {
             this.props.loadExampleProblem(exampleProblem);
         } else {
-            const { action, code } = this.props.match.params;
-            this.props.loadProblem(action, code);
+            const { action, code, position } = this.props.match.params;
+            if (position) {
+                this.props.requestProblemSet(action, code, position);
+            } else {
+                this.props.loadProblem(action, code);
+            }
         }
         this.setState({
             actionsStack: [],

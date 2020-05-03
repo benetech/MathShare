@@ -1,18 +1,18 @@
 import React from 'react';
 import { toast } from 'react-toastify';
 
-const ALERT_DELAY_MS = 10000;
+const ALERT_DELAY_MS = 10;
 
-const commonProps = {
+const commonProps = () => ({
     position: toast.POSITION.TOP_RIGHT,
-    autoClose: ALERT_DELAY_MS,
+    autoClose: 1000 * (window.alertAutoClose || ALERT_DELAY_MS),
     closeButton: false,
-};
+});
 
-function getCommonAlert(title, message, id = undefined, anchor = null) {
+function getCommonAlert(title, message, id = undefined, anchor = null, trapFocus = true) {
     return (
         <div className="toast-common" role="alert">
-            <h2 id={id} tabIndex={-1}>
+            <h2 id={id} tabIndex={-1} data-trap-focus={trapFocus}>
                 {title}
             </h2>
             <div>{message}</div>
@@ -21,20 +21,20 @@ function getCommonAlert(title, message, id = undefined, anchor = null) {
     );
 }
 
-function alertInfo(message, title, id = undefined, autoClose = commonProps.autoClose) {
-    toast.info(getCommonAlert(title, message), { ...commonProps, autoClose, toastId: id });
+function alertInfo(message, title, id = undefined) {
+    toast.info(getCommonAlert(title, message), { ...commonProps(), toastId: id });
 }
 
 function alertSuccess(message, title, id = undefined) {
-    toast.success(getCommonAlert(title, message, id), { ...commonProps, toastId: id });
+    toast.success(getCommonAlert(title, message, id), { ...commonProps(), toastId: id });
 }
 
 function alertError(message, title, id = undefined, anchor = null) {
-    toast.error(getCommonAlert(title, message, id, anchor), { ...commonProps, toastId: id });
+    toast.error(getCommonAlert(title, message, id, anchor), { ...commonProps(), toastId: id });
 }
 
 function alertWarning(message, title) {
-    toast.warn(getCommonAlert(title, message), commonProps);
+    toast.warn(getCommonAlert(title, message), commonProps());
 }
 
 function dismissAlert(id) {

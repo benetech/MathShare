@@ -8,6 +8,11 @@ const initialState = {
     currentTitle: null,
     prev: null,
     prevReplaced: null,
+    xPath: {
+        path: null,
+        href: null,
+    },
+    historyStack: [],
 };
 
 const router = (state = initialState, {
@@ -21,20 +26,46 @@ const router = (state = initialState, {
         ReactGA.pageview(
             payload.location.pathname,
         );
+        const hashPath = `/#${payload.location.pathname}`;
+        let historyStack = state.historyStack;
+        const isBack = (
+            historyStack.length > 1 && historyStack[historyStack.length - 2] === hashPath
+        );
+        if (action === 'REPLACE'
+            || (
+                historyStack.length > 1
+                && historyStack[historyStack.length - 2] === hashPath
+            )) {
+            historyStack = state.historyStack.filter(
+                (_, index) => index !== (historyStack.length - 1),
+            );
+        } else {
+            historyStack = [...state.historyStack, hashPath];
+        }
         if (action === 'REPLACE') {
+            historyStack = [...historyStack, hashPath];
             return {
                 ...state,
                 prevReplaced: state.current,
-                current: window.location.hash,
+                current: `/${window.location.hash}`,
+                historyStack,
             };
         } if (action === 'POP') {
             return {
                 ...state,
                 prev: state.current,
-                current: window.location.hash,
+                isBack,
+                current: `/${window.location.hash}`,
+                historyStack,
             };
         }
         return state;
+    }
+    case 'STORE_X_PATH': {
+        return {
+            ...state,
+            xPath: payload,
+        };
     }
     case 'SET_TITLE': {
         const { title } = payload;

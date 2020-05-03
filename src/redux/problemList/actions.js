@@ -8,12 +8,22 @@ export const requestExampleSets = () => ({
     type: 'REQUEST_EXAMPLE_SETS',
 });
 
-export const requestProblemSet = (action, code) => ({
+export const requestArchivedSets = () => ({
+    type: 'REQUEST_ARCHIVED_SETS',
+});
+
+export const requestProblemSet = (action, code, position) => ({
     type: 'REQUEST_PROBLEM_SET',
     payload: {
         action,
         code,
+        position,
     },
+});
+
+export const requestProblemSetSuccess = payload => ({
+    type: 'REQUEST_PROBLEM_SET_SUCCESS',
+    payload,
 });
 
 export const addProblem = (imageData, text, index, newProblemSet) => ({
@@ -144,18 +154,32 @@ export const updateProblemSetTitle = title => ({
     },
 });
 
+export const archiveProblemSet = (editCode, archiveMode, title) => ({
+    type: 'ARCHIVE_PROBLEM_SET',
+    payload: {
+        editCode,
+        archiveMode,
+        title,
+    },
+});
+
 export const duplicateProblemSet = (e, payload) => ({
     type: 'DUPLICATE_PROBLEM_SET',
     payload: (payload || {}),
 });
 
-export const setReviewSolutions = (solutions, reviewCode, editCode, title) => ({
+export const setReviewSolutions = (
+    id, solutions, reviewCode, editCode, title, archiveMode, source,
+) => ({
     type: 'SET_REVIEW_SOLUTIONS',
     payload: {
+        id,
         solutions,
         reviewCode,
         editCode,
         title,
+        archiveMode,
+        source,
     },
 });
 
@@ -173,15 +197,27 @@ export const loadProblemSetSolutionByEditCode = editCode => ({
     },
 });
 
+export const submitToPartner = (id, editCode, shareCode) => ({
+    type: 'REQUEST_SUBMIT_TO_PARTNER',
+    payload: {
+        id,
+        editCode,
+        shareCode,
+    },
+});
+
 export default {
     addProblem,
+    archiveProblemSet,
     clearProblemSet,
     deleteProblem,
     duplicateProblemSet,
     editProblem,
     finishEditing,
+    requestArchivedSets,
     requestDefaultRevision,
     requestProblemSet,
+    requestProblemSetSuccess,
     resetProblemSet,
     resetTempProblems,
     toggleModals,
@@ -192,10 +228,12 @@ export default {
     setActiveMathField,
     shareSolutions,
     setProblemSetShareCode,
+    setReviewSolutions,
     updateProblemList,
     updateSet,
     updateTempSet,
     updateProblemSetTitle,
     updateReviewSolutions,
     loadProblemSetSolutionByEditCode,
+    submitToPartner,
 };

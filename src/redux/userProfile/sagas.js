@@ -22,6 +22,7 @@ import {
     setMobileNotifySuccess,
     setPersonalizationSettings,
     setRecentWork,
+    setUserInfo,
 } from './actions';
 import {
     getState,
@@ -41,6 +42,7 @@ import {
 } from '../../scripts/alert';
 import { getCookie } from '../../scripts/cookie';
 import Locales from '../../strings';
+import { sessionStore } from '../../scripts/storage';
 
 const loginAlertId = 'login-alert';
 const redirectAlertId = 'redirect-info';
@@ -78,6 +80,7 @@ function* checkUserLoginSaga() {
                 if (userInfoResponse.status !== 200) {
                     throw Error('User info not set');
                 } else {
+                    yield put(setUserInfo(userInfoResponse.data));
                     yield put(setMobileNotifySuccess(userInfoResponse.data.notifyForMobile));
                 }
             } catch (infoError) {
@@ -85,7 +88,7 @@ function* checkUserLoginSaga() {
                 if (window.location.hash !== '#/userDetails') {
                     alertInfo(
                         Locales.strings.redirecting_to_fill, Locales.strings.info,
-                        redirectAlertId, redirectWait,
+                        redirectAlertId,
                     );
                     yield delay(redirectWait);
                     yield put(push('/userDetails'));
@@ -101,6 +104,7 @@ function* checkUserLoginSaga() {
                         yield put(setPersonalizationSettings(data));
                     }
                 } catch (configError) {
+                    // eslint-disable-next-line no-console
                     console.log('configError', configError);
                 }
             }
@@ -129,7 +133,7 @@ function* checkUserLoginSaga() {
 function* fetchRecentWorkSaga() {
     yield takeLatest('FETCH_RECENT_WORK', function* workerSaga() {
         try {
-            const response = yield call(fetchRecentWorkApi);
+            const response = yield call(fetchRecentWorkApi, {});
             if (response.status !== 200) {
                 throw Error('Unable to fetch work');
             }
@@ -181,23 +185,17 @@ function* saveUserInfoSaga() {
                 grades,
                 role,
             });
-            yield call(saveUserInfoApi, {
+            const userInfoResponse = yield call(saveUserInfoApi, {
                 ...payload,
                 user_type: userType,
                 email,
             });
+            yield put(setUserInfo(userInfoResponse.data));
         } catch (error) {
             yield put({
                 type: 'SAVE_USER_INFO_FAILURE',
             });
         } finally {
-            setTimeout(() => {
-                alertSuccess(
-                    Locales.strings.you_are_now_on.replace('{pageTitle}',
-                        (document.title || '').split(` - ${Locales.strings.mathshare_benetech}`)[0]),
-                    Locales.strings.thanks_for_details,
-                );
-            }, 100);
             yield put(replace(redirectTo));
         }
     });
@@ -247,7 +245,7 @@ function* setMobileNotifySaga() {
                 });
             }
             yield put(setMobileNotifySuccess(notifyForMobile));
-            sessionStorage.setItem('hide_mobile_support_banner', dayjs().add(1, 'hour').toISOString());
+            sessionStore.setItem('hide_mobile_support_banner', dayjs().add(1, 'hour').toISOString());
             alertSuccess(Locales.strings.thanks_for_mobile_notfiy, Locales.strings.success);
         } catch (error) {
             yield put({
