@@ -125,13 +125,13 @@ class Index extends Component {
         }
         return (
             <>
+                <h2 id="recent-sets-header" className="title">{Locales.strings.recent_sets}</h2>
+                {recentContent}
                 {userProfile.email && userProfile.info.userType !== 'student' && (
                     <a className={`pull-right btn btn-primary ${pageIndex.archivedList}`} href="/#/app/archived">
                         {Locales.strings.archived_sets}
                     </a>
                 )}
-                <h2 id="recent-sets-header" className="title">{Locales.strings.recent_sets}</h2>
-                {recentContent}
             </>
         );
     }
