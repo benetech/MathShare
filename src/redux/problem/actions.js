@@ -45,10 +45,10 @@ export const updateProblemSolution = (solution, onlyLoad) => ({
     },
 });
 
-export const commitProblemSolution = (redirectBack, shareModal, finished) => ({
+export const commitProblemSolution = (redirectTo, shareModal, finished) => ({
     type: 'REQUEST_COMMIT_PROBLEM_SOLUTION',
     payload: {
-        redirectBack,
+        redirectTo,
         shareModal,
         finished,
     },
@@ -71,6 +71,10 @@ export const updateWork = payload => ({
     payload,
 });
 
+export const resetProblem = () => ({
+    type: 'RESET_PROBLEM',
+});
+
 export default {
     commitProblemSolution,
     loadExampleProblem,
@@ -84,4 +88,5 @@ export default {
     closeTour,
     toggleTour,
     updateWork,
+    resetProblem,
 };

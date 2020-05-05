@@ -27,7 +27,7 @@ const initialState = {
         problems: [],
         title: '',
         textAreaValue: '',
-        displayScratchpad: null,
+        displayScratchpad: () => {},
     },
     newSetSharecode: '',
     newSetShareEditCode: '',
