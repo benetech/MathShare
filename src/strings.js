@@ -85,7 +85,7 @@ class Locales {
                 discard_changes: ' Discard Changes',
                 done: ' Done',
                 dot: 'dot',
-                duplicate_set: 'Duplicate Set',
+                duplicate_set: 'Duplicate to edit/share',
                 edit: 'Edit',
                 edit_equation: 'edit equation',
                 edit_link_label: 'URL for editing: ',
