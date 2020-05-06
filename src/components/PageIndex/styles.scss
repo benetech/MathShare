@@ -62,7 +62,10 @@ div.problemSetList {
     .archivedList {
         background-color: #5a6268;
         border-color: #5a6268;
-        margin-top: -8px;
+        margin-bottom: 50px;
+        margin-top: -25px;
+        margin-left: calc(100% - 135px);
+        width: 135px;
 
         &:hover {
             @extend .archivedList;

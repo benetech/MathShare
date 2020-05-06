@@ -636,11 +636,25 @@ function* reqestDuplicateProblemSet() {
         try {
             const {
                 set,
+                solutions,
                 tempPalettes,
             } = yield select(getState);
+            const problems = set.problems.map((problem) => {
+                const problemSolution = solutions.find(
+                    solution => solution.problem.id === problem.id,
+                );
+                if (problemSolution) {
+                    return {
+                        ...problem,
+                        steps: problemSolution.steps,
+                    };
+                }
+                return problem;
+            });
             const setPayload = {
                 ...set,
                 ...payload,
+                problems,
                 palettes: tempPalettes,
             };
             const {
