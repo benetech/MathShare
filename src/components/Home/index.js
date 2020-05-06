@@ -330,7 +330,6 @@ class Home extends Component {
                         <input
                             id="resumeWorkUrl"
                             type="text"
-                            aria-labelledby="resumeWorkDesc"
                             value={window.location.href}
                             readOnly
                             onFocus={this.selectTextInput}
