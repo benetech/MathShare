@@ -111,12 +111,20 @@
     margin: auto;
 }
 
-.loginWarning {
-    margin-bottom: 10px;
-    font-size: 14px;
-    .warningText {
-        color: #CD4C1D;
-        font-weight: 600;
+.warningContainer {
+    margin-top: 10px;
+
+    .loginWarning {
+        margin-bottom: 10px;
+
+        &, h2 {
+            display: inline;
+            font-size: 14px;
+        }
+        .warningText {
+            color: #CD4C1D;
+            font-weight: 600;
+        }
     }
 }
 

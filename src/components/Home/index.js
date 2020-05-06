@@ -14,6 +14,7 @@ import home from './styles.scss';
 import Locales from '../../strings';
 import problemListActions from '../../redux/problemList/actions';
 import problemActions from '../../redux/problem/actions';
+import ariaLiveAnnouncerActions from '../../redux/ariaLiveAnnouncer/actions';
 import Button from '../Button';
 import { passEventForKeys } from '../../services/events';
 import CommonDropdown from '../CommonDropdown';
@@ -158,13 +159,14 @@ class Home extends Component {
     }
 
     copyResumeWorkUrl = () => {
-        this.focusTextInput();
+        this.selectTextInput();
         document.execCommand('copy');
+        this.props.announceOnAriaLive(Locales.strings.work_link_copied);
         googleAnalytics('pressed copy resume work link button');
         IntercomAPI('trackEvent', 'pressed-copy-resume-work-link-button');
     }
 
-    focusTextInput = () => {
+    selectTextInput = () => {
         const copyText = document.getElementById('resumeWorkUrl');
         copyText.select();
     }
@@ -311,24 +313,27 @@ class Home extends Component {
         }
         return (
             <>
-                <div className="row">
-                    <h2 id="resumeWorkDesc" className={home.loginWarning}>
-                        <span className={home.warningText}>
+                <div className={`row ${home.warningContainer}`}>
+                    <div className={home.loginWarning}>
+                        <h2 className={home.warningText}>
                             {Locales.strings.warning}
                             {': '}
-                        </span>
+                        </h2>
                         {params.action === 'solve' ? Locales.strings.return_to_your_work_later : Locales.strings.return_to_your_problem_later}
-                    </h2>
+                    </div>
                 </div>
                 <div className="row">
                     <div className={home.shareLink}>
+                        <label htmlFor="resumeWorkUrl" className="sROnly">
+                            {Locales.strings.work_link}
+                        </label>
                         <input
                             id="resumeWorkUrl"
                             type="text"
                             aria-labelledby="resumeWorkDesc"
                             value={window.location.href}
                             readOnly
-                            onFocus={this.focusTextInput}
+                            onFocus={this.selectTextInput}
                             onClick={this.sendResumeLinkClickEvent}
                         />
                         <Button
@@ -340,7 +345,7 @@ class Home extends Component {
                             ])}
                             type="button"
                             icon="copy"
-                            content={`\u00A0${Locales.strings.copy}`}
+                            content={`\u00A0${Locales.strings.copy_work_link}`}
                             onClick={this.copyResumeWorkUrl}
                         />
                     </div>
@@ -426,6 +431,7 @@ export default connect(
         userProfile: state.userProfile,
     }),
     {
+        ...ariaLiveAnnouncerActions,
         ...problemActions,
         ...problemListActions,
     },
