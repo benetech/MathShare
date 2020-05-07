@@ -438,7 +438,6 @@ class Home extends Component {
                     {(params.action === 'new' || params.action === 'edit' || params.action === 'solve') && (
                         this.renderNewAndEditControls(currentSet)
                     )}
-                    <h2 id="problems_in_this_set" className="sROnly" tabIndex={-1}>{Locales.strings.problems_in_this_set}</h2>
                     {(params.action !== 'review' && (params.action !== 'edit' && params.action !== 'new')) && currentSet.problems.length > 0 && (
                         <div className={classNames([
                             'row',
@@ -543,9 +542,9 @@ class Home extends Component {
                                     />
                                 )}
                             </RenderActionButtons>
-
                         </div>
                     )}
+                    <h2 id="problems_in_this_set" className="sROnly" tabIndex={-1}>{Locales.strings.problems_in_this_set}</h2>
                     <NavigationProblems
                         problems={currentSet.problems}
                         solutions={problemList.solutions}
