@@ -1,6 +1,7 @@
 import React from 'react';
 import NewProblemsForm from '../Home/components/NewProblemsForm';
 import ShareModal from './components/ShareModal';
+import NewProblemSetShareModal from './components/NewProblemSetShareModal';
 import SaveModal from './components/SaveModal';
 import ProblemModal from './components/ProblemModal';
 import ProblemSetShareModal from './components/ProblemSetShareModal';
@@ -58,9 +59,8 @@ const ModalContainer = (props) => {
 
     const newSetShareModal = activeModals.includes(SHARE_NEW_SET)
         ? (
-            <ProblemSetShareModal
+            <NewProblemSetShareModal
                 shareLink={props.newSetShareLink}
-                problemList={props.problemList}
                 deactivateModal={() => props.toggleModals([SHARE_NEW_SET])}
             />
         )
@@ -174,11 +174,8 @@ const ModalContainer = (props) => {
     const shareProblemSet = activeModals.includes(SHARE_PROBLEM_SET)
         ? (
             <ProblemSetShareModal
-                shareLink={props.problemSetShareLink}
-                problemList={props.problemList}
+                problemSetShareLink={props.problemSetShareLink}
                 deactivateModal={() => props.toggleModals([SHARE_PROBLEM_SET])}
-                submitToPartner={props.submitToPartner}
-                isSolutionSet
             />
         )
         : null;
