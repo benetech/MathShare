@@ -20,6 +20,8 @@ export default class ProblemHeader extends Component {
         super(props);
 
         this.onImgClick = this.onImgClick.bind(this);
+        this.ellipsisDebouncedWorker = this.showEllipsisDebounced();
+        this.debounce = null;
 
         this.handlers = {
             SAVE_PROBLEM_SOLUTION: (e) => {
@@ -32,10 +34,8 @@ export default class ProblemHeader extends Component {
     }
 
     componentDidMount() {
-        // const subHeader = document.getElementById('subHeader');
-        // if (subHeader) {
-        //     subHeader.focus();
-        // }
+        this.ellipsisDebouncedWorker();
+        window.addEventListener('resize', this.ellipsisDebouncedWorker);
     }
 
     shouldComponentUpdate(nextProps) {
@@ -48,6 +48,40 @@ export default class ProblemHeader extends Component {
 
     componentDidUpdate() {
         mathLive.renderMathInDocument();
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.ellipsisDebouncedWorker);
+        clearTimeout(this.debounce);
+    }
+
+    showEllpisisIfNeeded = () => {
+        const containerWidth = document.getElementById('headingContainer').offsetWidth;
+        const childrenWidths = Array.from(document.querySelectorAll('#headingContainer > *')).map(Element => Element.offsetWidth);
+        const needEllipsis = childrenWidths.reduce((a, b) => (a + b), 0) - containerWidth > 10;
+        if (needEllipsis && !this.scrolledToEndOfTitle()) {
+            document.getElementById('math-ellipsis').innerText = '...';
+        } else {
+            document.getElementById('math-ellipsis').innerText = '';
+        }
+    }
+
+    scrolledToEndOfTitle = () => {
+        const spanElement = document.getElementById('headingContainer');
+        const a = Math.abs(
+            spanElement.offsetWidth - (spanElement.scrollWidth - spanElement.scrollLeft),
+        ) < 2;
+        return a;
+    }
+
+    scrollListener = () => {
+        this.ellipsisDebouncedWorker();
+    }
+
+
+    showEllipsisDebounced = (time = 300) => () => {
+        clearTimeout(this.debounce);
+        this.debounce = setTimeout(this.showEllpisisIfNeeded, time);
     }
 
     onImgClick = () => {
@@ -125,24 +159,26 @@ export default class ProblemHeader extends Component {
                 <div className={`d-flex flex-row ${problem.header}`}>
                     <div id="mainContainer" className={`d-flex flex-row ${problem.subHeader}`}>
                         {imgButton}
-                        <h1 id="ProblemTitle" className={problem.title} tabIndex={-1}>
-                            {title}
-                            <span className="sROnly">
-                                {mathLive.latexToSpeakableText(
-                                    this.props.math,
-                                    {
-                                        textToSpeechRules: 'sre',
-                                        textToSpeechRulesOptions: { domain: 'clearspeak', style: 'default', markup: 'none' },
-                                    },
-                                )}
-                            </span>
-                        </h1>
-                        {this.props.math !== Locales.strings.loading && (<span id="ProblemMath" className={`${problem.title} ${problem.question}`}>{`$$${this.props.math}$$`}</span>)}
+                        <span id="headingContainer" className={problem.headingContainer} onScroll={this.scrollListener}>
+                            <h1 id="ProblemTitle" className={problem.title} tabIndex={-1}>
+                                {title}
+                                <span className="sROnly">
+                                    {mathLive.latexToSpeakableText(
+                                        this.props.math,
+                                        {
+                                            textToSpeechRules: 'sre',
+                                            textToSpeechRulesOptions: { domain: 'clearspeak', style: 'default', markup: 'none' },
+                                        },
+                                    )}
+                                </span>
+                            </h1>
+                            {this.props.math !== Locales.strings.loading && (<span id="ProblemMath" className={`${problem.title} ${problem.question}`}>{`$$${this.props.math}$$`}</span>)}
+                        </span>
                         <span id="math-ellipsis" className={`flex-grow-1 ${problem.mathEllipsis}`}>&nbsp;</span>
                         {exampleLabel}
                         <Button
                             id="backBtn"
-                            className={classNames('btn', 'pointer', problem.button)}
+                            className={classNames('btn', 'pointer', problem.button, problem.backBtn)}
                             additionalStyles={['default']}
                             type="button"
                             icon="arrow-left"

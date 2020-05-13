@@ -110,6 +110,16 @@
 
 .equationOverflownHorizontally {
     justify-content: flex-start;
+
+    :global(.ML__mathlive) {
+        line-height: unset;
+        white-space: unset;
+        width: 90%;
+
+        :global(.ML__text) {
+            white-space: break-spaces;
+        }
+    }
 }
 
 .equationOverflownVertically {
