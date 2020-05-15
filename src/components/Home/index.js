@@ -9,11 +9,13 @@ import MainPageHeader from './components/Header';
 import NavigationHeader from './components/Navigation/Header';
 import NavigationProblems from './components/Navigation/Problems';
 import { TITLE_EDIT_MODAL, PALETTE_CHOOSER } from '../ModalContainer';
+import googleAnalytics from '../../scripts/googleAnalytics';
 import NotFound from '../NotFound';
 import home from './styles.scss';
 import Locales from '../../strings';
 import problemListActions from '../../redux/problemList/actions';
 import problemActions from '../../redux/problem/actions';
+import ariaLiveAnnouncerActions from '../../redux/ariaLiveAnnouncer/actions';
 import Button from '../Button';
 import googleClassroomIcon from '../../../images/google-classroom-icon.png';
 import msTeamIcon from '../../../images/ms-team-icon.svg';
@@ -221,6 +223,24 @@ class Home extends Component {
         }
     }
 
+    copyResumeWorkUrl = () => {
+        this.selectTextInput();
+        document.execCommand('copy');
+        this.props.announceOnAriaLive(Locales.strings.work_link_copied);
+        googleAnalytics('pressed copy resume work link button');
+        IntercomAPI('trackEvent', 'pressed-copy-resume-work-link-button');
+    }
+
+    selectTextInput = () => {
+        const copyText = document.getElementById('resumeWorkUrl');
+        copyText.select();
+    }
+
+    sendResumeLinkClickEvent = () => {
+        googleAnalytics('clicked on resume work link');
+        IntercomAPI('trackEvent', 'clicked-resume-work-link');
+    }
+
     renderNewAndEditControls = (currentSet) => {
         const {
             match,
@@ -402,6 +422,57 @@ class Home extends Component {
         );
     }
 
+    renderNotLoggedInWarning = () => {
+        const { userProfile, match } = this.props;
+        const { params } = match;
+        if (params.action !== 'edit' && params.action !== 'solve') {
+            return null;
+        }
+        if (userProfile.checking || userProfile.email) {
+            return null;
+        }
+        return (
+            <>
+                <div className={`row ${home.warningContainer}`}>
+                    <div className={home.loginWarning}>
+                        <h2 className={home.warningText}>
+                            {Locales.strings.warning}
+                            {': '}
+                        </h2>
+                        {params.action === 'solve' ? Locales.strings.return_to_your_work_later : Locales.strings.return_to_your_problem_later}
+                    </div>
+                </div>
+                <div className="row">
+                    <div className={home.shareLink}>
+                        <label htmlFor="resumeWorkUrl" className="sROnly">
+                            {Locales.strings.work_link}
+                        </label>
+                        <input
+                            id="resumeWorkUrl"
+                            type="text"
+                            value={window.location.href}
+                            readOnly
+                            onFocus={this.selectTextInput}
+                            onClick={this.sendResumeLinkClickEvent}
+                        />
+                        <Button
+                            id="copyBtn"
+                            iconSize="sm"
+                            className={classNames([
+                                'btn',
+                                'btn-outline-dark',
+                            ])}
+                            type="button"
+                            icon="copy"
+                            content={`\u00A0${Locales.strings.copy_work_link}`}
+                            onClick={this.copyResumeWorkUrl}
+                        />
+                    </div>
+                </div>
+            </>
+        );
+    }
+
     render() {
         const {
             match,
@@ -546,6 +617,7 @@ class Home extends Component {
 
                         </div>
                     )}
+                    {this.renderNotLoggedInWarning()}
                     <NavigationProblems
                         problems={currentSet.problems}
                         solutions={problemList.solutions}
@@ -568,6 +640,7 @@ export default connect(
         userProfile: state.userProfile,
     }),
     {
+        ...ariaLiveAnnouncerActions,
         ...problemActions,
         ...problemListActions,
     },
