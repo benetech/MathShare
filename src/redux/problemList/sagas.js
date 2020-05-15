@@ -180,7 +180,12 @@ function* requestProblemSetByCode() {
                 //     },
                 // });
             } else {
-                const orderedProblems = problems.map((problem, index) => ({
+                const orderedProblems = problems.sort((a, b) => {
+                    if (a.position === b.position) {
+                        return (a.id - b.id);
+                    }
+                    return (a.position - b.position);
+                }).map((problem, index) => ({
                     ...problem,
                     position: index,
                 }));
