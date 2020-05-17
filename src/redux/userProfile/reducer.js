@@ -18,7 +18,7 @@ const userProfile = (state = initialState, {
     // error,
 }) => {
     switch (type) {
-    case 'CHECK_USER_LOGIN':
+    case 'CHECK_USER_LOGIN_START':
         return {
             ...state,
             checking: true,
