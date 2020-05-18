@@ -177,8 +177,9 @@ class Index extends Component {
                             {'\u00A0'}
                             {`- ${Locales.strings.problem_set_completed_speech.replace('{completedCount}', completedSolutions).replace('{totalCount}', problemSet.solutions.length)}`}
                         </span>
-                        {' '}
+                        {'\u00A0'}
                         <span>{Locales.strings.problems}</span>
+                        {'\u00A0'}
                         <span className={`${pageIndex.meta} sROnly`}>{Locales.strings.completed}</span>
                     </span>
                     {problemSet.solutions.length === completedSolutions && <img src={checkMark} alt="" height="25" />}
