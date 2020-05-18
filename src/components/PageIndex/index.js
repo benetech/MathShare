@@ -174,6 +174,7 @@ class Index extends Component {
                     <span className={pageIndex.meta}>
                         <span aria-hidden="true">{`${completedSolutions}/${problemSet.solutions.length}`}</span>
                         <span className="sROnly">
+                            {'\u00A0'}
                             {`- ${Locales.strings.problem_set_completed_speech.replace('{completedCount}', completedSolutions).replace('{totalCount}', problemSet.solutions.length)}`}
                         </span>
                         {' '}
