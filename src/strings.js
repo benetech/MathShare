@@ -183,6 +183,7 @@ class Locales {
                 no_problem_equation_or_image_and_title_warning: 'Please provide problem title and problem equation or an image',
                 no_problem_equation_or_image_warning: 'Please provide a problem equation or an image.',
                 no_problem_title_warning: 'Please provide a problem title.',
+                no_recent_sets: 'No recent problem sets',
                 no_step_number: 'No step number ',
                 not_saved_yet: 'Not saved yet.',
                 number: 'Number',

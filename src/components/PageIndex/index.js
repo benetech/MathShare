@@ -123,7 +123,7 @@ class Index extends Component {
                 </ol>
             );
         } else {
-            recentContent = <div className={recentContentClass}>No recent problems</div>;
+            recentContent = <div className={recentContentClass}>{Locales.strings.no_recent_sets}</div>;
         }
         return (
             <>
