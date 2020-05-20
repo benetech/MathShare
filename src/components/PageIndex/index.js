@@ -20,6 +20,8 @@ import googleAnalytics from '../../scripts/googleAnalytics';
 import pageIndex from './styles.scss';
 import { stopEvent, passEventForKeys } from '../../services/events';
 import CommonDropdown from '../CommonDropdown';
+import checkMark from '../../../images/checkmark.png';
+
 
 // const shareOnTwitter = shareCode => (e) => {
 //     window.open(
@@ -121,7 +123,7 @@ class Index extends Component {
                 </ol>
             );
         } else {
-            recentContent = <div className={recentContentClass}>No recent problems</div>;
+            recentContent = <div className={recentContentClass}>{Locales.strings.no_recent_sets}</div>;
         }
         return (
             <>
@@ -150,6 +152,43 @@ class Index extends Component {
         this.props.replace('/app');
     }
 
+    renderProblemSetAnchorContent = (problemSet) => {
+        let completedSolutions = null;
+        if (problemSet.solutions) {
+            completedSolutions = problemSet.solutions.filter(solution => solution.finished).length;
+        }
+        if (problemSet.problems && problemSet.problems.length) {
+            return (
+                <>
+                    <span className={pageIndex.meta}>
+                        <span aria-hidden="false">{problemSet.problems.length}</span>
+                        {' '}
+                        <span>{Locales.strings.problems}</span>
+                    </span>
+                </>
+            );
+        }
+        if (problemSet.solutions) {
+            return (
+                <>
+                    <span className={pageIndex.meta}>
+                        <span aria-hidden="true">{`${completedSolutions}/${problemSet.solutions.length}`}</span>
+                        <span className="sROnly">
+                            {'\u00A0'}
+                            {`- ${Locales.strings.problem_set_completed_speech.replace('{completedCount}', completedSolutions).replace('{totalCount}', problemSet.solutions.length)}`}
+                        </span>
+                        {'\u00A0'}
+                        <span>{Locales.strings.problems}</span>
+                        {'\u00A0'}
+                        <span className={`${pageIndex.meta} sROnly`}>{Locales.strings.completed}</span>
+                    </span>
+                    {problemSet.solutions.length === completedSolutions && <img src={checkMark} alt="" height="25" />}
+                </>
+            );
+        }
+        return null;
+    }
+
     renderProblemSet = (isPremade, isRecent) => (problemSet, index) => {
         const isExample = isPremade && problemSet.title === 'Example Problem Set';
         const dropdownBtnId = `dropdownMenuButton-${(problemSet.shareCode && (`id-${problemSet.shareCode}`)) || index}`;
@@ -170,11 +209,7 @@ class Index extends Component {
                     <span className={pageIndex.title}>
                         {problemSet.title}
                     </span>
-                    <span className={pageIndex.meta}>
-                        {(problemSet.problems || problemSet.solutions).length}
-                        {' '}
-                        {Locales.strings.problems}
-                    </span>
+                    {this.renderProblemSetAnchorContent(problemSet)}
                 </a>
                 {problemSet.problems && (
                     <CommonDropdown
