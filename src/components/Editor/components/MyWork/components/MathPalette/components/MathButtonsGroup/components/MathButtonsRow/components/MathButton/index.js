@@ -196,7 +196,6 @@ export default class MathButton extends Component {
         const theActiveMathField = this.props.theActiveMathField;
         // Button contents as a string
         let insertionString = this.props.button.value
-            .replace(/\$\$/g, '')
             .replace('\\blacksquare', '#0')
             .replace('\\square', '#?')
             .trim();

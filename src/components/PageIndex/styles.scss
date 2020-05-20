@@ -19,6 +19,10 @@
 .problemSetList {
     margin-top: 20px;
     margin-bottom: 40px;
+
+    li:global(.card) > a > img {
+        margin-left: -25px;
+    }
 }
 
 div.problemSetList {

@@ -179,6 +179,10 @@ function* requestCommitProblemSolutionSaga() {
                     alertError('Unable to save problem', 'Error');
                     return;
                 }
+                yield put({
+                    type: 'REQUEST_SAVE_PROBLEMS_SUCCESS',
+                    payload: response.data,
+                });
             } else if (problemListState.editCode) {
                 const payloadSolutions = problemListState.solutions.map((currentSolution) => {
                     if (currentSolution.problem.id === solution.problem.id) {

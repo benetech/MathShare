@@ -61,6 +61,9 @@ const getFormattedUserType = (userType) => {
 
 function* checkUserLoginSaga() {
     yield throttle(60000, 'CHECK_USER_LOGIN', function* workerSaga() {
+        yield put({
+            type: 'CHECK_USER_LOGIN_START',
+        });
         let loginStarted = false;
         try {
             if (!loginStarted) {
@@ -137,6 +140,10 @@ function* checkUserLoginSaga() {
                 );
                 focusOnAlert(loginAlertId);
             }
+        } finally {
+            yield put({
+                type: 'CHECK_USER_LOGIN_COMPLETE',
+            });
         }
     });
 }
