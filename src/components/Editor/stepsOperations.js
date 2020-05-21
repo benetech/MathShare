@@ -77,10 +77,11 @@ function editStep(context, stepNumber) {
 
 function updateStep(context, img) {
     const { updateProblemStore, problemStore, problemList } = context.props;
+    const { set } = problemList;
     googleAnalytics('Edit step');
     const index = problemStore.editedStep;
 
-    if (problemStore.textAreaValue === '') {
+    if (!(set && !set.optionalExplanations) && problemStore.textAreaValue === '') {
         // alertWarning(Locales.strings.no_description_warning, 'Warning');
         $('#mathAnnotation').tooltip('show');
         setTimeout(() => {
@@ -104,7 +105,8 @@ function updateStep(context, img) {
 
 function addStep(context, addToHistory, img) {
     const { problemStore, problemList, updateProblemStore } = context.props;
-    if (!problemStore.textAreaValue || problemStore.textAreaValue === '' || $.trim(problemStore.textAreaValue).length === 0) {
+    const { set } = problemList;
+    if (!(set && !set.optionalExplanations) && (!problemStore.textAreaValue || problemStore.textAreaValue === '' || $.trim(problemStore.textAreaValue).length === 0)) {
         // alertWarning(Locales.strings.no_description_warning, 'Warning');
         $('#mathAnnotation').tooltip('show');
         setTimeout(() => {

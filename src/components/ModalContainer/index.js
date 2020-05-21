@@ -14,6 +14,7 @@ import Locales from '../../strings';
 
 const CONFIRMATION = 'confirmation';
 const PALETTE_CHOOSER = 'paletteChooser';
+const PALETTE_UPDATE_CHOOSER = 'paletteUpdateChooser';
 const ADD_PROBLEM_SET = 'addProblemSet';
 const ADD_PROBLEMS = 'addProblems';
 const SHARE_NEW_SET = 'shareNewSet';
@@ -53,6 +54,19 @@ const ModalContainer = (props) => {
                 cancelCallback={() => props.toggleModals([PALETTE_CHOOSER])}
                 nextCallback={props.progressToAddingProblems}
                 deactivateModal={() => props.toggleModals([PALETTE_CHOOSER])}
+            />
+        )
+        : null;
+
+    const paletteUpdateChooser = activeModals.includes(PALETTE_UPDATE_CHOOSER)
+        ? (
+            <PaletteChooser
+                title={Locales.strings.choose_palettes_title}
+                cancelCallback={() => props.toggleModals([PALETTE_UPDATE_CHOOSER])}
+                nextCallback={props.updatePaletteSymbols}
+                deactivateModal={() => props.toggleModals([PALETTE_UPDATE_CHOOSER])}
+                currentPalettes={props.currentPalettes}
+                isUpdate
             />
         )
         : null;
@@ -213,6 +227,7 @@ const ModalContainer = (props) => {
             {confirmationModal}
             {confirmationBackModal}
             {paletteChooser}
+            {paletteUpdateChooser}
             {newSetShareModal}
             {addProblems}
             {addProblemSet}
@@ -229,7 +244,7 @@ const ModalContainer = (props) => {
 export default ModalContainer;
 
 export {
-    CONFIRMATION, PALETTE_CHOOSER, ADD_PROBLEM_SET, ADD_PROBLEMS, SHARE_PROBLEM_SET,
-    SHARE_NEW_SET, SAVE_SET, SHARE_SET, VIEW_SET, EDIT_PROBLEM, CONFIRMATION_BACK, TITLE_EDIT_MODAL,
-    PERSONALIZATION_SETTINGS, SIGN_IN_MODAL,
+    CONFIRMATION, PALETTE_CHOOSER, PALETTE_UPDATE_CHOOSER, ADD_PROBLEM_SET, ADD_PROBLEMS,
+    SHARE_PROBLEM_SET, SHARE_NEW_SET, SAVE_SET, SHARE_SET, VIEW_SET, EDIT_PROBLEM,
+    CONFIRMATION_BACK, TITLE_EDIT_MODAL, PERSONALIZATION_SETTINGS, SIGN_IN_MODAL,
 };

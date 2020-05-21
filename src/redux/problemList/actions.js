@@ -47,6 +47,15 @@ export const saveProblems = newProblems => ({
     },
 });
 
+export const updateProblemSetPayload = (updatePayload, successMsg, errorMsg) => ({
+    type: 'REQUEST_UPDATE_PROBLEMS',
+    payload: {
+        updatePayload,
+        successMsg,
+        errorMsg,
+    },
+});
+
 export const updateProblemList = problemList => ({
     type: 'UPDATE_PROBLEM_LIST',
     payload: {
@@ -219,6 +228,7 @@ export default {
     requestDefaultRevision,
     requestProblemSet,
     requestProblemSetSuccess,
+    updateProblemSetPayload,
     resetProblemSet,
     resetTempProblems,
     toggleModals,

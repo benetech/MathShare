@@ -24,6 +24,7 @@ import {
     shareSolutions as shareSolutionsAction,
     setReviewSolutions,
     requestProblemSetSuccess,
+    updateProblemSetPayload,
 } from './actions';
 import {
     updateProblemStore,
@@ -172,6 +173,8 @@ function* requestProblemSetByCode() {
                 palettes,
                 archiveMode,
                 source,
+                optionalExplanations,
+                hideSteps,
             } = response.data;
             if (action === 'review') {
                 yield put(
@@ -205,6 +208,8 @@ function* requestProblemSetByCode() {
                     palettes,
                     archiveMode,
                     source,
+                    optionalExplanations,
+                    hideSteps,
                 }));
                 if (action === 'view') {
                     yield put(shareSolutionsAction(action, code, true));
@@ -347,9 +352,36 @@ function* requestSaveProblemsSaga() {
                 set,
             } = yield select(getState);
 
+            yield put(updateProblemSetPayload({
+                problems: newProblems || set.problems,
+            }));
+        } catch (error) {
+            yield put({
+                type: 'REQUEST_SAVE_PROBLEMS_FAILURE',
+                error,
+            });
+        }
+    });
+}
+
+function* requestUpdateProblemsSaga() {
+    yield takeLatest('REQUEST_UPDATE_PROBLEMS', function* workerSaga({
+        payload: {
+            updatePayload,
+            successMsg,
+            errorMsg,
+        },
+    }) {
+        try {
+            const {
+                set,
+            } = yield select(getState);
+
             const response = yield call(
-                updateProblemsApi, set.editCode, set.shareCode, newProblems || set.problems,
-                set.title,
+                updateProblemsApi, {
+                    ...set,
+                    ...updatePayload,
+                },
             );
 
             // might not be required on save after deleted
@@ -363,11 +395,17 @@ function* requestSaveProblemsSaga() {
             //         title: set.title,
             //     },
             // );
+            if (successMsg) {
+                alertSuccess(successMsg, Locales.strings.success);
+            }
         } catch (error) {
             yield put({
                 type: 'REQUEST_SAVE_PROBLEMS_FAILURE',
                 error,
             });
+            if (errorMsg) {
+                alertError(errorMsg, Locales.strings.failure);
+            }
         }
     });
 }
@@ -823,6 +861,7 @@ export default function* rootSaga() {
         fork(requestEditProblemSaga),
         fork(requestShareSolutionsSaga),
         fork(requestSaveProblemSetSaga),
+        fork(requestUpdateProblemsSaga),
         fork(requestFinishEditingSaga),
         fork(requestUpdateTitleSaga),
         fork(reqestDuplicateProblemSet),

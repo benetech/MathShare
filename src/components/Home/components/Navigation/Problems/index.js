@@ -75,6 +75,7 @@ export default class Problems extends Component {
 
         return (
             <div className={`${styles.container} ${styles.problemList} justify-content-around`}>
+                {this.props.children}
                 <SortableList
                     distance={5}
                     problems={this.state.problems}

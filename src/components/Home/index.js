@@ -8,7 +8,7 @@ import { Helmet } from 'react-helmet';
 import MainPageHeader from './components/Header';
 import NavigationHeader from './components/Navigation/Header';
 import NavigationProblems from './components/Navigation/Problems';
-import { TITLE_EDIT_MODAL, PALETTE_CHOOSER } from '../ModalContainer';
+import { TITLE_EDIT_MODAL, PALETTE_CHOOSER, PALETTE_UPDATE_CHOOSER } from '../ModalContainer';
 import googleAnalytics from '../../scripts/googleAnalytics';
 import NotFound from '../NotFound';
 import home from './styles.scss';
@@ -21,6 +21,7 @@ import googleClassroomIcon from '../../../images/google-classroom-icon.png';
 import msTeamIcon from '../../../images/ms-team-icon.svg';
 import { passEventForKeys } from '../../services/events';
 import CommonDropdown from '../CommonDropdown';
+import Toggle from '../Toggle';
 
 
 const RenderActionButtons = ({ children }) => (
@@ -241,6 +242,18 @@ class Home extends Component {
         IntercomAPI('trackEvent', 'clicked-resume-work-link');
     }
 
+    updateRequireExplanations = (pressed) => {
+        this.props.updateProblemSetPayload({ optionalExplanations: !pressed });
+    }
+
+    updateIncludeSteps = (pressed) => {
+        this.props.updateProblemSetPayload({ hideSteps: !pressed });
+    }
+
+    updatePaletteModal = () => {
+        this.props.toggleModals([PALETTE_UPDATE_CHOOSER]);
+    }
+
     renderNewAndEditControls = (currentSet) => {
         const {
             match,
@@ -323,18 +336,6 @@ class Home extends Component {
                 ) && (
                     <div className={`row flex-row ${home.btnContainer}`}>
                         <RenderActionButtons>
-                            <Button
-                                id="shareBtn"
-                                className={classNames([
-                                    'btn',
-                                    'btn-outline-dark',
-                                ])}
-                                type="button"
-                                icon="link"
-                                content={`\u00A0${Locales.strings.share_permalink}`}
-                                onClick={this.saveProblemSet(currentSet)}
-                                onKeyPress={passEventForKeys(this.saveProblemSet(currentSet))}
-                            />
                             <span>
                                 <button
                                     id="googleContainer2"
@@ -470,6 +471,67 @@ class Home extends Component {
                     </div>
                 </div>
             </>
+        );
+    }
+
+    renderProblemSetControls = () => {
+        const {
+            match,
+            problemList,
+        } = this.props;
+        const {
+            params,
+        } = match;
+        const currentSet = problemList.set;
+        if (params.action !== 'edit' || !currentSet.editCode) {
+            return null;
+        }
+        return (
+            <div className={classNames('row', 'm-2', home.setControls)}>
+                <div className={classNames('col-12')}>
+                    <h2>{Locales.strings.problem_set_controls}</h2>
+                </div>
+                <div className={classNames('col-4', home.controlRadios)}>
+                    <Toggle
+                        btnClass={home.toggleBtn}
+                        text={Locales.strings.require_explanations}
+                        callback={this.updateRequireExplanations}
+                        defaultPressed={!currentSet.optionalExplanations}
+                    />
+                    <Toggle
+                        btnClass={home.toggleBtn}
+                        text={Locales.strings.include_my_work}
+                        callback={this.updateIncludeSteps}
+                        defaultPressed={!currentSet.hideSteps}
+                    />
+                </div>
+                <div className={classNames('col-4', home.btnContainer, home.changeMathSymbols)}>
+                    <Button
+                        id="changeMathSymbol"
+                        className={classNames([
+                            'btn',
+                            'btn-outline-dark',
+                        ])}
+                        type="button"
+                        content={Locales.strings.change_math_symbols}
+                        onClick={this.updatePaletteModal}
+                    />
+                </div>
+                <div className={classNames('col-4', home.btnContainer, home.shareSection)}>
+                    <Button
+                        id="shareBtn"
+                        className={classNames([
+                            'btn',
+                            'btn-outline-dark',
+                        ])}
+                        type="button"
+                        icon="link"
+                        content={`\u00A0${Locales.strings.share_permalink}`}
+                        onClick={this.saveProblemSet(currentSet)}
+                        onKeyPress={passEventForKeys(this.saveProblemSet(currentSet))}
+                    />
+                </div>
+            </div>
         );
     }
 
@@ -627,7 +689,9 @@ class Home extends Component {
                         action={params.action}
                         code={params.code}
                         setEditProblem={this.props.setEditProblem}
-                    />
+                    >
+                        {this.renderProblemSetControls()}
+                    </NavigationProblems>
                 </main>
             </div>
         );
