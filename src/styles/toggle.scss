@@ -47,7 +47,7 @@
 
 /* styling specific to the knob "container" */
 :global(.switchToggle__ui):before {
-	background: #eee;
+	background: #525158;
 	border-radius: 1.75em;
 	height: 1em;
 	right: .25em;
@@ -75,7 +75,7 @@
 
 /* update the color of the "container" to further visually indicate state */
 :global(.switchToggle)[aria-pressed="true"] :global(.switchToggle__ui):before {
-	background: #007bff;
+	background: #1e5dea;
 }
 
 /**
