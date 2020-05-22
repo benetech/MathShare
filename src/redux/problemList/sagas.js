@@ -575,6 +575,7 @@ function* requestSaveProblemSetSaga() {
                 problems,
                 title,
                 palettes: tempPalettes,
+                hideSteps: true,
             };
             const {
                 data,

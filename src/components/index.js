@@ -483,6 +483,8 @@ class App extends Component {
                             updateTempSet={this.props.updateTempSet}
                             updateProblemStore={this.props.updateProblemStore}
                             currentPalettes={problemList.set.palettes}
+                            problemList={this.props.problemList}
+                            submitToPartner={this.props.submitToPartner}
                             {...problemStore}
                             {...this}
                         />
