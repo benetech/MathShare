@@ -103,7 +103,7 @@ class MainPageHeader extends React.Component {
                             <ul className="nav pull-left">
                                 <li>
                                     <a
-                                        href="https://benetech.box.com/s/m040cviwz5vvqnpmb5qo1nqbf0ku2fut"
+                                        href="/#/getting-started"
                                         className={`nav-link ${header.gettingStarted}`}
                                         onClick={this.clickedOnGettingStarted}
                                     >
