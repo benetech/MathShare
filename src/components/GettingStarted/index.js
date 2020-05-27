@@ -2,8 +2,8 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import styles from './styles.scss';
 import Locales from '../../strings';
-import logo from '../../../images/logo-2.png';
-import SkipContent from '../Home/components/SkipContent';
+import MainPageHeader from '../Home/components/Header';
+
 
 const GettingStarted = () => (
     <div className={styles.container}>
@@ -12,19 +12,7 @@ const GettingStarted = () => (
                 {`${Locales.strings.getting_started_title} - ${Locales.strings.mathshare_benetech}`}
             </title>
         </Helmet>
-        <header>
-            <div className={styles.logoContainer}>
-                <SkipContent />
-                <a href="/#/">
-                    <img
-                        className={styles.midLogo}
-                        src={logo}
-                        alt={Locales.strings.mathshare_logo}
-                    />
-                </a>
-            </div>
-            <div className={styles.headerBottom} />
-        </header>
+        <MainPageHeader />
         <main id="mainContainer" className={styles.content}>
             <h1 className={styles.header} tabIndex={-1}>{Locales.strings.getting_started_title}</h1>
             <div className={styles.textContent}>
