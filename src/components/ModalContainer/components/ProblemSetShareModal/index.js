@@ -11,6 +11,7 @@ import { passEventForKeys } from '../../../../services/events';
 import googleClassroomIcon from '../../../../../images/google-classroom-icon.png';
 import msTeamIcon from '../../../../../images/ms-team-icon.svg';
 import googleAnalytics from '../../../../scripts/googleAnalytics';
+import { alertSuccess } from '../../../../scripts/alert';
 
 export default class ProblemSetShareModal extends Component {
     componentWillMount() {
@@ -21,9 +22,14 @@ export default class ProblemSetShareModal extends Component {
     }
 
     copyShareLink = () => {
-        const copyText = document.getElementById('shareLink');
-        copyText.select();
+        const el = document.createElement('textarea');
+        el.textContent = this.props.shareLink;
+        el.setAttribute('readonly', '');
+        document.getElementById('ProblemSetShareModal').appendChild(el);
+        el.select();
         document.execCommand('copy');
+        document.getElementById('ProblemSetShareModal').removeChild(el);
+        alertSuccess(Locales.strings.successfully_copied, Locales.strings.success);
     }
 
     shareOnGoogleClassroom = (e) => {
@@ -121,7 +127,7 @@ export default class ProblemSetShareModal extends Component {
                 getApplicationNode={this.getApplicationNode}
                 underlayStyle={{ paddingTop: '2em' }}
             >
-                <div id="demo-one-modal" className={editor.modal}>
+                <div id="ProblemSetShareModal" className={editor.modal}>
                     <div className={editor.modalBody}>
                         <h3>
                             <FontAwesome
@@ -138,106 +144,104 @@ export default class ProblemSetShareModal extends Component {
                         <div className={editor.modalMessage}>
                             <p>{message}</p>
                         </div>
-                        <div className={editor.shareContainer}>
-                            <FontAwesome
-                                size="lg"
-                                name="link"
-                            />
-                            <input type="text" readOnly value={this.props.shareLink} id="shareLink" className={editor.shareLink} />
-                            <Button
-                                id="copy_button"
-                                className={classNames('btn', editor.button)}
-                                ariaHidden="false"
-                                type="button"
-                                content={Locales.strings.copy}
-                                onClick={() => this.copyShareLink()}
-                            />
-                        </div>
-                        <div className={editor.externalButtons}>
-                            <span>
-                                <button
-                                    id="googleContainer1"
-                                    className={classNames([
-                                        'btn',
-                                        'btn-outline-dark',
-                                        editor.buttonContainer,
-                                        'pointer',
-                                    ])}
-                                    onClick={this.shareOnGoogleClassroom}
-                                    onKeyPress={
-                                        passEventForKeys(this.shareOnGoogleClassroom)
-                                    }
-                                    type="button"
-                                >
-                                    <img src={googleClassroomIcon} alt="" />
-                                    <span className={editor.btnText}>
-                                        <span className="sROnly">
-                                            {Locales.strings.share_on}
-                                        </span>
-                                        {Locales.strings.google_classroom}
-                                        <span className="sROnly">
-                                            {'\u00A0'}
-                                            {Locales.strings.opens_in_new_tab}
-                                        </span>
-                                    </span>
-                                </button>
-                                <UncontrolledTooltip placement="top" target="googleContainer1" />
-                            </span>
-                            <span>
-                                <button
-                                    id="microsoftTeamContainer1"
-                                    className={classNames([
-                                        'btn',
-                                        'btn-outline-dark',
-                                        editor.buttonContainer,
-                                        'pointer',
-                                    ])}
-                                    onClick={this.shareOnMicrosoftTeams}
-                                    onKeyPress={
-                                        passEventForKeys(this.shareOnMicrosoftTeams)
-                                    }
-                                    type="button"
-                                >
-                                    <img
-                                        src={msTeamIcon}
-                                        alt=""
-                                    />
-                                    <span className={editor.btnText}>
-                                        <span className="sROnly">
-                                            {Locales.strings.share_on}
-                                        </span>
-                                        {Locales.strings.ms_team}
-                                        <span className="sROnly">
-                                            {'\u00A0'}
-                                            {Locales.strings.opens_in_new_tab}
-                                        </span>
-                                    </span>
-                                </button>
-                                <UncontrolledTooltip placement="top" target="microsoftTeamContainer1" />
-                            </span>
-                            {(isSolutionSet && currentSet.partner
-                                && currentSet.partner.canSubmit) && (
+                        <div className="row">
+                            <div className={classNames('col-6', editor.shareContainer)}>
                                 <Button
-                                    id="partnerBtn"
-                                    className={classNames([
-                                        'btn',
-                                        'btn-outline-dark',
-                                        editor.integrationBtn,
-                                    ])}
+                                    id="copy_button"
+                                    icon="link"
+                                    className={classNames('btn', editor.button)}
+                                    ariaHidden="false"
                                     type="button"
-                                    content={Locales.strings.submit_to_partner.replace('{partner}', currentSet.partner.name)}
-                                    onClick={() => {
-                                        this.props.submitToPartner(
-                                            currentSet.id,
-                                            problemList.editCode,
-                                            problemList.reviewCode,
-                                        );
-                                    }}
+                                    content={Locales.strings.copy_link_url}
+                                    onClick={() => this.copyShareLink()}
                                 />
-                            )}
+                            </div>
+                            <div className={classNames('col-6', editor.externalButtons)}>
+                                <span>
+                                    <button
+                                        id="googleContainer1"
+                                        className={classNames([
+                                            'btn',
+                                            'btn-outline-dark',
+                                            editor.buttonContainer,
+                                            'pointer',
+                                        ])}
+                                        onClick={this.shareOnGoogleClassroom}
+                                        onKeyPress={
+                                            passEventForKeys(this.shareOnGoogleClassroom)
+                                        }
+                                        type="button"
+                                    >
+                                        <img src={googleClassroomIcon} alt="" />
+                                        <span className={editor.btnText}>
+                                            <span className="sROnly">
+                                                {Locales.strings.share_on}
+                                            </span>
+                                            {Locales.strings.google_classroom}
+                                            <span className="sROnly">
+                                                {'\u00A0'}
+                                                {Locales.strings.opens_in_new_tab}
+                                            </span>
+                                        </span>
+                                    </button>
+                                    <UncontrolledTooltip placement="top" target="googleContainer1" />
+                                </span>
+                                <span>
+                                    <button
+                                        id="microsoftTeamContainer1"
+                                        className={classNames([
+                                            'btn',
+                                            'btn-outline-dark',
+                                            editor.buttonContainer,
+                                            'pointer',
+                                        ])}
+                                        onClick={this.shareOnMicrosoftTeams}
+                                        onKeyPress={
+                                            passEventForKeys(this.shareOnMicrosoftTeams)
+                                        }
+                                        type="button"
+                                    >
+                                        <img
+                                            src={msTeamIcon}
+                                            alt=""
+                                        />
+                                        <span className={editor.btnText}>
+                                            <span className="sROnly">
+                                                {Locales.strings.share_on}
+                                            </span>
+                                            {Locales.strings.ms_team}
+                                            <span className="sROnly">
+                                                {'\u00A0'}
+                                                {Locales.strings.opens_in_new_tab}
+                                            </span>
+                                        </span>
+                                    </button>
+                                    <UncontrolledTooltip placement="top" target="microsoftTeamContainer1" />
+                                </span>
+                                {(isSolutionSet && currentSet.partner
+                                    && currentSet.partner.canSubmit) && (
+                                    <Button
+                                        id="partnerBtn"
+                                        className={classNames([
+                                            'btn',
+                                            'btn-outline-dark',
+                                            editor.integrationBtn,
+                                        ])}
+                                        type="button"
+                                        content={Locales.strings.submit_to_partner.replace('{partner}', currentSet.partner.name)}
+                                        onClick={() => {
+                                            this.props.submitToPartner(
+                                                currentSet.id,
+                                                problemList.editCode,
+                                                problemList.reviewCode,
+                                            );
+                                        }}
+                                    />
+                                )}
+                            </div>
                         </div>
                     </div>
-                    <footer className={editor.modalFooter}>
+                    <div className={editor.modalFooter}>
                         <Button
                             id="deactivate"
                             className={classNames('btn', 'btn-primary')}
@@ -247,7 +251,7 @@ export default class ProblemSetShareModal extends Component {
                             content={Locales.strings.close}
                             onClick={this.props.deactivateModal}
                         />
-                    </footer>
+                    </div>
                 </div>
             </AriaModal>
         );

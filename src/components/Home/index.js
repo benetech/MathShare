@@ -239,7 +239,7 @@ class Home extends Component {
                             listClass="dropdown-menu-lg-right dropdown-secondary"
                         >
                             {(params.action === 'edit' || params.action === 'solve') && (
-                                [
+                                <>
                                     <button
                                         className="dropdown-item"
                                         onClick={this.props.duplicateProblemSet}
@@ -252,13 +252,28 @@ class Home extends Component {
                                             size="lg"
                                             name="copy"
                                         />
-                                        {` ${Locales.strings.duplicate_set}`}
+                                        {` ${Locales.strings.duplicate}`}
                                         <span className="sROnly">
                                             {'\u00A0'}
                                             {Locales.strings.opens_in_new_tab}
                                         </span>
-                                    </button>,
-                                ]
+                                    </button>
+                                    {params.action === 'edit' && (
+                                        <Button
+                                            id="shareBtn"
+                                            className={classNames([
+                                                'dropdown-item',
+                                            ])}
+                                            type="button"
+                                            icon="share"
+                                            content={`\u00A0${Locales.strings.share_problem_set}`}
+                                            onClick={this.saveProblemSet(currentSet)}
+                                            onKeyPress={passEventForKeys(
+                                                this.saveProblemSet(currentSet),
+                                            )}
+                                        />
+                                    )}
+                                </>
                             )}
                         </CommonDropdown>
                     </div>
@@ -356,49 +371,39 @@ class Home extends Component {
         }
         return (
             <div className={classNames('row', 'm-2', home.setControls)}>
-                <div className={classNames('col-12')}>
-                    <h2>{Locales.strings.problem_set_controls}</h2>
-                </div>
-                <div className={classNames('col-4', home.controlRadios)}>
-                    <Toggle
-                        btnClass={home.toggleBtn}
-                        text={Locales.strings.require_explanations}
-                        callback={this.updateRequireExplanations}
-                        defaultPressed={!currentSet.optionalExplanations}
-                    />
-                    <Toggle
-                        btnClass={home.toggleBtn}
-                        text={Locales.strings.include_my_work}
-                        callback={this.updateIncludeSteps}
-                        defaultPressed={!currentSet.hideSteps}
-                    />
-                </div>
-                <div className={classNames('col-4', home.btnContainer, home.changeMathSymbols)}>
-                    <Button
-                        id="changeMathSymbol"
-                        className={classNames([
-                            'btn',
-                            'btn-outline-dark',
-                        ])}
-                        type="button"
-                        content={Locales.strings.change_math_symbols}
-                        onClick={this.updatePaletteModal}
-                    />
-                </div>
-                <div className={classNames('col-4', home.btnContainer, home.shareSection)}>
-                    <Button
-                        id="shareBtn"
-                        className={classNames([
-                            'btn',
-                            'btn-outline-dark',
-                        ])}
-                        type="button"
-                        icon="share"
-                        content={`\u00A0${Locales.strings.share_problem_set}`}
-                        onClick={this.saveProblemSet(currentSet)}
-                        onKeyPress={passEventForKeys(this.saveProblemSet(currentSet))}
-                    />
-                </div>
+                <h2 id="problem_set_controls" className={classNames('col-12')}>{Locales.strings.problem_set_controls}</h2>
+                <ul className={classNames('col-4', home.controlRadios)} aria-labelledby="problem_set_controls">
+                    <li>
+                        <Toggle
+                            btnClass={home.toggleBtn}
+                            text={Locales.strings.require_explanations}
+                            callback={this.updateRequireExplanations}
+                            defaultPressed={!currentSet.optionalExplanations}
+                        />
+                    </li>
+                    <li>
+                        <Toggle
+                            btnClass={home.toggleBtn}
+                            text={Locales.strings.include_my_work}
+                            callback={this.updateIncludeSteps}
+                            defaultPressed={!currentSet.hideSteps}
+                        />
+                    </li>
+                </ul>
+                <ul className={classNames('col-4', home.btnContainer, home.changeMathSymbols)} aria-labelledby="problem_set_controls">
+                    <li>
+                        <Button
+                            id="changeMathSymbol"
+                            className={classNames([
+                                'btn',
+                                'btn-outline-dark',
+                            ])}
+                            type="button"
+                            content={Locales.strings.change_math_symbols}
+                            onClick={this.updatePaletteModal}
+                        />
+                    </li>
+                </ul>
             </div>
         );
     }
@@ -439,7 +444,7 @@ class Home extends Component {
                     {(params.action === 'new' || params.action === 'edit' || params.action === 'solve') && (
                         this.renderNewAndEditControls(currentSet)
                     )}
-                    {(params.action !== 'review' && (params.action !== 'edit' && params.action !== 'new')) && currentSet.problems.length > 0 && (
+                    {(params.action !== 'review' && params.action !== 'new') && currentSet.problems.length > 0 && (
                         <RenderActionButtons additionalClassName={home.floatingBtnBar}>
                             {[
                                 <Button
@@ -457,7 +462,6 @@ class Home extends Component {
                         </RenderActionButtons>
                     )}
                     {this.renderNotLoggedInWarning()}
-                    <h2 id="problems_in_this_set" className="sROnly" tabIndex={-1}>{Locales.strings.problems_in_this_set}</h2>
                     <NavigationProblems
                         problems={currentSet.problems}
                         solutions={problemList.solutions}
@@ -468,7 +472,10 @@ class Home extends Component {
                         code={params.code}
                         setEditProblem={this.props.setEditProblem}
                     >
-                        {this.renderProblemSetControls()}
+                        <>
+                            {this.renderProblemSetControls()}
+                            <h2 id="problems_in_this_set" className="sROnly" tabIndex={-1}>{Locales.strings.problems_in_this_set}</h2>
+                        </>
                     </NavigationProblems>
                 </main>
             </div>

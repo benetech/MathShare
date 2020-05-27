@@ -506,7 +506,18 @@ function* requestShareSolutionsSaga() {
         },
     }) {
         try {
-            if (action !== 'solve') {
+            if (action === 'edit') {
+                const {
+                    set,
+                    newSetSharecode,
+                } = yield select(getState);
+
+                const payloadSolutions = getSolutionObjectFromProblems(set.problems);
+                const {
+                    reviewCode,
+                } = yield call(shareSolutions, newSetSharecode, payloadSolutions);
+                yield put(setProblemSetShareCode(reviewCode));
+            } else if (action !== 'solve') {
                 const {
                     set,
                 } = yield select(getState);

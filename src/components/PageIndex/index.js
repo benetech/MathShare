@@ -141,13 +141,13 @@ class Index extends Component {
     }
 
     dropdownOnClick = dropdownBtnId => (e) => {
-        stopEvent(e);
         const { dropdownOpen } = this.props.ui;
         if (dropdownOpen === dropdownBtnId) {
             this.props.setDropdownId(null);
         } else {
             this.props.setDropdownId(dropdownBtnId);
         }
+        return stopEvent(e);
     }
 
     goBack = () => {
