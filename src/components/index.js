@@ -55,6 +55,7 @@ import msalConfig from '../constants/msal';
 import keyMap from '../constants/hotkeyConfig.json';
 import { stopEvent, passEventForKeys } from '../services/events';
 import { getPathTo } from '../services/dom';
+import './styles.scss';
 
 
 const mathLive = process.env.MATHLIVE_DEBUG_MODE
