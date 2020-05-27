@@ -88,7 +88,7 @@ const GettingStarted = () => (
                     </div>
                     <div className={styles.subSection}>
                         <h3>{Locales.strings.deleting_a_step}</h3>
-                        <p>{Locales.strings.editing_a_step_note}</p>
+                        <p>{Locales.strings.deleting_a_step_note}</p>
                     </div>
                     <div className={styles.subSection}>
                         <h3 id="sharing-solution">{Locales.strings.sharing_your_answered_set}</h3>
