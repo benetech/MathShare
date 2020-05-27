@@ -40,25 +40,39 @@ const GettingStarted = () => (
                             ))}
                         </ol>
                     </div>
+                </div>
+                <div className={styles.mainSection}>
+                    <h2>{Locales.strings.sharing_sets}</h2>
                     <div className={styles.subSection}>
-                        <h3 id="sharing-a-problem-set">{Locales.strings.sharing_sets}</h3>
-                        <p>{Locales.strings.sharing_sets_note}</p>
+                        <h3 id="sharing-a-problem-set">{Locales.strings.sharing_sets_with_students}</h3>
                         <ol aria-labelledby="sharing-a-problem-set">
-                            {Locales.strings.sharing_sets_steps.map(step => (
+                            {Locales.strings.sharing_sets_with_students_steps.map(step => (
                                 <li>{step}</li>
                             ))}
                         </ol>
                     </div>
-                </div>
-                <div className={styles.mainSection}>
-                    <h2 id="sharing-a-set-with-teacher">{Locales.strings.sharing_sets_with_teachers}</h2>
-                    <p>{Locales.strings.sharing_sets_with_teachers_note_1}</p>
-                    <ol aria-labelledby="sharing-a-set-with-teacher">
-                        {Locales.strings.sharing_sets_with_teachers_steps.map(step => (
-                            <li>{step}</li>
-                        ))}
-                    </ol>
-                    <p>{Locales.strings.sharing_sets_with_teachers_note_2}</p>
+                    <div className={styles.subSection}>
+                        <h3 id="sharing-a-solution-set">{Locales.strings.sharing_solution_sets}</h3>
+                        <p>{Locales.strings.sharing_solution_sets_note}</p>
+                        <ol aria-labelledby="sharing-a-solution-set">
+                            {Locales.strings.sharing_solution_sets_steps.map(step => (
+                                <li>{step}</li>
+                            ))}
+                        </ol>
+                    </div>
+                    <div className={styles.subSection}>
+                        <h3>{Locales.strings.sharing_sets_with_teachers}</h3>
+                        <p>{Locales.strings.sharing_sets_with_teachers_note}</p>
+                    </div>
+                    <div className={styles.subSection}>
+                        <h3 id="copying-a-problem-set">{Locales.strings.copying_problem_sets}</h3>
+                        <p>{Locales.strings.copying_problem_sets_note}</p>
+                        <ol aria-labelledby="copying-a-problem-set">
+                            {Locales.strings.copying_problem_sets_steps.map(step => (
+                                <li>{step}</li>
+                            ))}
+                        </ol>
+                    </div>
                 </div>
                 <div className={styles.mainSection}>
                     <h2>{Locales.strings.solving_problems}</h2>
