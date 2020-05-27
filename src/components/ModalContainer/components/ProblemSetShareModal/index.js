@@ -129,13 +129,13 @@ export default class ProblemSetShareModal extends Component {
             >
                 <div id="ProblemSetShareModal" className={editor.modal}>
                     <div className={editor.modalBody}>
-                        <h3>
+                        <h1>
                             <FontAwesome
                                 size="md"
                                 name={iconName}
                             />
                             {header}
-                        </h3>
+                        </h1>
                         <ul className={editor.messageList}>
                             {messageList.map((messageListItem, mIndex) => (
                                 <li key={mIndex}>{messageListItem}</li>
