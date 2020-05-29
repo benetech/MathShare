@@ -101,15 +101,17 @@ class MainPageHeader extends React.Component {
                         </div>
                         <div className="navbar-header pull-right">
                             <ul className="nav pull-left">
-                                <li>
-                                    <a
-                                        href="https://benetech.box.com/s/m040cviwz5vvqnpmb5qo1nqbf0ku2fut"
-                                        className={`nav-link ${header.gettingStarted}`}
-                                        onClick={this.clickedOnGettingStarted}
-                                    >
-                                        {Locales.strings.getting_started_title}
-                                    </a>
-                                </li>
+                                {window.location.hash !== '#/getting-started' && (
+                                    <li>
+                                        <a
+                                            href="/#/getting-started"
+                                            className={`nav-link ${header.gettingStarted}`}
+                                            onClick={this.clickedOnGettingStarted}
+                                        >
+                                            {Locales.strings.getting_started_title}
+                                        </a>
+                                    </li>
+                                )}
                                 <HeaderDropdown
                                     additionalClass={header.dropDownMenu}
                                     dropdownName={Locales.strings.help_center}

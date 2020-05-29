@@ -695,18 +695,21 @@ function* reqestDuplicateProblemSet() {
                 solutions,
                 tempPalettes,
             } = yield select(getState);
-            const problems = set.problems.map((problem) => {
-                const problemSolution = solutions.find(
-                    solution => solution.problem.id === problem.id,
-                );
-                if (problemSolution) {
-                    return {
-                        ...problem,
-                        steps: problemSolution.steps,
-                    };
-                }
-                return problem;
-            });
+            let problems = payload.problems;
+            if (window.location.hash !== '#/app') {
+                problems = set.problems.map((problem) => {
+                    const problemSolution = solutions.find(
+                        solution => solution.problem.id === problem.id,
+                    );
+                    if (problemSolution) {
+                        return {
+                            ...problem,
+                            steps: problemSolution.steps,
+                        };
+                    }
+                    return problem;
+                });
+            }
             const setPayload = {
                 ...set,
                 ...payload,
