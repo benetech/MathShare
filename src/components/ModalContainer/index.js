@@ -82,14 +82,7 @@ const ModalContainer = (props) => {
     const confirmationBackModal = activeModals.includes(CONFIRMATION_BACK)
         ? (
             <ConfirmationModal
-                redButtonCallback={() => {
-                    props.toggleModals([CONFIRMATION_BACK]);
-                    if (props.link) {
-                        props.history.replace(props.link);
-                    } else {
-                        props.history.goBack();
-                    }
-                }}
+                redButtonCallback={props.goBack(true, props.link)}
                 greenButtonCallback={props.saveProblemCallback(props.link === null ? 'back' : props.link)}
                 deactivateModal={() => props.toggleModals([CONFIRMATION_BACK])}
                 title={Locales.strings.confirmation_modal_unsaved_title}
