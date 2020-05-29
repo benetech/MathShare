@@ -100,7 +100,7 @@ class App extends Component {
             if (target.tagName === 'A' && target.attributes && target.attributes.href) {
                 this.props.storeXPathToAnchor(getPathTo(target), target.attributes.href.value);
             }
-            if (!['dropdown-item', 'dropdown-toggle'].includes(target.className)) {
+            if (!Array.from(document.querySelectorAll('.dropdown-menu,.dropdown-toggle')).find(toggle => toggle.contains(target))) {
                 this.props.setDropdownId(null);
             }
         });
