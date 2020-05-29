@@ -146,7 +146,7 @@ export default class ProblemHeader extends Component {
                             additionalStyles={['default']}
                             type="button"
                             icon="arrow-left"
-                            onClick={this.props.goBack}
+                            onClick={this.props.goBack()}
                             ariaLabel={Locales.strings.back_to_problem_page}
                             content={(
                                 <React.Fragment>

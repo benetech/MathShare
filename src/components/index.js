@@ -304,13 +304,42 @@ class App extends Component {
         );
     }
 
-    goBack = () => {
-        if (this.isEdited() && !this.props.example) {
+    goBack = (isModal, link) => () => {
+        let allProblemsUrl = this.findGoBackUrl();
+        if (isModal === true) {
             this.props.toggleModals([CONFIRMATION_BACK]);
+            if (link) {
+                allProblemsUrl = link;
+            }
+        } else if (this.isEdited() && !this.props.example) {
+            this.props.toggleModals([CONFIRMATION_BACK], null, allProblemsUrl);
+            return;
+        }
+
+        if (allProblemsUrl) {
+            this.props.history.replace(allProblemsUrl);
         } else {
             this.props.history.goBack();
         }
     };
+
+    findGoBackUrl = () => {
+        let allProblemsUrl = null;
+        const url = window.location.hash;
+        const isProblemSetEdit = /#\/app\/problemSet\/edit\/[A-Z0-9]*\/[0-9]*$/.exec(url);
+        const isSolutionEdit = /#\/app\/problem\/edit\/[A-Z0-9]*$/.exec(url);
+        const isReview = /#\/app\/problem\/view\/[A-Z0-9]*$/.exec(url);
+        if (isProblemSetEdit) {
+            allProblemsUrl = /#\/app\/problemSet\/edit\/[A-Z0-9]*/.exec(url)[0].split('#')[1];
+        } else if (isSolutionEdit) {
+            const { set } = this.props.problemList;
+            allProblemsUrl = `/app/problemSet/solve/${set.editCode}`;
+        } else if (isReview) {
+            const { solution } = this.props.problemStore;
+            allProblemsUrl = `/app/problemSet/review/${solution.reviewCode}`;
+        }
+        return allProblemsUrl;
+    }
 
     getAdditionalClass = () => {
         if (window.location.hash && ['#/signin', '#/signup', '#/userdetails'].indexOf(window.location.hash.toLowerCase()) > -1) {
