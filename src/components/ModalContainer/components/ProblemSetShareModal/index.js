@@ -11,7 +11,7 @@ import { passEventForKeys } from '../../../../services/events';
 import googleClassroomIcon from '../../../../../images/google-classroom-icon.png';
 import msTeamIcon from '../../../../../images/ms-team-icon.svg';
 import googleAnalytics from '../../../../scripts/googleAnalytics';
-import { alertSuccess } from '../../../../scripts/alert';
+import CopyLink from '../../../Home/components/CopyLink';
 
 export default class ProblemSetShareModal extends Component {
     componentWillMount() {
@@ -19,17 +19,6 @@ export default class ProblemSetShareModal extends Component {
         if (!isSolutionSet && shareLink) {
             googleAnalytics(Locales.strings.share_problem_set);
         }
-    }
-
-    copyShareLink = () => {
-        const el = document.createElement('textarea');
-        el.textContent = this.props.shareLink;
-        el.setAttribute('readonly', '');
-        document.getElementById('ProblemSetShareModal').appendChild(el);
-        el.select();
-        document.execCommand('copy');
-        document.getElementById('ProblemSetShareModal').removeChild(el);
-        alertSuccess(Locales.strings.successfully_copied, Locales.strings.success);
     }
 
     shareOnGoogleClassroom = (e) => {
@@ -122,7 +111,7 @@ export default class ProblemSetShareModal extends Component {
         }
         return (
             <AriaModal
-                titleId="shareModal"
+                titleId="share_problem_set_heading"
                 onExit={this.props.deactivateModal}
                 getApplicationNode={this.getApplicationNode}
                 underlayStyle={{ paddingTop: '2em' }}
@@ -146,14 +135,14 @@ export default class ProblemSetShareModal extends Component {
                         </div>
                         <div className="row">
                             <div className={classNames('col-6', editor.shareContainer)}>
-                                <Button
-                                    id="copy_button"
+                                <CopyLink
                                     icon="link"
+                                    injectionContainer="ProblemSetShareModal"
+                                    copyText={Locales.strings.copy_link_url}
+                                    announceText={Locales.strings.successfully_copied}
+                                    announceOnAriaLive={this.props.announceOnAriaLive}
+                                    shareLink={this.props.shareLink}
                                     className={classNames('btn', editor.button)}
-                                    ariaHidden="false"
-                                    type="button"
-                                    content={Locales.strings.copy_link_url}
-                                    onClick={() => this.copyShareLink()}
                                 />
                             </div>
                             <div className={classNames('col-6', editor.externalButtons)}>

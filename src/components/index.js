@@ -486,6 +486,7 @@ class App extends Component {
                             currentPalettes={problemList.set.palettes}
                             problemList={this.props.problemList}
                             submitToPartner={this.props.submitToPartner}
+                            announceOnAriaLive={this.props.announceOnAriaLive}
                             {...problemStore}
                             {...this}
                         />

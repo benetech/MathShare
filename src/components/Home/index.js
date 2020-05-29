@@ -19,6 +19,7 @@ import Button from '../Button';
 import { passEventForKeys } from '../../services/events';
 import CommonDropdown from '../CommonDropdown';
 import Toggle from '../Toggle';
+import CopyLink from './components/CopyLink';
 
 
 const RenderActionButtons = ({ additionalClassName, children }) => (
@@ -159,10 +160,7 @@ class Home extends Component {
         }
     }
 
-    copyResumeWorkUrl = () => {
-        this.selectTextInput();
-        document.execCommand('copy');
-        this.props.announceOnAriaLive(Locales.strings.work_link_copied);
+    copyResumeWorkUrlCallback = () => {
         googleAnalytics('pressed copy resume work link button');
         IntercomAPI('trackEvent', 'pressed-copy-resume-work-link-button');
     }
@@ -339,17 +337,18 @@ class Home extends Component {
                             onFocus={this.selectTextInput}
                             onClick={this.sendResumeLinkClickEvent}
                         />
-                        <Button
-                            id="copyBtn"
+                        <CopyLink
+                            icon="copy"
                             iconSize="sm"
+                            announceOnAriaLive={this.props.announceOnAriaLive}
+                            announceText={Locales.strings.work_link_copied}
+                            copyText={`\u00A0${Locales.strings.copy_work_link}`}
+                            shareLinkId="resumeWorkUrl"
                             className={classNames([
                                 'btn',
                                 'btn-outline-dark',
                             ])}
-                            type="button"
-                            icon="copy"
-                            content={`\u00A0${Locales.strings.copy_work_link}`}
-                            onClick={this.copyResumeWorkUrl}
+                            copyLinkCallback={this.copyResumeWorkUrlCallback}
                         />
                     </div>
                 </div>
