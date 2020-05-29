@@ -26,6 +26,7 @@ import Privacy from './Privacy';
 import Partners from './Partners';
 import SignIn from './SignIn';
 import UserDetails from './UserDetails';
+import GettingStarted from './GettingStarted';
 import AriaLiveAnnouncer from './AriaLiveAnnouncer';
 import MainPageFooter from './Home/components/Footer';
 import SocialFooter from './Home/components/SocialFooter';
@@ -538,6 +539,7 @@ class App extends Component {
                                 )}
                             />
                             <Route exact path="/privacy" render={p => <Privacy {...p} />} />
+                            <Route exact path="/getting-started" render={p => <GettingStarted {...p} />} />
                             <Route exact path="/partners" render={p => <Partners {...p} />} />
                             <Route exact path="/signIn" render={p => <SignIn {...p} />} />
                             <Route exact path="/signUp" render={p => <SignIn {...p} isSignUp />} />
