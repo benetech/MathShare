@@ -66,6 +66,10 @@
 
         .changeMathSymbols {
             text-align: center;
+            position: absolute;
+            left: 150%;
+            width: 200px;
+            margin-top: -50px;
         }
     }
 }

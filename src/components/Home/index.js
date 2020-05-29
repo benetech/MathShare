@@ -388,9 +388,7 @@ class Home extends Component {
                             defaultPressed={!currentSet.hideSteps}
                         />
                     </li>
-                </ul>
-                <ul className={classNames('col-4', home.btnContainer, home.changeMathSymbols)} aria-labelledby="problem_set_controls">
-                    <li>
+                    <li className={home.changeMathSymbols}>
                         <Button
                             id="changeMathSymbol"
                             className={classNames([
