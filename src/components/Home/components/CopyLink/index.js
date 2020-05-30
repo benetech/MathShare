@@ -10,6 +10,7 @@ export default class CopyLink extends Component {
     }
 
     copyShareLink = () => {
+        const currentActiveElement = document.activeElement;
         if (this.props.shareLinkId) {
             const copyText = document.getElementById(this.props.shareLinkId);
             copyText.select();
@@ -26,6 +27,9 @@ export default class CopyLink extends Component {
         this.props.announceOnAriaLive(this.props.announceText);
         if (this.props.copyLinkCallback) {
             this.props.copyLinkCallback();
+        }
+        if (currentActiveElement) {
+            currentActiveElement.focus();
         }
     }
 

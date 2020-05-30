@@ -471,7 +471,9 @@ class Home extends Component {
                     >
                         <>
                             {this.renderProblemSetControls()}
-                            <h2 id="problems_in_this_set" className="sROnly" tabIndex={-1}>{Locales.strings.problems_in_this_set}</h2>
+                            <h2 id="problems_in_this_set" className="sROnly" tabIndex={-1}>
+                                {Locales.strings[currentSet.problems.length > 0 ? 'problems_in_this_set' : 'no_problems_added_yet']}
+                            </h2>
                         </>
                     </NavigationProblems>
                 </main>

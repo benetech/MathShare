@@ -76,15 +76,17 @@ export default class Problems extends Component {
         return (
             <div className={`${styles.container} ${styles.problemList} justify-content-around`}>
                 {this.props.children}
-                <SortableList
-                    distance={5}
-                    problems={this.state.problems}
-                    solutions={this.props.solutions}
-                    onSortEnd={this.onSortEnd}
-                    onSortStart={this.onSortStart}
-                    axis="xy"
-                    transitionDuration={800}
-                />
+                {this.state.problems.length > 0 && (
+                    <SortableList
+                        distance={5}
+                        problems={this.state.problems}
+                        solutions={this.props.solutions}
+                        onSortEnd={this.onSortEnd}
+                        onSortStart={this.onSortStart}
+                        axis="xy"
+                        transitionDuration={800}
+                    />
+                )}
                 {newProblem}
             </div>
 
