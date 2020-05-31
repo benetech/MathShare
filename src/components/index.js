@@ -26,6 +26,7 @@ import Privacy from './Privacy';
 import Partners from './Partners';
 import SignIn from './SignIn';
 import UserDetails from './UserDetails';
+import GettingStarted from './GettingStarted';
 import AriaLiveAnnouncer from './AriaLiveAnnouncer';
 import MainPageFooter from './Home/components/Footer';
 import SocialFooter from './Home/components/SocialFooter';
@@ -54,6 +55,7 @@ import msalConfig from '../constants/msal';
 import keyMap from '../constants/hotkeyConfig.json';
 import { stopEvent, passEventForKeys } from '../services/events';
 import { getPathTo } from '../services/dom';
+import './styles.scss';
 
 
 const mathLive = process.env.MATHLIVE_DEBUG_MODE
@@ -94,7 +96,7 @@ class App extends Component {
 
         document.body.addEventListener('click', (e) => {
             const { target } = e;
-            if (target.tagName === 'A') {
+            if (target.tagName === 'A' && target.attributes && target.attributes.href) {
                 this.props.storeXPathToAnchor(getPathTo(target), target.attributes.href.value);
             }
             if (target.className.indexOf('dropdown-item') === -1) {
@@ -205,18 +207,22 @@ class App extends Component {
 
     addProblemSet = () => {
         const { userProfile } = this.props;
-        if (userProfile.info && userProfile.info.userType === 'student') {
-            this.progressToAddingProblems([
-                'Edit',
-                'Operators',
-                'Notations',
-                'Geometry',
-            ], true);
+        if (userProfile.checking) {
+            setTimeout(this.addProblemSet, 500);
         } else {
-            this.props.toggleModals([PALETTE_CHOOSER]);
+            if (userProfile.info && userProfile.info.userType === 'student') {
+                this.progressToAddingProblems([
+                    'Edit',
+                    'Operators',
+                    'Notations',
+                    'Geometry',
+                ], true);
+            } else {
+                this.props.toggleModals([PALETTE_CHOOSER]);
+            }
+            googleAnalytics('new problem set button');
+            IntercomAPI('trackEvent', 'create-a-set');
         }
-        googleAnalytics('new problem set button');
-        IntercomAPI('trackEvent', 'create-a-set');
     };
 
     progressToAddingProblems = (palettes, dontToggleModal = false) => {
@@ -241,7 +247,7 @@ class App extends Component {
         this.props.saveProblemSet(orderedProblems, title);
     };
 
-    saveProblem = goBack => new Promise((resolve) => {
+    saveProblem = goTo => new Promise((resolve) => {
         if (this.props.example) {
             this.props.updateProblemStore({
                 editLink: Locales.strings.example_edit_code,
@@ -249,12 +255,12 @@ class App extends Component {
             resolve(true);
         } else {
             googleAnalytics('Save Problem');
-            this.props.commitProblemSolution(goBack === true);
+            this.props.commitProblemSolution(goTo);
         }
     });
 
     finishProblem = () => {
-        this.props.commitProblemSolution(true);
+        this.props.commitProblemSolution('back', false, true);
         googleAnalytics('Finish Problem');
     };
 
@@ -267,7 +273,7 @@ class App extends Component {
         } else {
             googleAnalytics('Share Problem');
             this.props.updateProblemSolution(this.props.problemStore.solution);
-            this.props.commitProblemSolution(false, true);
+            this.props.commitProblemSolution(null, true);
         }
     };
 
@@ -275,35 +281,66 @@ class App extends Component {
         this.props.toggleModals([VIEW_SET]);
     };
 
-    saveProblemCallback = () => {
+    saveProblemCallback = goTo => () => {
         this.props.toggleModals([CONFIRMATION_BACK]);
-        this.saveProblem(true);
+        this.saveProblem(goTo);
     };
 
-    goBack = () => {
+    isEdited = () => {
         const { problemStore, problemList } = this.props;
-        if (
-            (
-                !compareStepArrays(
-                    problemStore.solution.steps,
-                    problemStore.stepsFromLastSave,
-                )
-                || problemStore.textAreaValue
-                || (
-                    problemStore.solution.steps.length > 0
-                    && (
-                        (problemStore.theActiveMathField || problemList.theActiveMathField).$latex()
-                            !== problemStore.solution.steps.slice(-1).pop().stepValue
-                    )
-                )
+        if (window.location.hash.startsWith('#/app/problem/view/')) {
+            return false;
+        }
+        return !compareStepArrays(
+            problemStore.solution.steps,
+            problemStore.stepsFromLastSave,
+        )
+        || problemStore.textAreaValue
+        || (
+            problemStore.solution.steps.length > 0
+            && (
+                (problemStore.theActiveMathField || problemList.theActiveMathField).$latex()
+                    !== problemStore.solution.steps.slice(-1).pop().stepValue
             )
-            && !this.props.example
-        ) {
+        );
+    }
+
+    goBack = (isModal, link) => () => {
+        let allProblemsUrl = this.findGoBackUrl();
+        if (isModal === true) {
             this.props.toggleModals([CONFIRMATION_BACK]);
+            if (link) {
+                allProblemsUrl = link;
+            }
+        } else if (this.isEdited() && !this.props.example) {
+            this.props.toggleModals([CONFIRMATION_BACK], null, allProblemsUrl);
+            return;
+        }
+
+        if (allProblemsUrl) {
+            this.props.history.replace(allProblemsUrl);
         } else {
             this.props.history.goBack();
         }
     };
+
+    findGoBackUrl = () => {
+        let allProblemsUrl = null;
+        const url = window.location.hash;
+        const isProblemSetEdit = /#\/app\/problemSet\/edit\/[A-Z0-9]*\/[0-9]*$/.exec(url);
+        const isSolutionEdit = /#\/app\/problem\/edit\/[A-Z0-9]*$/.exec(url);
+        const isReview = /#\/app\/problem\/view\/[A-Z0-9]*$/.exec(url);
+        if (isProblemSetEdit) {
+            allProblemsUrl = /#\/app\/problemSet\/edit\/[A-Z0-9]*/.exec(url)[0].split('#')[1];
+        } else if (isSolutionEdit) {
+            const { set } = this.props.problemList;
+            allProblemsUrl = `/app/problemSet/solve/${set.editCode}`;
+        } else if (isReview) {
+            const { solution } = this.props.problemStore;
+            allProblemsUrl = `/app/problemSet/review/${solution.reviewCode}`;
+        }
+        return allProblemsUrl;
+    }
 
     getAdditionalClass = () => {
         if (window.location.hash && ['#/signin', '#/signup', '#/userdetails'].indexOf(window.location.hash.toLowerCase()) > -1) {
@@ -436,6 +473,7 @@ class App extends Component {
                     <div className={`body-container ${this.getAdditionalClass()}`}>
                         <ModalContainer
                             activeModals={modal.activeModals}
+                            link={modal.link}
                             toggleModals={this.props.toggleModals}
                             updateProblemSetTitle={this.props.updateProblemSetTitle}
                             progressToAddingProblems={this.progressToAddingProblems}
@@ -501,6 +539,7 @@ class App extends Component {
                                 )}
                             />
                             <Route exact path="/privacy" render={p => <Privacy {...p} />} />
+                            <Route exact path="/getting-started" render={p => <GettingStarted {...p} />} />
                             <Route exact path="/partners" render={p => <Partners {...p} />} />
                             <Route exact path="/signIn" render={p => <SignIn {...p} />} />
                             <Route exact path="/signUp" render={p => <SignIn {...p} isSignUp />} />
@@ -508,7 +547,7 @@ class App extends Component {
                             <Route render={p => <NotFound {...p} />} />
                         </Switch>
                     </div>
-                    {userProfile.info.userType === 'teacher' && <Intercom appID={process.env.INTERCOM_APP_ID} />}
+                    {['teacher', 'other'].includes(userProfile.info.userType) && <Intercom appID={process.env.INTERCOM_APP_ID} />}
                     <footer id="footer">
                         <h2 className="sROnly">
                             {' '}
@@ -532,6 +571,7 @@ export default withRouter(connect(
         problemStore: state.problem,
         userProfile: state.userProfile,
         modal: state.modal,
+        routerHooks: state.routerHooks,
     }),
     {
         ...problemActions,

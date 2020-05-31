@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { IntercomAPI } from 'react-intercom';
 import { Helmet } from 'react-helmet';
+import MainPageHeader from '../Home/components/Header';
 import ProblemHeader from './components/ProblemHeader';
 import MyStepsHeader from './components/MySteps/components/MyStepsHeader';
 import MyStepsList from './components/MySteps/components/MyStepsList';
@@ -18,7 +19,6 @@ import Locales from '../../strings';
 import googleAnalytics from '../../scripts/googleAnalytics';
 import exampleProblem from './example.json';
 import scrollTo from '../../scripts/scrollTo';
-import SkipContent from '../Home/components/SkipContent';
 
 const mathLive = process.env.MATHLIVE_DEBUG_MODE ? require('../../../../mathlive/src/mathlive.js').default
     : require('../../lib/mathlivedist/mathlive.js');
@@ -50,25 +50,16 @@ class Editor extends Component {
 
     componentDidMount() {
         window.addEventListener('beforeunload', this.onUnload);
-        if (this.props.example) {
-            this.props.loadExampleProblem(exampleProblem);
-        } else {
-            const { action, code, position } = this.props.match.params;
-            if (position) {
-                this.props.requestProblemSet(action, code, position);
-            } else {
-                this.props.loadProblem(action, code);
-            }
-        }
-        this.setState({
-            actionsStack: [],
-        });
-        const mathEditor = document.getElementById('mathEditorActive');
-        if (mathEditor && mathEditor.mathfield) {
-            const { undoManager } = mathEditor.mathfield;
-            if (undoManager) {
-                undoManager.reset();
-            }
+        const { action, code, position } = this.props.match.params;
+        this.initialize(action, code, position);
+    }
+
+    componentWillReceiveProps(newProps) {
+        const oldParams = this.props.match.params;
+        const newParams = newProps.match.params;
+        if (oldParams.action !== newParams.action || oldParams.code !== newParams.code
+            || oldParams.position !== newParams.position) {
+            this.initialize(newParams.action, newParams.code, newParams.position);
         }
         this.scrollToBottom();
     }
@@ -95,6 +86,33 @@ class Editor extends Component {
 
         // For Safari
         return Locales.strings.sure;
+    }
+
+    initialize = (action, code, position) => {
+        this.props.resetProblem();
+        this.props.updateProblemStore({ textAreaValue: '' });
+        this.setState({
+            actionsStack: [],
+        });
+        const mathEditor = document.getElementById('mathEditorActive');
+        if (mathEditor) {
+            const { mathfield } = mathEditor;
+            if (mathfield) {
+                mathfield.$latex(Locales.strings.loading);
+                const { undoManager } = mathfield;
+                if (undoManager) {
+                    undoManager.reset();
+                }
+            }
+        }
+        if (this.props.example) {
+            this.props.loadExampleProblem(exampleProblem);
+        } else if (position) {
+            this.props.requestProblemSet(action, code, position);
+        } else {
+            this.props.loadProblem(action, code);
+        }
+        this.scrollToBottom();
     }
 
     scrollToBottom = () => {
@@ -227,7 +245,10 @@ class Editor extends Component {
     }
 
     render() {
-        const { problemStore, problemList } = this.props;
+        const { match, problemStore, problemList } = this.props;
+        const {
+            params,
+        } = match;
         if (problemStore.notFound) {
             return <NotFound />;
         }
@@ -245,7 +266,9 @@ class Editor extends Component {
                 undoLastActionCallback={() => undoLastAction(this)}
                 deleteStepsCallback={() => clearAll(this)}
                 updateCallback={img => updateStep(this, img)}
-                bindDisplayFunction={f => this.props.updateProblemStore({ displayScratchpad: f })}
+                bindDisplayFunction={
+                    f => this.props.updateProblemStore({ displayScratchpad: (f || (() => {})) })
+                }
                 showDelete={problemStore.actionsStack.length > 0}
                 newProblem={this.id === 'newEditor'}
             />
@@ -254,8 +277,15 @@ class Editor extends Component {
         return (
             <div id="MainWorkWrapper" className={editor.mainWorkWrapper}>
                 {this.renderHelmet()}
+                <MainPageHeader
+                    editing={params.action === 'edit' || params.action === 'new'}
+                    history={this.props.history}
+                    addProblemSetCallback={this.props.addProblemSet}
+                    duplicateProblemSet={this.props.duplicateProblemSet}
+                    editCode={problemList.set.editCode}
+                    action={params.action}
+                />
                 <main id="MainWorkArea" className={editor.editorAndHistoryWrapper}>
-                    <SkipContent />
                     <ProblemHeader
                         {...this}
                         {...this.props}

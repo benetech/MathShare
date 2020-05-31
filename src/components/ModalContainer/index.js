@@ -8,6 +8,7 @@ import ProblemSetShareModal from './components/ProblemSetShareModal';
 import ConfirmationModal from './components/ConfirmationModal';
 import TitleEditModal from './components/TitleEditModal';
 import PersonalizationModal from './components/PersonalizationModal';
+import SignInModal from './components/SignInModal';
 import PaletteChooser from '../Home/components/ButtonsPaletteChooser';
 import Locales from '../../strings';
 
@@ -24,6 +25,7 @@ const EDIT_PROBLEM = 'editProblem';
 const CONFIRMATION_BACK = 'confirmationBack';
 const TITLE_EDIT_MODAL = 'titleEditModal';
 const PERSONALIZATION_SETTINGS = 'personalizationSettings';
+const SIGN_IN_MODAL = 'signInModal';
 
 const ModalContainer = (props) => {
     const { activeModals } = props;
@@ -80,11 +82,8 @@ const ModalContainer = (props) => {
     const confirmationBackModal = activeModals.includes(CONFIRMATION_BACK)
         ? (
             <ConfirmationModal
-                redButtonCallback={() => {
-                    props.toggleModals([CONFIRMATION_BACK]);
-                    props.history.goBack();
-                }}
-                greenButtonCallback={props.saveProblemCallback}
+                redButtonCallback={props.goBack(true, props.link)}
+                greenButtonCallback={props.saveProblemCallback(props.link === null ? 'back' : props.link)}
                 deactivateModal={() => props.toggleModals([CONFIRMATION_BACK])}
                 title={Locales.strings.confirmation_modal_unsaved_title}
                 redButtonLabel={Locales.strings.discard_changes}
@@ -192,6 +191,14 @@ const ModalContainer = (props) => {
         )
         : null;
 
+    const signInModal = activeModals.includes(SIGN_IN_MODAL)
+        ? (
+            <SignInModal
+                deactivateModal={() => props.toggleModals([SIGN_IN_MODAL])}
+            />
+        )
+        : null;
+
     return (
         <>
             {saveModal}
@@ -207,6 +214,7 @@ const ModalContainer = (props) => {
             {shareProblemSet}
             {titleEditModal}
             {personalizationModal}
+            {signInModal}
         </>
     );
 };
@@ -216,5 +224,5 @@ export default ModalContainer;
 export {
     CONFIRMATION, PALETTE_CHOOSER, ADD_PROBLEM_SET, ADD_PROBLEMS, SHARE_PROBLEM_SET,
     SHARE_NEW_SET, SAVE_SET, SHARE_SET, VIEW_SET, EDIT_PROBLEM, CONFIRMATION_BACK, TITLE_EDIT_MODAL,
-    PERSONALIZATION_SETTINGS,
+    PERSONALIZATION_SETTINGS, SIGN_IN_MODAL,
 };

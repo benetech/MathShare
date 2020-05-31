@@ -16,6 +16,7 @@ import { goBack, push, replace } from 'connected-react-router';
 import * as dayjs from 'dayjs';
 import {
     fetchRecentWork,
+    markUserResolved,
     resetUserProfile,
     setUserProfile,
     setAuthRedirect,
@@ -48,8 +49,21 @@ const loginAlertId = 'login-alert';
 const redirectAlertId = 'redirect-info';
 const redirectWait = 2500;
 
+const getFormattedUserType = (userType) => {
+    if (userType === 'teacher') {
+        return 'Teacher';
+    }
+    if (userType === 'student') {
+        return 'Student';
+    }
+    return 'Undefined';
+};
+
 function* checkUserLoginSaga() {
     yield throttle(60000, 'CHECK_USER_LOGIN', function* workerSaga() {
+        yield put({
+            type: 'CHECK_USER_LOGIN_START',
+        });
         let loginStarted = false;
         try {
             if (!loginStarted) {
@@ -74,16 +88,15 @@ function* checkUserLoginSaga() {
                 alertSuccess(Locales.strings.you_are_signed_in.replace('{user}', displayName), Locales.strings.success, loginAlertId);
                 focusOnAlert(loginAlertId);
             }
-            yield put(fetchRecentWork());
             try {
                 const userInfoResponse = yield call(fetchUserInfoApi, emails[0]);
                 if (userInfoResponse.status !== 200) {
                     throw Error('User info not set');
                 } else {
                     yield put(setUserInfo(userInfoResponse.data));
-                    yield put(setMobileNotifySuccess(userInfoResponse.data.notifyForMobile));
                 }
             } catch (infoError) {
+                yield put(markUserResolved(true));
                 yield put(setAuthRedirect((window.location.hash || '').substring(1)));
                 if (window.location.hash !== '#/userDetails') {
                     alertInfo(
@@ -96,6 +109,7 @@ function* checkUserLoginSaga() {
                 }
             } finally {
                 try {
+                    yield put(fetchRecentWork());
                     const configResponse = yield call(getConfigApi);
                     if (configResponse.status === 200) {
                         const {
@@ -126,6 +140,10 @@ function* checkUserLoginSaga() {
                 );
                 focusOnAlert(loginAlertId);
             }
+        } finally {
+            yield put({
+                type: 'CHECK_USER_LOGIN_COMPLETE',
+            });
         }
     });
 }
@@ -133,7 +151,10 @@ function* checkUserLoginSaga() {
 function* fetchRecentWorkSaga() {
     yield takeLatest('FETCH_RECENT_WORK', function* workerSaga() {
         try {
-            const response = yield call(fetchRecentWorkApi, {});
+            const {
+                info,
+            } = yield select(getState);
+            const response = yield call(fetchRecentWorkApi(info.userType), {});
             if (response.status !== 200) {
                 throw Error('Unable to fetch work');
             }
@@ -181,7 +202,7 @@ function* saveUserInfoSaga() {
                 role,
             } = payload;
             IntercomAPI('trackEvent', 'user-details', {
-                userType,
+                userType: getFormattedUserType(userType),
                 grades,
                 role,
             });
@@ -311,6 +332,15 @@ function* logoutSaga() {
     });
 }
 
+function* setUserInfoSaga() {
+    yield takeLatest('SET_USER_INFO', function* workerSaga({
+        payload,
+    }) {
+        yield put(setMobileNotifySuccess(payload.notifyForMobile));
+        ReactGA.set({ UserType: getFormattedUserType(payload.userType) });
+    });
+}
+
 export default function* rootSaga() {
     yield all([
         fork(checkUserLoginSaga),
@@ -321,5 +351,6 @@ export default function* rootSaga() {
         fork(logoutSaga),
         fork(setMobileNotifySaga),
         fork(savePersonalizationSettingsSaga),
+        fork(setUserInfoSaga),
     ]);
 }

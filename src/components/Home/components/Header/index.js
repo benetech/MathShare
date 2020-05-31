@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import FontAwesome from 'react-fontawesome';
 import { UncontrolledTooltip } from 'reactstrap';
 import classNames from 'classnames';
+import { IntercomAPI } from 'react-intercom';
 import header from './styles.scss';
 import UpcomingMobile from '../UpcomingMobile';
 import Locales from '../../../../strings';
@@ -68,6 +69,11 @@ class MainPageHeader extends React.Component {
         this.props.setDropdownId();
     }
 
+    clickedOnGettingStarted = () => {
+        googleAnalytics('clicked on getting started');
+        IntercomAPI('trackEvent', 'clicked-getting-started');
+    }
+
     render() {
         const { props } = this;
         const { userProfile } = props;
@@ -95,6 +101,17 @@ class MainPageHeader extends React.Component {
                         </div>
                         <div className="navbar-header pull-right">
                             <ul className="nav pull-left">
+                                {window.location.hash !== '#/getting-started' && (
+                                    <li>
+                                        <a
+                                            href="/#/getting-started"
+                                            className={`nav-link ${header.gettingStarted}`}
+                                            onClick={this.clickedOnGettingStarted}
+                                        >
+                                            {Locales.strings.getting_started_title}
+                                        </a>
+                                    </li>
+                                )}
                                 <HeaderDropdown
                                     additionalClass={header.dropDownMenu}
                                     dropdownName={Locales.strings.help_center}

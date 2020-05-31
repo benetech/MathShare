@@ -105,3 +105,43 @@
 .noProblems {
     padding-top: 80px;
 }
+
+.loginWarning, .shareLink {
+    text-align: center;
+    margin: auto;
+}
+
+.warningContainer {
+    margin-top: 10px;
+
+    .loginWarning {
+        margin-bottom: 10px;
+
+        &, h2 {
+            display: inline;
+            font-size: 14px;
+        }
+        .warningText {
+            color: #CD4C1D;
+            font-weight: 600;
+        }
+    }
+}
+
+.shareLink {
+    margin-bottom: 30px;
+    input {
+        font-size: 12px;
+        padding: 3px;
+        margin-right: 25px;
+        width: 480px;
+    }
+    button {
+        padding: 2px 7px;
+    }
+}
+
+.floatingBtnBar {
+    float: right;
+    margin-top: -70px;
+}

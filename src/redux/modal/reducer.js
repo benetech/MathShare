@@ -1,5 +1,6 @@
 export const initialState = {
     activeModals: [],
+    link: null,
 };
 
 const modal = (state = initialState, {
@@ -8,8 +9,16 @@ const modal = (state = initialState, {
     // error,
 }) => {
     switch (type) {
+    case 'TOGGLE_MODALS':
+        return {
+            ...state,
+            link: payload.link,
+        };
     case 'UPDATE_ACTIVE_MODALS':
-        return payload;
+        return {
+            link: state.link,
+            ...payload,
+        };
     default:
         return state;
     }

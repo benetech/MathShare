@@ -20,6 +20,8 @@ import googleAnalytics from '../../scripts/googleAnalytics';
 import pageIndex from './styles.scss';
 import { stopEvent, passEventForKeys } from '../../services/events';
 import CommonDropdown from '../CommonDropdown';
+import checkMark from '../../../images/checkmark.png';
+
 
 // const shareOnTwitter = shareCode => (e) => {
 //     window.open(
@@ -62,7 +64,11 @@ class Index extends Component {
         if (!isRecent) {
             return `/#/app/problemSet/view/${problemSet.shareCode}`;
         }
-        return `/#/app/problemSet/edit/${problemSet.editCode}`;
+        let action = 'edit';
+        if (problemSet.solutions) {
+            action = 'solve';
+        }
+        return `/#/app/problemSet/${action}/${problemSet.editCode}`;
     }
 
     openByEditCode = (editCode) => {
@@ -94,18 +100,22 @@ class Index extends Component {
             return null;
         }
         let recentContent = null;
+        const recentContentClass = `text-center ${pageIndex.recentContent}`;
         if (!userProfile.service) {
             recentContent = (
                 <div className={`text-center ${pageIndex.signInContainer}`}>
                     <a className={pageIndex.signInLink} href="/#/signIn">
-                        Sign in
+                        {Locales.strings.sign_in}
                     </a>
                     {' '}
-                    to track your problem sets
+                    {Locales.strings.to_track}
+                    <a className={pageIndex.benefitsLink} href="https://intercom.help/benetech/en/articles/3754980-benefits-of-having-a-user-account">
+                        {Locales.strings.benefits_of_signing_in}
+                    </a>
                 </div>
             );
         } else if (userProfile.recentProblemSets === null) {
-            recentContent = <div className="text-center">{Locales.strings.loading}</div>;
+            recentContent = <div className={recentContentClass}>{Locales.strings.loading}</div>;
         } else if (userProfile.recentProblemSets.length > 0) {
             recentContent = (
                 <ol className={pageIndex.problemSetList} aria-labelledby="recent-sets-header">
@@ -113,17 +123,19 @@ class Index extends Component {
                 </ol>
             );
         } else {
-            recentContent = <div className="text-center">No recent problems</div>;
+            recentContent = (
+                <div className={recentContentClass}>{Locales.strings.no_recent_sets}</div>
+            );
         }
         return (
             <>
-                {userProfile.email && (
+                <h2 id="recent-sets-header" className="title">{Locales.strings.recent_sets}</h2>
+                {recentContent}
+                {userProfile.email && userProfile.info.userType !== 'student' && (
                     <a className={`pull-right btn btn-primary ${pageIndex.archivedList}`} href="/#/app/archived">
                         {Locales.strings.archived_sets}
                     </a>
                 )}
-                <h2 id="recent-sets-header" className="title">{Locales.strings.recent_sets}</h2>
-                {recentContent}
             </>
         );
     }
@@ -140,6 +152,43 @@ class Index extends Component {
 
     goBack = () => {
         this.props.replace('/app');
+    }
+
+    renderProblemSetAnchorContent = (problemSet) => {
+        let completedSolutions = null;
+        if (problemSet.solutions) {
+            completedSolutions = problemSet.solutions.filter(solution => solution.finished).length;
+        }
+        if (problemSet.problems && problemSet.problems.length) {
+            return (
+                <>
+                    <span className={pageIndex.meta}>
+                        <span aria-hidden="false">{problemSet.problems.length}</span>
+                        {' '}
+                        <span>{Locales.strings.problems}</span>
+                    </span>
+                </>
+            );
+        }
+        if (problemSet.solutions) {
+            return (
+                <>
+                    <span className={pageIndex.meta}>
+                        <span aria-hidden="true">{`${completedSolutions}/${problemSet.solutions.length}`}</span>
+                        <span className="sROnly">
+                            {'\u00A0'}
+                            {`- ${Locales.strings.problem_set_completed_speech.replace('{completedCount}', completedSolutions).replace('{totalCount}', problemSet.solutions.length)}`}
+                        </span>
+                        {'\u00A0'}
+                        <span>{Locales.strings.problems}</span>
+                        {'\u00A0'}
+                        <span className={`${pageIndex.meta} sROnly`}>{Locales.strings.completed}</span>
+                    </span>
+                    {problemSet.solutions.length === completedSolutions && <img src={checkMark} alt="" height="25" />}
+                </>
+            );
+        }
+        return null;
     }
 
     renderProblemSet = (isPremade, isRecent) => (problemSet, index) => {
@@ -162,57 +211,29 @@ class Index extends Component {
                     <span className={pageIndex.title}>
                         {problemSet.title}
                     </span>
-                    <span className={pageIndex.meta}>
-                        {problemSet.problems.length}
-                        {' '}
-                        {Locales.strings.problems}
-                    </span>
+                    {this.renderProblemSetAnchorContent(problemSet)}
                 </a>
-                <CommonDropdown
-                    btnId={dropdownBtnId}
-                    btnClass={pageIndex.problemSetDropdown}
-                    containerClass={pageIndex.dropdownContainer}
-                    btnContent={(
-                        <span className="sROnly">
-                            {Locales.strings.more_options_for.replace('{title}', problemSet.title)}
-                        </span>
-                    )}
-                    btnIcon="ellipsis-v"
-                    listClass={pageIndex.dropdownList}
-                >
-                    <button
-                        className="dropdown-item reset-btn"
-                        onClick={this.duplicateProblemSet(
-                            problemSet,
+                {problemSet.problems && (
+                    <CommonDropdown
+                        btnId={dropdownBtnId}
+                        btnClass={pageIndex.problemSetDropdown}
+                        containerClass={pageIndex.dropdownContainer}
+                        btnContent={(
+                            <span className="sROnly">
+                                {Locales.strings.more_options_for.replace('{title}', problemSet.title)}
+                            </span>
                         )}
-                        onKeyPress={
-                            passEventForKeys(
-                                this.duplicateProblemSet(
-                                    problemSet,
-                                ),
-                            )
-                        }
-                        type="button"
+                        btnIcon="ellipsis-v"
+                        listClass={pageIndex.dropdownList}
                     >
-                        <FontAwesome
-                            size="lg"
-                            name="copy"
-                        />
-                        {` ${Locales.strings.duplicate_set}`}
-                        <span className="sROnly">
-                            {'\u00A0'}
-                            {Locales.strings.opens_in_new_tab}
-                        </span>
-                    </button>
-                    {isRecent && (
                         <button
                             className="dropdown-item reset-btn"
-                            onClick={this.archiveProblemSet(
+                            onClick={this.duplicateProblemSet(
                                 problemSet,
                             )}
                             onKeyPress={
                                 passEventForKeys(
-                                    this.archiveProblemSet(
+                                    this.duplicateProblemSet(
                                         problemSet,
                                     ),
                                 )
@@ -221,12 +242,38 @@ class Index extends Component {
                         >
                             <FontAwesome
                                 size="lg"
-                                name={problemSet.archiveMode === 'archived' ? 'refresh' : 'trash'}
+                                name="copy"
                             />
-                            {` ${problemSet.archiveMode === 'archived' ? Locales.strings.restore : Locales.strings.archive}`}
+                            {` ${Locales.strings.duplicate_set}`}
+                            <span className="sROnly">
+                                {'\u00A0'}
+                                {Locales.strings.opens_in_new_tab}
+                            </span>
                         </button>
-                    )}
-                </CommonDropdown>
+                        {isRecent && (
+                            <button
+                                className="dropdown-item reset-btn"
+                                onClick={this.archiveProblemSet(
+                                    problemSet,
+                                )}
+                                onKeyPress={
+                                    passEventForKeys(
+                                        this.archiveProblemSet(
+                                            problemSet,
+                                        ),
+                                    )
+                                }
+                                type="button"
+                            >
+                                <FontAwesome
+                                    size="lg"
+                                    name={problemSet.archiveMode === 'archived' ? 'refresh' : 'trash'}
+                                />
+                                {` ${problemSet.archiveMode === 'archived' ? Locales.strings.restore : Locales.strings.archive}`}
+                            </button>
+                        )}
+                    </CommonDropdown>
+                )}
             </li>
         );
     }
@@ -257,7 +304,7 @@ class Index extends Component {
         if (problemList.archivedProblemSets === null) {
             emptyList = <div className="text-center">{Locales.strings.loading}</div>;
         } else if (problemList.archivedProblemSets.length === 0) {
-            emptyList = <div className="text-center">{Locales.strings.archived_sets_empty}</div>;
+            emptyList = <div className={`text-center ${pageIndex.noArchivedSets}`}>{Locales.strings.archived_sets_empty}</div>;
         }
         return (
             <>
@@ -328,12 +375,12 @@ class Index extends Component {
     }
 
     renderLibrary = () => {
-        const { archiveMode } = this.props;
-        if (archiveMode) {
+        const { archiveMode, userProfile } = this.props;
+        if (archiveMode || (userProfile.email && userProfile.info.userType === 'student')) {
             return null;
         }
         return (
-            <div className="text-center">
+            <div className={`text-center ${pageIndex.problemSetLibrary}`}>
                 <h2 className="sROnly" tabIndex={-1}>{Locales.strings.problem_set_library}</h2>
                 <span role="img" aria-label="" aria-hidden="true">📓</span>
                 <a
@@ -357,8 +404,12 @@ class Index extends Component {
 
     render() {
         const { props } = this;
-        const { problemList, archiveMode } = props;
+        const { problemList, archiveMode, userProfile } = props;
         let title = Locales.strings.all_problem_sets;
+        let isStudent = false;
+        if (userProfile.email && userProfile.info.userType === 'student') {
+            isStudent = true;
+        }
         if (archiveMode === 'archived') {
             title = Locales.strings.archived_sets;
         }
@@ -378,7 +429,7 @@ class Index extends Component {
                     editCode={problemList.set.editCode}
                     action={null}
                 />
-                <div id="mainContainer" className="mainContainer">
+                <div id="mainContainer" className={`mainContainer ${isStudent ? pageIndex.isStudent : ''}`}>
                     {this.renderHeader()}
                     {archiveMode ? this.renderArchived() : this.renderMainDashboard()}
                 </div>

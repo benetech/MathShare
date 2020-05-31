@@ -60,7 +60,12 @@ export default class Problems extends Component {
 
         const SortableList = SortableContainer(({ problems, solutions }) => (
             <ol aria-labelledby="problems_in_this_set">
-                {problems.map((problem, index) => (
+                {problems.sort((a, b) => {
+                    if (a.position === b.position) {
+                        return (a.id - b.id);
+                    }
+                    return (a.position - b.position);
+                }).map((problem, index) => (
                     problem
                         ? <SortableItem key={`item-${index}`} index={index + 1} problem={problem} solutions={solutions} number={index} disabled={!this.props.editing} action={action} code={this.props.code} />
                         : null

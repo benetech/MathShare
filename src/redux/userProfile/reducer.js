@@ -7,7 +7,7 @@ const initialState = {
     service: null,
     recentProblemSets: null,
     notifyForMobile: null,
-    checking: false,
+    checking: true,
     config: null,
     info: {},
 };
@@ -18,7 +18,7 @@ const userProfile = (state = initialState, {
     // error,
 }) => {
     switch (type) {
-    case 'CHECK_USER_LOGIN':
+    case 'CHECK_USER_LOGIN_START':
         return {
             ...state,
             checking: true,
@@ -27,7 +27,11 @@ const userProfile = (state = initialState, {
         return {
             ...state,
             ...payload,
-            checking: false,
+        };
+    case 'MARK_USER_RESOLVED':
+        return {
+            ...state,
+            checking: !payload.resolved,
         };
     case 'SET_AUTH_REDIRECT':
         return {
@@ -81,6 +85,7 @@ const userProfile = (state = initialState, {
         return {
             ...state,
             info: payload,
+            checking: false,
         };
     default:
         return state;

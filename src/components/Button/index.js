@@ -35,6 +35,7 @@ export default class Button extends Component {
 
     render() {
         let span;
+        const iconIsAfterContent = this.props.iconAfterContent;
         if (this.props.icon) {
             span = this.props.fa5
                 ? (
@@ -75,8 +76,9 @@ export default class Button extends Component {
                 onKeyPress={this.props.onKeyPress || passEventForKeys(undefined, undefined, true)}
                 style={this.props.hide ? { display: 'none' } : {}}
             >
-                {span}
+                {!iconIsAfterContent && span}
                 {this.state.content}
+                {iconIsAfterContent && span}
             </button>
 
         );
