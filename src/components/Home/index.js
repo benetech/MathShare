@@ -9,11 +9,13 @@ import MainPageHeader from './components/Header';
 import NavigationHeader from './components/Navigation/Header';
 import NavigationProblems from './components/Navigation/Problems';
 import { TITLE_EDIT_MODAL, PALETTE_CHOOSER } from '../ModalContainer';
+import googleAnalytics from '../../scripts/googleAnalytics';
 import NotFound from '../NotFound';
 import home from './styles.scss';
 import Locales from '../../strings';
 import problemListActions from '../../redux/problemList/actions';
 import problemActions from '../../redux/problem/actions';
+import ariaLiveAnnouncerActions from '../../redux/ariaLiveAnnouncer/actions';
 import Button from '../Button';
 import googleClassroomIcon from '../../../images/google-classroom-icon.png';
 import msTeamIcon from '../../../images/ms-team-icon.svg';
@@ -48,14 +50,9 @@ class Home extends Component {
             action,
             code,
         } = this.props.match.params;
-        const {
-            problemList,
-        } = this.props;
         if (action === 'new') {
             this.props.clearProblemSet();
-            if (!problemList.tempPalettes || problemList.tempPalettes.length === 0) {
-                this.props.toggleModals([PALETTE_CHOOSER]);
-            }
+            this.newProblemSet();
         } else {
             this.loadData(action, code);
         }
@@ -78,6 +75,27 @@ class Home extends Component {
                 window.shareToMicrosoftTeams.renderButtons();
             }
         }, 0);
+    }
+
+    newProblemSet = () => {
+        const {
+            problemList,
+            userProfile,
+        } = this.props;
+        if (userProfile.checking) {
+            setTimeout(this.newProblemSet, 500);
+        } else if (!problemList.tempPalettes || problemList.tempPalettes.length === 0) {
+            if (userProfile.info && userProfile.info.userType === 'student') {
+                this.props.progressToAddingProblems([
+                    'Edit',
+                    'Operators',
+                    'Notations',
+                    'Geometry',
+                ], true);
+            } else {
+                this.props.toggleModals([PALETTE_CHOOSER]);
+            }
+        }
     }
 
     loadData = (action, code) => {
@@ -205,6 +223,24 @@ class Home extends Component {
         }
     }
 
+    copyResumeWorkUrl = () => {
+        this.selectTextInput();
+        document.execCommand('copy');
+        this.props.announceOnAriaLive(Locales.strings.work_link_copied);
+        googleAnalytics('pressed copy resume work link button');
+        IntercomAPI('trackEvent', 'pressed-copy-resume-work-link-button');
+    }
+
+    selectTextInput = () => {
+        const copyText = document.getElementById('resumeWorkUrl');
+        copyText.select();
+    }
+
+    sendResumeLinkClickEvent = () => {
+        googleAnalytics('clicked on resume work link');
+        IntercomAPI('trackEvent', 'clicked-resume-work-link');
+    }
+
     renderNewAndEditControls = (currentSet) => {
         const {
             match,
@@ -221,26 +257,28 @@ class Home extends Component {
                         <h1 id="LeftNavigationHeader" className={home.titleHeader} tabIndex="-1">
                             {currentSet.title || Locales.strings.untitled_problem_set}
                         </h1>
-                        <button
-                            className="reset-btn"
-                            onClick={() => {
-                                this.props.toggleModals([TITLE_EDIT_MODAL]);
-                            }}
-                            onKeyPress={passEventForKeys(() => {
-                                this.props.toggleModals([TITLE_EDIT_MODAL]);
-                            })}
-                            type="button"
-                        >
-                            <FontAwesome
-                                name="edit"
-                                className={
-                                    classNames(
-                                        'fa-2x',
-                                    )
-                                }
-                            />
-                            <span className="sROnly">{Locales.strings.edit_title}</span>
-                        </button>
+                        {params.action !== 'solve' && (
+                            <button
+                                className="reset-btn"
+                                onClick={() => {
+                                    this.props.toggleModals([TITLE_EDIT_MODAL]);
+                                }}
+                                onKeyPress={passEventForKeys(() => {
+                                    this.props.toggleModals([TITLE_EDIT_MODAL]);
+                                })}
+                                type="button"
+                            >
+                                <FontAwesome
+                                    name="edit"
+                                    className={
+                                        classNames(
+                                            'fa-2x',
+                                        )
+                                    }
+                                />
+                                <span className="sROnly">{Locales.strings.edit_title}</span>
+                            </button>
+                        )}
                         <CommonDropdown
                             btnId="dropdownMenuButton"
                             btnClass="nav-link reset-btn"
@@ -253,7 +291,7 @@ class Home extends Component {
                             )}
                             listClass="dropdown-menu-lg-right dropdown-secondary"
                         >
-                            {params.action === 'edit' && (
+                            {(params.action === 'edit' || params.action === 'solve') && (
                                 [
                                     <button
                                         className="dropdown-item"
@@ -278,12 +316,12 @@ class Home extends Component {
                         </CommonDropdown>
                     </div>
                 </div>
-                <div className={`row flex-row ${home.btnContainer}`}>
-                    {(
-                        (
-                            params.action === 'new' && problemList.tempSet.problems.length > 0)
-                        || params.action === 'edit'
-                    ) && (
+                {(
+                    (
+                        params.action === 'new' && problemList.tempSet.problems.length > 0)
+                    || params.action === 'edit'
+                ) && (
+                    <div className={`row flex-row ${home.btnContainer}`}>
                         <RenderActionButtons>
                             <Button
                                 id="shareBtn"
@@ -354,8 +392,8 @@ class Home extends Component {
                                 <UncontrolledTooltip placement="top" target="microsoftTeamContainer2" />
                             </span>
                         </RenderActionButtons>
-                    )}
-                </div>
+                    </div>
+                )}
             </React.Fragment>
         );
     }
@@ -381,6 +419,57 @@ class Home extends Component {
                     {Locales.strings.mathshare_benetech}
                 </title>
             </Helmet>
+        );
+    }
+
+    renderNotLoggedInWarning = () => {
+        const { userProfile, match } = this.props;
+        const { params } = match;
+        if (params.action !== 'edit' && params.action !== 'solve') {
+            return null;
+        }
+        if (userProfile.checking || userProfile.email) {
+            return null;
+        }
+        return (
+            <>
+                <div className={`row ${home.warningContainer}`}>
+                    <div className={home.loginWarning}>
+                        <h2 className={home.warningText}>
+                            {Locales.strings.warning}
+                            {': '}
+                        </h2>
+                        {params.action === 'solve' ? Locales.strings.return_to_your_work_later : Locales.strings.return_to_your_problem_later}
+                    </div>
+                </div>
+                <div className="row">
+                    <div className={home.shareLink}>
+                        <label htmlFor="resumeWorkUrl" className="sROnly">
+                            {Locales.strings.work_link}
+                        </label>
+                        <input
+                            id="resumeWorkUrl"
+                            type="text"
+                            value={window.location.href}
+                            readOnly
+                            onFocus={this.selectTextInput}
+                            onClick={this.sendResumeLinkClickEvent}
+                        />
+                        <Button
+                            id="copyBtn"
+                            iconSize="sm"
+                            className={classNames([
+                                'btn',
+                                'btn-outline-dark',
+                            ])}
+                            type="button"
+                            icon="copy"
+                            content={`\u00A0${Locales.strings.copy_work_link}`}
+                            onClick={this.copyResumeWorkUrl}
+                        />
+                    </div>
+                </div>
+            </>
         );
     }
 
@@ -411,11 +500,14 @@ class Home extends Component {
                     action={params.action}
                 />
                 <main id="mainContainer" className={home.leftNavigation}>
-                    {(params.action !== 'new' && params.action !== 'edit') && (
+                    {(params.action !== 'new' && params.action !== 'edit' && params.action !== 'solve') && (
                         <NavigationHeader
                             action={params.action}
                             set={problemList.set}
                         />
+                    )}
+                    {(params.action === 'new' || params.action === 'edit' || params.action === 'solve') && (
+                        this.renderNewAndEditControls(currentSet)
                     )}
                     {(params.action !== 'review' && (params.action !== 'edit' && params.action !== 'new')) && currentSet.problems.length > 0 && (
                         <div className={classNames([
@@ -521,12 +613,9 @@ class Home extends Component {
                                     />
                                 )}
                             </RenderActionButtons>
-
                         </div>
                     )}
-                    {(params.action === 'new' || params.action === 'edit') && (
-                        this.renderNewAndEditControls(currentSet)
-                    )}
+                    {this.renderNotLoggedInWarning()}
                     <h2 id="problems_in_this_set" className="sROnly" tabIndex={-1}>{Locales.strings.problems_in_this_set}</h2>
                     <NavigationProblems
                         problems={currentSet.problems}
@@ -547,8 +636,10 @@ class Home extends Component {
 export default connect(
     state => ({
         problemList: state.problemList,
+        userProfile: state.userProfile,
     }),
     {
+        ...ariaLiveAnnouncerActions,
         ...problemActions,
         ...problemListActions,
     },

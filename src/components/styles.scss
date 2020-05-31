@@ -1,0 +1,13 @@
+:global(#contentContainer) {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+
+    > :global(.body-container) {
+        flex: 1 0 auto;
+    }
+
+    > :global(footer#footer) {
+        margin-top: auto;
+    }
+}

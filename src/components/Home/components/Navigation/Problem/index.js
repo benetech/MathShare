@@ -14,6 +14,7 @@ import showImage from '../../../../../scripts/showImage';
 import parseMathLive from '../../../../../scripts/parseMathLive';
 import { stopEvent, passEventForKeys } from '../../../../../services/events';
 import CommonDropdown from '../../../../CommonDropdown';
+import { getMathshareLink } from '../../../../../services/mathshare';
 
 const mathLive = process.env.MATHLIVE_DEBUG_MODE ? require('../../../../../../../mathlive/src/mathlive.js').default
     : require('../../../../../lib/mathlivedist/mathlive.js');
@@ -109,7 +110,7 @@ export default class Problem extends Component {
 
     getLink = () => {
         const {
-            action, solutions, problem, code,
+            solutions, problem, action, code, position,
         } = this.props;
         if (this.props.example) {
             return '/#/app/problem/example/';
@@ -118,15 +119,7 @@ export default class Problem extends Component {
             const currentSolution = solutions.find(
                 solution => solution.problem.id === problem.id,
             );
-            if (currentSolution && (currentSolution.editCode || currentSolution.shareCode)) {
-                if (currentSolution.editCode && action !== 'review') {
-                    return `/#/app/problem/edit/${currentSolution.editCode}`;
-                }
-                return `/#/app/problem/view/${currentSolution.shareCode}`;
-            }
-            if (action === 'edit') {
-                return `/#/app/problemSet/edit/${code}/${problem.position}`;
-            }
+            return `/#${getMathshareLink({ action, code, position }, currentSolution, problem)}`;
         }
         return null;
     }

@@ -1,6 +1,7 @@
 import {
     all,
     call,
+    delay,
     fork,
     put,
     select,
@@ -51,9 +52,13 @@ import {
     getState as getModalState,
 } from '../modal/selectors';
 import {
+    getState as getStateFromUserProfile,
+} from '../userProfile/selectors';
+import {
     ADD_PROBLEM_SET,
     SHARE_NEW_SET,
     SHARE_PROBLEM_SET,
+    SIGN_IN_MODAL,
 } from '../../components/ModalContainer';
 import scrollTo from '../../scripts/scrollTo';
 import {
@@ -115,7 +120,10 @@ function* requestExampleSetSaga() {
 function* requestArchivedSetSaga() {
     yield takeLatest('REQUEST_ARCHIVED_SETS', function* workerSaga() {
         try {
-            const response = yield call(fetchRecentWorkApi, { 'x-archive-mode': 'archived' });
+            const {
+                info,
+            } = yield select(getStateFromUserProfile);
+            const response = yield call(fetchRecentWorkApi(info.userType), { 'x-archive-mode': 'archived' });
             const archivedProblemSets = response.data;
             yield put({
                 type: 'REQUEST_ARCHIVED_SETS_SUCCESS',
@@ -180,7 +188,12 @@ function* requestProblemSetByCode() {
                 //     },
                 // });
             } else {
-                const orderedProblems = problems.map((problem, index) => ({
+                const orderedProblems = problems.sort((a, b) => {
+                    if (a.position === b.position) {
+                        return (a.id - b.id);
+                    }
+                    return (a.position - b.position);
+                }).map((problem, index) => ({
                     ...problem,
                     position: index,
                 }));
@@ -472,6 +485,9 @@ function* requestShareSolutionsSaga() {
                 } = yield call(shareSolutions, code, payloadSolutions);
                 if (silent) {
                     yield put(replace(`/app/problemSet/solve/${editCode}`));
+                    yield put({
+                        type: 'SHOW_SIGN_IN_PROMPT',
+                    });
                 }
                 yield put(
                     setReviewSolutions(
@@ -625,11 +641,28 @@ function* reqestDuplicateProblemSet() {
         try {
             const {
                 set,
+                solutions,
                 tempPalettes,
             } = yield select(getState);
+            let problems = payload.problems;
+            if (window.location.hash !== '#/app') {
+                problems = set.problems.map((problem) => {
+                    const problemSolution = solutions.find(
+                        solution => solution.problem.id === problem.id,
+                    );
+                    if (problemSolution) {
+                        return {
+                            ...problem,
+                            steps: problemSolution.steps,
+                        };
+                    }
+                    return problem;
+                });
+            }
             const setPayload = {
                 ...set,
                 ...payload,
+                problems,
                 palettes: tempPalettes,
             };
             const {
@@ -761,6 +794,24 @@ function* requestSubmitToPartner() {
     });
 }
 
+function* showSignInPrompt() {
+    yield takeLatest('SHOW_SIGN_IN_PROMPT', function* workerSaga() {
+        while (true) {
+            const {
+                email,
+                checking,
+            } = yield select(getStateFromUserProfile);
+            if (!checking) {
+                if (!email) {
+                    yield put(toggleModals([SIGN_IN_MODAL]));
+                }
+                break;
+            }
+            yield delay(500);
+        }
+    });
+}
+
 
 export default function* rootSaga() {
     yield all([
@@ -781,5 +832,6 @@ export default function* rootSaga() {
         fork(requestLoadProblemSetSolution),
         fork(requestPartnerSubmitOptions),
         fork(requestSubmitToPartner),
+        fork(showSignInPrompt),
     ]);
 }

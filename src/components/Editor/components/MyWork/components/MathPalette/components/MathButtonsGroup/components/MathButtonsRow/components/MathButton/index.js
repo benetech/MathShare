@@ -196,7 +196,6 @@ export default class MathButton extends Component {
         const theActiveMathField = this.props.theActiveMathField;
         // Button contents as a string
         let insertionString = this.props.button.value
-            .replace(/\$\$/g, '')
             .replace('\\blacksquare', '#0')
             .replace('\\square', '#?')
             .trim();
@@ -377,6 +376,10 @@ export default class MathButton extends Component {
         if (options.erase) {
             result = ReplaceTeXCommands(latexStr, { enclose: { patterns: '$2' } });
         } else { // delete
+            // add validation to not calcuate latex without enclose
+            if (latexStr.indexOf('enclose') === -1) {
+                return latexStr;
+            }
             const replaceChar = '\uFFFD'; // temporary replacement char -- can't be in latexStr
             const notReplaceChar = `[^${replaceChar}]+`;
             result = ReplaceTeXCommands(latexStr, { enclose: { patterns: replaceChar } });

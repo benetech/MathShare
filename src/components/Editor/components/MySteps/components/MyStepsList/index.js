@@ -5,11 +5,15 @@ import Step from './components/Step';
 import myStepsList from './styles.scss';
 import mySteps from '../../../../styles.scss';
 import MyWork from '../../../MyWork';
+import {
+    CONFIRMATION_BACK,
+} from '../../../../../ModalContainer';
 import Locales from '../../../../../../strings';
 import Button from '../../../../../Button';
 import { stopEvent } from '../../../../../../services/events';
 import { getScreenReaderText } from '../../../../../../services/screenReader';
 import completeKeyMap from '../../../../../../constants/hotkeyConfig.json';
+import { getMathshareLink } from '../../../../../../services/mathshare';
 
 
 export default class MyStepsList extends Component {
@@ -41,6 +45,16 @@ export default class MyStepsList extends Component {
         }
     }
 
+    isReadonly = () => {
+        const { match, readOnly } = this.props;
+        const { params } = match;
+        const { action } = params;
+        if (readOnly || action === 'view') {
+            return true;
+        }
+        return false;
+    }
+
     readStep = index => (e) => {
         const step = document.getElementById(`mathStep-${index}`);
         if (step) {
@@ -66,15 +80,57 @@ export default class MyStepsList extends Component {
         this.readStep(this.state.readStep - 1)(e);
     }
 
+    findProblem = stepCount => () => {
+        const {
+            problemList, problemStore, match,
+        } = this.props;
+        const { solutions, set } = problemList;
+        const { problems } = set;
+        const { solution } = problemStore;
+        const { params } = match;
+        const { action, position } = params;
+
+        let currentIndex = -1;
+        let link = null;
+        if (action !== 'edit' || !position) {
+            currentIndex = solutions && solutions.findIndex(
+                currentSolution => currentSolution.problem.id === solution.problem.id,
+            );
+            if (currentIndex > -1) {
+                const nextSolution = solutions[
+                    (solutions.length + currentIndex + stepCount) % solutions.length
+                ];
+                link = getMathshareLink(params, nextSolution, nextSolution.problem);
+            }
+        }
+        if (!link) {
+            currentIndex = problems && problems.findIndex(
+                currentProblem => currentProblem.position === Number(position),
+            );
+            if (currentIndex > -1) {
+                link = getMathshareLink(params, null, problems[
+                    (problems.length + currentIndex + stepCount) % problems.length
+                ]);
+            }
+        }
+        if (link) {
+            if (this.props.isEdited()) {
+                this.props.toggleModals([CONFIRMATION_BACK], null, link);
+            } else {
+                this.props.history.replace(link);
+            }
+        }
+    }
+
     buildStep(i, value, explanation, isCleanup, isEdited, scratchpad, stepsSize) {
         let showTrash = false;
         let showEdit = false;
-        if (i > 0 && !this.props.readOnly && !isEdited) {
+        if (i > 0 && !this.isReadonly() && !isEdited) {
             showEdit = true;
         }
 
         if (i === this.props.solution.steps.length - 1
-            && this.props.solution.steps.length > 1 && !this.props.readOnly) {
+            && this.props.solution.steps.length > 1 && !this.isReadonly()) {
             showTrash = true;
         }
 
@@ -91,7 +147,7 @@ export default class MyStepsList extends Component {
                     deleteStepCallback={this.props.deleteStepCallback}
                     editStepCallback={this.props.editStepCallback}
                     deleteStepsCallback={this.props.deleteStepsCallback}
-                    readOnly={this.props.readOnly}
+                    readOnly={this.isReadonly()}
                     scratchpad={scratchpad}
                 />
             </div>
@@ -113,7 +169,7 @@ export default class MyStepsList extends Component {
             }
         });
 
-        const myWork = this.props.readOnly ? null
+        const myWork = this.isReadonly() ? null
             : (
                 <MyWork
                     allowedPalettes={this.props.allowedPalettes}
@@ -168,8 +224,17 @@ export default class MyStepsList extends Component {
                         >
                             {steps}
                         </div>
-                        {!this.props.readOnly && (
-                            <div>
+                        {!this.isReadonly() && (
+                            <div className={myStepsList.btnRow}>
+                                <Button
+                                    id="prevProblem"
+                                    className={classNames('btn', 'default', 'pointer', myStepsList.carouselBtn)}
+                                    type="button"
+                                    icon="arrow-left"
+                                    content={Locales.strings.previous_problem}
+                                    onClick={this.findProblem(-1)}
+                                    spanStyle={myStepsList.btnContainer}
+                                />
                                 <Button
                                     id="finishBtn"
                                     className={classNames('btn', 'pointer')}
@@ -179,6 +244,16 @@ export default class MyStepsList extends Component {
                                     content={Locales.strings.finish}
                                     onClick={this.props.finishProblem}
                                     spanStyle={myStepsList.finishContainer}
+                                />
+                                <Button
+                                    id="nextProblem"
+                                    className={classNames('btn', 'default', 'pointer', myStepsList.carouselBtn)}
+                                    type="button"
+                                    icon="arrow-right"
+                                    content={Locales.strings.next_problem}
+                                    onClick={this.findProblem(1)}
+                                    spanStyle={myStepsList.btnContainer}
+                                    iconAfterContent
                                 />
                             </div>
                         )}

@@ -8,6 +8,7 @@ import {
 } from 'redux-saga/effects';
 import {
     goBack,
+    replace,
 } from 'connected-react-router';
 import {
     setProblemNotFound,
@@ -93,7 +94,9 @@ function* processFetchedProblem() {
         const {
             theActiveMathField,
         } = yield select(getProblemListState);
-        theActiveMathField.$latex(solution.steps[solution.steps.length - 1].stepValue);
+        if (theActiveMathField) {
+            theActiveMathField.$latex(solution.steps[solution.steps.length - 1].stepValue);
+        }
         yield put(setSolutionData(solution, action));
         const {
             problemSetSolutionEditCode,
@@ -131,8 +134,9 @@ function* updateProblemSolutionSaga() {
 function* requestCommitProblemSolutionSaga() {
     yield takeLatest('REQUEST_COMMIT_PROBLEM_SOLUTION', function* workerSaga({
         payload: {
-            redirectBack,
+            redirectTo,
             shareModal,
+            finished,
         },
     }) {
         try {
@@ -175,10 +179,17 @@ function* requestCommitProblemSolutionSaga() {
                     alertError('Unable to save problem', 'Error');
                     return;
                 }
+                yield put({
+                    type: 'REQUEST_SAVE_PROBLEMS_SUCCESS',
+                    payload: response.data,
+                });
             } else if (problemListState.editCode) {
                 const payloadSolutions = problemListState.solutions.map((currentSolution) => {
                     if (currentSolution.problem.id === solution.problem.id) {
-                        return solution;
+                        return {
+                            ...solution,
+                            finished: finished || solution.finished,
+                        };
                     }
                     return currentSolution;
                 });
@@ -244,8 +255,10 @@ function* requestCommitProblemSolutionSaga() {
             alertSuccess(Locales.strings.problem_saved_success_message,
                 Locales.strings.success);
 
-            if (redirectBack) {
+            if (redirectTo === 'back') {
                 yield put(goBack());
+            } else if (typeof (redirectTo) === 'string') {
+                yield put(replace(redirectTo));
             }
             if (!matchedRoute && shareCode) {
                 if (shareModal) {

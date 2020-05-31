@@ -54,11 +54,12 @@ export const updateProblemList = problemList => ({
     },
 });
 
-export const toggleModals = (modals, index) => ({
+export const toggleModals = (modals, index, link) => ({
     type: 'TOGGLE_MODALS',
     payload: {
         modals,
         index,
+        link: link || null,
     },
 });
 

@@ -2,16 +2,14 @@ import React, { Component } from 'react';
 import classNames from 'classnames';
 import Tour from 'reactour';
 import { GlobalHotKeys } from 'react-hotkeys';
-import FontAwesome from 'react-fontawesome';
 import Button from '../../../Button';
 import problem from './styles.scss';
 import googleAnalytics from '../../../../scripts/googleAnalytics';
 import Locales from '../../../../strings';
 import showImage from '../../../../scripts/showImage';
 import completeKeyMap from '../../../../constants/hotkeyConfig.json';
-import { passEventForKeys, stopEvent } from '../../../../services/events';
+import { stopEvent } from '../../../../services/events';
 import { tourConfig, accentColor } from './tourConfig';
-import HeaderDropdown from '../../../HeaderDropdown';
 // import parseMathLive from '../../../../scripts/parseMathLive';
 
 const mathLive = process.env.MATHLIVE_DEBUG_MODE ? require('../../../../../../mathlive/src/mathlive.js').default
@@ -111,28 +109,6 @@ export default class ProblemHeader extends Component {
                             <div>{this.props.lastSaved}</div>
                         </div>
                     )}
-                    <HeaderDropdown
-                        additionalClass={problem.dropDownMenu}
-                        dropdownName={Locales.strings.more_options}
-                        dropdownIcon="question"
-                    >
-                        {[
-                            <button
-                                className="dropdown-item reset-btn"
-                                onClick={this.openTour}
-                                onKeyPress={passEventForKeys(this.openTour)}
-                                type="button"
-                                key="open-tour"
-                            >
-                                <FontAwesome
-                                    className="super-crazy-colors"
-                                    name="hand-o-up"
-                                    style={{ textShadow: '0 1px 0 rgba(0, 0, 0, 0.1)' }}
-                                />
-                                {Locales.strings.tutorial}
-                            </button>,
-                        ]}
-                    </HeaderDropdown>
                 </div>
             );
 
@@ -147,41 +123,7 @@ export default class ProblemHeader extends Component {
                     allowChanges
                 />
                 <div className={`d-flex flex-row ${problem.header}`}>
-                    <div className={problem.backBtnContainer}>
-                        <Button
-                            id="backBtn"
-                            className={classNames('btn', 'pointer', problem.button)}
-                            additionalStyles={['default']}
-                            type="button"
-                            icon="arrow-left"
-                            onClick={this.props.goBack}
-                            tabIndex="-1"
-                            ariaLabel={Locales.strings.back_to_problem_page}
-                            content={(
-                                <React.Fragment>
-                                    <span className="sROnly">{Locales.strings.back_to_problem_page}</span>
-                                    <span>{Locales.strings.all_problems}</span>
-                                </React.Fragment>
-                            )}
-                        />
-                    </div>
-                    <span id="math-ellipsis" className={`flex-grow-1 ${problem.mathEllipsis}`}>&nbsp;</span>
-                    {exampleLabel}
-                    {editOnlyControls}
-                    <Tour
-                        onRequestClose={this.closeTour}
-                        steps={tourConfig}
-                        isOpen={this.props.tourOpen}
-                        rounded={5}
-                        accentColor={accentColor}
-                        startAt={0}
-                        lastStepNextButton={
-                            <div className={classNames('btn', 'pointer', problem.btnFinish)}>{Locales.strings.finish}</div>
-                        }
-                    />
-                </div>
-                <div id="mainContainer">
-                    <div id="subHeader" className={`d-flex flex-row ${problem.subHeader}`} tabIndex={-1}>
+                    <div id="mainContainer" className={`d-flex flex-row ${problem.subHeader}`}>
                         {imgButton}
                         <h1 id="ProblemTitle" className={problem.title} tabIndex={-1}>
                             {title}
@@ -195,7 +137,36 @@ export default class ProblemHeader extends Component {
                                 )}
                             </span>
                         </h1>
-                        <span id="ProblemMath" className={`${problem.title} ${problem.question}`}>{`$$${this.props.math}$$`}</span>
+                        {this.props.math !== Locales.strings.loading && (<span id="ProblemMath" className={`${problem.title} ${problem.question}`}>{`$$${this.props.math}$$`}</span>)}
+                        <span id="math-ellipsis" className={`flex-grow-1 ${problem.mathEllipsis}`}>&nbsp;</span>
+                        {exampleLabel}
+                        <Button
+                            id="backBtn"
+                            className={classNames('btn', 'pointer', problem.button)}
+                            additionalStyles={['default']}
+                            type="button"
+                            icon="arrow-left"
+                            onClick={this.props.goBack()}
+                            ariaLabel={Locales.strings.back_to_problem_page}
+                            content={(
+                                <React.Fragment>
+                                    <span className="sROnly">{Locales.strings.back_to_problem_page}</span>
+                                    <span>{Locales.strings.all_problems}</span>
+                                </React.Fragment>
+                            )}
+                        />
+                        {editOnlyControls}
+                        <Tour
+                            onRequestClose={this.closeTour}
+                            steps={tourConfig}
+                            isOpen={this.props.tourOpen}
+                            rounded={5}
+                            accentColor={accentColor}
+                            startAt={0}
+                            lastStepNextButton={
+                                <div className={classNames('btn', 'pointer', problem.btnFinish)}>{Locales.strings.finish}</div>
+                            }
+                        />
                     </div>
                 </div>
             </React.Fragment>
