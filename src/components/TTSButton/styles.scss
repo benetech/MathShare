@@ -1,0 +1,9 @@
+.ttsButton {
+    background: none;
+    border: none;
+    padding: 5px 10px;
+
+    &:hover {
+        outline: 5px auto -webkit-focus-ring-color;
+    }
+}
