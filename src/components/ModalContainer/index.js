@@ -76,6 +76,7 @@ const ModalContainer = (props) => {
                 shareLink={props.newSetShareLink}
                 problemList={props.problemList}
                 announceOnAriaLive={props.announceOnAriaLive}
+                clearAriaLive={props.clearAriaLive}
                 deactivateModal={() => props.toggleModals([SHARE_NEW_SET])}
             />
         )
@@ -184,6 +185,7 @@ const ModalContainer = (props) => {
             <ProblemSetShareModal
                 shareLink={props.problemSetShareLink}
                 announceOnAriaLive={props.announceOnAriaLive}
+                clearAriaLive={props.clearAriaLive}
                 problemList={props.problemList}
                 deactivateModal={() => props.toggleModals([SHARE_PROBLEM_SET])}
                 submitToPartner={props.submitToPartner}

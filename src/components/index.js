@@ -517,6 +517,7 @@ class App extends Component {
                             problemList={this.props.problemList}
                             submitToPartner={this.props.submitToPartner}
                             announceOnAriaLive={this.props.announceOnAriaLive}
+                            clearAriaLive={this.props.clearAriaLive}
                             {...problemStore}
                             {...this}
                         />

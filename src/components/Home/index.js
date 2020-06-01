@@ -341,6 +341,7 @@ class Home extends Component {
                             icon="copy"
                             iconSize="sm"
                             announceOnAriaLive={this.props.announceOnAriaLive}
+                            clearAriaLive={this.props.clearAriaLive}
                             announceText={Locales.strings.work_link_copied}
                             copyText={`\u00A0${Locales.strings.copy_work_link}`}
                             shareLinkId="resumeWorkUrl"
@@ -472,7 +473,7 @@ class Home extends Component {
                         <>
                             {this.renderProblemSetControls()}
                             <h2 id="problems_in_this_set" className="sROnly" tabIndex={-1}>
-                                {Locales.strings[currentSet.problems.length > 0 ? 'problems_in_this_set' : 'no_problems_added_yet']}
+                                {Locales.strings.problems_in_this_set}
                             </h2>
                         </>
                     </NavigationProblems>

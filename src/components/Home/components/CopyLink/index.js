@@ -31,6 +31,9 @@ export default class CopyLink extends Component {
         if (currentActiveElement) {
             currentActiveElement.focus();
         }
+        setTimeout(() => {
+            this.props.clearAriaLive();
+        }, 1000);
     }
 
     render() {

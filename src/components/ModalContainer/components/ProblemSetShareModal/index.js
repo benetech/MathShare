@@ -141,6 +141,7 @@ export default class ProblemSetShareModal extends Component {
                                     copyText={Locales.strings.copy_link_url}
                                     announceText={Locales.strings.successfully_copied}
                                     announceOnAriaLive={this.props.announceOnAriaLive}
+                                    clearAriaLive={this.props.clearAriaLive}
                                     shareLink={this.props.shareLink}
                                     className={classNames('btn', editor.button)}
                                 />
