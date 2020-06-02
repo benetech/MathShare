@@ -77,7 +77,7 @@ export default class Problems extends Component {
         return (
             <div className={`${styles.container} ${styles.problemList} justify-content-around`}>
                 {this.props.children}
-                {this.state.problems.length === 0 && <h3 className="sROnly">{Locales.strings.no_problems_added_yet}</h3>}
+                {this.state.problems.length === 0 && <div className="sROnly">{Locales.strings.no_problems_added_yet}</div>}
                 {this.state.problems.length > 0 && (
                     <SortableList
                         distance={5}
