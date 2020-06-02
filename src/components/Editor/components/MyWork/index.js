@@ -125,7 +125,7 @@ class MyWork extends Component {
                 },
             );
         }
-        return `${math}. ${this.props.textAreaValue}.`;
+        return [math, this.props.textAreaValue].filter(value => value.trim() !== '').join('. ');
     };
 
     scratchpadChangeHandler() {
