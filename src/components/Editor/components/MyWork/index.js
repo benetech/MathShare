@@ -235,7 +235,7 @@ class MyWork extends Component {
                             id="tts-work-area"
                             additionalClass={editor.ttsButton}
                             text={this.getSpeakableText}
-                            ariaLabelSuffix={Locales.strings.my_work}
+                            ariaLabelSuffix={this.props.title || Locales.strings.prompt}
                         />
                         <h2
                             className={classNames(
