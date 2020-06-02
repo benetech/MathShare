@@ -46,9 +46,14 @@
         }
     }
 
-    .imageBtn {
+    .imageBtn, .ttsButton {
         background-color: #fafafa;
         margin-right: 15px;
+    }
+
+
+    .ttsButton {
+        min-width: 48px;
     }
 }
 

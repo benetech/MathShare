@@ -10,6 +10,7 @@ import showImage from '../../../../scripts/showImage';
 import completeKeyMap from '../../../../constants/hotkeyConfig.json';
 import { stopEvent } from '../../../../services/events';
 import { tourConfig, accentColor } from './tourConfig';
+import TTSButton from '../../../TTSButton';
 // import parseMathLive from '../../../../scripts/parseMathLive';
 
 const mathLive = process.env.MATHLIVE_DEBUG_MODE ? require('../../../../../../mathlive/src/mathlive.js').default
@@ -64,6 +65,14 @@ export default class ProblemHeader extends Component {
         this.props.closeTour();
     }
 
+    getSpeakableText = () => `${this.props.title} ${mathLive.latexToSpeakableText(
+        this.props.math,
+        {
+            textToSpeechRules: 'sre',
+            textToSpeechRulesOptions: { domain: 'clearspeak', style: 'default', markup: 'none' },
+        },
+    )}`;
+
     render() {
         const imgButton = this.props.scratchpad
             ? (
@@ -115,6 +124,15 @@ export default class ProblemHeader extends Component {
         const exampleLabel = this.props.example
             ? <span className={problem.label}>{Locales.strings.example}</span> : null;
 
+        const ttsButton = (
+            <TTSButton
+                id="tts-prompt"
+                additionalClass={classNames('btn', problem.ttsButton)}
+                text={this.getSpeakableText()}
+                ariaLabelSuffix={Locales.strings.prompt}
+            />
+        );
+
         return (
             <React.Fragment>
                 <GlobalHotKeys
@@ -125,6 +143,7 @@ export default class ProblemHeader extends Component {
                 <div className={`d-flex flex-row ${problem.header}`}>
                     <div id="mainContainer" className={`d-flex flex-row ${problem.subHeader}`}>
                         {imgButton}
+                        {ttsButton}
                         <h1 id="ProblemTitle" className={problem.title} tabIndex={-1}>
                             {title}
                             <span className="sROnly">
