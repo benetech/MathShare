@@ -11,6 +11,7 @@ import { sessionStore } from '../../../../scripts/storage';
 import { updateWork } from '../../../../redux/problem/actions';
 import Painterro from '../../../../lib/painterro/painterro.commonjs2';
 import painterroConfiguration from './painterroConfiguration.json';
+import TTSButton from '../../../TTSButton';
 
 const mathLive = process.env.MATHLIVE_DEBUG_MODE ? require('../../../../../../mathlive/src/mathlive.js').default
     : require('../../../../lib/mathlivedist/mathlive.js');
@@ -112,6 +113,20 @@ class MyWork extends Component {
             $(`#${id}`).click();
         }
     }
+
+    getSpeakableText = () => {
+        let math = '';
+        if (this.props.theActiveMathField) {
+            math = mathLive.latexToSpeakableText(
+                this.props.theActiveMathField.$latex(),
+                {
+                    textToSpeechRules: 'sre',
+                    textToSpeechRulesOptions: { domain: 'clearspeak', style: 'default', markup: 'none' },
+                },
+            );
+        }
+        return `${math}. ${this.props.textAreaValue}.`;
+    };
 
     scratchpadChangeHandler() {
         const { problem } = this.props;
@@ -216,6 +231,12 @@ class MyWork extends Component {
             <div id="EditorArea" className={myWork.editorArea}>
                 <div className={myWork.myWorkArea}>
                     <div id="historyWorkSeparator" className={myWork.historyWorkSeparator}>
+                        <TTSButton
+                            id="tts-work-area"
+                            additionalClass={editor.ttsButton}
+                            text={this.getSpeakableText}
+                            ariaLabelSuffix={Locales.strings.my_work}
+                        />
                         <h2
                             className={classNames(
                                 editor.modalAreaHeading,

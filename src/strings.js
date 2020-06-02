@@ -377,6 +377,7 @@ class Locales {
                 tour_save: "Save your work so you don't lose it.",
                 tour_share: 'Share your solution with others.',
                 try_now: 'Try now',
+                tts_error: 'Unable to play the audio',
                 tts_hint: 'Use the microphone button or type to explain your work (required)',
                 tts_hint_add_problem: 'Use the microphone button or type to add problem prompt (required)',
                 tts_intro: 'Describe your work by typing directly \nor using the microphone to record an explanation of your work (required).',

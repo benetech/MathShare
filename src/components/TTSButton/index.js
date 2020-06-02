@@ -5,14 +5,16 @@ import FontAwesome from 'react-fontawesome';
 import styles from './styles.scss';
 import Locales from '../../strings';
 import uiActions from '../../redux/ui/actions';
+import ariaLiveActions from '../../redux/ariaLiveAnnouncer/actions';
 import { stopEvent } from '../../services/events';
+import { alertError } from '../../scripts/alert';
 
 class TTSButton extends Component {
     constructor(props) {
         super(props);
         this.state = {
             ttsState: null,
-            text: props.text,
+            text: this.getText(props.text),
             audio: null,
         };
         this.polly = new window.AWS.Polly({ apiVersion: '2016-06-10' });
@@ -33,13 +35,15 @@ class TTSButton extends Component {
                     this.setState({ ttsState: false });
                 }
             }
-        } else if (this.state.text !== newProps.text) {
-            this.clearListeners();
+        } else if (this.state.text !== this.getText(newProps.text)) {
+            this.clearListeners(true);
             this.setState({
                 tsState: null,
-                text: newProps.text,
+                text: this.getText(newProps.text),
                 audio: null,
-            }, this.generateUrl);
+            }, () => {
+                this.generateUrl(true, 0);
+            });
         }
     }
 
@@ -47,19 +51,46 @@ class TTSButton extends Component {
         this.clearListeners();
     }
 
+    getText = (inputText) => {
+        if (typeof inputText === 'function') {
+            return inputText();
+        }
+        return inputText;
+    }
+
+    playAudio = (retryNo) => {
+        const { audio } = this.state;
+        audio.play()
+            .then(() => {
+                this.props.setTtsPlaying(this.ttsId);
+            })
+            .catch(() => {
+                if (retryNo < 1) {
+                    this.generateUrl(true, retryNo + 1);
+                } else {
+                    alertError(Locales.strings.tts_error, Locales.strings.error);
+                    this.props.clearAriaLive();
+                    this.props.announceOnAriaLive(Locales.strings.tts_error);
+                    this.endAudio();
+                }
+            });
+    }
+
     endAudio = () => {
         this.setState({ ttsState: false });
         this.props.stopTtsPlaying(this.ttsId);
     }
 
-    clearListeners = () => {
+    clearListeners = (dontStop) => {
         const audio = this.state.audio;
         if (audio) {
             audio.pause();
             audio.currentTime = 0;
             audio.removeEventListener('ended', this.endAudio);
-            this.endAudio();
-            this.props.stopTtsPlaying(this.ttsId);
+            if (!dontStop) {
+                this.endAudio();
+                this.props.stopTtsPlaying(this.ttsId);
+            }
         }
     }
 
@@ -71,15 +102,14 @@ class TTSButton extends Component {
                 audio.currentTime = 0;
                 this.props.stopTtsPlaying(this.ttsId);
             } else {
-                audio.play();
-                this.props.setTtsPlaying(this.ttsId);
+                this.playAudio(0);
             }
             return { ttsState: !prevState.ttsState };
         });
         return stopEvent(e);
     }
 
-    generateUrl = () => {
+    generateUrl = (playOnGeneration, retryNo) => {
         if (this.state.text === null) {
             return;
         }
@@ -95,11 +125,15 @@ class TTSButton extends Component {
             if (!error) {
                 const audio = new Audio(url);
                 audio.load();
-                this.setState({
-                    ttsState: false,
-                    audio,
-                });
                 audio.addEventListener('ended', this.endAudio);
+                this.setState({
+                    ttsState: playOnGeneration,
+                    audio,
+                }, () => {
+                    if (playOnGeneration) {
+                        this.playAudio(retryNo || 0);
+                    }
+                });
             }
         });
     }
@@ -130,7 +164,7 @@ class TTSButton extends Component {
 
         const button = (
             <button
-                className={styles.ttsButton}
+                className={`${styles.ttsButton} ${this.props.additionalClass}`}
                 id={this.props.id || this.ttsId}
                 aria-label={this.getAriaLabel()}
                 type="button"
@@ -155,5 +189,8 @@ export default connect(
     state => ({
         ui: state.ui,
     }),
-    uiActions,
+    {
+        ...uiActions,
+        ...ariaLiveActions,
+    },
 )(TTSButton);
