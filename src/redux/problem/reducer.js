@@ -128,6 +128,16 @@ const problem = (state = initialState, {
             },
         };
     }
+    case 'SET_EDIT_PROBLEM': {
+        let textAreaValue = initialState.textAreaValue;
+        if (payload.action === 'edit') {
+            textAreaValue = payload.textAreaValue;
+        }
+        return {
+            ...state,
+            textAreaValue,
+        };
+    }
     case LOCATION_CHANGE:
         if (payload.action === 'POP' && payload.location.pathname.indexOf('/app/problemSet/') > -1) {
             return {

@@ -58,7 +58,7 @@ export default class Problem extends Component {
     }
 
     onEditClick(e) {
-        this.props.setEditProblem(this.props.number, this.props.action);
+        this.props.setEditProblem(this.props.number, this.props.action, this.props.problem.title);
         this.props.activateModals([EDIT_PROBLEM], this.props.number);
         return stopEvent(e);
     }
