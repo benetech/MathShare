@@ -112,6 +112,7 @@ module.exports = (env, argv) => {
                 include: [
                     /node_modules(\/|\\)react-toastify/,
                     /node_modules(\/|\\)bootstrap/,
+                    /node_modules(\/|\\)rc-slider/,
                     /src(\/|\\)lib/,
                     /src(\/|\\)styles/,
                 ],

@@ -71,6 +71,7 @@
     "jquery": "^3.5.0",
     "lodash": "^4.17.15",
     "msal": "^1.1.1",
+    "rc-slider": "^9.3.0",
     "react": "^16.8.6",
     "react-aria-live": "^2.0.5",
     "react-aria-modal": "^3.0.1",

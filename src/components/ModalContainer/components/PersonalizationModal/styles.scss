@@ -2,6 +2,11 @@
     background: rgb(255, 255, 255);
     outline: 0;
     border-radius: 4px;
+    width: 600px;
+
+    h1 {
+        font-size: 1.75rem;
+    }
 }
 
 .modalHeader,
@@ -39,11 +44,51 @@
 .formContainer {
     padding-top: 15px;
     min-width: 350px;
-    max-width: 500px;
 
-    h4 {
+    h3 {
         font-size: 18px;
         font-weight: 400;
         padding-right: 15px;
+        padding-left: 25px;
+    }
+
+    ul li {
+        width: 100%;
+    }
+}
+
+.ttsContainer {
+    h2 {
+        font-size: 22px;
+        padding-top: 25px;
+        padding-bottom: 10px;
+        padding-left: 15px;
+    }
+    h3 {
+        font-size: 18px;
+        font-weight: 400;
+        padding-left: 25px;
+    }
+    .ttsSpeed {
+        display: flex;
+        padding: 0;
+
+        > span:first-child {
+            padding-right: 15px;
+        }
+
+        > span:last-child {
+            padding-left: 15px;
+        }
+
+        > :global(.rc-slider) {
+            padding: 10px 0;
+
+            > :global(.rc-slider-handle) {
+                width: 20px;
+                height: 20px;
+                margin-top: -8px;
+            }
+        }
     }
 }

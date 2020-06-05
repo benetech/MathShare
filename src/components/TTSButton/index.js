@@ -16,7 +16,13 @@ class TTSButton extends Component {
             ttsState: null,
             text: this.getText(props.text),
             audio: null,
+            ttsConfig: null,
         };
+        if (props.userProfile.config) {
+            this.state.ttsConfig = props.userProfile.config.tts || {
+                speed: 1.0,
+            };
+        }
         this.polly = new window.AWS.Polly({ apiVersion: '2016-06-10' });
         this.ttsId = `${props.id}-${Math.round(Math.random() * 1000)}`;
     }
@@ -35,12 +41,17 @@ class TTSButton extends Component {
                     this.setState({ ttsState: false });
                 }
             }
-        } else if (this.state.text !== this.getText(newProps.text)) {
+        } else if (this.state.text !== this.getText(newProps.text)
+        || (
+            newProps.userProfile.config
+            && this.compareTtsConfig(newProps)
+        )) {
             this.clearListeners(true);
             this.setState({
                 tsState: null,
                 text: this.getText(newProps.text),
                 audio: null,
+                ttsConfig: (newProps.userProfile.config || {}).tts || {},
             }, () => {
                 this.generateUrl(true, 0);
             });
@@ -50,6 +61,10 @@ class TTSButton extends Component {
     componentWillUnmount() {
         this.clearListeners();
     }
+
+    compareTtsConfig = newProps => (
+        JSON.stringify(newProps.userProfile.config.tts) !== JSON.stringify(this.state.ttsConfig)
+    )
 
     getText = (inputText) => {
         if (typeof inputText === 'function') {
@@ -109,6 +124,16 @@ class TTSButton extends Component {
         return stopEvent(e);
     }
 
+    getSsml = () => {
+        const text = this.state.text;
+        const { ttsConfig } = this.state;
+        let speed = 100;
+        if (ttsConfig && ttsConfig.speed > 0) {
+            speed *= ttsConfig.speed;
+        }
+        return `<speak><prosody rate="${Math.round(speed)}%">${text}</prosody></speak>`;
+    }
+
     generateUrl = (playOnGeneration, retryNo) => {
         if (this.state.text === null) {
             return;
@@ -116,8 +141,8 @@ class TTSButton extends Component {
         const speechParams = {
             OutputFormat: 'mp3',
             SampleRate: '16000',
-            Text: this.state.text,
-            TextType: 'text',
+            Text: this.getSsml(),
+            TextType: 'ssml',
             VoiceId: 'Matthew',
         };
         const signer = new window.AWS.Polly.Presigner(speechParams, this.polly);
@@ -188,6 +213,7 @@ class TTSButton extends Component {
 export default connect(
     state => ({
         ui: state.ui,
+        userProfile: state.userProfile,
     }),
     {
         ...uiActions,
