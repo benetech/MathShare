@@ -108,6 +108,7 @@ const ModalContainer = (props) => {
                 title={Locales.strings.add_problems_new_set}
                 updateProblemStore={props.updateProblemStore}
                 textAreaValue={props.textAreaValue}
+                allowedPalettes={props.mathPalettes}
                 newProblemSet
             />
         )
@@ -129,6 +130,7 @@ const ModalContainer = (props) => {
                 title={Locales.strings.add_problems}
                 updateProblemStore={props.updateProblemStore}
                 textAreaValue={props.textAreaValue}
+                allowedPalettes={props.mathPalettes}
             />
         )
         : null;
@@ -151,6 +153,7 @@ const ModalContainer = (props) => {
                 problemToEdit={props.problemToEdit}
                 title={Locales.strings.edit_problem}
                 updateProblemStore={props.updateProblemStore}
+                allowedPalettes={props.mathPalettes}
             />
         )
         : null;

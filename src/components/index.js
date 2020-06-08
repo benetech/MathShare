@@ -493,6 +493,7 @@ class App extends Component {
                             history={this.props.history}
                             updateTempSet={this.props.updateTempSet}
                             updateProblemStore={this.props.updateProblemStore}
+                            mathPalettes={problemList.set.palettes}
                             {...problemStore}
                             {...this}
                         />
