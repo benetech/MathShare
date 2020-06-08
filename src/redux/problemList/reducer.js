@@ -37,7 +37,9 @@ const initialState = {
 
 
 const addPositionToProblems = (problemList) => {
-    const multipleZeros = problemList.find(problem => !problem.position || problem.position === 0);
+    const multipleZeros = problemList.filter(problem => (
+        !problem.position || problem.position === 0
+    ));
     if (multipleZeros.length === 1) {
         return problemList;
     }
