@@ -40,9 +40,9 @@ class MyWork extends Component {
             });
         }
         document.getElementById('mathEditorActive').addEventListener('keydown', this.HandleKeyDown);
-        const { problem, isStepView } = this.props;
+        const { problem } = this.props;
         const { scratchpadMode } = problem.work;
-        if (scratchpadMode && !isStepView) {
+        if (scratchpadMode) {
             setTimeout(this.openScratchpad, 0);
         }
     }
