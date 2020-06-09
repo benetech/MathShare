@@ -36,6 +36,7 @@ import ModalContainer, {
     CONFIRMATION,
     CONFIRMATION_BACK,
     PALETTE_CHOOSER, // ADD_PROBLEM_SET,
+    PALETTE_UPDATE_CHOOSER,
     EDIT_PROBLEM,
     SHARE_SET,
     VIEW_SET,
@@ -99,7 +100,7 @@ class App extends Component {
             if (target.tagName === 'A' && target.attributes && target.attributes.href) {
                 this.props.storeXPathToAnchor(getPathTo(target), target.attributes.href.value);
             }
-            if (target.className.indexOf('dropdown-item') === -1) {
+            if (!Array.from(document.querySelectorAll('.dropdown-menu,.dropdown-toggle')).find(toggle => toggle.contains(target))) {
                 this.props.setDropdownId(null);
             }
         });
@@ -240,6 +241,25 @@ class App extends Component {
         }
         this.props.history.push('/app/problemSet/new');
         this.props.saveProblemSet([], `${Locales.strings.new_problem_set} ${dayjs().format('MM-DD-YYYY')}`, null);
+    }
+
+    updatePaletteSymbols = (palettes, dontToggleModal = false) => {
+        if (palettes.length === 0) {
+            alertWarning(
+                Locales.strings.no_palettes_chosen_warning,
+                Locales.strings.warning,
+            );
+            return;
+        }
+        this.props.setTempPalettes(palettes);
+        if (!dontToggleModal) {
+            this.props.toggleModals([PALETTE_UPDATE_CHOOSER]);
+        }
+        this.props.updateProblemSetPayload(
+            { palettes },
+            Locales.strings.updated_palettes,
+            Locales.strings.unable_to_update_palettes,
+        );
     }
 
     saveProblemSet = (orderedProblems, title) => {
@@ -493,7 +513,12 @@ class App extends Component {
                             history={this.props.history}
                             updateTempSet={this.props.updateTempSet}
                             updateProblemStore={this.props.updateProblemStore}
+                            currentPalettes={problemList.set.palettes}
                             mathPalettes={problemList.set.palettes}
+                            problemList={this.props.problemList}
+                            submitToPartner={this.props.submitToPartner}
+                            announceOnAriaLive={this.props.announceOnAriaLive}
+                            clearAriaLive={this.props.clearAriaLive}
                             {...problemStore}
                             {...this}
                         />

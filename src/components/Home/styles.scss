@@ -5,7 +5,7 @@
     flex-direction: column;
     padding-bottom: 20px;
     .btnContainer {
-        padding: 10px;
+        padding-right: 10px;
         margin-right: 5px;
         justify-content: flex-end;
         .text {
@@ -24,6 +24,52 @@
                 margin: auto;
                 display: inline-block;
             }
+        }
+    }
+
+    .setControls {
+        background-color: #fafafa;
+        border: 1px solid #cccccc;
+        display: flex;
+        width: 100%;
+        margin-left: 48px!important;
+        padding: 8px 4px 4px;
+        border-radius: 4px;
+        margin-bottom: 20px;
+
+        h2 {
+            font-size: 18px;
+        }
+
+        .toggleBtn {
+            text-align: right;
+            padding-right: 40px;
+        }
+
+        .controlRadios {
+            font-size: 14px;
+            text-align: right;
+        }
+
+        .shareSection {
+            text-align: right;
+        }
+
+        .btnContainer {
+            margin: auto;
+
+            button {
+                font-size: 12px;
+                padding: 5px 15px;
+            }
+        }
+
+        .changeMathSymbols {
+            text-align: center;
+            position: absolute;
+            left: 150%;
+            width: 200px;
+            margin-top: -50px;
         }
     }
 }
@@ -113,7 +159,7 @@
 }
 
 .warningContainer {
-    margin-top: 10px;
+    margin-top: 25px;
 
     .loginWarning {
         margin-bottom: 10px;

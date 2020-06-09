@@ -264,6 +264,7 @@ class MyWork extends Component {
 export default connect(
     state => ({
         problem: state.problem,
+        problemList: state.problemList,
     }),
     {
         updateWork,
