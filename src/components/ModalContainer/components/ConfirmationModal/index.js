@@ -8,19 +8,19 @@ export default class ConfirmationModal extends Component {
     render() {
         return (
             <AriaModal
-                titleId="confirmationModal"
+                titleId="modalHeader"
                 onExit={this.props.deactivateModal}
                 getApplicationNode={this.getApplicationNode}
                 underlayStyle={{ paddingTop: '2em' }}
                 focusDialog
             >
-                <div id="demo-one-modal" className={modalStyles.modal}>
+                <div id="confirmationModal" className={modalStyles.modal}>
                     <div className={modalStyles.modalHeader}>
-                        <h3>
+                        <h1 id="modalHeader">
                             {this.props.title}
-                        </h3>
+                        </h1>
                     </div>
-                    <footer className={modalStyles.modalFooter}>
+                    <div className={modalStyles.modalFooter}>
                         <Button
                             id="discardButton"
                             className={classNames('btn', modalStyles.button, modalStyles.discardButton)}
@@ -39,7 +39,7 @@ export default class ConfirmationModal extends Component {
                             content={this.props.greenButtonLabel}
                             onClick={this.props.greenButtonCallback}
                         />
-                    </footer>
+                    </div>
                 </div>
             </AriaModal>
         );
