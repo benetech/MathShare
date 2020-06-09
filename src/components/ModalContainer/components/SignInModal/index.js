@@ -10,7 +10,7 @@ export default class SignInModal extends Component {
     render() {
         return (
             <AriaModal
-                titleId="SignInModal"
+                titleId="signInServices"
                 onExit={this.props.deactivateModal}
                 getApplicationNode={this.getApplicationNode}
                 underlayStyle={{ paddingTop: '2em' }}
@@ -21,7 +21,7 @@ export default class SignInModal extends Component {
                             header={Locales.strings.login_using}
                         />
                     </div>
-                    <footer className={signInModal.modalFooter}>
+                    <div className={signInModal.modalFooter}>
                         <Button
                             id="deactivate"
                             className={classNames('btn', signInModal.dismissBtn)}
@@ -30,7 +30,7 @@ export default class SignInModal extends Component {
                             content={Locales.strings.continue_without_signing_in}
                             onClick={this.props.deactivateModal}
                         />
-                    </footer>
+                    </div>
                 </div>
             </AriaModal>
         );

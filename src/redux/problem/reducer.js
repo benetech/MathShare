@@ -51,7 +51,13 @@ const problem = (state = initialState, {
 }) => {
     switch (type) {
     case 'RESET_PROBLEM':
-        return initialState;
+        return {
+            ...initialState,
+            work: {
+                ...initialState.work,
+                scratchpadMode: state.work.scratchpadMode,
+            },
+        };
     case 'LOAD_EXAMPLE_PROBLEM':
         return {
             ...state,
@@ -83,7 +89,10 @@ const problem = (state = initialState, {
             tourOpen: false,
             actionsStack: [],
             textAreaValue: '',
-            work: initialState.work,
+            work: {
+                ...initialState.work,
+                scratchpadMode: state.work.scratchpadMode,
+            },
         };
     case 'UPDATE_PROBLEM_STORE':
         return {
@@ -126,6 +135,16 @@ const problem = (state = initialState, {
                 ...state.work,
                 scratchpadContent: initialState.work.scratchpadContent,
             },
+        };
+    }
+    case 'SET_EDIT_PROBLEM': {
+        let textAreaValue = initialState.textAreaValue;
+        if (payload.action === 'edit') {
+            textAreaValue = payload.textAreaValue;
+        }
+        return {
+            ...state,
+            textAreaValue,
         };
     }
     case LOCATION_CHANGE:

@@ -141,11 +141,12 @@ export const resetTempProblems = () => ({
     type: 'RESET_TEMP_PROBLEMS',
 });
 
-export const setEditProblem = (index, action) => ({
+export const setEditProblem = (index, action, textAreaValue) => ({
     type: 'SET_EDIT_PROBLEM',
     payload: {
         problemToEditIndex: index,
         action,
+        textAreaValue,
     },
 });
 
