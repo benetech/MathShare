@@ -258,6 +258,10 @@ function* requestCommitProblemSolutionSaga() {
             if (redirectTo === 'back') {
                 yield put(goBack());
             } else if (typeof (redirectTo) === 'string') {
+                const { scratchPadPainterro } = work;
+                if (scratchPadPainterro) {
+                    scratchPadPainterro.clear();
+                }
                 yield put(replace(redirectTo));
             }
             if (!matchedRoute && shareCode) {
