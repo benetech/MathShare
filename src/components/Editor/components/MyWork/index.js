@@ -35,7 +35,10 @@ class MyWork extends Component {
     componentDidMount() {
         if (this.props.bindDisplayFunction) {
             this.props.bindDisplayFunction((scratchpadContent) => {
-                this.props.updateWork({ scratchpadContent });
+                this.props.updateWork({
+                    scratchpadContent,
+                    scratchPadPainterro: this.scratchPadPainterro,
+                });
                 this.displayScratchpadImage();
             });
         }
@@ -116,7 +119,10 @@ class MyWork extends Component {
     scratchpadChangeHandler() {
         const { problem } = this.props;
         if (!problem.work.isScratchpadUsed) {
-            this.props.updateWork({ isScratchpadUsed: true });
+            this.props.updateWork({
+                isScratchpadUsed: true,
+                scratchPadPainterro: this.scratchPadPainterro,
+            });
         }
     }
 
@@ -155,7 +161,10 @@ class MyWork extends Component {
         const reader = new FileReader();
         reader.onload = (e) => {
             const scratchpadContent = e.target.result;
-            this.props.updateWork({ scratchpadContent });
+            this.props.updateWork({
+                scratchpadContent,
+                scratchPadPainterro: this.scratchPadPainterro,
+            });
             this.scratchPadPainterro.show(scratchpadContent);
         };
         reader.readAsDataURL(file);
@@ -176,12 +185,16 @@ class MyWork extends Component {
             this.props.updateWork({
                 isScratchpadUsed: false,
                 scratchpadContent: content,
+                scratchPadPainterro: this.scratchPadPainterro,
             });
         }
     }
 
     openScratchpad() {
-        this.props.updateWork({ scratchpadMode: true });
+        this.props.updateWork({
+            scratchpadMode: true,
+            scratchPadPainterro: this.scratchPadPainterro,
+        });
         $('#scratch-pad-containter').show();
         this.displayScratchpadImage();
     }

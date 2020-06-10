@@ -338,6 +338,12 @@ class App extends Component {
         }
 
         if (allProblemsUrl) {
+            if (isModal) {
+                const { scratchPadPainterro } = this.props.problemStore.work;
+                if (scratchPadPainterro) {
+                    scratchPadPainterro.clear();
+                }
+            }
             this.props.history.replace(allProblemsUrl);
         } else {
             this.props.history.goBack();
