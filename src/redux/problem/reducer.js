@@ -157,6 +157,15 @@ const problem = (state = initialState, {
             };
         }
         return state;
+    case 'TOGGLE_MODALS': {
+        if (payload.modals.includes('addProblems')) {
+            return {
+                ...state,
+                textAreaValue: initialState.textAreaValue,
+            };
+        }
+        return state;
+    }
     default:
         return state;
     }
