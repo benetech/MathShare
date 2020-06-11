@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Locales from '../../../../strings';
 import Button from '../../../Button';
+import { alertSuccess } from '../../../../scripts/alert';
 
 export default class CopyLink extends Component {
     constructor(props) {
@@ -24,6 +25,7 @@ export default class CopyLink extends Component {
             document.execCommand('copy');
             document.getElementById('ProblemSetShareModal').removeChild(copyText);
         }
+        alertSuccess(this.props.announceText, Locales.strings.success);
         this.props.clearAriaLive();
         this.props.announceOnAriaLive(this.props.announceText);
         if (this.props.copyLinkCallback) {
