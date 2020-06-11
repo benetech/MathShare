@@ -4,7 +4,7 @@ import {
 } from 'connected-react-router';
 
 const initialState = {
-    current: window.location.hash,
+    current: `/${window.location.hash}`,
     currentTitle: null,
     prev: null,
     prevReplaced: null,

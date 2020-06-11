@@ -13,7 +13,7 @@ import SignInCore from './core';
 class SignIn extends Component {
     goBack = () => {
         const { routerHistory } = this.props;
-        if (routerHistory.prev === '#/' || routerHistory.prev === window.location.hash) {
+        if (routerHistory.prev === '/#/' || routerHistory.prev === `/${window.location.hash}`) {
             this.props.history.push('app');
         } else {
             this.props.history.goBack();
@@ -23,8 +23,12 @@ class SignIn extends Component {
     render() {
         const { isSignUp, userProfile } = this.props;
         let mainText = Locales.strings.sign_in;
+        let header = Locales.strings.login_using;
+        let benefitsText = Locales.strings.benefits_of_logging_in;
         if (isSignUp) {
             mainText = Locales.strings.sign_up;
+            header = Locales.strings.sign_up_using;
+            benefitsText = Locales.strings.benefits_of_signing_up;
         }
         if (userProfile.email) {
             return <Redirect to="/app" />;
@@ -39,9 +43,8 @@ class SignIn extends Component {
                 </Helmet>
                 <div id="mainContainer" className={signIn.content}>
                     <SignInCore
-                        header={
-                            isSignUp ? Locales.strings.sign_up_using : Locales.strings.login_using
-                        }
+                        header={header}
+                        benefitsText={benefitsText}
                     >
                         <button
                             id="goBack"

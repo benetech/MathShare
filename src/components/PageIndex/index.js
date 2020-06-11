@@ -362,7 +362,7 @@ class Index extends Component {
 
     renderHeader = () => {
         const { routerHistory } = this.props;
-        if (routerHistory.prev === '#/userDetails') {
+        if (routerHistory.prev === '/#/userDetails') {
             return (
                 <h1 className={pageIndex.thanksHeader} tabIndex={-1}>
                     {Locales.strings.thanks_for_details}
