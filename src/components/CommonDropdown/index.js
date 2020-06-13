@@ -6,17 +6,19 @@ import { stopEvent, passEventForKeys } from '../../services/events';
 
 class CommonDropdown extends Component {
     dropdownOnClick = dropdownBtnId => (e) => {
-        stopEvent(e);
         const { btnClickHandler, ui } = this.props;
         const { dropdownOpen } = ui;
         if (dropdownOpen === dropdownBtnId) {
-            this.props.setDropdownId(null);
+            if (dropdownOpen !== null) {
+                this.props.setDropdownId(null);
+            }
         } else {
             this.props.setDropdownId(dropdownBtnId);
             if (btnClickHandler) {
                 btnClickHandler();
             }
         }
+        return stopEvent(e);
     }
 
     render() {

@@ -12,37 +12,42 @@ const mathLive = process.env.MATHLIVE_DEBUG_MODE ? require('../../../../../../ma
 export default class PaletteChooser extends Component {
     constructor(props) {
         super(props);
+        let chosenPalettes = palettes.map(palette => palette.label);
+        if (props.isUpdate && props.currentPalettes) {
+            chosenPalettes = props.currentPalettes;
+        }
         this.state = {
-            chosenPalettes: palettes.map(palette => palette.label),
+            chosenPalettes,
         };
-
-        this.handleChange = this.handleChange.bind(this);
     }
 
     componentDidMount() {
-        $("input[type='checkbox']").prop('checked', true);
+        if (!this.props.isUpdate) {
+            $("input[type='checkbox']").prop('checked', true);
+        }
         mathLive.renderMathInDocument();
     }
 
     getApplicationNode = () => document.getElementById('contentContainer')
 
-    handleChange(key) {
+    handleChange = (key) => {
         if (this.state.chosenPalettes.indexOf(key) !== -1) {
-            this.setState((prevState) => {
-                let oldPalettes = prevState.chosenPalettes;
-                oldPalettes = oldPalettes.filter(e => e !== key);
-                return { chosenPalettes: oldPalettes };
-            });
+            this.setState(prevState => ({
+                chosenPalettes: prevState.chosenPalettes.filter(e => e !== key),
+            }));
         } else {
-            this.setState((prevState) => {
-                const oldPalettes = prevState.chosenPalettes;
-                oldPalettes.push(key);
-                return { chosenPalettes: oldPalettes };
-            });
+            this.setState(prevState => ({
+                chosenPalettes: [
+                    ...prevState.chosenPalettes,
+                    key,
+                ],
+            }));
         }
     }
 
     render() {
+        const { isUpdate } = this.props;
+        const { chosenPalettes } = this.state;
         const mathPalette = palettes.map((palette) => {
             const id = `key-${palette.label}`;
             const checkBoxId = `${id}-pallete-cb`;
@@ -63,7 +68,13 @@ export default class PaletteChooser extends Component {
                         />
                     </div>
                     <div id={`checkBox-${id}`} className={styles.checkBox}>
-                        <input type="checkbox" name="name" id={checkBoxId} onChange={() => this.handleChange(palette.label)} />
+                        <input
+                            type="checkbox"
+                            name="name"
+                            id={checkBoxId}
+                            onChange={() => this.handleChange(palette.label)}
+                            checked={chosenPalettes.includes(palette.label)}
+                        />
                         <label htmlFor={checkBoxId} className="sROnly">
                             {palette.label}
                         </label>
@@ -105,7 +116,7 @@ export default class PaletteChooser extends Component {
                             id="BtnSave"
                             className={btnClassNames}
                             additionalStyles={['default']}
-                            content={Locales.strings.next}
+                            content={isUpdate ? Locales.strings.save : Locales.strings.next}
                             onClick={() => { this.props.nextCallback(this.state.chosenPalettes); }}
                         />
                     </div>

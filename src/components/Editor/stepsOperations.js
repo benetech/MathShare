@@ -11,6 +11,20 @@ import Locales from '../../strings';
 import googleAnalytics from '../../scripts/googleAnalytics';
 import { countEditorPosition } from '../../redux/problem/helpers';
 
+function checkIfDescriptionIsRequired(problemStore, problemList) {
+    const isSolutionView = /#\/app\/problem\/edit\/[A-Z0-9]*/.exec(window.location.hash);
+    const isProblemEditView = /#\/app\/problemSet\/edit\/[A-Z0-9]*\/[0-9]*/.exec(window.location.hash);
+    if (isSolutionView) {
+        const { solution } = problemStore;
+        return (solution && !solution.optionalExplanations);
+    }
+    if (isProblemEditView) {
+        const { set } = problemList;
+        return (set && !set.optionalExplanations);
+    }
+    return true;
+}
+
 function addNewStep(context, step) {
     const { updateProblemStore, problemStore, problemList } = context.props;
     googleAnalytics('Add new step');
@@ -80,7 +94,7 @@ function updateStep(context, img) {
     googleAnalytics('Edit step');
     const index = problemStore.editedStep;
 
-    if (problemStore.textAreaValue === '') {
+    if (checkIfDescriptionIsRequired(problemStore, problemList) && problemStore.textAreaValue === '') {
         // alertWarning(Locales.strings.no_description_warning, 'Warning');
         $('#mathAnnotation').tooltip('show');
         setTimeout(() => {
@@ -104,7 +118,7 @@ function updateStep(context, img) {
 
 function addStep(context, addToHistory, img) {
     const { problemStore, problemList, updateProblemStore } = context.props;
-    if (!problemStore.textAreaValue || problemStore.textAreaValue === '' || $.trim(problemStore.textAreaValue).length === 0) {
+    if (checkIfDescriptionIsRequired(problemStore, problemList) && (!problemStore.textAreaValue || problemStore.textAreaValue === '' || $.trim(problemStore.textAreaValue).length === 0)) {
         // alertWarning(Locales.strings.no_description_warning, 'Warning');
         $('#mathAnnotation').tooltip('show');
         setTimeout(() => {
@@ -137,6 +151,7 @@ function addStep(context, addToHistory, img) {
 
 export {
     addStep,
+    checkIfDescriptionIsRequired,
     deleteStep,
     editStep,
     updateStep,

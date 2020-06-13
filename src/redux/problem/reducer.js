@@ -51,7 +51,13 @@ const problem = (state = initialState, {
 }) => {
     switch (type) {
     case 'RESET_PROBLEM':
-        return initialState;
+        return {
+            ...initialState,
+            work: {
+                ...initialState.work,
+                scratchpadMode: state.work.scratchpadMode,
+            },
+        };
     case 'LOAD_EXAMPLE_PROBLEM':
         return {
             ...state,
@@ -83,7 +89,10 @@ const problem = (state = initialState, {
             tourOpen: false,
             actionsStack: [],
             textAreaValue: '',
-            work: initialState.work,
+            work: {
+                ...initialState.work,
+                scratchpadMode: state.work.scratchpadMode,
+            },
         };
     case 'UPDATE_PROBLEM_STORE':
         return {
@@ -128,6 +137,16 @@ const problem = (state = initialState, {
             },
         };
     }
+    case 'SET_EDIT_PROBLEM': {
+        let textAreaValue = initialState.textAreaValue;
+        if (payload.action === 'edit') {
+            textAreaValue = payload.textAreaValue;
+        }
+        return {
+            ...state,
+            textAreaValue,
+        };
+    }
     case LOCATION_CHANGE:
         if (payload.action === 'POP' && payload.location.pathname.indexOf('/app/problemSet/') > -1) {
             return {
@@ -138,6 +157,15 @@ const problem = (state = initialState, {
             };
         }
         return state;
+    case 'TOGGLE_MODALS': {
+        if (payload.modals.includes('addProblems')) {
+            return {
+                ...state,
+                textAreaValue: initialState.textAreaValue,
+            };
+        }
+        return state;
+    }
     default:
         return state;
     }

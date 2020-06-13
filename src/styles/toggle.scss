@@ -1,0 +1,111 @@
+/* containing label */
+:global(.switchToggle) {
+	background: none;
+	border: none;
+	border-bottom: 1px solid transparent;
+	display: block;
+	font-size: inherit;
+	line-height: 1;
+	padding: .5em;
+	position: relative;
+	text-align: left;
+    width: 100%;
+}
+
+:global(.switchToggle):focus {
+	outline: none;
+}
+
+/* negate 'flash' of text color when pressing a button in some browsers */
+:global(.switchToggle):active {
+	color: inherit;
+}
+
+/* using the before/after pseudo elements of the span to create the "switch" */
+:global(.switchToggle__ui):before,
+:global(.switchToggle__ui):after {
+	border: 1px solid #565656;
+	content: "";
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+/* styling specific to the knob of the switch */
+:global(.switchToggle__ui):after {
+	background: #fff;
+	border-radius: 100%;
+	height: 1em;
+	right: 1em;
+    width: 1em;
+    
+
+    transition: background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out,-webkit-transform .15s ease-in-out;
+    transition: transform .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    transition: transform .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out,-webkit-transform .15s ease-in-out;
+}
+
+/* styling specific to the knob "container" */
+:global(.switchToggle__ui):before {
+	background: #525158;
+	border-radius: 1.75em;
+	height: 1em;
+	right: .25em;
+    transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+	width: 1.75em;
+}
+
+:global(.switchToggle) span {
+	pointer-events: none;
+}
+
+:global(.switchToggle):focus :global(.switchToggle__ui):before {
+	outline: 2px solid #2196f3;
+	outline-offset: 2px;
+}
+
+/* change the position of the knob to indicate it has been checked*/
+:global(.switchToggle)[aria-pressed="true"] :global(.switchToggle__ui):after {
+    right: .25em;
+    transition-property: right;
+    transition-duration: 0.15s;
+    transition-timing-function: ease-in-out;
+    transition-delay: 0.15s;
+}
+
+/* update the color of the "container" to further visually indicate state */
+:global(.switchToggle)[aria-pressed="true"] :global(.switchToggle__ui):before {
+	background: #1e5dea;
+}
+
+/**
+ * Toggle switch modifications for displaying On/Off labels
+ */
+:global(.switchToggle__labels)  span:before {
+	content: "Off";
+	color: rgba(10, 10, 10, 1);
+	line-height: 1.6;
+	text-indent: 1.625em;
+	width: 3.5em;
+}
+
+:global(.switchToggle__labels) [aria-pressed="false"] span:after {
+	right: 2.2em;
+    transition-property: right;
+    transition-duration: 0.15s;
+    transition-timing-function: ease-in-out;
+    transition-delay: 0.15s;
+}
+
+:global(.switchToggle__labels) [aria-pressed="true"] span:before {
+	color: rgba(255 ,255 ,255 ,1);
+	content: "On";
+	text-indent: .25em;
+	text-shadow: 0 0 1px #000;
+}
+
+@media screen and (-ms-high-contrast: active) {
+	:global(.switchToggle__ui):after {
+		background-color: windowText;
+	}
+}

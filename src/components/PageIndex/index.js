@@ -141,13 +141,13 @@ class Index extends Component {
     }
 
     dropdownOnClick = dropdownBtnId => (e) => {
-        stopEvent(e);
         const { dropdownOpen } = this.props.ui;
         if (dropdownOpen === dropdownBtnId) {
             this.props.setDropdownId(null);
         } else {
             this.props.setDropdownId(dropdownBtnId);
         }
+        return stopEvent(e);
     }
 
     goBack = () => {
@@ -362,7 +362,7 @@ class Index extends Component {
 
     renderHeader = () => {
         const { routerHistory } = this.props;
-        if (routerHistory.prev === '#/userDetails') {
+        if (routerHistory.prev === '/#/userDetails') {
             return (
                 <h1 className={pageIndex.thanksHeader} tabIndex={-1}>
                     {Locales.strings.thanks_for_details}

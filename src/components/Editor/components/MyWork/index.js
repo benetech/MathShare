@@ -11,6 +11,7 @@ import { sessionStore } from '../../../../scripts/storage';
 import { updateWork } from '../../../../redux/problem/actions';
 import Painterro from '../../../../lib/painterro/painterro.commonjs2';
 import painterroConfiguration from './painterroConfiguration.json';
+import { checkIfDescriptionIsRequired } from '../../stepsOperations';
 
 const mathLive = process.env.MATHLIVE_DEBUG_MODE ? require('../../../../../../mathlive/src/mathlive.js').default
     : require('../../../../lib/mathlivedist/mathlive.js');
@@ -35,14 +36,17 @@ class MyWork extends Component {
     componentDidMount() {
         if (this.props.bindDisplayFunction) {
             this.props.bindDisplayFunction((scratchpadContent) => {
-                this.props.updateWork({ scratchpadContent });
+                this.props.updateWork({
+                    scratchpadContent,
+                    scratchPadPainterro: this.scratchPadPainterro,
+                });
                 this.displayScratchpadImage();
             });
         }
         document.getElementById('mathEditorActive').addEventListener('keydown', this.HandleKeyDown);
-        const { problem, isStepView } = this.props;
+        const { problem } = this.props;
         const { scratchpadMode } = problem.work;
-        if (scratchpadMode && !isStepView) {
+        if (scratchpadMode) {
             setTimeout(this.openScratchpad, 0);
         }
     }
@@ -73,6 +77,7 @@ class MyWork extends Component {
     }
 
     HandleKeyDown = (event) => {
+        const { problem, problemList } = this.props;
         const keyShortcuts = new Map(JSON.parse(sessionStore.getItem('keyShortcuts')));
         if (event.shiftKey && this.props.theActiveMathField.$selectionIsCollapsed()) {
             // if an insertion cursor, extend the selection unless we are at an edge
@@ -82,7 +87,7 @@ class MyWork extends Component {
                 this.props.theActiveMathField.$perform('extendToNextChar');
             }
         }
-        if (event.shiftKey && event.key === 'Enter' && $('#mathAnnotation').val() !== '') {
+        if (event.shiftKey && event.key === 'Enter' && ($('#mathAnnotation').val() !== '' || !checkIfDescriptionIsRequired(problem, problemList))) {
             event.preventDefault();
             if (this.props.editing || this.props.editingProblem) {
                 this.updateCallback();
@@ -116,7 +121,10 @@ class MyWork extends Component {
     scratchpadChangeHandler() {
         const { problem } = this.props;
         if (!problem.work.isScratchpadUsed) {
-            this.props.updateWork({ isScratchpadUsed: true });
+            this.props.updateWork({
+                isScratchpadUsed: true,
+                scratchPadPainterro: this.scratchPadPainterro,
+            });
         }
     }
 
@@ -155,7 +163,10 @@ class MyWork extends Component {
         const reader = new FileReader();
         reader.onload = (e) => {
             const scratchpadContent = e.target.result;
-            this.props.updateWork({ scratchpadContent });
+            this.props.updateWork({
+                scratchpadContent,
+                scratchPadPainterro: this.scratchPadPainterro,
+            });
             this.scratchPadPainterro.show(scratchpadContent);
         };
         reader.readAsDataURL(file);
@@ -176,12 +187,16 @@ class MyWork extends Component {
             this.props.updateWork({
                 isScratchpadUsed: false,
                 scratchpadContent: content,
+                scratchPadPainterro: this.scratchPadPainterro,
             });
         }
     }
 
     openScratchpad() {
-        this.props.updateWork({ scratchpadMode: true });
+        this.props.updateWork({
+            scratchpadMode: true,
+            scratchPadPainterro: this.scratchPadPainterro,
+        });
         $('#scratch-pad-containter').show();
         this.displayScratchpadImage();
     }
@@ -264,6 +279,7 @@ class MyWork extends Component {
 export default connect(
     state => ({
         problem: state.problem,
+        problemList: state.problemList,
     }),
     {
         updateWork,

@@ -117,6 +117,10 @@ export default class MyStepsList extends Component {
             if (this.props.isEdited()) {
                 this.props.toggleModals([CONFIRMATION_BACK], null, link);
             } else {
+                const { scratchPadPainterro } = this.props.problemStore.work;
+                if (scratchPadPainterro) {
+                    scratchPadPainterro.clear();
+                }
                 this.props.history.replace(link);
             }
         }
