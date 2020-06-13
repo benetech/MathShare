@@ -27,6 +27,8 @@ import {
     CONFIRMATION,
     EDIT_PROBLEM,
     PALETTE_CHOOSER,
+    SHARE_NEW_SET,
+    SHARE_PROBLEM_SET,
     TITLE_EDIT_MODAL,
 } from '../../components/ModalContainer';
 import { commonElementFinder } from '../../services/misc';
@@ -55,6 +57,14 @@ function* toggleModalSaga() {
             [PALETTE_CHOOSER]: {
                 selector: '#add_problem_set',
                 isDismiss: true,
+            },
+            [SHARE_PROBLEM_SET]: {
+                selector: '#share_problem_set_heading',
+                isDismiss: false,
+            },
+            [SHARE_NEW_SET]: {
+                selector: '#share_problem_set_heading',
+                isDismiss: false,
             },
         };
         if (problemToDeleteIndex) {

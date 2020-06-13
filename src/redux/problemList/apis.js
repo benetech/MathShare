@@ -31,12 +31,7 @@ export const fetchProblemsByActionAndCodeApi = (action, code) => {
     return fetchProblemsByReviewCodeApi(code);
 };
 
-export const updateProblemsApi = (editCode, shareCode, problems, title) => axios.put(`${SERVER_URL}/problemSet/${editCode}`, {
-    editCode,
-    problems,
-    shareCode,
-    title,
-}, commonRequestConfig);
+export const updateProblemsApi = payload => axios.put(`${SERVER_URL}/problemSet/${payload.editCode}`, payload, commonRequestConfig);
 
 export const saveProblemSetApi = set => axios.post(`${SERVER_URL}/problemSet/`, set, commonRequestConfig);
 

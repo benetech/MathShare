@@ -47,6 +47,15 @@ export const saveProblems = newProblems => ({
     },
 });
 
+export const updateProblemSetPayload = (updatePayload, successMsg, errorMsg) => ({
+    type: 'REQUEST_UPDATE_PROBLEMS',
+    payload: {
+        updatePayload,
+        successMsg,
+        errorMsg,
+    },
+});
+
 export const updateProblemList = problemList => ({
     type: 'UPDATE_PROBLEM_LIST',
     payload: {
@@ -132,11 +141,12 @@ export const resetTempProblems = () => ({
     type: 'RESET_TEMP_PROBLEMS',
 });
 
-export const setEditProblem = (index, action) => ({
+export const setEditProblem = (index, action, textAreaValue) => ({
     type: 'SET_EDIT_PROBLEM',
     payload: {
         problemToEditIndex: index,
         action,
+        textAreaValue,
     },
 });
 
@@ -219,6 +229,7 @@ export default {
     requestDefaultRevision,
     requestProblemSet,
     requestProblemSetSuccess,
+    updateProblemSetPayload,
     resetProblemSet,
     resetTempProblems,
     toggleModals,

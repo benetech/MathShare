@@ -15,16 +15,16 @@ export default class SaveModal extends Component {
     render() {
         return (
             <AriaModal
-                titleId="saveModal"
+                titleId="saveModalHeader"
                 onExit={this.props.deactivateModal}
                 getApplicationNode={this.getApplicationNode}
                 underlayStyle={{ paddingTop: '2em' }}
             >
-                <div id="demo-one-modal" className={editor.modal}>
+                <div id="saveModal" className={editor.modal}>
                     <div className={editor.modalBody}>
-                        <h3>
+                        <h1 id="saveModalHeader">
                             {Locales.strings.save_text}
-                        </h3>
+                        </h1>
                         <input type="text" readOnly value={this.props.editLink} id="saveLink" className={editor.saveLink} />
                         <div className={editor.modalMessage}>
                             <p>
@@ -35,7 +35,7 @@ export default class SaveModal extends Component {
                             </p>
                         </div>
                     </div>
-                    <footer className={editor.modalFooter}>
+                    <div className={editor.modalFooter}>
                         <Button
                             id="copy_button"
                             className={classNames('btn', 'btn-primary', editor.button)}
@@ -54,7 +54,7 @@ export default class SaveModal extends Component {
                             content={Locales.strings.close}
                             onClick={this.props.deactivateModal}
                         />
-                    </footer>
+                    </div>
                 </div>
             </AriaModal>
         );

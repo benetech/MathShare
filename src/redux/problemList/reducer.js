@@ -35,6 +35,20 @@ const initialState = {
     solutions: [],
 };
 
+
+const addPositionToProblems = (problemList) => {
+    const multipleZeros = problemList.filter(problem => (
+        !problem.position || problem.position === 0
+    ));
+    if (multipleZeros.length === 1) {
+        return problemList;
+    }
+    return problemList.map((problem, position) => ({
+        ...problem,
+        position,
+    }));
+};
+
 const problems = (state = initialState, {
     type,
     payload,
@@ -86,7 +100,10 @@ const problems = (state = initialState, {
     case 'REQUEST_SAVE_PROBLEMS_SUCCESS':
         return {
             ...state,
-            set: payload,
+            set: {
+                ...payload,
+                problems: addPositionToProblems(payload.problems),
+            },
             newSetSharecode: payload.shareCode,
         };
     case 'ADD_PROBLEM':

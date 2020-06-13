@@ -22,19 +22,19 @@ export default class ProblemModal extends Component {
     render() {
         return (
             <AriaModal
-                titleId="problemModal"
+                titleId="problemModalHeader"
                 onExit={this.props.deactivateModal}
                 getApplicationNode={this.getApplicationNode}
                 underlayStyle={{ paddingTop: '2em' }}
             >
-                <div id="demo-one-modal" className={`mathliveModal ${editor.modal}`}>
+                <div id="problemModal" className={`mathliveModal ${editor.modal}`}>
                     <div className={editor.modalBody}>
-                        <h3>
+                        <h1 id="problemModalHeader">
                             {this.props.solution.problem.title}
-                        </h3>
+                        </h1>
                         <div className={editor.desc}>{`$$${this.props.solution.problem.text}$$`}</div>
                     </div>
-                    <footer className={editor.modalFooter}>
+                    <div className={editor.modalFooter}>
                         <Button
                             id="deactivate"
                             className={classNames('btn', 'btn-primary')}
@@ -44,7 +44,7 @@ export default class ProblemModal extends Component {
                             content={Locales.strings.close}
                             onClick={this.props.deactivateModal}
                         />
-                    </footer>
+                    </div>
                 </div>
             </AriaModal>
         );

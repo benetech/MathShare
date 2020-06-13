@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import SpeechToTextButton from './components/SpeechToTextButton';
 import editorArea from './styles.scss';
 import Locales from '../../../../../../strings';
+import { checkIfDescriptionIsRequired } from '../../../../stepsOperations';
 
 const mathLive = process.env.MATHLIVE_DEBUG_MODE
     ? require('../../../../../../../../mathlive/src/mathlive.js').default
@@ -89,7 +90,15 @@ export default class MyWorkEditorArea extends Component {
     }
 
     render() {
-        const ttsHint = this.props.addingProblem ? Locales.strings.tts_hint_add_problem : Locales.strings.tts_hint;
+        let ttsHint = Locales.strings.tts_hint_add_problem;
+        if (!this.props.addingProblem) {
+            let required = '';
+            const { problem, problemList } = this.props;
+            if (checkIfDescriptionIsRequired(problem, problemList)) {
+                required = ` (${Locales.strings.required})`;
+            }
+            ttsHint = `${Locales.strings.tts_hint}${required}`;
+        }
         const ttsIntro = this.props.addingProblem ? Locales.strings.tts_intro_add_problem : Locales.strings.tts_intro;
         return (
             <section aria-labelledby="workarea-header">
