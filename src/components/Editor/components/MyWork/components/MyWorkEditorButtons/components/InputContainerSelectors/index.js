@@ -16,6 +16,7 @@ const InputContainerSelectors = (props) => {
                     'd-flex',
                     'flex-column',
                     styles.container,
+                    styles.inputContainersSelectors,
                 ])
             }
             aria-label={Locales.strings.select_symbol_or_scratchpad}
