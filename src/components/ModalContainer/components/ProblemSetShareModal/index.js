@@ -24,20 +24,21 @@ export default class ProblemSetShareModal extends Component {
     shareOnGoogleClassroom = (e) => {
         const {
             problemList,
+            shareLink,
         } = this.props;
         const { action } = this.getParams();
         e.preventDefault();
         const popupConfig = 'height=400,width=641,top=100,left=100,target=classroomPopup,toolbar=yes,scrollbars=yes,menubar=yes,location=no,resizable=yes';
         if (action === 'edit') {
             window.open(
-                `https://classroom.google.com/u/0/share?url=${encodeURIComponent(`${this.getShareUrl()}`)}&title=${problemList.set.title}`,
+                `https://classroom.google.com/u/0/share?url=${encodeURIComponent(shareLink)}&title=${problemList.set.title}`,
                 'googleClassroom',
                 popupConfig,
             );
             IntercomAPI('trackEvent', 'assign-a-set-google-classroom');
         } else if (action === 'view' || action === 'solve') {
             window.open(
-                `https://classroom.google.com/u/0/share?url=${encodeURIComponent(this.getShareUrl())}`,
+                `https://classroom.google.com/u/0/share?url=${encodeURIComponent(shareLink)}`,
                 'googleClassroom',
                 popupConfig,
             );
@@ -47,10 +48,11 @@ export default class ProblemSetShareModal extends Component {
     }
 
     shareOnMicrosoftTeams = () => {
+        const { shareLink } = this.props;
         const { action } = this.getParams();
         const popupConfig = 'height=578,width=700,top=100,left=100,target=msTeamPopup,toolbar=yes,scrollbars=yes,menubar=yes,location=no,resizable=yes';
         window.open(
-            `https://teams.microsoft.com/share?href=${encodeURIComponent(this.getShareUrl())}&preview=true&referrer=${window.location.hostname}`,
+            `https://teams.microsoft.com/share?href=${encodeURIComponent(shareLink)}&preview=true&referrer=${window.location.hostname}`,
             'microsoftTeam',
             popupConfig,
         );
@@ -60,19 +62,6 @@ export default class ProblemSetShareModal extends Component {
             IntercomAPI('trackEvent', 'submit-problem-set-microsoft-team');
         }
         this.props.deactivateModal();
-    }
-
-    getShareUrl = () => {
-        const {
-            problemList,
-        } = this.props;
-        const { action } = this.getParams();
-        if (action === 'edit') {
-            return `${window.location.origin}/#/app/problemSet/view/${problemList.set.shareCode}`;
-        } if (action === 'view' || action === 'solve') {
-            return `${window.location.origin}/#/app/problemSet/review/${problemList.problemSetShareCode}`;
-        }
-        return '';
     }
 
     getParams = () => {
