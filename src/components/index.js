@@ -44,7 +44,7 @@ import ModalContainer, {
 import { configClassMap } from './ModalContainer/components/PersonalizationModal';
 import { alertWarning } from '../scripts/alert';
 import googleAnalytics from '../scripts/googleAnalytics';
-import { FRONTEND_URL } from '../config';
+import { FRONTEND_URL_PROTO } from '../config';
 import problemListActions from '../redux/problemList/actions';
 import problemActions from '../redux/problem/actions';
 import userProfileActions from '../redux/userProfile/actions';
@@ -505,8 +505,8 @@ class App extends Component {
                             progressToAddingProblems={this.progressToAddingProblems}
                             deleteProblem={this.deleteProblem}
                             shareLink={problemStore.shareLink}
-                            newSetShareLink={`${FRONTEND_URL}/app/problemSet/view/${problemList.newSetSharecode}`}
-                            problemSetShareLink={`${FRONTEND_URL}/app/problemSet/review/${problemList.problemSetShareCode}`}
+                            newSetShareLink={`${FRONTEND_URL_PROTO}/app/problemSet/view/${problemList.newSetSharecode}`}
+                            problemSetShareLink={`${FRONTEND_URL_PROTO}/app/problemSet/review/${problemList.problemSetShareCode}`}
                             activateMathField={field => this.props.setActiveMathField(field)}
                             theActiveMathField={problemList.theActiveMathField}
                             addProblemCallback={this.addProblem}
