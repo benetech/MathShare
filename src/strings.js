@@ -44,7 +44,7 @@ class Locales {
                 alertAutoClose: 'Alert close time (in secs)',
                 all_problem_sets: 'All Problem Sets',
                 all_problems: ' All Problems',
-                allow_educators_to_duplicate: 'Allows eductators to duplicate and re-use this problem set',
+                allow_educators_to_duplicate: 'Allows educators to duplicate and re-use this problem set',
                 allow_others_to_see: 'Allows others to see your work',
                 allow_students_to_see: 'Allows students to answer questions',
                 archive: 'Archive',
