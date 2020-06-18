@@ -7,6 +7,7 @@ import App from './components';
 import 'jquery/dist/jquery';
 import 'bootstrap/dist/js/bootstrap.bundle';
 import 'react-toastify/dist/ReactToastify.css';
+import 'rc-slider/assets/index.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import './lib/mathlivedist/mathlive.core.css';
 import './lib/mathlivedist/mathlive.css';
