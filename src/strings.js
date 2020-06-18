@@ -313,7 +313,7 @@ class Locales {
                 share_problem_set: 'Share Problem Set',
                 share_with_teachers: ' Share with Teachers',
                 share_with_teachers_text: 'Check out my #accessible math problems made in @mathshare. Supports learning styles, special needs and #4Cs. ',
-                share_your_problem_set: 'Share your problem set through Google Classroom or Microsoft Teams, or share using the link below.',
+                share_your_problem_set: 'Share your problem set through Google Classroom or Microsoft Teams, or use the button below to copy the shareable link.',
                 sharing_sets: 'Sharing Sets with Others',
                 sharing_sets_with_students: 'Sharing Sets with Students',
                 sharing_sets_with_students_steps: [
@@ -360,7 +360,7 @@ class Locales {
                 submit_to_partner: 'Submit to {partner}',
                 submit_to_partner_success: 'Submitted Sucessfully',
                 submit_to_partner_failure: 'Unable to submit',
-                submit_your_answers: 'Submit your answers to Google Classroom or Microsoft Teams or you can also share your finished work with the link below.',
+                submit_your_answers: 'Submit your answers to Google Classroom or Microsoft Teams, or use the button below to copy the shareable link.',
                 success: 'Success',
                 successfull_update_message: 'The step has been updated.',
                 successfully_copied: 'Successfully copied to clipboard',
