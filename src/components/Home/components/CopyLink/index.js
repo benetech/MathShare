@@ -25,7 +25,7 @@ export default class CopyLink extends Component {
             document.execCommand('copy');
             document.getElementById('ProblemSetShareModal').removeChild(copyText);
         }
-        alertSuccess(this.props.announceText, Locales.strings.success);
+        alertSuccess(this.props.announceText, Locales.strings.success, undefined, true);
         this.props.clearAriaLive();
         this.props.announceOnAriaLive(this.props.announceText);
         if (this.props.copyLinkCallback) {
