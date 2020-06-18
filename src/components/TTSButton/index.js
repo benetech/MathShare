@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import lodash from 'lodash';
 import { UncontrolledTooltip } from 'reactstrap';
 import FontAwesome from 'react-fontawesome';
 import styles from './styles.scss';
@@ -25,6 +26,7 @@ class TTSButton extends Component {
         }
         this.polly = new window.AWS.Polly({ apiVersion: '2016-06-10' });
         this.ttsId = `${props.id}-${Math.round(Math.random() * 1000)}`;
+        this.debouncedClick = lodash.debounce(this.clickTtsBtn, 300);
     }
 
     componentDidMount() {
@@ -193,7 +195,7 @@ class TTSButton extends Component {
                 id={this.props.id || this.ttsId}
                 aria-label={this.getAriaLabel()}
                 type="button"
-                onClick={this.clickTtsBtn}
+                onClick={this.debouncedClick}
             >
                 <FontAwesome name={iconName} size="lg" />
             </button>
