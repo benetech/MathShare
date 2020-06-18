@@ -1,7 +1,6 @@
 import React from 'react';
 import NewProblemsForm from '../Home/components/NewProblemsForm';
 import ShareModal from './components/ShareModal';
-import NewProblemSetShareModal from './components/NewProblemSetShareModal';
 import SaveModal from './components/SaveModal';
 import ProblemModal from './components/ProblemModal';
 import ProblemSetShareModal from './components/ProblemSetShareModal';
@@ -14,6 +13,7 @@ import Locales from '../../strings';
 
 const CONFIRMATION = 'confirmation';
 const PALETTE_CHOOSER = 'paletteChooser';
+const PALETTE_UPDATE_CHOOSER = 'paletteUpdateChooser';
 const ADD_PROBLEM_SET = 'addProblemSet';
 const ADD_PROBLEMS = 'addProblems';
 const SHARE_NEW_SET = 'shareNewSet';
@@ -57,10 +57,26 @@ const ModalContainer = (props) => {
         )
         : null;
 
+    const paletteUpdateChooser = activeModals.includes(PALETTE_UPDATE_CHOOSER)
+        ? (
+            <PaletteChooser
+                title={Locales.strings.choose_palettes_title}
+                cancelCallback={() => props.toggleModals([PALETTE_UPDATE_CHOOSER])}
+                nextCallback={props.updatePaletteSymbols}
+                deactivateModal={() => props.toggleModals([PALETTE_UPDATE_CHOOSER])}
+                currentPalettes={props.currentPalettes}
+                isUpdate
+            />
+        )
+        : null;
+
     const newSetShareModal = activeModals.includes(SHARE_NEW_SET)
         ? (
-            <NewProblemSetShareModal
+            <ProblemSetShareModal
                 shareLink={props.newSetShareLink}
+                problemList={props.problemList}
+                announceOnAriaLive={props.announceOnAriaLive}
+                clearAriaLive={props.clearAriaLive}
                 deactivateModal={() => props.toggleModals([SHARE_NEW_SET])}
             />
         )
@@ -108,6 +124,7 @@ const ModalContainer = (props) => {
                 title={Locales.strings.add_problems_new_set}
                 updateProblemStore={props.updateProblemStore}
                 textAreaValue={props.textAreaValue}
+                allowedPalettes={props.mathPalettes}
                 newProblemSet
             />
         )
@@ -129,6 +146,7 @@ const ModalContainer = (props) => {
                 title={Locales.strings.add_problems}
                 updateProblemStore={props.updateProblemStore}
                 textAreaValue={props.textAreaValue}
+                allowedPalettes={props.mathPalettes}
             />
         )
         : null;
@@ -151,6 +169,7 @@ const ModalContainer = (props) => {
                 problemToEdit={props.problemToEdit}
                 title={Locales.strings.edit_problem}
                 updateProblemStore={props.updateProblemStore}
+                allowedPalettes={props.mathPalettes}
             />
         )
         : null;
@@ -167,8 +186,13 @@ const ModalContainer = (props) => {
     const shareProblemSet = activeModals.includes(SHARE_PROBLEM_SET)
         ? (
             <ProblemSetShareModal
-                problemSetShareLink={props.problemSetShareLink}
+                shareLink={props.problemSetShareLink}
+                announceOnAriaLive={props.announceOnAriaLive}
+                clearAriaLive={props.clearAriaLive}
+                problemList={props.problemList}
                 deactivateModal={() => props.toggleModals([SHARE_PROBLEM_SET])}
+                submitToPartner={props.submitToPartner}
+                isSolutionSet
             />
         )
         : null;
@@ -206,6 +230,7 @@ const ModalContainer = (props) => {
             {confirmationModal}
             {confirmationBackModal}
             {paletteChooser}
+            {paletteUpdateChooser}
             {newSetShareModal}
             {addProblems}
             {addProblemSet}
@@ -222,7 +247,7 @@ const ModalContainer = (props) => {
 export default ModalContainer;
 
 export {
-    CONFIRMATION, PALETTE_CHOOSER, ADD_PROBLEM_SET, ADD_PROBLEMS, SHARE_PROBLEM_SET,
-    SHARE_NEW_SET, SAVE_SET, SHARE_SET, VIEW_SET, EDIT_PROBLEM, CONFIRMATION_BACK, TITLE_EDIT_MODAL,
-    PERSONALIZATION_SETTINGS, SIGN_IN_MODAL,
+    CONFIRMATION, PALETTE_CHOOSER, PALETTE_UPDATE_CHOOSER, ADD_PROBLEM_SET, ADD_PROBLEMS,
+    SHARE_PROBLEM_SET, SHARE_NEW_SET, SAVE_SET, SHARE_SET, VIEW_SET, EDIT_PROBLEM,
+    CONFIRMATION_BACK, TITLE_EDIT_MODAL, PERSONALIZATION_SETTINGS, SIGN_IN_MODAL,
 };

@@ -23,24 +23,24 @@ export default class NewProblemSetShareModal extends Component {
     render() {
         return (
             <AriaModal
-                titleId="shareModal"
+                titleId="shareModalHeader"
                 onExit={this.props.deactivateModal}
                 getApplicationNode={this.getApplicationNode}
                 underlayStyle={{ paddingTop: '2em' }}
             >
-                <div id="demo-one-modal" className={editor.modal}>
+                <div id="shareModal" className={editor.modal}>
                     <div className={editor.modalBody}>
-                        <h3>
+                        <h1 id="shareModalHeader">
                             {Locales.strings.share_permalink}
                             :
                             {'\u00A0'}
-                        </h3>
+                        </h1>
                         <div className={editor.modalMessage}>
                             <p>{Locales.strings.copy_this_link}</p>
                         </div>
                         <input type="text" readOnly value={this.props.shareLink} id="shareLink" className={editor.shareLink} />
                     </div>
-                    <footer className={editor.modalFooter}>
+                    <div className={editor.modalFooter}>
                         <Button
                             id="copy_button"
                             className={classNames('btn', 'btn-primary', editor.button)}
@@ -59,7 +59,7 @@ export default class NewProblemSetShareModal extends Component {
                             content={Locales.strings.close}
                             onClick={this.props.deactivateModal}
                         />
-                    </footer>
+                    </div>
                 </div>
             </AriaModal>
         );

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { SortableContainer, SortableElement, arrayMove } from 'react-sortable-hoc';
 import NavigationProblem from '../Problem';
 import styles from './styles.scss';
+import Locales from '../../../../../strings';
 
 const mathLive = process.env.MATHLIVE_DEBUG_MODE ? require('../../../../../../../mathlive/src/mathlive.js').default
     : require('../../../../../lib/mathlivedist/mathlive.js');
@@ -75,15 +76,19 @@ export default class Problems extends Component {
 
         return (
             <div className={`${styles.container} ${styles.problemList} justify-content-around`}>
-                <SortableList
-                    distance={5}
-                    problems={this.state.problems}
-                    solutions={this.props.solutions}
-                    onSortEnd={this.onSortEnd}
-                    onSortStart={this.onSortStart}
-                    axis="xy"
-                    transitionDuration={800}
-                />
+                {this.props.children}
+                {this.state.problems.length === 0 && <div className="sROnly">{Locales.strings.no_problems_added_yet}</div>}
+                {this.state.problems.length > 0 && (
+                    <SortableList
+                        distance={5}
+                        problems={this.state.problems}
+                        solutions={this.props.solutions}
+                        onSortEnd={this.onSortEnd}
+                        onSortStart={this.onSortStart}
+                        axis="xy"
+                        transitionDuration={800}
+                    />
+                )}
                 {newProblem}
             </div>
 

@@ -39,7 +39,10 @@ class SignInCore extends Component {
         let path = '/#/app';
         if (routerHistory.current !== '/#/signIn' && routerHistory.prev !== '/#/signUp') {
             path = routerHistory.current;
-        } else if (routerHistory.prev && routerHistory.prev !== '/#/signIn' && routerHistory.prev !== '/#/signUp') {
+        } else if (
+            routerHistory.prev && routerHistory.prev !== '/#/signIn'
+            && routerHistory.prev !== '/#/signUp' && routerHistory.prev !== '/#/'
+        ) {
             path = routerHistory.prev;
         }
         return `${window.location.origin}${path}`;
@@ -77,7 +80,7 @@ class SignInCore extends Component {
 
     render() {
         const {
-            routerHistory, userProfile, header,
+            routerHistory, userProfile, header, benefitsText,
         } = this.props;
 
         if (userProfile.email) {
@@ -100,7 +103,7 @@ class SignInCore extends Component {
                     </li>
                 </ul>
                 <a className={signIn.benefitsLink} href="https://intercom.help/benetech/en/articles/3754980-benefits-of-having-a-user-account">
-                    {Locales.strings.benefits_of_signing_in}
+                    {benefitsText}
                 </a>
                 {this.props.children}
             </>

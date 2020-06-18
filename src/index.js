@@ -13,6 +13,7 @@ import './lib/mathlivedist/mathlive.core.css';
 import './lib/mathlivedist/mathlive.css';
 import './lib/font-awesome/css/font-awesome.min.css';
 import './styles/styles.scss';
+import './styles/toggle.scss';
 
 import '../images/favicon.png';
 

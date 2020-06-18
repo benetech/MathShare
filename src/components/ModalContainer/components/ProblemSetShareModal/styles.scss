@@ -2,7 +2,7 @@
     background: rgb(255, 255, 255);
     outline: 0;
     min-width: 250px;
-    max-width: 500px;
+    max-width: 550px;
     border-radius: 4px;
 }
 
@@ -27,12 +27,66 @@
 
 .modalMessage {
     margin-top: 15px;
+    padding: 10px 30px;
 }
 
-.button {
-    margin-right: 10px;
+
+.shareContainer {
+    margin: auto;
+    text-align: center;
+
+    .shareLink {
+        width: 250px;
+        margin: 0 15px;
+        border: 1px solid;
+    }
+
+    .button {
+        margin-right: 10px;
+        border: 1px solid;
+    }
 }
 
-.shareLink {
-    width: 400px;
+.modalBody {
+    ul.messageList li {
+        list-style-type: disc;
+    }
+
+    h1 {
+        text-align: center;
+        font-size: 24px;
+        padding-top: 20px;
+        padding-bottom: 20px;
+
+        span:global(.fa) {
+            padding-right: 10px;
+        }
+    }
+
+    .externalButtons {
+        display: block;
+
+        > span {
+            display: block;
+            margin: 10px;
+            > {
+                button.buttonContainer {
+                    width: 191px;
+                    display: inline-flex;
+                    padding: 2px;
+                    margin-left: 5px;
+                    .btnText {
+                        padding: 4px 5px;
+                    }
+                    img {
+                        height: 32px;
+                    }
+                }
+            }
+        } 
+        
+        .integrationBtn {
+            margin-left: 5px;
+        }
+    }
 }

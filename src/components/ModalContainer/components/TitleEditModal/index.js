@@ -27,16 +27,16 @@ export default class TitleEditModal extends Component {
     render() {
         return (
             <AriaModal
-                titleId="titleEditModal"
+                titleId="titleEditModalHeader"
                 onExit={this.props.deactivateModal}
                 getApplicationNode={this.getApplicationNode}
                 underlayStyle={{ paddingTop: '2em' }}
             >
-                <div id="demo-one-modal" className={editor.modal}>
+                <div id="titleEditModal" className={editor.modal}>
                     <div className={editor.modalBody}>
-                        <h3>
+                        <h1 id="titleEditModalHeader">
                             {Locales.strings.update_title}
-                        </h3>
+                        </h1>
                         <input
                             type="text"
                             value={this.state.title}
@@ -45,7 +45,7 @@ export default class TitleEditModal extends Component {
                             onChange={this.updateTitle}
                         />
                     </div>
-                    <footer className={editor.modalFooter}>
+                    <div className={editor.modalFooter}>
                         <Button
                             id="save_title"
                             className={classNames('btn', 'btn-primary', editor.button)}
@@ -64,7 +64,7 @@ export default class TitleEditModal extends Component {
                             content={Locales.strings.close}
                             onClick={this.props.deactivateModal}
                         />
-                    </footer>
+                    </div>
                 </div>
             </AriaModal>
         );

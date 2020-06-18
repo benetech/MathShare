@@ -25,16 +25,16 @@ export default class ShareModal extends Component {
     render() {
         return (
             <AriaModal
-                titleId="shareModal"
+                titleId="shareModalHeader"
                 onExit={this.props.deactivateModal}
                 getApplicationNode={this.getApplicationNode}
                 underlayStyle={{ paddingTop: '2em' }}
             >
-                <div id="demo-one-modal" className={editor.modal}>
+                <div id="shareModal" className={editor.modal}>
                     <div className={editor.modalBody}>
-                        <h3>
+                        <h1 id="shareModalHeader">
                             {Locales.strings.share_link}
-                        </h3>
+                        </h1>
                         <input type="text" readOnly value={this.props.shareLink} id="shareLink" className={editor.shareLink} />
                         <div className={editor.modalMessage}>
                             <p>
@@ -47,7 +47,7 @@ export default class ShareModal extends Component {
                             <p>{Locales.strings.if_you_want_to_continue}</p>
                         </div>
                     </div>
-                    <footer className={editor.modalFooter}>
+                    <div className={editor.modalFooter}>
                         <Button
                             id="copy_button"
                             className={classNames('btn', 'btn-primary', editor.button)}
@@ -66,7 +66,7 @@ export default class ShareModal extends Component {
                             content={Locales.strings.close}
                             onClick={this.props.deactivateModal}
                         />
-                    </footer>
+                    </div>
                 </div>
             </AriaModal>
         );
