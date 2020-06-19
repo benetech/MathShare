@@ -80,6 +80,10 @@ class PersonalizationModal extends Component {
         };
     }
 
+    covertValue = value => (
+        0.5 + (value / 100)
+    )
+
     save = () => {
         this.props.savePersonalizationSettings(this.state);
         this.props.deactivateModal();
@@ -103,7 +107,7 @@ class PersonalizationModal extends Component {
     updateSpeed = (speed) => {
         this.setState({
             tts: {
-                speed,
+                speed: this.covertValue(speed),
             },
         });
     }
@@ -166,10 +170,12 @@ class PersonalizationModal extends Component {
                                             <span>{Locales.strings.slower}</span>
                                             <Slider
                                                 ariaLabelledByForHandle="ttsSpeed"
-                                                defaultValue={this.state.tts.speed}
-                                                min={0.5}
-                                                step={0.05}
-                                                max={1.5}
+                                                defaultValue={
+                                                    Math.round((this.state.tts.speed - 0.5) * 100)
+                                                }
+                                                min={0}
+                                                step={5}
+                                                max={100}
                                                 handle={sliderHandle}
                                                 onChange={this.updateSpeed}
                                             />
