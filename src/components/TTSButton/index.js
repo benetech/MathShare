@@ -26,7 +26,7 @@ class TTSButton extends Component {
         }
         this.polly = new window.AWS.Polly({ apiVersion: '2016-06-10' });
         this.ttsId = `${props.id}-${Math.round(Math.random() * 1000)}`;
-        this.debouncedClick = lodash.debounce(this.clickTtsBtn, 300);
+        this.debouncedClick = lodash.debounce(this.clickTtsBtn, 250);
     }
 
     componentDidMount() {
