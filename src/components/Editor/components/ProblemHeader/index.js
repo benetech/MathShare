@@ -129,6 +129,7 @@ export default class ProblemHeader extends Component {
                 id="tts-prompt"
                 additionalClass={classNames('btn', problem.ttsButton)}
                 text={this.getSpeakableText()}
+                spanStyle="flex-grow-1"
                 ariaLabelSuffix={Locales.strings.prompt}
             />
         );
@@ -143,7 +144,6 @@ export default class ProblemHeader extends Component {
                 <div className={`d-flex flex-row ${problem.header}`}>
                     <div id="mainContainer" className={`d-flex flex-row ${problem.subHeader}`}>
                         {imgButton}
-                        {ttsButton}
                         <h1 id="ProblemTitle" className={problem.title} tabIndex={-1}>
                             {title}
                             <span className="sROnly">
@@ -157,7 +157,8 @@ export default class ProblemHeader extends Component {
                             </span>
                         </h1>
                         {this.props.math !== Locales.strings.loading && (<span id="ProblemMath" className={`${problem.title} ${problem.question}`}>{`$$${this.props.math}$$`}</span>)}
-                        <span id="math-ellipsis" className={`flex-grow-1 ${problem.mathEllipsis}`}>&nbsp;</span>
+                        <span id="math-ellipsis" className={problem.mathEllipsis}>&nbsp;</span>
+                        {ttsButton}
                         {exampleLabel}
                         <Button
                             id="backBtn"

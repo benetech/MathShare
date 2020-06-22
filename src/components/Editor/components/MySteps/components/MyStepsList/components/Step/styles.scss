@@ -11,9 +11,6 @@
     transition: all 1s;
 
     .ttsBtnContainer {
-        position: absolute;
-        margin-left: -60px;
-        margin-right: 10px;
         margin-top: 5px;
     }
 
@@ -22,7 +19,7 @@
     }
 }
 
-.step>div:nth-child(2) {
+.step>div:first-child {
     min-width: 120px;
 }
 
