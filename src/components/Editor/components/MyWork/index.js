@@ -246,12 +246,6 @@ class MyWork extends Component {
             <div id="EditorArea" className={myWork.editorArea}>
                 <div className={myWork.myWorkArea}>
                     <div id="historyWorkSeparator" className={myWork.historyWorkSeparator}>
-                        <TTSButton
-                            id="tts-work-area"
-                            additionalClass={editor.ttsButton}
-                            text={this.getSpeakableText}
-                            ariaLabelSuffix={this.props.title || Locales.strings.current_problem}
-                        />
                         <h2
                             className={classNames(
                                 editor.modalAreaHeading,
@@ -260,6 +254,12 @@ class MyWork extends Component {
                         >
                             {this.props.title || Locales.strings.mathshare_benetech}
                         </h2>
+                        <TTSButton
+                            id="tts-work-area"
+                            additionalClass={editor.ttsButton}
+                            text={this.getSpeakableText}
+                            ariaLabelSuffix={this.props.title || Locales.strings.current_problem}
+                        />
                     </div>
                     <div className={myWork.editorWrapper}>
                         <MyWorkEditorArea {...this.props} />

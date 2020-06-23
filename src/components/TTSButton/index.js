@@ -26,7 +26,10 @@ class TTSButton extends Component {
         }
         this.polly = new window.AWS.Polly({ apiVersion: '2016-06-10' });
         this.ttsId = `${props.id}-${Math.round(Math.random() * 1000)}`;
-        this.debouncedClick = lodash.debounce(this.clickTtsBtn, 300);
+        this.debouncedClick = lodash.debounce(this.clickTtsBtn, 250, {
+            leading: true,
+            trailing: true,
+        });
     }
 
     componentDidMount() {
@@ -179,7 +182,7 @@ class TTSButton extends Component {
     render() {
         const { ttsState } = this.state;
         if (ttsState === null) {
-            return null;
+            return <span className={this.props.spanStyle || ''} />;
         }
         const tooltip = (
             <UncontrolledTooltip placement="top" target={this.props.id || this.ttsId}>

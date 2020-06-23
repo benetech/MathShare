@@ -188,19 +188,20 @@ export default class Step extends Component {
 
         return (
             <div id={id} className={classNames('d-flex flex-column flex-md-row flex-lg-row flex-xl-row', step.step)} tabIndex={-1}>
-                <div className={step.ttsBtnContainer}>
-                    {(this.props.annotation !== Locales.strings.loading || this.props.math !== '') && (
-                        <TTSButton
-                            id={`tts-${id}`}
-                            text={this.getStepText()}
-                            ariaLabelSuffix={Locales.strings.step_no.replace('{no}', this.props.stepNumber)}
-                        />
-                    )}
-                </div>
                 <div className="d-flex p-2">
                     <h3>
                         {this.buildReason()}
                     </h3>
+                </div>
+                <div className={step.ttsBtnContainer}>
+                    {(this.props.annotation !== Locales.strings.loading || this.props.math !== '') && (
+                        <TTSButton
+                            id={`tts-${id}`}
+                            additionalClass={step.ttsButton}
+                            text={this.getStepText()}
+                            ariaLabelSuffix={Locales.strings.step_no.replace('{no}', this.props.stepNumber)}
+                        />
+                    )}
                 </div>
                 <div className={classNames('col-md-4', step.annotationEquation)}>
                     <span className="staticMath">{`$$${this.props.math}$$`}</span>
