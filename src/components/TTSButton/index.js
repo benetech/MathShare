@@ -182,7 +182,7 @@ class TTSButton extends Component {
     render() {
         const { ttsState } = this.state;
         if (ttsState === null) {
-            return null;
+            return <span className={this.props.spanStyle || ''} />;
         }
         const tooltip = (
             <UncontrolledTooltip placement="top" target={this.props.id || this.ttsId}>

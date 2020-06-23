@@ -197,6 +197,7 @@ export default class Step extends Component {
                     {(this.props.annotation !== Locales.strings.loading || this.props.math !== '') && (
                         <TTSButton
                             id={`tts-${id}`}
+                            additionalClass={step.ttsButton}
                             text={this.getStepText()}
                             ariaLabelSuffix={Locales.strings.step_no.replace('{no}', this.props.stepNumber)}
                         />

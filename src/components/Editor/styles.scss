@@ -5,11 +5,12 @@
     font-weight: bold;
     display: inline-block;
     margin-left: 5px;
+    margin-bottom: 0;
 }
 
 .ttsButton {
-    position: relative;
-    margin-top: 5px;
+    position: absolute;
+    margin-top: 7px;
 }
 
 .historyWrapper {
