@@ -81,7 +81,7 @@ class PersonalizationModal extends Component {
     }
 
     covertValue = value => (
-        0.5 + (value / 100)
+        0.2 + (1.6 * value / 100)
     )
 
     save = () => {
@@ -171,7 +171,9 @@ class PersonalizationModal extends Component {
                                             <Slider
                                                 ariaLabelledByForHandle="ttsSpeed"
                                                 defaultValue={
-                                                    Math.round((this.state.tts.speed - 0.5) * 100)
+                                                    Math.round(
+                                                        (this.state.tts.speed - 0.2) / 1.6 * 100,
+                                                    )
                                                 }
                                                 min={0}
                                                 step={5}
