@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import AriaModal from 'react-aria-modal';
 import { UncontrolledTooltip } from 'reactstrap';
-import Slider from 'rc-slider';
 import classNames from 'classnames';
 import styles from './styles.scss';
 import Locales from '../../../../strings';
@@ -29,18 +28,6 @@ export const configClassMap = {
         'Courier Prime': 'courier-prime',
         'Open Sans': 'open-sans',
     },
-};
-
-const sliderHandle = (props) => {
-    const {
-        value, dragging, index, ...restProps
-    } = props;
-    return (
-        <>
-            <Slider.Handle id="slider-handle" value={value} {...restProps} />
-            <UncontrolledTooltip placement="top" target="slider-handle" />
-        </>
-    );
 };
 
 class PersonalizationModal extends Component {
@@ -104,10 +91,14 @@ class PersonalizationModal extends Component {
         }));
     }
 
-    updateSpeed = (speed) => {
+    updateSpeed = () => {
+        const speedElement = document.getElementById('ttsSpeedSlider');
+        if (!speedElement) {
+            return;
+        }
         this.setState({
             tts: {
-                speed: this.covertValue(speed),
+                speed: this.covertValue(Number(speedElement.value)),
             },
         });
     }
@@ -128,7 +119,7 @@ class PersonalizationModal extends Component {
                         <div className={styles.formContainer}>
                             <div className={classNames('row')}>
                                 <h2 id="uiHeader" className="sROnly">{Locales.strings.ui}</h2>
-                                <ul className="row col-12" ariaLabelledBy="uiHeader">
+                                <ul className="row col-12" aria-labelledby="uiHeader">
                                     {fields.map((field) => {
                                         const id = `per-${field}`;
                                         return (
@@ -161,24 +152,25 @@ class PersonalizationModal extends Component {
                             </div>
                             <div className={classNames('row', styles.ttsContainer)}>
                                 <h2 className="col-12" id="tts-heading">{Locales.strings.tts}</h2>
-                                <ul className="col-12" ariaLabelledBy="tts-heading">
+                                <ul className="col-12" aria-labelledby="tts-heading">
                                     <li className="row">
                                         <h3 className="col-5" id="ttsSpeed" tabIndex="-1">
                                             {Locales.strings.speed}
                                         </h3>
                                         <div className={classNames('col-7', styles.ttsSpeed)}>
                                             <span>{Locales.strings.slower}</span>
-                                            <Slider
-                                                ariaLabelledByForHandle="ttsSpeed"
-                                                defaultValue={
-                                                    Math.round(
-                                                        (this.state.tts.speed - 0.2) / 1.6 * 100,
-                                                    )
-                                                }
+                                            <input
+                                                id="ttsSpeedSlider"
+                                                aria-labelledby="ttsSpeed"
+                                                type="range"
                                                 min={0}
                                                 step={5}
                                                 max={100}
-                                                handle={sliderHandle}
+                                                defaultValue={
+                                                    Math.round(
+                                                        (this.state.tts.speed - 0.2) / 1.6 * 100,
+                                                    ) || 0
+                                                }
                                                 onChange={this.updateSpeed}
                                             />
                                             <span>{Locales.strings.faster}</span>
