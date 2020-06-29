@@ -129,6 +129,7 @@ function* playIfCurrentSaga() {
                         alertError(Locales.strings.tts_error, Locales.strings.error);
                         dispatch(clearAriaLive());
                         dispatch(announceOnAriaLive(Locales.strings.tts_error));
+                        dispatch(stopTtsAudio(ttsBtnId));
                     }
                 },
             });
