@@ -11,6 +11,7 @@ import routerHooks from './router/reducer';
 import ui from './ui/reducer';
 import userProfile from './userProfile/reducer';
 import ariaLiveAnnouncer from './ariaLiveAnnouncer/reducer';
+import tts from './tts/reducer';
 
 export default history => combineReducers({
     router: connectRouter(history),
@@ -19,6 +20,7 @@ export default history => combineReducers({
     problem,
     problemList,
     routerHooks,
+    tts,
     ui,
     userProfile,
 });
