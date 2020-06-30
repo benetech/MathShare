@@ -144,7 +144,7 @@ class MyWork extends Component {
     }
 
     InitScratchPad() {
-        painterroConfiguration.changeHandler = this.scratchpadChangeHandler;
+        painterroConfiguration.onChange = this.scratchpadChangeHandler;
         this.scratchPadPainterro = Painterro(painterroConfiguration);
         this.scratchPadPainterro.show();
         /* eslint-disable no-useless-concat */
