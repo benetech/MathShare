@@ -14,6 +14,11 @@ import googleAnalytics from '../../../../scripts/googleAnalytics';
 import CopyLink from '../../../Home/components/CopyLink';
 
 export default class ProblemSetShareModal extends Component {
+    constructor(props) {
+        super(props);
+        this.titleId = 'share_problem_set_heading';
+    }
+
     componentWillMount() {
         const { isSolutionSet, shareLink } = this.props;
         if (!isSolutionSet && shareLink) {
@@ -100,14 +105,15 @@ export default class ProblemSetShareModal extends Component {
         }
         return (
             <AriaModal
-                titleId="share_problem_set_heading"
+                titleId={this.titleId}
+                initialFocus={`#${this.titleId}`}
                 onExit={this.props.deactivateModal}
                 getApplicationNode={this.getApplicationNode}
                 underlayStyle={{ paddingTop: '2em' }}
             >
                 <div id="ProblemSetShareModal" className={editor.modal}>
                     <div className={editor.modalBody}>
-                        <h1 id="share_problem_set_heading" tabIndex={-1}>
+                        <h1 id={this.titleId} tabIndex={-1}>
                             <FontAwesome
                                 size="md"
                                 name={iconName}
