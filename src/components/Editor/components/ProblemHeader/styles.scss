@@ -13,7 +13,7 @@
 
 .mathEllipsis {
     margin-left: 4px;
-    margin-right: 24px;
+    margin-right: 4px;
     color: white;
 }
 
@@ -49,6 +49,12 @@
     .imageBtn {
         background-color: #fafafa;
         margin-right: 15px;
+    }
+
+
+    .ttsButton {
+        min-width: 48px;
+        color: #fafafa;
     }
 }
 

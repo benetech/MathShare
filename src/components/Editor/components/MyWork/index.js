@@ -11,6 +11,8 @@ import { sessionStore } from '../../../../scripts/storage';
 import { updateWork } from '../../../../redux/problem/actions';
 import Painterro from '../../../../lib/painterro/painterro.commonjs2';
 import painterroConfiguration from './painterroConfiguration.json';
+import TTSButton from '../../../TTSButton';
+import { checkIfDescriptionIsRequired } from '../../stepsOperations';
 
 const mathLive = process.env.MATHLIVE_DEBUG_MODE ? require('../../../../../../mathlive/src/mathlive.js').default
     : require('../../../../lib/mathlivedist/mathlive.js');
@@ -76,6 +78,7 @@ class MyWork extends Component {
     }
 
     HandleKeyDown = (event) => {
+        const { problem, problemList } = this.props;
         const keyShortcuts = new Map(JSON.parse(sessionStore.getItem('keyShortcuts')));
         if (event.shiftKey && this.props.theActiveMathField.$selectionIsCollapsed()) {
             // if an insertion cursor, extend the selection unless we are at an edge
@@ -85,7 +88,7 @@ class MyWork extends Component {
                 this.props.theActiveMathField.$perform('extendToNextChar');
             }
         }
-        if (event.shiftKey && event.key === 'Enter' && $('#mathAnnotation').val() !== '') {
+        if (event.shiftKey && event.key === 'Enter' && ($('#mathAnnotation').val() !== '' || !checkIfDescriptionIsRequired(problem, problemList))) {
             event.preventDefault();
             if (this.props.editing || this.props.editingProblem) {
                 this.updateCallback();
@@ -115,6 +118,20 @@ class MyWork extends Component {
             $(`#${id}`).click();
         }
     }
+
+    getSpeakableText = () => {
+        let math = '';
+        if (this.props.theActiveMathField) {
+            math = mathLive.latexToSpeakableText(
+                this.props.theActiveMathField.$latex(),
+                {
+                    textToSpeechRules: 'sre',
+                    textToSpeechRulesOptions: { domain: 'clearspeak', style: 'default', markup: 'none' },
+                },
+            );
+        }
+        return [math, this.props.textAreaValue].filter(value => value.trim() !== '').join('. ');
+    };
 
     scratchpadChangeHandler() {
         const { problem } = this.props;
@@ -237,6 +254,12 @@ class MyWork extends Component {
                         >
                             {this.props.title || Locales.strings.mathshare_benetech}
                         </h2>
+                        <TTSButton
+                            id="tts-work-area"
+                            additionalClass={editor.ttsButton}
+                            text={this.getSpeakableText}
+                            ariaLabelSuffix={this.props.title || Locales.strings.current_problem}
+                        />
                     </div>
                     <div className={myWork.editorWrapper}>
                         <MyWorkEditorArea {...this.props} />

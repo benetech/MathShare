@@ -19,6 +19,7 @@ export default class SignInModal extends Component {
                     <div className={signInModal.content}>
                         <SignInCore
                             header={Locales.strings.login_using}
+                            benefitsText={Locales.strings.benefits_of_logging_in}
                         />
                     </div>
                     <div className={signInModal.modalFooter}>

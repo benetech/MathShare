@@ -87,11 +87,9 @@ export const setMobileNotifySuccess = notifyForMobile => ({
     },
 });
 
-export const savePersonalizationSettings = ui => ({
+export const savePersonalizationSettings = config => ({
     type: 'SAVE_PERSONALIZATION_SETTINGS',
-    payload: {
-        ui,
-    },
+    payload: config,
 });
 
 export const setPersonalizationSettings = payload => ({

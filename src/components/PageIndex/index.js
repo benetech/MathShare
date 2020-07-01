@@ -110,7 +110,7 @@ class Index extends Component {
                     {' '}
                     {Locales.strings.to_track}
                     <a className={pageIndex.benefitsLink} href="https://intercom.help/benetech/en/articles/3754980-benefits-of-having-a-user-account">
-                        {Locales.strings.benefits_of_signing_in}
+                        {Locales.strings.benefits_of_logging_in}
                     </a>
                 </div>
             );
@@ -362,7 +362,7 @@ class Index extends Component {
 
     renderHeader = () => {
         const { routerHistory } = this.props;
-        if (routerHistory.prev === '#/userDetails') {
+        if (routerHistory.prev === '/#/userDetails') {
             return (
                 <h1 className={pageIndex.thanksHeader} tabIndex={-1}>
                     {Locales.strings.thanks_for_details}

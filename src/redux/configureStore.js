@@ -21,7 +21,12 @@ export const history = createHashHistory();
 
 export default function configureStore(preloadedState) {
     ReactGA.initialize(GA_ACCOUNT_ID);
-    const sagaMiddleware = createSagaMiddleware();
+    const context = {
+        dispatch: () => {},
+    };
+    const sagaMiddleware = createSagaMiddleware({
+        context,
+    });
 
     const middlewares = [sagaMiddleware];
 
@@ -35,6 +40,7 @@ export default function configureStore(preloadedState) {
         preloadedState,
         compose(applyMiddleware(...middlewares)),
     );
+    context.dispatch = store.dispatch;
     sagaMiddleware.run(rootSaga);
     return store;
 }
