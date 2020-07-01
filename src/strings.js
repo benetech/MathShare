@@ -198,6 +198,7 @@ class Locales {
                 link: ' Link',
                 lms_integration: 'LMS Integration',
                 loading: 'Loading...',
+                loading_2: 'Loading ',
                 login_something_wrong: 'Sorry, something went wrong. Your user profile could not be retrieved. You can try to sign in again or return to MathShare as a guest.',
                 login_using: 'Log in using',
                 logo: 'logo',
