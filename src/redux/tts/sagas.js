@@ -54,9 +54,9 @@ function* startTtsSaga() {
         const {
             config,
         } = yield select(getStateFromUserProfile);
-        if (!ttsStore[ttsBtnId]) {
-            const ttsConfig = config && config.tts;
-            const speechParams = generateSpecchParams(ttsConfig, text);
+        const ttsConfig = config && config.tts;
+        const speechParams = generateSpecchParams(ttsConfig, text);
+        if (!ttsStore[ttsBtnId] || ttsStore[ttsBtnId] !== JSON.stringify(speechParams)) {
             const ttsUrl = yield call(generateTtsUrl, speechParams);
             yield put({
                 type: 'STORE_TTS_URL',
@@ -144,7 +144,7 @@ function* stopIfCurrentSaga() {
             ttsBtnId,
         },
     }) => {
-        if (ttsId === ttsBtnId) {
+        if ((!ttsBtnId && currentSound) || ttsId === ttsBtnId) {
             currentSound.stop();
         }
     });

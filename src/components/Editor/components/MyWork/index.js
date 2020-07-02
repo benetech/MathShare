@@ -256,6 +256,7 @@ class MyWork extends Component {
                         </h2>
                         <TTSButton
                             id="tts-work-area"
+                            spanStyle={myWork.ttsSpan}
                             additionalClass={editor.ttsButton}
                             text={this.getSpeakableText}
                             ariaLabelSuffix={this.props.title || Locales.strings.current_problem}
