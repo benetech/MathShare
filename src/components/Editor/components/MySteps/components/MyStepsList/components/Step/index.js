@@ -28,7 +28,7 @@ export default class Step extends Component {
     }
 
     getSpeakableText = () => mathLive.latexToSpeakableText(
-        this.props.math,
+        this.props.cleanupValue || this.props.math,
         {
             textToSpeechRules: 'sre',
             textToSpeechRulesOptions: { domain: 'clearspeak', style: 'default', markup: 'none' },
@@ -194,7 +194,7 @@ export default class Step extends Component {
                     </h3>
                 </div>
                 <div className={step.ttsBtnContainer}>
-                    {(this.props.annotation !== Locales.strings.loading || this.props.math !== '') && (
+                    {!this.props.cleanup && (this.props.annotation !== Locales.strings.loading || this.props.math !== '') && (
                         <TTSButton
                             id={`tts-${id}`}
                             additionalClass={step.ttsButton}
