@@ -17,6 +17,10 @@
 .historyWorkSeparator {
     flex: 0 0 50px;
     padding-left: 10px;
+
+    .ttsSpan {
+        position: relative;
+    }
 }
 
 .marginTop {
