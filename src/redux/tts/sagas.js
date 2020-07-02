@@ -144,7 +144,7 @@ function* stopIfCurrentSaga() {
             ttsBtnId,
         },
     }) => {
-        if (ttsId === ttsBtnId) {
+        if ((!ttsBtnId && currentSound) || ttsId === ttsBtnId) {
             currentSound.stop();
         }
     });
