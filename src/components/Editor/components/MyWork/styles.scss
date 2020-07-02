@@ -20,6 +20,11 @@
 
     .ttsSpan {
         position: relative;
+        padding-top: 0px;
+
+        > button {
+            top: -14px;
+        }
     }
 }
 
