@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import AriaModal from 'react-aria-modal';
+import lodash from 'lodash';
 import { UncontrolledTooltip } from 'reactstrap';
 import classNames from 'classnames';
 import styles from './styles.scss';
@@ -20,6 +21,29 @@ const defaultValues = {
 };
 
 const fields = ['font', 'lineHeight', 'letterSpacing', 'alertAutoClose'];
+
+const speedLabels = [
+    {
+        value: 0,
+        text: 'Slowest',
+    },
+    {
+        value: 25,
+        text: '',
+    },
+    {
+        value: 50,
+        text: 'Medium',
+    },
+    {
+        value: 75,
+        text: '',
+    },
+    {
+        value: 100,
+        text: 'Fastest',
+    },
+];
 
 export const configClassMap = {
     font: {
@@ -65,11 +89,23 @@ class PersonalizationModal extends Component {
                 speed: props.userProfile.config.tts.speed || defaultValues.tts.speed,
             },
         };
+        this.debouncedUpdateSpeed = lodash.debounce(this.updateSpeed, 300, {
+            leading: true,
+            trailing: true,
+        });
+        this.debouncedHandleSpeedChange = lodash.debounce(this.handleSpeedChange, 300, {
+            leading: true,
+            trailing: true,
+        });
     }
 
     covertValue = value => (
         0.2 + (1.6 * value / 100)
     )
+
+    convertTTSBackendValue = value => (Math.round(
+        (value - 0.2) / 1.6 * 100,
+    ) || 0)
 
     save = () => {
         this.props.savePersonalizationSettings(this.state);
@@ -96,9 +132,39 @@ class PersonalizationModal extends Component {
         if (!speedElement) {
             return;
         }
+        const rawValue = Number(speedElement.value);
+        if (this.state.rawValue === rawValue) {
+            return;
+        }
         this.setState({
             tts: {
-                speed: this.covertValue(Number(speedElement.value)),
+                speed: this.covertValue(rawValue),
+                rawValue,
+            },
+        });
+    }
+
+    handleSpeedChange = (e) => {
+        const rawValue = e.target.value || 0;
+        if (this.state.rawValue === rawValue) {
+            return;
+        }
+        this.setSpeed(rawValue)();
+    }
+
+    setSpeed = rawValue => () => {
+        if (this.state.rawValue === rawValue) {
+            return;
+        }
+        const speedElement = document.getElementById('ttsSpeedSlider');
+        if (!speedElement) {
+            return;
+        }
+        speedElement.value = rawValue;
+        this.setState({
+            tts: {
+                speed: this.covertValue(rawValue),
+                rawValue,
             },
         });
     }
@@ -154,11 +220,14 @@ class PersonalizationModal extends Component {
                                 <h2 className="col-12" id="tts-heading">{Locales.strings.tts}</h2>
                                 <ul className="col-12" aria-labelledby="tts-heading">
                                     <li className="row">
-                                        <h3 className="col-5" id="ttsSpeed" tabIndex="-1">
-                                            {Locales.strings.speed}
-                                        </h3>
-                                        <div className={classNames('col-7', styles.ttsSpeed)}>
-                                            <span>{Locales.strings.slower}</span>
+                                        <div className="col-5">
+                                            <label htmlFor="ttsSpeedSlider">
+                                                <h3 tabIndex={-1}>
+                                                    {Locales.strings.speed}
+                                                </h3>
+                                            </label>
+                                        </div>
+                                        <div className={classNames('col-5', styles.ttsSpeed)}>
                                             <input
                                                 id="ttsSpeedSlider"
                                                 aria-labelledby="ttsSpeed"
@@ -167,13 +236,62 @@ class PersonalizationModal extends Component {
                                                 step={5}
                                                 max={100}
                                                 defaultValue={
-                                                    Math.round(
-                                                        (this.state.tts.speed - 0.2) / 1.6 * 100,
-                                                    ) || 0
+                                                    this.convertTTSBackendValue(
+                                                        this.state.tts.speed,
+                                                    )
                                                 }
-                                                onChange={this.updateSpeed}
+                                                onChange={this.debouncedUpdateSpeed}
                                             />
-                                            <span>{Locales.strings.faster}</span>
+                                            <ul className={styles.rangeLabels}>
+                                                {speedLabels.map(speedLabel => (
+                                                    <li>
+                                                        <button
+                                                            className={speedLabel.text ? '' : styles.smallLine}
+                                                            type="button"
+                                                            onClick={
+                                                                this.setSpeed(speedLabel.value)
+                                                            }
+                                                            aria-hidden="true"
+                                                            tabIndex={-1}
+                                                        >
+                                                            {speedLabel.text ? (
+                                                                <>
+                                                                    <div
+                                                                        className={styles.smallLine}
+                                                                    >
+                                                                        |
+                                                                    </div>
+                                                                    <span>{speedLabel.text}</span>
+                                                                </>
+                                                            ) : '|'}
+                                                        </button>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                        <div className={classNames('col-2', styles.ttsNumberInput)}>
+                                            <div className="form-group">
+                                                <input
+                                                    id="ttsSpeedNumberIp"
+                                                    aria-labelledby="ttsSpeed"
+                                                    type="number"
+                                                    min={0}
+                                                    max={100}
+                                                    defaultValue={
+                                                        this.convertTTSBackendValue(
+                                                            this.state.tts.speed,
+                                                        )
+                                                    }
+                                                    value={
+                                                        this.convertTTSBackendValue(
+                                                            this.state.tts.speed,
+                                                        )
+                                                    }
+                                                    onChange={this.debouncedHandleSpeedChange}
+                                                />
+                                                <UncontrolledTooltip placement="top" target="ttsSpeedNumberIp" />
+                                            </div>
+
                                         </div>
                                     </li>
                                 </ul>
