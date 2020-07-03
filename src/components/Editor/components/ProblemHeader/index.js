@@ -11,6 +11,7 @@ import completeKeyMap from '../../../../constants/hotkeyConfig.json';
 import { stopEvent } from '../../../../services/events';
 import { tourConfig, accentColor } from './tourConfig';
 import TTSButton from '../../../TTSButton';
+import { latexToSpeakableText } from '../../../../services/speech';
 // import parseMathLive from '../../../../scripts/parseMathLive';
 
 const mathLive = process.env.MATHLIVE_DEBUG_MODE ? require('../../../../../../mathlive/src/mathlive.js').default
@@ -65,13 +66,7 @@ export default class ProblemHeader extends Component {
         this.props.closeTour();
     }
 
-    getSpeakableText = () => `${this.props.title} ${mathLive.latexToSpeakableText(
-        this.props.math,
-        {
-            textToSpeechRules: 'sre',
-            textToSpeechRulesOptions: { domain: 'clearspeak', style: 'default', markup: 'none' },
-        },
-    )}`;
+    getSpeakableText = () => `${this.props.title} ${latexToSpeakableText(this.props.math)}`;
 
     render() {
         const imgButton = this.props.scratchpad
@@ -147,13 +142,7 @@ export default class ProblemHeader extends Component {
                         <h1 id="ProblemTitle" className={problem.title} tabIndex={-1}>
                             {title}
                             <span className="sROnly">
-                                {mathLive.latexToSpeakableText(
-                                    this.props.math,
-                                    {
-                                        textToSpeechRules: 'sre',
-                                        textToSpeechRulesOptions: { domain: 'clearspeak', style: 'default', markup: 'none' },
-                                    },
-                                )}
+                                {latexToSpeakableText(this.props.math)}
                             </span>
                         </h1>
                         {this.props.math !== Locales.strings.loading && (<span id="ProblemMath" className={`${problem.title} ${problem.question}`}>{`$$${this.props.math}$$`}</span>)}
