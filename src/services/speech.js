@@ -6,8 +6,6 @@ export const latexToSpeakableText = latex => mathLive.latexToSpeakableText(
     {
         textToSpeechRules: 'sre',
         textToSpeechRulesOptions: { domain: 'mathspeak', style: 'default', markup: 'none' },
-        // textToSpeechRules: 'sre',
-        // textToSpeechRulesOptions: { domain: 'clearspeak', style: 'default', markup: 'none' },
     },
 );
 
