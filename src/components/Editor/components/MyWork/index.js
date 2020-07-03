@@ -13,6 +13,7 @@ import Painterro from '../../../../lib/painterro/painterro.commonjs2';
 import painterroConfiguration from './painterroConfiguration.json';
 import TTSButton from '../../../TTSButton';
 import { checkIfDescriptionIsRequired } from '../../stepsOperations';
+import { latexToSpeakableText } from '../../../../services/speech';
 
 const mathLive = process.env.MATHLIVE_DEBUG_MODE ? require('../../../../../../mathlive/src/mathlive.js').default
     : require('../../../../lib/mathlivedist/mathlive.js');
@@ -122,13 +123,7 @@ class MyWork extends Component {
     getSpeakableText = () => {
         let math = '';
         if (this.props.theActiveMathField) {
-            math = mathLive.latexToSpeakableText(
-                this.props.theActiveMathField.$latex(),
-                {
-                    textToSpeechRules: 'sre',
-                    textToSpeechRulesOptions: { domain: 'clearspeak', style: 'default', markup: 'none' },
-                },
-            );
+            math = latexToSpeakableText(this.props.theActiveMathField.$latex());
         }
         return [math, this.props.textAreaValue].filter(value => value.trim() !== '').join('. ');
     };
