@@ -21,6 +21,7 @@ import {
 import {
     setTitle,
 } from './actions';
+import { stopTtsAudio } from '../tts/actions';
 
 function* changeTitleSaga() {
     yield takeLatest('CHANGE_TITLE', function* workerSaga({
@@ -56,6 +57,7 @@ function* changeRouteSaga() {
         },
     }) {
         const { pathname } = location;
+        yield put(stopTtsAudio());
         const routerState = yield select(getRouterHookState);
         const {
             prev,

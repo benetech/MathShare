@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import AriaModal from 'react-aria-modal';
 import FontAwesome from 'react-fontawesome';
+import classNames from 'classnames';
 import { arrayMove } from 'react-sortable-hoc';
 import * as dayjs from 'dayjs';
 import { IntercomAPI } from 'react-intercom';
@@ -13,6 +14,8 @@ import parseMathLive from '../../../../scripts/parseMathLive';
 import scrollTo from '../../../../scripts/scrollTo';
 import googleAnalytics from '../../../../scripts/googleAnalytics';
 import { passEventForKeys, stopEvent } from '../../../../services/events';
+import TTSButton from '../../../TTSButton';
+import { latexToSpeakableText } from '../../../../services/speech';
 
 const mathLive = process.env.MATHLIVE_DEBUG_MODE ? require('../../../../../../mathlive/src/mathlive.js').default
     : require('../../../../lib/mathlivedist/mathlive.js');
@@ -120,6 +123,24 @@ export default class NewProblemsForm extends Component {
         return stopEvent(e);
     }
 
+    getSpeakableTextForStep = (stepNo, problem) => (
+        Locales.strings.step_tts_text
+            .replace('{stepNo}', stepNo)
+            .replace('{mathEquation}', latexToSpeakableText(problem.text))
+            .replace('{explanation}', problem.title)
+    );
+
+    getSpeakableTextForCurrentProblem = () => {
+        let math = '';
+        if (this.props.theActiveMathField) {
+            math = this.props.theActiveMathField.$latex();
+            if (math) {
+                math = latexToSpeakableText(math);
+            }
+        }
+        return [math, this.props.textAreaValue].filter(val => val.trim() !== '').join(' .');
+    }
+
     render() {
         const problems = this.state.problems.map((problem, i) => {
             const img = problem.scratchpad
@@ -188,6 +209,12 @@ export default class NewProblemsForm extends Component {
                         {`$$${parseMathLive(problem.title)}}$$`}
                     </td>
                     <td className={styles.rowControl}>
+                        <TTSButton
+                            id={`tts-step-${i}`}
+                            additionalClass={classNames(styles.ttsButton, 'reset-btn')}
+                            text={this.getSpeakableTextForStep(i + 1, problem)}
+                            ariaLabelSuffix={Locales.strings.problem_no.replace('{no}', i + 1)}
+                        />
                         {img}
                         <div className={styles.positionButtons}>
                             {moveUpBtn}

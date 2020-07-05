@@ -15,6 +15,7 @@ import parseMathLive from '../../../../../scripts/parseMathLive';
 import { stopEvent, passEventForKeys } from '../../../../../services/events';
 import CommonDropdown from '../../../../CommonDropdown';
 import { getMathshareLink } from '../../../../../services/mathshare';
+import { latexToSpeakableText } from '../../../../../lib/mathlivedist/mathlive';
 
 const mathLive = process.env.MATHLIVE_DEBUG_MODE ? require('../../../../../../../mathlive/src/mathlive.js').default
     : require('../../../../../lib/mathlivedist/mathlive.js');
@@ -273,13 +274,7 @@ export default class Problem extends Component {
 
         const speechForMath = (this.props.problem && this.props.problem.text) ? (
             <span className="sROnly">
-                {mathLive.latexToSpeakableText(
-                    this.props.problem.text,
-                    {
-                        textToSpeechRules: 'sre',
-                        textToSpeechRulesOptions: { domain: 'clearspeak', style: 'default', markup: 'none' },
-                    },
-                )}
+                {latexToSpeakableText(this.props.problem.text)}
             </span>
         ) : null;
 
