@@ -8,6 +8,8 @@ import showImage from '../../../../../../../../scripts/showImage';
 import '../../../../../../../../../images/pencil.png';
 import '../../../../../../../../../images/delete.png';
 import { passEventForKeys } from '../../../../../../../../services/events';
+import TTSButton from '../../../../../../../TTSButton';
+import { latexToSpeakableText } from '../../../../../../../../services/speech';
 
 const mathLive = process.env.MATHLIVE_DEBUG_MODE ? require('../../../../../../../../../../mathlive/src/mathlive.js').default
     : require('../../../../../../../../lib/mathlivedist/mathlive.js');
@@ -21,18 +23,19 @@ export default class Step extends Component {
         };
     }
 
-    componentDidMount() {
-        // mathLive.renderMathInDocument();
-        // const autoFocus = document.getElementById(this.state.id);
-        // if (autoFocus) {
-        //     autoFocus.focus();
-        // }
-    }
-
     componentWillUpdate() {
         mathLive.renderMathInDocument();
         setTimeout(mathLive.renderMathInDocument, 100); // failsafe to ensure mathlive conversion
     }
+
+    getSpeakableText = () => latexToSpeakableText(this.props.cleanupValue || this.props.math);
+
+    getStepText = () => (
+        Locales.strings.step_tts_text
+            .replace('{stepNo}', this.props.stepNumber)
+            .replace('{mathEquation}', this.getSpeakableText())
+            .replace('{explanation}', this.props.annotation)
+    )
 
     /**
     Convert number to ordinal -- checked with NVDA that 2nd will read as "second", etc.
@@ -185,16 +188,20 @@ export default class Step extends Component {
                         {this.buildReason()}
                     </h3>
                 </div>
+                <div className={step.ttsBtnContainer}>
+                    {!this.props.cleanup && (this.props.annotation !== Locales.strings.loading || this.props.math !== '') && (
+                        <TTSButton
+                            id={`tts-${id}`}
+                            additionalClass={step.ttsButton}
+                            text={this.getStepText()}
+                            ariaLabelSuffix={Locales.strings.step_no.replace('{no}', this.props.stepNumber)}
+                        />
+                    )}
+                </div>
                 <div className={classNames('col-md-4', step.annotationEquation)}>
                     <span className="staticMath">{`$$${this.props.math}$$`}</span>
                     <span className="sROnly">
-                        {mathLive.latexToSpeakableText(
-                            this.props.math,
-                            {
-                                textToSpeechRules: 'sre',
-                                textToSpeechRulesOptions: { domain: 'clearspeak', style: 'default', markup: 'none' },
-                            },
-                        )}
+                        {this.getSpeakableText()}
                     </span>
                 </div>
                 <div className={classNames('flex-grow-1', step.annotationEquation)}>

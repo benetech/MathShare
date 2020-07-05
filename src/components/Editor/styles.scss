@@ -2,8 +2,15 @@
     color: rgb(0, 31, 63);
     font-style: italic;
     font-size: 22px;
-    float: left;
     font-weight: bold;
+    display: inline-block;
+    margin-left: 5px;
+    margin-bottom: 0;
+}
+
+.ttsButton {
+    position: absolute;
+    margin-top: 7px;
 }
 
 .historyWrapper {

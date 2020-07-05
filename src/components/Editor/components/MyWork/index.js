@@ -11,7 +11,9 @@ import { sessionStore } from '../../../../scripts/storage';
 import { updateWork } from '../../../../redux/problem/actions';
 import Painterro from '../../../../lib/painterro/painterro.commonjs2';
 import painterroConfiguration from './painterroConfiguration.json';
+import TTSButton from '../../../TTSButton';
 import { checkIfDescriptionIsRequired } from '../../stepsOperations';
+import { latexToSpeakableText } from '../../../../services/speech';
 
 const mathLive = process.env.MATHLIVE_DEBUG_MODE ? require('../../../../../../mathlive/src/mathlive.js').default
     : require('../../../../lib/mathlivedist/mathlive.js');
@@ -118,6 +120,14 @@ class MyWork extends Component {
         }
     }
 
+    getSpeakableText = () => {
+        let math = '';
+        if (this.props.theActiveMathField) {
+            math = latexToSpeakableText(this.props.theActiveMathField.$latex());
+        }
+        return [math, this.props.textAreaValue].filter(value => value.trim() !== '').join('. ');
+    };
+
     scratchpadChangeHandler() {
         const { problem } = this.props;
         if (!problem.work.isScratchpadUsed) {
@@ -129,7 +139,7 @@ class MyWork extends Component {
     }
 
     InitScratchPad() {
-        painterroConfiguration.changeHandler = this.scratchpadChangeHandler;
+        painterroConfiguration.onChange = this.scratchpadChangeHandler;
         this.scratchPadPainterro = Painterro(painterroConfiguration);
         this.scratchPadPainterro.show();
         /* eslint-disable no-useless-concat */
@@ -239,6 +249,13 @@ class MyWork extends Component {
                         >
                             {this.props.title || Locales.strings.mathshare_benetech}
                         </h2>
+                        <TTSButton
+                            id="tts-work-area"
+                            spanStyle={myWork.ttsSpan}
+                            additionalClass={editor.ttsButton}
+                            text={this.getSpeakableText}
+                            ariaLabelSuffix={this.props.title || Locales.strings.current_problem}
+                        />
                     </div>
                     <div className={myWork.editorWrapper}>
                         <MyWorkEditorArea {...this.props} />

@@ -71,7 +71,7 @@ div.row {
 
 .cell {
     overflow: auto;
-    flex: 1;
+    width: 62%;
 }
 
 .titleCell {
@@ -88,11 +88,18 @@ div.row {
 }
 
 .rowControl {
-    width: 70px;
     float: right;
     cursor: pointer;
     display: flex;
     justify-content: flex-end;
+
+    > span {
+        display: inherit;
+
+        .ttsButton {
+            min-width: 50px;
+        }
+    }
 }
 
 .footer {
