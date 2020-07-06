@@ -67,8 +67,8 @@
 }
 
 @mixin commonTrack {
-    background: #eef0ff;
-    border: 1.5px solid rgba(0, 0, 0, 0.5);
+    background: #D8D8D8;
+    border: 1.5px solid #979797;
     border-radius: 25px;
     width: 100%;
     height: 0.5px;
@@ -121,12 +121,14 @@
 
                     &.smallLine {
                         padding-bottom: 50%;
+                        color: #979797;
                     }
                 }
 
                 .smallLine {
                     font-size: 8px;
                     font-weight: 600;
+                    color: #979797;
                 }
             }
         }
