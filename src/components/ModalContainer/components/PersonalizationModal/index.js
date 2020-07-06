@@ -176,6 +176,7 @@ class PersonalizationModal extends Component {
                 onExit={this.props.deactivateModal}
                 getApplicationNode={this.getApplicationNode}
                 underlayStyle={{ paddingTop: '2em' }}
+                initialFocus="modalHeading"
             >
                 <div id="personalization-modal" className={styles.modal}>
                     <div className={styles.modalBody}>
