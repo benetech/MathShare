@@ -15,6 +15,7 @@ import scrollTo from '../../../../scripts/scrollTo';
 import googleAnalytics from '../../../../scripts/googleAnalytics';
 import { passEventForKeys, stopEvent } from '../../../../services/events';
 import TTSButton from '../../../TTSButton';
+import { latexToSpeakableText } from '../../../../services/speech';
 
 const mathLive = process.env.MATHLIVE_DEBUG_MODE ? require('../../../../../../mathlive/src/mathlive.js').default
     : require('../../../../lib/mathlivedist/mathlive.js');
@@ -125,13 +126,7 @@ export default class NewProblemsForm extends Component {
     getSpeakableTextForStep = (stepNo, problem) => (
         Locales.strings.step_tts_text
             .replace('{stepNo}', stepNo)
-            .replace('{mathEquation}', mathLive.latexToSpeakableText(
-                problem.text,
-                {
-                    textToSpeechRules: 'sre',
-                    textToSpeechRulesOptions: { domain: 'clearspeak', style: 'default', markup: 'none' },
-                },
-            ))
+            .replace('{mathEquation}', latexToSpeakableText(problem.text))
             .replace('{explanation}', problem.title)
     );
 
@@ -140,13 +135,7 @@ export default class NewProblemsForm extends Component {
         if (this.props.theActiveMathField) {
             math = this.props.theActiveMathField.$latex();
             if (math) {
-                math = mathLive.latexToSpeakableText(
-                    math,
-                    {
-                        textToSpeechRules: 'sre',
-                        textToSpeechRulesOptions: { domain: 'clearspeak', style: 'default', markup: 'none' },
-                    },
-                );
+                math = latexToSpeakableText(math);
             }
         }
         return [math, this.props.textAreaValue].filter(val => val.trim() !== '').join(' .');

@@ -9,6 +9,7 @@ import '../../../../../../../../../images/pencil.png';
 import '../../../../../../../../../images/delete.png';
 import { passEventForKeys } from '../../../../../../../../services/events';
 import TTSButton from '../../../../../../../TTSButton';
+import { latexToSpeakableText } from '../../../../../../../../services/speech';
 
 const mathLive = process.env.MATHLIVE_DEBUG_MODE ? require('../../../../../../../../../../mathlive/src/mathlive.js').default
     : require('../../../../../../../../lib/mathlivedist/mathlive.js');
@@ -27,13 +28,7 @@ export default class Step extends Component {
         setTimeout(mathLive.renderMathInDocument, 100); // failsafe to ensure mathlive conversion
     }
 
-    getSpeakableText = () => mathLive.latexToSpeakableText(
-        this.props.cleanupValue || this.props.math,
-        {
-            textToSpeechRules: 'sre',
-            textToSpeechRulesOptions: { domain: 'clearspeak', style: 'default', markup: 'none' },
-        },
-    );
+    getSpeakableText = () => latexToSpeakableText(this.props.cleanupValue || this.props.math);
 
     getStepText = () => (
         Locales.strings.step_tts_text
