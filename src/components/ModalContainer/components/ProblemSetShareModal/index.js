@@ -123,9 +123,9 @@ export default class ProblemSetShareModal extends Component {
                             <p>{message}</p>
                         </div>
                         <div className="row">
-                            <div className={classNames('col-6', editor.shareContainer)}>
+                            <div className={classNames('col-12', editor.shareContainer)}>
                                 <CopyLink
-                                    icon="link"
+                                    icon="copy"
                                     injectionContainer="ProblemSetShareModal"
                                     copyText={Locales.strings.copy_link_url}
                                     announceText={Locales.strings.successfully_copied}
@@ -135,7 +135,7 @@ export default class ProblemSetShareModal extends Component {
                                     className={classNames('btn', editor.button)}
                                 />
                             </div>
-                            <div className={classNames('col-6', editor.externalButtons)}>
+                            <div className={classNames('col-12', 'text-center', editor.externalButtons)}>
                                 <span>
                                     <button
                                         id="googleContainer1"

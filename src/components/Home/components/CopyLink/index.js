@@ -1,29 +1,19 @@
 import React, { Component } from 'react';
 import Locales from '../../../../strings';
 import Button from '../../../Button';
+import styles from './styles.scss';
 
 export default class CopyLink extends Component {
     constructor(props) {
         super(props);
         this.id = Math.round(Math.random() * 1000);
-        this.containerId = this.injectionContainer || `CopyLinkContainer-${this.id}`;
     }
 
     copyShareLink = () => {
         const currentActiveElement = document.activeElement;
-        if (this.props.shareLinkId) {
-            const copyText = document.getElementById(this.props.shareLinkId);
-            copyText.select();
-            document.execCommand('copy');
-        } else {
-            const copyText = document.createElement('textarea');
-            copyText.textContent = this.props.shareLink;
-            copyText.setAttribute('readonly', '');
-            document.getElementById('ProblemSetShareModal').appendChild(copyText);
-            copyText.select();
-            document.execCommand('copy');
-            document.getElementById('ProblemSetShareModal').removeChild(copyText);
-        }
+        const copyText = document.getElementById('copyUrl');
+        copyText.select();
+        document.execCommand('copy');
         this.props.clearAriaLive();
         this.props.announceOnAriaLive(this.props.announceText);
         if (this.props.copyLinkCallback) {
@@ -36,8 +26,18 @@ export default class CopyLink extends Component {
 
     render() {
         return (
-            <>
-                <span id={this.containerId} />
+            <div className={styles.btnContainer}>
+                <label htmlFor="copyUrl" className="sROnly">
+                    {Locales.strings.work_link}
+                </label>
+                <textarea
+                    id="copyUrl"
+                    className={styles.textArea}
+                    value={this.props.shareLink}
+                    readOnly
+                    onFocus={this.selectTextInput}
+                    onClick={this.sendResumeLinkClickEvent}
+                />
                 <Button
                     id={this.props.id || `copy_button-${this.id}`}
                     icon={this.props.icon || 'link'}
@@ -48,7 +48,7 @@ export default class CopyLink extends Component {
                     content={this.props.copyText || Locales.strings.copy_link_url}
                     onClick={() => this.copyShareLink()}
                 />
-            </>
+            </div>
         );
     }
 }
