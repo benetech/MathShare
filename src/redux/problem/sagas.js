@@ -151,10 +151,16 @@ function* requestCommitProblemSolutionSaga() {
                 theActiveMathField,
             } = yield select(getProblemListState);
             const { steps } = solution;
+            const editorMath = theActiveMathField.$latex();
+            let lastStep = null;
+            if (solution.steps.length > 0) {
+                lastStep = solution.steps.slice(-1).pop();
+            }
             if (textAreaValue
                 || (
-                    solution.steps.length > 0
-                    && theActiveMathField.$latex() !== solution.steps.slice(-1).pop().stepValue
+                    lastStep && editorMath.trim()
+                    && editorMath !== lastStep.stepValue
+                    && editorMath !== lastStep.cleanup
                 )) {
                 steps.push({
                     scratchpad: work.scratchpadContent,
