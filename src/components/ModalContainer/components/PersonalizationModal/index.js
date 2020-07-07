@@ -198,7 +198,7 @@ class PersonalizationModal extends Component {
                                                         </h3>
                                                     </label>
                                                 </div>
-                                                <div className="col-7">
+                                                <div className="col-5">
                                                     <div className="form-group">
                                                         <select className="form-control" id={id} onChange={this.handleChange(field)} value={this.state.ui[field]}>
                                                             {defaultValues.ui[field] === undefined && <option value="">{Locales.strings.system_default}</option>}
