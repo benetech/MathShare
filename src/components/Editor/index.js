@@ -98,7 +98,6 @@ class Editor extends Component {
         if (mathEditor) {
             const { mathfield } = mathEditor;
             if (mathfield) {
-                mathfield.$latex(Locales.strings.loading);
                 const { undoManager } = mathfield;
                 if (undoManager) {
                     undoManager.reset();
