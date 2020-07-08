@@ -326,17 +326,6 @@ class Home extends Component {
                 </div>
                 <div className="row">
                     <div className={home.shareLink}>
-                        <label htmlFor="resumeWorkUrl" className="sROnly">
-                            {Locales.strings.work_link}
-                        </label>
-                        <input
-                            id="resumeWorkUrl"
-                            type="text"
-                            value={window.location.href}
-                            readOnly
-                            onFocus={this.selectTextInput}
-                            onClick={this.sendResumeLinkClickEvent}
-                        />
                         <CopyLink
                             icon="copy"
                             iconSize="sm"
@@ -350,6 +339,7 @@ class Home extends Component {
                                 'btn-outline-dark',
                             ])}
                             copyLinkCallback={this.copyResumeWorkUrlCallback}
+                            shareLink={window.location.href}
                         />
                     </div>
                 </div>

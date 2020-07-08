@@ -24,7 +24,7 @@ export default class MathPalette extends Component {
             palette.buttonsRows.forEach((buttonsRow) => {
                 buttonsRow.forEach((button) => {
                     if (button.keys) {
-                        keyShortcuts.set(button.keys.sort().join(''), button.id);
+                        button.keys.map(keyCombination => keyShortcuts.set(keyCombination.sort().join(''), button.id));
                     }
                 });
             });

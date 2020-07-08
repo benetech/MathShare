@@ -13,6 +13,7 @@ import Painterro from '../../../../lib/painterro/painterro.commonjs2';
 import painterroConfiguration from './painterroConfiguration.json';
 import TTSButton from '../../../TTSButton';
 import { checkIfDescriptionIsRequired } from '../../stepsOperations';
+import { latexToSpeakableText } from '../../../../services/speech';
 
 const mathLive = process.env.MATHLIVE_DEBUG_MODE ? require('../../../../../../mathlive/src/mathlive.js').default
     : require('../../../../lib/mathlivedist/mathlive.js');
@@ -105,6 +106,12 @@ class MyWork extends Component {
         if (event.shiftKey) {
             keys.push('Shift');
         }
+        if (event.altKey) {
+            keys.push('Alt');
+        }
+        if (event.metaKey) {
+            keys.push('Cmd');
+        }
         if (event.ctrlKey) {
             keys.push('Ctrl');
             if (event.key === ' ') {
@@ -122,13 +129,7 @@ class MyWork extends Component {
     getSpeakableText = () => {
         let math = '';
         if (this.props.theActiveMathField) {
-            math = mathLive.latexToSpeakableText(
-                this.props.theActiveMathField.$latex(),
-                {
-                    textToSpeechRules: 'sre',
-                    textToSpeechRulesOptions: { domain: 'clearspeak', style: 'default', markup: 'none' },
-                },
-            );
+            math = latexToSpeakableText(this.props.theActiveMathField.$latex());
         }
         return [math, this.props.textAreaValue].filter(value => value.trim() !== '').join('. ');
     };
@@ -144,7 +145,7 @@ class MyWork extends Component {
     }
 
     InitScratchPad() {
-        painterroConfiguration.changeHandler = this.scratchpadChangeHandler;
+        painterroConfiguration.onChange = this.scratchpadChangeHandler;
         this.scratchPadPainterro = Painterro(painterroConfiguration);
         this.scratchPadPainterro.show();
         /* eslint-disable no-useless-concat */
@@ -256,6 +257,7 @@ class MyWork extends Component {
                         </h2>
                         <TTSButton
                             id="tts-work-area"
+                            spanStyle={myWork.ttsSpan}
                             additionalClass={editor.ttsButton}
                             text={this.getSpeakableText}
                             ariaLabelSuffix={this.props.title || Locales.strings.current_problem}

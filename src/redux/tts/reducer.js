@@ -40,7 +40,7 @@ const tts = (state = initialState, {
         };
     }
     case 'STOP_TTS_AUDIO': {
-        if (payload.ttsBtnId === state.currentTtsId) {
+        if (!payload.ttsBtnId || payload.ttsBtnId === state.currentTtsId) {
             return {
                 ...state,
                 currentTtsId: initialState.currentTtsId,

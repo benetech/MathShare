@@ -77,7 +77,7 @@ export default class MyWorkEditorArea extends Component {
                 },
                 textToSpeechMarkup: 'ssml',
                 textToSpeechRules: 'sre',
-                textToSpeechRulesOptions: { domain: 'clearspeak', style: 'default', markup: 'ssml_step' },
+                textToSpeechRulesOptions: { domain: 'mathspeak', style: 'default', markup: 'ssml_step' },
                 speechEngine: 'amazon',
             },
         );

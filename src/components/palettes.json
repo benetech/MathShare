@@ -12,8 +12,10 @@
                     ],
                     "value": "$$\\enclose{updiagonalstrike downdiagonalstrike}[2px solid #4040ff]{\\blacksquare}$$",
                     "keys": [
-                        "Shift",
-                        "Delete"
+                        [
+                            "Shift",
+                            "Delete"
+                        ]
                     ]
                 },
                 {
@@ -25,9 +27,11 @@
                     ],
                     "value": "$$ \\enclose{updiagonalstrike downdiagonalstrike}[2px solid #4040ff]{\\blacksquare}^{\\square} $$",
                     "keys": [
-                        "Shift",
-                        "Ctrl",
-                        "Delete"
+                        [
+                            "Shift",
+                            "Ctrl",
+                            "Delete"
+                        ]
                     ]
                 }
             ],
@@ -40,8 +44,10 @@
                     ],
                     "value": "$$ \\begin{array}{r} \\blacksquare \\\\ \\square\\end{array}$$",
                     "keys": [
-                        "Ctrl",
-                        "Enter"
+                        [
+                            "Ctrl",
+                            "Enter"
+                        ]
                     ]
                 }
             ],
@@ -54,8 +60,16 @@
                     ],
                     "value": "Calc",
                     "keys": [
-                        "Ctrl",
-                        "="
+                        [
+                            "Alt",
+                            "Ctrl",
+                            "Enter"
+                        ],
+                        [
+                            "Alt",
+                            "Cmd",
+                            "Enter"
+                        ]
                     ]
                 },
                 {
