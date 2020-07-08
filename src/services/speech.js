@@ -4,8 +4,8 @@ const mathLive = process.env.MATHLIVE_DEBUG_MODE ? require('../../../mathlive/sr
 export const latexToSpeakableText = latex => mathLive.latexToSpeakableText(
     latex.replace(/updiagonalstrike downdiagonalstrike/g, 'updiagonalstrike'),
     {
-        textToSpeechRules: 'sre',
-        textToSpeechRulesOptions: { domain: 'mathspeak', style: 'default', markup: 'none' },
+        textToSpeechRules: 'mathlive',
+        textToSpeechRulesOptions: { domain: 'clearspeak', style: 'default', markup: 'none' },
     },
 );
 
