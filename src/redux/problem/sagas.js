@@ -153,19 +153,21 @@ function* requestCommitProblemSolutionSaga() {
             const { steps } = solution;
             const editorMath = theActiveMathField.$latex();
             let lastStep = null;
+            const editorOnLastStep = (solution.steps.length - editorPosition) === 1;
             if (solution.steps.length > 0) {
                 lastStep = solution.steps.slice(-1).pop();
             }
-            if (textAreaValue
+            if (editorOnLastStep && (textAreaValue
                 || (
                     lastStep && editorMath.trim()
                     && editorMath !== lastStep.stepValue
                     && editorMath !== lastStep.cleanup
-                )) {
+                ))) {
                 steps.push({
                     scratchpad: work.scratchpadContent,
                     explanation: textAreaValue,
                     stepValue: theActiveMathField.$latex(),
+                    inProgress: true,
                 });
                 finalEditorPosition = steps.length;
             }

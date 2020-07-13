@@ -4,6 +4,7 @@ import {
 import Locales from '../../strings';
 import {
     countEditorPosition,
+    getLastTextArea,
 } from './helpers';
 
 export const initialState = {
@@ -88,7 +89,7 @@ const problem = (state = initialState, {
             allowedPalettes: payload.solution.palettes,
             tourOpen: false,
             actionsStack: [],
-            textAreaValue: '',
+            textAreaValue: getLastTextArea(payload.solution.steps),
             work: {
                 ...initialState.work,
                 scratchpadMode: state.work.scratchpadMode,
@@ -141,6 +142,17 @@ const problem = (state = initialState, {
         let textAreaValue = initialState.textAreaValue;
         if (payload.action === 'edit') {
             textAreaValue = payload.textAreaValue;
+        }
+        return {
+            ...state,
+            textAreaValue,
+        };
+    }
+    case 'PROCESS_FETCHED_PROBLEM': {
+        const { solution, action } = payload;
+        let textAreaValue = initialState.textAreaValue;
+        if (action === 'edit') {
+            textAreaValue = solution.problem.title;
         }
         return {
             ...state,

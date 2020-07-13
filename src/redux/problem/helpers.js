@@ -22,3 +22,11 @@ export const compareStepArrays = (first, second) => {
     }
     return true;
 };
+
+export const getLastTextArea = (steps) => {
+    if (!steps || steps.length === 0) {
+        return '';
+    }
+    const stepLength = steps.length;
+    return steps[stepLength - 1].explanation;
+};
