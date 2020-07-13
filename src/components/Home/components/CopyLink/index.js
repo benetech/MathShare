@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Locales from '../../../../strings';
 import Button from '../../../Button';
+import { alertSuccess } from '../../../../scripts/alert';
 import styles from './styles.scss';
 
 export default class CopyLink extends Component {
@@ -14,6 +15,7 @@ export default class CopyLink extends Component {
         const copyText = document.getElementById('copyUrl');
         copyText.select();
         document.execCommand('copy');
+        alertSuccess(this.props.announceText, Locales.strings.success, undefined, true);
         this.props.clearAriaLive();
         this.props.announceOnAriaLive(this.props.announceText);
         if (this.props.copyLinkCallback) {

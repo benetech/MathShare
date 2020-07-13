@@ -9,9 +9,11 @@ const commonProps = () => ({
     closeButton: false,
 });
 
-function getCommonAlert(title, message, id = undefined, anchor = null, trapFocus = true) {
+function getCommonAlert(
+    title, message, id = undefined, anchor = null, trapFocus = true, ariaHidden = false,
+) {
     return (
-        <div className="toast-common" role="alert">
+        <div className="toast-common" role="alert" aria-hidden={ariaHidden}>
             <h2 id={id} tabIndex={-1} data-trap-focus={trapFocus}>
                 {title}
             </h2>
@@ -25,8 +27,10 @@ function alertInfo(message, title, id = undefined) {
     toast.info(getCommonAlert(title, message), { ...commonProps(), toastId: id });
 }
 
-function alertSuccess(message, title, id = undefined) {
-    toast.success(getCommonAlert(title, message, id), { ...commonProps(), toastId: id });
+function alertSuccess(message, title, id = undefined, ariaHidden) {
+    toast.success(getCommonAlert(title, message, id, null, !ariaHidden, ariaHidden), {
+        ...commonProps(), toastId: id,
+    });
 }
 
 function alertError(message, title, id = undefined, anchor = null) {

@@ -44,7 +44,7 @@ class Locales {
                 alertAutoClose: 'Alert close time (in secs)',
                 all_problem_sets: 'All Problem Sets',
                 all_problems: ' All Problems',
-                allow_educators_to_duplicate: 'Allows eductators to duplicate and re-use this problem set',
+                allow_educators_to_duplicate: 'Allows educators to duplicate and re-use this problem set',
                 allow_others_to_see: 'Allows others to see your work',
                 allow_students_to_see: 'Allows students to answer questions',
                 archive: 'Archive',
@@ -318,7 +318,7 @@ class Locales {
                 share_problem_set: 'Share Problem Set',
                 share_with_teachers: ' Share with Teachers',
                 share_with_teachers_text: 'Check out my #accessible math problems made in @mathshare. Supports learning styles, special needs and #4Cs. ',
-                share_your_problem_set: 'Share your problem set through Google Classroom or Microsoft Teams, or share using the link below.',
+                share_your_problem_set: 'Share your problem set through Google Classroom or Microsoft Teams, or use the button below to copy the shareable link.',
                 sharing_sets: 'Sharing Sets with Others',
                 sharing_sets_with_students: 'Sharing Sets with Students',
                 sharing_sets_with_students_steps: [
