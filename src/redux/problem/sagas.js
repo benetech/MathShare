@@ -36,7 +36,6 @@ import {
 import {
     loadProblemSetSolutionByEditCode,
     updateReviewSolutions,
-    toggleModals,
     setReviewSolutions,
     setProblemSetShareCode,
 } from '../problemList/actions';
@@ -48,8 +47,6 @@ import {
     alertError,
 } from '../../scripts/alert';
 import Locales from '../../strings';
-
-const SHARE_SET = 'shareSet';
 
 function* requestLoadProblemSaga() {
     yield takeLatest('REQUEST_LOAD_PROBLEM', function* workerSaga({
@@ -275,7 +272,6 @@ function* requestCommitProblemSolutionSaga() {
                     yield put(updateProblemStore({
                         shareLink: `${FRONTEND_URL}/app/problem/view/${shareCode}`,
                     }));
-                    yield put(toggleModals([SHARE_SET]));
                 }
             }
         } catch (error) {

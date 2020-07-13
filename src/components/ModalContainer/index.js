@@ -1,8 +1,5 @@
 import React from 'react';
 import NewProblemsForm from '../Home/components/NewProblemsForm';
-import ShareModal from './components/ShareModal';
-import SaveModal from './components/SaveModal';
-import ProblemModal from './components/ProblemModal';
 import ProblemSetShareModal from './components/ProblemSetShareModal';
 import ConfirmationModal from './components/ConfirmationModal';
 import TitleEditModal from './components/TitleEditModal';
@@ -16,10 +13,7 @@ const PALETTE_UPDATE_CHOOSER = 'paletteUpdateChooser';
 const ADD_PROBLEM_SET = 'addProblemSet';
 const ADD_PROBLEMS = 'addProblems';
 const SHARE_NEW_SET = 'shareNewSet';
-const SHARE_SET = 'shareSet';
 const SHARE_PROBLEM_SET = 'shareProblemSet';
-const SAVE_SET = 'saveSet';
-const VIEW_SET = 'viewSet';
 const EDIT_PROBLEM = 'editProblem';
 const CONFIRMATION_BACK = 'confirmationBack';
 const TITLE_EDIT_MODAL = 'titleEditModal';
@@ -27,22 +21,6 @@ const PERSONALIZATION_SETTINGS = 'personalizationSettings';
 
 const ModalContainer = (props) => {
     const { activeModals } = props;
-    const shareModal = activeModals.includes(SHARE_SET)
-        ? (
-            <ShareModal
-                shareLink={props.shareLink}
-                deactivateModal={() => props.toggleModals([SHARE_SET])}
-            />
-        )
-        : null;
-    const saveModal = activeModals.includes(SAVE_SET)
-        ? (
-            <SaveModal
-                editLink={props.editLink}
-                deactivateModal={() => props.toggleModals([SAVE_SET])}
-            />
-        )
-        : null;
 
     const paletteChooser = activeModals.includes(PALETTE_CHOOSER)
         ? (
@@ -172,15 +150,6 @@ const ModalContainer = (props) => {
         )
         : null;
 
-    const viewProblem = activeModals.includes(VIEW_SET)
-        ? (
-            <ProblemModal
-                solution={props.solution}
-                deactivateModal={() => props.toggleModals([VIEW_SET])}
-            />
-        )
-        : null;
-
     const shareProblemSet = activeModals.includes(SHARE_PROBLEM_SET)
         ? (
             <ProblemSetShareModal
@@ -215,8 +184,6 @@ const ModalContainer = (props) => {
 
     return (
         <>
-            {saveModal}
-            {shareModal}
             {confirmationModal}
             {confirmationBackModal}
             {paletteChooser}
@@ -225,7 +192,6 @@ const ModalContainer = (props) => {
             {addProblems}
             {addProblemSet}
             {editProblem}
-            {viewProblem}
             {shareProblemSet}
             {titleEditModal}
             {personalizationModal}
@@ -237,6 +203,6 @@ export default ModalContainer;
 
 export {
     CONFIRMATION, PALETTE_CHOOSER, PALETTE_UPDATE_CHOOSER, ADD_PROBLEM_SET, ADD_PROBLEMS,
-    SHARE_PROBLEM_SET, SHARE_NEW_SET, SAVE_SET, SHARE_SET, VIEW_SET, EDIT_PROBLEM,
+    SHARE_PROBLEM_SET, SHARE_NEW_SET, EDIT_PROBLEM,
     CONFIRMATION_BACK, TITLE_EDIT_MODAL, PERSONALIZATION_SETTINGS,
 };
