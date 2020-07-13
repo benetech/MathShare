@@ -162,15 +162,20 @@ export default class MyStepsList extends Component {
     render() {
         const steps = [];
         let i = 0;
+        let stepIndex = 0;
         let cleanups = 0;
+        const stepListlength = this.props.solution.steps.length;
         this.props.solution.steps.forEach((step) => {
-            const isEdited = this.props.editing && (i + cleanups === this.props.editorPosition);
-            steps.push(this.buildStep(i, step.stepValue, step.explanation, false, isEdited,
-                step.scratchpad, this.props.solution.steps.length, step.cleanup));
-            i += 1;
-            if (step.cleanup) {
-                cleanups += 1;
-                steps.push(this.buildStep(i, step.cleanup, Locales.strings.cleanup, true));
+            stepIndex += 1;
+            if (stepListlength !== stepIndex || !step.inProgress) {
+                const isEdited = this.props.editing && (i + cleanups === this.props.editorPosition);
+                steps.push(this.buildStep(i, step.stepValue, step.explanation, false, isEdited,
+                    step.scratchpad, this.props.solution.steps.length, step.cleanup));
+                i += 1;
+                if (step.cleanup) {
+                    cleanups += 1;
+                    steps.push(this.buildStep(i, step.cleanup, Locales.strings.cleanup, true));
+                }
             }
         });
 
