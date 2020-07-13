@@ -38,8 +38,6 @@ import ModalContainer, {
     PALETTE_CHOOSER, // ADD_PROBLEM_SET,
     PALETTE_UPDATE_CHOOSER,
     EDIT_PROBLEM,
-    SHARE_SET,
-    VIEW_SET,
 } from './ModalContainer';
 import { configClassMap } from './ModalContainer/components/PersonalizationModal';
 import { alertWarning } from '../scripts/alert';
@@ -282,23 +280,6 @@ class App extends Component {
     finishProblem = () => {
         this.props.commitProblemSolution('back', false, true);
         googleAnalytics('Finish Problem');
-    };
-
-    shareProblem = () => {
-        if (this.props.example) {
-            this.props.updateProblemStore({
-                shareLink: Locales.strings.example_share_code,
-            });
-            this.props.toggleModals([SHARE_SET]);
-        } else {
-            googleAnalytics('Share Problem');
-            this.props.updateProblemSolution(this.props.problemStore.solution);
-            this.props.commitProblemSolution(null, true);
-        }
-    };
-
-    viewProblem = () => {
-        this.props.toggleModals([VIEW_SET]);
     };
 
     saveProblemCallback = goTo => () => {
