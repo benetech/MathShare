@@ -28,7 +28,11 @@ function checkIfDescriptionIsRequired(problemStore, problemList) {
 function addNewStep(context, step) {
     const { updateProblemStore, problemStore, problemList } = context.props;
     googleAnalytics('Add new step');
-    const newSteps = problemStore.solution.steps;
+    const newSteps = problemStore.solution.steps.slice();
+    const lastStep = newSteps[newSteps.length - 1];
+    if (lastStep && lastStep.inProgress) {
+        newSteps.pop();
+    }
     newSteps.push(step);
     const updatedMathField = problemList.theActiveMathField;
     updatedMathField.$latex(step.cleanup);
