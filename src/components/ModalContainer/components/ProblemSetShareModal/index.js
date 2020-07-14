@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { UncontrolledTooltip } from 'reactstrap';
-import AriaModal from 'react-aria-modal';
 import classNames from 'classnames';
 import { IntercomAPI } from 'react-intercom';
 import FontAwesome from 'react-fontawesome';
 import editor from './styles.scss';
+import CommonModal, { CommonModalHeader } from '../CommonModal';
 import Locales from '../../../../strings';
 import Button from '../../../Button';
 import { passEventForKeys } from '../../../../services/events';
@@ -99,21 +99,16 @@ export default class ProblemSetShareModal extends Component {
             ];
         }
         return (
-            <AriaModal
-                titleId="share_problem_set_heading"
-                onExit={this.props.deactivateModal}
-                getApplicationNode={this.getApplicationNode}
-                underlayStyle={{ paddingTop: '2em' }}
-            >
+            <CommonModal deactivateModal={this.props.deactivateModal}>
                 <div id="ProblemSetShareModal" className={editor.modal}>
                     <div className={editor.modalBody}>
-                        <h1 id="share_problem_set_heading" tabIndex={-1}>
+                        <CommonModalHeader>
                             <FontAwesome
                                 size="md"
                                 name={iconName}
                             />
                             {header}
-                        </h1>
+                        </CommonModalHeader>
                         <ul className={editor.messageList}>
                             {messageList.map((messageListItem, mIndex) => (
                                 <li key={mIndex}>{messageListItem}</li>
@@ -232,7 +227,7 @@ export default class ProblemSetShareModal extends Component {
                         />
                     </div>
                 </div>
-            </AriaModal>
+            </CommonModal>
         );
     }
 }

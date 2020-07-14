@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import AriaModal from 'react-aria-modal';
 import lodash from 'lodash';
 import { UncontrolledTooltip } from 'reactstrap';
 import classNames from 'classnames';
 import styles from './styles.scss';
+import CommonModal, { CommonModalHeader } from '../CommonModal';
 import Locales from '../../../../strings';
 import Button from '../../../Button';
 import { savePersonalizationSettings } from '../../../../redux/userProfile/actions';
@@ -171,18 +171,12 @@ class PersonalizationModal extends Component {
 
     render() {
         return (
-            <AriaModal
-                titleId="modalHeading"
-                onExit={this.props.deactivateModal}
-                getApplicationNode={this.getApplicationNode}
-                underlayStyle={{ paddingTop: '2em' }}
-                initialFocus="modalHeading"
-            >
+            <CommonModal deactivateModal={this.props.deactivateModal}>
                 <div id="personalization-modal" className={styles.modal}>
                     <div className={styles.modalBody}>
-                        <h1 id="modalHeading">
+                        <CommonModalHeader>
                             {Locales.strings.personalization_settings}
-                        </h1>
+                        </CommonModalHeader>
                         <div className={styles.formContainer}>
                             <div className={classNames('row')}>
                                 <h2 id="uiHeader" className="sROnly">{Locales.strings.ui}</h2>
@@ -320,7 +314,7 @@ class PersonalizationModal extends Component {
                         />
                     </div>
                 </div>
-            </AriaModal>
+            </CommonModal>
         );
     }
 }

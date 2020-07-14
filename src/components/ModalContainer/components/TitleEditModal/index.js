@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import AriaModal from 'react-aria-modal';
 import classNames from 'classnames';
 import editor from './styles.scss';
+import CommonModal, { CommonModalHeader } from '../CommonModal';
 import Locales from '../../../../strings';
 import Button from '../../../Button';
 
@@ -26,17 +26,10 @@ export default class TitleEditModal extends Component {
 
     render() {
         return (
-            <AriaModal
-                titleId="titleEditModalHeader"
-                onExit={this.props.deactivateModal}
-                getApplicationNode={this.getApplicationNode}
-                underlayStyle={{ paddingTop: '2em' }}
-            >
+            <CommonModal deactivateModal={this.props.deactivateModal}>
                 <div id="titleEditModal" className={editor.modal}>
                     <div className={editor.modalBody}>
-                        <h1 id="titleEditModalHeader">
-                            {Locales.strings.update_title}
-                        </h1>
+                        <CommonModalHeader>{Locales.strings.update_title}</CommonModalHeader>
                         <input
                             type="text"
                             value={this.state.title}
@@ -66,7 +59,7 @@ export default class TitleEditModal extends Component {
                         />
                     </div>
                 </div>
-            </AriaModal>
+            </CommonModal>
         );
     }
 }
