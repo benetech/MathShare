@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import AriaModal from 'react-aria-modal';
 import FontAwesome from 'react-fontawesome';
 import classNames from 'classnames';
 import { arrayMove } from 'react-sortable-hoc';
@@ -16,6 +15,7 @@ import googleAnalytics from '../../../../scripts/googleAnalytics';
 import { passEventForKeys, stopEvent } from '../../../../services/events';
 import TTSButton from '../../../TTSButton';
 import { latexToSpeakableText } from '../../../../services/speech';
+import CommonModal, { CommonModalHeader } from '../../../ModalContainer/components/CommonModal';
 
 const mathLive = process.env.MATHLIVE_DEBUG_MODE ? require('../../../../../../mathlive/src/mathlive.js').default
     : require('../../../../lib/mathlivedist/mathlive.js');
@@ -256,7 +256,7 @@ export default class NewProblemsForm extends Component {
             : (
                 <div className={styles.header}>
                     <div>
-                        <h1>{this.props.title}</h1>
+                        <CommonModalHeader>{this.props.title}</CommonModalHeader>
                     </div>
                 </div>
             );
@@ -300,12 +300,9 @@ export default class NewProblemsForm extends Component {
         const lastMathEquation = this.props.editing ? this.props.problemToEdit.text : '';
         const scratchpadContent = this.props.editing ? this.props.problemToEdit.scratchpad : null;
         return (
-            <AriaModal
-                id="modal"
-                titleText={Locales.strings.add_problem_title}
-                onExit={this.props.deactivateModal}
-                getApplicationNode={this.getApplicationNode}
-                underlayStyle={{ paddingTop: '2em' }}
+            <CommonModal
+                deactivateModal={this.props.deactivateModal}
+                focusOnExit="#problem-new > button"
             >
                 <div className={styles.container} id="container">
                     {header}
@@ -333,7 +330,7 @@ export default class NewProblemsForm extends Component {
                         {cancelButton}
                     </div>
                 </div>
-            </AriaModal>
+            </CommonModal>
         );
     }
 }

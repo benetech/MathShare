@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import AriaModal from 'react-aria-modal';
 import Locales from '../../../../strings';
 import styles from './styles.scss';
 import palettes from '../../../palettes.json';
 import MathButtonsGroup from '../../../Editor/components/MyWork/components/MathPalette/components/MathButtonsGroup';
 import Button from '../../../Button';
+import CommonModal, { CommonModalHeader } from '../../../ModalContainer/components/CommonModal';
 
 const mathLive = process.env.MATHLIVE_DEBUG_MODE ? require('../../../../../../mathlive/src/mathlive.js').default
     : require('../../../../lib/mathlivedist/mathlive.js');
@@ -87,20 +87,15 @@ export default class PaletteChooser extends Component {
             'pointer',
         ];
         return (
-            <AriaModal
-                id="modal"
-                titleText={Locales.strings.math_palette}
-                onExit={this.props.deactivateModal}
-                getApplicationNode={this.getApplicationNode}
-                focusDialog
-                underlayStyle={{ paddingTop: '2em' }}
-                dialogStyle={{ display: 'inline-table' }}
+            <CommonModal
+                deactivateModal={this.props.deactivateModal}
+                focusOnExit="#add_problem_set"
             >
 
                 <div className={styles.container} id="container">
-                    <h1 className={styles.title}>
+                    <CommonModalHeader className={styles.title}>
                         {this.props.title}
-                    </h1>
+                    </CommonModalHeader>
                     <form>
                         {mathPalette}
                     </form>
@@ -121,7 +116,7 @@ export default class PaletteChooser extends Component {
                         />
                     </div>
                 </div>
-            </AriaModal>
+            </CommonModal>
         );
     }
 }
