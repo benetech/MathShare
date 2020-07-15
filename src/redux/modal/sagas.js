@@ -23,10 +23,8 @@ import {
 } from '../problemList/selectors';
 import {
     CONFIRMATION,
-    EDIT_PROBLEM,
     TITLE_EDIT_MODAL,
 } from '../../components/ModalContainer';
-// import { commonElementFinder } from '../../services/misc';
 
 function* toggleModalSaga() {
     yield takeLatest('TOGGLE_MODALS', function* workerSaga({
@@ -40,26 +38,11 @@ function* toggleModalSaga() {
         } = yield select(getState);
         const {
             set,
-            problemToDeleteIndex,
-            problemToEditIndex,
         } = yield select(getProblemListState);
         let updatedModals = activeModals.slice();
-        const focusDict = {};
-        if (problemToDeleteIndex) {
-            let gotoAfterDelete = problemToDeleteIndex;
-            if (set.problems.length === gotoAfterDelete) {
-                gotoAfterDelete = set.problems.length - 1;
-            }
-            focusDict[CONFIRMATION] = `#problem-dropdown-${gotoAfterDelete}`;
-        }
-        if (problemToEditIndex) {
-            focusDict[EDIT_PROBLEM] = `#problem-dropdown-${problemToEditIndex}`;
-        }
         // eslint-disable-next-line no-restricted-syntax
         for (const modal of modals) {
-            // let isDismiss = false;
             if (updatedModals.indexOf(modal) !== -1) {
-                // isDismiss = true;
                 updatedModals = updatedModals.filter(e => e !== modal);
             } else {
                 if (modal === CONFIRMATION) {
@@ -81,11 +64,6 @@ function* toggleModalSaga() {
                 }
                 updatedModals.push(modal);
             }
-            // if (isDismiss && focusDict[modal]) {
-            //     setImmediate(() => {
-            //         commonElementFinder.tryToFind(focusDict[modal]);
-            //     }, 0);
-            // }
         }
         yield delay(100);
         yield put(updateActiveModals(updatedModals));

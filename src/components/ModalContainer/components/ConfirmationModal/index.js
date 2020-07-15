@@ -5,7 +5,10 @@ import Button from '../../../Button';
 import CommonModal, { CommonModalHeader } from '../CommonModal';
 
 const ConfirmationModal = props => (
-    <CommonModal deactivateModal={props.deactivateModal}>
+    <CommonModal
+        deactivateModal={props.deactivateModal}
+        focusOnExit={props.focusOnExit}
+    >
         <div id="confirmationModal" className={modalStyles.modal}>
             <div className={modalStyles.modalHeader}>
                 <CommonModalHeader>

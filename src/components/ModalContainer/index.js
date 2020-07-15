@@ -20,7 +20,16 @@ const TITLE_EDIT_MODAL = 'titleEditModal';
 const PERSONALIZATION_SETTINGS = 'personalizationSettings';
 
 const ModalContainer = (props) => {
-    const { activeModals } = props;
+    const { activeModals, problemList } = props;
+    const { problemToDeleteIndex, problemToEditIndex, set } = problemList;
+    let gotoAfterDelete = '';
+
+    if (problemToDeleteIndex) {
+        gotoAfterDelete = problemToDeleteIndex;
+        if (set.problems.length === gotoAfterDelete) {
+            gotoAfterDelete = set.problems.length - 1;
+        }
+    }
 
     const paletteChooser = activeModals.includes(PALETTE_CHOOSER)
         ? (
@@ -61,6 +70,7 @@ const ModalContainer = (props) => {
     const confirmationModal = activeModals.includes(CONFIRMATION)
         ? (
             <ConfirmationModal
+                focusOnExit={gotoAfterDelete && `#problem-dropdown-${gotoAfterDelete}`}
                 redButtonCallback={() => props.toggleModals([CONFIRMATION])}
                 greenButtonCallback={props.deleteProblem}
                 deactivateModal={() => props.toggleModals([CONFIRMATION])}
@@ -87,6 +97,7 @@ const ModalContainer = (props) => {
     const addProblemSet = activeModals.includes(ADD_PROBLEM_SET)
         ? (
             <NewProblemsForm
+                focusOnExit="#problem-new > button"
                 deactivateModal={() => props.toggleModals([ADD_PROBLEM_SET])}
                 activateMathField={props.activateMathField}
                 theActiveMathField={props.theActiveMathField}
@@ -130,6 +141,7 @@ const ModalContainer = (props) => {
     const editProblem = activeModals.includes(EDIT_PROBLEM)
         ? (
             <NewProblemsForm
+                focusOnExit={`#problem-dropdown-${problemToEditIndex}`}
                 deactivateModal={() => props.toggleModals([EDIT_PROBLEM])}
                 activateMathField={props.activateMathField}
                 theActiveMathField={props.theActiveMathField}

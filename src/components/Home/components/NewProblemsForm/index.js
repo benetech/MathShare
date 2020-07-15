@@ -302,7 +302,7 @@ export default class NewProblemsForm extends Component {
         return (
             <CommonModal
                 deactivateModal={this.props.deactivateModal}
-                focusOnExit="#problem-new > button"
+                focusOnExit={this.props.focusOnExit}
             >
                 <div className={styles.container} id="container">
                     {header}
