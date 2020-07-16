@@ -203,8 +203,8 @@ function* saveUserInfoSaga() {
             } = payload;
             IntercomAPI('trackEvent', 'user-details', {
                 userType: getFormattedUserType(userType),
+                userRole: role,
                 grades,
-                role,
             });
             const userInfoResponse = yield call(saveUserInfoApi, {
                 ...payload,
