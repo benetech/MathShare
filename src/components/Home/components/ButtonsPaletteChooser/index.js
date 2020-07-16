@@ -1,15 +1,15 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Locales from '../../../../strings';
 import styles from './styles.scss';
 import palettes from '../../../palettes.json';
 import MathButtonsGroup from '../../../Editor/components/MyWork/components/MathPalette/components/MathButtonsGroup';
 import Button from '../../../Button';
-import CommonModal, { CommonModalHeader } from '../../../ModalContainer/components/CommonModal';
+import CommonModal, { CommonModalHeader, AriaModalDefaultProps } from '../../../ModalContainer/components/CommonModal';
 
 const mathLive = process.env.MATHLIVE_DEBUG_MODE ? require('../../../../../../mathlive/src/mathlive.js').default
     : require('../../../../lib/mathlivedist/mathlive.js');
 
-export default class PaletteChooser extends Component {
+export default class PaletteChooser extends CommonModal {
     constructor(props) {
         super(props);
         let chosenPalettes = palettes.map(palette => palette.label);
@@ -87,11 +87,10 @@ export default class PaletteChooser extends Component {
             'pointer',
         ];
         return (
-            <CommonModal
-                deactivateModal={this.props.deactivateModal}
-                focusOnExit="#add_problem_set"
+            <AriaModalDefaultProps
+                handleModalExit={this.handleModalExit}
+                {...this.props}
             >
-
                 <div className={styles.container} id="container">
                     <CommonModalHeader className={styles.title}>
                         {this.props.title}
@@ -105,18 +104,20 @@ export default class PaletteChooser extends Component {
                             className={btnClassNames}
                             additionalStyles={['withHugeRightMargin', 'default']}
                             content={Locales.strings.cancel}
-                            onClick={this.props.cancelCallback}
+                            onClick={this.handleModalExit()}
                         />
                         <Button
                             id="BtnSave"
                             className={btnClassNames}
                             additionalStyles={['default']}
                             content={isUpdate ? Locales.strings.save : Locales.strings.next}
-                            onClick={() => { this.props.nextCallback(this.state.chosenPalettes); }}
+                            onClick={this.handleModalExit(() => {
+                                this.props.nextCallback(this.state.chosenPalettes);
+                            }, true)}
                         />
                     </div>
                 </div>
-            </CommonModal>
+            </AriaModalDefaultProps>
         );
     }
 }

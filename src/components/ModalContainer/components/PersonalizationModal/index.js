@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import lodash from 'lodash';
 import { UncontrolledTooltip } from 'reactstrap';
 import classNames from 'classnames';
 import styles from './styles.scss';
-import CommonModal, { CommonModalHeader } from '../CommonModal';
+import CommonModal, { CommonModalHeader, AriaModalDefaultProps } from '../CommonModal';
 import Locales from '../../../../strings';
 import Button from '../../../Button';
 import { savePersonalizationSettings } from '../../../../redux/userProfile/actions';
@@ -54,7 +54,7 @@ export const configClassMap = {
     },
 };
 
-class PersonalizationModal extends Component {
+class PersonalizationModal extends CommonModal {
     constructor(props) {
         super(props);
         this.optionList = {
@@ -109,7 +109,6 @@ class PersonalizationModal extends Component {
 
     save = () => {
         this.props.savePersonalizationSettings(this.state);
-        this.props.deactivateModal();
     }
 
     handleChange = key => (event) => {
@@ -171,7 +170,10 @@ class PersonalizationModal extends Component {
 
     render() {
         return (
-            <CommonModal deactivateModal={this.props.deactivateModal}>
+            <AriaModalDefaultProps
+                handleModalExit={this.handleModalExit}
+                {...this.props}
+            >
                 <div id="personalization-modal" className={styles.modal}>
                     <div className={styles.modalBody}>
                         <CommonModalHeader>
@@ -301,7 +303,7 @@ class PersonalizationModal extends Component {
                             type="button"
                             icon="save"
                             content={Locales.strings.save}
-                            onClick={this.save}
+                            onClick={this.handleModalExit(this.save)}
                         />
                         <Button
                             id="deactivate"
@@ -310,11 +312,11 @@ class PersonalizationModal extends Component {
                             type="button"
                             icon="times"
                             content={Locales.strings.close}
-                            onClick={this.props.deactivateModal}
+                            onClick={this.handleModalExit()}
                         />
                     </div>
                 </div>
-            </CommonModal>
+            </AriaModalDefaultProps>
         );
     }
 }
