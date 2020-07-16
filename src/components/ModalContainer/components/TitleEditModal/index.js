@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import AriaModal from 'react-aria-modal';
+import React from 'react';
 import classNames from 'classnames';
 import editor from './styles.scss';
+import CommonModal, { CommonModalHeader, AriaModalDefaultProps } from '../CommonModal';
 import Locales from '../../../../strings';
 import Button from '../../../Button';
 
-export default class TitleEditModal extends Component {
+export default class TitleEditModal extends CommonModal {
     constructor(props) {
         super(props);
         this.state = {
@@ -21,22 +21,17 @@ export default class TitleEditModal extends Component {
 
     commitTitle = () => {
         this.props.updateProblemSetTitle(this.state.title);
-        this.props.deactivateModal();
     }
 
     render() {
         return (
-            <AriaModal
-                titleId="titleEditModalHeader"
-                onExit={this.props.deactivateModal}
-                getApplicationNode={this.getApplicationNode}
-                underlayStyle={{ paddingTop: '2em' }}
+            <AriaModalDefaultProps
+                handleModalExit={this.handleModalExit}
+                {...this.props}
             >
                 <div id="titleEditModal" className={editor.modal}>
                     <div className={editor.modalBody}>
-                        <h1 id="titleEditModalHeader">
-                            {Locales.strings.update_title}
-                        </h1>
+                        <CommonModalHeader>{Locales.strings.update_title}</CommonModalHeader>
                         <input
                             type="text"
                             value={this.state.title}
@@ -53,7 +48,7 @@ export default class TitleEditModal extends Component {
                             type="button"
                             icon="save"
                             content={Locales.strings.save}
-                            onClick={this.commitTitle}
+                            onClick={this.handleModalExit(this.commitTitle)}
                         />
                         <Button
                             id="deactivate"
@@ -62,11 +57,11 @@ export default class TitleEditModal extends Component {
                             type="button"
                             icon="times"
                             content={Locales.strings.close}
-                            onClick={this.props.deactivateModal}
+                            onClick={this.handleModalExit()}
                         />
                     </div>
                 </div>
-            </AriaModal>
+            </AriaModalDefaultProps>
         );
     }
 }
