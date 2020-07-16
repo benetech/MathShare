@@ -98,7 +98,8 @@ class App extends Component {
             if (target.tagName === 'A' && target.attributes && target.attributes.href) {
                 this.props.storeXPathToAnchor(getPathTo(target), target.attributes.href.value);
             }
-            if (!Array.from(document.querySelectorAll('.dropdown-menu,.dropdown-toggle')).find(toggle => toggle.contains(target))) {
+            const skip = Array.from(document.querySelectorAll('.dropdown-menu,.dropdown-toggle,#react-aria-modal-dialog')).find(toggle => toggle.contains(target));
+            if (!skip && Array.from(document.querySelectorAll('#root')).find(toggle => toggle.contains(target))) {
                 this.props.setDropdownId(null);
             }
         });

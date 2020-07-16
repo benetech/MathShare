@@ -1,24 +1,21 @@
-import React, { Component } from 'react';
-import AriaModal from 'react-aria-modal';
+import React from 'react';
 import classNames from 'classnames';
 import modalStyles from './styles.scss';
 import Button from '../../../Button';
+import CommonModal, { CommonModalHeader, AriaModalDefaultProps } from '../CommonModal';
 
-export default class ConfirmationModal extends Component {
+class ConfirmationModal extends CommonModal {
     render() {
         return (
-            <AriaModal
-                titleId="modalHeader"
-                onExit={this.props.deactivateModal}
-                getApplicationNode={this.getApplicationNode}
-                underlayStyle={{ paddingTop: '2em' }}
-                focusDialog
+            <AriaModalDefaultProps
+                handleModalExit={this.handleModalExit}
+                {...this.props}
             >
                 <div id="confirmationModal" className={modalStyles.modal}>
                     <div className={modalStyles.modalHeader}>
-                        <h1 id="modalHeader">
+                        <CommonModalHeader>
                             {this.props.title}
-                        </h1>
+                        </CommonModalHeader>
                     </div>
                     <div className={modalStyles.modalFooter}>
                         <Button
@@ -28,7 +25,9 @@ export default class ConfirmationModal extends Component {
                             type="button"
                             icon="times"
                             content={this.props.redButtonLabel}
-                            onClick={this.props.redButtonCallback}
+                            onClick={this.handleModalExit(
+                                this.props.redButtonCallback, this.props.dontToggleOnRed,
+                            )}
                         />
                         <Button
                             id="deactivate"
@@ -37,11 +36,13 @@ export default class ConfirmationModal extends Component {
                             type="button"
                             icon="save"
                             content={this.props.greenButtonLabel}
-                            onClick={this.props.greenButtonCallback}
+                            onClick={this.handleModalExit(this.props.greenButtonCallback, true)}
                         />
                     </div>
                 </div>
-            </AriaModal>
+            </AriaModalDefaultProps>
         );
     }
 }
+
+export default ConfirmationModal;

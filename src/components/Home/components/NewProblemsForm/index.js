@@ -1,5 +1,4 @@
-import React, { Component } from 'react';
-import AriaModal from 'react-aria-modal';
+import React from 'react';
 import FontAwesome from 'react-fontawesome';
 import classNames from 'classnames';
 import { arrayMove } from 'react-sortable-hoc';
@@ -16,11 +15,12 @@ import googleAnalytics from '../../../../scripts/googleAnalytics';
 import { passEventForKeys, stopEvent } from '../../../../services/events';
 import TTSButton from '../../../TTSButton';
 import { latexToSpeakableText } from '../../../../services/speech';
+import CommonModal, { CommonModalHeader, AriaModalDefaultProps } from '../../../ModalContainer/components/CommonModal';
 
 const mathLive = process.env.MATHLIVE_DEBUG_MODE ? require('../../../../../../mathlive/src/mathlive.js').default
     : require('../../../../lib/mathlivedist/mathlive.js');
 
-export default class NewProblemsForm extends Component {
+export default class NewProblemsForm extends CommonModal {
     constructor(props) {
         super(props);
 
@@ -256,7 +256,7 @@ export default class NewProblemsForm extends Component {
             : (
                 <div className={styles.header}>
                     <div>
-                        <h1>{this.props.title}</h1>
+                        <CommonModalHeader>{this.props.title}</CommonModalHeader>
                     </div>
                 </div>
             );
@@ -268,7 +268,7 @@ export default class NewProblemsForm extends Component {
                     additionalStyles={['withRightMargin', 'default', 'right']}
                     icon="save"
                     content={Locales.strings.save}
-                    onClick={this.save}
+                    onClick={this.handleModalExit(this.save)}
 
                 />
             )
@@ -279,7 +279,7 @@ export default class NewProblemsForm extends Component {
                     additionalStyles={['withRightMargin', 'default', 'right']}
                     icon="check"
                     content={this.props.editing ? Locales.strings.close : Locales.strings.done}
-                    onClick={this.props.deactivateModal}
+                    onClick={this.handleModalExit()}
                 />
             );
         doneButton = (this.props.newProblemSet) ? null : doneButton;
@@ -293,19 +293,16 @@ export default class NewProblemsForm extends Component {
                         this.props.newProblemSet ? Locales.strings.close : Locales.strings.cancel
                     }
                     icon="times-circle"
-                    onClick={this.props.deactivateModal}
+                    onClick={this.handleModalExit()}
                 />
             ) : null;
 
         const lastMathEquation = this.props.editing ? this.props.problemToEdit.text : '';
         const scratchpadContent = this.props.editing ? this.props.problemToEdit.scratchpad : null;
         return (
-            <AriaModal
-                id="modal"
-                titleText={Locales.strings.add_problem_title}
-                onExit={this.props.deactivateModal}
-                getApplicationNode={this.getApplicationNode}
-                underlayStyle={{ paddingTop: '2em' }}
+            <AriaModalDefaultProps
+                handleModalExit={this.handleModalExit}
+                {...this.props}
             >
                 <div className={styles.container} id="container">
                     {header}
@@ -333,7 +330,7 @@ export default class NewProblemsForm extends Component {
                         {cancelButton}
                     </div>
                 </div>
-            </AriaModal>
+            </AriaModalDefaultProps>
         );
     }
 }

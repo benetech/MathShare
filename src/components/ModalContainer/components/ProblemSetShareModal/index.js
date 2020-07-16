@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { UncontrolledTooltip } from 'reactstrap';
-import AriaModal from 'react-aria-modal';
 import classNames from 'classnames';
 import { IntercomAPI } from 'react-intercom';
 import FontAwesome from 'react-fontawesome';
 import editor from './styles.scss';
+import CommonModal, { CommonModalHeader, AriaModalDefaultProps } from '../CommonModal';
 import Locales from '../../../../strings';
 import Button from '../../../Button';
 import { passEventForKeys } from '../../../../services/events';
@@ -13,7 +13,7 @@ import msTeamIcon from '../../../../../images/ms-team-icon.svg';
 import googleAnalytics from '../../../../scripts/googleAnalytics';
 import CopyLink from '../../../Home/components/CopyLink';
 
-export default class ProblemSetShareModal extends Component {
+export default class ProblemSetShareModal extends CommonModal {
     componentWillMount() {
         const { isSolutionSet, shareLink } = this.props;
         if (!isSolutionSet && shareLink) {
@@ -99,21 +99,19 @@ export default class ProblemSetShareModal extends Component {
             ];
         }
         return (
-            <AriaModal
-                titleId="share_problem_set_heading"
-                onExit={this.props.deactivateModal}
-                getApplicationNode={this.getApplicationNode}
-                underlayStyle={{ paddingTop: '2em' }}
+            <AriaModalDefaultProps
+                handleModalExit={this.handleModalExit}
+                {...this.props}
             >
                 <div id="ProblemSetShareModal" className={editor.modal}>
                     <div className={editor.modalBody}>
-                        <h1 id="share_problem_set_heading" tabIndex={-1}>
+                        <CommonModalHeader>
                             <FontAwesome
                                 size="md"
                                 name={iconName}
                             />
                             {header}
-                        </h1>
+                        </CommonModalHeader>
                         <ul className={editor.messageList}>
                             {messageList.map((messageListItem, mIndex) => (
                                 <li key={mIndex}>{messageListItem}</li>
@@ -228,11 +226,11 @@ export default class ProblemSetShareModal extends Component {
                             type="button"
                             icon="times"
                             content={Locales.strings.close}
-                            onClick={this.props.deactivateModal}
+                            onClick={this.handleModalExit()}
                         />
                     </div>
                 </div>
-            </AriaModal>
+            </AriaModalDefaultProps>
         );
     }
 }

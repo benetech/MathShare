@@ -180,7 +180,11 @@
         }
     }
 
-    .ttsNumberInput > input {
-        width: 100%;
+    .ttsNumberInput {
+        max-width: 175px;
+
+        input {
+            width: 100%;
+        }
     }
 }
