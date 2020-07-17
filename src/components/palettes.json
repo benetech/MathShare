@@ -61,14 +61,14 @@
                     "value": "Calc",
                     "keys": [
                         [
-                            "Alt",
                             "Ctrl",
+                            "Alt",
                             "Enter"
                         ],
                         [
-                            "Alt",
+                            "Opt",
                             "Cmd",
-                            "Enter"
+                            "Return"
                         ]
                     ]
                 },
