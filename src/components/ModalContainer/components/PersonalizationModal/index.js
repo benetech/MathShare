@@ -219,7 +219,7 @@ class PersonalizationModal extends CommonModal {
                                     <li className="row">
                                         <div className="col-5">
                                             <label htmlFor="ttsSpeedSlider">
-                                                <h3 tabIndex={-1}>
+                                                <h3 tabIndex={-1} id="ttsSpeed">
                                                     {Locales.strings.speed}
                                                 </h3>
                                             </label>
