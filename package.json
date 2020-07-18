@@ -70,7 +70,7 @@
     "howler": "^2.2.0",
     "intro.js": "^2.9.3",
     "jquery": "^3.5.0",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "msal": "^1.1.1",
     "react": "^16.8.6",
     "react-aria-live": "^2.0.5",
