@@ -25,7 +25,7 @@
                         "MathLivePasteFromButton",
                         "GoogleAnalytics"
                     ],
-                    "value": "$$ \\enclose{updiagonalstrike downdiagonalstrike}[2px solid #4040ff]{\\blacksquare}^{\\square} $$",
+                    "value": "$$ \\enclose{updiagonalstrike downdiagonalstrike}[2px solid #4040ff]{\\blacksquare}\\,{\\square} $$",
                     "keys": [
                         [
                             "Shift",
@@ -61,14 +61,14 @@
                     "value": "Calc",
                     "keys": [
                         [
-                            "Alt",
                             "Ctrl",
+                            "Alt",
                             "Enter"
                         ],
                         [
-                            "Alt",
+                            "Opt",
                             "Cmd",
-                            "Enter"
+                            "Return"
                         ]
                     ]
                 },
