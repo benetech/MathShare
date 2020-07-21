@@ -199,12 +199,12 @@ class Index extends Component {
                 <a
                     className="btn d-flex"
                     href={this.getLink(problemSet, isRecent)}
-                    onClick={isExample ? this.openExampleProblem() : this.openPremadeSet(
+                    onClick={isExample ? this.openExampleProblem : this.openPremadeSet(
                         problemSet,
                     )}
                     onKeyPress={
                         passEventForKeys(
-                            isExample ? this.openExampleProblem() : this.openPremadeSet(problemSet),
+                            isExample ? this.openExampleProblem : this.openPremadeSet(problemSet),
                         )
                     }
                 >
