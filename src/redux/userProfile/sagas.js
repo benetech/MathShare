@@ -195,29 +195,36 @@ function* saveUserInfoSaga() {
             email,
             redirectTo,
         } = yield select(getState);
+        let intercomPayload = null;
         try {
             const {
                 userType,
                 grades,
                 role,
             } = payload;
-            IntercomAPI('trackEvent', 'user-details', {
-                userType: getFormattedUserType(userType),
-                userRole: role,
-                grades,
-            });
             const userInfoResponse = yield call(saveUserInfoApi, {
                 ...payload,
                 user_type: userType,
                 email,
             });
             yield put(setUserInfo(userInfoResponse.data));
+            intercomPayload = {
+                userType: getFormattedUserType(userType),
+                userRole: role,
+                grades,
+            }
         } catch (error) {
             yield put({
                 type: 'SAVE_USER_INFO_FAILURE',
             });
         } finally {
             yield put(replace(redirectTo));
+            if (intercomPayload) {
+                while (!window.Intercom.booted) {
+                    yield delay(1000);
+                }
+                IntercomAPI('trackEvent', 'user-details', intercomPayload);
+            }
         }
     });
 }
@@ -234,13 +241,16 @@ function* setUserProfileSaga() {
             email,
             name,
         } = payload;
+        ReactGA.set({
+            email,
+        });
+        while (!window.Intercom.booted) {
+            yield delay(1000);
+        }
         IntercomAPI('update', {
             user_id: email,
             email,
             name,
-        });
-        ReactGA.set({
-            email,
         });
     });
 }
