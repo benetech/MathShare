@@ -212,7 +212,7 @@ function* saveUserInfoSaga() {
                 userType: getFormattedUserType(userType),
                 userRole: role,
                 grades,
-            }
+            };
         } catch (error) {
             yield put({
                 type: 'SAVE_USER_INFO_FAILURE',
