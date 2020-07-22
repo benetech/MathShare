@@ -467,6 +467,13 @@ class App extends Component {
         const {
             modal, problemList, problemStore, userProfile,
         } = this.props;
+        const { email, name } = userProfile;
+
+        const intercomAttributes = {
+            user_id: email,
+            email,
+            name,
+        };
         return (
             <React.Fragment>
                 <Helmet
@@ -561,7 +568,7 @@ class App extends Component {
                             <Route render={p => <NotFound {...p} />} />
                         </Switch>
                     </div>
-                    {['teacher', 'other'].includes(userProfile.info.userType) && <Intercom appID={process.env.INTERCOM_APP_ID} />}
+                    {['teacher', 'other'].includes(userProfile.info.userType) && <Intercom {...intercomAttributes} appID={process.env.INTERCOM_APP_ID} />}
                     <footer id="footer">
                         <h2 className="sROnly">
                             {' '}
