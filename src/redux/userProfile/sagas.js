@@ -243,22 +243,10 @@ function* setUserProfileSaga() {
         });
         const {
             email,
-            name,
-            userType,
         } = payload;
         ReactGA.set({
             email,
         });
-        if (!['teacher', 'other'].includes(userType)) {
-            return;
-        }
-        if (yield call(waitForIntercomToBoot, 5)) {
-            IntercomAPI('update', {
-                user_id: email,
-                email,
-                name,
-            });
-        }
     });
 }
 
