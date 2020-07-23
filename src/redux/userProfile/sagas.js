@@ -52,7 +52,6 @@ const redirectAlertId = 'redirect-info';
 const redirectWait = 2500;
 
 
-
 function* checkUserLoginSaga() {
     yield throttle(60000, 'CHECK_USER_LOGIN', function* workerSaga() {
         yield put({
