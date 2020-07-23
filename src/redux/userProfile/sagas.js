@@ -45,20 +45,12 @@ import { getCookie } from '../../scripts/cookie';
 import Locales from '../../strings';
 import { sessionStore } from '../../scripts/storage';
 import { waitForIntercomToBoot } from '../../services/intercom';
+import { getFormattedUserType } from '../../services/mathshare';
 
 const loginAlertId = 'login-alert';
 const redirectAlertId = 'redirect-info';
 const redirectWait = 2500;
 
-const getFormattedUserType = (userType) => {
-    if (userType === 'teacher') {
-        return 'Teacher';
-    }
-    if (userType === 'student') {
-        return 'Student';
-    }
-    return 'Undefined';
-};
 
 function* checkUserLoginSaga() {
     yield throttle(60000, 'CHECK_USER_LOGIN', function* workerSaga() {
@@ -198,12 +190,9 @@ function* saveUserInfoSaga() {
             email,
             redirectTo,
         } = yield select(getState);
-        let intercomPayload = null;
         try {
             const {
                 userType,
-                grades,
-                role,
             } = payload;
             const userInfoResponse = yield call(saveUserInfoApi, {
                 ...payload,
@@ -211,24 +200,12 @@ function* saveUserInfoSaga() {
                 email,
             });
             yield put(setUserInfo(userInfoResponse.data));
-            if (['teacher', 'other'].includes(userType)) {
-                intercomPayload = {
-                    userType: getFormattedUserType(userType),
-                    userRole: role,
-                    grades,
-                };
-            }
         } catch (error) {
             yield put({
                 type: 'SAVE_USER_INFO_FAILURE',
             });
         } finally {
             yield put(replace(redirectTo));
-            if (intercomPayload) {
-                if (yield call(waitForIntercomToBoot, 5)) {
-                    IntercomAPI('trackEvent', 'user-details', intercomPayload);
-                }
-            }
         }
     });
 }
