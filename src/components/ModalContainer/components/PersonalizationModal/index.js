@@ -274,11 +274,6 @@ class PersonalizationModal extends CommonModal {
                                                     type="number"
                                                     min={0}
                                                     max={100}
-                                                    defaultValue={
-                                                        this.convertTTSBackendValue(
-                                                            this.state.tts.speed,
-                                                        )
-                                                    }
                                                     value={
                                                         this.convertTTSBackendValue(
                                                             this.state.tts.speed,
@@ -286,6 +281,7 @@ class PersonalizationModal extends CommonModal {
                                                     }
                                                     onChange={this.debouncedHandleSpeedChange}
                                                 />
+                                                <span className={styles.percent}>%</span>
                                                 <UncontrolledTooltip placement="top" target="ttsSpeedNumberIp" />
                                             </div>
 
