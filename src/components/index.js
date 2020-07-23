@@ -484,7 +484,7 @@ class App extends Component {
             name,
             userType: getFormattedUserType(userType),
             userRole: role,
-            grades,
+            grades: grades && grades.join(','),
         };
         return (
             <React.Fragment>
