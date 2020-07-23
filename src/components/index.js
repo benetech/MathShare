@@ -104,6 +104,13 @@ class App extends Component {
                 this.props.setDropdownId(null);
             }
         });
+
+        document.body.addEventListener('keydown', (e) => {
+            const { key, target } = e;
+            if (key === 'Escape' && Array.from(document.querySelectorAll('.dropdown-menu,.dropdown-toggle')).find(toggle => toggle.contains(target))) {
+                this.props.setDropdownId(null);
+            }
+        });
     }
 
     componentDidMount() {
