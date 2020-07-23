@@ -16,6 +16,17 @@ export const getMathshareLink = (params, currentSolution, problem) => {
     return null;
 };
 
+export const getFormattedUserType = (userType) => {
+    if (userType === 'teacher') {
+        return 'Teacher';
+    }
+    if (userType === 'student') {
+        return 'Student';
+    }
+    return 'Undefined';
+};
+
 export default {
+    getFormattedUserType,
     getMathshareLink,
 };

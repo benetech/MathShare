@@ -55,6 +55,7 @@ import keyMap from '../constants/hotkeyConfig.json';
 import { stopEvent, passEventForKeys } from '../services/events';
 import { getPathTo } from '../services/dom';
 import './styles.scss';
+import { getFormattedUserType } from '../services/mathshare';
 
 
 const mathLive = process.env.MATHLIVE_DEBUG_MODE
@@ -468,11 +469,15 @@ class App extends Component {
             modal, problemList, problemStore, userProfile,
         } = this.props;
         const { email, name } = userProfile;
+        const { userType, role, grades } = userProfile.info;
 
         const intercomAttributes = {
             user_id: email,
             email,
             name,
+            userType: getFormattedUserType(userType),
+            userRole: role,
+            grades,
         };
         return (
             <React.Fragment>
@@ -568,7 +573,7 @@ class App extends Component {
                             <Route render={p => <NotFound {...p} />} />
                         </Switch>
                     </div>
-                    {['teacher', 'other'].includes(userProfile.info.userType) && <Intercom {...intercomAttributes} appID={process.env.INTERCOM_APP_ID} />}
+                    {['teacher', 'other'].includes(userType) && <Intercom {...intercomAttributes} appID={process.env.INTERCOM_APP_ID} />}
                     <footer id="footer">
                         <h2 className="sROnly">
                             {' '}
