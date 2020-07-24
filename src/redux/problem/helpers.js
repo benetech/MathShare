@@ -24,9 +24,11 @@ export const compareStepArrays = (first, second) => {
 };
 
 export const getLastTextArea = (steps) => {
-    if (!steps || steps.length === 0) {
-        return '';
+    if (steps) {
+        const inProgressStep = steps.find(step => step.inProgress);
+        if (inProgressStep) {
+            return inProgressStep.explanation;
+        }
     }
-    const stepLength = steps.length;
-    return steps[stepLength - 1].explanation;
+    return '';
 };

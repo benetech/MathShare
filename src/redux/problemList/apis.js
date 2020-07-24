@@ -35,7 +35,7 @@ export const updateProblemsApi = payload => axios.put(`${SERVER_URL}/problemSet/
 
 export const saveProblemSetApi = set => axios.post(`${SERVER_URL}/problemSet/`, set, commonRequestConfig);
 
-export const updateProblemStepsInSet = (editCode, problemId, steps) => axios.put(`${SERVER_URL}/problemSet/${editCode}/steps/${problemId}`, steps, commonRequestConfig);
+export const updateProblemStepsInSet = (editCode, payload) => axios.put(`${SERVER_URL}/problemSet/${editCode}/problem/`, payload, commonRequestConfig);
 
 export const archiveProblemSetApi = (editCode, archiveMode) => axios.put(`${SERVER_URL}/problemSet/${editCode}/archive`, { archiveMode }, commonRequestConfig);
 
