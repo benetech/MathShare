@@ -26,11 +26,24 @@ export const shareSolutions = (code, payloadSolutions) => axios.post(`${SERVER_U
     });
 
 export const getSolutionObjectFromProblems = problems => problems.map((problem) => {
-    if (problem.steps && problem.steps.length > 0) {
-        return {
-            problem,
-            steps: problem.steps,
-        };
+    if (problem.steps) {
+        const steps = [];
+        for (let index = 1; index <= problem.steps.length; index += 1) {
+            const step = problem.steps[index - 1];
+            const nextInProgress = problem.steps[index] && problem.steps[index].inProgress;
+            if (!nextInProgress || step.inProgress) {
+                steps.push({
+                    ...step,
+                    inProgress: false,
+                });
+            }
+        }
+        if (steps.length > 0) {
+            return {
+                problem,
+                steps,
+            };
+        }
     }
     const step = {
         explanation: problem.title,

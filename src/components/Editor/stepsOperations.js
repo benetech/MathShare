@@ -28,7 +28,11 @@ function checkIfDescriptionIsRequired(problemStore, problemList) {
 function addNewStep(context, step) {
     const { updateProblemStore, problemStore, problemList } = context.props;
     googleAnalytics('Add new step');
-    const newSteps = problemStore.solution.steps;
+    const newSteps = problemStore.solution.steps.slice();
+    const lastStep = newSteps[newSteps.length - 1];
+    if (lastStep && lastStep.inProgress) {
+        newSteps.pop();
+    }
     newSteps.push(step);
     const updatedMathField = problemList.theActiveMathField;
     updatedMathField.$latex(step.cleanup);
@@ -78,7 +82,15 @@ function editStep(context, stepNumber) {
     const updatedMathField = problemList.theActiveMathField;
     updatedMathField.$latex(mathStep.stepValue);
     problemStore.displayScratchpad(mathStep.scratchpad);
+    const solution = Object.assign({}, problemStore.solution);
+    const steps = problemStore.solution.steps.filter(step => !step.inProgress);
+    solution.steps = steps;
+    if (problemStore.solution.problem) {
+        const problemSteps = problemStore.solution.problem.steps.filter(step => !step.inProgress);
+        problemStore.solution.problem.steps = problemSteps;
+    }
     updateProblemStore({
+        solution,
         editedStep: stepNumber - 1,
         theActiveMathField: updatedMathField,
         textAreaValue: mathStep.explanation,
@@ -111,8 +123,16 @@ function updateStep(context, img) {
         mathStep.cleanup, index, mathStep.scratchpad);
     alertSuccess(Locales.strings.successfull_update_message, 'Success');
     problemStore.displayScratchpad();
+    const solution = Object.assign({}, problemStore.solution);
+    const steps = problemStore.solution.steps.filter(step => !step.inProgress);
+    solution.steps = steps;
+    if (problemStore.solution.problem) {
+        const problemSteps = problemStore.solution.problem.steps.filter(step => !step.inProgress);
+        problemStore.solution.problem.steps = problemSteps;
+    }
     updateProblemStore({
         isUpdated: true,
+        solution,
     });
 }
 

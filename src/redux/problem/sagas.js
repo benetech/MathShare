@@ -47,6 +47,7 @@ import {
     alertError,
 } from '../../scripts/alert';
 import Locales from '../../strings';
+import MathButton from '../../components/Editor/components/MyWork/components/MathPalette/components/MathButtonsGroup/components/MathButtonsRow/components/MathButton';
 
 function* requestLoadProblemSaga() {
     yield takeLatest('REQUEST_LOAD_PROBLEM', function* workerSaga({
@@ -87,12 +88,37 @@ function* processFetchedProblem() {
             solution,
         },
     }) {
+        const { editorPosition } = solution;
         yield put(updateProblemSolution(solution, true));
         const {
             theActiveMathField,
         } = yield select(getProblemListState);
+        let stepListPosition = solution.steps.length - 1;
+        if (editorPosition !== null && editorPosition > -1 && solution.steps.length > 0) {
+            stepListPosition = -1;
+            let currentCount = -1;
+            for (let index = 0; index < solution.steps.length; index += 1) {
+                const step = solution.steps[index];
+                stepListPosition += 1;
+                currentCount += 1;
+                if (step.cleanup !== null) {
+                    currentCount += 1;
+                }
+                if (editorPosition < currentCount) {
+                    if (step.cleanup !== null) {
+                        stepListPosition += 1;
+                    }
+                    break;
+                }
+            }
+        }
         if (theActiveMathField) {
-            theActiveMathField.$latex(solution.steps[solution.steps.length - 1].stepValue);
+            theActiveMathField.$latex(solution.steps[stepListPosition].stepValue);
+        }
+        if (solution.steps[stepListPosition].inProgress) {
+            yield put(updateProblemStore({
+                textAreaValue: solution.steps[stepListPosition].explanation,
+            }));
         }
         yield put(setSolutionData(solution, action));
         const {
@@ -142,30 +168,38 @@ function* requestCommitProblemSolutionSaga() {
                 textAreaValue,
                 work,
                 editorPosition,
+                editing,
             } = yield select(getState);
             let finalEditorPosition = editorPosition;
             const {
                 theActiveMathField,
             } = yield select(getProblemListState);
-            const { steps } = solution;
+            let steps = solution.steps.slice();
             const editorMath = theActiveMathField.$latex();
             let lastStep = null;
             if (solution.steps.length > 0) {
-                lastStep = solution.steps.slice(-1).pop();
+                lastStep = solution.steps.splice(editorPosition, 0).pop();
             }
+            steps = steps.filter(step => !step.inProgress);
             if (textAreaValue
                 || (
                     lastStep && editorMath.trim()
                     && editorMath !== lastStep.stepValue
                     && editorMath !== lastStep.cleanup
                 )) {
-                steps.push({
+                const stepValue = theActiveMathField.$latex();
+                const cleanup = MathButton.CleanUpCrossouts(stepValue);
+                steps.splice(editorPosition + 1, 0, {
                     scratchpad: work.scratchpadContent,
                     explanation: textAreaValue,
-                    stepValue: theActiveMathField.$latex(),
+                    stepValue,
+                    cleanup: (cleanup === stepValue) ? null : cleanup,
+                    inProgress: true,
                 });
+            } else {
                 finalEditorPosition = steps.length;
             }
+            const inProgressStep = steps && steps.find(step => step.inProgress);
             const problemListState = yield select(getProblemListState);
             let shareCode = '';
             const matchedRoute = yield select(
@@ -174,9 +208,13 @@ function* requestCommitProblemSolutionSaga() {
             if (matchedRoute) {
                 const { params } = matchedRoute;
                 const { editCode } = params;
-                const problemId = solution.problem.id;
+                const payload = {
+                    id: solution.problem.id,
+                    editorPosition: (editing && inProgressStep) ? editorPosition : null,
+                    steps,
+                };
                 const response = yield call(
-                    updateProblemStepsInSet, editCode, problemId, steps,
+                    updateProblemStepsInSet, editCode, payload,
                 );
                 if (response.status !== 201) {
                     alertError('Unable to save problem', 'Error');
@@ -191,7 +229,9 @@ function* requestCommitProblemSolutionSaga() {
                     if (currentSolution.problem.id === solution.problem.id) {
                         return {
                             ...solution,
+                            steps,
                             finished: finished || solution.finished,
+                            editorPosition: (editing && inProgressStep) ? editorPosition : null,
                         };
                     }
                     return currentSolution;
@@ -249,8 +289,8 @@ function* requestCommitProblemSolutionSaga() {
                     ...problemStorePayload,
                     editLink: `${FRONTEND_URL}/app/problem/edit/${solution.editCode}`,
                     shareLink: `${FRONTEND_URL}/app/problem/view/${shareCode}`,
-                    editorPosition: finalEditorPosition,
-                    textAreaValue: '',
+                    editorPosition: editing ? editorPosition : finalEditorPosition,
+                    textAreaValue: inProgressStep ? textAreaValue : '',
                 };
             }
             yield put(updateProblemStore(problemStorePayload));
