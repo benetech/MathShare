@@ -293,18 +293,40 @@ class App extends Component {
         if (window.location.hash.startsWith('#/app/problem/view/')) {
             return false;
         }
-        return !compareStepArrays(
+        let editorPosition = problemStore.solution.steps.length - 1;
+        let editorStep = null;
+        if (problemStore.editing) {
+            editorPosition = problemStore.editorPosition;
+            editorStep = problemStore.stepsFromLastSave.find(step => step.inProgress);
+        } else if (problemStore.stepsFromLastSave.length > 0) {
+            editorStep = problemStore.stepsFromLastSave.slice()[editorPosition] || null;
+        }
+
+        const stepDiff = !compareStepArrays(
             problemStore.solution.steps,
             problemStore.stepsFromLastSave,
-        )
-        || problemStore.textAreaValue
-        || (
-            problemStore.solution.steps.length > 0
-            && (
-                (problemStore.theActiveMathField || problemList.theActiveMathField).$latex()
-                    !== problemStore.solution.steps.slice(-1).pop().stepValue
+        );
+        if (stepDiff) {
+            return true;
+        }
+        const textAreaUpdated = (
+            problemStore.textAreaValue && (
+                !editorStep || editorStep.explanation !== problemStore.textAreaValue
             )
         );
+        if (textAreaUpdated) {
+            return true;
+        }
+        const mathFieldLatex = (
+            problemStore.theActiveMathField || problemList.theActiveMathField
+        ).$latex();
+        const stepChanged = (
+            editorStep
+            && mathFieldLatex !== editorStep.stepValue);
+        if (stepChanged) {
+            return true;
+        }
+        return false;
     }
 
     goBack = (isModal, link) => () => {
@@ -314,7 +336,7 @@ class App extends Component {
             if (link) {
                 allProblemsUrl = link;
             }
-        } else if (this.isEdited() && !this.props.example) {
+        } else if (!this.props.example && this.isEdited()) {
             this.props.toggleModals([CONFIRMATION_BACK], null, allProblemsUrl);
             return;
         }
