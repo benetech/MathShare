@@ -79,11 +79,27 @@ const problem = (state = initialState, {
             ...state,
             notFound: true,
         };
-    case 'REQUEST_LOAD_PROBLEM_SUCCESS':
+    case 'REQUEST_LOAD_PROBLEM_SUCCESS': {
+        let editing = false;
+        let editorPosition = countEditorPosition(payload.solution.steps);
+        let editedStep = state.editedStep;
+        if (payload.solution.editorPosition !== null && payload.solution.editorPosition > -1) {
+            editing = true;
+            editorPosition = payload.solution.editorPosition;
+        } else if (payload.solution.problem.editorPosition !== null
+            && payload.solution.problem.editorPosition > -1) {
+            editing = true;
+            editorPosition = payload.solution.problem.editorPosition;
+        }
+        if (editing) {
+            editedStep = editorPosition;
+        }
         return {
             ...state,
             solution: payload.solution,
-            editorPosition: countEditorPosition(payload.solution.steps),
+            editing,
+            editedStep,
+            editorPosition,
             readOnly: (payload.action === 'view'),
             stepsFromLastSave: JSON.parse(JSON.stringify(payload.solution.steps)),
             allowedPalettes: payload.solution.palettes,
@@ -95,6 +111,7 @@ const problem = (state = initialState, {
                 scratchpadMode: state.work.scratchpadMode,
             },
         };
+    }
     case 'UPDATE_PROBLEM_STORE':
         return {
             ...state,
