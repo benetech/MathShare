@@ -275,6 +275,7 @@ function* requestCommitProblemSolutionSaga() {
                 yield put(updateProblemSolution(response.data));
                 shareCode = response.data.shareCode;
             }
+            const currentProblemStore = yield select(getState);
             let problemStorePayload = {
                 stepsFromLastSave: JSON.parse(JSON.stringify(steps)),
                 lastSaved: (new Date().toLocaleString('en-US', {
@@ -286,6 +287,10 @@ function* requestCommitProblemSolutionSaga() {
             };
             if (!shareModal) {
                 problemStorePayload = {
+                    solution: {
+                        ...currentProblemStore.solution,
+                        steps: problemStorePayload.stepsFromLastSave,
+                    },
                     ...problemStorePayload,
                     editLink: `${FRONTEND_URL}/app/problem/edit/${solution.editCode}`,
                     shareLink: `${FRONTEND_URL}/app/problem/view/${shareCode}`,
