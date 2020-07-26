@@ -38,8 +38,6 @@ import ModalContainer, {
     PALETTE_CHOOSER, // ADD_PROBLEM_SET,
     PALETTE_UPDATE_CHOOSER,
     EDIT_PROBLEM,
-    SHARE_SET,
-    VIEW_SET,
 } from './ModalContainer';
 import { configClassMap } from './ModalContainer/components/PersonalizationModal';
 import { alertWarning } from '../scripts/alert';
@@ -57,6 +55,7 @@ import keyMap from '../constants/hotkeyConfig.json';
 import { stopEvent, passEventForKeys } from '../services/events';
 import { getPathTo } from '../services/dom';
 import './styles.scss';
+import { getFormattedUserType } from '../services/mathshare';
 
 
 const mathLive = process.env.MATHLIVE_DEBUG_MODE
@@ -100,7 +99,15 @@ class App extends Component {
             if (target.tagName === 'A' && target.attributes && target.attributes.href) {
                 this.props.storeXPathToAnchor(getPathTo(target), target.attributes.href.value);
             }
-            if (!Array.from(document.querySelectorAll('.dropdown-menu,.dropdown-toggle')).find(toggle => toggle.contains(target))) {
+            const skip = Array.from(document.querySelectorAll('.dropdown-menu,.dropdown-toggle,#react-aria-modal-dialog')).find(toggle => toggle.contains(target));
+            if (!skip && Array.from(document.querySelectorAll('#root')).find(toggle => toggle.contains(target))) {
+                this.props.setDropdownId(null);
+            }
+        });
+
+        document.body.addEventListener('keydown', (e) => {
+            const { key, target } = e;
+            if (key === 'Escape' && Array.from(document.querySelectorAll('.dropdown-menu,.dropdown-toggle')).find(toggle => toggle.contains(target))) {
                 this.props.setDropdownId(null);
             }
         });
@@ -282,23 +289,6 @@ class App extends Component {
     finishProblem = () => {
         this.props.commitProblemSolution('back', false, true);
         googleAnalytics('Finish Problem');
-    };
-
-    shareProblem = () => {
-        if (this.props.example) {
-            this.props.updateProblemStore({
-                shareLink: Locales.strings.example_share_code,
-            });
-            this.props.toggleModals([SHARE_SET]);
-        } else {
-            googleAnalytics('Share Problem');
-            this.props.updateProblemSolution(this.props.problemStore.solution);
-            this.props.commitProblemSolution(null, true);
-        }
-    };
-
-    viewProblem = () => {
-        this.props.toggleModals([VIEW_SET]);
     };
 
     saveProblemCallback = goTo => () => {
@@ -485,6 +475,17 @@ class App extends Component {
         const {
             modal, problemList, problemStore, userProfile,
         } = this.props;
+        const { email, name } = userProfile;
+        const { userType, role, grades } = userProfile.info;
+
+        const intercomAttributes = {
+            user_id: email,
+            email,
+            name,
+            userType: getFormattedUserType(userType),
+            userRole: role,
+            grades: grades && grades.join(','),
+        };
         return (
             <React.Fragment>
                 <Helmet
@@ -579,7 +580,7 @@ class App extends Component {
                             <Route render={p => <NotFound {...p} />} />
                         </Switch>
                     </div>
-                    {['teacher', 'other'].includes(userProfile.info.userType) && <Intercom appID={process.env.INTERCOM_APP_ID} />}
+                    {['teacher', 'other'].includes(userType) && <Intercom {...intercomAttributes} appID={process.env.INTERCOM_APP_ID} />}
                     <footer id="footer">
                         <h2 className="sROnly">
                             {' '}

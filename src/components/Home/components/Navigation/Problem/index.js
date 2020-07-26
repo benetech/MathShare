@@ -186,6 +186,7 @@ export default class Problem extends Component {
                     onClick={this.onEditClick}
                     onKeyPress={passEventForKeys(this.onEditClick)}
                     type="button"
+                    id={`${dropdownId}-editBtn`}
                     key={`${dropdownId}-editBtn`}
                 >
                     <FontAwesome
@@ -210,6 +211,7 @@ export default class Problem extends Component {
                     onClick={this.onTrashClick}
                     onKeyPress={passEventForKeys(this.onTrashClick)}
                     type="button"
+                    id={`${dropdownId}-removeBtn`}
                     key={`${dropdownId}-removeBtn`}
                 >
                     <FontAwesome

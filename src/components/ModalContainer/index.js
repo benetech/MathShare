@@ -1,13 +1,9 @@
 import React from 'react';
 import NewProblemsForm from '../Home/components/NewProblemsForm';
-import ShareModal from './components/ShareModal';
-import SaveModal from './components/SaveModal';
-import ProblemModal from './components/ProblemModal';
 import ProblemSetShareModal from './components/ProblemSetShareModal';
 import ConfirmationModal from './components/ConfirmationModal';
 import TitleEditModal from './components/TitleEditModal';
 import PersonalizationModal from './components/PersonalizationModal';
-import SignInModal from './components/SignInModal';
 import PaletteChooser from '../Home/components/ButtonsPaletteChooser';
 import Locales from '../../strings';
 
@@ -17,42 +13,31 @@ const PALETTE_UPDATE_CHOOSER = 'paletteUpdateChooser';
 const ADD_PROBLEM_SET = 'addProblemSet';
 const ADD_PROBLEMS = 'addProblems';
 const SHARE_NEW_SET = 'shareNewSet';
-const SHARE_SET = 'shareSet';
 const SHARE_PROBLEM_SET = 'shareProblemSet';
-const SAVE_SET = 'saveSet';
-const VIEW_SET = 'viewSet';
 const EDIT_PROBLEM = 'editProblem';
 const CONFIRMATION_BACK = 'confirmationBack';
 const TITLE_EDIT_MODAL = 'titleEditModal';
 const PERSONALIZATION_SETTINGS = 'personalizationSettings';
-const SIGN_IN_MODAL = 'signInModal';
 
 const ModalContainer = (props) => {
-    const { activeModals } = props;
-    const shareModal = activeModals.includes(SHARE_SET)
-        ? (
-            <ShareModal
-                shareLink={props.shareLink}
-                deactivateModal={() => props.toggleModals([SHARE_SET])}
-            />
-        )
-        : null;
-    const saveModal = activeModals.includes(SAVE_SET)
-        ? (
-            <SaveModal
-                editLink={props.editLink}
-                deactivateModal={() => props.toggleModals([SAVE_SET])}
-            />
-        )
-        : null;
+    const { activeModals, problemList } = props;
+    const { problemToDeleteIndex, problemToEditIndex, set } = problemList;
+    let gotoAfterDelete = '';
+
+    if (typeof (problemToDeleteIndex) !== 'undefined' && problemToDeleteIndex != null) {
+        gotoAfterDelete = problemToDeleteIndex;
+        if (set.problems.length === gotoAfterDelete) {
+            gotoAfterDelete = set.problems.length - 1;
+        }
+    }
 
     const paletteChooser = activeModals.includes(PALETTE_CHOOSER)
         ? (
             <PaletteChooser
+                modalId={PALETTE_CHOOSER}
+                toggleModals={props.toggleModals}
                 title={Locales.strings.choose_palettes_title}
-                cancelCallback={() => props.toggleModals([PALETTE_CHOOSER])}
                 nextCallback={props.progressToAddingProblems}
-                deactivateModal={() => props.toggleModals([PALETTE_CHOOSER])}
             />
         )
         : null;
@@ -60,10 +45,10 @@ const ModalContainer = (props) => {
     const paletteUpdateChooser = activeModals.includes(PALETTE_UPDATE_CHOOSER)
         ? (
             <PaletteChooser
+                modalId={PALETTE_UPDATE_CHOOSER}
+                toggleModals={props.toggleModals}
                 title={Locales.strings.choose_palettes_title}
-                cancelCallback={() => props.toggleModals([PALETTE_UPDATE_CHOOSER])}
                 nextCallback={props.updatePaletteSymbols}
-                deactivateModal={() => props.toggleModals([PALETTE_UPDATE_CHOOSER])}
                 currentPalettes={props.currentPalettes}
                 isUpdate
             />
@@ -73,11 +58,12 @@ const ModalContainer = (props) => {
     const newSetShareModal = activeModals.includes(SHARE_NEW_SET)
         ? (
             <ProblemSetShareModal
+                modalId={SHARE_NEW_SET}
+                toggleModals={props.toggleModals}
                 shareLink={props.newSetShareLink}
                 problemList={props.problemList}
                 announceOnAriaLive={props.announceOnAriaLive}
                 clearAriaLive={props.clearAriaLive}
-                deactivateModal={() => props.toggleModals([SHARE_NEW_SET])}
             />
         )
         : null;
@@ -85,9 +71,10 @@ const ModalContainer = (props) => {
     const confirmationModal = activeModals.includes(CONFIRMATION)
         ? (
             <ConfirmationModal
-                redButtonCallback={() => props.toggleModals([CONFIRMATION])}
+                modalId={CONFIRMATION}
+                toggleModals={props.toggleModals}
+                focusOnExit={`#problem-dropdown-${gotoAfterDelete}-removeBtn`}
                 greenButtonCallback={props.deleteProblem}
-                deactivateModal={() => props.toggleModals([CONFIRMATION])}
                 title={Locales.strings.confirmation_modal_sure_to_remove_problem}
                 redButtonLabel={Locales.strings.cancel}
                 greenButtonLabel={Locales.strings.yes}
@@ -98,12 +85,14 @@ const ModalContainer = (props) => {
     const confirmationBackModal = activeModals.includes(CONFIRMATION_BACK)
         ? (
             <ConfirmationModal
+                modalId={CONFIRMATION_BACK}
+                toggleModals={props.toggleModals}
                 redButtonCallback={props.goBack(true, props.link)}
                 greenButtonCallback={props.saveProblemCallback(props.link === null ? 'back' : props.link)}
-                deactivateModal={() => props.toggleModals([CONFIRMATION_BACK])}
                 title={Locales.strings.confirmation_modal_unsaved_title}
                 redButtonLabel={Locales.strings.discard_changes}
                 greenButtonLabel={Locales.strings.save_changes}
+                dontToggleOnRed
             />
         )
         : null;
@@ -111,7 +100,9 @@ const ModalContainer = (props) => {
     const addProblemSet = activeModals.includes(ADD_PROBLEM_SET)
         ? (
             <NewProblemsForm
-                deactivateModal={() => props.toggleModals([ADD_PROBLEM_SET])}
+                modalId={ADD_PROBLEM_SET}
+                toggleModals={props.toggleModals}
+                focusOnExit="#problem-new > button"
                 activateMathField={props.activateMathField}
                 theActiveMathField={props.theActiveMathField}
                 addProblemCallback={props.addProblemCallback}
@@ -120,7 +111,6 @@ const ModalContainer = (props) => {
                 problemSetTitle={props.title}
                 saveCallback={props.saveProblemSet}
                 addingProblem
-                cancelCallback={() => props.toggleModals([ADD_PROBLEM_SET])}
                 title={Locales.strings.add_problems_new_set}
                 updateProblemStore={props.updateProblemStore}
                 textAreaValue={props.textAreaValue}
@@ -133,7 +123,8 @@ const ModalContainer = (props) => {
     const addProblems = activeModals.includes(ADD_PROBLEMS)
         ? (
             <NewProblemsForm
-                deactivateModal={() => props.toggleModals([ADD_PROBLEMS])}
+                modalId={ADD_PROBLEMS}
+                toggleModals={props.toggleModals}
                 activateMathField={props.activateMathField}
                 theActiveMathField={props.theActiveMathField}
                 addProblemCallback={props.addProblemCallback}
@@ -142,7 +133,6 @@ const ModalContainer = (props) => {
                 saveCallback={props.saveProblems}
                 updateTempSet={props.updateTempSet}
                 addingProblem
-                cancelCallback={() => props.toggleModals([ADD_PROBLEMS])}
                 title={Locales.strings.add_problems}
                 updateProblemStore={props.updateProblemStore}
                 textAreaValue={props.textAreaValue}
@@ -154,7 +144,9 @@ const ModalContainer = (props) => {
     const editProblem = activeModals.includes(EDIT_PROBLEM)
         ? (
             <NewProblemsForm
-                deactivateModal={() => props.toggleModals([EDIT_PROBLEM])}
+                modalId={EDIT_PROBLEM}
+                toggleModals={props.toggleModals}
+                focusOnExit={(problemToEditIndex > -1) && `#problem-dropdown-${problemToEditIndex}-editBtn`}
                 activateMathField={props.activateMathField}
                 theActiveMathField={props.theActiveMathField}
                 textAreaChanged={props.textAreaChanged}
@@ -162,7 +154,6 @@ const ModalContainer = (props) => {
                 editProblemCallback={props.editProblemCallback}
                 problems={[]}
                 problemSetTitle={props.title}
-                cancelCallback={() => props.toggleModals([EDIT_PROBLEM])}
                 updateTempSet={props.updateTempSet}
                 editing
                 addingProblem
@@ -174,23 +165,15 @@ const ModalContainer = (props) => {
         )
         : null;
 
-    const viewProblem = activeModals.includes(VIEW_SET)
-        ? (
-            <ProblemModal
-                solution={props.solution}
-                deactivateModal={() => props.toggleModals([VIEW_SET])}
-            />
-        )
-        : null;
-
     const shareProblemSet = activeModals.includes(SHARE_PROBLEM_SET)
         ? (
             <ProblemSetShareModal
+                modalId={SHARE_PROBLEM_SET}
+                toggleModals={props.toggleModals}
                 shareLink={props.problemSetShareLink}
                 announceOnAriaLive={props.announceOnAriaLive}
                 clearAriaLive={props.clearAriaLive}
                 problemList={props.problemList}
-                deactivateModal={() => props.toggleModals([SHARE_PROBLEM_SET])}
                 submitToPartner={props.submitToPartner}
                 isSolutionSet
             />
@@ -200,9 +183,10 @@ const ModalContainer = (props) => {
     const titleEditModal = activeModals.includes(TITLE_EDIT_MODAL)
         ? (
             <TitleEditModal
+                modalId={TITLE_EDIT_MODAL}
+                toggleModals={props.toggleModals}
                 title={props.tempSet.title}
                 updateProblemSetTitle={props.updateProblemSetTitle}
-                deactivateModal={() => props.toggleModals([TITLE_EDIT_MODAL])}
             />
         )
         : null;
@@ -210,23 +194,14 @@ const ModalContainer = (props) => {
     const personalizationModal = activeModals.includes(PERSONALIZATION_SETTINGS)
         ? (
             <PersonalizationModal
-                deactivateModal={() => props.toggleModals([PERSONALIZATION_SETTINGS])}
-            />
-        )
-        : null;
-
-    const signInModal = activeModals.includes(SIGN_IN_MODAL)
-        ? (
-            <SignInModal
-                deactivateModal={() => props.toggleModals([SIGN_IN_MODAL])}
+                modalId={PERSONALIZATION_SETTINGS}
+                toggleModals={props.toggleModals}
             />
         )
         : null;
 
     return (
         <>
-            {saveModal}
-            {shareModal}
             {confirmationModal}
             {confirmationBackModal}
             {paletteChooser}
@@ -235,11 +210,9 @@ const ModalContainer = (props) => {
             {addProblems}
             {addProblemSet}
             {editProblem}
-            {viewProblem}
             {shareProblemSet}
             {titleEditModal}
             {personalizationModal}
-            {signInModal}
         </>
     );
 };
@@ -248,6 +221,6 @@ export default ModalContainer;
 
 export {
     CONFIRMATION, PALETTE_CHOOSER, PALETTE_UPDATE_CHOOSER, ADD_PROBLEM_SET, ADD_PROBLEMS,
-    SHARE_PROBLEM_SET, SHARE_NEW_SET, SAVE_SET, SHARE_SET, VIEW_SET, EDIT_PROBLEM,
-    CONFIRMATION_BACK, TITLE_EDIT_MODAL, PERSONALIZATION_SETTINGS, SIGN_IN_MODAL,
+    SHARE_PROBLEM_SET, SHARE_NEW_SET, EDIT_PROBLEM,
+    CONFIRMATION_BACK, TITLE_EDIT_MODAL, PERSONALIZATION_SETTINGS,
 };

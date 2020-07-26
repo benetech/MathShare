@@ -1,7 +1,6 @@
 import {
     all,
     call,
-    delay,
     fork,
     put,
     select,
@@ -59,7 +58,6 @@ import {
     ADD_PROBLEM_SET,
     SHARE_NEW_SET,
     SHARE_PROBLEM_SET,
-    SIGN_IN_MODAL,
 } from '../../components/ModalContainer';
 import scrollTo from '../../scripts/scrollTo';
 import {
@@ -534,9 +532,6 @@ function* requestShareSolutionsSaga() {
                 } = yield call(shareSolutions, code, payloadSolutions);
                 if (silent) {
                     yield put(replace(`/app/problemSet/solve/${editCode}`));
-                    yield put({
-                        type: 'SHOW_SIGN_IN_PROMPT',
-                    });
                 }
                 yield put(
                     setReviewSolutions(
@@ -845,25 +840,6 @@ function* requestSubmitToPartner() {
     });
 }
 
-function* showSignInPrompt() {
-    yield takeLatest('SHOW_SIGN_IN_PROMPT', function* workerSaga() {
-        while (true) {
-            const {
-                email,
-                checking,
-            } = yield select(getStateFromUserProfile);
-            if (!checking) {
-                if (!email) {
-                    yield put(toggleModals([SIGN_IN_MODAL]));
-                }
-                break;
-            }
-            yield delay(500);
-        }
-    });
-}
-
-
 export default function* rootSaga() {
     yield all([
         fork(addProblemSaga),
@@ -884,6 +860,5 @@ export default function* rootSaga() {
         fork(requestLoadProblemSetSolution),
         fork(requestPartnerSubmitOptions),
         fork(requestSubmitToPartner),
-        fork(showSignInPrompt),
     ]);
 }
