@@ -106,7 +106,7 @@ export default class MathButton extends Component {
         let keyShortcut = '';
         if (keys && !this.props.hideShortcuts) {
             keyShortcut += ' (⌨: ';
-            keyShortcut += keys.join('+');
+            keyShortcut += keys.map(keyCombination => keyCombination.join('+')).join(' / ');
             keyShortcut += ')';
         }
         return title + keyShortcut;

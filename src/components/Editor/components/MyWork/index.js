@@ -106,6 +106,12 @@ class MyWork extends Component {
         if (event.shiftKey) {
             keys.push('Shift');
         }
+        if (event.altKey) {
+            keys.push('Alt');
+        }
+        if (event.metaKey) {
+            keys.push('Cmd');
+        }
         if (event.ctrlKey) {
             keys.push('Ctrl');
             if (event.key === ' ') {

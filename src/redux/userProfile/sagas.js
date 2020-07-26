@@ -44,20 +44,13 @@ import {
 import { getCookie } from '../../scripts/cookie';
 import Locales from '../../strings';
 import { sessionStore } from '../../scripts/storage';
+import { waitForIntercomToBoot } from '../../services/intercom';
+import { getFormattedUserType } from '../../services/mathshare';
 
 const loginAlertId = 'login-alert';
 const redirectAlertId = 'redirect-info';
 const redirectWait = 2500;
 
-const getFormattedUserType = (userType) => {
-    if (userType === 'teacher') {
-        return 'Teacher';
-    }
-    if (userType === 'student') {
-        return 'Student';
-    }
-    return 'Undefined';
-};
 
 function* checkUserLoginSaga() {
     yield throttle(60000, 'CHECK_USER_LOGIN', function* workerSaga() {
@@ -83,7 +76,6 @@ function* checkUserLoginSaga() {
                 displayName,
                 imageUrl,
             } = response.data;
-            yield put(setUserProfile(emails[0], displayName, imageUrl || `https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=256&name=${encodeURIComponent(displayName)}&rounded=true&length=1`, 'passport'));
             if (loginStarted) {
                 alertSuccess(Locales.strings.you_are_signed_in.replace('{user}', displayName), Locales.strings.success, loginAlertId);
                 focusOnAlert(loginAlertId);
@@ -93,9 +85,12 @@ function* checkUserLoginSaga() {
                 if (userInfoResponse.status !== 200) {
                     throw Error('User info not set');
                 } else {
-                    yield put(setUserInfo(userInfoResponse.data));
+                    const userInfo = userInfoResponse.data;
+                    yield put(setUserProfile(emails[0], displayName, imageUrl || `https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=256&name=${encodeURIComponent(displayName)}&rounded=true&length=1`, 'passport', userInfo.userType));
+                    yield put(setUserInfo(userInfo));
                 }
             } catch (infoError) {
+                yield put(setUserProfile(emails[0], displayName, imageUrl || `https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=256&name=${encodeURIComponent(displayName)}&rounded=true&length=1`, 'passport', null));
                 yield put(markUserResolved(true));
                 yield put(setAuthRedirect((window.location.hash || '').substring(1)));
                 if (window.location.hash !== '#/userDetails') {
@@ -198,14 +193,7 @@ function* saveUserInfoSaga() {
         try {
             const {
                 userType,
-                grades,
-                role,
             } = payload;
-            IntercomAPI('trackEvent', 'user-details', {
-                userType: getFormattedUserType(userType),
-                grades,
-                role,
-            });
             const userInfoResponse = yield call(saveUserInfoApi, {
                 ...payload,
                 user_type: userType,
@@ -232,13 +220,7 @@ function* setUserProfileSaga() {
         });
         const {
             email,
-            name,
         } = payload;
-        IntercomAPI('update', {
-            user_id: email,
-            email,
-            name,
-        });
         ReactGA.set({
             email,
         });
@@ -260,7 +242,7 @@ function* setMobileNotifySaga() {
             if (email) {
                 yield call(updateNotifyMobileApi, notifyForMobile);
             }
-            if (notifyForMobile === 1) {
+            if (notifyForMobile === 1 && (yield call(waitForIntercomToBoot, 5))) {
                 IntercomAPI('trackEvent', 'notify-mobile-support', {
                     email: email || inputEmail,
                 });
@@ -316,14 +298,16 @@ function* logoutSaga() {
                 throw Error('Unable to login');
             }
             yield put(resetUserProfile());
-            IntercomAPI('shutdown');
-            IntercomAPI('boot', {
-                app_id: process.env.INTERCOM_APP_ID,
-            });
             alertSuccess(
                 Locales.strings.you_have_been_logged_out, Locales.strings.success, loginAlertId,
             );
             focusOnAlert(loginAlertId);
+            if (yield call(waitForIntercomToBoot, 5)) {
+                IntercomAPI('shutdown');
+                IntercomAPI('boot', {
+                    app_id: process.env.INTERCOM_APP_ID,
+                });
+            }
         } catch (error) {
             yield put({
                 type: 'LOGOUT_FAILURE',
