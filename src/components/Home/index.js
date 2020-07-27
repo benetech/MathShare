@@ -195,12 +195,17 @@ class Home extends Component {
             params,
         } = match;
 
+        let title = currentSet.title || Locales.strings.untitled_problem_set;
+        if (title && currentSet.archiveMode) {
+            title = `${currentSet.archiveMode.toUpperCase()} - ${title}`;
+        }
+
         return (
             <React.Fragment>
                 <div>
                     <div className={classNames('m-3', 'text-left')}>
                         <h1 id="LeftNavigationHeader" className={home.titleHeader} tabIndex="-1">
-                            {currentSet.title || Locales.strings.untitled_problem_set}
+                            {title}
                         </h1>
                         {params.action !== 'solve' && (
                             <button
@@ -285,6 +290,10 @@ class Home extends Component {
             problemList,
         } = this.props;
         let titlePrefix = '';
+        let archivedPrefix = '';
+        if (problemList.set && problemList.set.archiveMode) {
+            archivedPrefix = `${problemList.set.archiveMode.toUpperCase()} - `;
+        }
         if (problemList.set && problemList.set.shareCode) {
             if (problemList.set.title) {
                 titlePrefix = `${problemList.set.title} - `;
@@ -297,6 +306,7 @@ class Home extends Component {
         return (
             <Helmet>
                 <title>
+                    {archivedPrefix}
                     {titlePrefix}
                     {Locales.strings.mathshare_benetech}
                 </title>
