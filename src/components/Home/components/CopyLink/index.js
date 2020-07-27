@@ -9,6 +9,8 @@ export default class CopyLink extends Component {
         this.id = Math.round(Math.random() * 1000);
     }
 
+    selectTextInput = event => event.target.select();
+
     copyShareLink = () => {
         const currentActiveElement = document.activeElement;
         const copyText = document.getElementById('copyUrl');
