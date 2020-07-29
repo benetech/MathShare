@@ -52,6 +52,8 @@ class Locales {
                 archived_problem_set_failure: 'Failed to archive Problem Set - {title}',
                 archived_sets: 'Archived Sets',
                 archived_sets_empty: 'No Archived Sets',
+                archived_solutiom_set: 'Archived Solution Set - {title}',
+                archived_solutiom_set_failure: 'Failed to archive Solution Set - {title}',
                 assign: 'Assign:',
                 assign_with_a_link: 'Assign with a link: ',
                 back: 'Go back',
