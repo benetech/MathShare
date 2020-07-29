@@ -39,6 +39,8 @@ export const updateProblemStepsInSet = (editCode, payload) => axios.put(`${SERVE
 
 export const archiveProblemSetApi = (editCode, archiveMode) => axios.put(`${SERVER_URL}/problemSet/${editCode}/archive`, { archiveMode }, commonRequestConfig);
 
+export const archiveSolutionSetApi = (editCode, archiveMode) => axios.put(`${SERVER_URL}/solution/${editCode}/archive`, { archiveMode }, commonRequestConfig);
+
 export const fetchEditableProblemSetSolutionApi = editCode => axios.get(`${SERVER_URL}/solution/solve/${editCode}`, commonRequestConfig);
 
 export const fetchPartnerSubmitOptionsApi = partnerCode => axios.post(`${API_URL}/partner/submitOptions`, { partnerCode }, commonRequestConfig);
@@ -47,6 +49,7 @@ export const submitToPartnerApi = (id, editCode, shareCode) => axios.post(`${API
 
 export default {
     archiveProblemSetApi,
+    archiveSolutionSetApi,
     fetchDefaultRevisionApi,
     fetchProblemsByActionAndCodeApi,
     fetchProblemsByRevisionCodeApi,
