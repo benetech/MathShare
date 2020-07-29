@@ -82,10 +82,13 @@ class Index extends Component {
 
     archiveProblemSet = problemSet => (e) => {
         let archiveMode = null;
+        const isSolutionSet = !problemSet.problems;
         if (!problemSet.archiveMode) {
             archiveMode = 'archived';
         }
-        this.props.archiveProblemSet(problemSet.editCode, archiveMode, problemSet.title);
+        this.props.archiveProblemSet(
+            problemSet.editCode, archiveMode, problemSet.title, isSolutionSet,
+        );
         return stopEvent(e);
     }
 
@@ -131,7 +134,7 @@ class Index extends Component {
             <>
                 <h2 id="recent-sets-header" className="title">{Locales.strings.recent_sets}</h2>
                 {recentContent}
-                {userProfile.email && userProfile.info.userType !== 'student' && (
+                {userProfile.email && (
                     <a className={`pull-right btn btn-primary ${pageIndex.archivedList}`} href="/#/app/archived">
                         {Locales.strings.archived_sets}
                     </a>
@@ -213,19 +216,19 @@ class Index extends Component {
                     </span>
                     {this.renderProblemSetAnchorContent(problemSet)}
                 </a>
-                {problemSet.problems && (
-                    <CommonDropdown
-                        btnId={dropdownBtnId}
-                        btnClass={pageIndex.problemSetDropdown}
-                        containerClass={pageIndex.dropdownContainer}
-                        btnContent={(
-                            <span className="sROnly">
-                                {Locales.strings.more_options_for.replace('{title}', problemSet.title)}
-                            </span>
-                        )}
-                        btnIcon="ellipsis-v"
-                        listClass={pageIndex.dropdownList}
-                    >
+                <CommonDropdown
+                    btnId={dropdownBtnId}
+                    btnClass={pageIndex.problemSetDropdown}
+                    containerClass={pageIndex.dropdownContainer}
+                    btnContent={(
+                        <span className="sROnly">
+                            {Locales.strings.more_options_for.replace('{title}', problemSet.title)}
+                        </span>
+                    )}
+                    btnIcon="ellipsis-v"
+                    listClass={pageIndex.dropdownList}
+                >
+                    {problemSet.problems && (
                         <button
                             className="dropdown-item reset-btn"
                             onClick={this.duplicateProblemSet(
@@ -250,30 +253,30 @@ class Index extends Component {
                                 {Locales.strings.opens_in_new_tab}
                             </span>
                         </button>
-                        {isRecent && (
-                            <button
-                                className="dropdown-item reset-btn"
-                                onClick={this.archiveProblemSet(
-                                    problemSet,
-                                )}
-                                onKeyPress={
-                                    passEventForKeys(
-                                        this.archiveProblemSet(
-                                            problemSet,
-                                        ),
-                                    )
-                                }
-                                type="button"
-                            >
-                                <FontAwesome
-                                    size="lg"
-                                    name={problemSet.archiveMode === 'archived' ? 'refresh' : 'trash'}
-                                />
-                                {` ${problemSet.archiveMode === 'archived' ? Locales.strings.restore : Locales.strings.archive}`}
-                            </button>
-                        )}
-                    </CommonDropdown>
-                )}
+                    )}
+                    {isRecent && (
+                        <button
+                            className="dropdown-item reset-btn"
+                            onClick={this.archiveProblemSet(
+                                problemSet,
+                            )}
+                            onKeyPress={
+                                passEventForKeys(
+                                    this.archiveProblemSet(
+                                        problemSet,
+                                    ),
+                                )
+                            }
+                            type="button"
+                        >
+                            <FontAwesome
+                                size="lg"
+                                name={problemSet.archiveMode === 'archived' ? 'refresh' : 'trash'}
+                            />
+                            {` ${problemSet.archiveMode === 'archived' ? Locales.strings.restore : Locales.strings.archive}`}
+                        </button>
+                    )}
+                </CommonDropdown>
             </li>
         );
     }
