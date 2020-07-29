@@ -30,6 +30,7 @@ import {
 } from '../problem/actions';
 import {
     archiveProblemSetApi,
+    archiveSolutionSetApi,
     fetchEditableProblemSetSolutionApi,
     fetchDefaultRevisionApi,
     fetchExampleSetsApi,
@@ -770,10 +771,15 @@ function* requestArchiveProblemSet() {
             editCode,
             archiveMode,
             title,
+            isSolutionSet,
         },
     }) {
         try {
-            yield call(archiveProblemSetApi, editCode, archiveMode);
+            if (isSolutionSet) {
+                yield call(archiveSolutionSetApi, editCode, archiveMode);
+            } else {
+                yield call(archiveProblemSetApi, editCode, archiveMode);
+            }
             yield put({
                 type: 'ARCHIVE_PROBLEM_SET_SUCCESS',
                 payload: {
@@ -781,13 +787,25 @@ function* requestArchiveProblemSet() {
                     key: (archiveMode === 'archived' ? 'recentProblemSets' : 'archivedProblemSets'),
                 },
             });
-            if (archiveMode === 'archived') {
+            if (isSolutionSet) {
+                if (archiveMode === 'archived') {
+                    alertSuccess(Locales.strings.archived_solutiom_set.replace('{title}', title), Locales.strings.success);
+                } else {
+                    alertSuccess(Locales.strings.restore_success.replace('{title}', title), Locales.strings.success);
+                }
+            } else if (archiveMode === 'archived') {
                 alertSuccess(Locales.strings.archived_problem_set.replace('{title}', title), Locales.strings.success);
             } else {
                 alertSuccess(Locales.strings.restore_success.replace('{title}', title), Locales.strings.success);
             }
         } catch (error) {
-            if (archiveMode === 'archived') {
+            if (isSolutionSet) {
+                if (archiveMode === 'archived') {
+                    alertError(Locales.strings.archived_solutiom_set_failure.replace('{title}', title), Locales.strings.failure);
+                } else {
+                    alertError(Locales.strings.restore_failure.replace('{title}', title), Locales.strings.failure);
+                }
+            } else if (archiveMode === 'archived') {
                 alertError(Locales.strings.archived_problem_set_failure.replace('{title}', title), Locales.strings.failure);
             } else {
                 alertError(Locales.strings.restore_failure.replace('{title}', title), Locales.strings.failure);

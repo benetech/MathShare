@@ -165,12 +165,13 @@ export const updateProblemSetTitle = title => ({
     },
 });
 
-export const archiveProblemSet = (editCode, archiveMode, title) => ({
+export const archiveProblemSet = (editCode, archiveMode, title, isSolutionSet) => ({
     type: 'ARCHIVE_PROBLEM_SET',
     payload: {
         editCode,
         archiveMode,
         title,
+        isSolutionSet,
     },
 });
 
