@@ -141,7 +141,8 @@ class Editor extends Component {
     restoreEditorPosition() {
         const { problemStore, problemList } = this.props;
         const updatedMathField = problemList.theActiveMathField;
-        const lastStep = problemStore.solution.steps[problemStore.solution.steps.length - 1];
+        const commitedSteps = problemStore.solution.steps.filter(step => !step.inProgress);
+        const lastStep = commitedSteps[commitedSteps.length - 1];
         updatedMathField.$latex(lastStep.cleanup ? lastStep.cleanup : lastStep.stepValue);
         this.props.updateProblemStore({
             theActiveMathField: updatedMathField,
