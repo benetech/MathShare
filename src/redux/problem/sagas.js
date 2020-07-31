@@ -95,21 +95,26 @@ function* processFetchedProblem() {
         } = yield select(getProblemListState);
         let stepListPosition = solution.steps.length - 1;
         if (editorPosition !== null && editorPosition > -1 && solution.steps.length > 0) {
-            stepListPosition = -1;
-            let currentCount = -1;
-            for (let index = 0; index < solution.steps.length; index += 1) {
-                const step = solution.steps[index];
-                stepListPosition += 1;
-                currentCount += 1;
-                if (step.cleanup !== null) {
+            const inProgressSteps = solution.steps.filter(step => step.inProgress);
+            if (inProgressSteps.count > 1) {
+                stepListPosition = -1;
+                let currentCount = -1;
+                for (let index = 0; index < solution.steps.length; index += 1) {
+                    const step = solution.steps[index];
+                    stepListPosition += 1;
                     currentCount += 1;
-                }
-                if (editorPosition < currentCount) {
                     if (step.cleanup !== null) {
-                        stepListPosition += 1;
+                        currentCount += 1;
                     }
-                    break;
+                    if (editorPosition < currentCount) {
+                        if (step.cleanup !== null) {
+                            stepListPosition += 1;
+                        }
+                        break;
+                    }
                 }
+            } else {
+                stepListPosition = solution.steps.findIndex(step => step.inProgress);
             }
         }
         if (theActiveMathField) {
@@ -177,15 +182,23 @@ function* requestCommitProblemSolutionSaga() {
             let steps = solution.steps.slice();
             const editorMath = theActiveMathField.$latex();
             let lastStep = null;
-            if (solution.steps.length > 0) {
-                lastStep = solution.steps.splice(editorPosition, 0).pop();
+            if (steps.length > 0) {
+                if (editing && editorPosition !== null && editorPosition > -1) {
+                    lastStep = steps.splice(editorPosition, 0).pop();
+                }
+                if (!lastStep) {
+                    lastStep = steps[steps.length - 1];
+                }
             }
             steps = steps.filter(step => !step.inProgress);
             if (textAreaValue
+                || (lastStep && textAreaValue.trim() !== lastStep.explanation)
                 || (
                     lastStep && editorMath.trim()
-                    && editorMath !== lastStep.stepValue
-                    && editorMath !== lastStep.cleanup
+                    && (
+                        editorMath !== lastStep.stepValue
+                        && editorMath !== lastStep.cleanup
+                    )
                 )) {
                 const stepValue = theActiveMathField.$latex();
                 const cleanup = MathButton.CleanUpCrossouts(stepValue);
