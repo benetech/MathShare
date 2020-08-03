@@ -156,7 +156,7 @@ class Home extends Component {
             redirect,
         );
         if (!redirect) {
-            IntercomAPI('trackEvent', 'assign-a-set');
+            IntercomAPI('trackEvent', 'assigned-a-set');
             IntercomAPI('trackEvent', 'assign-a-set-link');
         }
     }
