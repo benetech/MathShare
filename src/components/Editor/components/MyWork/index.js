@@ -128,8 +128,9 @@ class MyWork extends Component {
 
     getSpeakableText = () => {
         let math = '';
-        if (this.props.theActiveMathField) {
-            math = latexToSpeakableText(this.props.theActiveMathField.$latex());
+        const mathField = document.getElementById('mathEditorActive');
+        if (mathField) {
+            math = latexToSpeakableText(mathField.mathfield.$latex());
         }
         return [math, this.props.textAreaValue].filter(value => value.trim() !== '').join('. ');
     };
