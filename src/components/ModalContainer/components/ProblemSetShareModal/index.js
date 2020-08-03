@@ -36,6 +36,7 @@ export default class ProblemSetShareModal extends CommonModal {
                 popupConfig,
             );
             IntercomAPI('trackEvent', 'assign-a-set-google-classroom');
+            IntercomAPI('trackEvent', 'assign-a-set');
         } else if (action === 'view' || action === 'solve') {
             window.open(
                 `https://classroom.google.com/u/0/share?url=${encodeURIComponent(shareLink)}`,
@@ -58,6 +59,7 @@ export default class ProblemSetShareModal extends CommonModal {
         );
         if (action === 'edit') {
             IntercomAPI('trackEvent', 'assign-a-set-microsoft-team');
+            IntercomAPI('trackEvent', 'assign-a-set');
         } else if (action === 'view' || action === 'solve') {
             IntercomAPI('trackEvent', 'submit-problem-set-microsoft-team');
         }
