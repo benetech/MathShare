@@ -87,13 +87,12 @@ class PersonalizationModal extends CommonModal {
             },
             tts: {
                 speed: props.userProfile.config.tts.speed || defaultValues.tts.speed,
+                rawValue: this.convertTTSBackendValue(
+                    props.userProfile.config.tts.speed || defaultValues.tts.speed,
+                ),
             },
         };
         this.debouncedUpdateSpeed = lodash.debounce(this.updateSpeed, 300, {
-            leading: true,
-            trailing: true,
-        });
-        this.debouncedHandleSpeedChange = lodash.debounce(this.handleSpeedChange, 300, {
             leading: true,
             trailing: true,
         });
@@ -159,11 +158,12 @@ class PersonalizationModal extends CommonModal {
         if (!speedElement) {
             return;
         }
-        speedElement.value = rawValue;
+        const cleanedValue = String(Math.min(Math.round(Number(rawValue)), 100)).replace(/^0+/, '') || '0';
+        speedElement.value = cleanedValue;
         this.setState({
             tts: {
-                speed: this.covertValue(rawValue),
-                rawValue,
+                speed: this.covertValue(cleanedValue),
+                rawValue: cleanedValue,
             },
         });
     }
@@ -274,12 +274,8 @@ class PersonalizationModal extends CommonModal {
                                                     type="number"
                                                     min={0}
                                                     max={100}
-                                                    value={
-                                                        this.convertTTSBackendValue(
-                                                            this.state.tts.speed,
-                                                        )
-                                                    }
-                                                    onChange={this.debouncedHandleSpeedChange}
+                                                    value={this.state.tts.rawValue}
+                                                    onChange={this.handleSpeedChange}
                                                 />
                                                 <span className={styles.percent}>%</span>
                                                 <UncontrolledTooltip placement="top" target="ttsSpeedNumberIp" />
