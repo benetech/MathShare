@@ -135,6 +135,7 @@ class Locales {
                 discard_changes: ' Discard Changes',
                 done: ' Done',
                 dot: 'dot',
+                dropdown_collapsed: 'Dropdown collapsed',
                 duplicate: 'Duplicate',
                 duplicate_set: 'Duplicate to edit/share',
                 edit: 'Edit',
