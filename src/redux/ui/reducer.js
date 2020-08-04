@@ -1,7 +1,3 @@
-import {
-    LOCATION_CHANGE,
-} from 'connected-react-router';
-
 const initialState = {
     dropdownOpen: null,
     ttsId: null,
@@ -13,8 +9,6 @@ const ui = (state = initialState, {
     // error,
 }) => {
     switch (type) {
-    case LOCATION_CHANGE:
-        return initialState;
     case 'SET_DROPDOWN_ID':
         return {
             ...state,

@@ -22,6 +22,7 @@ import {
     setTitle,
 } from './actions';
 import { stopTtsAudio } from '../tts/actions';
+import { setDropdownId } from '../ui/actions';
 
 function* changeTitleSaga() {
     yield takeLatest('CHANGE_TITLE', function* workerSaga({
@@ -57,6 +58,7 @@ function* changeRouteSaga() {
         },
     }) {
         const { pathname } = location;
+        yield put(setDropdownId(null));
         yield put(stopTtsAudio());
         const routerState = yield select(getRouterHookState);
         const {
