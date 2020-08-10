@@ -9,7 +9,6 @@ const DynamicSVG = ({ name, ...rest }) => {
         const importIcon = async () => {
             try {
                 ImportedIconRef.current = (await import(`../../../images/${name}.svg`)).default;
-                console.log('ImportedIconRef', ImportedIconRef);
             } catch (err) {
                 // Your own error handling logic, throwing error for the sake of
                 // simplicity
