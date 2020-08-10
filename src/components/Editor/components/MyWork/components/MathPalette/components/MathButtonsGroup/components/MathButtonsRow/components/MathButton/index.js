@@ -9,6 +9,7 @@ import googleAnalytics from '../../../../../../../../../../../../scripts/googleA
 import { alertWarning } from '../../../../../../../../../../../../scripts/alert';
 import Locales from '../../../../../../../../../../../../strings';
 import { stopEvent } from '../../../../../../../../../../../../services/events';
+import DynamicSVG from '../../../../../../../../../../../DynamicSVG';
 
 // those disabled check occur mainly in commented/legacy code that might be needed at some point
 /* eslint-disable no-tabs, func-names, max-len, no-use-before-define, no-eval, no-param-reassign, no-shadow, react/sort-comp, no-unused-vars, no-fallthrough */
@@ -314,11 +315,13 @@ export default class MathButton extends Component {
             functionIds = functionIds.concat(this.props.button.additionalOnclick);
         }
         const functions = this.getFunctionsById(functionIds);
+
+        const valueContainsLatex = this.props.button.value.includes('$$');
+
         const visualContent = (
             <React.Fragment>
-                <span aria-hidden="true">
-                    {this.props.button.value}
-                </span>
+                {valueContainsLatex && <DynamicSVG name={`mathpalette/${this.props.button.id}`} />}
+                {!valueContainsLatex && <span aria-hidden="true">{this.props.button.value}</span>}
                 <span id={labelId} className="sROnly">{titleFixedForSpeech}</span>
             </React.Fragment>
         );
