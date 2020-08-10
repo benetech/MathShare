@@ -121,12 +121,12 @@
                     "value": "$$=$$"
                 },
                 {
-                    "id": "LessThanBtn",
+                    "id": "lessThanBtn",
                     "title": "Less than (⌨: <)",
                     "value": "$$<$$"
                 },
                 {
-                    "id": "GreaterThanBtn",
+                    "id": "greaterThanBtn",
                     "title": "Greater than (⌨: >)",
                     "value": "$$>$$"
                 },
