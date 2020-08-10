@@ -40,6 +40,9 @@ const getDOM = (xmlstring) => {
 
 const removeTags = (node) => {
     let result = '';
+    if (!node) {
+        return result;
+    }
     const nodes = node.childNodes;
     const tagName = node.tagName;
     if (!nodes.length) {
