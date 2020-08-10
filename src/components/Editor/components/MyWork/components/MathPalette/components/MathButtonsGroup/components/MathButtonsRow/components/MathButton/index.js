@@ -321,7 +321,7 @@ export default class MathButton extends Component {
         const visualContent = (
             <React.Fragment>
                 {valueContainsLatex && <DynamicSVG name={`mathpalette/${this.props.button.id}`} />}
-                {!valueContainsLatex && this.props.button.value}
+                {!valueContainsLatex && <span aria-hidden="true">{this.props.button.value}</span>}
                 <span id={labelId} className="sROnly">{titleFixedForSpeech}</span>
             </React.Fragment>
         );
