@@ -55,7 +55,7 @@ export default class Button extends Component {
         }
 
         const tooltip = (
-            <UncontrolledTooltip placement="top" target={this.props.id}>
+            <UncontrolledTooltip placement="top" trigger="hover focus" target={this.props.id}>
                 {this.props.title}
             </UncontrolledTooltip>
         );
