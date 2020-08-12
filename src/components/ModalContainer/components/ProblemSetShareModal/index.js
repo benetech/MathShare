@@ -21,6 +21,11 @@ export default class ProblemSetShareModal extends CommonModal {
         }
     }
 
+    copyLinkCallback = () => {
+        IntercomAPI('trackEvent', 'assigned-a-set');
+        IntercomAPI('trackEvent', 'assign-a-set-link');
+    }
+
     shareOnGoogleClassroom = (e) => {
         const {
             problemList,
@@ -132,6 +137,7 @@ export default class ProblemSetShareModal extends CommonModal {
                                     announceOnAriaLive={this.props.announceOnAriaLive}
                                     clearAriaLive={this.props.clearAriaLive}
                                     shareLink={this.props.shareLink}
+                                    copyLinkCallback={this.copyLinkCallback}
                                     className={classNames('btn', editor.button)}
                                 />
                             </div>
