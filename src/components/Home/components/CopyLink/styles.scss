@@ -5,9 +5,9 @@
 
     .textArea {
         resize: none;
-        max-height:300px;
         width: 90%;
         margin-bottom: 8px;
+        height: 30px;
 
         &:focus {
             outline-color: rgb(0, 95, 204);
