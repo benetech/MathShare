@@ -7,6 +7,10 @@ export default class CopyLink extends Component {
     constructor(props) {
         super(props);
         this.id = Math.round(Math.random() * 1000);
+        this.state = {
+            css: {},
+        };
+        this.updateScrollHeight();
     }
 
     selectTextInput = event => event.target.select();
@@ -26,6 +30,18 @@ export default class CopyLink extends Component {
         }
     }
 
+    updateScrollHeight = () => {
+        const textEle = document.getElementById(`copyUrl-${this.id}`);
+        if (textEle) {
+            const height = textEle.scrollHeight;
+            this.setState({ css: { height: `${height}px` } }, () => {
+                setTimeout(this.updateScrollHeight, 50);
+            });
+        } else {
+            setTimeout(this.updateScrollHeight, 100);
+        }
+    }
+
     render() {
         return (
             <div className={styles.btnContainer}>
@@ -33,12 +49,13 @@ export default class CopyLink extends Component {
                     {Locales.strings.work_link}
                 </label>
                 <textarea
-                    id="copyUrl"
+                    id={`copyUrl-${this.id}`}
                     className={styles.textArea}
                     value={this.props.shareLink}
                     readOnly
                     onFocus={this.selectTextInput}
                     onClick={this.sendResumeLinkClickEvent}
+                    style={this.state.css}
                 />
                 <Button
                     id={this.props.id || `copy_button-${this.id}`}
