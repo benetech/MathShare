@@ -155,10 +155,6 @@ class Home extends Component {
             currentSet.title,
             redirect,
         );
-        if (!redirect) {
-            IntercomAPI('trackEvent', 'assigned-a-set');
-            IntercomAPI('trackEvent', 'assign-a-set-link');
-        }
     }
 
     copyResumeWorkUrlCallback = () => {
