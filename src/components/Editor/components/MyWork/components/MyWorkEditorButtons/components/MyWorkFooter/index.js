@@ -11,6 +11,20 @@ const MyWorkFooter = (props) => {
         footer.button,
     ];
 
+    const deleteButton = props.showDelete && !props.addingProblem
+        ? (
+            <Button
+                id="deleteButton"
+                className={btnClassNames}
+                spanStyle="order-2"
+                additionalStyles={['withRightMargin', 'undo']}
+                content={Locales.strings.delete_step}
+                icon="minus"
+                title={Locales.strings.undo_last_action}
+                onClick={props.undoLastActionCallback}
+            />
+        ) : null;
+
     const cancelButton = (
         <Button
             id="cancelButton"
@@ -118,7 +132,7 @@ const MyWorkFooter = (props) => {
         >
             {undoButton}
             {confirmButton}
-            {props.editing ? cancelButton : null }
+            {props.editing ? cancelButton : deleteButton}
         </section>
     );
 };
