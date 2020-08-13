@@ -17,7 +17,7 @@ export default class CopyLink extends Component {
 
     copyShareLink = () => {
         const currentActiveElement = document.activeElement;
-        const copyText = document.getElementById('copyUrl');
+        const copyText = document.getElementById(`copyUrl-${this.id}`);
         copyText.select();
         document.execCommand('copy');
         this.props.clearAriaLive();
@@ -45,7 +45,7 @@ export default class CopyLink extends Component {
     render() {
         return (
             <div className={styles.btnContainer}>
-                <label htmlFor="copyUrl" className="sROnly">
+                <label htmlFor={`copyUrl-${this.id}`} className="sROnly">
                     {Locales.strings.work_link}
                 </label>
                 <textarea
