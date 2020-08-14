@@ -80,6 +80,10 @@ button :global(.ML__mathlive) {
     cursor: text;
 }
 
+:global(.staticMath) :global(.ML__mathlive) :global(.ML__base) > span > span {
+    line-height: 2.2;
+}
+
 :global(.mainContainer) {
     margin: auto;
     margin-top: 75px;
