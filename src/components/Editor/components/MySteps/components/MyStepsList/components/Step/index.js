@@ -21,11 +21,26 @@ export default class Step extends Component {
             id: this.props.cleanup ? `mathStep-${this.props.stepNumber - 1}-cleanup`
                 : `mathStep-${this.props.stepNumber}`,
         };
+        this.id = `${Math.round(10000 * Math.random())}-${this.state.id}`;
+        this.makeMathField();
     }
 
     componentWillUpdate() {
-        mathLive.renderMathInDocument();
-        setTimeout(mathLive.renderMathInDocument, 100); // failsafe to ensure mathlive conversion
+        setTimeout(this.makeMathField, 0); // failsafe to ensure mathlive conversion
+    }
+
+    makeMathField = () => {
+        const id = `math-${this.id}`;
+        const mathElement = document.getElementById(id);
+        if (mathElement) {
+            const mathField = mathLive.makeMathField(id, {
+                readOnly: true,
+                horizontalSpacingScale: 2,
+            });
+            mathField.$latex(this.props.math);
+        } else {
+            setTimeout(this.makeMathField, 100);
+        }
     }
 
     getSpeakableText = () => latexToSpeakableText(this.props.cleanupValue || this.props.math);
@@ -199,7 +214,9 @@ export default class Step extends Component {
                     )}
                 </div>
                 <div className={classNames('col-md-4', step.annotationEquation)}>
-                    <span className="staticMath">{`$$${this.props.math}$$`}</span>
+                    <span className="staticMath">
+                        <div id={`math-${this.id}`} />
+                    </span>
                     <span className="sROnly">
                         {this.getSpeakableText()}
                     </span>
