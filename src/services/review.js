@@ -31,7 +31,9 @@ export const getSolutionObjectFromProblems = problems => problems.map((problem) 
         for (let index = 1; index <= problem.steps.length; index += 1) {
             const step = problem.steps[index - 1];
             const nextInProgress = problem.steps[index] && problem.steps[index].inProgress;
-            if (!nextInProgress || step.inProgress) {
+            if (problem.editorPosition === null || typeof (problem.editorPosition) === 'undefined') {
+                steps.push(step);
+            } else if (!nextInProgress || step.inProgress) {
                 steps.push({
                     ...step,
                     inProgress: false,
