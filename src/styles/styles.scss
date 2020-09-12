@@ -303,6 +303,10 @@ body [tabindex="-1"]:focus {
         font-weight: 600;
         font-size: 16px;
     }
+
+    a {
+        color: white;
+    }
 }
 
 $letterSpacings: 0, 1, 2, 3, 5, 10;

@@ -10,13 +10,14 @@ const commonProps = () => ({
 });
 
 function getCommonAlert(title, message, id = undefined, anchor = null, trapFocus = true) {
+    console.log('anchor', anchor);
     return (
         <div className="toast-common" role="alert">
             <h2 id={id} tabIndex={-1} data-trap-focus={trapFocus}>
                 {title}
             </h2>
             <div>{message}</div>
-            {anchor && <a href={anchor.link}>{anchor.text}</a>}
+            {anchor && <a target="_blank" rel="noreferrer noopener" href={anchor.link}>{anchor.text}</a>}
         </div>
     );
 }
@@ -25,8 +26,8 @@ function alertInfo(message, title, id = undefined) {
     toast.info(getCommonAlert(title, message), { ...commonProps(), toastId: id });
 }
 
-function alertSuccess(message, title, id = undefined) {
-    toast.success(getCommonAlert(title, message, id), { ...commonProps(), toastId: id });
+function alertSuccess(message, title, id = undefined, anchor) {
+    toast.success(getCommonAlert(title, message, id, anchor), { ...commonProps(), toastId: id });
 }
 
 function alertError(message, title, id = undefined, anchor = null) {

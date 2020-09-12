@@ -65,6 +65,7 @@
 
     .externalButtons {
         display: block;
+        margin: auto;
 
         > span {
             display: block;
@@ -87,6 +88,10 @@
         
         .integrationBtn {
             margin-left: 5px;
+        }
+
+        select {
+            margin-bottom: 10px;
         }
     }
 }

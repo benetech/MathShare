@@ -14,6 +14,15 @@ import googleAnalytics from '../../../../scripts/googleAnalytics';
 import CopyLink from '../../../Home/components/CopyLink';
 
 export default class ProblemSetShareModal extends CommonModal {
+    constructor(props) {
+        super(props);
+        this.state = {
+            assignmentSelected: null,
+            courseSelected: null,
+            canvasMode: false,
+        };
+    }
+
     componentWillMount() {
         const { isSolutionSet, shareLink } = this.props;
         if (!isSolutionSet && shareLink) {
@@ -80,9 +89,269 @@ export default class ProblemSetShareModal extends CommonModal {
         };
     }
 
-    render() {
+    renderNonCanvasButtons = () => {
+        const { canvasMode } = this.state;
         const { isSolutionSet, problemList } = this.props;
         const currentSet = problemList.set;
+        if (canvasMode) {
+            return null;
+        }
+        return (
+            <>
+                <span>
+                    <button
+                        id="googleContainer1"
+                        className={classNames([
+                            'btn',
+                            'btn-outline-dark',
+                            editor.buttonContainer,
+                            'pointer',
+                        ])}
+                        onClick={this.shareOnGoogleClassroom}
+                        onKeyPress={
+                            passEventForKeys(this.shareOnGoogleClassroom)
+                        }
+                        type="button"
+                    >
+                        <img src={googleClassroomIcon} alt="" />
+                        <span className={editor.btnText}>
+                            <span className="sROnly">
+                                {Locales.strings.share_on}
+                            </span>
+                            {Locales.strings.google_classroom}
+                            <span className="sROnly">
+                                {'\u00A0'}
+                                {Locales.strings.opens_in_new_tab}
+                            </span>
+                        </span>
+                    </button>
+                    <UncontrolledTooltip placement="top" target="googleContainer1" />
+                </span>
+                <span>
+                    <button
+                        id="microsoftTeamContainer1"
+                        className={classNames([
+                            'btn',
+                            'btn-outline-dark',
+                            editor.buttonContainer,
+                            'pointer',
+                        ])}
+                        onClick={this.shareOnMicrosoftTeams}
+                        onKeyPress={
+                            passEventForKeys(this.shareOnMicrosoftTeams)
+                        }
+                        type="button"
+                    >
+                        <img
+                            src={msTeamIcon}
+                            alt=""
+                        />
+                        <span className={editor.btnText}>
+                            <span className="sROnly">
+                                {Locales.strings.share_on}
+                            </span>
+                            {Locales.strings.ms_team}
+                            <span className="sROnly">
+                                {'\u00A0'}
+                                {Locales.strings.opens_in_new_tab}
+                            </span>
+                        </span>
+                    </button>
+                    <UncontrolledTooltip placement="top" target="microsoftTeamContainer1" />
+                </span>
+                {(isSolutionSet && currentSet.partner
+                    && currentSet.partner.canSubmit) && (
+                    <Button
+                        id="partnerBtn"
+                        className={classNames([
+                            'btn',
+                            'btn-outline-dark',
+                            editor.integrationBtn,
+                        ])}
+                        type="button"
+                        content={Locales.strings.submit_to_partner.replace('{partner}', currentSet.partner.name)}
+                        onClick={() => {
+                            this.props.submitToPartner(
+                                currentSet.id,
+                                problemList.editCode,
+                                problemList.reviewCode,
+                            );
+                        }}
+                    />
+                )}
+            </>
+        );
+    }
+
+    renderCanvas = () => {
+        const { isSolutionSet, problemList, lti } = this.props;
+        const {
+            assignmentsLoading,
+            assignmentSelected,
+            canvasMode,
+            courseSelected,
+        } = this.state;
+        const currentSet = problemList.set;
+        if (lti.courses.length === 0) {
+            return null;
+        }
+        const coursesDropdown = (
+            <select
+                className="form-control"
+                id="courseId"
+                onChange={(event) => {
+                    const target = event.target;
+                    this.setState({
+                        courseSelected: target.value,
+                        assignmentSelected: null,
+                    });
+                }}
+                value={this.state.courseSelected}
+            >
+                <option value={null}>None</option>
+                {lti.courses
+                    .map(course => (
+                        <option
+                            key={course.id}
+                            value={course.id}
+                        >
+                            {course.id}
+                            {' - '}
+                            {course.name}
+                        </option>
+                    ))}
+            </select>
+        );
+        if (!isSolutionSet && canvasMode) {
+            return (
+                <>
+                    <div className="form-group">
+                        {coursesDropdown}
+                        <Button
+                            id="canvasBtn"
+                            className={classNames([
+                                'btn',
+                                'btn-outline-dark',
+                                editor.integrationBtn,
+                            ])}
+                            disabled={!courseSelected}
+                            content="Create Canvas assignment"
+                            onClick={() => {
+                                this.props.createAssignmentOnCanvas(
+                                    courseSelected,
+                                    currentSet.title,
+                                    ['online_url'],
+                                    this.props.shareLink,
+                                );
+                                this.setState({
+                                    canvasMode: false,
+                                });
+                            }}
+                        />
+                    </div>
+                </>
+            );
+        }
+        if (!isSolutionSet) {
+            return (
+                <Button
+                    id="canvasBtn"
+                    className={classNames([
+                        'btn',
+                        'btn-outline-dark',
+                        editor.integrationBtn,
+                    ])}
+                    content="Create Canvas assignment"
+                    onClick={() => {
+                        this.setState({
+                            canvasMode: true,
+                        });
+                    }}
+                />
+            );
+        }
+
+        let dropdownHTML = null;
+
+        if (this.props.lti.assignments.length > 0) {
+            dropdownHTML = (
+                <div className="form-group">
+                    {coursesDropdown}
+                    <select
+                        className="form-control"
+                        id="assignmentId"
+                        disabled={!courseSelected || assignmentsLoading}
+                        onChange={(event) => {
+                            const target = event.target;
+                            this.setState({
+                                assignmentSelected: target.value,
+                            });
+                        }}
+                        value={assignmentSelected}
+                    >
+                        <option value={null}>None</option>
+                        {this.props.lti.assignments
+                            .map(assignment => (
+                                <option
+                                    key={assignment.id}
+                                    value={assignment.id}
+                                >
+                                    {assignment.name}
+                                    {' - '}
+                                    {assignment.html_url}
+                                </option>
+                            ))}
+                    </select>
+                </div>
+            );
+        }
+        if (canvasMode) {
+            return (
+                <>
+                    {dropdownHTML}
+                    <Button
+                        id="canvasBtn"
+                        disabled={!assignmentSelected}
+                        className={classNames([
+                            'btn',
+                            'btn-outline-dark',
+                            editor.integrationBtn,
+                        ])}
+                        content="Submit Canvas assignment"
+                        onClick={() => {
+                            this.props.submitAssignmentOnCanvas(
+                                courseSelected, assignmentSelected, this.props.shareLink,
+                            );
+                            this.setState({
+                                canvasMode: false,
+                            });
+                        }}
+                    />
+                </>
+            );
+        }
+        return (
+            <>
+                <Button
+                    id="canvasBtn"
+                    className={classNames([
+                        'btn',
+                        'btn-outline-dark',
+                        editor.integrationBtn,
+                    ])}
+                    content="Canvas"
+                    onClick={() => {
+                        this.setState({
+                            canvasMode: true,
+                        });
+                    }}
+                />
+            </>
+        );
+    }
+
+    render() {
+        const { isSolutionSet } = this.props;
         let message = '';
         let header = '';
         let iconName = '';
@@ -141,88 +410,9 @@ export default class ProblemSetShareModal extends CommonModal {
                                     className={classNames('btn', editor.button)}
                                 />
                             </div>
-                            <div className={classNames('col-12', 'text-center', editor.externalButtons)}>
-                                <span>
-                                    <button
-                                        id="googleContainer1"
-                                        className={classNames([
-                                            'btn',
-                                            'btn-outline-dark',
-                                            editor.buttonContainer,
-                                            'pointer',
-                                        ])}
-                                        onClick={this.shareOnGoogleClassroom}
-                                        onKeyPress={
-                                            passEventForKeys(this.shareOnGoogleClassroom)
-                                        }
-                                        type="button"
-                                    >
-                                        <img src={googleClassroomIcon} alt="" />
-                                        <span className={editor.btnText}>
-                                            <span className="sROnly">
-                                                {Locales.strings.share_on}
-                                            </span>
-                                            {Locales.strings.google_classroom}
-                                            <span className="sROnly">
-                                                {'\u00A0'}
-                                                {Locales.strings.opens_in_new_tab}
-                                            </span>
-                                        </span>
-                                    </button>
-                                    <UncontrolledTooltip placement="top" target="googleContainer1" />
-                                </span>
-                                <span>
-                                    <button
-                                        id="microsoftTeamContainer1"
-                                        className={classNames([
-                                            'btn',
-                                            'btn-outline-dark',
-                                            editor.buttonContainer,
-                                            'pointer',
-                                        ])}
-                                        onClick={this.shareOnMicrosoftTeams}
-                                        onKeyPress={
-                                            passEventForKeys(this.shareOnMicrosoftTeams)
-                                        }
-                                        type="button"
-                                    >
-                                        <img
-                                            src={msTeamIcon}
-                                            alt=""
-                                        />
-                                        <span className={editor.btnText}>
-                                            <span className="sROnly">
-                                                {Locales.strings.share_on}
-                                            </span>
-                                            {Locales.strings.ms_team}
-                                            <span className="sROnly">
-                                                {'\u00A0'}
-                                                {Locales.strings.opens_in_new_tab}
-                                            </span>
-                                        </span>
-                                    </button>
-                                    <UncontrolledTooltip placement="top" target="microsoftTeamContainer1" />
-                                </span>
-                                {(isSolutionSet && currentSet.partner
-                                    && currentSet.partner.canSubmit) && (
-                                    <Button
-                                        id="partnerBtn"
-                                        className={classNames([
-                                            'btn',
-                                            'btn-outline-dark',
-                                            editor.integrationBtn,
-                                        ])}
-                                        type="button"
-                                        content={Locales.strings.submit_to_partner.replace('{partner}', currentSet.partner.name)}
-                                        onClick={() => {
-                                            this.props.submitToPartner(
-                                                currentSet.id,
-                                                problemList.editCode,
-                                                problemList.reviewCode,
-                                            );
-                                        }}
-                                    />
-                                )}
+                            <div className={classNames('col-6', 'text-center', editor.externalButtons)}>
+                                {this.renderNonCanvasButtons()}
+                                {this.renderCanvas()}
                             </div>
                         </div>
                     </div>

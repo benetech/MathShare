@@ -72,6 +72,7 @@ function* checkUserLoginSaga() {
                 throw Error('Unable to login');
             }
             const {
+                id,
                 emails,
                 displayName,
                 imageUrl,
@@ -86,8 +87,14 @@ function* checkUserLoginSaga() {
                     throw Error('User info not set');
                 } else {
                     const userInfo = userInfoResponse.data;
-                    yield put(setUserProfile(emails[0], displayName, imageUrl || `https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=256&name=${encodeURIComponent(displayName)}&rounded=true&length=1`, 'passport', userInfo.userType));
+                    yield put(setUserProfile(id, emails[0], displayName, imageUrl || `https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=256&name=${encodeURIComponent(displayName)}&rounded=true&length=1`, 'passport', userInfo.userType));
                     yield put(setUserInfo(userInfo));
+                    yield put({
+                        type: 'LTI_TEST',
+                        payload: {
+                            userId: id,
+                        },
+                    });
                 }
             } catch (infoError) {
                 yield put(setUserProfile(emails[0], displayName, imageUrl || `https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=256&name=${encodeURIComponent(displayName)}&rounded=true&length=1`, 'passport', null));

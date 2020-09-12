@@ -142,5 +142,12 @@ module.exports = (env, argv) => {
         resolve: {
             extensions: ['.js', '.css', '.scss'],
         },
+        node: {
+            child_process: 'empty',
+            fs: 'empty',
+            crypto: 'empty',
+            net: 'empty',
+            tls: 'empty',
+        },
     };
 };

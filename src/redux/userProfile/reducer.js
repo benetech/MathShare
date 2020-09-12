@@ -1,4 +1,5 @@
 const initialState = {
+    id: '',
     email: '',
     name: '',
     profileImage: '',

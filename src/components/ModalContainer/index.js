@@ -62,7 +62,10 @@ const ModalContainer = (props) => {
                 toggleModals={props.toggleModals}
                 shareLink={props.newSetShareLink}
                 problemList={props.problemList}
+                lti={props.lti}
                 announceOnAriaLive={props.announceOnAriaLive}
+                createAssignmentOnCanvas={props.createAssignmentOnCanvas}
+                submitAssignmentOnCanvas={props.submitAssignmentOnCanvas}
                 clearAriaLive={props.clearAriaLive}
             />
         )
@@ -174,7 +177,10 @@ const ModalContainer = (props) => {
                 announceOnAriaLive={props.announceOnAriaLive}
                 clearAriaLive={props.clearAriaLive}
                 problemList={props.problemList}
+                lti={props.lti}
                 submitToPartner={props.submitToPartner}
+                createAssignmentOnCanvas={props.createAssignmentOnCanvas}
+                submitAssignmentOnCanvas={props.submitAssignmentOnCanvas}
                 isSolutionSet
             />
         )

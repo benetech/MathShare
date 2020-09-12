@@ -546,8 +546,11 @@ class App extends Component {
                             mathPalettes={problemList.set.palettes}
                             problemList={this.props.problemList}
                             submitToPartner={this.props.submitToPartner}
+                            createAssignmentOnCanvas={this.props.createAssignmentOnCanvas}
+                            submitAssignmentOnCanvas={this.props.submitAssignmentOnCanvas}
                             announceOnAriaLive={this.props.announceOnAriaLive}
                             clearAriaLive={this.props.clearAriaLive}
+                            lti={this.props.lti}
                             {...problemStore}
                             {...this}
                         />
@@ -627,6 +630,7 @@ export default withRouter(connect(
         userProfile: state.userProfile,
         modal: state.modal,
         routerHooks: state.routerHooks,
+        lti: state.lti,
     }),
     {
         ...problemActions,

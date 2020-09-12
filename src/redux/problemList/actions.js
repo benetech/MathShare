@@ -218,10 +218,29 @@ export const submitToPartner = (id, editCode, shareCode) => ({
     },
 });
 
+export const createAssignmentOnCanvas = (
+    courseId, assignmentName, submissionTypes, description,
+) => ({
+    type: 'CREATE_ASSIGNMENT_ON_CANVAS',
+    payload: {
+        courseId, assignmentName, submissionTypes, description,
+    },
+});
+
+export const submitAssignmentOnCanvas = (
+    courseId, assignmentId, url,
+) => ({
+    type: 'SUBMIT_ASSIGNMENT_ON_CANVAS',
+    payload: {
+        courseId, assignmentId, url,
+    },
+});
+
 export default {
     addProblem,
     archiveProblemSet,
     clearProblemSet,
+    createAssignmentOnCanvas,
     deleteProblem,
     duplicateProblemSet,
     editProblem,
@@ -242,6 +261,7 @@ export default {
     shareSolutions,
     setProblemSetShareCode,
     setReviewSolutions,
+    submitAssignmentOnCanvas,
     updateProblemList,
     updateSet,
     updateTempSet,

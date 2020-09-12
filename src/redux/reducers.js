@@ -4,6 +4,7 @@ import {
 import {
     connectRouter,
 } from 'connected-react-router';
+import lti from './lti/reducer';
 import modal from './modal/reducer';
 import problem from './problem/reducer';
 import problemList from './problemList/reducer';
@@ -17,6 +18,7 @@ export default history => combineReducers({
     router: connectRouter(history),
     modal,
     ariaLiveAnnouncer,
+    lti,
     problem,
     problemList,
     routerHooks,

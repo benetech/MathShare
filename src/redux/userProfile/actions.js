@@ -1,6 +1,7 @@
-export const setUserProfile = (email, name, profileImage, service, userType) => ({
+export const setUserProfile = (id, email, name, profileImage, service, userType) => ({
     type: 'SET_USER_PROFILE',
     payload: {
+        id,
         email,
         name,
         profileImage,
