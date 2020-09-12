@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="Mathshare is a free, open source, and accessible education tool that helps students show and organize their math work."/>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta property="og:url" content="https://mathshare.benetech.org">
+    <meta property="og:title" content="Mathshare">
+    <meta property="og:description" content="Help students share and organize their math work">
+    <meta property="og:image" content="https://mathshare.benetech.org/images/mathshare_logo.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@mathshare">
+    <meta name="twitter:title" content="Mathshare">
+    <meta name="twitter:description" content="An accessible and free tool that helps all students share and organize their math work.">
+    <meta name="google-signin-client_id" content="<%= htmlWebpackPlugin.options.env.GOOGLE_SIGNIN_CLIENT_ID %>">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/pickr.min.css"/>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-84400364-2"></script>
+    <link rel="stylesheet" href="/libs/google-signin/style.css">
+    <link href="https://fonts.googleapis.com/css?family=Courier+Prime|Open+Sans&display=swap" rel="stylesheet">
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        const GA_ACCOUNT_ID = 'UA-84400364-2';
+    </script>
+    <script src="/libs/speech-rule-engine/lib/sre_browser.js"></script>
+
+    <title>Benetech Mathshare</title>
+	<link rel="icon" href="/images/favicon.png">
+    <script>
+    window.___gcfg = {
+        parsetags: 'explicit'
+    };
+    </script>
+    <script src="//sdk.amazonaws.com/js/aws-sdk-2.249.1.min.js"></script>
+    <script>
+        // Initialize the Amazon Cognito credentials provider
+        AWS.config.region = 'us-east-1'; 
+        AWS.config.credentials = new AWS.CognitoIdentityCredentials({IdentityPoolId: 'us-east-1:ac6523d9-ebad-4bb9-85cd-794672b83d14'});
+    </script>
+</head>
+
+<body lang=EN-US>
+    <div id="root" style="height: 100%; 
+        display: flex;
+        overflow-y: scroll;
+        justify-content: space-between;
+        flex-direction: column;
+        z-index: 1;
+        --webkit-overflow-scrolling: touch;" >
+    </div>   
+</body>
+
+</html>

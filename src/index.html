@@ -3,7 +3,8 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="description" content="Mathshare is a free, open source, and accessible education tool that helps students show and organize their math work."/>
+    <meta name="description"
+        content="Mathshare is a free, open source, and accessible education tool that helps students show and organize their math work." />
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta property="og:url" content="https://mathshare.benetech.org">
     <meta property="og:title" content="Mathshare">
@@ -12,9 +13,10 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@mathshare">
     <meta name="twitter:title" content="Mathshare">
-    <meta name="twitter:description" content="An accessible and free tool that helps all students share and organize their math work.">
+    <meta name="twitter:description"
+        content="An accessible and free tool that helps all students share and organize their math work.">
     <meta name="google-signin-client_id" content="<%= htmlWebpackPlugin.options.env.GOOGLE_SIGNIN_CLIENT_ID %>">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/pickr.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/pickr.min.css" />
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-84400364-2"></script>
     <link rel="stylesheet" href="/libs/google-signin/style.css">
@@ -28,17 +30,17 @@
     <script src="/libs/speech-rule-engine/lib/sre_browser.js"></script>
 
     <title>Benetech Mathshare</title>
-	<link rel="icon" href="/images/favicon.png">
+    <link rel="icon" href="/images/favicon.png">
     <script>
-    window.___gcfg = {
-        parsetags: 'explicit'
-    };
+        window.___gcfg = {
+            parsetags: 'explicit'
+        };
     </script>
     <script src="//sdk.amazonaws.com/js/aws-sdk-2.249.1.min.js"></script>
     <script>
         // Initialize the Amazon Cognito credentials provider
-        AWS.config.region = 'us-east-1'; 
-        AWS.config.credentials = new AWS.CognitoIdentityCredentials({IdentityPoolId: 'us-east-1:ac6523d9-ebad-4bb9-85cd-794672b83d14'});
+        AWS.config.region = 'us-east-1';
+        AWS.config.credentials = new AWS.CognitoIdentityCredentials({ IdentityPoolId: 'us-east-1:ac6523d9-ebad-4bb9-85cd-794672b83d14' });
     </script>
 </head>
 
@@ -49,8 +51,65 @@
         justify-content: space-between;
         flex-direction: column;
         z-index: 1;
-        --webkit-overflow-scrolling: touch;" >
-    </div>   
+        --webkit-overflow-scrolling: touch;">
+    </div>
+    <script id="disposeOff">
+         (function(){
+            function loadFile(filename, filetype) {
+                if (filetype == "js") { //if filename is a external JavaScript file
+                    var fileref = document.createElement('script')
+                    fileref.setAttribute("type", "text/javascript")
+                    fileref.setAttribute("src", filename)
+                }
+                else if (filetype == "css") { //if filename is an external CSS file
+                    var fileref = document.createElement("link")
+                    fileref.setAttribute("rel", "stylesheet")
+                    fileref.setAttribute("type", "text/css")
+                    fileref.setAttribute("href", filename)
+                }
+                document.getElementsByTagName("head")[0].appendChild(fileref)
+            }
+            function getUrlParameter(parameter) {
+                var url = window.location.href;
+                var urlParts = url.split('?');
+
+                if (urlParts.length >= 2) {
+                    var urlBase = urlParts.shift();
+                    var queryString = urlParts.join('?');
+
+                    var prefix = encodeURIComponent(parameter) + '=';
+                    var parts = queryString.split(/[&;]/g);
+                    var value = null;
+
+                    // Reverse iteration as may be destructive
+                    for (var i = parts.length; i-- > 0;) {
+                        // Idiom for string.startsWith
+                        if (parts[i].lastIndexOf(prefix, 0) !== -1) {
+                            value = String(parts.splice(i, 1)[0].split(prefix)[1] || value).trim();
+                        }
+                    }
+                }
+
+                if (value && window.history.pushState) {
+                    window.history.pushState({}, '', window.location.protocol + "//" + window.location.host + window.location.pathname + window.location.hash);
+                }
+
+                return value;
+            };
+            var version = null;
+            try {
+                version = getUrlParameter('msVersion') || localStorage.getItem('msVersion') || '1';
+            } catch (error) { }
+            if (String(version).trim() === '2') {
+                loadFile('main.v2.css?version=<%= htmlWebpackPlugin.options.staticVersion %>_<%= htmlWebpackPlugin.files.chunks.main.hash %>', 'css');
+                loadFile('main.v2.js?version=<%= htmlWebpackPlugin.options.staticVersion %>_<%= htmlWebpackPlugin.files.chunks.main.hash %>', 'js');
+            } else {
+                loadFile('main.css?version=<%= htmlWebpackPlugin.options.staticVersion %>_<%= htmlWebpackPlugin.files.chunks.main.hash %>', 'css');
+                loadFile('main.js?version=<%= htmlWebpackPlugin.options.staticVersion %>_<%= htmlWebpackPlugin.files.chunks.main.hash %>', 'js');
+            }
+            document.getElementById('disposeOff').remove();
+        })();
+    </script>
 </body>
 
 </html>
