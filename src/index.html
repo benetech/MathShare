@@ -99,6 +99,7 @@
             var version = null;
             try {
                 version = getUrlParameter('msVersion') || localStorage.getItem('msVersion') || '1';
+                localStorage.setItem('msVersion', version);
             } catch (error) { }
             if (String(version).trim() === '2') {
                 loadFile('main.v2.css?version=<%= htmlWebpackPlugin.options.staticVersion %>_<%= htmlWebpackPlugin.files.chunks.main.hash %>', 'css');
