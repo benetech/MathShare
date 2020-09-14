@@ -2,8 +2,6 @@ const HtmlWebPackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
-const dayjs = require('dayjs');
 const getClientEnvironment = require('./env');
 
 module.exports = (env, argv) => {
@@ -14,10 +12,8 @@ module.exports = (env, argv) => {
         new HtmlWebPackPlugin({
             template: './src/index.html',
             filename: './index.html',
-            staticVersion: dayjs().unix(),
             environment: process.env.NODE_ENV,
             env: envVars.raw,
-            inject: false,
         }),
         new webpack.ProvidePlugin({
             $: 'jquery',
@@ -29,26 +25,7 @@ module.exports = (env, argv) => {
             filename: '[name].css',
             chunkFilename: '[id].css',
         }),
-        new CopyWebpackPlugin([{
-            from: 'node_modules/speech-rule-engine/lib/sre_browser.js',
-            to: 'libs/speech-rule-engine/lib/sre_browser.js',
-        }, {
-            from: 'src/lib/google-signin/style.css',
-            to: 'libs/google-signin/style.css',
-        }, {
-            from: 'static/microsoft-identity-association.json',
-            to: '.well-known/microsoft-identity-association.json',
-        }, {
-            from: 'v2/dist/main.css',
-            to: 'main.v2.css',
-        }, {
-            from: 'v2/dist/main.js',
-            to: 'main.v2.js',
-        }]),
     ];
-    if (!debug) {
-        plugins.push(new webpack.IgnorePlugin(/mathlive\/src\/mathlive.js/));
-    }
     return {
         resolveLoader: {
             modules: [path.join(__dirname, 'node_modules')],
@@ -72,9 +49,10 @@ module.exports = (env, argv) => {
                     {
                         loader: 'css-loader',
                         options: {
-                            modules: true,
-                            localIdentName: '[name]__[local]___[hash:base64:5]',
-                            camelCase: true,
+                            modules: {
+                                localIdentName: '[name]__[local]___[hash:base64:5]',
+                                exportLocalsConvention: 'camelCase',
+                            },
                             sourceMap: debug,
                         },
                     },

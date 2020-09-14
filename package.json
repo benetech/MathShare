@@ -6,8 +6,8 @@
   "scripts": {
     "start": "webpack-dev-server --mode development --stage=local --open",
     "debug": "webpack-dev-server --mode development --open --env.debug",
-    "build": "webpack --mode production --stage=production",
-    "build_qa": "webpack --mode production --stage=qa",
+    "build": "cd v2 && webpack --mode production --stage=production && cd ../ && webpack --mode production --stage=production",
+    "build_qa": "cd v2 && webpack --mode production --stage=qa && cd ../ && webpack --mode production --stage=qa",
     "build_staging": "webpack --mode production --stage=staging",
     "axe_audit": "node axe/index.js",
     "json_server": "json-server dummy_api/db.json --routes dummy_api/routes.json --port 8080"
