@@ -1,0 +1,99 @@
+@import "../../assets/scss/argon-design-system-react.scss";
+
+.topBar {
+    .searchInput {
+        border: 2px solid #fff;
+        border-bottom: 2px solid $gray-900;
+        border-radius: 0;
+        box-shadow: none;
+
+        &:focus,
+        &:hover {
+            border: 2px solid $gray-900;
+        }
+
+        i {
+            color: $gray-900;
+        }
+
+        input {
+            color: $gray-900;
+        }
+    }
+}
+
+.heading {
+    .title {
+        font-size: 32px;
+        text-transform: none;
+        color: $gray-900;
+        font-weight: bolder;
+    }
+
+    .layoutBtns {
+        button {
+            padding: 0.2rem 0.6rem;
+            font-size: 24px;
+        }
+    }
+
+    .newSetBtn {
+        padding: 6px;
+        font-size: 18px;
+
+        i {
+            vertical-align: inherit;
+            font-size: 32px;
+            padding-right: 8px;
+        }
+    }
+
+    .dropdown {
+        padding-left: 24px;
+
+        button i {
+            padding-left: 12px;
+        }
+    }
+}
+
+.setButtons {
+    justify-content: flex-end;
+    display: flex;
+}
+
+.problemSetGrid {
+    padding-top: 45px;
+    padding-bottom: 60px;
+
+    .tile {
+        min-height: 400px;
+        text-align: center;
+        box-sizing: border-box;
+        width: 315px;
+        color: #37345B;
+        border-radius: 30px;
+        display: flex;
+
+        &.newSet {
+            margin: auto;
+            border: 3px dashed #37345B;
+            align-items: center;
+    
+            i {
+                font-size: 84px;
+                color: #61CBB8;
+            }
+        }
+    
+        div {
+            font-size: 30px;
+            font-weight: 600;
+        }
+    }
+
+    > * {
+        cursor: pointer;
+    }
+}
+

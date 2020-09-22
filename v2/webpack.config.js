@@ -43,7 +43,7 @@ module.exports = (env, argv) => {
             },
             {
                 test: /\.s(a|c)ss$/,
-                exclude: /node_modules/,
+                exclude: /node_modules|src(\/|\\)assets(\/|\\)scss/,
                 loader: [
                     debug ? 'style-loader' : MiniCssExtractPlugin.loader,
                     {
@@ -99,6 +99,8 @@ module.exports = (env, argv) => {
                 include: [
                     /node_modules(\/|\\)react-toastify/,
                     /node_modules(\/|\\)bootstrap/,
+                    /node_modules(\/|\\)argon-design-system-react/,
+                    /src(\/|\\)assets(\/|\\)scss/,
                     /src(\/|\\)lib/,
                     /src(\/|\\)styles/,
                 ],
@@ -108,6 +110,28 @@ module.exports = (env, argv) => {
                 {
                     loader: 'css-loader',
                 },
+                ],
+            },
+            {
+                test: /\.s(a|c)ss$/,
+                include: [
+                    /node_modules(\/|\\)bootstrap/,
+                    /node_modules(\/|\\)argon-design-system-react/,
+                    /src(\/|\\)assets(\/|\\)scss/,
+                ],
+                loader: [
+                    {
+                        loader: 'style-loader',
+                    },
+                    {
+                        loader: 'css-loader',
+                    },
+                    {
+                        loader: 'sass-loader',
+                        options: {
+                            sourceMap: debug,
+                        },
+                    },
                 ],
             },
             {

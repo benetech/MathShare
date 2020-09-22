@@ -1,0 +1,281 @@
+@import "../../assets/scss/argon-design-system-react.scss";
+
+.topBar {
+    .searchInput {
+        border: 2px solid #fff;
+        border-bottom: 2px solid $gray-900;
+        border-radius: 0;
+        box-shadow: none;
+
+        &:focus,
+        &:hover {
+            border: 2px solid $gray-900;
+        }
+
+        i {
+            color: $gray-900;
+        }
+
+        input {
+            color: $gray-900;
+        }
+    }
+}
+
+.heading {
+    .title {
+        font-size: 32px;
+        text-transform: none;
+        color: $gray-900;
+        font-weight: bolder;
+    }
+
+    .layoutBtns {
+        button {
+            padding: 0.2rem 0.6rem;
+            font-size: 24px;
+        }
+    }
+
+    .newSetBtn {
+        padding: 6px;
+        font-size: 18px;
+
+        i {
+            vertical-align: inherit;
+            font-size: 32px;
+            padding-right: 8px;
+        }
+    }
+
+    .dropdown {
+        padding-left: 24px;
+
+        button i {
+            padding-left: 12px;
+        }
+
+        > * {
+            text-transform: none;
+        }
+
+        :global(.dropdown-menu) {
+            padding: 0;
+
+            :global(.dropdown-item) {
+                box-shadow: none;
+                background-color: #37345B;
+                color: white;
+
+                &:not(:last-child) {
+                    border-bottom: 1px solid white;
+                }
+
+                &:first-child {
+                    border-top-right-radius: 8px;
+                    border-top-left-radius: 8px;
+                }
+
+                &:last-child {
+                    border-bottom-right-radius: 8px;
+                    border-bottom-left-radius: 8px;
+                }
+
+                &:hover, &:focus {
+                    background-color: white;
+                    color: #37345B;
+                }
+            }
+        }
+    }
+}
+
+.setButtons {
+    justify-content: flex-end;
+    display: flex;
+}
+
+.problemSetGrid:global(.grid) {
+    .tileContainer {
+        width: 315px;
+    }
+
+    .tile {
+        width: 315px;
+
+        > &:nth-child(2) {
+            width: 50%;
+        }
+
+        .header {
+            display: inline-flex;
+            width: 100%;
+            height: 62px;
+
+            img {
+                margin-right: auto;
+            }
+        }
+
+        .course {
+            padding-top: 12px;
+        }
+
+        .problemSetTitle {
+            font-size: 36px;
+            height: 175px;
+        }
+
+        .progressText {
+            font-size: 26px;
+
+            > span {
+                margin-top: 12px;
+            }
+        }
+
+        &.newSet {
+            margin: auto;
+            border: 3px dashed #37345B;
+            align-items: center;
+    
+            i {
+                font-size: 84px;
+                color: #61CBB8;
+            }
+        }
+    }
+
+    > * {
+        cursor: pointer;
+    }
+}
+
+.problemSetGrid:global(.line-item) {
+    .tileContainer {
+        width: 100%;
+        margin: 10px 20px;
+
+        .tile {
+            display: flex;
+            width: 100%;
+            padding: 20px;
+
+            .problemSetTitle {
+                height: auto;
+                font-size: 25px;
+            }
+
+            .content {
+                display: flex;
+                flex-wrap: wrap;
+                width: 100%;
+                padding-right: 60px;
+                justify-content: space-between;
+            }
+
+            .mainContent {
+                width: 50%;
+            }
+
+            .progressText {
+                font-size: 18px;
+                width: 250px;
+                position: relative;
+                top: 10px;
+
+                span {
+                    margin-top: 2px;
+                }
+            }
+
+            .header {
+                margin-right: 25px;
+                
+                i {
+                    position: absolute;
+                    right: 40px;
+                    line-height: 100px;
+                    margin-top: -18px;
+                    padding-left: 20px;
+                }
+            }
+
+            .course {
+                font-size: 14px;
+            }
+        }
+    }
+}
+
+
+.problemSetGrid {
+    padding-top: 25px;
+    padding-bottom: 60px;
+
+    .tileContainer {
+        border-radius: 25px;
+        display: flex;
+        margin: 20px;
+        &:nth-child(3n+1) {
+            background: #E3FDF7;
+        }
+
+        &:nth-child(3n+2) {
+            background: rgba(245,243,255,0.42);
+        }
+
+        &:nth-child(3n+3) {
+            background: #FBE8E3;
+        }
+    }
+
+    .tile {
+        text-align: left;
+        box-sizing: border-box;
+        color: #37345B;
+        border-radius: 30px;
+        padding: 25px;
+
+        .header {
+
+            img {
+                width: 62px;
+                height: 62px;
+                border-radius: 18px;
+            }
+
+            i {
+                margin-top: 20px;
+            }
+        }
+
+        .course {
+            color: #6D6A92;
+        }
+
+        .problemSetTitle {
+            font-weight: bold;
+            color: #37345B;
+        }
+
+        .progressText {
+            padding-bottom: 12px;
+
+            > span {
+                font-size: 14px;
+                color: #37345B;
+                float: right;
+            }
+        }
+    
+        div {
+            font-size: 30px;
+            font-weight: 600;
+        }
+    }
+
+    > * {
+        cursor: pointer;
+    }
+}

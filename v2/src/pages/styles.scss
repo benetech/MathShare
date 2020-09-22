@@ -11,3 +11,23 @@
         margin-top: auto;
     }
 }
+
+:global(.body-container) {
+    :global(.ct-sidebar) {
+        top: 0rem;
+        background-color: #fff;
+        border: none;
+        padding: 20px;
+    }
+
+    @media (min-width: 786px) {
+        :global(.ct-sidebar) {
+            padding: 0;
+            :global(.ct-sidebar-sroll-container) {
+                height: calc(100vh - 120px);
+                overflow-y: auto;
+                padding: 15px;
+            }
+        }
+    }
+}
