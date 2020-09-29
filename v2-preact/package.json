@@ -1,0 +1,39 @@
+{
+  "private": true,
+  "name": "v2-preact",
+  "version": "0.0.0",
+  "license": "MIT",
+  "scripts": {
+    "build": "preact build --no-prerender",
+    "serve": "preact serve",
+    "dev": "preact watch",
+    "lint": "eslint src",
+    "postinstall": "echo 'ALERT! This package has been deprecated. Please use default/typescript/netlify/simple.'"
+  },
+  "eslintConfig": {
+    "extends": "eslint-config-synacor",
+    "rules": {
+      "no-unused-vars": "warn",
+      "react/sort-comp": "off",
+      "lines-around-comment": "off",
+      "react/prefer-stateless-function": "off"
+    }
+  },
+  "eslintIgnore": [
+    "build/*"
+  ],
+  "devDependencies": {
+    "eslint": "^4.5.0",
+    "eslint-config-synacor": "^1.1.0",
+    "preact-cli": "^3.0.2"
+  },
+  "dependencies": {
+    "preact": "^8.5.2",
+    "preact-compat": "^3.17.0",
+    "preact-material-components": "^1.4.3",
+    "preact-render-to-string": "^4.1.0",
+    "preact-router": "^2.5.5",
+    "react-ga": "^3.1.2",
+    "redux-zero": "^5.1.7"
+  }
+}
