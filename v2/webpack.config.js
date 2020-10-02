@@ -2,6 +2,7 @@ const HtmlWebPackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+
 const getClientEnvironment = require('./env');
 
 module.exports = (env, argv) => {
@@ -98,8 +99,7 @@ module.exports = (env, argv) => {
                 test: /\.css$/,
                 include: [
                     /node_modules(\/|\\)react-toastify/,
-                    /node_modules(\/|\\)bootstrap/,
-                    /node_modules(\/|\\)argon-design-system-react/,
+                    /node_modules(\/|\\)antd/,
                     /src(\/|\\)assets(\/|\\)scss/,
                     /src(\/|\\)lib/,
                     /src(\/|\\)styles/,
@@ -116,7 +116,6 @@ module.exports = (env, argv) => {
                 test: /\.s(a|c)ss$/,
                 include: [
                     /node_modules(\/|\\)bootstrap/,
-                    /node_modules(\/|\\)argon-design-system-react/,
                     /src(\/|\\)assets(\/|\\)scss/,
                 ],
                 loader: [
@@ -133,6 +132,24 @@ module.exports = (env, argv) => {
                         },
                     },
                 ],
+            },
+            {
+                test: /\.less$/,
+                use: [{
+                    loader: 'style-loader',
+                }, {
+                    loader: 'css-loader', // translates CSS into CommonJS
+                }, {
+                    loader: 'less-loader', // compiles Less to CSS
+                    options: {
+                        lessOptions: {
+                            modifyVars: {
+                                'primary-color': '#37345B',
+                            },
+                            javascriptEnabled: true,
+                        },
+                    },
+                }],
             },
             {
                 test: /\.(ttf|eot|svg|woff(2)?)(\S+)?$/,

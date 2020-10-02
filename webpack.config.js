@@ -39,17 +39,11 @@ module.exports = (env, argv) => {
             from: 'static/microsoft-identity-association.json',
             to: '.well-known/microsoft-identity-association.json',
         }, {
-            from: 'v2-preact/build/bundle.*.css',
+            from: 'v2/dist/main.css',
             to: 'main.v2.css',
         }, {
-            from: 'v2-preact/build/bundle.*.js',
+            from: 'v2/dist/main.js',
             to: 'main.v2.js',
-        }, {
-            from: 'v2-preact/build/**/*.js',
-            to: '[name].[ext]',
-        }, {
-            from: 'v2-preact/build/**/*.css',
-            to: '[name].[ext]',
         }]),
     ];
     if (!debug) {

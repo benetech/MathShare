@@ -1,77 +1,131 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable no-console */
-import React from 'react';
+/* eslint-disable no-restricted-globals */
+import {
+    faBars, faChevronDown, faPlusCircle, faThLarge,
+} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+    Row, Col, Radio, Dropdown, Button, Menu, Input,
+} from 'antd';
+/* eslint-disable react/prefer-stateless-function */
+import React, { Component } from 'react';
 import styles from './styles.scss';
 
-const Welcome = ({ history }) => (
-    <div>
-        <div className={`row ${styles.topBar}`}>
-            <div className="col-md-6">
-                <div className="form-group">
-                    <div className={`${styles.searchInput} input-group input-group-alternative mb-4`}>
-                        <input className="form-control form-control-alternative" placeholder="Search set" type="text" />
-                        <div className="input-group-append">
-                            <span className="input-group-text">
-                                <i className="fa fa-search" />
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div className={`row justify-content-between ${styles.heading}`}>
-            <div className="col col-md-6 col-sm-12 col-xs-12">
-                <span className={styles.title}>Your Sets</span>
-            </div>
-            <div className={`col-auto align-self-end ${styles.setButtons}`}>
-                <button
-                    type="button"
-                    className={`btn btn-secondary ${styles.newSetBtn}`}
+const { Search } = Input;
+
+const gutter = {
+    xs: 8,
+    sm: 16,
+    md: 24,
+    lg: 24,
+};
+
+class Welcome extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            layout: 'grid',
+        };
+    }
+
+    setLayout = (e) => {
+        this.setState({
+            layout: e.target.value,
+        });
+    }
+
+    handleDropdownSelect = (e) => {
+        console.log('e', e);
+    }
+
+    render() {
+        const menu = (
+            <Menu onClick={this.handleDropdownSelect}>
+                <Menu.Item key="1">
+                    Most Recent
+                </Menu.Item>
+                <Menu.Item key="2">
+                    Assigned to me
+                </Menu.Item>
+                <Menu.Item key="3">
+                    Created by me
+                </Menu.Item>
+            </Menu>
+        );
+
+        return (
+            <div>
+                <Row
+                    className={styles.topBar}
+                    gutter={gutter}
                 >
-                    <i className="fa fa-plus-circle" aria-hidden="true" />
-                    New Set
-                </button>
-                <div className={`btn-group ${styles.layoutBtns}`} role="group">
-                    <button type="button" className="btn btn-outline-default active">
-                        <i className="fa fa-bars" aria-hidden="true" />
-                    </button>
-                    <button type="button" className="btn btn-outline-default">
-                        <i className="fa fa-th-large" aria-hidden="true" />
-                    </button>
-                </div>
-                <div className={`dropdown ${styles.dropdown}`}>
-                    <button className="btn btn-outline-default btn-icon btn-round" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        recent
-                        <i className="fa fa-chevron-down" aria-hidden="true" />
-                    </button>
-                    <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a className="dropdown-item" href="#">recent</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div className={`row ${styles.problemSetGrid}`}>
-            <div
-                className="col-lg-4 col-md-6"
-                onClick={() => {
-                    console.log('history');
-                    history.push('/dash');
-                }}
-            >
-                <div className={`${styles.tile} ${styles.newSet}`}>
-                    <div>
-                        <div>
-                            <i className="fa fa-plus-circle" aria-hidden="true" />
+                    <Col className={`gutter-row ${styles.topBar}`} xs={24} sm={24} md={12} lg={12} xl={12}>
+                        <Search
+                            className={styles.searchInput}
+                            placeholder="Search set"
+                            onSearch={value => console.log(value)}
+                        />
+                    </Col>
+                </Row>
+                <Row
+                    className={`justify-content-between ${styles.heading}`}
+                    gutter={gutter}
+                >
+                    <Col className={`gutter-row ${styles.topBar}`} xs={24} sm={24} md={12} lg={12} xl={12}>
+                        <span className={styles.title}>Your Sets</span>
+                    </Col>
+                    <Col className={`col-auto ${styles.setButtons}`} xs={24} sm={24} md={12} lg={12} xl={12}>
+                        <div className={`btn-group ${styles.layoutBtns}`} role="group">
+                            <Radio.Group
+                                buttonStyle="solid"
+                                onChange={this.setLayout}
+                                size="large"
+                                value={this.state.layout}
+                                style={{ marginBottom: 8 }}
+                            >
+                                <Radio.Button value="line-item">
+                                    <FontAwesomeIcon icon={faBars} />
+                                </Radio.Button>
+                                <Radio.Button value="grid">
+                                    <FontAwesomeIcon icon={faThLarge} />
+                                </Radio.Button>
+                            </Radio.Group>
                         </div>
-                        <div>
-                            Add your first problem here
+                        <div className={`dropdown ${styles.dropdown}`}>
+                            <Dropdown overlay={menu}>
+                                <Button size="large">
+                                    Most Recent
+                                    <FontAwesomeIcon icon={faChevronDown} />
+                                </Button>
+                            </Dropdown>
+                        </div>
+                    </Col>
+                </Row>
+                <Row className={`${styles.problemSetGrid} grid`}>
+                    <div
+                        className="col-lg-4 col-md-6"
+                        onClick={() => {
+                            console.log('history', this.props);
+                            this.props.history.push('/dash');
+                        }}
+                    >
+                        <div className={`${styles.tile} ${styles.newSet}`}>
+                            <div>
+                                <div>
+                                    <FontAwesomeIcon icon={faPlusCircle} />
+                                </div>
+                                <div>
+                                    Add your first problem here
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </Row>
             </div>
-        </div>
-    </div>
-);
+        );
+    }
+}
 
 export default Welcome;

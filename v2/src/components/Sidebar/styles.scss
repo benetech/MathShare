@@ -19,31 +19,42 @@
 .profile {
     max-width: 250px;
     margin: auto;
+
     .avatar {
         padding: 20px;
-    
+
         img {
             border-radius: 1.9rem;
+            width: 100%;
         }
     }
+
     .name {
-        font-weight: 900;
+        font-weight: bold;
         color: $primary-color;
-        font-size: 1.2rem;
+        font-size: 20px;
     }
-    .title, .signout {
+
+    .title,
+    .signout {
         color: $dark-grey-3;
     }
+
     .title {
         font-size: 0.9rem;
     }
+
     .signout {
         font-size: 0.8rem;
+    }
+
+    >* {
+        text-align: center;
     }
 }
 
 .actionButtons {
-    padding-top: 48px;
+    padding: 10px 20px;
     display: flex;
     justify-content: space-between;
 
@@ -53,13 +64,18 @@
         font-size: 0.7rem;
         border-width: 2px;
         border-radius: 8px;
+        height: 40px;
+        margin: 5px;
+        border-color: $primary-color;
 
-        span {
-            font-size: 1rem;
-        }
+        // span {
+        //     font-size: 1rem;
+        // }
 
-        svg:not(:first-child), i:not(:first-child) {
+        svg:not(:first-child),
+        i:not(:first-child) {
             margin-left: 0.2rem;
+            margin-right: 0.1rem
         }
     }
 
@@ -69,24 +85,66 @@
 }
 
 .contrastButtons {
-    padding-top: 20px;
+    padding: 10px;
     display: block;
-    :global(.btn-group) {
+    margin: auto;
+
+    :global(.ant-radio-group) {
         width: 100%;
-        button {
-            border-radius: 0.8rem;
-            font-size: 12px;
-            padding: 12px 8px;
-            text-transform: none;
+
+        :global(.ant-radio-button-wrapper) {
+            font-size: 14px;
+            border: 1px solid $primary-color !important;
+            box-sizing: border-box;
+
+            padding: 0 12px;
+
             &:first-child {
-                padding-left: 20px;
+                border-radius: 10px 0 0 10px;
             }
+
             &:last-child {
-                padding-right: 10px;
+                border-radius: 0 10px 10px 0;
+            }
+
+            &:not([class*=' ant-radio-button-wrapper-disabled']) {
+                // &:first-child {
+                //     border-right-color:$primary-color;
+                // }
+                // &:last-child {
+                //     border-left-color: $primary-color;
+                // }
+
+                &:global(.ant-radio-button-wrapper-checked),
+                &:focus,
+                &:hover {
+                    background: $primary-color;
+                    // border-color: $primary-color;
+                    color: white;
+                    border-left-color: $primary-color;
+                }
+
+                &:global(.ant-radio-button-wrapper-checked) {
+                    // &:not(:global(.ant-radio-button-wrapper-disabled)):before {
+                    //     background-color: white;
+                    // }
+
+                    font-weight: bold;
+                }
+
+                // &:nth-child(2) {
+                //     // &:focus, &:hover {
+                //     //     border-left: 1px solid white;
+                //     //     border-right: 1px solid white;
+                //     //     border-top: 1px solid $primary-color;
+                //     //     border-bottom: 1px solid $primary-color;
+                //     // }
+                // }
             }
         }
     }
 }
+
 .nav {
     color: #6D6A92;
     font-size: 16px;
@@ -106,5 +164,16 @@
                 font-weight: bold;
             }
         }
+    }
+}
+
+.sidebarContainer {
+    :global(.ant-menu):not(:global(.ant-menu-horizontal)) :global(.ant-menu-item-selected), :global(.ant-menu):not(:global(.ant-menu-horizontal)) :global(.ant-menu-item-selected) {
+        background-color: white;
+        font-weight: bold;
+    }
+
+    :global(.ant-menu-inline) :global(.ant-menu-item::after), :global(.ant-menu-inline), :global(.ant-menu-vertical), :global(.ant-menu-vertical-left) {
+        border-right: none;
     }
 }

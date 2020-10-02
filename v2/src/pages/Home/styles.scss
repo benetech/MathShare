@@ -1,23 +1,29 @@
-@import "../../assets/scss/argon-design-system-react.scss";
+@import '../../styles/colors.scss';
 
 .topBar {
+    padding: 10px;
+
     .searchInput {
         border: 2px solid #fff;
-        border-bottom: 2px solid $gray-900;
+        border-bottom: 2px solid $primary-color;
         border-radius: 0;
         box-shadow: none;
 
         &:focus,
         &:hover {
-            border: 2px solid $gray-900;
+            border: 2px solid $primary-color;
         }
 
         i {
-            color: $gray-900;
+            color: $primary-color;
         }
 
         input {
-            color: $gray-900;
+            color: $primary-color;
+        }
+
+        :global(.ant-input-search-icon)::before {
+            border-left: none;
         }
     }
 }
@@ -26,20 +32,32 @@
     .title {
         font-size: 32px;
         text-transform: none;
-        color: $gray-900;
+        color: $primary-color;
         font-weight: bolder;
     }
 
     .layoutBtns {
-        button {
-            padding: 0.2rem 0.6rem;
-            font-size: 24px;
+        padding: 0px 12px;
+
+        :global(.ant-radio-button-wrapper) {
+            padding: 0px 12px;
+
+            &:first-child {
+                border-radius: 8px 0 0 8px;
+            }
+
+            &:last-child {
+                border-radius: 0 8px 8px 0;
+            }
         }
+
     }
 
     .newSetBtn {
         padding: 6px;
         font-size: 18px;
+        white-space: nowrap;
+        height: 46px;
 
         i {
             vertical-align: inherit;
@@ -51,49 +69,316 @@
     .dropdown {
         padding-left: 24px;
 
-        button i {
-            padding-left: 12px;
+        button {
+            width: 150px;
+
+            svg {
+                margin-left: 18px;
+            }
+        }
+
+        >* {
+            text-transform: none;
+        }
+
+        :global(.dropdown-menu) {
+            padding: 0;
+
+            &:global(.show) {
+                position: absolute !important;
+                right: 0 !important;
+                left: auto !important;
+            }
+
+            :global(.dropdown-item) {
+                box-shadow: none;
+                background-color: #37345B;
+                color: white;
+
+                &:not(:last-child) {
+                    border-bottom: 1px solid white;
+                }
+
+                &:first-child {
+                    border-top-right-radius: 8px;
+                    border-top-left-radius: 8px;
+                }
+
+                &:last-child {
+                    border-bottom-right-radius: 8px;
+                    border-bottom-left-radius: 8px;
+                }
+
+                &:hover,
+                &:focus {
+                    background-color: white;
+                    color: #37345B;
+                }
+            }
         }
     }
 }
 
-.setButtons {
-    justify-content: flex-end;
-    display: flex;
+.heading {
+    .setButtons {
+        justify-content: flex-end;
+        display: flex;
+        margin: auto;
+    }
+
+    @media (max-width: 480px) {
+        .setButtons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-evenly;
+
+            >* {
+                margin: 10px;
+            }
+        }
+    }
 }
 
-.problemSetGrid {
-    padding-top: 45px;
-    padding-bottom: 60px;
+.problemSetGrid:global(.grid) {
+    .tileContainer {
+        width: 315px;
+    }
 
     .tile {
-        min-height: 400px;
-        text-align: center;
-        box-sizing: border-box;
         width: 315px;
-        color: #37345B;
-        border-radius: 30px;
-        display: flex;
+
+        >&:nth-child(2) {
+            width: 50%;
+        }
+
+        .header {
+            display: inline-flex;
+            width: 100%;
+            height: 62px;
+
+            img {
+                margin-right: auto;
+            }
+        }
+
+        .course {
+            padding-top: 12px;
+        }
+
+        .problemSetTitle {
+            font-size: 36px;
+            height: 175px;
+        }
+
+        .progressContainer {
+            .progressText {
+                font-size: 26px;
+
+                >span {
+                    margin-top: 12px;
+                }
+            }
+        }
 
         &.newSet {
             margin: auto;
             border: 3px dashed #37345B;
             align-items: center;
-    
-            i {
+            text-align: center;
+            min-height: 400px;
+            display: flex;
+
+            svg {
                 font-size: 84px;
                 color: #61CBB8;
             }
         }
-    
+    }
+
+    >* {
+        cursor: pointer;
+    }
+}
+
+.problemSetGrid:global(.line-item) {
+    margin: 0;
+
+    .tileContainer {
+        width: 100%;
+
+        .tile {
+            display: flex;
+            width: 100%;
+            padding: 20px;
+            padding-bottom: 8px;
+            position: relative;
+
+            .problemSetTitle {
+                height: auto;
+                font-size: 25px;
+            }
+
+            .content {
+                display: flex;
+                flex-wrap: wrap;
+                width: 100%;
+                padding-right: 80px;
+                justify-content: space-between;
+            }
+
+            .mainContent {
+                width: 50%;
+            }
+
+            .progressContainer {
+                .progressText {
+                    font-size: 18px;
+                    width: 250px;
+                    position: relative;
+                    top: 10px;
+
+                    span {
+                        margin-top: 2px;
+                    }
+                }
+            }
+
+            .header {
+                margin-right: 45px;
+
+                .icon {
+                    position: absolute;
+                    right: 0;
+                    top: 0;
+                    height: 100%;
+                    border-left: 1px solid rgba($color: #000000, $alpha: 0.07);
+                    padding: 36px;
+
+                    svg {
+                        font-size: 24px;
+                        margin: 0;
+                        position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        -ms-transform: translate(-50%, -50%);
+                        transform: translate(-50%, -50%);
+                    }
+                }
+            }
+
+            .course {
+                font-size: 14px;
+            }
+        }
+    }
+}
+
+
+.problemSetGrid {
+    padding-top: 25px;
+    padding-bottom: 60px;
+
+    .tileContainer {
+        border-radius: 25px;
+        display: flex;
+        margin: 20px;
+
+        &:nth-child(3n+1) {
+            background: #E3FDF7;
+        }
+
+        &:nth-child(3n+2) {
+            background: rgba(245, 243, 255, 0.42);
+        }
+
+        &:nth-child(3n+3) {
+            background: #FBE8E3;
+        }
+    }
+
+    .tile {
+        text-align: left;
+        box-sizing: border-box;
+        color: #37345B;
+        border-radius: 30px;
+        padding: 25px;
+
+        .header {
+
+            img {
+                width: 62px;
+                height: 62px;
+                border-radius: 18px;
+            }
+
+            svg {
+                margin-top: 20px;
+            }
+        }
+
+        .course {
+            color: #6D6A92;
+        }
+
+        .problemSetTitle {
+            font-weight: bold;
+            color: #37345B;
+        }
+
+        .progressContainer {
+            .progressText {
+
+                >span {
+                    font-size: 14px;
+                    color: #37345B;
+                    float: right;
+                }
+            }
+        }
+
         div {
             font-size: 30px;
             font-weight: 600;
         }
     }
 
-    > * {
+    >* {
         cursor: pointer;
     }
 }
 
+@media (max-width: 610px) {
+    .problemSetGrid:global(.grid) .tileContainer {
+        width: 315px;
+        margin: 10px auto;
+    }
+}
+
+.copyLinkContainer {
+
+    display: inline-flex;
+    width: auto;
+    background: rgba(227, 253, 247, 50%);
+    border-radius: 10px;
+    padding: 8px;
+    margin-top: 30px;
+    margin-left: 15px;
+
+    .text {
+        line-height: 22px;
+    }
+
+    button {
+        text-transform: none;
+        margin-left: 20px;
+        background: #F16D78;
+        border-color: #F16D78;
+
+        &:focus,
+        &:hover {
+            background: #F16D78;
+            opacity: 0.8;
+            border-color: #F16D78;
+        }
+    }
+}

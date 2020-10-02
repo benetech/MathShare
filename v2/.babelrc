@@ -5,6 +5,10 @@
     ["@babel/transform-runtime", {
       "helpers": false,
       "regenerator": true
+    }],
+    ["import", {
+      "libraryName": "antd",
+      "style": true
     }]
   ]
 }
