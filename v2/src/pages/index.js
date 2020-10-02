@@ -4,23 +4,20 @@ import { Helmet } from 'react-helmet';
 import {
     Switch, Route, withRouter,
 } from 'react-router-dom';
+import { Layout } from 'antd';
 import userProfileActions from '../redux/userProfile/actions';
 import ariaLiveAnnouncerActions from '../redux/ariaLiveAnnouncer/actions';
 import routerActions from '../redux/router/actions';
 import uiActions from '../redux/ui/actions';
 import './styles.scss';
+import 'antd/dist/antd.less';
 import Home from './Home';
 import Dashboard from './Dashboard';
 import NotFound from './NotFound';
-
-import 'argon-design-system-react/src/assets/vendor/nucleo/css/nucleo.css';
-import 'argon-design-system-react/src/assets/vendor/font-awesome/css/font-awesome.min.css';
-import '../assets/scss/argon-design-system-react.scss';
-import 'argon-design-system-free/assets/js/core/bootstrap.min';
-import 'argon-design-system-free/assets/js/core/jquery.min';
-import 'argon-design-system-free/assets/js/core/popper.min';
-import 'argon-design-system-free/assets/js/argon-design-system.min';
+import NotLoggedIn from './NotLoggedIn';
 import Sidebar from '../components/Sidebar';
+
+const { Content } = Layout;
 
 class App extends Component {
     getClassFromUserConfig = () => 'container-fluid';
@@ -37,16 +34,19 @@ class App extends Component {
                     }}
                 />
                 <div id="contentContainer" className={this.getClassFromUserConfig()}>
-                    <div className={`body-container ${this.getBodyClass()}`}>
+                    <NotLoggedIn />
+                    <Layout className={`body-container ${this.getBodyClass()}`}>
                         <Sidebar router={router} />
-                        <main className="py-md-3 pl-md-5 ct-content col-12 col-md-8 col-xl-9">
-                            <Switch>
-                                <Route exact path="/" component={withRouter(Home)} />
-                                <Route exact path="/dash" component={withRouter(Dashboard)} />
-                                <Route render={NotFound} />
-                            </Switch>
-                        </main>
-                    </div>
+                        <Layout>
+                            <Content style={{ padding: '25px' }}>
+                                <Switch>
+                                    <Route exact path="/" component={withRouter(Home)} />
+                                    <Route exact path="/dash" component={withRouter(Dashboard)} />
+                                    <Route render={NotFound} />
+                                </Switch>
+                            </Content>
+                        </Layout>
+                    </Layout>
                 </div>
             </React.Fragment>
         );

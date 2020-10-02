@@ -1,13 +1,22 @@
+import {
+    faBars, faChevronDown, faEllipsisH, faThLarge,
+} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+    Input, Row, Col, Radio, Dropdown, Button, Menu, Progress,
+} from 'antd';
 /* eslint-disable react/prefer-stateless-function */
 import React, { Component } from 'react';
 import styles from './styles.scss';
+
+const { Search } = Input;
 
 const Card = ({ id }) => (
     <div id={id} key={id} className={styles.tileContainer}>
         <div className={styles.tile}>
             <div className={styles.header}>
                 <img src="https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200" alt="" className="img-fluid shadow-lg" />
-                <i className="fa fa-ellipsis-h" aria-hidden="true" />
+                <span className={styles.icon}><FontAwesomeIcon icon={faEllipsisH} /></span>
             </div>
             <div className={styles.content}>
                 <div className={styles.mainContent}>
@@ -21,7 +30,14 @@ const Card = ({ id }) => (
                     </div>
                     <div>
                         <div className="progress">
-                            <div className="progress-bar bg-dark" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style={{ width: '33%' }} />
+                            <Progress
+                                strokeColor={{
+                                    '0%': '#108ee9',
+                                    '100%': '#87d068',
+                                }}
+                                percent={66}
+                                showInfo={false}
+                            />
                         </div>
                     </div>
                 </div>
@@ -30,6 +46,12 @@ const Card = ({ id }) => (
     </div>
 );
 
+const gutter = {
+    xs: 8,
+    sm: 16,
+    md: 24,
+    lg: 24,
+};
 
 class Dashboard extends Component {
     constructor(props) {
@@ -39,73 +61,103 @@ class Dashboard extends Component {
         };
     }
 
-    setLayout = (layout) => {
+    setLayout = (e) => {
         this.setState({
-            layout,
+            layout: e.target.value,
         });
+    }
+
+    handleDropdownSelect = (e) => {
+        console.log('e', e);
     }
 
     render() {
         const { layout } = this.state;
+        const menu = (
+            <Menu onClick={this.handleDropdownSelect}>
+                <Menu.Item key="1">
+                Most Recent
+                </Menu.Item>
+                <Menu.Item key="2">
+                Assigned to me
+                </Menu.Item>
+                <Menu.Item key="3">
+                Created by me
+                </Menu.Item>
+            </Menu>
+        );
+
         return (
             <div>
-                <div className={`row ${styles.topBar}`}>
-                    <div className="col-md-6">
-                        <div className="form-group">
-                            <div className={`${styles.searchInput} input-group input-group-alternative mb-4`}>
-                                <input className="form-control form-control-alternative" placeholder="Search set" type="text" />
-                                <div className="input-group-append">
-                                    <span className="input-group-text">
-                                        <i className="fa fa-search" />
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className={`row justify-content-between ${styles.heading}`}>
-                    <div className="col col-md-6 col-sm-12">
+                <Row
+                    className={styles.topBar}
+                    gutter={gutter}
+                >
+                    <Col className={`gutter-row ${styles.topBar}`} xs={24} sm={24} md={12} lg={12} xl={12}>
+                        <Search
+                            className={styles.searchInput}
+                            placeholder="Search set"
+                            onSearch={value => console.log(value)}
+                        />
+                    </Col>
+                </Row>
+                <Row
+                    className={`justify-content-between ${styles.heading}`}
+                    gutter={gutter}
+                >
+                    <Col className={`gutter-row ${styles.topBar}`} xs={24} sm={24} md={12} lg={12} xl={12}>
                         <span className={styles.title}>Your Sets</span>
-                    </div>
-                    <div className={`col-auto align-self-end ${styles.setButtons}`}>
-                        <button type="button" className={`btn btn-secondary ${styles.newSetBtn}`}>
-                            <i className="fa fa-plus-circle" aria-hidden="true" />
-                            New Set
-                        </button>
+                    </Col>
+                    <Col className={`col-auto ${styles.setButtons}`} xs={24} sm={24} md={12} lg={12} xl={12}>
                         <div className={`btn-group ${styles.layoutBtns}`} role="group">
-                            <button type="button" className={`btn btn-outline-default ${(layout === 'line-item') ? 'active' : ''}`} onClick={() => { this.setLayout('line-item'); }}>
-                                <i className="fa fa-bars" aria-hidden="true" />
-                            </button>
-                            <button type="button" className={`btn btn-outline-default ${(layout === 'grid') ? 'active' : ''}`} onClick={() => { this.setLayout('grid'); }}>
-                                <i className="fa fa-th-large" aria-hidden="true" />
-                            </button>
+                            <Radio.Group
+                                buttonStyle="solid"
+                                onChange={this.setLayout}
+                                size="large"
+                                value={this.state.layout}
+                                style={{ marginBottom: 8 }}
+                            >
+                                <Radio.Button value="line-item">
+                                    <FontAwesomeIcon icon={faBars} />
+                                </Radio.Button>
+                                <Radio.Button value="grid">
+                                    <FontAwesomeIcon icon={faThLarge} />
+                                </Radio.Button>
+                            </Radio.Group>
                         </div>
                         <div className={`dropdown ${styles.dropdown}`}>
-                            <button className="btn btn-outline-default btn-icon btn-round" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Most Recent
-                                <i className="fa fa-chevron-down" aria-hidden="true" />
-                            </button>
-                            <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a className="dropdown-item" href="#">Most Recent</a>
-                                <a className="dropdown-item" href="#">Assigned to me</a>
-                                <a className="dropdown-item" href="#">Created by me</a>
-                            </div>
+                            <Dropdown overlay={menu}>
+                                <Button size="large">
+                                    Most Recent
+                                    <FontAwesomeIcon icon={faChevronDown} />
+                                </Button>
+                            </Dropdown>
                         </div>
+                    </Col>
+                </Row>
+                <div>
+                    <div className={styles.copyLinkContainer}>
+                        <span className={styles.text}>
+                            Don&apos;t forget to copy the link to share your work
+                        </span>
+                        <Button type="primary" size="small">
+                            Copy WorkLink
+                        </Button>
                     </div>
                 </div>
-                <div className={`row ${styles.problemSetGrid} ${layout}`}>
+                <Row className={`${styles.problemSetGrid} ${layout}`}>
                     {[1, 2, 3].map(id => (
                         <Card id={id} key={id} />
                     ))}
-                </div>
-                <div className={`row ${styles.heading}`}>
+                </Row>
+                <div className={styles.heading}>
                     <span className={styles.title}>Example Sets</span>
                 </div>
-                <div className={`row ${styles.problemSetGrid} ${layout}`}>
+                <Row className={`${styles.problemSetGrid} ${layout}`}>
                     {[1, 2, 3].map(id => (
                         <Card id={id} key={id} />
                     ))}
-                </div>
+                </Row>
             </div>
         );
     }
