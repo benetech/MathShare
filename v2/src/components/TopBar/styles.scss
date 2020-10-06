@@ -1,0 +1,38 @@
+@import '../../styles/colors.scss';
+
+.topBar {
+    padding: 10px;
+
+    .searchInput {
+        border: 2px solid #fff;
+        border-bottom: 2px solid $primary-color;
+        border-radius: 0;
+        box-shadow: none;
+
+        &:focus,
+        &:hover {
+            border: 2px solid $primary-color;
+        }
+
+        i {
+            color: $primary-color;
+        }
+
+        input {
+            color: $primary-color;
+        }
+
+        :global(.ant-input-search-icon)::before {
+            border-left: none;
+        }
+    }
+
+    :global(.ant-btn) {
+        &.signout {
+            &:hover span {
+                text-decoration: underline;
+                color: darkblue;
+            }
+        }
+    }
+}

@@ -1,50 +1,18 @@
 import {
-    faBars, faChevronDown, faEllipsisH, faThLarge,
+    faBars, faThLarge,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-    Input, Row, Col, Radio, Dropdown, Button, Menu, Progress,
+    Row, Col, Radio,
 } from 'antd';
-/* eslint-disable react/prefer-stateless-function */
+import { connect } from 'react-redux';
 import React, { Component } from 'react';
+import Card from '../../components/Card';
+import problemSetListActions from '../../redux/problemSetList/actions';
 import styles from './styles.scss';
-
-const { Search } = Input;
-
-const Card = ({ id }) => (
-    <div id={id} key={id} className={styles.tileContainer}>
-        <div className={styles.tile}>
-            <div className={styles.header}>
-                <img src="https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200" alt="" className="img-fluid shadow-lg" />
-                <span className={styles.icon}><FontAwesomeIcon icon={faEllipsisH} /></span>
-            </div>
-            <div className={styles.content}>
-                <div className={styles.mainContent}>
-                    <div className={styles.course}>Course</div>
-                    <div className={styles.problemSetTitle}>Solve for X</div>
-                </div>
-                <div className={styles.progressContainer}>
-                    <div className={styles.progressText}>
-                        Progress
-                        <span>2 of 6 Problems</span>
-                    </div>
-                    <div>
-                        <div className="progress">
-                            <Progress
-                                strokeColor={{
-                                    '0%': '#108ee9',
-                                    '100%': '#87d068',
-                                }}
-                                percent={66}
-                                showInfo={false}
-                            />
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-);
+import CopyLink from '../../components/CopyLink';
+import Select from '../../components/Select';
+import TopBar from '../../components/TopBar';
 
 const gutter = {
     xs: 8,
@@ -61,6 +29,10 @@ class Dashboard extends Component {
         };
     }
 
+    componentDidMount() {
+        this.props.requestExampleSets();
+    }
+
     setLayout = (e) => {
         this.setState({
             layout: e.target.value,
@@ -71,36 +43,46 @@ class Dashboard extends Component {
         console.log('e', e);
     }
 
+    renderExampleSets() {
+        const { layout } = this.state;
+        const { problemSetList } = this.props;
+        if (problemSetList.exampleProblemSets.loading) {
+            return null;
+        }
+        return (
+            <>
+                <div className={styles.heading}>
+                    <span className={styles.title}>Example Sets</span>
+                </div>
+                <Row className={`${styles.problemSetGrid} ${layout}`}>
+                    {problemSetList.exampleProblemSets.data.map(exampleSet => (
+                        <Card key={exampleSet.id} {...exampleSet} isExampleSet />
+                    ))}
+                </Row>
+            </>
+        );
+    }
+
     render() {
         const { layout } = this.state;
-        const menu = (
-            <Menu onClick={this.handleDropdownSelect}>
-                <Menu.Item key="1">
-                Most Recent
-                </Menu.Item>
-                <Menu.Item key="2">
-                Assigned to me
-                </Menu.Item>
-                <Menu.Item key="3">
-                Created by me
-                </Menu.Item>
-            </Menu>
-        );
+        const options = [
+            {
+                value: 'most_recent',
+                label: 'Most Recent',
+            },
+            {
+                value: 'assigned_to_me',
+                label: 'Assigned to Me',
+            },
+            {
+                value: 'Created by me',
+                label: 'Created by Me',
+            },
+        ];
 
         return (
             <div>
-                <Row
-                    className={styles.topBar}
-                    gutter={gutter}
-                >
-                    <Col className={`gutter-row ${styles.topBar}`} xs={24} sm={24} md={12} lg={12} xl={12}>
-                        <Search
-                            className={styles.searchInput}
-                            placeholder="Search set"
-                            onSearch={value => console.log(value)}
-                        />
-                    </Col>
-                </Row>
+                <TopBar />
                 <Row
                     className={`justify-content-between ${styles.heading}`}
                     gutter={gutter}
@@ -125,42 +107,31 @@ class Dashboard extends Component {
                                 </Radio.Button>
                             </Radio.Group>
                         </div>
-                        <div className={`dropdown ${styles.dropdown}`}>
-                            <Dropdown overlay={menu}>
-                                <Button size="large">
-                                    Most Recent
-                                    <FontAwesomeIcon icon={faChevronDown} />
-                                </Button>
-                            </Dropdown>
-                        </div>
+                        <Select dropdownClassName={styles.select} options={options} size="large" defaultValue="most_recent" />
                     </Col>
                 </Row>
-                <div>
-                    <div className={styles.copyLinkContainer}>
-                        <span className={styles.text}>
-                            Don&apos;t forget to copy the link to share your work
-                        </span>
-                        <Button type="primary" size="small">
-                            Copy WorkLink
-                        </Button>
-                    </div>
-                </div>
+                <Row>
+                    <CopyLink />
+                </Row>
                 <Row className={`${styles.problemSetGrid} ${layout}`}>
                     {[1, 2, 3].map(id => (
                         <Card id={id} key={id} />
                     ))}
                 </Row>
-                <div className={styles.heading}>
-                    <span className={styles.title}>Example Sets</span>
-                </div>
-                <Row className={`${styles.problemSetGrid} ${layout}`}>
-                    {[1, 2, 3].map(id => (
-                        <Card id={id} key={id} />
-                    ))}
-                </Row>
+                {this.renderExampleSets()}
             </div>
         );
     }
 }
 
-export default Dashboard;
+export default connect(
+    state => ({
+        problemSetList: state.problemSetList,
+        userProfile: state.userProfile,
+        routerHooks: state.routerHooks,
+        router: state.router,
+    }),
+    {
+        ...problemSetListActions,
+    },
+)(Dashboard);

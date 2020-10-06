@@ -1,0 +1,27 @@
+.copyLinkContainer {
+    display: inline-flex;
+    width: auto;
+    background: rgba(227, 253, 247, 50%);
+    border-radius: 10px;
+    padding: 8px;
+    margin-top: 30px;
+    margin-left: 15px;
+
+    .text {
+        line-height: 22px;
+    }
+
+    button {
+        text-transform: none;
+        margin-left: 20px;
+        background: #F16D78;
+        border-color: #F16D78;
+
+        &:focus,
+        &:hover {
+            background: #F16D78;
+            opacity: 0.8;
+            border-color: #F16D78;
+        }
+    }
+}

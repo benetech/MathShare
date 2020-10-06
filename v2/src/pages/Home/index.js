@@ -1,19 +1,16 @@
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable no-console */
 /* eslint-disable no-restricted-globals */
 import {
-    faBars, faChevronDown, faPlusCircle, faThLarge,
+    faBars, faChevronDown, faThLarge,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-    Row, Col, Radio, Dropdown, Button, Menu, Input,
+    Row, Col, Radio, Dropdown, Button, Menu,
 } from 'antd';
-/* eslint-disable react/prefer-stateless-function */
 import React, { Component } from 'react';
+import Card from '../../components/Card';
+import TopBar from '../../components/TopBar';
 import styles from './styles.scss';
-
-const { Search } = Input;
 
 const gutter = {
     xs: 8,
@@ -57,18 +54,7 @@ class Welcome extends Component {
 
         return (
             <div>
-                <Row
-                    className={styles.topBar}
-                    gutter={gutter}
-                >
-                    <Col className={`gutter-row ${styles.topBar}`} xs={24} sm={24} md={12} lg={12} xl={12}>
-                        <Search
-                            className={styles.searchInput}
-                            placeholder="Search set"
-                            onSearch={value => console.log(value)}
-                        />
-                    </Col>
-                </Row>
+                <TopBar />
                 <Row
                     className={`justify-content-between ${styles.heading}`}
                     gutter={gutter}
@@ -104,24 +90,7 @@ class Welcome extends Component {
                     </Col>
                 </Row>
                 <Row className={`${styles.problemSetGrid} grid`}>
-                    <div
-                        className="col-lg-4 col-md-6"
-                        onClick={() => {
-                            console.log('history', this.props);
-                            this.props.history.push('/dash');
-                        }}
-                    >
-                        <div className={`${styles.tile} ${styles.newSet}`}>
-                            <div>
-                                <div>
-                                    <FontAwesomeIcon icon={faPlusCircle} />
-                                </div>
-                                <div>
-                                    Add your first problem here
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <Card history={this.props.history} newSet />
                 </Row>
             </div>
         );

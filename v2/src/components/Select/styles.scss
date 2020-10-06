@@ -1,0 +1,23 @@
+@import '../../styles/colors.scss';
+
+.select {
+    &:global(.ant-select-dropdown) {
+        padding: 0;
+
+        :global(.ant-select-item-option) {
+            color: white;
+            background-color: $primary-color;
+            padding: 10px;
+            border-bottom: 1px solid white;
+
+            &:global(.ant-select-item-option-active) {
+                font-weight: 800;
+            }
+        }
+    }
+
+    :global(.ant-select.ant-select-single):global(:not(.ant-select-customize-input)) :global(.ant-select-selector) {
+        border-color: $primary-color;
+        border-radius: 8px;
+    }
+}
