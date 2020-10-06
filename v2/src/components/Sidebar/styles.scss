@@ -145,35 +145,32 @@
     }
 }
 
-.nav {
-    color: #6D6A92;
-    font-size: 16px;
-    letter-spacing: 0;
-    line-height: 20px;
-    padding: 20px;
-
-    ul {
-        list-style-type: none;
-        padding-left: 0;
-
-        li {
-            padding: 10px 0;
-
-            &.active {
-                color: #303030;
-                font-weight: bold;
-            }
-        }
-    }
-}
-
 .sidebarContainer {
-    :global(.ant-menu):not(:global(.ant-menu-horizontal)) :global(.ant-menu-item-selected), :global(.ant-menu):not(:global(.ant-menu-horizontal)) :global(.ant-menu-item-selected) {
+
+    :global(.ant-menu):not(:global(.ant-menu-horizontal)) :global(.ant-menu-item-selected),
+    :global(.ant-menu):not(:global(.ant-menu-horizontal)) :global(.ant-menu-item-selected) {
         background-color: white;
         font-weight: bold;
     }
 
-    :global(.ant-menu-inline) :global(.ant-menu-item::after), :global(.ant-menu-inline), :global(.ant-menu-vertical), :global(.ant-menu-vertical-left) {
+    :global(.ant-menu-item) {
+        font-size: 17px;
+
+        &:not(:global(.ant-menu-item-selected)) {
+            color: #737185;
+        }
+    }
+
+    :global(.ant-menu):not(:global(.ant-menu-horizontal)) :global(.ant-menu-item-selected),
+    :global(.ant-menu):not(:global(.ant-menu-horizontal)) :global(.ant-menu-item-selected) {
+        background-color: white;
+        font-weight: bold;
+    }
+
+    :global(.ant-menu-inline) :global(.ant-menu-item::after),
+    :global(.ant-menu-inline),
+    :global(.ant-menu-vertical),
+    :global(.ant-menu-vertical-left) {
         border-right: none;
     }
 }
