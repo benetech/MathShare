@@ -16,6 +16,7 @@ import {
     Popconfirm,
     Progress,
 } from 'antd';
+import favIcon from '../../../../images/favicon.png';
 import styles from './styles.scss';
 
 const Card = (props) => {
@@ -66,8 +67,8 @@ const Card = (props) => {
             <div className={styles.tile}>
                 <div className={styles.header}>
                     <img
-                        src="https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200"
-                        alt=""
+                        src={favIcon}
+                        alt="Mathshare"
                         className="img-fluid shadow-lg"
                     />
                     <Dropdown overlay={menu} placement="bottomRight" className={styles.icon} overlayClassName={styles.dropdown}>

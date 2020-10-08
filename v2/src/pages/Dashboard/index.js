@@ -10,7 +10,7 @@ import React, { Component } from 'react';
 import Card from '../../components/Card';
 import problemSetListActions from '../../redux/problemSetList/actions';
 import styles from './styles.scss';
-import CopyLink from '../../components/CopyLink';
+// import CopyLink from '../../components/CopyLink';
 // import Select from '../../components/Select';
 
 const gutter = {
@@ -45,15 +45,19 @@ class Dashboard extends Component {
         if (problemSetList.exampleProblemSets.loading) {
             return null;
         }
+        const allowedSets = ['Example Problem Set', 'Combining Like Terms', 'Solve for X'];
         return (
             <>
                 <div className={styles.heading}>
                     <span className={styles.title}>Example Sets</span>
                 </div>
                 <Row className={`${styles.problemSetGrid} ${layout}`}>
-                    {problemSetList.exampleProblemSets.data.map(exampleSet => (
-                        <Card key={exampleSet.id} {...exampleSet} isExampleSet />
-                    ))}
+                    {problemSetList.exampleProblemSets.data
+                        .filter(exampleSet => allowedSets.includes(exampleSet.title))
+                        .map(exampleSet => (
+                            <Card key={exampleSet.id} {...exampleSet} isExampleSet />
+                        ))
+                    }
                 </Row>
             </>
         );
@@ -61,6 +65,7 @@ class Dashboard extends Component {
 
     render() {
         const { layout } = this.state;
+        const { userProfile } = this.props;
         // const options = [
         //     {
         //         value: 'most_recent',
@@ -83,7 +88,7 @@ class Dashboard extends Component {
                     gutter={gutter}
                 >
                     <Col className={`gutter-row ${styles.topBar}`} xs={24} sm={24} md={12} lg={12} xl={12}>
-                        <span className={styles.title}>Your Sets</span>
+                        {userProfile.email && <span className={styles.title}>Your Sets</span>}
                     </Col>
                     <Col className={`col-auto ${styles.setButtons}`} xs={24} sm={24} md={12} lg={12} xl={12}>
                         <div className={`btn-group ${styles.layoutBtns}`} role="group">
@@ -110,14 +115,16 @@ class Dashboard extends Component {
                         /> */}
                     </Col>
                 </Row>
-                <Row>
+                {/* <Row>
                     <CopyLink />
-                </Row>
-                <Row className={`${styles.problemSetGrid} ${layout}`}>
-                    {[1, 2, 3].map(id => (
-                        <Card id={id} key={id} />
-                    ))}
-                </Row>
+                </Row> */}
+                {userProfile.email && (
+                    <Row className={`${styles.problemSetGrid} ${layout}`}>
+                        {[1, 2, 3].map(id => (
+                            <Card id={id} key={id} />
+                        ))}
+                    </Row>
+                )}
                 {this.renderExampleSets()}
             </div>
         );

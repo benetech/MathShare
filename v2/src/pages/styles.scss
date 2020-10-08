@@ -54,8 +54,9 @@
             background-color: $primary-color;
             padding: 10px;
             border-bottom: 1px solid white;
+            color: white;
     
-            a {
+            a, button {
                 color: white;
             }
     
@@ -72,6 +73,12 @@
                 border-bottom-right-radius: 8px;
             }
         }
+    }
+
+    :global(.ant-dropdown-arrow) {
+        border-top-color: $primary-color;
+        border-left-color: $primary-color;
+        margin-top: -5px;
     }
 }
 
