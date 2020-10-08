@@ -1,0 +1,282 @@
+.container {
+    padding: 50px;
+
+    .content {
+        background: white;
+        max-width: 500px;
+        padding-bottom: 50px;
+        width: 100%;
+        margin: auto;
+        text-align: center;
+        border-radius: 4px;
+
+
+        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .25);
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        -webkit-transition: background-color .218s, border-color .218s, box-shadow .218s;
+        transition: background-color .218s, border-color .218s, box-shadow .218s;
+    }
+}
+
+.text,
+.header {
+    font-size: 28px;
+    font-weight: 400;
+    color: #5a5a5a;
+}
+
+.text {
+    font-size: 24px;
+    background: none;
+    border: none;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.logo {
+    max-width: 240px;
+    padding: 36px 24px;
+    background: white;
+    margin: auto;
+
+    img {
+        width: 100%;
+    }
+}
+
+.buttonsContainer {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 50px 0;
+    list-style-type: none;
+
+    >li {
+        padding: 10px;
+        width: 50%;
+
+        >* {
+            margin: auto;
+            display: block;
+            text-decoration: none;
+        }
+    }
+
+    .microsoftContainer {
+        height: 100%;
+        background: white;
+        outline: 1px solid #00000024;
+        cursor: pointer;
+        max-width: 132px;
+        // border: 1px solid black;
+
+        img {
+            padding: 8px 10px;
+            margin-left: -10px;
+        }
+
+        span {
+            color: #737373;
+            font-family: 'Open Sans', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            vertical-align: middle;
+        }
+    }
+
+    :global(.abcRioButtonSvgImageWithFallback) img {
+        vertical-align: baseline;
+    }
+
+}
+
+.googleBtn {
+    height: 40px;
+    width: 120px;
+    padding: 0;
+
+    &,
+    &:hover {
+        outline: 1px solid #00000024;
+    }
+
+    :global(.abcRioButtonIcon) {
+        height: 100%;
+        width: 38px;
+
+        :global(.abcRioButtonIconImage) {
+            display: grid;
+        }
+    }
+
+    &:global(.abcRioButton) {
+        -webkit-border-radius: 1px;
+        border-radius: 1px;
+        -webkit-box-shadow: 0 2px 4px 0px rgba(0, 0, 0, .25);
+        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .25);
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        -webkit-transition: background-color .218s, border-color .218s, box-shadow .218s;
+        transition: background-color .218s, border-color .218s, box-shadow .218s;
+        -webkit-user-select: none;
+        -webkit-appearance: none;
+        background-color: #fff;
+        background-image: none;
+        color: #262626;
+        cursor: pointer;
+        outline: none;
+        overflow: hidden;
+        position: relative;
+        text-align: center;
+        vertical-align: middle;
+        white-space: nowrap;
+    }
+
+    &:global(.abcRioButton):hover {
+        -webkit-box-shadow: 0 0 3px 3px rgba(66, 133, 244, .3);
+        box-shadow: 0 0 3px 3px rgba(66, 133, 244, .3)
+    }
+
+    &:global(.abcRioButtonBlue) {
+        background-color: #4285f4;
+        border: none;
+        color: #fff
+    }
+
+    &:global(.abcRioButtonBlue):hover {
+        background-color: #4285f4
+    }
+
+    &:global(.abcRioButtonBlue):active {
+        background-color: #3367d6
+    }
+
+    :global(.abcRioButtonLightBlue) {
+        background-color: #fff;
+        color: #757575
+    }
+
+    :global(.abcRioButtonLightBlue):active {
+        background-color: #eee;
+        color: #6d6d6d
+    }
+
+    :global(.abcRioButtonIcon) {
+        float: left;
+        background: white;
+    }
+
+    :global(.abcRioButtonBlue) :global(.abcRioButtonIcon) {
+        background-color: #fff;
+        -webkit-border-radius: 1px;
+        border-radius: 1px
+    }
+
+    :global(.abcRioButtonSvg) {
+        display: block
+    }
+
+    :global(.abcRioButtonContents) {
+        font-family: Roboto, arial, sans-serif;
+        font-size: 14px;
+        font-weight: 500;
+        letter-spacing: .21px;
+        margin-left: 6px;
+        margin-right: 6px;
+        vertical-align: top
+    }
+
+    :global(.abcRioButtonContentWrapper) {
+        height: 100%;
+        width: 100%
+    }
+
+    :global(.abcRioButtonBlue) :global(.abcRioButtonContentWrapper) {
+        border: 1px solid transparent;
+        display: block;
+    }
+
+    :global(.abcRioButtonErrorWrapper),
+    :global(.abcRioButtonWorkingWrapper) {
+        display: none;
+        height: 100%;
+        width: 100%
+    }
+
+    :global(.abcRioButtonErrorIcon),
+    :global(.abcRioButtonWorkingIcon) {
+        margin-left: auto;
+        margin-right: auto
+    }
+
+    :global(.abcRioButtonErrorState),
+    :global(.abcRioButtonWorkingState) {
+        border: 1px solid #d5d5d5;
+        border: 1px solid rgba(0, 0, 0, .17);
+        -webkit-box-shadow: 0 1px 0 rgba(0, 0, 0, .05);
+        box-shadow: 0 1px 0 rgba(0, 0, 0, .05);
+        color: #262626
+    }
+
+    :global(.abcRioButtonErrorState):hover,
+    :global(.abcRioButtonWorkingState):hover {
+        border: 1px solid #aaa;
+        border: 1px solid rgba(0, 0, 0, .25);
+        -webkit-box-shadow: 0 1px 0 rgba(0, 0, 0, .1);
+        box-shadow: 0 1px 0 rgba(0, 0, 0, .1)
+    }
+
+    :global(.abcRioButtonErrorState):active,
+    :global(.abcRioButtonWorkingState):active {
+        border: 1px solid #aaa;
+        border: 1px solid rgba(0, 0, 0, .25);
+        -webkit-box-shadow: inset 0 1px 0 #ddd;
+        box-shadow: inset 0 1px 0 #ddd;
+        color: #262626
+    }
+
+    :global(.abcRioButtonWorkingState),
+    :global(.abcRioButtonWorkingState):hover {
+        background-color: #f5f5f5
+    }
+
+    :global(.abcRioButtonWorkingState):active {
+        background-color: #e5e5e5
+    }
+
+    :global(.abcRioButtonErrorState),
+    :global(.abcRioButtonErrorState):hover {
+        background-color: #fff
+    }
+
+    :global(.abcRioButtonErrorState):active {
+        background-color: #e5e5e5
+    }
+
+    :global(.abcRioButtonWorkingState) :global(.abcRioButtonWorkingWrapper),
+    :global(.abcRioButtonErrorState) :global(.abcRioButtonErrorWrapper) {
+        display: block
+    }
+
+    :global(.abcRioButtonErrorState) :global(.abcRioButtonContentWrapper),
+    :global(.abcRioButtonWorkingState) :global(.abcRioButtonContentWrapper),
+    :global(.abcRioButtonErrorState) :global(.abcRioButtonWorkingWrapper) {
+        display: none
+    }
+
+    @keyframes abcRioButtonWorkingIconPathSpinKeyframes {
+        0% {
+            -webkit-transform: rotate(0)
+        }
+    }
+
+}
+
+.benefitsLink {
+    display: block;
+    padding-top: 10px;
+    padding-bottom: 30px;
+    font-size: 22px;
+}

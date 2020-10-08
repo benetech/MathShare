@@ -3,10 +3,17 @@
 
 import React from 'react';
 import {
-    faEllipsisH, faPlusCircle,
+    faCopy,
+    faEllipsisH,
+    faMinusCircle,
+    faPlusCircle,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
+    Button,
+    Dropdown,
+    Menu,
+    Popconfirm,
     Progress,
 } from 'antd';
 import styles from './styles.scss';
@@ -19,8 +26,7 @@ const Card = (props) => {
         return (
             <div
                 onClick={() => {
-                    console.log('history', history);
-                    history.push('/dash');
+                    history.push('/app');
                 }}
             >
                 <div className={`${styles.tile} ${styles.newSet}`}>
@@ -29,19 +35,44 @@ const Card = (props) => {
                             <FontAwesomeIcon icon={faPlusCircle} />
                         </div>
                         <div>
-                        Add your first problem here
+                            Add your first problem here
                         </div>
                     </div>
                 </div>
             </div>
         );
     }
+    const menu = (
+        <Menu className={styles.menu}>
+            <Menu.Item>
+                <Button type="text" icon={<FontAwesomeIcon icon={faCopy} />}>
+                    Duplicate
+                </Button>
+            </Menu.Item>
+            {!isExampleSet && (
+                <Menu.Item>
+                    <Popconfirm title="This will permanently delete the problem set." okText="Okay" cancelText="Cancel">
+                        <Button type="text" icon={<FontAwesomeIcon icon={faMinusCircle} />}>
+                            Delete
+                        </Button>
+                    </Popconfirm>
+                </Menu.Item>
+            )}
+        </Menu>
+    );
+
     return (
         <div id={id} key={id} className={styles.tileContainer}>
             <div className={styles.tile}>
                 <div className={styles.header}>
-                    <img src="https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200" alt="" className="img-fluid shadow-lg" />
-                    <span className={styles.icon}><FontAwesomeIcon icon={faEllipsisH} /></span>
+                    <img
+                        src="https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200"
+                        alt=""
+                        className="img-fluid shadow-lg"
+                    />
+                    <Dropdown overlay={menu} placement="bottomRight" className={styles.icon} overlayClassName={styles.dropdown}>
+                        <Button type="text" size="large" icon={<FontAwesomeIcon icon={faEllipsisH} />} />
+                    </Dropdown>
                 </div>
                 <div className={styles.content}>
                     <div className={styles.mainContent}>

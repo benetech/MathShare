@@ -11,8 +11,7 @@ import Card from '../../components/Card';
 import problemSetListActions from '../../redux/problemSetList/actions';
 import styles from './styles.scss';
 import CopyLink from '../../components/CopyLink';
-import Select from '../../components/Select';
-import TopBar from '../../components/TopBar';
+// import Select from '../../components/Select';
 
 const gutter = {
     xs: 8,
@@ -22,12 +21,9 @@ const gutter = {
 };
 
 class Dashboard extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            layout: 'grid',
-        };
-    }
+    state = {
+        layout: 'grid',
+    };
 
     componentDidMount() {
         this.props.requestExampleSets();
@@ -65,24 +61,23 @@ class Dashboard extends Component {
 
     render() {
         const { layout } = this.state;
-        const options = [
-            {
-                value: 'most_recent',
-                label: 'Most Recent',
-            },
-            {
-                value: 'assigned_to_me',
-                label: 'Assigned to Me',
-            },
-            {
-                value: 'Created by me',
-                label: 'Created by Me',
-            },
-        ];
+        // const options = [
+        //     {
+        //         value: 'most_recent',
+        //         label: 'Most Recent',
+        //     },
+        //     {
+        //         value: 'assigned_to_me',
+        //         label: 'Assigned to Me',
+        //     },
+        //     {
+        //         value: 'Created by me',
+        //         label: 'Created by Me',
+        //     },
+        // ];
 
         return (
             <div>
-                <TopBar />
                 <Row
                     className={`justify-content-between ${styles.heading}`}
                     gutter={gutter}
@@ -107,7 +102,12 @@ class Dashboard extends Component {
                                 </Radio.Button>
                             </Radio.Group>
                         </div>
-                        <Select dropdownClassName={styles.select} options={options} size="large" defaultValue="most_recent" />
+                        {/* <Select
+                            dropdownClassName={styles.select}
+                            options={options}
+                            size="large"
+                            defaultValue="most_recent"
+                        /> */}
                     </Col>
                 </Row>
                 <Row>

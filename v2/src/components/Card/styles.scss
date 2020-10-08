@@ -1,3 +1,5 @@
+@import '../../styles/colors.scss';
+
 :global(.grid) {
     .tileContainer {
         width: 315px;
@@ -168,7 +170,21 @@
         }
 
         svg {
-            margin-top: 20px;
+            font-size: 30px;
+        }
+
+        :global(.ant-dropdown-open) {
+            background-color: $primary-color;
+            color: white;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+        }
+
+        .icon {
+            &:global(.ant-btn-icon-only) {
+                padding: 6px 10px;
+                width: 60px;
+            }
         }
     }
 
@@ -206,5 +222,17 @@
     :global(.grid) .tileContainer {
         width: 315px;
         margin: 10px auto;
+    }
+}
+
+.menu {
+    :global(.ant-dropdown-menu-item) button {
+        color: white;
+        padding-left: 8px;
+        font-size: 16px;
+
+        span {
+            padding-left: 8px;
+        }
     }
 }

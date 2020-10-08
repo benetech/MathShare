@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import {
     Button, Layout, Menu, Radio,
 } from 'antd';
@@ -6,6 +7,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     faMicrophone, faMinus, faPlus, faVolumeUp,
 } from '@fortawesome/free-solid-svg-icons';
+import { updateSideBarCollapsed } from '../../redux/ui/actions';
+import { logoutOfUserProfile } from '../../redux/userProfile/actions';
 import styles from './styles.scss';
 
 const { Sider } = Layout;
@@ -22,39 +25,46 @@ class Sidebar extends React.Component {
 
     render() {
         const { contrast } = this.state;
+        const { userProfile } = this.props;
         return (
             <Sider
                 breakpoint="lg"
                 width={350}
                 collapsedWidth={0}
                 theme="light"
-                onBreakpoint={(broken) => {
-                    console.log(broken);
-                }}
-                onCollapse={(collapsed, type) => {
-                    console.log(collapsed, type);
+                onBreakpoint={(collapsed) => {
+                    this.props.updateSideBarCollapsed(collapsed);
                 }}
             >
-                <div className="logo" />
-                <div className={styles.header}>
-                    Math
-                    <span>(share)</span>
-                </div>
                 <div className={styles.sidebarContainer}>
-                    <div className={`${styles.profile} text-center`}>
-                        <div className={`row justify-content-center ${styles.avatar}`}>
-                            <div className="col-7">
-                                <img src="https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200" alt="" className="img-fluid shadow-lg" />
+                    {userProfile && userProfile.email && (
+                        <div className={`${styles.profile} text-center`}>
+                            <div className={`row justify-content-center ${styles.avatar}`}>
+                                <div className="col-7">
+                                    <img
+                                        src={userProfile.profileImage || 'https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200'}
+                                        alt=""
+                                        className="img-fluid shadow-lg"
+                                    />
+                                </div>
                             </div>
+                            <div className={styles.name}>
+                                {userProfile.name}
+                            </div>
+                            <div className={styles.title}>
+                                Teacher 9th grade
+                            </div>
+                            <Button
+                                type="text"
+                                className={styles.signout}
+                                onClick={() => {
+                                    this.props.logoutOfUserProfile();
+                                }}
+                            >
+                                Signout
+                            </Button>
                         </div>
-                        <div className={styles.name}>
-                            Adam Boone
-                        </div>
-                        <div className={styles.title}>
-                            Teacher 9th grade
-                        </div>
-                        <div className={styles.signout}>Signout</div>
-                    </div>
+                    )}
                     <div className={styles.actionButtons}>
                         <div>
                             <Button icon={<FontAwesomeIcon icon={faVolumeUp} size="2x" />} size="middle" />
@@ -117,4 +127,12 @@ class Sidebar extends React.Component {
     }
 }
 
-export default Sidebar;
+export default connect(
+    state => ({
+        userProfile: state.userProfile,
+    }),
+    {
+        updateSideBarCollapsed,
+        logoutOfUserProfile,
+    },
+)(Sidebar);

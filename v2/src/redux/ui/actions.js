@@ -19,8 +19,16 @@ export const stopTtsPlaying = ttsId => ({
     },
 });
 
+export const updateSideBarCollapsed = state => ({
+    type: 'UPDATE_SIDEBAR_COLLAPSED',
+    payload: {
+        sideBarCollapsed: state,
+    },
+});
+
 export default {
     setDropdownId,
     setTtsPlaying,
     stopTtsPlaying,
+    updateSideBarCollapsed,
 };

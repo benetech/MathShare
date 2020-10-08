@@ -1,15 +1,14 @@
 /* eslint-disable no-console */
 /* eslint-disable no-restricted-globals */
 import {
-    faBars, faChevronDown, faThLarge,
+    faBars, faThLarge, // faChevronDown
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-    Row, Col, Radio, Dropdown, Button, Menu,
+    Row, Col, Radio, // Menu, Dropdown, Button, ,
 } from 'antd';
 import React, { Component } from 'react';
 import Card from '../../components/Card';
-import TopBar from '../../components/TopBar';
 import styles from './styles.scss';
 
 const gutter = {
@@ -38,23 +37,22 @@ class Welcome extends Component {
     }
 
     render() {
-        const menu = (
-            <Menu onClick={this.handleDropdownSelect}>
-                <Menu.Item key="1">
-                    Most Recent
-                </Menu.Item>
-                <Menu.Item key="2">
-                    Assigned to me
-                </Menu.Item>
-                <Menu.Item key="3">
-                    Created by me
-                </Menu.Item>
-            </Menu>
-        );
+        // const menu = (
+        //     <Menu onClick={this.handleDropdownSelect}>
+        //         <Menu.Item key="1">
+        //             Most Recent
+        //         </Menu.Item>
+        //         <Menu.Item key="2">
+        //             Assigned to me
+        //         </Menu.Item>
+        //         <Menu.Item key="3">
+        //             Created by me
+        //         </Menu.Item>
+        //     </Menu>
+        // );
 
         return (
             <div>
-                <TopBar />
                 <Row
                     className={`justify-content-between ${styles.heading}`}
                     gutter={gutter}
@@ -79,14 +77,14 @@ class Welcome extends Component {
                                 </Radio.Button>
                             </Radio.Group>
                         </div>
-                        <div className={`dropdown ${styles.dropdown}`}>
+                        {/* <div className={`dropdown ${styles.dropdown}`}>
                             <Dropdown overlay={menu}>
                                 <Button size="large">
                                     Most Recent
                                     <FontAwesomeIcon icon={faChevronDown} />
                                 </Button>
                             </Dropdown>
-                        </div>
+                        </div> */}
                     </Col>
                 </Row>
                 <Row className={`${styles.problemSetGrid} grid`}>

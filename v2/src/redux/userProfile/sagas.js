@@ -1,7 +1,7 @@
 import {
     all,
     call,
-    delay,
+    // delay,
     fork,
     put,
     select,
@@ -12,7 +12,11 @@ import {
     IntercomAPI,
 } from 'react-intercom';
 import ReactGA from 'react-ga';
-import { goBack, push, replace } from 'connected-react-router';
+import {
+    goBack,
+    // push,
+    replace,
+} from 'connected-react-router';
 import * as dayjs from 'dayjs';
 import {
     fetchRecentWork,
@@ -44,7 +48,7 @@ import { sessionStore } from '../../../../src/scripts/storage';
 import { waitForIntercomToBoot } from '../../services/intercom';
 import { getFormattedUserType } from '../../services/mathshare';
 
-const redirectWait = 2500;
+// const redirectWait = 2500;
 
 
 function* checkUserLoginSaga() {
@@ -84,15 +88,15 @@ function* checkUserLoginSaga() {
                 yield put(setUserProfile(emails[0], displayName, imageUrl || `https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=256&name=${encodeURIComponent(displayName)}&rounded=true&length=1`, 'passport', null));
                 yield put(markUserResolved(true));
                 yield put(setAuthRedirect((window.location.hash || '').substring(1)));
-                if (window.location.hash !== '#/userDetails') {
-                    // alertInfo(
-                    //     Locales.strings.redirecting_to_fill, Locales.strings.info,
-                    //     redirectAlertId,
-                    // );
-                    yield delay(redirectWait);
-                    yield put(push('/userDetails'));
-                    // dismissAlert(redirectAlertId);
-                }
+                // if (window.location.hash !== '#/userDetails') {
+                //     // alertInfo(
+                //     //     Locales.strings.redirecting_to_fill, Locales.strings.info,
+                //     //     redirectAlertId,
+                //     // );
+                //     yield delay(redirectWait);
+                //     yield put(push('/userDetails'));
+                //     // dismissAlert(redirectAlertId);
+                // }
             } finally {
                 try {
                     yield put(fetchRecentWork());

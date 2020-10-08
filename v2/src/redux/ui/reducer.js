@@ -1,6 +1,7 @@
 const initialState = {
     dropdownOpen: null,
     ttsId: null,
+    sideBarCollapsed: null,
 };
 
 const ui = (state = initialState, {
@@ -27,6 +28,12 @@ const ui = (state = initialState, {
             };
         }
         return state;
+    }
+    case 'UPDATE_SIDEBAR_COLLAPSED': {
+        return {
+            ...state,
+            ...payload,
+        };
     }
     default:
         return state;

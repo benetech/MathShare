@@ -1,3 +1,5 @@
+@import '../styles/colors.scss';
+
 :global(#contentContainer) {
     min-height: 100vh;
     display: flex;
@@ -34,4 +36,45 @@
 
 :global(.ant-layout-content) {
     background: white;
+}
+
+:global(.ant-layout-sider) {
+    :global(.ant-layout-sider-zero-width-trigger) {
+        display: none;
+    }
+}
+
+
+:global(.ant-dropdown) {
+    padding: 0;
+    :global(.ant-dropdown-menu) {
+        margin-top: -5px;
+        padding: 0;
+        :global(.ant-dropdown-menu-item) {
+            background-color: $primary-color;
+            padding: 10px;
+            border-bottom: 1px solid white;
+    
+            a {
+                color: white;
+            }
+    
+            &:global(.ant-select-item-option-active) {
+                font-weight: 800;
+            }
+
+            &:first-child {
+                border-top-left-radius: 8px;
+            }
+
+            &:last-child {
+                border-bottom-left-radius: 8px;
+                border-bottom-right-radius: 8px;
+            }
+        }
+    }
+}
+
+*:focus {
+    outline: 1px solid black;
 }

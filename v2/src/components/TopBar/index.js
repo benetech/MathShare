@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-    Row, Col, Button, Input,
+    Col, Input, Row,
 } from 'antd';
 import styles from './styles.scss';
 
@@ -32,9 +32,6 @@ class TopBar extends Component {
                         placeholder="Search sets."
                         onSearch={this.handleChange}
                     />
-                </Col>
-                <Col>
-                    <Button className={styles.signout} type="link">Signout</Button>
                 </Col>
             </Row>
         );
