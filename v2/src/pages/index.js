@@ -14,15 +14,31 @@ import 'antd/dist/antd.less';
 import Home from './Home';
 import Dashboard from './Dashboard';
 import NotFound from './NotFound';
-import NotLoggedIn from './NotLoggedIn';
+import Header from './Header';
+import SignIn from '../components/SignIn';
 import Sidebar from '../components/Sidebar';
 
 const { Content } = Layout;
 
 class App extends Component {
+    componentDidMount() {
+        this.props.checkUserLogin();
+    }
+
     getClassFromUserConfig = () => 'container-fluid';
 
     getBodyClass = () => 'flex-xl-nowrap row';
+
+    userIsLoggedIn = () => !!this.props.userProfile.email
+
+    shouldRenderCommonComponents = () => {
+        const { router } = this.props;
+        const pathName = router.location.pathname.toLowerCase();
+        if (pathName === '/login' || pathName === '/signup') {
+            return false;
+        }
+        return true;
+    }
 
     render() {
         const { router } = this.props;
@@ -34,14 +50,18 @@ class App extends Component {
                     }}
                 />
                 <div id="contentContainer" className={this.getClassFromUserConfig()}>
-                    <NotLoggedIn />
+                    {this.shouldRenderCommonComponents() && (
+                        <Header />
+                    )}
                     <Layout className={`body-container ${this.getBodyClass()}`}>
-                        <Sidebar router={router} />
+                        {this.shouldRenderCommonComponents() && <Sidebar router={router} />}
                         <Layout>
                             <Content style={{ padding: '25px' }}>
                                 <Switch>
                                     <Route exact path="/" component={withRouter(Home)} />
-                                    <Route exact path="/dash" component={withRouter(Dashboard)} />
+                                    <Route exact path="/app" component={withRouter(Dashboard)} />
+                                    <Route exact path="/signUp" component={withRouter(SignIn)} />
+                                    <Route exact path="/login" component={withRouter(SignIn)} />
                                     <Route render={NotFound} />
                                 </Switch>
                             </Content>

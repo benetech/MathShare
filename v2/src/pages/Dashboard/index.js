@@ -10,9 +10,8 @@ import React, { Component } from 'react';
 import Card from '../../components/Card';
 import problemSetListActions from '../../redux/problemSetList/actions';
 import styles from './styles.scss';
-import CopyLink from '../../components/CopyLink';
-import Select from '../../components/Select';
-import TopBar from '../../components/TopBar';
+// import CopyLink from '../../components/CopyLink';
+// import Select from '../../components/Select';
 
 const gutter = {
     xs: 8,
@@ -22,12 +21,9 @@ const gutter = {
 };
 
 class Dashboard extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            layout: 'grid',
-        };
-    }
+    state = {
+        layout: 'grid',
+    };
 
     componentDidMount() {
         this.props.requestExampleSets();
@@ -49,15 +45,19 @@ class Dashboard extends Component {
         if (problemSetList.exampleProblemSets.loading) {
             return null;
         }
+        const allowedSets = ['Example Problem Set', 'Combining Like Terms', 'Solve for X'];
         return (
             <>
                 <div className={styles.heading}>
                     <span className={styles.title}>Example Sets</span>
                 </div>
                 <Row className={`${styles.problemSetGrid} ${layout}`}>
-                    {problemSetList.exampleProblemSets.data.map(exampleSet => (
-                        <Card key={exampleSet.id} {...exampleSet} isExampleSet />
-                    ))}
+                    {problemSetList.exampleProblemSets.data
+                        .filter(exampleSet => allowedSets.includes(exampleSet.title))
+                        .map(exampleSet => (
+                            <Card key={exampleSet.id} {...exampleSet} isExampleSet />
+                        ))
+                    }
                 </Row>
             </>
         );
@@ -65,30 +65,30 @@ class Dashboard extends Component {
 
     render() {
         const { layout } = this.state;
-        const options = [
-            {
-                value: 'most_recent',
-                label: 'Most Recent',
-            },
-            {
-                value: 'assigned_to_me',
-                label: 'Assigned to Me',
-            },
-            {
-                value: 'Created by me',
-                label: 'Created by Me',
-            },
-        ];
+        const { userProfile } = this.props;
+        // const options = [
+        //     {
+        //         value: 'most_recent',
+        //         label: 'Most Recent',
+        //     },
+        //     {
+        //         value: 'assigned_to_me',
+        //         label: 'Assigned to Me',
+        //     },
+        //     {
+        //         value: 'Created by me',
+        //         label: 'Created by Me',
+        //     },
+        // ];
 
         return (
             <div>
-                <TopBar />
                 <Row
                     className={`justify-content-between ${styles.heading}`}
                     gutter={gutter}
                 >
                     <Col className={`gutter-row ${styles.topBar}`} xs={24} sm={24} md={12} lg={12} xl={12}>
-                        <span className={styles.title}>Your Sets</span>
+                        {userProfile.email && <span className={styles.title}>Your Sets</span>}
                     </Col>
                     <Col className={`col-auto ${styles.setButtons}`} xs={24} sm={24} md={12} lg={12} xl={12}>
                         <div className={`btn-group ${styles.layoutBtns}`} role="group">
@@ -107,17 +107,24 @@ class Dashboard extends Component {
                                 </Radio.Button>
                             </Radio.Group>
                         </div>
-                        <Select dropdownClassName={styles.select} options={options} size="large" defaultValue="most_recent" />
+                        {/* <Select
+                            dropdownClassName={styles.select}
+                            options={options}
+                            size="large"
+                            defaultValue="most_recent"
+                        /> */}
                     </Col>
                 </Row>
-                <Row>
+                {/* <Row>
                     <CopyLink />
-                </Row>
-                <Row className={`${styles.problemSetGrid} ${layout}`}>
-                    {[1, 2, 3].map(id => (
-                        <Card id={id} key={id} />
-                    ))}
-                </Row>
+                </Row> */}
+                {userProfile.email && (
+                    <Row className={`${styles.problemSetGrid} ${layout}`}>
+                        {[1, 2, 3].map(id => (
+                            <Card id={id} key={id} />
+                        ))}
+                    </Row>
+                )}
                 {this.renderExampleSets()}
             </div>
         );
