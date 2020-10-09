@@ -66,3 +66,18 @@
     padding-top: 25px;
     padding-bottom: 60px;
 }
+
+.linkContainer {
+    background-color: #FBE8E3;
+    padding: 10px;
+    border-radius: 10px;
+    font-weight: 600;
+
+    color: $primary-color;
+
+    .link {
+        color: darkblue;
+        text-decoration: underline;
+    }
+}
+
