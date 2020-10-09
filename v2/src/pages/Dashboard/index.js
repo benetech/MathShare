@@ -125,6 +125,9 @@ class Dashboard extends Component {
                         ))}
                     </Row>
                 )}
+                {!userProfile.email && (
+                    <p className={styles.linkContainer}>You're not logged in -- <a className={styles.link} href="/#/login">log in</a> to view your problem sets.</p>
+                )}
                 {this.renderExampleSets()}
             </div>
         );
