@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Menu, Dropdown, Button } from 'antd';
 import { logoutOfUserProfile } from '../../redux/userProfile/actions';
-import logo from '../../../../images/logo-black.png';
 import styles from './styles.scss';
 
 /* eslint-disable react/prefer-stateless-function */
@@ -42,7 +41,7 @@ class Header extends React.Component {
                         </div>
                     )} */}
                     <div className={styles.header}>
-                        <img src={logo} alt="logo" />
+                        <img src="https://mathshare-qa.diagramcenter.org/images/logo-black.png" alt="logo" />
                         <span className={styles.beta}>beta</span>
                     </div>
                 </div>
