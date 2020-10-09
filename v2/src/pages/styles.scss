@@ -75,7 +75,7 @@
         }
     }
 
-    :global(.ant-dropdown-arrow) {
+    &:global(.ant-dropdown-placement-bottomRight) > :global(.ant-dropdown-arrow) {
         border-top-color: $primary-color;
         border-left-color: $primary-color;
         margin-top: -5px;
