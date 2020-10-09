@@ -16,7 +16,6 @@ import {
     Popconfirm,
     Progress,
 } from 'antd';
-import favIcon from '../../../../images/favicon.png';
 import styles from './styles.scss';
 
 const Card = (props) => {
@@ -67,7 +66,7 @@ const Card = (props) => {
             <div className={styles.tile}>
                 <div className={styles.header}>
                     <img
-                        src={favIcon}
+                        src="https://mathshare-qa.diagramcenter.org/images/favicon.png"
                         alt="Mathshare"
                         className="img-fluid shadow-lg"
                     />

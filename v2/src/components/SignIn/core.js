@@ -7,7 +7,6 @@ import {
 } from '../../redux/userProfile/actions';
 import { API_URL } from '../../config';
 import Locales from '../../strings';
-import logo from '../../../../images/logo-black.png';
 import googleLogo from '../../../../images/google-logo.svg';
 import microsoftLogo from '../../../../images/microsoft-logo.svg';
 import signIn from './styles.scss';
@@ -80,7 +79,10 @@ class SignInCore extends Component {
         return (
             <>
                 <div className={signIn.logo}>
-                    <img src={logo} alt={Locales.strings.mathshare_logo} />
+                    <img
+                        src="https://mathshare-qa.diagramcenter.org/images/logo-black.png"
+                        alt={Locales.strings.mathshare_logo}
+                    />
                 </div>
                 <h1 id="signInServices" className={signIn.header} tabIndex={-1}>{header}</h1>
                 <ul className={signIn.buttonsContainer} aria-labelledby="signInServices">

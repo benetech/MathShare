@@ -251,3 +251,28 @@
         }
     }
 }
+
+@media (max-width: 520px) {
+    .tile {
+        flex-wrap: wrap;
+    }
+
+    .progressContainer {
+        .progressText {
+            padding-right: 10px;
+        }
+    }
+}
+
+@media (max-width: 400px) {
+    .progressContainer {
+        .progressText {
+            display: flex;
+            flex-wrap: wrap-reverse;
+
+            span {
+                width: 100%;
+            }
+        }
+    }
+}

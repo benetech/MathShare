@@ -39,8 +39,16 @@ class Dashboard extends Component {
         console.log('e', e);
     }
 
-    renderExampleSets() {
+    getLayout = () => {
         const { layout } = this.state;
+        const { ui } = this.props;
+        if (ui.sideBarCollapsed) {
+            return 'line-item';
+        }
+        return layout;
+    }
+
+    renderExampleSets() {
         const { problemSetList } = this.props;
         if (problemSetList.exampleProblemSets.loading) {
             return null;
@@ -51,7 +59,7 @@ class Dashboard extends Component {
                 <div className={styles.heading}>
                     <span className={styles.title}>Example Sets</span>
                 </div>
-                <Row className={`${styles.problemSetGrid} ${layout}`}>
+                <Row className={`${styles.problemSetGrid} ${this.getLayout()}`}>
                     {problemSetList.exampleProblemSets.data
                         .filter(exampleSet => allowedSets.includes(exampleSet.title))
                         .map(exampleSet => (
@@ -64,8 +72,7 @@ class Dashboard extends Component {
     }
 
     render() {
-        const { layout } = this.state;
-        const { userProfile } = this.props;
+        const { userProfile, ui } = this.props;
         // const options = [
         //     {
         //         value: 'most_recent',
@@ -90,43 +97,50 @@ class Dashboard extends Component {
                     <Col className={`gutter-row ${styles.topBar}`} xs={24} sm={24} md={12} lg={12} xl={12}>
                         {userProfile.email && <span className={styles.title}>Your Sets</span>}
                     </Col>
-                    <Col className={`col-auto ${styles.setButtons}`} xs={24} sm={24} md={12} lg={12} xl={12}>
-                        <div className={`btn-group ${styles.layoutBtns}`} role="group">
-                            <Radio.Group
-                                buttonStyle="solid"
-                                onChange={this.setLayout}
-                                size="large"
-                                value={this.state.layout}
-                                style={{ marginBottom: 8 }}
-                            >
-                                <Radio.Button value="line-item">
-                                    <FontAwesomeIcon icon={faBars} />
-                                </Radio.Button>
-                                <Radio.Button value="grid">
-                                    <FontAwesomeIcon icon={faThLarge} />
-                                </Radio.Button>
-                            </Radio.Group>
-                        </div>
-                        {/* <Select
+                    {!ui.sideBarCollapsed && (
+                        <Col className={`col-auto ${styles.setButtons}`} xs={24} sm={24} md={12} lg={12} xl={12}>
+                            <div className={`btn-group ${styles.layoutBtns}`} role="group">
+                                <Radio.Group
+                                    buttonStyle="solid"
+                                    onChange={this.setLayout}
+                                    size="large"
+                                    value={this.state.layout}
+                                    style={{ marginBottom: 8 }}
+                                >
+                                    <Radio.Button value="line-item">
+                                        <FontAwesomeIcon icon={faBars} />
+                                    </Radio.Button>
+                                    <Radio.Button value="grid">
+                                        <FontAwesomeIcon icon={faThLarge} />
+                                    </Radio.Button>
+                                </Radio.Group>
+                            </div>
+                            {/* <Select
                             dropdownClassName={styles.select}
                             options={options}
                             size="large"
                             defaultValue="most_recent"
                         /> */}
-                    </Col>
+                        </Col>
+                    )}
                 </Row>
                 {/* <Row>
                     <CopyLink />
                 </Row> */}
                 {userProfile.email && (
-                    <Row className={`${styles.problemSetGrid} ${layout}`}>
+                    <Row className={`${styles.problemSetGrid} ${this.getLayout()}`}>
                         {[1, 2, 3].map(id => (
                             <Card id={id} key={id} />
                         ))}
                     </Row>
                 )}
                 {!userProfile.email && (
-                    <p className={styles.linkContainer}>You're not logged in -- <a className={styles.link} href="/#/login">log in</a> to view your problem sets.</p>
+                    <p className={styles.linkContainer}>
+                        You&apos;re not logged in --
+                        <a className={styles.link} href="/#/login">log in</a>
+                        {' '}
+                        to view your problem sets.
+                    </p>
                 )}
                 {this.renderExampleSets()}
             </div>
@@ -138,6 +152,7 @@ export default connect(
     state => ({
         problemSetList: state.problemSetList,
         userProfile: state.userProfile,
+        ui: state.ui,
         routerHooks: state.routerHooks,
         router: state.router,
     }),
