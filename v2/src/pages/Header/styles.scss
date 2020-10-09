@@ -33,17 +33,26 @@
             padding: 8px 12px;
             font-family: 'Poppins', sans-serif;
         
-            span {
-                font-size: 0.6rem;
-                font-weight: 300;
-                position: relative;
-                top: -18px;
-                color: $salmon-1;
-            }
+            // span {
+            //     font-size: 0.6rem;
+            //     font-weight: 300;
+            //     position: relative;
+            //     top: -18px;
+            //     color: $salmon-1;
+            // }
 
             img {
                 height: 32px;
             }
+
+            .beta {
+                margin-left: 10px;
+                padding: 0 5px;
+                background: #37355a;
+                border-radius: 4px;
+                font: caption;
+                color: white;
+              }
         }
     }
     .right {

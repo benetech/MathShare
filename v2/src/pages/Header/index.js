@@ -43,6 +43,7 @@ class Header extends React.Component {
                     )} */}
                     <div className={styles.header}>
                         <img src={logo} alt="logo" />
+                        <span className={styles.beta}>beta</span>
                     </div>
                 </div>
                 <div className={styles.right}>

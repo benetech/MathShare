@@ -71,9 +71,11 @@ const Card = (props) => {
                         alt="Mathshare"
                         className="img-fluid shadow-lg"
                     />
-                    <Dropdown overlay={menu} placement="bottomRight" className={styles.icon} overlayClassName={styles.dropdown}>
-                        <Button type="text" size="large" icon={<FontAwesomeIcon icon={faEllipsisH} />} />
-                    </Dropdown>
+                    <div className={styles.iconContainer}>
+                        <Dropdown overlay={menu} placement="bottomRight" className={styles.icon} overlayClassName={styles.dropdown}>
+                            <Button type="text" size="large" icon={<FontAwesomeIcon icon={faEllipsisH} />} />
+                        </Dropdown>
+                    </div>
                 </div>
                 <div className={styles.content}>
                     <div className={styles.mainContent}>
@@ -99,7 +101,8 @@ const Card = (props) => {
                                             '100%': '#87d068',
                                         }}
                                         percent={66}
-                                        showInfo={false}
+                                        format={percent => `Progress bar, ${percent}% full.`}
+                                        showInfo
                                     />
                                 </div>
                             </div>
