@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import {
-    Switch, Route, withRouter,
+    Switch, Route, withRouter, Redirect,
 } from 'react-router-dom';
 import { Layout } from 'antd';
 import userProfileActions from '../redux/userProfile/actions';
@@ -11,7 +11,6 @@ import routerActions from '../redux/router/actions';
 import uiActions from '../redux/ui/actions';
 import './styles.scss';
 import 'antd/dist/antd.less';
-import Home from './Home';
 import Dashboard from './Dashboard';
 import NotFound from './NotFound';
 import Header from './Header';
@@ -59,7 +58,9 @@ class App extends Component {
                         <Layout>
                             <Content style={{ padding: '25px' }}>
                                 <Switch>
-                                    <Route exact path="/" component={withRouter(Home)} />
+                                    <Route exact path="/">
+                                        <Redirect to="/app" />
+                                    </Route>
                                     <Route exact path="/app/problemSet/:action/:code" component={withRouter(ProblemSet)} />
                                     <Route exact path="/app" component={withRouter(Dashboard)} />
                                     <Route exact path="/signUp" component={withRouter(SignIn)} />
