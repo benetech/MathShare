@@ -14,6 +14,7 @@
 
         .header {
             display: inline-flex;
+            justify-content: space-between;
             width: 100%;
             height: 62px;
 
@@ -29,18 +30,6 @@
         .problemSetTitle {
             font-size: 32px;
             height: 200px;
-        }
-
-        .progressContainer {
-            height: 87px;
-
-            .progressText {
-                font-size: 26px;
-
-                >span {
-                    margin-top: 12px;
-                }
-            }
         }
 
         &.newSet {
@@ -77,30 +66,25 @@
             position: relative;
 
             .problemSetTitle {
-                height: auto;
                 font-size: 25px;
+                width: 100%;
             }
 
             .content {
-                display: flex;
-                flex-wrap: wrap;
+                display: block;
                 width: 100%;
+                padding-right: 80px;
                 justify-content: space-between;
-            }
 
-            .mainContent {
-                width: 50%;
-            }
+                .mainContent {
+                    display: grid;
+                    width: 75%;
+                }
 
-            .progressContainer {
-                width: 100%;
-                .progressText {
-                    font-size: 18px;
-                    top: 10px;
-
-                    span {
-                        margin-top: 2px;
-                    }
+                .desc {
+                    font-size: 20px;
+                    color: #3F3A68;
+                    font-weight: lighter;
                 }
             }
 
@@ -110,9 +94,9 @@
                 .iconContainer {
                     position: absolute;
                     display: flex;
-                    right: 0;
-                    top: 0;
-                    padding: 12px;
+                    right: 10px;
+                    top: 10px;
+                    padding: 8px;
 
                     .icon {
                         align-self: center;
@@ -144,6 +128,10 @@
 
     &:nth-child(3n+1) {
         background: #E3FDF7;
+
+        .header .number {
+            background-color: #61CBB8;
+        }
     }
 
     &:nth-child(3n+2) {
@@ -152,6 +140,10 @@
 
     &:nth-child(3n+3) {
         background: #FBE8E3;
+
+        .header .number {
+            background-color: #cc9586;
+        }
     }
 }
 
@@ -165,10 +157,15 @@
 
     .header {
 
-        img {
-            width: 62px;
-            height: 62px;
-            border-radius: 18px;
+        .number {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            text-align: center;
+            line-height: 40px;
+            background-color: #6D6A92;
+            color: white;
+            font-size: 18px;
         }
 
         svg {
@@ -202,34 +199,21 @@
         overflow: hidden;
     }
 
-    .progressContainer {
-        .progressText {
-
-            >span {
-                font-size: 14px;
-                color: #37345B;
-                float: right;
-            }
-        }
-
-        :global(.ant-progress-outer) {
-            margin-right: 0;
-            padding-right: 0;
-        }
-
-        :global(.ant-progress-text) {
-            clip: rect(1px, 1px, 1px, 1px);
-            position: absolute !important;
-            white-space: nowrap;
-            height: 1px;
-            width: 1px;
-            overflow: hidden;
-        }
-    }
-
     div {
         font-size: 30px;
         font-weight: 600;
+    }
+
+    .content {
+        :global(.ML__fieldcontainer) {
+            max-width: 60vw;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        :global(.ML__mathlive) {
+            font: normal 0.8em KaTeX_Main, 'Times New Roman', serif;
+        }
     }
 }
 
@@ -259,24 +243,5 @@
 @media (max-width: 520px) {
     .tile {
         flex-wrap: wrap;
-    }
-
-    .progressContainer {
-        .progressText {
-            padding-right: 10px;
-        }
-    }
-}
-
-@media (max-width: 400px) {
-    .progressContainer {
-        .progressText {
-            display: flex;
-            flex-wrap: wrap-reverse;
-
-            span {
-                width: 100%;
-            }
-        }
     }
 }

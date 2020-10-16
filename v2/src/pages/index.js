@@ -15,6 +15,7 @@ import Home from './Home';
 import Dashboard from './Dashboard';
 import NotFound from './NotFound';
 import Header from './Header';
+import ProblemSet from './ProblemSet';
 import SignIn from '../components/SignIn';
 import Sidebar from '../components/Sidebar';
 
@@ -59,6 +60,7 @@ class App extends Component {
                             <Content style={{ padding: '25px' }}>
                                 <Switch>
                                     <Route exact path="/" component={withRouter(Home)} />
+                                    <Route exact path="/app/problemSet/:action/:code" component={withRouter(ProblemSet)} />
                                     <Route exact path="/app" component={withRouter(Dashboard)} />
                                     <Route exact path="/signUp" component={withRouter(SignIn)} />
                                     <Route exact path="/login" component={withRouter(SignIn)} />

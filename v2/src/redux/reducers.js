@@ -4,15 +4,17 @@ import {
 import {
     connectRouter,
 } from 'connected-react-router';
+import ariaLiveAnnouncer from './ariaLiveAnnouncer/reducer';
+import problemSetList from './problemSetList/reducer';
+import problemSet from './problemSet/reducer';
 import routerHooks from './router/reducer';
 import ui from './ui/reducer';
 import userProfile from './userProfile/reducer';
-import problemSetList from './problemSetList/reducer';
-import ariaLiveAnnouncer from './ariaLiveAnnouncer/reducer';
 
 export default history => combineReducers({
     router: connectRouter(history),
     ariaLiveAnnouncer,
+    problemSet,
     problemSetList,
     routerHooks,
     ui,

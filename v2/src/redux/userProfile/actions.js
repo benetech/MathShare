@@ -63,7 +63,7 @@ export const saveUserInfo = (userType, grades, role) => ({
 });
 
 export const fetchRecentWork = () => ({
-    type: 'FETCH_RECENT_WORK',
+    type: 'REQUEST_RECENT_SETS',
 });
 
 export const setRecentWork = recentProblemSets => ({

@@ -1,8 +1,14 @@
 import { commonElementFinder, sleep } from './misc';
 
 export const stopEvent = (e) => {
-    e.stopPropagation();
-    e.preventDefault();
+    if (e) {
+        if (e.stopPropagation) {
+            e.stopPropagation();
+        }
+        if (e.preventDefault) {
+            e.preventDefault();
+        }
+    }
     return false;
 };
 

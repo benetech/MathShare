@@ -106,6 +106,7 @@
             if (String(version).trim() === '2') {
                 loadFile('main.v2.css?version=<%= htmlWebpackPlugin.options.staticVersion %>_<%= htmlWebpackPlugin.files.chunks.main.hash %>', 'css');
                 loadFile('main.v2.js?version=<%= htmlWebpackPlugin.options.staticVersion %>_<%= htmlWebpackPlugin.files.chunks.main.hash %>', 'js');
+                document.getElementById('root').style.removeProperty('height');
             } else {
                 loadFile('main.css?version=<%= htmlWebpackPlugin.options.staticVersion %>_<%= htmlWebpackPlugin.files.chunks.main.hash %>', 'css');
                 loadFile('main.js?version=<%= htmlWebpackPlugin.options.staticVersion %>_<%= htmlWebpackPlugin.files.chunks.main.hash %>', 'js');
