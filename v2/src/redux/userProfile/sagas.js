@@ -75,17 +75,18 @@ function* checkUserLoginSaga() {
                 displayName,
                 imageUrl,
             } = response.data;
+            const profileUrl = (imageUrl || '').replace('/s50/', '/s240/');
             try {
                 const userInfoResponse = yield call(fetchUserInfoApi, emails[0]);
                 if (userInfoResponse.status !== 200) {
                     throw Error('User info not set');
                 } else {
                     const userInfo = userInfoResponse.data;
-                    yield put(setUserProfile(emails[0], displayName, imageUrl || `https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=256&name=${encodeURIComponent(displayName)}&rounded=true&length=1`, 'passport', userInfo.userType));
+                    yield put(setUserProfile(emails[0], displayName, profileUrl || `https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=256&name=${encodeURIComponent(displayName)}&rounded=true&length=1`, 'passport', userInfo.userType));
                     yield put(setUserInfo(userInfo));
                 }
             } catch (infoError) {
-                yield put(setUserProfile(emails[0], displayName, imageUrl || `https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=256&name=${encodeURIComponent(displayName)}&rounded=true&length=1`, 'passport', null));
+                yield put(setUserProfile(emails[0], displayName, profileUrl || `https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=256&name=${encodeURIComponent(displayName)}&rounded=true&length=1`, 'passport', null));
                 yield put(markUserResolved(true));
                 yield put(setAuthRedirect((window.location.hash || '').substring(1)));
                 // if (window.location.hash !== '#/userDetails') {

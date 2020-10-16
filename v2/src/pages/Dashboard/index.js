@@ -10,6 +10,7 @@ import React, { Component } from 'react';
 import Card from '../../components/Card';
 import problemSetListActions from '../../redux/problemSetList/actions';
 import styles from './styles.scss';
+import { stopEvent } from '../../services/events';
 // import CopyLink from '../../components/CopyLink';
 // import Select from '../../components/Select';
 
@@ -39,6 +40,23 @@ class Dashboard extends Component {
         console.log('e', e);
     }
 
+    duplicateProblemSet = problemSet => (e) => {
+        this.props.duplicateProblemSet(problemSet);
+        return stopEvent(e);
+    }
+
+    archiveProblemSet = problemSet => (e) => {
+        let archiveMode = null;
+        const isSolutionSet = !problemSet.problems;
+        if (!problemSet.archiveMode) {
+            archiveMode = 'archived';
+        }
+        this.props.archiveProblemSet(
+            problemSet.editCode, archiveMode, problemSet.title, isSolutionSet,
+        );
+        return stopEvent(e);
+    }
+
     getLayout = () => {
         const { layout } = this.state;
         const { ui } = this.props;
@@ -63,11 +81,56 @@ class Dashboard extends Component {
                     {problemSetList.exampleProblemSets.data
                         .filter(exampleSet => allowedSets.includes(exampleSet.title))
                         .map(exampleSet => (
-                            <Card key={exampleSet.id} {...exampleSet} isExampleSet />
+                            <Card
+                                key={exampleSet.id}
+                                {...exampleSet}
+                                isExampleSet
+                                duplicateProblemSet={this.duplicateProblemSet(exampleSet)}
+                            />
                         ))
                     }
                 </Row>
             </>
+        );
+    }
+
+    renderRecentSets() {
+        const { problemSetList, userProfile } = this.props;
+        if (problemSetList.recentProblemSets.loading || problemSetList.recentSolutionSets.loading) {
+            return (
+                <Row className={`${styles.problemSetGrid} ${this.getLayout()}`}>
+                    Loading...
+                </Row>
+            );
+        }
+        if (problemSetList.recentProblemSets.data.length === 0
+            && problemSetList.recentSolutionSets.data.length === 0) {
+            return (
+                <Row className={`${styles.problemSetGrid} ${this.getLayout()}`}>
+                    You don&apos;t have any sets yet!
+                    {' '}
+                    Try solving an example problem set below,
+                    {' '}
+                    or create your own using the desktop version of Mathshare.
+                </Row>
+            );
+        }
+        return (
+            <Row className={`${styles.problemSetGrid} ${this.getLayout()}`}>
+                {problemSetList.recentProblemSets.data
+                    .concat(problemSetList.recentSolutionSets.data)
+                    .map(recentProblemSet => (
+                        <Card
+                            key={recentProblemSet.id}
+                            {...recentProblemSet}
+                            duplicateProblemSet={this.duplicateProblemSet(recentProblemSet)}
+                            archiveProblemSet={this.archiveProblemSet(recentProblemSet)}
+                            userProfile={userProfile}
+                            isRecent
+                        />
+                    ))
+                }
+            </Row>
         );
     }
 
@@ -95,7 +158,7 @@ class Dashboard extends Component {
                     gutter={gutter}
                 >
                     <Col className={`gutter-row ${styles.topBar}`} xs={24} sm={24} md={12} lg={12} xl={12}>
-                        {userProfile.email && <span className={styles.title}>Your Sets</span>}
+                        <span className={styles.title}>Your Sets</span>
                     </Col>
                     {!ui.sideBarCollapsed && (
                         <Col className={`col-auto ${styles.setButtons}`} xs={24} sm={24} md={12} lg={12} xl={12}>
@@ -127,16 +190,11 @@ class Dashboard extends Component {
                 {/* <Row>
                     <CopyLink />
                 </Row> */}
-                {userProfile.email && (
-                    <Row className={`${styles.problemSetGrid} ${this.getLayout()}`}>
-                        {[1, 2, 3].map(id => (
-                            <Card id={id} key={id} />
-                        ))}
-                    </Row>
-                )}
+                {userProfile.email && this.renderRecentSets()}
                 {!userProfile.email && (
                     <p className={styles.linkContainer}>
                         You&apos;re not logged in --
+                        {' '}
                         <a className={styles.link} href="/#/login">log in</a>
                         {' '}
                         to view your problem sets.

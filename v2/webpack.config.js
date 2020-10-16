@@ -100,6 +100,7 @@ module.exports = (env, argv) => {
                 include: [
                     /node_modules(\/|\\)react-toastify/,
                     /node_modules(\/|\\)antd/,
+                    /node_modules(\/|\\)mathlive/,
                     /src(\/|\\)assets(\/|\\)scss/,
                     /src(\/|\\)lib/,
                     /src(\/|\\)styles/,

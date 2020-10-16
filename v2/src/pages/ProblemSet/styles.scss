@@ -1,0 +1,37 @@
+.topBar {
+    .back {
+        svg {
+            font-size: 20px;
+            display: block;
+        }
+
+        padding-right: 20px;
+    }
+
+    .title {
+        font-size: 38px;
+    }
+
+    .options {
+        float: right;
+        top: 15%;
+        height: auto;
+        width: auto;
+
+        svg {
+            font-size: 1.5em;
+        }
+    }
+}
+
+.menu {
+    :global(.ant-dropdown-menu-item) button {
+        color: white;
+        padding-left: 8px;
+        font-size: 16px;
+
+        span {
+            padding-left: 8px;
+        }
+    }
+}

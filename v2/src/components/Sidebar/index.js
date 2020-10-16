@@ -26,6 +26,7 @@ class Sidebar extends React.Component {
     render() {
         const { contrast } = this.state;
         const { userProfile } = this.props;
+        const { info } = userProfile;
         return (
             <Sider
                 breakpoint="lg"
@@ -52,7 +53,9 @@ class Sidebar extends React.Component {
                                 {userProfile.name}
                             </div>
                             <div className={styles.title}>
-                                Teacher 9th grade
+                                {(info.userType || '').replace(/(^|\s)\S/g, t => t.toUpperCase())}
+                                {' '}
+                                {info.role}
                             </div>
                             <Button
                                 type="text"
@@ -104,7 +107,10 @@ class Sidebar extends React.Component {
                             <Radio.Button value="low">Low Contrast</Radio.Button>
                         </Radio.Group>
                     </div>
-                    <Menu mode="inline" defaultSelectedKeys={['1']}>
+                    <Menu
+                        mode="inline"
+                        defaultSelectedKeys={['1']}
+                    >
                         <Menu.Item key="1">
                             Home
                         </Menu.Item>
@@ -115,9 +121,12 @@ class Sidebar extends React.Component {
                             Example Sets
                         </Menu.Item>
                         <Menu.Item key="4">
-                            Help
+                            About Mathshare
                         </Menu.Item>
                         <Menu.Item key="5">
+                            Help
+                        </Menu.Item>
+                        <Menu.Item key="6">
                             Settings
                         </Menu.Item>
                     </Menu>
