@@ -562,13 +562,19 @@ class App extends Component {
                             <Route
                                 exact
                                 path="/"
-                                render={p => (
-                                    <LandingPage
-                                        {...p}
-                                        setAuthRedirect={this.props.setAuthRedirect}
-                                        userProfile={this.props.userProfile}
-                                    />
-                                )}
+                                render={(p) => {
+                                    if (window.location.host === 'mathshare.benetech.org') {
+                                        window.location.href = 'https://mathshare.benetech.org/cms';
+                                        return null;
+                                    }
+                                    return (
+                                        <LandingPage
+                                            {...p}
+                                            setAuthRedirect={this.props.setAuthRedirect}
+                                            userProfile={this.props.userProfile}
+                                        />
+                                    );
+                                }}
                             />
                             <Route exact path="/privacy" render={p => <Privacy {...p} />} />
                             <Route exact path="/getting-started" render={p => <GettingStarted {...p} />} />
