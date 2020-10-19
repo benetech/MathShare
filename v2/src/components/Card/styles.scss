@@ -70,7 +70,7 @@
         width: 100%;
 
         .tile {
-            display: flex;
+            display: inline-block;
             width: 100%;
             padding: 20px;
             padding-bottom: 8px;
@@ -84,19 +84,26 @@
             .content {
                 display: flex;
                 flex-wrap: wrap;
-                width: 100%;
                 justify-content: space-between;
+                padding-bottom: 30px;
             }
 
             .mainContent {
-                width: 50%;
+                width: 70%;
             }
 
             .progressContainer {
                 width: 100%;
+                padding-top: 12px;
+                position: relative;
+
                 .progressText {
                     font-size: 18px;
-                    top: 10px;
+
+                    :global(.progress) {
+                        position: relative;
+                        top: -10px;
+                    }
 
                     span {
                         margin-top: 2px;
@@ -105,29 +112,8 @@
             }
 
             .header {
-                margin-right: 45px;
-
-                .iconContainer {
-                    position: absolute;
-                    display: flex;
-                    right: 0;
-                    top: 0;
-                    padding: 12px;
-
-                    .icon {
-                        align-self: center;
-
-                        svg {
-                            font-size: 24px;
-                            margin: 0;
-                            position: absolute;
-                            top: 50%;
-                            left: 50%;
-                            -ms-transform: translate(-50%, -50%);
-                            transform: translate(-50%, -50%);
-                        }
-                    }
-                }
+                margin-right: 15px;
+                float: left;
             }
 
             .course {
@@ -157,6 +143,7 @@
 
 .tile {
     text-align: left;
+    position: relative;
     box-sizing: border-box;
     color: #37345B;
     border-radius: 30px;
@@ -170,9 +157,32 @@
             height: 62px;
             border-radius: 18px;
         }
+    }
 
-        svg {
-            font-size: 30px;
+    .iconContainer {
+        position: absolute;
+        display: flex;
+        right: 0;
+        top: 0;
+        padding: 12px;
+
+        .icon {
+            align-self: center;
+
+            svg {
+                font-size: 30px;
+                margin: 0;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                -ms-transform: translate(-50%, -50%);
+                transform: translate(-50%, -50%);
+            }
+
+            &:global(.ant-btn-icon-only) {
+                padding: 6px 10px;
+                width: 60px;
+            }
         }
 
         :global(.ant-dropdown-open) {
@@ -180,13 +190,6 @@
             color: white;
             border-top-left-radius: 8px;
             border-top-right-radius: 8px;
-        }
-
-        .icon {
-            &:global(.ant-btn-icon-only) {
-                padding: 6px 10px;
-                width: 60px;
-            }
         }
     }
 
@@ -204,9 +207,11 @@
 
     .progressContainer {
         .progressText {
+            font-weight: 500;
 
             >span {
                 font-size: 14px;
+                font-weight: 300;
                 color: #37345B;
                 float: right;
             }

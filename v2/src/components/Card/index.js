@@ -111,56 +111,56 @@ const Card = (props) => {
                         alt="Mathshare"
                         className="img-fluid shadow-lg"
                     />
-                    {(!solutions || (!isExampleSet && userProfile.email)) && (
-                        <div className={styles.iconContainer}>
-                            <Dropdown
-                                overlay={menu}
-                                placement="bottomRight"
-                                className={styles.icon}
-                                overlayClassName={styles.dropdown}
-                            >
-                                <Button type="text" size="large" icon={<FontAwesomeIcon icon={faEllipsisH} />} onClick={e => e.preventDefault()} />
-                            </Dropdown>
-                        </div>
-                    )}
                 </div>
+                {(!solutions || (!isExampleSet && userProfile.email)) && (
+                    <div className={styles.iconContainer}>
+                        <Dropdown
+                            overlay={menu}
+                            placement="bottomRight"
+                            className={styles.icon}
+                            overlayClassName={styles.dropdown}
+                        >
+                            <Button type="text" size="large" icon={<FontAwesomeIcon icon={faEllipsisH} />} onClick={e => e.preventDefault()} />
+                        </Dropdown>
+                    </div>
+                )}
                 <div className={styles.content}>
                     <div className={styles.mainContent}>
                         {/* <div className={styles.course}>Course</div> */}
                         <div className={styles.problemSetTitle}>{title || 'Undefined'}</div>
                     </div>
-                    <div className={styles.progressContainer}>
-                        <div className={styles.progressText}>
-                            {(!solutions || totalCount === 0) ? '' : 'Progress'}
-                            {totalCount === 0 ? (
-                                <span>Empty</span>
-                            ) : (
-                                <span>
-                                    {!solutions ? '' : `${completedProblems} of `}
-                                    {totalCount}
-                                    {' '}
-                                    Problems
-                                </span>
-                            )}
-                        </div>
-                        {solutions && (
-                            <div>
-                                <div className="progress">
-                                    <Progress
-                                        strokeColor={{
-                                            '0%': '#108ee9',
-                                            '100%': '#87d068',
-                                        }}
-                                        percent={
-                                            Math.round(100 * completedProblems / totalCount, 2)
-                                        }
-                                        format={percent => `Progress bar, ${percent}% full.`}
-                                        showInfo
-                                    />
-                                </div>
-                            </div>
+                </div>
+                <div className={styles.progressContainer}>
+                    <div className={styles.progressText}>
+                        {(!solutions || totalCount === 0) ? '' : 'Progress'}
+                        {totalCount === 0 ? (
+                            <span>Empty</span>
+                        ) : (
+                            <span>
+                                {!solutions ? '' : `${String(completedProblems || '0').padStart(2, '0')} of `}
+                                {String(totalCount).padStart(2, '0') || '0'}
+                                {' '}
+                                Problems
+                            </span>
                         )}
                     </div>
+                    {solutions && (
+                        <div>
+                            <div className="progress">
+                                <Progress
+                                    strokeColor={{
+                                        '0%': '#108ee9',
+                                        '100%': '#87d068',
+                                    }}
+                                    percent={
+                                        Math.round(100 * completedProblems / totalCount, 2)
+                                    }
+                                    format={percent => `Progress bar, ${percent}% full.`}
+                                    showInfo
+                                />
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div>
         </a>
