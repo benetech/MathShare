@@ -500,6 +500,10 @@ class App extends Component {
         const { email, name } = userProfile;
         const { userType, role, grades } = userProfile.info;
 
+        if (userProfile.checking) {
+            return null;
+        }
+
         const intercomAttributes = {
             user_id: email,
             email,
@@ -586,7 +590,8 @@ class App extends Component {
                                 exact
                                 path="/"
                                 render={(p) => {
-                                    if (window.location.host === 'mathshare.benetech.org') {
+                                    const signedIn = userProfile && userProfile.email;
+                                    if (!signedIn && window.location.host === 'mathshare.benetech.org') {
                                         window.location.href = 'https://mathshare.benetech.org/cms';
                                         return null;
                                     }
