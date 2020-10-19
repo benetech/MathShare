@@ -62,7 +62,7 @@
             display: flex;
             width: 100%;
             padding: 20px;
-            padding-bottom: 8px;
+            padding-bottom: 12px;
             position: relative;
 
             .problemSetTitle {
@@ -79,6 +79,7 @@
                 .mainContent {
                     display: grid;
                     width: 75%;
+                    padding-bottom: 12px;
                 }
 
                 .desc {
