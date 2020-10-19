@@ -27,10 +27,10 @@ class SignInCore extends Component {
 
     getReturnUrl = (routerHistory) => {
         let path = '/#/app';
-        if (routerHistory.current !== '/#/signIn' && routerHistory.prev !== '/#/signUp') {
+        if (routerHistory.current !== '/#/login' && routerHistory.current !== '/#/signUp') {
             path = routerHistory.current;
         } else if (
-            routerHistory.prev && routerHistory.prev !== '/#/signIn'
+            routerHistory.prev && routerHistory.prev !== '/#/login'
             && routerHistory.prev !== '/#/signUp' && routerHistory.prev !== '/#/'
         ) {
             path = routerHistory.prev;
