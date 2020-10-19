@@ -72,7 +72,7 @@ const Card = (props) => {
     if (solutions) {
         completedProblems = solutions.filter(solution => solution.finished).length;
     }
-    const totalCount = Math.max(1, typeof (problemCount) === 'undefined' ? (solutions && solutions.length) : problemCount);
+    const totalCount = typeof (problemCount) === 'undefined' ? (solutions && solutions.length) : problemCount;
     const menu = (
         <Menu
             className={styles.menu}
@@ -131,13 +131,17 @@ const Card = (props) => {
                     </div>
                     <div className={styles.progressContainer}>
                         <div className={styles.progressText}>
-                            {(!solutions) ? '' : 'Progress'}
-                            <span>
-                                {!solutions ? '' : `${completedProblems} of `}
-                                {totalCount}
-                                {' '}
-                                Problems
-                            </span>
+                            {(!solutions || totalCount === 0) ? '' : 'Progress'}
+                            {totalCount === 0 ? (
+                                <span>Empty</span>
+                            ) : (
+                                <span>
+                                    {!solutions ? '' : `${completedProblems} of `}
+                                    {totalCount}
+                                    {' '}
+                                    Problems
+                                </span>
+                            )}
                         </div>
                         {solutions && (
                             <div>
