@@ -72,7 +72,7 @@ const Card = (props) => {
     if (solutions) {
         completedProblems = solutions.filter(solution => solution.finished).length;
     }
-    const totalCount = problemCount || solutions.length;
+    const totalCount = Math.max(1, typeof (problemCount) === 'undefined' ? (solutions && solutions.length) : problemCount);
     const menu = (
         <Menu
             className={styles.menu}
