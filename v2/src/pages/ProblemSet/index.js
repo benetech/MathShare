@@ -138,7 +138,12 @@ class ProblemSet extends Component {
     }
 
     render() {
-        const { match, problemSet, userProfile } = this.props;
+        const {
+            match,
+            problemSet,
+            userProfile,
+            routerHooks,
+        } = this.props;
         const {
             action,
         } = match.params;
@@ -193,7 +198,7 @@ class ProblemSet extends Component {
                             aria-label={Locales.strings.back_to_all_sets}
                             className={styles.back}
                             onClick={() => {
-                                if (this.props.history.length < 2) {
+                                if (this.props.history.length < 2 || routerHooks.prev === '/#/' || routerHooks.prev === `/${window.location.hash}`) {
                                     this.props.history.replace('/app');
                                 } else {
                                     this.props.history.goBack();
