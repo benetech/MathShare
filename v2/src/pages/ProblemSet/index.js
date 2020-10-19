@@ -12,6 +12,7 @@ import problemSetListActions from '../../redux/problemSetList/actions';
 import problemSetActions from '../../redux/problemSet/actions';
 import styles from './styles.scss';
 import { stopEvent } from '../../services/events';
+import Locales from '../../strings';
 // import CopyLink from '../../components/CopyLink';
 // import Select from '../../components/Select';
 
@@ -156,23 +157,23 @@ class ProblemSet extends Component {
                             icon={<FontAwesomeIcon icon={faCopy} />}
                             onClick={e => this.duplicateProblemSet(set)(e.domEvent)}
                         >
-                            Duplicate
+                            {Locales.strings.duplicate}
                         </Button>
                     </Menu.Item>
                 )}
                 {userProfile.email && (
                     <Menu.Item>
                         <Popconfirm
-                            title="This will permanently delete the problem set."
-                            okText="Okay"
-                            cancelText="Cancel"
+                            title={Locales.strings.delete_confirmation}
+                            okText={Locales.strings.okay}
+                            cancelText={Locales.strings.cancel}
                             onConfirm={e => this.archiveProblemSet(set)(e.domEvent)}
                         >
                             <Button
                                 type="text"
                                 icon={<FontAwesomeIcon icon={faMinusCircle} />}
                             >
-                                Delete
+                                {Locales.strings.delete}
                             </Button>
                         </Popconfirm>
                     </Menu.Item>
@@ -188,6 +189,7 @@ class ProblemSet extends Component {
                 >
                     <Col className={`gutter-row ${styles.topBar}`} xs={24} sm={24} md={18} lg={18} xl={18}>
                         <Button
+                            aria-label={Locales.strings.back_to_all_sets}
                             className={styles.back}
                             onClick={() => {
                                 if (this.props.history.length < 2) {
