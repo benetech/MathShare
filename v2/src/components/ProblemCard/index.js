@@ -82,7 +82,11 @@ class ProblemCard extends React.Component {
                         <div className={styles.number}>
                             {String(problemPosition).padStart(2, '0')}
                         </div>
-                        {finished && <div className={styles.check}><FontAwesomeIcon icon={faCheckCircle} /></div>}
+                        {finished && (
+                            <div className={styles.check}>
+                                <FontAwesomeIcon icon={faCheckCircle} />
+                            </div>
+                        )}
                         {/* <div className={styles.iconContainer}>
                             <Dropdown
                                 overlay={menu}

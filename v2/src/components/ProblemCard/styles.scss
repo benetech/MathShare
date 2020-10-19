@@ -125,6 +125,12 @@
             .course {
                 font-size: 14px;
             }
+
+            .check {
+                position: absolute;
+                right: 20px;
+                top: 20px;
+            }
         }
     }
 }
@@ -193,8 +199,10 @@
                 width: 60px;
             }
         }
+    }
 
-        .check svg {
+    .check {
+        svg {
             color: #61CBB8;
             background-color: $primary-color;
             border-color: #61CBB8;
