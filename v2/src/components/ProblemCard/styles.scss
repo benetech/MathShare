@@ -27,9 +27,16 @@
             padding-top: 12px;
         }
 
+        .content {
+            height: 250px;
+            display: flex;
+            justify-content: space-between;
+            flex-direction: column;
+        }
+
         .problemSetTitle {
             font-size: 32px;
-            height: 200px;
+            max-height: 100px;
         }
 
         &.newSet {
@@ -66,7 +73,7 @@
             position: relative;
 
             .problemSetTitle {
-                font-size: 25px;
+                font-size: 22px;
                 width: 100%;
             }
 
@@ -186,6 +193,13 @@
                 width: 60px;
             }
         }
+
+        .check svg {
+            color: #61CBB8;
+            background-color: $primary-color;
+            border-color: #61CBB8;
+            border-radius: 100%;
+        }
     }
 
     .course {
@@ -195,13 +209,12 @@
     .problemSetTitle {
         font-weight: bold;
         color: #37345B;
-        white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
     }
 
     div {
-        font-size: 30px;
+        font-size: 18px;
         font-weight: 600;
     }
 
@@ -210,10 +223,12 @@
             max-width: 60vw;
             overflow: hidden;
             text-overflow: ellipsis;
-            white-space: nowrap;
         }
         :global(.ML__mathlive) {
             font: normal 0.8em KaTeX_Main, 'Times New Roman', serif;
+            white-space: normal;
+            display: inline;
+            word-break: break-word;
         }
     }
 }
