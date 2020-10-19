@@ -8,9 +8,13 @@ import styles from './styles.scss';
 class Header extends React.Component {
     render() {
         const { userProfile } = this.props;
-        const { email } = userProfile;
+        const { email, name } = userProfile;
         const menu = (
             <Menu>
+                <Menu.Item>
+                    <div>{name}</div>
+                    <div>{email}</div>
+                </Menu.Item>
                 <Menu.Item>
                     <Button
                         type="text"
