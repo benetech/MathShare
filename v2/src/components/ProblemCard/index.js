@@ -7,6 +7,7 @@ import mathLive from 'mathlive';
 import { MathfieldComponent } from 'react-mathlive';
 
 import {
+    faCheckCircle,
     // faCopy,
     // faEllipsisH,
     // faMinusCircle,
@@ -33,6 +34,7 @@ class ProblemCard extends React.Component {
             newSet,
             history,
             text,
+            finished,
             problemPosition,
         } = this.props;
         if (newSet) {
@@ -80,6 +82,11 @@ class ProblemCard extends React.Component {
                         <div className={styles.number}>
                             {String(problemPosition).padStart(2, '0')}
                         </div>
+                        {finished && (
+                            <div className={styles.check}>
+                                <FontAwesomeIcon icon={faCheckCircle} />
+                            </div>
+                        )}
                         {/* <div className={styles.iconContainer}>
                             <Dropdown
                                 overlay={menu}
@@ -101,7 +108,7 @@ class ProblemCard extends React.Component {
                     <div className={styles.content}>
                         <div className={styles.mainContent}>
                             {/* <div className={styles.course}>Course</div> */}
-                            <div className={styles.problemSetTitle}>{title || 'Solve for X'}</div>
+                            <div className={styles.problemSetTitle}>{title || 'Undefined'}</div>
                         </div>
                         <MathfieldComponent
                             initialLatex={text}

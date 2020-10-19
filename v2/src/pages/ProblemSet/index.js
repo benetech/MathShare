@@ -115,17 +115,18 @@ class ProblemSet extends Component {
 
     renderProblems() {
         const { problemSet } = this.props;
-        const { set } = problemSet;
+        const { set, solutions } = problemSet;
         if (set.loading) {
             return null;
         }
         return (
             <>
                 <Row className={`${styles.problemSetGrid} ${this.getLayout()}`}>
-                    {set.problems
+                    {(solutions || set.problems)
                         .map((problem, index) => (
                             <Card
                                 key={problem.id || index}
+                                {...problem.problem}
                                 {...problem}
                                 problemPosition={index + 1}
                             />
