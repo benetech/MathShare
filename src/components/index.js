@@ -485,6 +485,10 @@ class App extends Component {
         const {
             modal, problemList, problemStore, userProfile,
         } = this.props;
+
+        if (userProfile.checking) {
+            return null;
+        }
         return (
             <React.Fragment>
                 <Helmet
@@ -563,7 +567,8 @@ class App extends Component {
                                 exact
                                 path="/"
                                 render={(p) => {
-                                    if (window.location.host === 'mathshare.benetech.org') {
+                                    const signedIn = userProfile && userProfile.email;
+                                    if (!signedIn && window.location.host === 'mathshare.benetech.org') {
                                         window.location.href = 'https://mathshare.benetech.org/cms';
                                         return null;
                                     }
