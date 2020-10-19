@@ -107,7 +107,7 @@ const Card = (props) => {
             <div className={styles.tile}>
                 <div className={styles.header}>
                     <img
-                        src="https://mathshare-qa.diagramcenter.org/images/favicon.png"
+                        src={(userProfile && userProfile.profileImage) || 'https://mathshare-qa.diagramcenter.org/images/favicon.png'}
                         alt="Mathshare"
                         className="img-fluid shadow-lg"
                     />
