@@ -27,6 +27,16 @@ class ProblemCard extends React.Component {
         mathLive.renderMathInDocument();
     }
 
+    getColor = (id) => {
+        const hash = Number(id || '0') % 3;
+        if (hash === 1) {
+            return styles.color2;
+        } if (hash === 2) {
+            return styles.color3;
+        }
+        return styles.color1;
+    };
+
     render() {
         const {
             id,
@@ -76,7 +86,7 @@ class ProblemCard extends React.Component {
         // );
 
         return (
-            <div id={id} key={id} className={styles.tileContainer}>
+            <div id={id} key={id} className={`${styles.tileContainer} ${this.getColor(id)}`}>
                 <div className={styles.tile}>
                     <div className={styles.header}>
                         <div className={styles.number}>

@@ -140,7 +140,7 @@
     display: flex;
     margin: 20px;
 
-    &:nth-child(3n+1) {
+    &.color1 {
         background: #E3FDF7;
 
         .header .number {
@@ -148,11 +148,11 @@
         }
     }
 
-    &:nth-child(3n+2) {
+    &.color2 {
         background: rgba(245, 243, 255, 0.42);
     }
 
-    &:nth-child(3n+3) {
+    &.color3 {
         background: #FBE8E3;
 
         .header .number {
