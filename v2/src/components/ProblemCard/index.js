@@ -86,6 +86,7 @@ class ProblemCard extends React.Component {
         // );
 
         return (
+            // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
             <div id={id} key={id} className={`${styles.tileContainer} ${this.getColor(id)}`}>
                 <div className={styles.tile}>
                     <div className={styles.header}>
@@ -121,6 +122,7 @@ class ProblemCard extends React.Component {
                             <div className={styles.problemSetTitle}>{title || 'Undefined'}</div>
                         </div>
                         <MathfieldComponent
+                            tabIndex={0}
                             initialLatex={text}
                             mathfieldConfig={{
                                 readOnly: true,

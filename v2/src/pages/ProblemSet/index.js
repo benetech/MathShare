@@ -88,8 +88,11 @@ class ProblemSet extends Component {
     }
 
     archiveProblemSet = problemSet => (e) => {
+        const {
+            action,
+        } = this.props.match.params;
         let archiveMode = null;
-        const isSolutionSet = !problemSet.problems;
+        const isSolutionSet = action === 'solve';
         if (!problemSet.archiveMode) {
             archiveMode = 'archived';
         }
@@ -104,6 +107,15 @@ class ProblemSet extends Component {
         return stopEvent(e);
     }
 
+    getData = () => {
+        const { problemSet } = this.props;
+        const { set, solutions } = problemSet;
+        if (solutions && solutions.length > 0) {
+            return solutions;
+        }
+        return set.problems;
+    }
+
     getLayout = () => {
         const { layout } = this.state;
         const { ui } = this.props;
@@ -115,14 +127,14 @@ class ProblemSet extends Component {
 
     renderProblems() {
         const { problemSet } = this.props;
-        const { set, solutions } = problemSet;
+        const { set } = problemSet;
         if (set.loading) {
             return null;
         }
         return (
             <>
                 <Row className={`${styles.problemSetGrid} ${this.getLayout()}`}>
-                    {(solutions || set.problems)
+                    {this.getData()
                         .map((problem, index) => (
                             <Card
                                 key={problem.id || index}
@@ -151,6 +163,7 @@ class ProblemSet extends Component {
 
         const menu = (
             <Menu
+                getPopupContainer={triggerNode => triggerNode.parentNode}
                 className={styles.menu}
                 onClick={(e) => {
                     stopEvent(e);
@@ -173,7 +186,10 @@ class ProblemSet extends Component {
                             title={Locales.strings.delete_confirmation}
                             okText={Locales.strings.okay}
                             cancelText={Locales.strings.cancel}
-                            onConfirm={e => this.archiveProblemSet(set)(e.domEvent)}
+                            onConfirm={e => this.archiveProblemSet({
+                                ...problemSet,
+                                ...set,
+                            })(e.domEvent)}
                         >
                             <Button
                                 type="text"
@@ -194,19 +210,20 @@ class ProblemSet extends Component {
                     gutter={gutter}
                 >
                     <Col className={`gutter-row ${styles.topBar}`} xs={24} sm={24} md={18} lg={18} xl={18}>
-                        <Button
-                            aria-label={Locales.strings.back_to_all_sets}
-                            className={styles.back}
-                            onClick={() => {
-                                if (this.props.history.length < 2 || routerHooks.prev === '/#/' || routerHooks.prev === `/${window.location.hash}`) {
-                                    this.props.history.replace('/app');
-                                } else {
-                                    this.props.history.goBack();
-                                }
-                            }}
-                            type="text"
-                            icon={<FontAwesomeIcon icon={faArrowLeft} size="2x" />}
-                        />
+                        <span className={styles.back}>
+                            <Button
+                                aria-label={Locales.strings.back_to_all_sets}
+                                onClick={() => {
+                                    if (this.props.history.length < 2 || routerHooks.prev === '/#/' || routerHooks.prev === `/${window.location.hash}`) {
+                                        this.props.history.replace('/app');
+                                    } else {
+                                        this.props.history.goBack();
+                                    }
+                                }}
+                                type="text"
+                                icon={<FontAwesomeIcon icon={faArrowLeft} size="2x" />}
+                            />
+                        </span>
                         <span className={styles.title}>{set.title}</span>
                     </Col>
                     <Col
@@ -226,9 +243,8 @@ class ProblemSet extends Component {
                                 placement="bottomRight"
                                 className={styles.options}
                                 overlayClassName={styles.dropdown}
-                                onClick={(e) => {
-                                    stopEvent(e);
-                                }}
+                                trigger={['click']}
+                                getPopupContainer={triggerNode => triggerNode.parentNode}
                             >
                                 <Button
                                     type="text"

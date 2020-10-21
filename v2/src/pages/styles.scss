@@ -83,5 +83,6 @@
 }
 
 *:focus {
-    outline: 1px solid black;
+    outline: rgb(0, 95, 204) auto 1px !important;
+    outline-offset: 5px !important;
 }

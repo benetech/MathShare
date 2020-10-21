@@ -86,7 +86,10 @@ const Card = (props) => {
     const menu = (
         <Menu
             className={styles.menu}
-            onClick={e => stopEvent(e.domEvent)}
+            getPopupContainer={triggerNode => triggerNode.parentNode}
+            onClick={(e) => {
+                stopEvent(e);
+            }}
         >
             {!solutions && (
                 <Menu.Item onClick={e => stopEvent(e)}>
@@ -129,6 +132,8 @@ const Card = (props) => {
                             placement="bottomRight"
                             className={styles.icon}
                             overlayClassName={styles.dropdown}
+                            trigger={['click']}
+                            getPopupContainer={triggerNode => triggerNode.parentNode}
                         >
                             <Button type="text" size="large" icon={<FontAwesomeIcon icon={faEllipsisH} />} onClick={e => e.preventDefault()} />
                         </Dropdown>

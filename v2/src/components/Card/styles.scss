@@ -3,6 +3,7 @@
 :global(.grid) {
     .tileContainer {
         width: 315px;
+        margin: 20px;
     }
 
     .tile {
@@ -68,6 +69,8 @@
 
     .tileContainer {
         width: 100%;
+        margin-bottom: 10px;
+        margin-top: 10px;
 
         .tile {
             display: inline-block;
@@ -126,7 +129,6 @@
 .tileContainer {
     border-radius: 25px;
     display: flex;
-    margin: 20px;
 
     &.color1 {
         background: #E3FDF7;
@@ -280,6 +282,20 @@
             flex-wrap: wrap-reverse;
 
             span {
+                width: 100%;
+            }
+        }
+    }
+}
+
+@media (max-width: 400px) {
+    :global(.line-item) .tileContainer .tile {
+        .content {
+            padding-top: 10px;
+            display: inline-block;
+            width: 100%;
+
+            .mainContent {
                 width: 100%;
             }
         }

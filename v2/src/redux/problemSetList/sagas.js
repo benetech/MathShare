@@ -93,6 +93,9 @@ function* reqestDuplicateProblemSet() {
                 ...payload,
                 problems,
             };
+            if (setPayload.id) {
+                delete setPayload.id;
+            }
             const {
                 data,
             } = yield call(saveProblemSetApi, setPayload);
