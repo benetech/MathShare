@@ -87,9 +87,7 @@ const Card = (props) => {
         <Menu
             className={styles.menu}
             getPopupContainer={triggerNode => triggerNode.parentNode}
-            onClick={(e) => {
-                stopEvent(e);
-            }}
+            onClick={e => stopEvent(e.domEvent)}
         >
             {!solutions && (
                 <Menu.Item onClick={e => stopEvent(e)}>
