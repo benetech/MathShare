@@ -63,8 +63,12 @@
 }
 
 .problemSetGrid {
-    padding-top: 25px;
-    padding-bottom: 60px;
+    padding-top: 5px;
+    padding-bottom: 40px;
+    
+    &:global(.line-item) {
+        margin: 20px;
+    }
 }
 
 .linkContainer {
