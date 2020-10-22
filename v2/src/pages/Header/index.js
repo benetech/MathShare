@@ -51,13 +51,13 @@ class Header extends React.Component {
                 </div>
                 <div className={styles.right}>
                     {!email && (
-                        <>
+                        <span className={styles.loginButtons}>
                             <Button type="link" href="/#/login">Login</Button>
                             <Button type="primary" href="/#/signUp">Sign up</Button>
-                        </>
+                        </span>
                     )}
                     {email && (
-                        <>
+                        <span className={styles.profileButton}>
                             <Dropdown
                                 className={styles.profileDropdown}
                                 overlay={menu}
@@ -73,7 +73,7 @@ class Header extends React.Component {
                                     />
                                 </Button>
                             </Dropdown>
-                        </>
+                        </span>
                     )}
                 </div>
             </div>
