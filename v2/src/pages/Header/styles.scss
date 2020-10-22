@@ -61,7 +61,14 @@
     .right {
         display: flex;
         padding: 10px;
-        min-width: 200px;
+
+        .loginButtons {
+            min-width: 160px;
+        }
+
+        .profileButton {
+            margin-left: auto;
+        }
 
         :global(.ant-btn-primary) {
             border-radius: 8px;
