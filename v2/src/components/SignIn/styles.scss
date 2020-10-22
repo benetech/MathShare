@@ -50,12 +50,13 @@
 .buttonsContainer {
     display: flex;
     flex-wrap: wrap;
-    padding: 50px 0;
+    padding: 20px;
     list-style-type: none;
+    justify-content: space-between;
 
     >li {
         padding: 10px;
-        width: 50%;
+        margin: auto;
 
         >* {
             margin: auto;
@@ -69,7 +70,7 @@
         background: white;
         outline: 1px solid #00000024;
         cursor: pointer;
-        max-width: 132px;
+        width: 132px;
         // border: 1px solid black;
 
         img {
