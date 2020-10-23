@@ -1,0 +1,20 @@
+.footer {
+    display: flex;
+    padding: 5px;
+    align-items: flex-end;
+    align-self: flex-end;
+
+    >span {
+        margin-top: 5px;
+    }
+}
+
+.button {
+    min-height: 37px;
+    margin-left: 5px;
+    outline: none;
+
+    &:focus {
+        box-shadow: none;
+    }
+}

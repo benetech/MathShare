@@ -53,6 +53,13 @@ const problems = (state = initialState, {
     // error,
 }) => {
     switch (type) {
+    case '@@router/LOCATION_CHANGE': {
+        const { location } = payload;
+        if (location.pathname === '/app') {
+            return initialState;
+        }
+        return state;
+    }
     case 'REQUEST_DEFAULT_REVISION_SUCCESS':
         return {
             ...state,

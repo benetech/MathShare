@@ -1,0 +1,386 @@
+import React, { Component } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft, faFlagCheckered, faLongArrowAltRight } from '@fortawesome/free-solid-svg-icons';
+import {
+    Affix, Row, Button, // Dropdown, Menu, Popconfirm,
+} from 'antd';
+import { connect } from 'react-redux';
+import { MathfieldComponent } from 'react-mathlive';
+import problemActions from '../../redux/problem/actions';
+import styles from './styles.scss';
+// import { stopEvent } from '../../services/events';
+import Locales from '../../strings';
+import mathlive from '../../../../src/lib/mathlivedist/mathlive';
+import { compareStepArrays, countEditorPosition } from '../../redux/problem/helpers';
+import scrollTo from '../../services/scrollTo';
+import { stackEditAction } from '../../components/Editor/stackOperations';
+import exampleProblem from '../../components/Editor/example.json';
+// import CopyLink from '../../components/CopyLink';
+// import Select from '../../components/Select';
+
+const gutter = {
+    xs: 8,
+    sm: 16,
+    md: 24,
+    lg: 24,
+};
+
+class Problem extends Component {
+    state = {
+        affixed: false,
+    };
+
+    placeholderAffix = null;
+
+    actualAffixed = null;
+
+    // componentWillMount() {
+    //     const { match } = this.props;
+    //     if (match.params.action === 'view') {
+    //         googleAnalytics('View a Problem: Teacher');
+    //     } else if (match.params.action === 'edit') {
+    //         googleAnalytics('View a Problem: Student');
+    //         IntercomAPI('trackEvent', 'work-a-problem');
+    //     }
+    // }
+
+    componentDidMount() {
+        this.interval = setInterval(() => this.setState({ time: Date.now() }), 1000);
+        window.addEventListener('beforeunload', this.onUnload);
+        const { action, code, position } = this.props.match.params;
+        this.initialize(action, code, position);
+    }
+
+    componentWillReceiveProps(newProps) {
+        const oldParams = this.props.match.params;
+        const newParams = newProps.match.params;
+        if (oldParams.action !== newParams.action || oldParams.code !== newParams.code
+            || oldParams.position !== newParams.position) {
+            this.initialize(newParams.action, newParams.code, newParams.position);
+        }
+        this.scrollToBottom();
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.interval);
+        window.removeEventListener('beforeunload', this.onUnload);
+    }
+
+    onUnload(event) {
+        const { editLink, solution, stepsFromLastSave } = this.props.problemStore;
+        const { location } = this.props;
+        if (location.pathname.indexOf('/app/problem/view') === '0' // check if the open view is readonly
+            || (editLink !== Locales.strings.not_saved_yet
+                && compareStepArrays(solution.steps, stepsFromLastSave))) {
+            return null;
+        }
+        const e = event || window.event;
+
+        // For IE and Firefox prior to version 4
+        if (e) {
+            e.preventDefault();
+            e.returnValue = Locales.strings.sure;
+        }
+
+        // For Safari
+        return Locales.strings.sure;
+    }
+
+    initialize = (action, code) => {
+        this.props.resetProblem();
+        this.props.updateProblemStore({ textAreaValue: '' });
+        this.setState({
+            actionsStack: [],
+        });
+        const mathEditor = document.getElementById('mathEditorActive');
+        if (mathEditor) {
+            const { mathfield } = mathEditor;
+            if (mathfield) {
+                const { undoManager } = mathfield;
+                if (undoManager) {
+                    undoManager.reset();
+                }
+            }
+        }
+        this.props.loadProblem(action, code);
+        // if (position) {
+        //     this.props.requestProblemSet(action, code, position);
+        // } else {
+        //     this.props.loadProblem(action, code);
+        // }
+        this.scrollToBottom();
+    }
+
+    scrollToBottom = () => {
+        scrollTo('MainWorkWrapper', 'mainWorkAreaFooter');
+    }
+
+    countCleanups = (steps) => {
+        let cleanups = 0;
+        steps.forEach((step) => {
+            if (step.cleanup) {
+                cleanups += 1;
+            }
+        });
+        return cleanups;
+    }
+
+    getApplicationNode = () => document.getElementById('contentContainer')
+
+    textAreaChanged = text => this.props.updateProblemStore({ textAreaValue: text });
+
+    countEditorPosition = steps => steps.length + this.countCleanups(steps) - 1
+
+    restoreEditorPosition = () => {
+        const { problemStore, problemList } = this.props;
+        const updatedMathField = problemList.theActiveMathField;
+        const commitedSteps = problemStore.solution.steps.filter(step => !step.inProgress);
+        const lastStep = commitedSteps[commitedSteps.length - 1];
+        updatedMathField.$latex(lastStep.cleanup ? lastStep.cleanup : lastStep.stepValue);
+        this.props.updateProblemStore({
+            theActiveMathField: updatedMathField,
+            editorPosition: countEditorPosition(problemStore.solution.steps),
+            editing: false,
+        });
+        problemList.theActiveMathField.$focus();
+    }
+
+    cancelEditCallback = (oldEquation, oldExplanation, cleanup, index, img) => {
+        this.restoreEditorPosition();
+        stackEditAction(this, index, oldEquation, cleanup, oldExplanation, img);
+        this.props.problemStore.displayScratchpad();
+    }
+
+    moveEditorBelowSpecificStep = (stepNumber) => {
+        const steps = this.props.problemStore.solution.steps.slice();
+        const leftPartOfSteps = steps.splice(0, stepNumber);
+        let editorPosition = this.countEditorPosition(leftPartOfSteps);
+        if (leftPartOfSteps[leftPartOfSteps.length - 1].cleanup) {
+            editorPosition -= 1;
+        }
+        this.props.updateProblemStore({ editorPosition });
+    }
+
+    updateMathEditorRow = (mathContent, mathAnnotation, mathStepNumber, cleanup, scratchpad) => {
+        const { problemStore } = this.props;
+        const updatedHistory = problemStore.solution.steps;
+        updatedHistory[mathStepNumber].stepValue = mathContent;
+        updatedHistory[mathStepNumber].explanation = mathAnnotation;
+        updatedHistory[mathStepNumber].cleanup = cleanup;
+        updatedHistory[mathStepNumber].scratchpad = scratchpad;
+        const oldSolution = problemStore.solution;
+        oldSolution.steps = updatedHistory;
+        this.props.updateProblemStore({
+            solution: oldSolution,
+            textAreaValue: '',
+            editorPosition: countEditorPosition(problemStore.solution.steps),
+        });
+        mathlive.renderMathInDocument();
+    }
+
+    activateMathField = (theActiveMathField) => {
+        const field = theActiveMathField;
+        this.props.setActiveMathFieldInProblem(field);
+        if (this.props.example) {
+            field.$latex(exampleProblem.steps[exampleProblem.steps.length - 1].stepValue);
+        }
+    }
+
+    setLayout = (e) => {
+        this.setState({
+            layout: e.target.value,
+        });
+    }
+
+    handleDropdownSelect = (e) => {
+        console.log('e', e);
+    }
+
+    loadData = (action, code) => {
+        const {
+            problemSet,
+        } = this.props;
+        const {
+            set, solutions, title, archiveMode, source, reviewCode,
+        } = problemSet;
+        const { editCode } = set;
+        if (action === 'edit' || action === 'solve') {
+            if (editCode === code) {
+                if (action === 'edit') {
+                    this.props.requestProblemSetSuccess(set);
+                }
+                if (action === 'solve') {
+                    this.props.setReviewSolutions(
+                        set.id, solutions, reviewCode, editCode, title, archiveMode, source,
+                    );
+                }
+                return;
+            }
+        }
+
+        if (action === 'review' && reviewCode === code) {
+            this.props.setReviewSolutions(
+                set.id, solutions, reviewCode, editCode, title, archiveMode, source,
+            );
+            return;
+        }
+
+        if (action === 'solve') {
+            this.props.loadProblemSetSolutionByEditCode(code);
+        } else {
+            this.props.requestProblemSet(action, code);
+        }
+    }
+
+    getData = () => {
+        const { problemSet } = this.props;
+        const { set, solutions } = problemSet;
+        if (solutions && solutions.length > 0) {
+            return solutions;
+        }
+        return set.problems;
+    }
+
+    getPlaceholderAffixStyle = () => {
+        if (!this.placeholderAffix) {
+            return {};
+        }
+
+        this.placeholderAffix.measure();
+
+        return {
+            ...this.placeholderAffix.state.affixStyle,
+            ...this.placeholderAffix.state.placeholderStyle,
+            height: 'auto',
+        };
+    }
+
+    getStepPaddingTop = () => {
+        if (!this.actualAffixed || !this.state.affixed || !this.state.time) {
+            return {};
+        }
+        this.placeholderAffix.measure();
+        return {
+            paddingTop: `${this.actualAffixed.offsetHeight + 20}px`,
+            display: 'block',
+        };
+    }
+
+    render() {
+        const {
+            problemState,
+            problemSet,
+            // match,
+            // userProfile,
+            // routerHooks,
+        } = this.props;
+        const { solution } = problemState;
+        const { title, set } = problemSet;
+        const { problem } = solution;
+        // const {
+        //     action,
+        // } = match.params;
+        // const { set } = problemSet;
+
+        return (
+            <div className={styles.container}>
+                <Row
+                    gutter={gutter}
+                    className={styles.heading}
+                >
+                    <div className={styles.topBar}>
+                        <span className={styles.back}>
+                            <Button
+                                aria-label={Locales.strings.back_to_all_sets}
+                                onClick={() => {
+                                    this.props.history.goBack();
+                                }}
+                                type="text"
+                                icon={<FontAwesomeIcon icon={faArrowLeft} size="2x" />}
+                            />
+                        </span>
+                        <span className={styles.title}>{title}</span>
+                    </div>
+                </Row>
+                <Row
+                    gutter={gutter}
+                    className={styles.staticProblem}
+                >
+                    <span aria-label="checkered flag"><FontAwesomeIcon icon={faFlagCheckered} /></span>
+                    <span className={styles.problem}>Problem</span>
+                </Row>
+                <Row
+                    gutter={gutter}
+                    className={styles.mathText}
+                >
+                    <MathfieldComponent
+                        tabIndex={0}
+                        latex={problem.text || ''}
+                        mathfieldConfig={{
+                            readOnly: true,
+                        }}
+                    />
+                </Row>
+                <Row
+                    gutter={gutter}
+                    className={styles.title}
+                >
+                    {problem.title}
+                </Row>
+                <hr />
+                <Affix
+                    onChange={affixed => this.setState({ affixed })}
+                    ref={(ref) => { this.placeholderAffix = ref; }}
+                >
+                    <div className={styles.affixPlaceholder} />
+                </Affix>
+                <div className={`${this.state.affixed ? styles.affixedTopbar : styles.hiddenTopbar}`} style={this.getPlaceholderAffixStyle()} ref={(ref) => { this.actualAffixed = ref; }}>
+                    <div className={styles.staticProblem}>
+                        <span className={styles.left}>
+                            <span><FontAwesomeIcon icon={faFlagCheckered} /></span>
+                            <span className={styles.problem}>Problem</span>
+                        </span>
+                        <MathfieldComponent
+                            tabIndex={0}
+                            latex={problem.text || ''}
+                            mathfieldConfig={{
+                                readOnly: true,
+                            }}
+                        />
+                    </div>
+                    <hr />
+                </div>
+                <div className={styles.steps} style={this.getStepPaddingTop()}>
+                    Steps will be added here. Keeping height of this div high to simulate scroll
+                </div>
+                <div className={styles.footerBtn}>
+                    <Button
+                        aria-label={Locales.strings.back_to_all_sets}
+                        type="primary"
+                        size="large"
+                        onClick={() => {
+                            this.props.history.replace(`/app/problemSet/solve/${set.editCode}`);
+                        }}
+                    >
+                        <span>Add Step</span>
+                        <FontAwesomeIcon icon={faLongArrowAltRight} size="2x" />
+                    </Button>
+                </div>
+            </div>
+        );
+    }
+}
+
+export default connect(
+    state => ({
+        problemState: state.problem,
+        problemSet: state.problemSet,
+        userProfile: state.userProfile,
+        ui: state.ui,
+        routerHooks: state.routerHooks,
+        router: state.router,
+    }),
+    {
+        ...problemActions,
+    },
+)(Problem);

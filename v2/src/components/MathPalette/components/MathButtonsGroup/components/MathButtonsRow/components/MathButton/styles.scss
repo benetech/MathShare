@@ -1,0 +1,47 @@
+.paletteButton {
+    padding: 0 !important;
+    margin: 0px 0px 4px 4px;
+    width: 42px;
+    height: 37px;
+    border: 1px solid #CCC;
+    cursor: pointer;
+
+    &:disabled {
+        color: black;
+        opacity: 1 !important;
+        cursor: default;
+    }
+
+    &.readOnly {
+
+        &,
+        * {
+            cursor: unset !important;
+        }
+    }
+}
+
+span[role='listitem'] {
+    margin: 2px;
+
+    :global(.btn) {
+        display: table-cell;
+        cursor: pointer;
+
+        &.btn-facility {
+            background-color: rgb(246, 255, 93);
+        }
+
+        &.btn-operator {
+            background-color: rgb(255, 211, 92);
+        }
+
+        &.btn-notation {
+            background-color: rgb(0, 255, 154);
+        }
+
+        &.btn-symbol {
+            background-color: rgb(164, 121, 255);
+        }
+    }
+}

@@ -1,0 +1,155 @@
+.container {
+    .topBar {
+        background: #E3FDF7;
+        position: relative;
+        padding: 8px;
+        border-radius: 9px;
+        margin-bottom: 24px;
+        width: 100%;
+
+        .back {
+            svg {
+                font-size: 20px;
+                display: block;
+            }
+
+            padding-right: 5px;
+            padding-left: 10px;
+            position: absolute;
+            top: 6px;
+        }
+
+        .title {
+            font-size: 18px;
+            font-weight: 500;
+            margin-left: 40px;
+        }
+
+        .options {
+            float: right;
+            top: 15%;
+            height: auto;
+            width: auto;
+
+            svg {
+                font-size: 1.5em;
+            }
+        }
+    }
+
+    .staticProblem {
+        font-size: 16px;
+        letter-spacing: 0;
+        line-height: 20px;
+
+        .problem {
+            margin-left: 10px;
+            color: #F16D78;
+        }
+    }
+
+    hr {
+        border: 1px dashed #37345B;
+        margin-left: -10px;
+        margin-right: -10px;
+    }
+
+    .mathText {
+        :global(.ML__fieldcontainer) {
+            margin-top: 10px;
+            max-width: 60vw;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-bottom: 16px;
+        }
+
+        :global(.ML__mathlive) {
+            font: normal 1.2em KaTeX_Main, 'Times New Roman', serif;
+            white-space: normal;
+            display: inline;
+            word-break: break-word;
+        }
+    }
+
+    .title {
+        color: #37345B;
+        font-size: 14px;
+        margin-bottom: 14px;
+    }
+
+    .footerBtn {
+        position: fixed;
+        right: 0;
+        bottom: 0;
+        padding: 10px;
+        width: 100%;
+        color: white;
+        text-align: center;
+        box-shadow: inset 0px -3px 2px 0px #504c69a3;
+
+        button {
+            display: flex;
+            padding: 8px 20px;
+            font-weight: 600;
+            color: #37345B;
+            background-color: #61CBB8;
+            border: none;
+            border-radius: 8px;
+            margin-left: auto;
+
+            > span {
+                padding-right: 10px;
+            }
+
+            > svg {
+                position: relative;
+                color: #37345B;
+                top: -4px;
+            }
+        }
+    }
+
+    .steps {
+        min-height: 100vh;
+    }
+
+    .affixedTopbar {
+        position: fixed;
+        top: 0px;
+        background: white;
+
+        .staticProblem {
+            display: flex;
+            justify-content: space-between;
+
+            .left {
+                min-width: 100px;
+                padding-top: 12px;
+            }
+
+            :global(.ML__fieldcontainer) {
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            :global(.ML__mathlive) {
+                font: normal 0.8em KaTeX_Main, 'Times New Roman', serif;
+                white-space: normal;
+                display: inline;
+                word-break: break-word;
+            }
+        }
+    }
+
+    .affixPlaceholder {
+        clip: rect(1px, 1px, 1px, 1px);
+        position: absolute !important;
+        white-space: nowrap;
+        height: 1px;
+        width: 1px;
+        overflow: hidden;
+    }
+
+    .hiddenTopbar {
+        display: none;
+    }
+}
