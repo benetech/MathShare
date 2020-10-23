@@ -154,7 +154,6 @@ class ProblemSet extends Component {
             match,
             problemSet,
             userProfile,
-            routerHooks,
         } = this.props;
         const {
             action,
@@ -214,11 +213,7 @@ class ProblemSet extends Component {
                             <Button
                                 aria-label={Locales.strings.back_to_all_sets}
                                 onClick={() => {
-                                    if (this.props.history.length < 2 || routerHooks.prev === '/#/' || routerHooks.prev === `/${window.location.hash}`) {
-                                        this.props.history.replace('/app');
-                                    } else {
-                                        this.props.history.goBack();
-                                    }
+                                    this.props.history.replace('/app');
                                 }}
                                 type="text"
                                 icon={<FontAwesomeIcon icon={faArrowLeft} size="2x" />}

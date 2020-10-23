@@ -22,6 +22,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // } from 'antd';
 import styles from './styles.scss';
 
+
 class ProblemCard extends React.Component {
     componentDidMount() {
         mathLive.renderMathInDocument();
@@ -36,6 +37,16 @@ class ProblemCard extends React.Component {
         }
         return styles.color1;
     };
+
+    getUrl = () => {
+        const {
+            editCode,
+        } = this.props;
+        if (!editCode) {
+            return null;
+        }
+        return `/#/app/problem/edit/${editCode}`;
+    }
 
     render() {
         const {
@@ -85,9 +96,17 @@ class ProblemCard extends React.Component {
         //     </Menu>
         // );
 
+        const editUrl = this.getUrl();
+        const additionalProps = {};
+        let ContainerTag = 'div';
+        if (editUrl) {
+            ContainerTag = 'a';
+            additionalProps.href = editUrl;
+        }
+
         return (
             // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
-            <div id={id} key={id} className={`${styles.tileContainer} ${this.getColor(id)}`}>
+            <ContainerTag id={id} key={id} className={`${styles.tileContainer} ${this.getColor(id)}`} {...additionalProps}>
                 <div className={styles.tile}>
                     <div className={styles.header}>
                         <div className={styles.number}>
@@ -123,14 +142,14 @@ class ProblemCard extends React.Component {
                         </div>
                         <MathfieldComponent
                             tabIndex={0}
-                            initialLatex={text}
+                            latex={text || ''}
                             mathfieldConfig={{
                                 readOnly: true,
                             }}
                         />
                     </div>
                 </div>
-            </div>
+            </ContainerTag>
         );
     }
 }

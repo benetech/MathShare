@@ -1,0 +1,273 @@
+[{
+        "screenReadersTitle": "cross out and calc buttons",
+        "label": "Edit",
+        "commonClass": "button btn-facility paletteButton",
+        "buttonsRows": [
+            [{
+                    "id": "crossOutBtn",
+                    "title": "Cross out",
+                    "additionalOnclick": [
+                        "MathLivePasteFromButton",
+                        "GoogleAnalytics"
+                    ],
+                    "value": "$$\\enclose{updiagonalstrike downdiagonalstrike}[2px solid #4040ff]{\\blacksquare}$$",
+                    "keys": [
+                        [
+                            "Shift",
+                            "Delete"
+                        ]
+                    ]
+                },
+                {
+                    "id": "crossOutAndReplaceBtn",
+                    "title": "Cross out & replace",
+                    "additionalOnclick": [
+                        "MathLivePasteFromButton",
+                        "GoogleAnalytics"
+                    ],
+                    "value": "$$ \\enclose{updiagonalstrike downdiagonalstrike}[2px solid #4040ff]{\\blacksquare}\\,{\\square} $$",
+                    "keys": [
+                        [
+                            "Shift",
+                            "Ctrl",
+                            "Delete"
+                        ]
+                    ]
+                }
+            ],
+            [{
+                    "id": "stackBelowBtn",
+                    "title": "stack below",
+                    "additionalOnclick": [
+                        "MathLivePasteFromButton",
+                        "GoogleAnalytics"
+                    ],
+                    "value": "$$ \\begin{array}{r} \\blacksquare \\\\ \\square\\end{array}$$",
+                    "keys": [
+                        [
+                            "Ctrl",
+                            "Enter"
+                        ]
+                    ]
+                }
+            ],
+            [{
+                    "id": "calculateBtn",
+                    "title": "Calculate",
+                    "additionalOnclick": [
+                        "CalculateAndReplace",
+                        "GoogleAnalytics"
+                    ],
+                    "value": "Calc",
+                    "keys": [
+                        [
+                            "Ctrl",
+                            "Alt",
+                            "Enter"
+                        ],
+                        [
+                            "Opt",
+                            "Cmd",
+                            "Return"
+                        ]
+                    ]
+                },
+                {
+                    "id": "colorBtn",
+                    "title": "Color",
+                    "additionalOnclick": [
+                        "OpenColorPicker"
+                    ],
+                    "value": "Color"
+                }
+            ]
+        ]
+    },
+    {
+        "screenReadersTitle": "Operator buttons",
+        "label": "Operators",
+        "commonClass": "button btn-operator paletteButton",
+        "commonOnclick": ["MathLivePasteFromButton"],
+        "buttonsRows": [
+            [{
+                    "id": "plusBtn",
+                    "title": "Plus (⌨: +)",
+                    "value": "$$+$$"
+                },
+                {
+                    "id": "minusBtn",
+                    "title": "Minus (⌨: -)",
+                    "value": "$$-$$"
+                },
+                {
+                    "id": "dotTimesBtn",
+                    "title": "Dot times (⌨: \\cdot⏎)",
+                    "value": "$$\\cdot$$"
+                },
+                {
+                    "id": "timesBtn",
+                    "title": "Times (⌨: xx)",
+                    "value": "$$\\times$$"
+                },
+                {
+                    "id": "divisionBtn",
+                    "title": "Division (⌨: \\div⏎)",
+                    "value": "$$\\div$$"
+                }
+            ],
+            [{
+                    "id": "equalBtn",
+                    "title": "Equal (⌨: =)",
+                    "value": "$$=$$"
+                },
+                {
+                    "id": "lessThanBtn",
+                    "title": "Less than (⌨: <)",
+                    "value": "$$<$$"
+                },
+                {
+                    "id": "greaterThanBtn",
+                    "title": "Greater than (⌨: >)",
+                    "value": "$$>$$"
+                },
+                {
+                    "id": "plusMinusBtn",
+                    "title": "Plus minus (⌨: +-)",
+                    "value": "$$\\pm$$"
+                }
+            ],
+            [{
+                    "id": "notEqualBtn",
+                    "title": "Not equal (⌨: !=)",
+                    "value": "$$\\neq$$"
+                },
+                {
+                    "id": "lessThanOrEqualBtn",
+                    "title": "Less than or equal  (⌨: <=)",
+                    "value": "$$\\leq$$"
+                },
+                {
+                    "id": "greaterThanOrEqualBtn",
+                    "title": "Greater than or equal  (⌨: >=)",
+                    "value": "$$\\geq$$"
+                },
+                {
+                    "id": "isEqualToBtn",
+                    "title": "Is equal to (⌨: ?=)",
+                    "value": "$$\\overset{?}{=}$$"
+                }
+            ]
+        ]
+    },
+    {
+        "screenReadersTitle": "Fraction and other notation buttons",
+        "label": "Notations",
+        "commonClass": "button btn-notation paletteButton",
+        "commonOnclick": ["MathLivePasteFromButton"],
+        "buttonsRows": [
+            [{
+                    "id": "fractionBtn",
+                    "title": "Fraction (⌨: /)",
+                    "value": "$$\\frac{\\blacksquare}{\\square}$$"
+                },
+                {
+                    "id": "superscriptBtn",
+                    "title": "Superscript (⌨: ^)",
+                    "value": "$${\\blacksquare}^{\\square}$$"
+                },
+                {
+                    "id": "subscriptBtn",
+                    "title": "Subscript (⌨: _)",
+                    "value": "$${\\blacksquare}_{\\square}$$"
+                }
+            ],
+            [{
+                    "id": "squareRootBtn",
+                    "title": "Square root (⌨: sqrt)",
+                    "value": "$$\\sqrt{\\blacksquare}$$"
+                },
+                {
+                    "id": "cubeRootBtn",
+                    "title": "Cube root (⌨: cbrt)",
+                    "value": "$$\\sqrt[{3}]{\\blacksquare}$$"
+                },
+                {
+                    "id": "generalRootBtn",
+                    "title": "General root(⌨: root)",
+                    "value": "$$\\sqrt[{\\square}]{\\blacksquare}$$"
+                },
+                {
+                    "id": "parenthesesBtn",
+                    "title": "Parentheses (⌨: ( ) )",
+                    "value": "$$\\left(\\blacksquare\\right)$$"
+                }
+            ],
+            [{
+                    "id": "squareBracketsBtn",
+                    "title": "Square brackets (⌨: [ ])",
+                    "value": "$$\\left[\\blacksquare\\right]$$"
+                },
+                {
+                    "id": "absoluteValueBtn",
+                    "title": "Absolute value (⌨: | |)",
+                    "value": "$$\\left|\\blacksquare\\right|$$"
+                },
+                {
+                    "id": "floorBtn",
+                    "title": "Floor (⌨: \\lfloor \\rfloor)",
+                    "value": "$$\\left\\lfloor\\blacksquare\\right\\rfloor$$"
+                },
+                {
+                    "id": "ceilingBtn",
+                    "title": "Ceiling (⌨: \\lceil \\rceil)",
+                    "value": "$$\\left\\lceil\\blacksquare\\right\\rceil$$"
+                }
+            ]
+        ]
+    },
+    {
+        "screenReadersTitle": "Additional symbols buttons",
+        "label": "Geometry",
+        "commonClass": "button btn-symbol paletteButton",
+        "commonOnclick": ["MathLivePasteFromButton"],
+        "buttonsRows": [
+            [{
+                    "id": "triangleBtn",
+                    "title": "Triangle (⌨: \\triangle⏎)",
+                    "value": "$$\\triangle$$"
+                },
+                {
+                    "id": "angleBtn",
+                    "title": "Angle (⌨: \\angle⏎)",
+                    "value": "$$\\angle$$"
+                },
+                {
+                    "id": "congruentBtn",
+                    "title": "Congruent (⌨: \\cong⏎)",
+                    "value": "$$\\cong$$"
+                }
+            ],
+            [{
+                    "id": "perpendicularBtn",
+                    "title": "Perpendicular (⌨: \\perp⏎)",
+                    "value": "$$\\perp$$"
+                },
+                {
+                    "id": "parallelBtn",
+                    "title": "Parallel (⌨: \\parallel⏎)",
+                    "value": "$$\\parallel$$"
+                },
+                {
+                    "id": "degreeBtn",
+                    "title": "Degree (⌨: \\degree⏎)",
+                    "value": "$$\\degree$$"
+                }
+            ],
+            [{
+                "id": "piBtn",
+                "title": "Pi (⌨: pi⏎)",
+                "value": "$$\\pi$$"
+            }]
+        ]
+    }
+]

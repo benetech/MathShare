@@ -14,6 +14,7 @@ import 'antd/dist/antd.less';
 import Dashboard from './Dashboard';
 import NotFound from './NotFound';
 import Header from './Header';
+import Problem from './Problem';
 import ProblemSet from './ProblemSet';
 import SignIn from '../components/SignIn';
 import Sidebar from '../components/Sidebar';
@@ -62,6 +63,7 @@ class App extends Component {
                                         <Redirect to="/app" />
                                     </Route>
                                     <Route exact path="/app/problemSet/:action/:code" component={withRouter(ProblemSet)} />
+                                    <Route exact path="/app/problem/:action/:code" component={withRouter(Problem)} />
                                     <Route exact path="/app" component={withRouter(Dashboard)} />
                                     <Route exact path="/signUp" component={withRouter(SignIn)} />
                                     <Route exact path="/login" component={withRouter(SignIn)} />
