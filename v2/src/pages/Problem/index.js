@@ -381,9 +381,6 @@ class Problem extends Component {
                         aria-label={Locales.strings.back_to_all_sets}
                         type="primary"
                         size="large"
-                        onClick={() => {
-                            this.props.history.replace(`/app/problemSet/solve/${set.editCode}`);
-                        }}
                     >
                         <span>Add Step</span>
                         <FontAwesomeIcon icon={faLongArrowAltRight} size="2x" />
