@@ -293,7 +293,7 @@ class Problem extends Component {
             // routerHooks,
         } = this.props;
         const { solution } = problemState;
-        const { title, set } = problemSet;
+        const { title } = problemSet;
         const { problem } = solution;
 
         const showMathEllipsis = this.showMathEllipsis();
@@ -381,6 +381,9 @@ class Problem extends Component {
                         aria-label={Locales.strings.back_to_all_sets}
                         type="primary"
                         size="large"
+                        onClick={() => {
+                            console.log('click');
+                        }}
                     >
                         <span>Add Step</span>
                         <FontAwesomeIcon icon={faLongArrowAltRight} size="2x" />
