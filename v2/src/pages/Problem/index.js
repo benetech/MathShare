@@ -293,7 +293,7 @@ class Problem extends Component {
             // routerHooks,
         } = this.props;
         const { solution } = problemState;
-        const { title, set } = problemSet;
+        const { title } = problemSet;
         const { problem } = solution;
 
         const showMathEllipsis = this.showMathEllipsis();
