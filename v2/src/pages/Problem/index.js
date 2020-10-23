@@ -67,7 +67,7 @@ class Problem extends Component {
     }
 
     onUnload(event) {
-        const { editLink, solution, stepsFromLastSave } = this.props.problemStore;
+        const { editLink, solution, stepsFromLastSave } = this.props.problemState;
         const { location } = this.props;
         if (location.pathname.indexOf('/app/problem/view') === '0' // check if the open view is readonly
             || (editLink !== Locales.strings.not_saved_yet
@@ -132,14 +132,14 @@ class Problem extends Component {
     countEditorPosition = steps => steps.length + this.countCleanups(steps) - 1
 
     restoreEditorPosition = () => {
-        const { problemStore, problemList } = this.props;
+        const { problemState, problemList } = this.props;
         const updatedMathField = problemList.theActiveMathField;
-        const commitedSteps = problemStore.solution.steps.filter(step => !step.inProgress);
+        const commitedSteps = problemState.solution.steps.filter(step => !step.inProgress);
         const lastStep = commitedSteps[commitedSteps.length - 1];
         updatedMathField.$latex(lastStep.cleanup ? lastStep.cleanup : lastStep.stepValue);
         this.props.updateProblemStore({
             theActiveMathField: updatedMathField,
-            editorPosition: countEditorPosition(problemStore.solution.steps),
+            editorPosition: countEditorPosition(problemState.solution.steps),
             editing: false,
         });
         problemList.theActiveMathField.$focus();
@@ -148,11 +148,11 @@ class Problem extends Component {
     cancelEditCallback = (oldEquation, oldExplanation, cleanup, index, img) => {
         this.restoreEditorPosition();
         stackEditAction(this, index, oldEquation, cleanup, oldExplanation, img);
-        this.props.problemStore.displayScratchpad();
+        this.props.problemState.displayScratchpad();
     }
 
     moveEditorBelowSpecificStep = (stepNumber) => {
-        const steps = this.props.problemStore.solution.steps.slice();
+        const steps = this.props.problemState.solution.steps.slice();
         const leftPartOfSteps = steps.splice(0, stepNumber);
         let editorPosition = this.countEditorPosition(leftPartOfSteps);
         if (leftPartOfSteps[leftPartOfSteps.length - 1].cleanup) {
@@ -162,18 +162,18 @@ class Problem extends Component {
     }
 
     updateMathEditorRow = (mathContent, mathAnnotation, mathStepNumber, cleanup, scratchpad) => {
-        const { problemStore } = this.props;
-        const updatedHistory = problemStore.solution.steps;
+        const { problemState } = this.props;
+        const updatedHistory = problemState.solution.steps;
         updatedHistory[mathStepNumber].stepValue = mathContent;
         updatedHistory[mathStepNumber].explanation = mathAnnotation;
         updatedHistory[mathStepNumber].cleanup = cleanup;
         updatedHistory[mathStepNumber].scratchpad = scratchpad;
-        const oldSolution = problemStore.solution;
+        const oldSolution = problemState.solution;
         oldSolution.steps = updatedHistory;
         this.props.updateProblemStore({
             solution: oldSolution,
             textAreaValue: '',
-            editorPosition: countEditorPosition(problemStore.solution.steps),
+            editorPosition: countEditorPosition(problemState.solution.steps),
         });
         mathlive.renderMathInDocument();
     }
@@ -241,6 +241,24 @@ class Problem extends Component {
         return set.problems;
     }
 
+    showMathEllipsis = () => {
+        const affixMathContainer = document.getElementById('affixMathContainer');
+        if (!affixMathContainer) {
+            return false;
+        }
+        const mathFields = affixMathContainer.querySelectorAll('.ML__mathlive');
+        if (!mathFields || mathFields.length === 0) {
+            return false;
+        }
+        console.log('affixMathContainer.offsetWidth', affixMathContainer.offsetWidth);
+        console.log('mathFields[0].offsetWidth', mathFields[0].offsetWidth);
+        // return false;
+        if (affixMathContainer.offsetWidth < mathFields[0].offsetWidth) {
+            return true;
+        }
+        return false;
+    }
+
     getPlaceholderAffixStyle = () => {
         if (!this.placeholderAffix) {
             return {};
@@ -277,6 +295,8 @@ class Problem extends Component {
         const { solution } = problemState;
         const { title, set } = problemSet;
         const { problem } = solution;
+
+        const showMathEllipsis = this.showMathEllipsis();
         // const {
         //     action,
         // } = match.params;
@@ -340,13 +360,16 @@ class Problem extends Component {
                             <span><FontAwesomeIcon icon={faFlagCheckered} /></span>
                             <span className={styles.problem}>Problem</span>
                         </span>
-                        <MathfieldComponent
-                            tabIndex={0}
-                            latex={problem.text || ''}
-                            mathfieldConfig={{
-                                readOnly: true,
-                            }}
-                        />
+                        <span id="affixMathContainer" className={`${styles.right} ${showMathEllipsis ? styles.hasEllipsis : ''}`}>
+                            <MathfieldComponent
+                                tabIndex={0}
+                                latex={problem.text || ''}
+                                mathfieldConfig={{
+                                    readOnly: true,
+                                }}
+                            />
+                            {showMathEllipsis && <span className={styles.ellipsis}>...</span>}
+                        </span>
                     </div>
                     <hr />
                 </div>

@@ -122,20 +122,39 @@
             display: flex;
             justify-content: space-between;
 
-            .left {
+            > .left {
                 min-width: 100px;
                 padding-top: 12px;
+            }
+
+            > .right {
+                display: flex;
+                overflow: hidden;
+                padding-right: 25px;
+                top: 2px;
+                position: relative;
+
+                &.hasEllipsis {
+                    > div {
+                        width: calc(100% - 25px);
+                    }
+                }
+
+                .ellipsis {
+                    line-height: 35px;
+                }
             }
 
             :global(.ML__fieldcontainer) {
                 overflow: hidden;
                 text-overflow: ellipsis;
+                text-align: end;
             }
             :global(.ML__mathlive) {
                 font: normal 0.8em KaTeX_Main, 'Times New Roman', serif;
-                white-space: normal;
+                white-space: nowrap;
                 display: inline;
-                word-break: break-word;
+                word-break: unset;
             }
         }
     }
