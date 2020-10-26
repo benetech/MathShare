@@ -57,7 +57,7 @@ class App extends Component {
                     <Layout className={`body-container ${this.getBodyClass()}`}>
                         {this.shouldRenderCommonComponents() && <Sidebar router={router} />}
                         <Layout>
-                            <Content style={{ padding: '25px' }}>
+                            <Content>
                                 <Switch>
                                     <Route exact path="/">
                                         <Redirect to="/app" />
