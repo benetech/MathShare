@@ -152,7 +152,7 @@ class Dashboard extends Component {
         // ];
 
         return (
-            <div>
+            <div style={{ padding: '20px' }}>
                 <Row
                     className={`justify-content-between ${styles.heading}`}
                     gutter={gutter}
