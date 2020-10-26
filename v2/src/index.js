@@ -4,13 +4,16 @@ import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
 import configureStore, { history } from './redux/configureStore';
 import App from './pages';
+import ScrollToTop from './components/ScrollToTop';
 
 import '../../images/favicon.png';
 
 const app = (
     <Provider store={configureStore()}>
         <ConnectedRouter history={history}>
-            <App />
+            <ScrollToTop>
+                <App />
+            </ScrollToTop>
         </ConnectedRouter>
     </Provider>
 );
