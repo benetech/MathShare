@@ -44,10 +44,10 @@ class Header extends React.Component {
                             </div>
                         </div>
                     )} */}
-                    <div className={styles.header}>
+                    <a className={styles.header} href="/#/app">
                         <img src="https://mathshare-qa.diagramcenter.org/images/logo-black.png" alt="logo" />
                         <span className={styles.beta}>beta</span>
-                    </div>
+                    </a>
                 </div>
                 <div className={styles.right}>
                     {!email && (
