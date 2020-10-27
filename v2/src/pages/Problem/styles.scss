@@ -173,4 +173,67 @@
     .hiddenTopbar {
         display: none;
     }
+
+    .steps {
+        .stepSectionHeader {
+            color: #37345B;
+            font-size: 20px;
+            padding-bottom: 15px;
+        }
+
+        .step {
+            .stepHeading {
+                color: #F16D78;
+                font-size: 16px;
+                padding-bottom: 10px;
+            }
+
+            .stepBody {
+                border-radius: 9px;
+                background-color: #F5F3FF;
+
+                > div {
+                    padding: 10px;
+
+                    &.mathContainer {
+                        padding: 4px 10px;
+                        border-bottom: 1px solid #D5D3DE;
+                        display: flex;
+
+                        > div {
+                            width: calc(100% - 30px);
+                            padding-left: 15px;
+                        }
+
+                        > span {
+                            padding-top: 2px;
+                            font-size: 24px;
+                        }
+                    }
+                }
+
+                .explanationContainer {
+                    display: flex;
+
+                    > .icon {
+                        padding-right: 12px;
+                        font-size: 24px;
+                    }
+
+                    .exaplanation {
+                        font-size: 16px;
+                        color: #37345B;
+                        background-color: transparent;
+                        resize: none;
+                        border: 0 none;
+                        width: calc(100% - 30px);
+                        outline: none;
+                        line-height: 32px;
+                        white-space: nowrap;
+                        overflow: auto;
+                    }
+                }
+            }
+        }
+    }
 }

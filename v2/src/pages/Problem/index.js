@@ -250,9 +250,6 @@ class Problem extends Component {
         if (!mathFields || mathFields.length === 0) {
             return false;
         }
-        console.log('affixMathContainer.offsetWidth', affixMathContainer.offsetWidth);
-        console.log('mathFields[0].offsetWidth', mathFields[0].offsetWidth);
-        // return false;
         if (affixMathContainer.offsetWidth < mathFields[0].offsetWidth) {
             return true;
         }
@@ -282,6 +279,60 @@ class Problem extends Component {
             paddingTop: `${this.actualAffixed.offsetHeight + 20}px`,
             display: 'block',
         };
+    }
+
+    renderStep = (step, index) => {
+        const { exaplanation, stepValue } = step;
+        return (
+            <div className={styles.step}>
+                <div className={styles.stepHeading}>
+                    Step
+                    {' '}
+                    {index + 1}
+                </div>
+                <div className={styles.stepBody}>
+                    <div className={styles.mathContainer}>
+                        <span role="img" aria-label="edit">✏️</span>
+                        <MathfieldComponent
+                            initialLatex={stepValue}
+                            mathfieldConfig={{
+                                virtualKeyboardMode: 'onfocus',
+                                smartMode: true,
+                                // onContentDidChange: (mf) => {
+                                //     const latex = mf.getValue();
+                                //     console.log('latex', latex);
+                                // },
+                            }}
+                        />
+                    </div>
+                    <div className={styles.explanationContainer}>
+                        <span className={styles.icon} role="img" aria-label="edit">💬</span>
+                        <textarea
+                            className={styles.exaplanation}
+                            placeholder="Add your explanation here"
+                            value={exaplanation}
+                            rows="1"
+                        />
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    renderStepSection = () => {
+        const { problemState } = this.props;
+        const { solution } = problemState;
+        if (!solution.editCode) {
+            return null;
+        }
+        return (
+            <div className={styles.steps} style={this.getStepPaddingTop()}>
+                <div className={styles.stepSectionHeader}>
+                    <div>My Steps</div>
+                </div>
+                {solution.steps.map(this.renderStep)}
+            </div>
+        );
     }
 
     render() {
@@ -373,9 +424,7 @@ class Problem extends Component {
                     </div>
                     <hr />
                 </div>
-                <div className={styles.steps} style={this.getStepPaddingTop()}>
-                    Steps will be added here. Keeping height of this div high to simulate scroll
-                </div>
+                {this.renderStepSection()}
                 <div className={styles.footerBtn}>
                     <Button
                         aria-label={Locales.strings.back_to_all_sets}
