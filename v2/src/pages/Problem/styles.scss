@@ -159,6 +159,15 @@
                 word-break: unset;
             }
         }
+
+        .topBar {
+            margin-bottom: unset;
+            margin-top: 10px;
+
+            .title {
+                white-space: nowrap;
+            }
+        }
     }
 
     .affixPlaceholder {

@@ -292,7 +292,7 @@ class Problem extends Component {
                 </div>
                 <div className={styles.stepBody}>
                     <div className={styles.mathContainer}>
-                        <span role="img" aria-label="edit">✏️</span>
+                        <span role="img" aria-label="pencil emoji">✏️</span>
                         <MathfieldComponent
                             initialLatex={stepValue}
                             mathfieldConfig={{
@@ -306,7 +306,7 @@ class Problem extends Component {
                         />
                     </div>
                     <div className={styles.explanationContainer}>
-                        <span className={styles.icon} role="img" aria-label="edit">💬</span>
+                        <span className={styles.icon} role="img" aria-label="speech bubble emoji">💬</span>
                         <textarea
                             className={styles.exaplanation}
                             placeholder="Add your explanation here"
@@ -406,6 +406,24 @@ class Problem extends Component {
                     <div className={styles.affixPlaceholder} />
                 </Affix>
                 <div className={`${this.state.affixed ? styles.affixedTopbar : styles.hiddenTopbar}`} style={this.getPlaceholderAffixStyle()} ref={(ref) => { this.actualAffixed = ref; }}>
+                    <Row
+                        gutter={gutter}
+                        className={styles.heading}
+                    >
+                        <div className={styles.topBar}>
+                            <span className={styles.back}>
+                                <Button
+                                    aria-label={Locales.strings.back_to_all_sets}
+                                    onClick={() => {
+                                        this.props.history.goBack();
+                                    }}
+                                    type="text"
+                                    icon={<FontAwesomeIcon icon={faArrowLeft} size="2x" />}
+                                />
+                            </span>
+                            <span className={styles.title}>{title}</span>
+                        </div>
+                    </Row>
                     <div className={styles.staticProblem}>
                         <span className={styles.left}>
                             <span><FontAwesomeIcon icon={faFlagCheckered} /></span>
