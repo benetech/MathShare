@@ -15,6 +15,7 @@ import { compareStepArrays, countEditorPosition } from '../../redux/problem/help
 import scrollTo from '../../services/scrollTo';
 import { stackEditAction } from '../../components/Editor/stackOperations';
 import exampleProblem from '../../components/Editor/example.json';
+import Step from '../../components/Step';
 // import CopyLink from '../../components/CopyLink';
 // import Select from '../../components/Select';
 
@@ -283,40 +284,7 @@ class Problem extends Component {
 
     renderStep = (step, index) => {
         const { exaplanation, stepValue } = step;
-        return (
-            <div className={styles.step}>
-                <div className={styles.stepHeading}>
-                    Step
-                    {' '}
-                    {index + 1}
-                </div>
-                <div className={styles.stepBody}>
-                    <div className={styles.mathContainer}>
-                        <span role="img" aria-label="edit">✏️</span>
-                        <MathfieldComponent
-                            initialLatex={stepValue}
-                            mathfieldConfig={{
-                                virtualKeyboardMode: 'onfocus',
-                                smartMode: true,
-                                // onContentDidChange: (mf) => {
-                                //     const latex = mf.getValue();
-                                //     console.log('latex', latex);
-                                // },
-                            }}
-                        />
-                    </div>
-                    <div className={styles.explanationContainer}>
-                        <span className={styles.icon} role="img" aria-label="edit">💬</span>
-                        <textarea
-                            className={styles.exaplanation}
-                            placeholder="Add your explanation here"
-                            value={exaplanation}
-                            rows="1"
-                        />
-                    </div>
-                </div>
-            </div>
-        );
+        return <Step index={index} stepValue={stepValue} exaplanation={exaplanation} />;
     }
 
     renderStepSection = () => {
@@ -330,7 +298,7 @@ class Problem extends Component {
                 <div className={styles.stepSectionHeader}>
                     <div>My Steps</div>
                 </div>
-                {solution.steps.map(this.renderStep)}
+                {[...solution.steps, {}].map(this.renderStep)}
             </div>
         );
     }
@@ -406,6 +374,24 @@ class Problem extends Component {
                     <div className={styles.affixPlaceholder} />
                 </Affix>
                 <div className={`${this.state.affixed ? styles.affixedTopbar : styles.hiddenTopbar}`} style={this.getPlaceholderAffixStyle()} ref={(ref) => { this.actualAffixed = ref; }}>
+                    <Row
+                        gutter={gutter}
+                        className={styles.heading}
+                    >
+                        <div className={styles.topBar}>
+                            <span className={styles.back}>
+                                <Button
+                                    aria-label={Locales.strings.back_to_all_sets}
+                                    onClick={() => {
+                                        this.props.history.goBack();
+                                    }}
+                                    type="text"
+                                    icon={<FontAwesomeIcon icon={faArrowLeft} size="2x" />}
+                                />
+                            </span>
+                            <span className={styles.title}>{title}</span>
+                        </div>
+                    </Row>
                     <div className={styles.staticProblem}>
                         <span className={styles.left}>
                             <span><FontAwesomeIcon icon={faFlagCheckered} /></span>
