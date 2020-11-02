@@ -75,6 +75,50 @@ export const resetProblem = () => ({
     type: 'RESET_PROBLEM',
 });
 
+export const duplicateStep = index => ({
+    type: 'DUPLICATE_STEP',
+    payload: {
+        index,
+    },
+});
+
+export const deleteStep = index => ({
+    type: 'DELETE_STEP',
+    payload: {
+        index,
+    },
+});
+
+export const addStep = index => ({
+    type: 'ADD_STEP',
+    payload: {
+        index,
+    },
+});
+
+export const updateStepMath = (index, stepValue) => ({
+    type: 'UPDATE_STEP_MATH',
+    payload: {
+        index,
+        stepValue,
+    },
+});
+
+export const updateStepExplanation = (index, explanation) => ({
+    type: 'UPDATE_STEP_EXPLANATION',
+    payload: {
+        index,
+        explanation,
+    },
+});
+
+export const setCurrentStep = currentStep => ({
+    type: 'SET_CURRENT_STEP',
+    payload: {
+        currentStep,
+    },
+});
+
 export default {
     commitProblemSolution,
     loadExampleProblem,
@@ -89,4 +133,10 @@ export default {
     toggleTour,
     updateWork,
     resetProblem,
+    duplicateStep,
+    deleteStep,
+    addStep,
+    updateStepExplanation,
+    updateStepMath,
+    setCurrentStep,
 };

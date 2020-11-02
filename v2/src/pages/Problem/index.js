@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft, faFlagCheckered, faLongArrowAltRight } from '@fortawesome/free-solid-svg-icons';
+import {
+    faArrowLeft, faFlagCheckered, faLongArrowAltRight, faRedo, faUndo,
+} from '@fortawesome/free-solid-svg-icons';
 import {
     Affix, Row, Button, // Dropdown, Menu, Popconfirm,
 } from 'antd';
@@ -35,15 +37,7 @@ class Problem extends Component {
 
     actualAffixed = null;
 
-    // componentWillMount() {
-    //     const { match } = this.props;
-    //     if (match.params.action === 'view') {
-    //         googleAnalytics('View a Problem: Teacher');
-    //     } else if (match.params.action === 'edit') {
-    //         googleAnalytics('View a Problem: Student');
-    //         IntercomAPI('trackEvent', 'work-a-problem');
-    //     }
-    // }
+    stepRefs = [];
 
     componentDidMount() {
         this.interval = setInterval(() => this.setState({ time: Date.now() }), 1000);
@@ -68,11 +62,7 @@ class Problem extends Component {
     }
 
     onUnload(event) {
-        const { editLink, solution, stepsFromLastSave } = this.props.problemState;
-        const { location } = this.props;
-        if (location.pathname.indexOf('/app/problem/view') === '0' // check if the open view is readonly
-            || (editLink !== Locales.strings.not_saved_yet
-                && compareStepArrays(solution.steps, stepsFromLastSave))) {
+        if (this.saveNotNeeded()) {
             return null;
         }
         const e = event || window.event;
@@ -82,6 +72,7 @@ class Problem extends Component {
             e.preventDefault();
             e.returnValue = Locales.strings.sure;
         }
+        this.props.commitProblemSolution();
 
         // For Safari
         return Locales.strings.sure;
@@ -197,6 +188,21 @@ class Problem extends Component {
         console.log('e', e);
     }
 
+    saveNotNeeded = () => {
+        const { solution, stepsFromLastSave } = this.props.problemState;
+        console.log('saveNotNeeded filtered steps', solution.steps.filter(step => step.stepValue || step.explanation));
+        console.log('saveNotNeeded stepsFromLastSave', stepsFromLastSave);
+        const { location } = this.props;
+        if (location.pathname.indexOf('/app/problem/view') === '0' // check if the open view is readonly
+            || (compareStepArrays(
+                solution.steps.filter(step => step.stepValue || step.explanation),
+                stepsFromLastSave,
+            ))) {
+            return true;
+        }
+        return false;
+    }
+
     loadData = (action, code) => {
         const {
             problemSet,
@@ -282,23 +288,67 @@ class Problem extends Component {
         };
     }
 
+    goBack = () => {
+        const { problemSet } = this.props;
+        const url = `/app/problemSet/solve/${problemSet.editCode}`;
+        if (this.saveNotNeeded()) {
+            this.props.history.replace(url);
+        } else {
+            this.props.commitProblemSolution(url);
+        }
+    }
+
     renderStep = (step, index) => {
-        const { exaplanation, stepValue } = step;
-        return <Step index={index} stepValue={stepValue} exaplanation={exaplanation} />;
+        const { explanation, stepValue } = step;
+        return <Step key={`${index}-step`} index={index} stepValue={stepValue} explanation={explanation} />;
     }
 
     renderStepSection = () => {
-        const { problemState } = this.props;
+        const { problemState, problemSet } = this.props;
         const { solution } = problemState;
+        const { solutions } = problemSet;
+        const editCodes = solutions && solutions.map(s => s.editCode);
         if (!solution.editCode) {
             return null;
         }
+        const currentIndex = editCodes && editCodes.indexOf(solution.editCode);
+
         return (
             <div className={styles.steps} style={this.getStepPaddingTop()}>
                 <div className={styles.stepSectionHeader}>
-                    <div>My Steps</div>
+                    <div className={styles.mySteps}>My Steps</div>
+                    <div className={styles.right}>
+                        <Button
+                            aria-label={Locales.strings.back_to_all_sets}
+                            onClick={() => {
+                                const url = `/app/problem/edit/${editCodes[currentIndex - 1]}`;
+                                if (this.saveNotNeeded()) {
+                                    this.props.history.replace(url);
+                                } else {
+                                    this.props.commitProblemSolution(url);
+                                }
+                            }}
+                            type="text"
+                            disabled={currentIndex === 0}
+                            icon={<FontAwesomeIcon icon={faUndo} size="2x" />}
+                        />
+                        <Button
+                            aria-label={Locales.strings.back_to_all_sets}
+                            onClick={() => {
+                                const url = `/app/problem/edit/${editCodes[currentIndex + 1]}`;
+                                if (this.saveNotNeeded()) {
+                                    this.props.history.replace(url);
+                                } else {
+                                    this.props.commitProblemSolution(url);
+                                }
+                            }}
+                            type="text"
+                            disabled={currentIndex === (editCodes.length - 1)}
+                            icon={<FontAwesomeIcon icon={faRedo} size="2x" />}
+                        />
+                    </div>
                 </div>
-                {[...solution.steps, {}].map(this.renderStep)}
+                {solution.steps.map(this.renderStep)}
             </div>
         );
     }
@@ -331,9 +381,7 @@ class Problem extends Component {
                         <span className={styles.back}>
                             <Button
                                 aria-label={Locales.strings.back_to_all_sets}
-                                onClick={() => {
-                                    this.props.history.goBack();
-                                }}
+                                onClick={this.goBack}
                                 type="text"
                                 icon={<FontAwesomeIcon icon={faArrowLeft} size="2x" />}
                             />
@@ -382,9 +430,7 @@ class Problem extends Component {
                             <span className={styles.back}>
                                 <Button
                                     aria-label={Locales.strings.back_to_all_sets}
-                                    onClick={() => {
-                                        this.props.history.goBack();
-                                    }}
+                                    onClick={this.goBack}
                                     type="text"
                                     icon={<FontAwesomeIcon icon={faArrowLeft} size="2x" />}
                                 />
@@ -417,7 +463,8 @@ class Problem extends Component {
                         type="primary"
                         size="large"
                         onClick={() => {
-                            console.log('click');
+                            this.props.addStep(null);
+                            this.props.commitProblemSolution();
                         }}
                     >
                         <span>Add Step</span>

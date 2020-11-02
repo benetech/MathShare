@@ -1,15 +1,54 @@
+@import '../../styles/colors.scss';
+
 .step {
     margin-top: 20px;
 
     .stepHeading {
+        display: flex;
         color: #F16D78;
         font-size: 16px;
         padding-bottom: 10px;
+
+        :global(.ant-dropdown-open) {
+            background-color: $primary-color;
+            color: white;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+        }
+
+        > span {
+            margin: auto 0;
+            flex-grow: 1;
+        }
+
+        .icon {
+            align-self: center;
+
+            svg {
+                font-size: 24px;
+                margin: 0;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                -ms-transform: translate(-50%, -50%);
+                transform: translate(-50%, -50%);
+            }
+
+            &:global(.ant-btn-icon-only) {
+                padding: 6px 10px;
+                width: 60px;
+            }
+        }
     }
 
     .stepBody {
         border-radius: 9px;
         background-color: #F5F3FF;
+        border: 1px solid transparent;
+
+        &.containerFocused {
+            border: 1px solid #61CBB8;
+        }
 
         > div {
             padding: 10px;
@@ -56,7 +95,7 @@
                 font-size: 24px;
             }
 
-            .exaplanation {
+            .explanation {
                 font-size: 16px;
                 color: #37345B;
                 background-color: transparent;
@@ -67,6 +106,18 @@
                 line-height: 32px;
                 white-space: nowrap;
                 overflow: auto;
+            }
+        }
+    }
+
+    .menu {
+        :global(.ant-dropdown-menu-item) button {
+            color: white;
+            padding-left: 8px;
+            font-size: 14px;
+
+            span {
+                padding-left: 8px;
             }
         }
     }
