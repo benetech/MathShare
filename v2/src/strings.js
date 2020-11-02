@@ -26,6 +26,7 @@ class Locales {
                 mathshare_benetech: 'Benetech Mathshare',
                 ms: 'Microsoft',
                 okay: 'Okay',
+                problem_saved_success_message: 'Problem Updated',
                 restore: 'Restore',
                 restore_success: 'Restored Problem Set - {title}',
                 sign_in: 'Log in',

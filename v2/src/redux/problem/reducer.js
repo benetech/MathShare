@@ -23,6 +23,7 @@ export const initialState = {
         stepValue: '',
         explanation: Locales.strings.loading,
     }],
+    currentStep: 0,
     editorPosition: 0,
     editedStep: null,
     allowedPalettes: [],
@@ -44,6 +45,8 @@ export const initialState = {
         scratchpadContent: null,
     },
 };
+
+const emptyStep = { stepValue: '', explanation: '' };
 
 const problem = (state = initialState, {
     type,
@@ -96,7 +99,10 @@ const problem = (state = initialState, {
         }
         return {
             ...state,
-            solution: payload.solution,
+            solution: {
+                ...payload.solution,
+                steps: [...payload.solution.steps, { stepValue: '', explanation: '' }],
+            },
             editing,
             editedStep,
             editorPosition,
@@ -194,6 +200,95 @@ const problem = (state = initialState, {
             };
         }
         return state;
+    }
+    case 'DUPLICATE_STEP': {
+        const { index } = payload;
+        const step = state.solution.steps[index];
+        const newSteps = state.solution.steps.slice();
+        newSteps.splice(index + 1, 0, step);
+        return {
+            ...state,
+            solution: {
+                ...state.solution,
+                steps: newSteps,
+            },
+        };
+    }
+    case 'DELETE_STEP': {
+        const { index } = payload;
+        const steps = state.solution.steps.filter((_, currentIndex) => currentIndex !== index);
+        if (steps.length === 0) {
+            steps.push({ ...emptyStep });
+        }
+        return {
+            ...state,
+            solution: {
+                ...state.solution,
+                steps,
+            },
+        };
+    }
+    case 'ADD_STEP': {
+        const steps = state.solution.steps.slice();
+        const { currentStep } = state;
+        if (currentStep >= (steps.length - 1)) {
+            steps.push({
+                ...emptyStep,
+            });
+        } else {
+            steps.splice(currentStep + 1, 0, {
+                ...emptyStep,
+            });
+        }
+        return {
+            ...state,
+            solution: {
+                ...state.solution,
+                steps,
+            },
+        };
+    }
+    case 'UPDATE_STEP_MATH': {
+        const { index, stepValue } = payload;
+        return {
+            ...state,
+            solution: {
+                ...state.solution,
+                steps: state.solution.steps.map((step, currentIndex) => {
+                    if (currentIndex === index) {
+                        return {
+                            ...step,
+                            stepValue,
+                        };
+                    }
+                    return step;
+                }),
+            },
+        };
+    }
+    case 'UPDATE_STEP_EXPLANATION': {
+        const { index, explanation } = payload;
+        return {
+            ...state,
+            solution: {
+                ...state.solution,
+                steps: state.solution.steps.map((step, currentIndex) => {
+                    if (currentIndex === index) {
+                        return {
+                            ...step,
+                            explanation,
+                        };
+                    }
+                    return step;
+                }),
+            },
+        };
+    }
+    case 'SET_CURRENT_STEP': {
+        return {
+            ...state,
+            currentStep: payload.currentStep,
+        };
     }
     default:
         return state;

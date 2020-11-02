@@ -113,10 +113,12 @@
 
     .steps {
         min-height: 100vh;
+        padding-bottom: 250px;
     }
 
     .affixedTopbar {
         position: fixed;
+        z-index: 1;
         top: 0px;
         background: white;
 
@@ -188,6 +190,11 @@
             color: #37345B;
             font-size: 20px;
             font-weight: 500;
+            display: flex;
+
+            .mySteps {
+                flex-grow: 1;
+            }
         }
     }
 }

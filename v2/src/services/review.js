@@ -47,16 +47,17 @@ export const getSolutionObjectFromProblems = problems => problems.map((problem) 
             };
         }
     }
-    const step = {
-        explanation: problem.title,
-        stepValue: problem.text,
-        deleted: false,
-        cleanup: null,
-        scratchpad: null,
-    };
+    // const step = {
+    //     explanation: problem.title,
+    //     stepValue: problem.text,
+    //     deleted: false,
+    //     cleanup: null,
+    //     scratchpad: null,
+    // };
     return {
         problem,
-        steps: [step],
+        step: [],
+        // steps: [step],
     };
 });
 

@@ -43,7 +43,6 @@ import {
     FRONTEND_URL,
 } from '../../config';
 import Locales from '../../strings';
-import MathButton from '../../components/MathPalette/components/MathButtonsGroup/components/MathButtonsRow/components/MathButton';
 import { displayAlert } from '../../services/alerts';
 
 function* requestLoadProblemSaga() {
@@ -117,7 +116,7 @@ function* processFetchedProblem() {
         if (theActiveMathField) {
             theActiveMathField.$latex(solution.steps[stepListPosition].stepValue);
         }
-        if (solution.steps[stepListPosition].inProgress) {
+        if (solution.steps[stepListPosition] && solution.steps[stepListPosition].inProgress) {
             yield put(updateProblemStore({
                 textAreaValue: solution.steps[stepListPosition].explanation,
             }));
@@ -168,47 +167,44 @@ function* requestCommitProblemSolutionSaga() {
             const {
                 solution,
                 textAreaValue,
-                work,
-                editorPosition,
+                // work,
+                currentStep,
                 editing,
             } = yield select(getState);
-            let finalEditorPosition = editorPosition;
-            const {
-                theActiveMathField,
-            } = yield select(getProblemSetState);
-            let steps = solution.steps.slice();
-            const editorMath = theActiveMathField.$latex();
+            let finalEditorPosition = currentStep;
+            let steps = solution.steps.slice().filter(step => step.explanation || step.stepValue);
+            // const editorMath = null;
             let lastStep = null;
             if (steps.length > 0) {
-                if (editing && editorPosition !== null && editorPosition > -1) {
-                    lastStep = steps.splice(editorPosition, 0).pop();
+                if (editing && currentStep !== null && currentStep > -1) {
+                    lastStep = steps.splice(currentStep, 0).pop();
                 }
                 if (!lastStep) {
                     lastStep = steps[steps.length - 1];
                 }
             }
             steps = steps.filter(step => !step.inProgress);
-            if (textAreaValue
-                || (lastStep && textAreaValue.trim() !== lastStep.explanation)
-                || (
-                    lastStep && editorMath.trim()
-                    && (
-                        editorMath !== lastStep.stepValue
-                        && editorMath !== lastStep.cleanup
-                    )
-                )) {
-                const stepValue = theActiveMathField.$latex();
-                const cleanup = MathButton.CleanUpCrossouts(stepValue);
-                steps.splice(editorPosition + 1, 0, {
-                    scratchpad: work.scratchpadContent,
-                    explanation: textAreaValue,
-                    stepValue,
-                    cleanup: (cleanup === stepValue) ? null : cleanup,
-                    inProgress: true,
-                });
-            } else {
-                finalEditorPosition = steps.length;
-            }
+            // if (textAreaValue
+            //     || (lastStep && textAreaValue.trim() !== lastStep.explanation)
+            //     || (
+            //         lastStep && editorMath.trim()
+            //         && (
+            //             editorMath !== lastStep.stepValue
+            //             && editorMath !== lastStep.cleanup
+            //         )
+            //     )) {
+            //     const stepValue = ''; // theActiveMathField.$latex();
+            //     const cleanup = MathButton.CleanUpCrossouts(stepValue);
+            //     steps.splice(currentStep + 1, 0, {
+            //         scratchpad: work.scratchpadContent,
+            //         explanation: textAreaValue,
+            //         stepValue,
+            //         cleanup: (cleanup === stepValue) ? null : cleanup,
+            //         inProgress: true,
+            //     });
+            // } else {
+            finalEditorPosition = steps.length;
+            // }
             const inProgressStep = steps && steps.find(step => step.inProgress);
             const problemListState = yield select(getProblemSetState);
             let shareCode = '';
@@ -220,7 +216,7 @@ function* requestCommitProblemSolutionSaga() {
                 const { editCode } = params;
                 const payload = {
                     id: solution.problem.id,
-                    editorPosition: (editing && inProgressStep) ? editorPosition : null,
+                    editorPosition: (editing && inProgressStep) ? currentStep : null,
                     steps,
                 };
                 const response = yield call(
@@ -241,7 +237,7 @@ function* requestCommitProblemSolutionSaga() {
                             ...solution,
                             steps,
                             finished: finished || solution.finished,
-                            editorPosition: (editing && inProgressStep) ? editorPosition : null,
+                            editorPosition: (editing && inProgressStep) ? currentStep : null,
                         };
                     }
                     return currentSolution;
@@ -299,27 +295,26 @@ function* requestCommitProblemSolutionSaga() {
                 problemStorePayload = {
                     solution: {
                         ...currentProblemStore.solution,
-                        steps: problemStorePayload.stepsFromLastSave,
+                        steps: solution.steps.slice(),
                     },
                     ...problemStorePayload,
                     editLink: `${FRONTEND_URL}/app/problem/edit/${solution.editCode}`,
                     shareLink: `${FRONTEND_URL}/app/problem/view/${shareCode}`,
-                    editorPosition: editing ? editorPosition : finalEditorPosition,
+                    editorPosition: editing ? currentStep : finalEditorPosition,
                     textAreaValue: inProgressStep ? textAreaValue : '',
                 };
             }
             yield put(updateProblemStore(problemStorePayload));
 
-            displayAlert('success', Locales.strings.problem_saved_success_message,
-                Locales.strings.success);
+            displayAlert('success', Locales.strings.problem_saved_success_message, Locales.strings.success);
 
             if (redirectTo === 'back') {
                 yield put(goBack());
             } else if (typeof (redirectTo) === 'string') {
-                const { scratchPadPainterro } = work;
-                if (scratchPadPainterro) {
-                    scratchPadPainterro.clear();
-                }
+                // const { scratchPadPainterro } = work;
+                // if (scratchPadPainterro) {
+                //     scratchPadPainterro.clear();
+                // }
                 yield put(replace(redirectTo));
             }
             if (!matchedRoute && shareCode) {
