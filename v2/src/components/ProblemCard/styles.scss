@@ -35,7 +35,6 @@
         }
 
         .problemSetTitle {
-            font-size: 32px;
             max-height: 100px;
         }
 
@@ -74,7 +73,6 @@
             flex-direction: column;
 
             .problemSetTitle {
-                font-size: 20px;
                 width: 100%;
             }
 
@@ -219,10 +217,12 @@
     }
 
     .problemSetTitle {
-        font-weight: bold;
         color: #37345B;
         text-overflow: ellipsis;
         overflow: hidden;
+        font-family: 'Source Sans Pro', sans-serif;
+        font-weight: 700;
+        font-size: 20px;
     }
 
     div {
