@@ -86,3 +86,11 @@
     outline: rgb(0, 95, 204) auto 1px !important;
     outline-offset: 5px !important;
 }
+
+:global(.ant-popover-inner) {
+    margin-right: 8px;
+}
+
+:global(.ant-notification-notice) {
+    max-width: calc(100vw - 50px);
+}
