@@ -71,17 +71,21 @@
             padding: 20px;
             padding-bottom: 12px;
             position: relative;
+            flex-direction: column;
 
             .problemSetTitle {
-                font-size: 22px;
+                font-size: 20px;
                 width: 100%;
             }
 
             .content {
                 display: block;
                 width: 100%;
-                padding-right: 80px;
                 justify-content: space-between;
+                padding-left: 50px;
+                padding-right: 10px;
+                top: -18px;
+                position: relative;
 
                 .mainContent {
                     display: grid;
