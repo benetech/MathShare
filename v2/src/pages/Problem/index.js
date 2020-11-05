@@ -383,7 +383,12 @@ class Problem extends Component {
                                 aria-label={Locales.strings.back_to_all_sets}
                                 onClick={this.goBack}
                                 type="text"
-                                icon={<FontAwesomeIcon icon={faArrowLeft} size="2x" />}
+                                icon={(
+                                    <>
+                                        <span />
+                                        <FontAwesomeIcon icon={faArrowLeft} size="2x" />
+                                    </>
+                                )}
                             />
                         </span>
                         <span className={styles.title}>{title}</span>
@@ -432,7 +437,12 @@ class Problem extends Component {
                                     aria-label={Locales.strings.back_to_all_sets}
                                     onClick={this.goBack}
                                     type="text"
-                                    icon={<FontAwesomeIcon icon={faArrowLeft} size="2x" />}
+                                    icon={(
+                                        <>
+                                            <span />
+                                            <FontAwesomeIcon icon={faArrowLeft} size="2x" />
+                                        </>
+                                    )}
                                 />
                             </span>
                             <span className={styles.title}>{title}</span>

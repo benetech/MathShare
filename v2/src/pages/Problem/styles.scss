@@ -10,6 +10,21 @@
         width: 100%;
 
         .back {
+            position: relative;
+
+            >button {
+                width: 40px;
+                padding-left: 10px;
+                >span {
+                    position: absolute;
+                    width: 4px;
+                    height: 20px;
+                    background: #37345B;
+                    left: 5px;
+                    border-radius: 4px;
+                }
+            }
+
             svg {
                 font-size: 20px;
                 display: block;
@@ -24,7 +39,7 @@
         .title {
             font-size: 18px;
             font-weight: 500;
-            margin-left: 40px;
+            margin-left: 50px;
             overflow-wrap: anywhere;
             padding-right: 16px;
             display: block;
@@ -102,11 +117,11 @@
             border-radius: 8px;
             margin-left: auto;
 
-            > span {
+            >span {
                 padding-right: 10px;
             }
 
-            > svg {
+            >svg {
                 position: relative;
                 color: #37345B;
                 top: -4px;
@@ -129,12 +144,12 @@
             display: flex;
             justify-content: space-between;
 
-            > .left {
+            >.left {
                 min-width: 100px;
                 padding-top: 12px;
             }
 
-            > .right {
+            >.right {
                 display: flex;
                 overflow: hidden;
                 padding-right: 25px;
@@ -142,7 +157,7 @@
                 position: relative;
 
                 &.hasEllipsis {
-                    > div {
+                    >div {
                         width: calc(100% - 25px);
                     }
                 }
@@ -157,6 +172,7 @@
                 text-overflow: ellipsis;
                 text-align: end;
             }
+
             :global(.ML__mathlive) {
                 font: normal 0.8em KaTeX_Main, 'Times New Roman', serif;
                 white-space: nowrap;
