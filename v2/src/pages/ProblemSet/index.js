@@ -216,7 +216,12 @@ class ProblemSet extends Component {
                                     this.props.history.replace('/app');
                                 }}
                                 type="text"
-                                icon={<FontAwesomeIcon icon={faArrowLeft} size="2x" />}
+                                icon={(
+                                    <>
+                                        <span />
+                                        <FontAwesomeIcon icon={faArrowLeft} size="2x" />
+                                    </>
+                                )}
                             />
                         </span>
                         <span className={styles.title}>{set.title}</span>
