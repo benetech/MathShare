@@ -117,6 +117,18 @@
             border-radius: 8px;
             margin-left: auto;
 
+            &.moveAddStep {
+                position: absolute;
+                right: 10px;
+                bottom: 300px;
+            }
+
+            @media (max-width: 767px) {
+                &.moveAddStep {
+                    bottom: 250px;
+                }
+            }
+
             >span {
                 padding-right: 10px;
             }

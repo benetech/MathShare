@@ -4,7 +4,7 @@
 import { faCopy, faEllipsisH, faMinusCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-    Button, Dropdown, Menu, Popconfirm,
+    Button, Dropdown, Menu,
 } from 'antd';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -80,6 +80,9 @@ class Step extends Component {
                             this.setState({ focused: true });
                             this.textAreaRef.scrollIntoView();
                         },
+                        onVirtualKeyboardToggle: (_sender, visible) => {
+                            this.props.markKeyboardVisible(visible);
+                        },
                         onContentDidChange: (mf) => {
                             const latexValue = mf.getValue();
                             this.setState({
@@ -113,16 +116,13 @@ class Step extends Component {
                     </Button>
                 </Menu.Item>
                 <Menu.Item onClick={e => stopEvent(e)}>
-                    <Popconfirm
-                        title="This will permanently delete the problem set."
-                        okText="Okay"
-                        onConfirm={() => { this.props.deleteStep(index); }}
-                        cancelText="Cancel"
+                    <Button
+                        type="text"
+                        icon={<FontAwesomeIcon icon={faMinusCircle} />}
+                        onClick={() => { this.props.deleteStep(index); }}
                     >
-                        <Button type="text" icon={<FontAwesomeIcon icon={faMinusCircle} />}>
-                            Delete
-                        </Button>
-                    </Popconfirm>
+                        Delete
+                    </Button>
                 </Menu.Item>
             </Menu>
         );
