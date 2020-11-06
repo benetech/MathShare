@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 
-import React from 'react';
+import React, { useState } from 'react';
 import {
     faCopy,
     faEllipsisH,
@@ -13,7 +13,7 @@ import {
     Button,
     Dropdown,
     Menu,
-    Popconfirm,
+    Modal,
     Progress,
 } from 'antd';
 import styles from './styles.scss';
@@ -45,6 +45,13 @@ const getLink = (props) => {
     return `/#/app/problemSet/edit/${editCode}`;
 };
 
+const handleHideModal = (updateModalVisible, callback) => () => {
+    if (callback) {
+        callback();
+    }
+    updateModalVisible(false);
+};
+
 const Card = (props) => {
     const {
         id,
@@ -58,6 +65,7 @@ const Card = (props) => {
         duplicateProblemSet,
         userProfile,
     } = props;
+    const [isModalVisible, updateModalVisible] = useState(false);
     if (newSet) {
         return (
             <div
@@ -98,16 +106,19 @@ const Card = (props) => {
             )}
             {!isExampleSet && userProfile.email && (
                 <Menu.Item onClick={e => stopEvent(e)}>
-                    <Popconfirm
-                        title="This will permanently delete the problem set."
+                    <Button type="text" icon={<FontAwesomeIcon icon={faMinusCircle} />} onClick={() => updateModalVisible(!isModalVisible)}>
+                        Delete
+                    </Button>
+                    <Modal
+                        title="Confirm"
+                        visible={isModalVisible}
+                        onOk={handleHideModal(updateModalVisible, archiveProblemSet)}
+                        onCancel={handleHideModal(updateModalVisible)}
                         okText="Okay"
-                        onConfirm={archiveProblemSet}
                         cancelText="Cancel"
                     >
-                        <Button type="text" icon={<FontAwesomeIcon icon={faMinusCircle} />}>
-                            Delete
-                        </Button>
-                    </Popconfirm>
+                        <p>This will permanently delete the problem set.</p>
+                    </Modal>
                 </Menu.Item>
             )}
         </Menu>

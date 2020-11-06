@@ -3,7 +3,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-    Row, Col, Button, Dropdown, Menu, Popconfirm,
+    Row, Col, Button, Dropdown, Menu, Modal,
 } from 'antd';
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
@@ -26,6 +26,7 @@ const gutter = {
 class ProblemSet extends Component {
     state = {
         layout: 'grid',
+        modalVisible: false,
     };
 
     componentDidMount() {
@@ -159,6 +160,7 @@ class ProblemSet extends Component {
             action,
         } = match.params;
         const { set } = problemSet;
+        const { modalVisible } = this.state;
 
         const menu = (
             <Menu
@@ -181,22 +183,39 @@ class ProblemSet extends Component {
                 )}
                 {userProfile.email && (
                     <Menu.Item>
-                        <Popconfirm
-                            title={Locales.strings.delete_confirmation}
+                        <Button
+                            type="text"
+                            icon={<FontAwesomeIcon icon={faMinusCircle} />}
+                            onClick={() => {
+                                this.setState({
+                                    modalVisible: true,
+                                });
+                            }}
+                        >
+                            {Locales.strings.delete}
+                        </Button>
+                        <Modal
+                            title="Confirm"
+                            visible={modalVisible}
+                            onOk={(e) => {
+                                this.archiveProblemSet({
+                                    ...problemSet,
+                                    ...set,
+                                })(e);
+                                this.setState({
+                                    modalVisible: false,
+                                });
+                            }}
+                            onCancel={() => {
+                                this.setState({
+                                    modalVisible: false,
+                                });
+                            }}
                             okText={Locales.strings.okay}
                             cancelText={Locales.strings.cancel}
-                            onConfirm={e => this.archiveProblemSet({
-                                ...problemSet,
-                                ...set,
-                            })(e.domEvent)}
                         >
-                            <Button
-                                type="text"
-                                icon={<FontAwesomeIcon icon={faMinusCircle} />}
-                            >
-                                {Locales.strings.delete}
-                            </Button>
-                        </Popconfirm>
+                            <p>{Locales.strings.delete_confirmation}</p>
+                        </Modal>
                     </Menu.Item>
                 )}
             </Menu>
