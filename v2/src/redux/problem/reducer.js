@@ -25,6 +25,7 @@ export const initialState = {
     }],
     currentStep: 0,
     editorPosition: 0,
+    keyboardVisible: false,
     editedStep: null,
     allowedPalettes: [],
     textAreaValue: '',
@@ -54,6 +55,13 @@ const problem = (state = initialState, {
     // error,
 }) => {
     switch (type) {
+    case 'KEYBOARD_VISIBLE': {
+        const { keyboardVisible } = payload;
+        return {
+            ...state,
+            keyboardVisible,
+        };
+    }
     case 'RESET_PROBLEM':
         return {
             ...initialState,

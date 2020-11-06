@@ -119,6 +119,13 @@ export const setCurrentStep = currentStep => ({
     },
 });
 
+export const markKeyboardVisible = keyboardVisible => ({
+    type: 'KEYBOARD_VISIBLE',
+    payload: {
+        keyboardVisible,
+    },
+});
+
 export default {
     commitProblemSolution,
     loadExampleProblem,
@@ -139,4 +146,5 @@ export default {
     updateStepExplanation,
     updateStepMath,
     setCurrentStep,
+    markKeyboardVisible,
 };

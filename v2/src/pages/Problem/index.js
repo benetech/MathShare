@@ -361,7 +361,7 @@ class Problem extends Component {
             // userProfile,
             // routerHooks,
         } = this.props;
-        const { solution } = problemState;
+        const { solution, keyboardVisible } = problemState;
         const { title } = problemSet;
         const { problem } = solution;
 
@@ -469,6 +469,7 @@ class Problem extends Component {
                 {this.renderStepSection()}
                 <div className={styles.footerBtn}>
                     <Button
+                        className={keyboardVisible ? styles.moveAddStep : ''}
                         aria-label={Locales.strings.back_to_all_sets}
                         type="primary"
                         size="large"
