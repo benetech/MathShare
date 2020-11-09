@@ -283,7 +283,7 @@ class Problem extends Component {
         }
         this.placeholderAffix.measure();
         return {
-            paddingTop: `${this.actualAffixed.offsetHeight + 20}px`,
+            paddingTop: `${this.actualAffixed.offsetHeight - 90}px`,
             display: 'block',
         };
     }
@@ -401,6 +401,12 @@ class Problem extends Component {
                     <span aria-label="checkered flag"><FontAwesomeIcon icon={faFlagCheckered} /></span>
                     <span className={styles.problem}>Problem</span>
                 </Row>
+                <Affix
+                    onChange={affixed => this.setState({ affixed })}
+                    ref={(ref) => { this.placeholderAffix = ref; }}
+                >
+                    <div className={styles.affixPlaceholder} />
+                </Affix>
                 <Row
                     gutter={gutter}
                     className={styles.mathText}
@@ -420,16 +426,9 @@ class Problem extends Component {
                     {problem.title}
                 </Row>
                 <hr />
-                <Affix
-                    onChange={affixed => this.setState({ affixed })}
-                    ref={(ref) => { this.placeholderAffix = ref; }}
-                >
-                    <div className={styles.affixPlaceholder} />
-                </Affix>
                 <div className={`${this.state.affixed ? styles.affixedTopbar : styles.hiddenTopbar}`} style={this.getPlaceholderAffixStyle()} ref={(ref) => { this.actualAffixed = ref; }}>
-                    <Row
-                        gutter={gutter}
-                        className={styles.heading}
+                    <div
+                        className={`ant-row ${styles.heading}`}
                     >
                         <div className={styles.topBar}>
                             <span className={styles.back}>
@@ -447,22 +446,26 @@ class Problem extends Component {
                             </span>
                             <span className={styles.title}>{title}</span>
                         </div>
-                    </Row>
-                    <div className={styles.staticProblem}>
-                        <span className={styles.left}>
-                            <span><FontAwesomeIcon icon={faFlagCheckered} /></span>
-                            <span className={styles.problem}>Problem</span>
-                        </span>
-                        <span id="affixMathContainer" className={`${styles.right} ${showMathEllipsis ? styles.hasEllipsis : ''}`}>
-                            <MathfieldComponent
-                                tabIndex={0}
-                                latex={problem.text || ''}
-                                mathfieldConfig={{
-                                    readOnly: true,
-                                }}
-                            />
-                            {showMathEllipsis && <span className={styles.ellipsis}>...</span>}
-                        </span>
+                    </div>
+                    <div
+                        className="ant-row"
+                    >
+                        <div className={styles.staticProblem}>
+                            <span className={styles.left}>
+                                <span><FontAwesomeIcon icon={faFlagCheckered} /></span>
+                                <span className={styles.problem}>Problem</span>
+                            </span>
+                            <span id="affixMathContainer" className={`${styles.right} ${showMathEllipsis ? styles.hasEllipsis : ''}`}>
+                                <MathfieldComponent
+                                    tabIndex={0}
+                                    latex={problem.text || ''}
+                                    mathfieldConfig={{
+                                        readOnly: true,
+                                    }}
+                                />
+                                {showMathEllipsis && <span className={styles.ellipsis}>...</span>}
+                            </span>
+                        </div>
                     </div>
                     <hr />
                 </div>

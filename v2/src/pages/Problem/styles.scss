@@ -150,11 +150,28 @@
         position: fixed;
         z-index: 1;
         top: 0px;
-        background: white;
+
+        &, > :global(.ant-row) {
+            background: white;
+        }
+
+        > :global(.ant-row) {
+            margin-left: -24px;
+            margin-right: -24px;
+
+            &:first-child {
+                padding: 5px 12px;
+            }
+
+            &:nth-child(2) {
+                padding: 0 10px;
+            }
+        }
 
         .staticProblem {
             display: flex;
             justify-content: space-between;
+            width: 100%;
 
             >.left {
                 min-width: 100px;
