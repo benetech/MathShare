@@ -15,8 +15,6 @@ import Locales from '../../strings';
 import mathlive from '../../../../src/lib/mathlivedist/mathlive';
 import { compareStepArrays, countEditorPosition } from '../../redux/problem/helpers';
 import scrollTo from '../../services/scrollTo';
-import { stackEditAction } from '../../components/Editor/stackOperations';
-import exampleProblem from '../../components/Editor/example.json';
 import Step from '../../components/Step';
 // import CopyLink from '../../components/CopyLink';
 // import Select from '../../components/Select';
@@ -137,12 +135,6 @@ class Problem extends Component {
         problemList.theActiveMathField.$focus();
     }
 
-    cancelEditCallback = (oldEquation, oldExplanation, cleanup, index, img) => {
-        this.restoreEditorPosition();
-        stackEditAction(this, index, oldEquation, cleanup, oldExplanation, img);
-        this.props.problemState.displayScratchpad();
-    }
-
     moveEditorBelowSpecificStep = (stepNumber) => {
         const steps = this.props.problemState.solution.steps.slice();
         const leftPartOfSteps = steps.splice(0, stepNumber);
@@ -168,14 +160,6 @@ class Problem extends Component {
             editorPosition: countEditorPosition(problemState.solution.steps),
         });
         mathlive.renderMathInDocument();
-    }
-
-    activateMathField = (theActiveMathField) => {
-        const field = theActiveMathField;
-        this.props.setActiveMathFieldInProblem(field);
-        if (this.props.example) {
-            field.$latex(exampleProblem.steps[exampleProblem.steps.length - 1].stepValue);
-        }
     }
 
     setLayout = (e) => {
