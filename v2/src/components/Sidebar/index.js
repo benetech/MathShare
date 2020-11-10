@@ -25,7 +25,7 @@ class Sidebar extends React.Component {
 
     render() {
         const { contrast } = this.state;
-        const { userProfile } = this.props;
+        const { userProfile, ui } = this.props;
         const { info } = userProfile;
         return (
             <Sider
@@ -33,6 +33,7 @@ class Sidebar extends React.Component {
                 width={350}
                 collapsedWidth={0}
                 theme="light"
+                hidden={ui.sideBarCollapsed}
                 onBreakpoint={(collapsed) => {
                     this.props.updateSideBarCollapsed(collapsed);
                 }}
@@ -139,6 +140,7 @@ class Sidebar extends React.Component {
 export default connect(
     state => ({
         userProfile: state.userProfile,
+        ui: state.ui,
     }),
     {
         updateSideBarCollapsed,
