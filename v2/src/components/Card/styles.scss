@@ -2,12 +2,12 @@
 
 :global(.grid) {
     .tileContainer {
-        width: 315px;
+        width: 300px;
         margin: 20px;
     }
 
     .tile {
-        width: 315px;
+        width: 300px;
 
         >&:nth-child(2) {
             width: 50%;
@@ -246,7 +246,7 @@
 
 @media (max-width: 610px) {
     :global(.grid) .tileContainer {
-        width: 315px;
+        width: 300px;
         margin: 10px auto;
     }
 }

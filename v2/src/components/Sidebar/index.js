@@ -29,7 +29,7 @@ class Sidebar extends React.Component {
         const { info } = userProfile;
         return (
             <Sider
-                breakpoint="lg"
+                breakpoint="xl"
                 width={350}
                 collapsedWidth={0}
                 theme="light"

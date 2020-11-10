@@ -59,8 +59,7 @@ class Dashboard extends Component {
 
     getLayout = () => {
         const { layout } = this.state;
-        const { ui } = this.props;
-        if (ui.sideBarCollapsed) {
+        if (document.body.offsetWidth < 800) {
             return 'line-item';
         }
         return layout;
