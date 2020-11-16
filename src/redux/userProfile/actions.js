@@ -62,6 +62,11 @@ export const saveUserInfo = (userType, grades, role) => ({
     },
 });
 
+export const saveUserInfoPayload = payload => ({
+    type: 'SAVE_USER_INFO',
+    payload,
+});
+
 export const fetchRecentWork = () => ({
     type: 'FETCH_RECENT_WORK',
 });
@@ -110,6 +115,7 @@ export default {
     redirectAfterLogin,
     resetUserProfile,
     saveUserInfo,
+    saveUserInfoPayload,
     setAuthRedirect,
     setMobileNotify,
     setRecentWork,

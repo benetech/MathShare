@@ -27,6 +27,14 @@
             font-size: 22px;
         }
 
+        .subHeading {
+            font-size: 22px;
+            font-weight: 400;
+            color: #5a5a5a;
+            padding: 36px;
+            padding-bottom: 0;
+        }
+
         .pointer {
             cursor: pointer;
         }
@@ -61,7 +69,6 @@
             color: black;
             border-color: #c4d9ff;
             max-width: 150px;
-            margin-left: 20px;
 
             &.confirmBtn {
                 margin-top: 50px;
@@ -76,17 +83,12 @@
             }
         }
 
-        .teacherForm {
+        .teacherForm, .studentForm {
             padding-top: 35px;
             margin: 0 25px;
 
             :global(.row):not(:first-child) {
                 padding-top: 20px;
-            }
-
-            h2 {
-                font-size: 1rem;
-                font-weight: 400;
             }
 
             .grade {
@@ -104,10 +106,6 @@
                         margin-right: 10px;
                     }
                 }
-            }
-
-            .descText {
-                text-align: right;
             }
 
             fieldset {
@@ -130,6 +128,36 @@
                 }
             }
 
+
+            .disabilities {
+                padding-left: 100px;
+
+                :global(.form-group) {
+                    text-align: left;
+
+                    input {
+                        margin-right: 20px;
+                    }
+                }
+            }
+        }
+
+        .teacherForm {
+            .descText {
+                text-align: right;
+            }
+
+            h2 {
+                font-size: 1rem;
+                font-weight: 400;
+            }
+        }
+
+        .studentForm {
+            .descText label {
+                font-size: 22px;
+                font-weight: 600;
+            }
         }
 
         .buttonsContainer {

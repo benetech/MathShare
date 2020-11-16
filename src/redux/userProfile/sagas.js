@@ -88,6 +88,19 @@ function* checkUserLoginSaga() {
                     const userInfo = userInfoResponse.data;
                     yield put(setUserProfile(emails[0], displayName, imageUrl || `https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=256&name=${encodeURIComponent(displayName)}&rounded=true&length=1`, 'passport', userInfo.userType));
                     yield put(setUserInfo(userInfo));
+                    if (userInfo && userInfo.infoVersion === 1 && userInfo.userType === 'student') {
+                        yield put(markUserResolved(true));
+                        yield put(setAuthRedirect((window.location.hash || '').substring(1)));
+                        if (window.location.hash !== '#/userDetailsEdit') {
+                            alertInfo(
+                                Locales.strings.redirecting_to_review, Locales.strings.info,
+                                redirectAlertId,
+                            );
+                            yield delay(redirectWait);
+                            yield put(push('/userDetailsEdit'));
+                            dismissAlert(redirectAlertId);
+                        }
+                    }
                 }
             } catch (infoError) {
                 yield put(setUserProfile(emails[0], displayName, imageUrl || `https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=256&name=${encodeURIComponent(displayName)}&rounded=true&length=1`, 'passport', null));
@@ -198,6 +211,7 @@ function* saveUserInfoSaga() {
                 ...payload,
                 user_type: userType,
                 email,
+                infoVersion: 1,
             });
             yield put(setUserInfo(userInfoResponse.data));
         } catch (error) {
