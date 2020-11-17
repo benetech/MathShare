@@ -8,7 +8,6 @@ import { displayAlert } from '../../services/alerts';
 import Locales from '../../strings';
 import { redirectAfterLogin, saveUserInfo, saveUserInfoPayload } from '../../redux/userProfile/actions';
 import { announceOnAriaLive } from '../../redux/ariaLiveAnnouncer/actions';
-import logo from '../../../../images/logo-black.png';
 import userDetails from './styles.scss';
 
 class UserDetails extends Component {
@@ -506,7 +505,7 @@ class UserDetails extends Component {
                 </Helmet>
                 <div className={userDetails.content}>
                     <header className={userDetails.logo}>
-                        <img src={logo} alt={Locales.strings.mathshare_logo} />
+                        <img src="https://mathshare-qa.diagramcenter.org/images/logo-black.png" alt={Locales.strings.mathshare_logo} />
                     </header>
                     <main id="mainContainer">
                         <h1 className={userDetails.text} tabIndex={-1}>
