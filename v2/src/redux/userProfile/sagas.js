@@ -1,7 +1,7 @@
 import {
     all,
     call,
-    // delay,
+    delay,
     fork,
     put,
     select,
@@ -14,7 +14,7 @@ import {
 import ReactGA from 'react-ga';
 import {
     goBack,
-    // push,
+    push,
     replace,
 } from 'connected-react-router';
 import * as dayjs from 'dayjs';
@@ -42,13 +42,14 @@ import {
     setConfigApi,
     updateNotifyMobileApi,
 } from './apis';
-
+import Locales from '../../strings';
 import { getCookie } from '../../../../src/scripts/cookie';
 import { sessionStore } from '../../../../src/scripts/storage';
 import { waitForIntercomToBoot } from '../../services/intercom';
 import { getFormattedUserType } from '../../services/mathshare';
+import { displayAlert } from '../../services/alerts';
 
-// const redirectWait = 2500;
+const redirectWait = 2500;
 
 
 function* checkUserLoginSaga() {
@@ -84,20 +85,33 @@ function* checkUserLoginSaga() {
                     const userInfo = userInfoResponse.data;
                     yield put(setUserProfile(emails[0], displayName, profileUrl || `https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=256&name=${encodeURIComponent(displayName)}&rounded=true&length=1`, 'passport', userInfo.userType));
                     yield put(setUserInfo(userInfo));
+                    if (userInfo && userInfo.infoVersion === 1 && userInfo.userType === 'student') {
+                        yield put(markUserResolved(true));
+                        yield put(setAuthRedirect((window.location.hash || '').substring(1)));
+                        if (window.location.hash !== '#/userDetailsEdit') {
+                            displayAlert(
+                                'info',
+                                Locales.strings.redirecting_to_review,
+                                Locales.strings.info,
+                            );
+                            yield delay(redirectWait);
+                            yield put(push('/userDetailsEdit'));
+                        }
+                    }
                 }
             } catch (infoError) {
                 yield put(setUserProfile(emails[0], displayName, profileUrl || `https://ui-avatars.com/api/?background=0D8ABC&color=fff&size=256&name=${encodeURIComponent(displayName)}&rounded=true&length=1`, 'passport', null));
                 yield put(markUserResolved(true));
                 yield put(setAuthRedirect((window.location.hash || '').substring(1)));
-                // if (window.location.hash !== '#/userDetails') {
-                //     // alertInfo(
-                //     //     Locales.strings.redirecting_to_fill, Locales.strings.info,
-                //     //     redirectAlertId,
-                //     // );
-                //     yield delay(redirectWait);
-                //     yield put(push('/userDetails'));
-                //     // dismissAlert(redirectAlertId);
-                // }
+                if (window.location.hash !== '#/userDetails') {
+                    displayAlert(
+                        'info',
+                        Locales.strings.redirecting_to_fill,
+                        Locales.strings.info,
+                    );
+                    yield delay(redirectWait);
+                    yield put(push('/userDetails'));
+                }
             } finally {
                 try {
                     yield put(fetchRecentWork());
@@ -182,6 +196,7 @@ function* saveUserInfoSaga() {
                 ...payload,
                 user_type: userType,
                 email,
+                infoVersion: 1,
             });
             yield put(setUserInfo(userInfoResponse.data));
         } catch (error) {

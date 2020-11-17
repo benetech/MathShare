@@ -610,6 +610,7 @@ class App extends Component {
                             <Route exact path="/signIn" render={p => <SignIn {...p} />} />
                             <Route exact path="/signUp" render={p => <SignIn {...p} isSignUp />} />
                             <Route exact path="/userDetails" render={p => <UserDetails {...p} />} />
+                            <Route exact path="/userDetailsEdit" render={p => <UserDetails editDetailsPage {...p} />} />
                             <Route render={p => <NotFound {...p} />} />
                         </Switch>
                     </div>

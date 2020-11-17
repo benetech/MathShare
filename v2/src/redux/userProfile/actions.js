@@ -103,6 +103,11 @@ export const setUserInfo = payload => ({
     payload,
 });
 
+export const saveUserInfoPayload = payload => ({
+    type: 'SAVE_USER_INFO',
+    payload,
+});
+
 export default {
     checkUserLogin,
     fetchRecentWork,

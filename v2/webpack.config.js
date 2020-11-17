@@ -98,6 +98,7 @@ module.exports = (env, argv) => {
             {
                 test: /\.css$/,
                 include: [
+                    /node_modules(\/|\\)bootstrap/,
                     /node_modules(\/|\\)react-toastify/,
                     /node_modules(\/|\\)antd/,
                     /node_modules(\/|\\)mathlive/,

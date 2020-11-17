@@ -50,7 +50,7 @@ const router = (state = initialState, {
                 current: `/${window.location.hash}`,
                 historyStack,
             };
-        } if (action === 'POP') {
+        } if (action === 'PUSH' || action === 'POP') {
             return {
                 ...state,
                 prev: state.current,

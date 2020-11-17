@@ -117,10 +117,10 @@ function* processFetchedProblem() {
                 stepListPosition = solution.steps.findIndex(step => step.inProgress);
             }
         }
-        if (theActiveMathField) {
+        if (theActiveMathField && solution.steps[stepListPosition]) {
             theActiveMathField.$latex(solution.steps[stepListPosition].stepValue);
         }
-        if (solution.steps[stepListPosition].inProgress) {
+        if (solution.steps[stepListPosition] && solution.steps[stepListPosition].inProgress) {
             yield put(updateProblemStore({
                 textAreaValue: solution.steps[stepListPosition].explanation,
             }));
