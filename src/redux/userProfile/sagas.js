@@ -211,7 +211,7 @@ function* saveUserInfoSaga() {
                 ...payload,
                 user_type: userType,
                 email,
-                infoVersion: 1,
+                infoVersion: 2,
             });
             yield put(setUserInfo(userInfoResponse.data));
         } catch (error) {

@@ -8,7 +8,6 @@ import { displayAlert } from '../../services/alerts';
 import Locales from '../../strings';
 import { redirectAfterLogin, saveUserInfo, saveUserInfoPayload } from '../../redux/userProfile/actions';
 import { announceOnAriaLive } from '../../redux/ariaLiveAnnouncer/actions';
-import logo from '../../../../images/logo-black.png';
 import userDetails from './styles.scss';
 
 class UserDetails extends Component {
@@ -60,6 +59,7 @@ class UserDetails extends Component {
             'Speaking or communicating math',
         ];
         this.state = {
+            id: props.userProfile.info.id,
             userType: (props.userProfile.info.userType) || 'teacher',
             typeConfirmed: false,
             county: '',
@@ -120,34 +120,37 @@ class UserDetails extends Component {
 
     finish = () => {
         const {
-            role, gradeStatus, userType, otherDisability,
+            gradeStatus, userType, otherDisability,
         } = this.state;
+        const payload = {
+            ...this.state,
+        };
+        if (payload.gender === 'na') {
+            payload.gender = null;
+        }
+        if (payload.grade === 'na') {
+            payload.grade = null;
+        }
+        if (payload.yearOfBirth === 'na') {
+            payload.yearOfBirth = null;
+        }
         if (userType === 'student') {
             if (otherDisability && otherDisability.length > 255) {
                 return;
             }
-            const payload = {
-                ...this.state,
-            };
-            if (payload.gender === 'na') {
-                payload.gender = null;
-            }
-            if (payload.grade === 'na') {
-                payload.grade = null;
-            }
-            if (payload.yearOfBirth === 'na') {
-                payload.yearOfBirth = null;
-            }
             this.props.saveUserInfoPayload(payload);
         } else if (userType === 'other') {
-            this.props.saveUserInfo(userType, [], '');
+            this.props.saveUserInfoPayload(payload);
         } else if (userType === 'teacher') {
             if (Object.values(gradeStatus).filter(value => value).length === 0) {
                 displayAlert('warning', Locales.strings.grade_and_role_warning);
                 return;
             }
             const grades = Object.keys(gradeStatus).filter(gradeName => gradeStatus[gradeName]);
-            this.props.saveUserInfo(userType, grades, role);
+            this.props.saveUserInfoPayload({
+                ...payload,
+                grades,
+            });
         }
         this.props.redirectAfterLogin();
     }
@@ -506,7 +509,7 @@ class UserDetails extends Component {
                 </Helmet>
                 <div className={userDetails.content}>
                     <header className={userDetails.logo}>
-                        <img src={logo} alt={Locales.strings.mathshare_logo} />
+                        <img src="https://mathshare-qa.diagramcenter.org/images/logo-black.png" alt={Locales.strings.mathshare_logo} />
                     </header>
                     <main id="mainContainer">
                         <h1 className={userDetails.text} tabIndex={-1}>

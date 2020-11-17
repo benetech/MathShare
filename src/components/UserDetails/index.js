@@ -61,6 +61,7 @@ class UserDetails extends Component {
             'Speaking or communicating math',
         ];
         this.state = {
+            id: props.userProfile.info.id,
             userType: (props.userProfile.info.userType) || 'teacher',
             typeConfirmed: false,
             county: '',

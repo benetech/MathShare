@@ -25,8 +25,11 @@ class Sidebar extends React.Component {
 
     render() {
         const { contrast } = this.state;
-        const { userProfile, ui } = this.props;
+        const { routerHooks, userProfile, ui } = this.props;
         const { info } = userProfile;
+        if (routerHooks.current === '/#/userDetailsEdit' || routerHooks.current === '/#/userDetails') {
+            return null;
+        }
         return (
             <Sider
                 breakpoint="xl"
@@ -139,6 +142,7 @@ class Sidebar extends React.Component {
 
 export default connect(
     state => ({
+        routerHooks: state.routerHooks,
         userProfile: state.userProfile,
         ui: state.ui,
     }),
