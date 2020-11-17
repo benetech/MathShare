@@ -12,10 +12,11 @@ import uiActions from '../redux/ui/actions';
 import './styles.scss';
 import 'antd/dist/antd.less';
 import Dashboard from './Dashboard';
-import NotFound from './NotFound';
 import Header from './Header';
+import NotFound from './NotFound';
 import Problem from './Problem';
 import ProblemSet from './ProblemSet';
+import UserDetails from './UserDetails';
 import SignIn from '../components/SignIn';
 import Sidebar from '../components/Sidebar';
 
@@ -65,8 +66,10 @@ class App extends Component {
                                     <Route exact path="/app/problemSet/:action/:code" component={withRouter(ProblemSet)} />
                                     <Route exact path="/app/problem/:action/:code" component={withRouter(Problem)} />
                                     <Route exact path="/app" component={withRouter(Dashboard)} />
-                                    <Route exact path="/signUp" component={withRouter(SignIn)} />
                                     <Route exact path="/login" component={withRouter(SignIn)} />
+                                    <Route exact path="/signUp" component={withRouter(SignIn)} />
+                                    <Route exact path="/userDetails" component={withRouter(UserDetails)} />
+                                    <Route exact path="/userDetailsEdit" component={withRouter(UserDetails)} />
                                     <Route render={NotFound} />
                                 </Switch>
                             </Content>

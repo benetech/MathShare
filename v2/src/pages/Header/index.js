@@ -7,7 +7,7 @@ import styles from './styles.scss';
 /* eslint-disable react/prefer-stateless-function */
 class Header extends React.Component {
     render() {
-        const { userProfile } = this.props;
+        const { userProfile, routerHooks } = this.props;
         const { email, name } = userProfile;
         const menu = (
             <Menu>
@@ -28,6 +28,9 @@ class Header extends React.Component {
                 </Menu.Item>
             </Menu>
         );
+        if (routerHooks.current === '/#/userDetailsEdit' || routerHooks.current === '/#/userDetails') {
+            return null;
+        }
         return (
             <div className={`row ${styles.loginPromptContainer}`}>
                 <div className={styles.left}>
@@ -83,6 +86,7 @@ class Header extends React.Component {
 
 export default connect(
     state => ({
+        routerHooks: state.routerHooks,
         ui: state.ui,
         userProfile: state.userProfile,
     }),

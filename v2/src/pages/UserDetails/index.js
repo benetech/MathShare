@@ -2,15 +2,14 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import { withRouter } from 'react-router-dom';
-import { UncontrolledTooltip } from 'reactstrap';
-import { alertWarning } from '../../scripts/alert';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+import { displayAlert } from '../../services/alerts';
 import Locales from '../../strings';
 import { redirectAfterLogin, saveUserInfo, saveUserInfoPayload } from '../../redux/userProfile/actions';
 import { announceOnAriaLive } from '../../redux/ariaLiveAnnouncer/actions';
-import logo from '../../../images/logo-black.png';
+import logo from '../../../../images/logo-black.png';
 import userDetails from './styles.scss';
-import SkipContent from '../Home/components/SkipContent';
-
 
 class UserDetails extends Component {
     constructor(props) {
@@ -144,7 +143,7 @@ class UserDetails extends Component {
             this.props.saveUserInfo(userType, [], '');
         } else if (userType === 'teacher') {
             if (Object.values(gradeStatus).filter(value => value).length === 0) {
-                alertWarning(Locales.strings.grade_and_role_warning);
+                displayAlert('warning', Locales.strings.grade_and_role_warning);
                 return;
             }
             const grades = Object.keys(gradeStatus).filter(gradeName => gradeStatus[gradeName]);
@@ -281,7 +280,6 @@ class UserDetails extends Component {
                                 </option>
                             ))}
                         </select>
-                        <UncontrolledTooltip placement="top" target="studentGrade" />
                     </div>
                 </div>
             </div>
@@ -302,7 +300,6 @@ class UserDetails extends Component {
                                 </option>
                             ))}
                         </select>
-                        <UncontrolledTooltip placement="top" target="yearOfBirth" />
                     </div>
                 </div>
             </div>
@@ -327,7 +324,6 @@ class UserDetails extends Component {
                                 Other
                             </option>
                         </select>
-                        <UncontrolledTooltip placement="top" target="gender" />
                     </div>
                 </div>
             </div>
@@ -344,11 +340,9 @@ class UserDetails extends Component {
                 <div className={`${userDetails.select} col-7`}>
                     <div className="form-group">
                         <input className="form-control" type="text" name="county" id="county" placeholder="County" onChange={this.handleChange('county')} />
-                        <UncontrolledTooltip placement="top" target="county" />
                     </div>
                     <div className="form-group">
                         <input className="form-control" type="text" name="zipcode" id="zipcode" placeholder="Zip Code" onChange={this.handleChange('zipcode')} />
-                        <UncontrolledTooltip placement="top" target="zipcode" />
                     </div>
                 </div>
             </div>
@@ -362,7 +356,6 @@ class UserDetails extends Component {
                 >
                     {Locales.strings.back.trim()}
                 </button>
-                <UncontrolledTooltip placement="top" target="backBtn" />
                 <div className="col-1" />
                 <button
                     className={`btn btn-primary col-4 ${userDetails.smallBtn}`}
@@ -372,7 +365,6 @@ class UserDetails extends Component {
                 >
                     {Locales.strings.next.trim()}
                 </button>
-                <UncontrolledTooltip placement="top" target="nextBtn" />
             </div>
         </div>
     )
@@ -382,7 +374,7 @@ class UserDetails extends Component {
             <div className="row">
                 <div className={`${userDetails.descText} col-12`}>
                     <label htmlFor="studentGrade">
-                        <h2 tabIndex={-1}>{Locales.strings.disability || 'Do you have a disability or difficulties related to:'}</h2>
+                        <h2 tabIndex={-1}>{Locales.strings.disability}</h2>
                     </label>
                 </div>
                 <div className={`${userDetails.disabilities} col-12`}>
@@ -430,7 +422,6 @@ class UserDetails extends Component {
                 >
                     {Locales.strings.back.trim()}
                 </button>
-                <UncontrolledTooltip placement="top" target="backBtn" />
                 <div className="col-1" />
                 <button
                     className={`btn btn-primary col-4 ${userDetails.smallBtn}`}
@@ -440,7 +431,6 @@ class UserDetails extends Component {
                 >
                     {Locales.strings.finish.trim()}
                 </button>
-                <UncontrolledTooltip placement="top" target="finishBtn" />
             </div>
         </div>
     )
@@ -467,7 +457,6 @@ class UserDetails extends Component {
                                     <input type="checkbox" name={grade} id={id} checked={this.state.gradeStatus[grade]} onChange={this.handleGradeChange} />
                                     {grade}
                                 </label>
-                                <UncontrolledTooltip placement="top" target={`label-${id}`} />
                             </React.Fragment>
                         );
                     })}
@@ -489,7 +478,6 @@ class UserDetails extends Component {
                                 </option>
                             ))}
                         </select>
-                        <UncontrolledTooltip placement="top" target="teacherRole" />
                     </div>
                 </div>
             </div>
@@ -503,7 +491,6 @@ class UserDetails extends Component {
                 >
                     {Locales.strings.finish.trim()}
                 </button>
-                <UncontrolledTooltip placement="top" target="finishBtn" />
             </div>
         </div>
     )
@@ -519,7 +506,6 @@ class UserDetails extends Component {
                 </Helmet>
                 <div className={userDetails.content}>
                     <header className={userDetails.logo}>
-                        <SkipContent />
                         <img src={logo} alt={Locales.strings.mathshare_logo} />
                     </header>
                     <main id="mainContainer">
@@ -554,7 +540,6 @@ class UserDetails extends Component {
                                                     </option>
                                                 ))}
                                             </select>
-                                            <UncontrolledTooltip placement="top" target="who_are_you" />
                                         </div>
                                     </div>
                                 </div>
@@ -568,7 +553,6 @@ class UserDetails extends Component {
                                     >
                                         {Locales.strings.next}
                                     </button>
-                                    <UncontrolledTooltip placement="top" target="confirmBtn" />
                                 </div>
                             </>
                         )}
