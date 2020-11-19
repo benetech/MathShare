@@ -23,9 +23,12 @@ class Step extends Component {
         };
     }
 
+    scrollToTargetAdjusted = () => {
+        this.stepContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
     handleFocus = () => {
         this.mathfieldRef.mathfield.focus();
-        // this.placeholderInput.scrollIntoView();
     }
 
     handleTab = (sender, direction) => {
@@ -40,8 +43,8 @@ class Step extends Component {
                 const focussable = Array.prototype.filter.call(
                     document.querySelectorAll(focussableElements),
                     element => element.offsetWidth > 0
-                    || element.offsetHeight > 0
-                    || element === referenceElement,
+                        || element.offsetHeight > 0
+                        || element === referenceElement,
                 );
                 const index = focussable.indexOf(referenceElement);
                 if (index > -1) {
@@ -78,7 +81,7 @@ class Step extends Component {
                         onFocus: () => {
                             this.props.setCurrentStep(index);
                             this.setState({ focused: true });
-                            this.textAreaRef.scrollIntoView();
+                            setTimeout(this.scrollToTargetAdjusted, 300);
                         },
                         onVirtualKeyboardToggle: (_sender, visible) => {
                             this.props.markKeyboardVisible(visible);
@@ -128,7 +131,7 @@ class Step extends Component {
         );
 
         return (
-            <div className={styles.step}>
+            <div className={styles.step} ref={(ref) => { this.stepContainer = ref; }}>
                 <div className={styles.stepHeading}>
                     <span>
                         Step
