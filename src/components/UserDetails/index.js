@@ -344,11 +344,11 @@ class UserDetails extends Component {
                 </div>
                 <div className={`${userDetails.select} col-7`}>
                     <div className="form-group">
-                        <input className="form-control" type="text" name="county" id="county" placeholder="County" onChange={this.handleChange('county')} />
+                        <input className="form-control" type="text" name="county" id="county" placeholder="County" value={this.state.county} onChange={this.handleChange('county')} />
                         <UncontrolledTooltip placement="top" target="county" />
                     </div>
                     <div className="form-group">
-                        <input className="form-control" type="text" name="zipcode" id="zipcode" placeholder="Zip Code" onChange={this.handleChange('zipcode')} />
+                        <input className="form-control" type="text" name="zipcode" id="zipcode" placeholder="Zip Code" value={this.state.zipcode} onChange={this.handleChange('zipcode')} />
                         <UncontrolledTooltip placement="top" target="zipcode" />
                     </div>
                 </div>
@@ -390,7 +390,7 @@ class UserDetails extends Component {
                     {this.disabilities.map((disability, disabilityIndex) => (
                         <div className="form-group" key={`disability-${disabilityIndex}`}>
                             <label className="radio-inline" htmlFor={`disability-${disabilityIndex}`} id={`label-disability-${disabilityIndex}`}>
-                                <input id={`disability-${disabilityIndex}`} type="checkbox" onChange={this.handleDisabilityChange(disability)} />
+                                <input id={`disability-${disabilityIndex}`} type="checkbox" defaultChecked={this.state.disability.includes(disability)} onChange={this.handleDisabilityChange(disability)} />
                                 {' '}
                                 {disability}
                             </label>
@@ -402,6 +402,7 @@ class UserDetails extends Component {
                                 id="disability-otherDisability"
                                 type="checkbox"
                                 onChange={this.handleOtherDisabilityToggle}
+                                defaultChecked={this.state.otherDisabilityEnabled}
                             />
                             {' '}
                             <input
