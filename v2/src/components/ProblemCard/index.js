@@ -5,6 +5,7 @@
 import React from 'react';
 import mathLive from 'mathlive';
 import { MathfieldComponent } from 'react-mathlive';
+import TruncateMarkup from 'react-truncate-markup';
 
 import {
     faCheckCircle,
@@ -48,10 +49,31 @@ class ProblemCard extends React.Component {
         return `/#/app/problem/edit/${editCode}`;
     }
 
+    renderTitle() {
+        const {
+            layoutMode,
+            title,
+        } = this.props;
+
+        const commonTitle = (
+            <div className={styles.problemSetTitle}>
+                {title || 'Undefined'}
+            </div>
+        );
+
+        if (layoutMode === 'line-item') {
+            return commonTitle;
+        }
+        return (
+            <TruncateMarkup lines={4} tokenize="characters">
+                {commonTitle}
+            </TruncateMarkup>
+        );
+    }
+
     render() {
         const {
             id,
-            title,
             newSet,
             history,
             text,
@@ -137,16 +159,18 @@ class ProblemCard extends React.Component {
                     </div>
                     <div className={styles.content}>
                         <div className={styles.mainContent}>
-                            {/* <div className={styles.course}>Course</div> */}
-                            <div className={styles.problemSetTitle}>{title || 'Undefined'}</div>
+                            {this.renderTitle()}
                         </div>
-                        <MathfieldComponent
-                            tabIndex={0}
-                            latex={text || ''}
-                            mathfieldConfig={{
-                                readOnly: true,
-                            }}
-                        />
+                        <div className={styles.mathContent}>
+                            <MathfieldComponent
+                                tabIndex={0}
+                                className
+                                latex={text || ''}
+                                mathfieldConfig={{
+                                    readOnly: true,
+                                }}
+                            />
+                        </div>
                     </div>
                 </div>
             </ContainerTag>

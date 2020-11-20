@@ -32,10 +32,11 @@
             display: flex;
             justify-content: space-between;
             flex-direction: column;
-        }
 
-        .problemSetTitle {
-            max-height: 100px;
+            .mathContent {
+                max-height: 50%;
+                overflow: hidden;
+            }
         }
 
         &.newSet {
@@ -218,6 +219,7 @@
 
     .problemSetTitle {
         color: #37345B;
+        word-break: break-all;
         text-overflow: ellipsis;
         overflow: hidden;
         font-family: 'Source Sans Pro', sans-serif;
