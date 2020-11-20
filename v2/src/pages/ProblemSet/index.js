@@ -137,6 +137,7 @@ class ProblemSet extends Component {
                     {this.getData()
                         .map((problem, index) => (
                             <Card
+                                layoutMode={this.getLayout()}
                                 key={problem.id || index}
                                 {...problem.problem}
                                 {...problem}
