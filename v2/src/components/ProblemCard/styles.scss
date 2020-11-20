@@ -218,6 +218,7 @@
 
     .problemSetTitle {
         color: #37345B;
+        word-wrap: break-all;
         text-overflow: ellipsis;
         overflow: hidden;
         font-family: 'Source Sans Pro', sans-serif;
