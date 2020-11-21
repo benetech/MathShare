@@ -126,9 +126,12 @@ class ProblemSet extends Component {
     }
 
     renderProblems() {
-        const { problemSet } = this.props;
+        const { problemSet, match } = this.props;
+        const {
+            action,
+        } = match.params;
         const { set } = problemSet;
-        if (set.loading) {
+        if (action === 'view' || set.loading) {
             return null;
         }
         return (
