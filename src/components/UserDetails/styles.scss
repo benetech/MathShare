@@ -62,16 +62,20 @@
             padding: 10px 25px;
         }
 
-        .smallBtn {
-            font-size: 14px;
-            padding: 12px;
-            background: #c4d9ff;
-            color: black;
-            border-color: #c4d9ff;
-            max-width: 150px;
+        .btnContainer {
+            justify-content: space-evenly;
 
-            &.confirmBtn {
-                margin-top: 50px;
+            .smallBtn {
+                font-size: 14px;
+                padding: 12px;
+                background: #c4d9ff;
+                color: black;
+                border-color: #c4d9ff;
+                max-width: 150px;
+
+                &.confirmBtn {
+                    margin-top: 50px;
+                }
             }
         }
 

@@ -353,18 +353,16 @@ class UserDetails extends Component {
                     </div>
                 </div>
             </div>
-            <div className="row">
-                <div className="col-3" />
+            <div className={`row ${userDetails.btnContainer}`}>
                 <button
                     className={`btn btn-primary col-4 ${userDetails.smallBtn}`}
                     id="backBtn"
                     type="button"
                     onClick={this.back}
                 >
-                    {Locales.strings.back.trim()}
+                    {Locales.strings.back_2.trim()}
                 </button>
                 <UncontrolledTooltip placement="top" target="backBtn" />
-                <div className="col-1" />
                 <button
                     className={`btn btn-primary col-4 ${userDetails.smallBtn}`}
                     id="nextBtn"
@@ -422,18 +420,16 @@ class UserDetails extends Component {
                     </div>
                 </div>
             </div>
-            <div className="row">
-                <div className="col-3" />
+            <div className={`row ${userDetails.btnContainer}`}>
                 <button
                     className={`btn btn-primary col-4 ${userDetails.smallBtn}`}
                     id="backBtn"
                     type="button"
                     onClick={this.back}
                 >
-                    {Locales.strings.back.trim()}
+                    {Locales.strings.back_2.trim()}
                 </button>
                 <UncontrolledTooltip placement="top" target="backBtn" />
-                <div className="col-1" />
                 <button
                     className={`btn btn-primary col-4 ${userDetails.smallBtn}`}
                     id="finishBtn"
@@ -495,8 +491,7 @@ class UserDetails extends Component {
                     </div>
                 </div>
             </div>
-            <div className="row">
-                <div className="col-5" />
+            <div className={`row ${userDetails.btnContainer}`}>
                 <button
                     className={`btn btn-primary col-7 ${userDetails.smallBtn}`}
                     id="finishBtn"
@@ -560,8 +555,7 @@ class UserDetails extends Component {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="row">
-                                    <div className="col-5" />
+                                <div className={`row ${userDetails.btnContainer}`}>
                                     <button
                                         className={`btn btn-primary col-7 ${userDetails.smallBtn} ${userDetails.confirmBtn}`}
                                         id="confirmBtn"
