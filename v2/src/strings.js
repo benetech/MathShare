@@ -12,6 +12,7 @@ class Locales {
                 archived_solutiom_set: 'Archived Solution Set - {title}',
                 archived_solutiom_set_failure: 'Failed to archive Solution Set - {title}',
                 back: 'Go back',
+                back_2: 'Back',
                 back_to_all_sets: 'Back to All Sets',
                 benefits_of_logging_in: 'Benefits of logging in',
                 benefits_of_signing_up: 'Benefits of signing up',

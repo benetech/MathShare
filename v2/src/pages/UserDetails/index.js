@@ -356,7 +356,7 @@ class UserDetails extends Component {
                     type="button"
                     onClick={this.back}
                 >
-                    {Locales.strings.back.trim()}
+                    {Locales.strings.back_2.trim()}
                 </button>
                 <button
                     className={`btn btn-primary col-4 ${userDetails.smallBtn}`}
@@ -421,7 +421,7 @@ class UserDetails extends Component {
                     type="button"
                     onClick={this.back}
                 >
-                    {Locales.strings.back.trim()}
+                    {Locales.strings.back_2.trim()}
                 </button>
                 <button
                     className={`btn btn-primary col-4 ${userDetails.smallBtn}`}

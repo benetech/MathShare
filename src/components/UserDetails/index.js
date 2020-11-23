@@ -360,7 +360,7 @@ class UserDetails extends Component {
                     type="button"
                     onClick={this.back}
                 >
-                    {Locales.strings.back.trim()}
+                    {Locales.strings.back_2.trim()}
                 </button>
                 <UncontrolledTooltip placement="top" target="backBtn" />
                 <button
@@ -427,7 +427,7 @@ class UserDetails extends Component {
                     type="button"
                     onClick={this.back}
                 >
-                    {Locales.strings.back.trim()}
+                    {Locales.strings.back_2.trim()}
                 </button>
                 <UncontrolledTooltip placement="top" target="backBtn" />
                 <button

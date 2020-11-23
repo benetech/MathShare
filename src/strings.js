@@ -57,6 +57,7 @@ class Locales {
                 assign: 'Assign:',
                 assign_with_a_link: 'Assign with a link: ',
                 back: 'Go back',
+                back_2: 'Back',
                 back_to_problem_page: 'Go back to all problems',
                 backslash: 'backslash ',
                 bang: 'exclamation point',
