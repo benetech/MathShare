@@ -349,8 +349,7 @@ class UserDetails extends Component {
                     </div>
                 </div>
             </div>
-            <div className="row">
-                <div className="col-3" />
+            <div className={`row ${userDetails.btnContainer}`}>
                 <button
                     className={`btn btn-primary col-4 ${userDetails.smallBtn}`}
                     id="backBtn"
@@ -359,7 +358,6 @@ class UserDetails extends Component {
                 >
                     {Locales.strings.back.trim()}
                 </button>
-                <div className="col-1" />
                 <button
                     className={`btn btn-primary col-4 ${userDetails.smallBtn}`}
                     id="nextBtn"
@@ -416,8 +414,7 @@ class UserDetails extends Component {
                     </div>
                 </div>
             </div>
-            <div className="row">
-                <div className="col-3" />
+            <div className={`row ${userDetails.btnContainer}`}>
                 <button
                     className={`btn btn-primary col-4 ${userDetails.smallBtn}`}
                     id="backBtn"
@@ -426,7 +423,6 @@ class UserDetails extends Component {
                 >
                     {Locales.strings.back.trim()}
                 </button>
-                <div className="col-1" />
                 <button
                     className={`btn btn-primary col-4 ${userDetails.smallBtn}`}
                     id="finishBtn"
@@ -485,10 +481,9 @@ class UserDetails extends Component {
                     </div>
                 </div>
             </div>
-            <div className="row">
-                <div className="col-5" />
+            <div className={`row ${userDetails.btnContainer}`}>
                 <button
-                    className={`btn btn-primary col-7 ${userDetails.smallBtn}`}
+                    className={`btn btn-primary col-6 ${userDetails.smallBtn}`}
                     id="finishBtn"
                     type="button"
                     onClick={this.finish}
@@ -547,10 +542,9 @@ class UserDetails extends Component {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="row">
-                                    <div className="col-5" />
+                                <div className={`row ${userDetails.btnContainer}`}>
                                     <button
-                                        className={`btn btn-primary col-7 ${userDetails.smallBtn} ${userDetails.confirmBtn}`}
+                                        className={`btn btn-primary col-6 ${userDetails.smallBtn} ${userDetails.confirmBtn}`}
                                         id="confirmBtn"
                                         type="button"
                                         onClick={this.confirmType}
