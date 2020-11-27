@@ -92,15 +92,15 @@ class UserDetails extends Component {
     next = () => {
         const errors = {};
         if (this.state.step === 1) {
-            if (!this.state.grade) {
-                errors.grade = 'required';
-            }
-            if (!this.state.yearOfBirth) {
-                errors.yearOfBirth = 'required';
-            }
-            if (!this.state.gender) {
-                errors.gender = 'required';
-            }
+            // if (!this.state.grade) {
+            //     errors.grade = 'required';
+            // }
+            // if (!this.state.yearOfBirth) {
+            //     errors.yearOfBirth = 'required';
+            // }
+            // if (!this.state.gender) {
+            //     errors.gender = 'required';
+            // }
         }
         if (Object.keys(errors).length > 0) {
             this.setState({
