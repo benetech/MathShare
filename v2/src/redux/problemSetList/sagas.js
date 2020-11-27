@@ -4,7 +4,7 @@ import {
     call,
     fork,
     put,
-    // select,
+    select,
     takeLatest,
 } from 'redux-saga/effects';
 import { archiveSolutionSetApi } from '../../../../src/redux/problemList/apis';
@@ -16,9 +16,11 @@ import {
     fetchRecentWorkApi,
     saveProblemSetApi,
 } from './apis';
-// import {
-//     getState,
-// } from './selectors';
+import {
+    getState,
+} from './selectors';
+
+const PAGINATION_SIZE = 15;
 
 function* requestExampleSetsSaga() {
     yield takeLatest('REQUEST_EXAMPLE_SETS', function* workerSaga() {
@@ -45,29 +47,44 @@ function* requestExampleSetsSaga() {
 }
 
 function* requestRecentSetsSaga() {
-    yield takeLatest('REQUEST_RECENT_SETS', function* workerSaga() {
+    yield takeLatest('REQUEST_RECENT_SETS', function* workerSaga({
+        payload: {
+            offset,
+        },
+    }) {
         try {
-            const { data: recentSolutionSets } = yield call(fetchRecentWorkApi('student'));
-            const { data: recentProblemSets } = yield call(fetchRecentWorkApi('teacher'));
-
-            yield put({
-                type: 'REQUEST_RECENT_PROBLEM_SETS_SUCCESS',
-                payload: {
-                    recentProblemSets: {
-                        data: recentProblemSets,
-                        loading: false,
-                    },
-                },
+            const { data: recentSolutionSets } = yield call(fetchRecentWorkApi('student'), {
+                'x-content-size': PAGINATION_SIZE,
+                'x-offset': offset,
             });
+            // const { data: recentProblemSets } = yield call(fetchRecentWorkApi('teacher'));
+
+            // yield put({
+            //     type: 'REQUEST_RECENT_PROBLEM_SETS_SUCCESS',
+            //     payload: {
+            //         recentProblemSets: {
+            //             data: recentProblemSets,
+            //             loading: false,
+            //         },
+            //     },
+            // });
+            const state = yield select(getState);
             yield put({
                 type: 'REQUEST_RECENT_SOLUTION_SETS_SUCCESS',
                 payload: {
                     recentSolutionSets: {
-                        data: recentSolutionSets,
+                        data: [
+                            ...state.recentSolutionSets.data,
+                            ...recentSolutionSets,
+                        ],
                         loading: false,
                     },
+                    showLoadMore: true,
                 },
             });
+            if (recentSolutionSets.length === 0) {
+                displayAlert('info', 'No more problem sets found', 'Info');
+            }
         } catch (error) {
             yield put({
                 type: 'REQUEST_EXAMPLE_SETS_FAILURE',

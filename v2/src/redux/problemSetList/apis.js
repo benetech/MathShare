@@ -15,17 +15,12 @@ export const fetchRecentProblemsApi = headers => axios.get(`${SERVER_URL}/privat
     headers,
 });
 
-export const fetchRecentSolutionsApi = headers => axios.get(`${SERVER_URL}/private/recentSolutions`, {
+export const fetchRecentSolutionsApi = headers => axios.get(`${SERVER_URL}/private/v2/recentSolutions`, {
     ...commonRequestConfig,
     headers,
 });
 
-export const fetchRecentWorkApi = (role) => {
-    if (!role || role === 'student') {
-        return fetchRecentSolutionsApi;
-    }
-    return fetchRecentProblemsApi;
-};
+export const fetchRecentWorkApi = () => fetchRecentSolutionsApi;
 
 export const saveProblemSetApi = set => axios.post(`${SERVER_URL}/problemSet/`, set, commonRequestConfig);
 

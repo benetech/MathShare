@@ -114,7 +114,7 @@ function* checkUserLoginSaga() {
                 }
             } finally {
                 try {
-                    yield put(fetchRecentWork());
+                    yield put(fetchRecentWork('-1'));
                     const configResponse = yield call(getConfigApi);
                     if (configResponse.status === 200) {
                         const {

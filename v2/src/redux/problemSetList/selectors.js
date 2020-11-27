@@ -1,4 +1,4 @@
-export const getState = state => state.problemList;
+export const getState = state => state.problemSetList;
 
 export default {
     getState,
