@@ -12,6 +12,7 @@ const initialState = {
         data: [],
         loading: false,
     },
+    showLoadMore: false,
 };
 
 const problems = (state = initialState, {
@@ -36,12 +37,8 @@ const problems = (state = initialState, {
     case 'REQUEST_RECENT_SETS':
         return {
             ...state,
-            recentProblemSets: {
-                ...state.recentProblemSets,
-                loading: true,
-            },
             recentSolutionSets: {
-                ...state.recentProblemSets,
+                ...state.recentSolutionSets,
                 loading: true,
             },
         };

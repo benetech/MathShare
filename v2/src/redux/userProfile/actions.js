@@ -62,8 +62,11 @@ export const saveUserInfo = (userType, grades, role) => ({
     },
 });
 
-export const fetchRecentWork = () => ({
+export const fetchRecentWork = offset => ({
     type: 'REQUEST_RECENT_SETS',
+    payload: {
+        offset,
+    },
 });
 
 export const setRecentWork = recentProblemSets => ({

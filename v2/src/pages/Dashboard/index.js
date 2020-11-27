@@ -3,12 +3,13 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-    Row, Col, Radio,
+    Button, Row, Col, Radio,
 } from 'antd';
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import Card from '../../components/Card';
 import problemSetListActions from '../../redux/problemSetList/actions';
+import { fetchRecentWork } from '../../redux/userProfile/actions';
 import styles from './styles.scss';
 import { stopEvent } from '../../services/events';
 // import CopyLink from '../../components/CopyLink';
@@ -95,15 +96,15 @@ class Dashboard extends Component {
 
     renderRecentSets() {
         const { problemSetList, userProfile } = this.props;
-        if (problemSetList.recentProblemSets.loading || problemSetList.recentSolutionSets.loading) {
+        const { recentSolutionSets } = problemSetList;
+        if (recentSolutionSets.loading && recentSolutionSets.data.length === 0) {
             return (
                 <Row className={`${styles.problemSetGrid} ${this.getLayout()}`}>
                     Loading...
                 </Row>
             );
         }
-        if (problemSetList.recentProblemSets.data.length === 0
-            && problemSetList.recentSolutionSets.data.length === 0) {
+        if (recentSolutionSets.data.length === 0) {
             return (
                 <Row className={`${styles.problemSetGrid} ${this.getLayout()}`}>
                     You don&apos;t have any sets yet!
@@ -115,21 +116,38 @@ class Dashboard extends Component {
             );
         }
         return (
-            <Row className={`${styles.problemSetGrid} ${this.getLayout()}`}>
-                {problemSetList.recentProblemSets.data
-                    .concat(problemSetList.recentSolutionSets.data)
-                    .map(recentProblemSet => (
-                        <Card
-                            key={recentProblemSet.id}
-                            {...recentProblemSet}
-                            duplicateProblemSet={this.duplicateProblemSet(recentProblemSet)}
-                            archiveProblemSet={this.archiveProblemSet(recentProblemSet)}
-                            userProfile={userProfile}
-                            isRecent
-                        />
-                    ))
-                }
-            </Row>
+            <>
+                <Row className={`${styles.problemSetGrid} ${this.getLayout()}`}>
+                    {recentSolutionSets.data
+                        .map(recentProblemSet => (
+                            <Card
+                                key={recentProblemSet.id}
+                                {...recentProblemSet}
+                                duplicateProblemSet={this.duplicateProblemSet(recentProblemSet)}
+                                archiveProblemSet={this.archiveProblemSet(recentProblemSet)}
+                                userProfile={userProfile}
+                                isRecent
+                            />
+                        ))
+                    }
+                </Row>
+                <Row className={styles.loadMoreContainer}>
+                    {problemSetList.showLoadMore && (
+                        <Button
+                            className={styles.loadMore}
+                            type="primary"
+                            loading={problemSetList.recentSolutionSets.loading}
+                            onClick={() => this.props.fetchRecentWork(
+                                Math.min(
+                                    ...problemSetList.recentSolutionSets.data.map(item => item.id),
+                                ),
+                            )}
+                        >
+                            Load More
+                        </Button>
+                    )}
+                </Row>
+            </>
         );
     }
 
@@ -215,5 +233,6 @@ export default connect(
     }),
     {
         ...problemSetListActions,
+        fetchRecentWork,
     },
 )(Dashboard);
