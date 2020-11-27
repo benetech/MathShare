@@ -1,4 +1,7 @@
-.topBar {
+.heading .topBar {
+    max-width: calc(100% - 25px);
+    margin: auto;
+
     .back {
         position: relative;
 
@@ -31,6 +34,8 @@
         font-weight: 600;
         font-family: 'Poppins', sans-serif;
         color: #37345B;
+        word-break: break-all;
+        margin: 0 10px;
     }
 
     .options {
