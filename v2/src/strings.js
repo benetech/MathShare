@@ -61,6 +61,7 @@ class Locales {
                 student: 'Student',
                 success: 'Success',
                 teacher: 'Teacher',
+                user_profile: 'User Profile',
                 where_are_you_from: 'Where are you from?',
                 who_are_you: 'Who are you?',
                 year_of_birth: 'Year of Birth',

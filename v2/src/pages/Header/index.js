@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Menu, Dropdown, Button } from 'antd';
 import { logoutOfUserProfile } from '../../redux/userProfile/actions';
+import Locales from '../../strings';
 import styles from './styles.scss';
 
 /* eslint-disable react/prefer-stateless-function */
@@ -68,7 +69,10 @@ class Header extends React.Component {
                                 arrow
                                 trigger={['click']}
                             >
-                                <Button type="default">
+                                <Button
+                                    type="default"
+                                    aria-label={Locales.strings.user_profile}
+                                >
                                     <img
                                         src={userProfile.profileImage || 'https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200'}
                                         alt=""
