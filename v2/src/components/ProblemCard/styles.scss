@@ -2,11 +2,11 @@
 
 :global(.grid) {
     .tileContainer {
-        width: 300px;
+        width: 275px;
     }
 
     .tile {
-        width: 300px;
+        width: 275px;
 
         >&:nth-child(2) {
             width: 50%;

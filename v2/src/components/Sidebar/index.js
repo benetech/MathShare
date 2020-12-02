@@ -33,7 +33,7 @@ class Sidebar extends React.Component {
         return (
             <Sider
                 breakpoint="xl"
-                width={350}
+                width={325}
                 collapsedWidth={0}
                 theme="light"
                 hidden={ui.sideBarCollapsed}

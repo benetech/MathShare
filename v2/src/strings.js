@@ -45,6 +45,8 @@ class Locales {
                 other: 'Other',
                 please_check_account_info: 'Please check through your account information to make sure it\'s accurate',
                 problem_saved_success_message: 'Problem Updated',
+                profile_of_mathshare: 'Profile of Mathshare',
+                profile_of_username: 'Profile of {userName}',
                 redirecting: 'Redirecting',
                 redirecting_to_fill: 'Redirecting to fill your information',
                 redirecting_to_review: 'Redirecting to review your information',

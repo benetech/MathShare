@@ -2,7 +2,9 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 
 import React, { useState } from 'react';
+import TruncateMarkup from 'react-truncate-markup';
 import {
+    // faCheckCircle,
     faCopy,
     faEllipsisH,
     faMinusCircle,
@@ -17,6 +19,7 @@ import {
     Progress,
 } from 'antd';
 import styles from './styles.scss';
+import Locales from '../../strings';
 import { stopEvent } from '../../services/events';
 
 const getColor = (id) => {
@@ -52,10 +55,55 @@ const handleHideModal = (updateModalVisible, callback) => () => {
     updateModalVisible(false);
 };
 
+
+const renderTitle = (props) => {
+    const {
+        layoutMode,
+        title,
+    } = props;
+
+    const commonTitle = (
+        <div className={styles.problemSetTitle}>
+            {title || 'Undefined'}
+        </div>
+    );
+
+    if (layoutMode === 'line-item') {
+        return commonTitle;
+    }
+    return (
+        <TruncateMarkup lines={4} tokenize="characters">
+            {commonTitle}
+        </TruncateMarkup>
+    );
+};
+
+const renderImage = (props) => {
+    const {
+        userProfile,
+        isExampleSet,
+    } = props;
+    if (isExampleSet) {
+        return (
+            <img
+                src="https://mathshare-qa.diagramcenter.org/images/favicon.png"
+                alt={Locales.strings.profile_of_mathshare}
+                className="img-fluid shadow-lg"
+            />
+        );
+    }
+    return (
+        <img
+            src={(userProfile && userProfile.profileImage) || `https://ui-avatars.com/api/?name=${encodeURIComponent(userProfile.name)}`}
+            alt={Locales.strings.profile_of_username.replace('{userName}', userProfile.name)}
+            className="img-fluid shadow-lg"
+        />
+    );
+};
+
 const Card = (props) => {
     const {
         id,
-        title,
         newSet,
         history,
         isExampleSet,
@@ -128,14 +176,15 @@ const Card = (props) => {
         <a id={id} key={id} href={getLink(props)} className={`${styles.tileContainer} ${getColor(id)}`}>
             <div className={styles.tile}>
                 <div className={styles.header}>
-                    <img
-                        src={(userProfile && userProfile.profileImage) || 'https://mathshare-qa.diagramcenter.org/images/favicon.png'}
-                        alt="Mathshare"
-                        className="img-fluid shadow-lg"
-                    />
+                    {renderImage(props)}
                 </div>
                 {(!solutions || (!isExampleSet && userProfile.email)) && (
                     <div className={styles.iconContainer}>
+                        {/* {completedProblems === totalCount && totalCount > 1 && (
+                            <div className={styles.check} aria-label="Completed checkmark">
+                                <FontAwesomeIcon icon={faCheckCircle} />
+                            </div>
+                        )} */}
                         <Dropdown
                             overlay={menu}
                             placement="bottomRight"
@@ -151,7 +200,7 @@ const Card = (props) => {
                 <div className={styles.content}>
                     <div className={styles.mainContent}>
                         {/* <div className={styles.course}>Course</div> */}
-                        <div className={styles.problemSetTitle}>{title || 'Undefined'}</div>
+                        {renderTitle(props)}
                     </div>
                 </div>
                 <div className={styles.progressContainer}>
