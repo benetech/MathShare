@@ -87,14 +87,14 @@
 
 .contrastButtons {
     padding: 10px;
-    display: block;
     margin: auto;
+    display: inline-flex;
 
     :global(.ant-radio-group) {
         width: 100%;
 
         :global(.ant-radio-button-wrapper) {
-            font-size: 14px;
+            font-size: 12px;
             border: 1px solid $primary-color !important;
             box-sizing: border-box;
 

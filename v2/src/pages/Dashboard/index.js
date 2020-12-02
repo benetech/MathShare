@@ -84,6 +84,7 @@ class Dashboard extends Component {
                             <Card
                                 key={exampleSet.id}
                                 {...exampleSet}
+                                layoutMode={this.getLayout()}
                                 isExampleSet
                                 duplicateProblemSet={this.duplicateProblemSet(exampleSet)}
                             />
@@ -126,6 +127,7 @@ class Dashboard extends Component {
                                 duplicateProblemSet={this.duplicateProblemSet(recentProblemSet)}
                                 archiveProblemSet={this.archiveProblemSet(recentProblemSet)}
                                 userProfile={userProfile}
+                                layoutMode={this.getLayout()}
                                 isRecent
                             />
                         ))

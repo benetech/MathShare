@@ -2,12 +2,12 @@
 
 :global(.grid) {
     .tileContainer {
-        width: 300px;
+        width: 275px;
         margin: 20px;
     }
 
     .tile {
-        width: 300px;
+        width: 275px;
 
         >&:nth-child(2) {
             width: 50%;
@@ -28,18 +28,19 @@
         }
 
         .problemSetTitle {
-            font-size: 32px;
-            height: 200px;
+            font-size: 24px;
+            width: 100%;
+            min-height: 160px;
         }
 
         .progressContainer {
             height: 87px;
 
             .progressText {
-                font-size: 26px;
+                font-size: 22px;
 
                 >span {
-                    margin-top: 12px;
+                    margin-top: 8px;
                 }
             }
         }
@@ -149,7 +150,7 @@
     box-sizing: border-box;
     color: #37345B;
     border-radius: 30px;
-    padding: 25px;
+    padding: 22px 20px;
     min-height: 103px;
 
     .header {
@@ -167,6 +168,16 @@
         right: 0;
         top: 0;
         padding: 12px;
+
+        .check {
+            svg {
+                color: #61CBB8;
+                background-color: $primary-color;
+                border-color: #61CBB8;
+                border-radius: 100%;
+            }
+            margin-right: 10px;
+        }
 
         .icon {
             align-self: center;
@@ -201,13 +212,25 @@
 
     .problemSetTitle {
         font-weight: bold;
+        // color: #37345B;
+        // white-space: nowrap;
+        // text-overflow: ellipsis;
+        // overflow: hidden;
         color: #37345B;
-        white-space: nowrap;
+        word-break: break-all;
         text-overflow: ellipsis;
         overflow: hidden;
+        font-family: 'Source Sans Pro', sans-serif;
+        font-weight: 700;
+        font-size: 20px;
     }
 
     .progressContainer {
+
+        :global(.progress) {
+            display: contents;
+        }
+
         .progressText {
             font-weight: 500;
 
@@ -277,6 +300,8 @@
 
 @media (max-width: 400px) {
     .progressContainer {
+        display: contents;
+
         .progressText {
             display: flex;
             flex-wrap: wrap-reverse;
