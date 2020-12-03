@@ -4,7 +4,7 @@
     .topBar {
         background: #E3FDF7;
         position: relative;
-        padding: 8px;
+        padding: 10px;
         border-radius: 9px;
         margin-bottom: 24px;
         width: 100%;
@@ -33,7 +33,7 @@
             padding-right: 5px;
             padding-left: 10px;
             position: absolute;
-            top: 6px;
+            top: 8px;
         }
 
         .title {
@@ -96,6 +96,7 @@
         font-size: 14px;
         margin-bottom: 14px;
         word-break: break-all;
+        margin: auto;
     }
 
     .footerBtn {
