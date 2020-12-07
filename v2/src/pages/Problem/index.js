@@ -294,13 +294,21 @@ class Problem extends Component {
         const { initialHeight, currentHeight } = ui;
 
         if (keyboardVisible) {
-            return { bottom: '250px' };
+            return { bottom: '300px' };
         }
 
         if (!isBrowser && initialHeight && currentHeight) {
             return { bottom: `${initialHeight - currentHeight}px` };
         }
         return {};
+    }
+
+    goBackText = () => {
+        const {
+            problemSet,
+        } = this.props;
+        const { title } = problemSet;
+        return Locales.strings.back_to_problem_set.replace('{title}', title);
     }
 
     renderStep = (step, index) => {
@@ -385,7 +393,7 @@ class Problem extends Component {
                     <div className={styles.topBar}>
                         <span className={styles.back}>
                             <Button
-                                aria-label={Locales.strings.back_to_all_sets}
+                                aria-label={this.goBackText()}
                                 onClick={this.goBack}
                                 type="text"
                                 icon={(
@@ -438,7 +446,7 @@ class Problem extends Component {
                         <div className={styles.topBar}>
                             <span className={styles.back}>
                                 <Button
-                                    aria-label={Locales.strings.back_to_all_sets}
+                                    aria-label={this.goBackText()}
                                     onClick={this.goBack}
                                     type="text"
                                     icon={(
