@@ -8,6 +8,9 @@ import {
 } from 'antd';
 import { connect } from 'react-redux';
 import { MathfieldComponent } from 'react-mathlive';
+import {
+    isBrowser,
+} from 'react-device-detect';
 import problemActions from '../../redux/problem/actions';
 import styles from './styles.scss';
 // import { stopEvent } from '../../services/events';
@@ -282,6 +285,24 @@ class Problem extends Component {
         }
     }
 
+    getAddStepStyle = () => {
+        const {
+            problemState,
+            ui,
+        } = this.props;
+        const { keyboardVisible } = problemState;
+        const { initialHeight, currentHeight } = ui;
+
+        if (keyboardVisible) {
+            return { bottom: '250px' };
+        }
+
+        if (!isBrowser && initialHeight && currentHeight) {
+            return { bottom: `${initialHeight - currentHeight}px` };
+        }
+        return {};
+    }
+
     renderStep = (step, index) => {
         const { explanation, stepValue } = step;
         return <Step key={`${index}-step`} index={index} stepValue={stepValue} explanation={explanation} />;
@@ -464,6 +485,7 @@ class Problem extends Component {
                             this.props.addStep(null);
                             this.props.commitProblemSolution();
                         }}
+                        style={this.getAddStepStyle()}
                     >
                         <span>Add Step</span>
                         <FontAwesomeIcon icon={faLongArrowAltRight} size="2x" />

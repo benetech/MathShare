@@ -26,9 +26,17 @@ export const updateSideBarCollapsed = state => ({
     },
 });
 
+export const setCurrentHeight = currentHeight => ({
+    type: 'SET_CURRENT_HEIGHT',
+    payload: {
+        currentHeight,
+    },
+});
+
 export default {
     setDropdownId,
     setTtsPlaying,
     stopTtsPlaying,
     updateSideBarCollapsed,
+    setCurrentHeight,
 };
