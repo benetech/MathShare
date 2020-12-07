@@ -67,6 +67,7 @@ class Header extends React.Component {
                                 overlay={menu}
                                 placement="bottomRight"
                                 arrow
+                                getPopupContainer={triggerNode => triggerNode.parentNode}
                                 trigger={['click']}
                             >
                                 <Button
