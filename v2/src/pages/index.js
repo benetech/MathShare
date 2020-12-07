@@ -25,6 +25,7 @@ const { Content } = Layout;
 class App extends Component {
     componentDidMount() {
         this.props.checkUserLogin();
+        this.setCurrentHeight();
     }
 
     getClassFromUserConfig = () => 'container-fluid';
@@ -40,6 +41,14 @@ class App extends Component {
             return false;
         }
         return true;
+    }
+
+    setCurrentHeight = () => {
+        const { ui } = this.props;
+        if (ui.currentHeight !== window.innerHeight) {
+            this.props.setCurrentHeight(window.innerHeight);
+        }
+        setTimeout(this.setCurrentHeight, 300);
     }
 
     render() {
@@ -86,6 +95,7 @@ export default withRouter(connect(
         userProfile: state.userProfile,
         routerHooks: state.routerHooks,
         router: state.router,
+        ui: state.ui,
     }),
     {
         ...userProfileActions,

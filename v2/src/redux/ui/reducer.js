@@ -2,6 +2,8 @@ const initialState = {
     dropdownOpen: null,
     ttsId: null,
     sideBarCollapsed: null,
+    initialHeight: null,
+    currentHeight: null,
 };
 
 const ui = (state = initialState, {
@@ -33,6 +35,18 @@ const ui = (state = initialState, {
         return {
             ...state,
             ...payload,
+        };
+    }
+    case 'SET_CURRENT_HEIGHT': {
+        const { currentHeight } = payload;
+        let initialHeight = state.initialHeight;
+        if (initialHeight === null) {
+            initialHeight = currentHeight;
+        }
+        return {
+            ...state,
+            initialHeight,
+            currentHeight,
         };
     }
     default:
