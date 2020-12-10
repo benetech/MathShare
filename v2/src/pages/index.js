@@ -72,13 +72,13 @@ class App extends Component {
                                     <Route exact path="/">
                                         <Redirect to="/app" />
                                     </Route>
-                                    <Route exact path="/app/problemSet/:action/:code" component={withRouter(ProblemSet)} />
-                                    <Route exact path="/app/problem/:action/:code" component={withRouter(Problem)} />
-                                    <Route exact path="/app" component={withRouter(Dashboard)} />
-                                    <Route exact path="/login" component={withRouter(SignIn)} />
-                                    <Route exact path="/signUp" component={withRouter(SignIn)} />
-                                    <Route exact path="/userDetails" component={withRouter(UserDetails)} />
-                                    <Route exact path="/userDetailsEdit" component={withRouter(UserDetails)} />
+                                    <Route exact path="/app/problemSet/:action/:code" component={ProblemSet} />
+                                    <Route exact path="/app/problem/:action/:code" component={Problem} />
+                                    <Route exact path="/app" component={Dashboard} />
+                                    <Route exact path="/login" component={SignIn} />
+                                    <Route exact path="/signUp" component={SignIn} />
+                                    <Route exact path="/userDetails" component={UserDetails} />
+                                    <Route exact path="/userDetailsEdit" component={UserDetails} />
                                     <Route render={NotFound} />
                                 </Switch>
                             </Content>
