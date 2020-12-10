@@ -26,6 +26,7 @@ class App extends Component {
     componentDidMount() {
         this.props.checkUserLogin();
         this.setCurrentHeight();
+        this.setCurrentFocusedElement();
     }
 
     getClassFromUserConfig = () => 'container-fluid';
@@ -49,6 +50,29 @@ class App extends Component {
             this.props.setCurrentHeight(window.innerHeight);
         }
         setTimeout(this.setCurrentHeight, 300);
+    }
+
+    setCurrentFocusedElement = () => {
+        const { ui } = this.props;
+        const activeElement = document.activeElement;
+        if (!activeElement) {
+            this.props.blurFocusedElement();
+        } else {
+            const attributes = {};
+            activeElement.getAttributeNames().forEach((name) => {
+                attributes[name] = activeElement.getAttribute(name);
+            });
+            const focused = {
+                id: activeElement.id,
+                className: activeElement.className,
+                tag: activeElement.tagName,
+                attributes,
+            };
+            if (JSON.stringify(ui.focused) !== JSON.stringify(focused)) {
+                this.props.setFocusedElement(focused);
+            }
+        }
+        setTimeout(this.setCurrentFocusedElement, 300);
     }
 
     render() {

@@ -291,15 +291,14 @@ class Problem extends Component {
             ui,
         } = this.props;
         const { keyboardVisible } = problemState;
-        const { initialHeight, currentHeight } = ui;
+        const { focused } = ui;
+        const { attributes } = focused;
 
-        if (keyboardVisible) {
+        const focusedMathlive = attributes && attributes.className === 'ML__textarea__textarea' && attributes['aria-label'].startsWith('after:');
+        if (keyboardVisible || (!isBrowser && focusedMathlive)) {
             return { bottom: '300px' };
         }
 
-        if (!isBrowser && initialHeight && currentHeight) {
-            return { bottom: `${initialHeight - currentHeight}px` };
-        }
         return {};
     }
 

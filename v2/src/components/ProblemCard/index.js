@@ -164,7 +164,6 @@ class ProblemCard extends React.Component {
                         <div className={styles.mathContent}>
                             <MathfieldComponent
                                 tabIndex={0}
-                                className
                                 latex={text || ''}
                                 mathfieldConfig={{
                                     readOnly: true,

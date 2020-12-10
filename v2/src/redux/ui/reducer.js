@@ -4,6 +4,12 @@ const initialState = {
     sideBarCollapsed: null,
     initialHeight: null,
     currentHeight: null,
+    focused: {
+        id: null,
+        className: null,
+        tag: null,
+        attributes: {},
+    },
 };
 
 const ui = (state = initialState, {
@@ -47,6 +53,18 @@ const ui = (state = initialState, {
             ...state,
             initialHeight,
             currentHeight,
+        };
+    }
+    case 'SET_CURRENT_FOCUS': {
+        return {
+            ...state,
+            focused: payload,
+        };
+    }
+    case 'BLUR_CURRENT_FOCUSED': {
+        return {
+            ...state,
+            focused: initialState.focused,
         };
     }
     default:
