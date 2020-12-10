@@ -33,10 +33,22 @@ export const setCurrentHeight = currentHeight => ({
     },
 });
 
+export const setFocusedElement = payload => ({
+    type: 'SET_CURRENT_FOCUS',
+    payload,
+});
+
+export const blurFocusedElement = payload => ({
+    type: 'BLUR_CURRENT_FOCUSED',
+    payload,
+});
+
 export default {
     setDropdownId,
     setTtsPlaying,
     stopTtsPlaying,
     updateSideBarCollapsed,
     setCurrentHeight,
+    setFocusedElement,
+    blurFocusedElement,
 };
