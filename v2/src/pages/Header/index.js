@@ -16,7 +16,7 @@ class Header extends React.Component {
         const { email, name } = userProfile;
         const menu = (
             <Menu>
-                <Menu.Item>
+                <Menu.Item role="presentation">
                     <div>{name}</div>
                     <div>{email}</div>
                 </Menu.Item>
