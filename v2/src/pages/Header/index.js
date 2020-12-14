@@ -7,6 +7,10 @@ import styles from './styles.scss';
 
 /* eslint-disable react/prefer-stateless-function */
 class Header extends React.Component {
+    state = {
+        expanded: false,
+    }
+
     render() {
         const { userProfile, routerHooks } = this.props;
         const { email, name } = userProfile;
@@ -68,11 +72,13 @@ class Header extends React.Component {
                                 placement="bottomRight"
                                 arrow
                                 getPopupContainer={triggerNode => triggerNode.parentNode}
+                                onVisibleChange={expanded => this.setState({ expanded })}
                                 trigger={['click']}
                             >
                                 <Button
                                     type="default"
                                     aria-label={Locales.strings.user_profile}
+                                    aria-expanded={this.state.expanded}
                                 >
                                     <img
                                         src={userProfile.profileImage || 'https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200'}
