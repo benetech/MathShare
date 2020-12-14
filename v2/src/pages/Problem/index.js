@@ -285,21 +285,23 @@ class Problem extends Component {
         }
     }
 
-    getAddStepStyle = () => {
+    shouldMoveAddStep = () => {
         const {
             problemState,
             ui,
         } = this.props;
         const { keyboardVisible } = problemState;
         const { focused } = ui;
-        const { attributes } = focused;
+        const { className, tag } = focused;
 
-        const focusedMathlive = attributes && attributes.className === 'ML__textarea__textarea' && attributes['aria-label'].startsWith('after:');
-        if (keyboardVisible || (!isBrowser && focusedMathlive)) {
-            return { bottom: '300px' };
+        const focusedMathlive = (className || '').includes('ML__textarea__textarea');
+        if (keyboardVisible
+            || (!isBrowser && tag === 'TEXTAREA' && !focusedMathlive)
+        ) {
+            return true;
         }
 
-        return {};
+        return false;
     }
 
     goBackText = () => {
@@ -373,7 +375,7 @@ class Problem extends Component {
             // userProfile,
             // routerHooks,
         } = this.props;
-        const { solution, keyboardVisible } = problemState;
+        const { solution } = problemState;
         const { title } = problemSet;
         const { problem } = solution;
 
@@ -484,7 +486,7 @@ class Problem extends Component {
                 {this.renderStepSection()}
                 <div className={styles.footerBtn}>
                     <Button
-                        className={keyboardVisible ? styles.moveAddStep : ''}
+                        className={this.shouldMoveAddStep() ? styles.moveAddStep : ''}
                         aria-label={Locales.strings.back_to_all_sets}
                         type="primary"
                         size="large"
@@ -492,7 +494,6 @@ class Problem extends Component {
                             this.props.addStep(null);
                             this.props.commitProblemSolution();
                         }}
-                        style={this.getAddStepStyle()}
                     >
                         <span>Add Step</span>
                         <FontAwesomeIcon icon={faLongArrowAltRight} size="2x" />

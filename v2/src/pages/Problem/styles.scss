@@ -122,7 +122,7 @@
             &.moveAddStep {
                 position: absolute;
                 right: 10px;
-                // bottom: 300px;
+                bottom: calc(50vh - 50px);
             }
 
             @media (max-width: 767px) {
