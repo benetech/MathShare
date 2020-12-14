@@ -35,6 +35,15 @@ const problems = (state = initialState, {
             ...payload,
         };
     case 'REQUEST_RECENT_SETS':
+        if (payload.offset === -1) {
+            return {
+                ...state,
+                recentSolutionSets: {
+                    ...initialState.recentSolutionSets,
+                    loading: true,
+                },
+            };
+        }
         return {
             ...state,
             recentSolutionSets: {
