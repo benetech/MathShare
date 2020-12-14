@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-    faArrowLeft, faFlagCheckered, faLongArrowAltRight, faRedo, faUndo,
+    faArrowLeft, faCheckCircle, faFlagCheckered, faLongArrowAltRight, faRedo, faUndo,
 } from '@fortawesome/free-solid-svg-icons';
 import {
     Affix, Row, Button, // Dropdown, Menu, Popconfirm,
@@ -372,13 +372,15 @@ class Problem extends Component {
         const {
             problemState,
             problemSet,
+            ui,
             // match,
             // userProfile,
             // routerHooks,
         } = this.props;
         const { solution } = problemState;
         const { title } = problemSet;
-        const { problem } = solution;
+        const { problem, finished } = solution;
+        const { sideBarCollapsed } = ui;
 
         const showMathEllipsis = this.showMathEllipsis();
         // const {
@@ -414,7 +416,14 @@ class Problem extends Component {
                     className={styles.staticProblem}
                 >
                     <span aria-label="checkered flag"><FontAwesomeIcon icon={faFlagCheckered} /></span>
-                    <span className={styles.problem}>Problem</span>
+                    <span className={styles.problem}>
+                        Problem
+                        {finished && (
+                            <div className={styles.check} aria-label="Finished Checkmark">
+                                <FontAwesomeIcon icon={faCheckCircle} />
+                            </div>
+                        )}
+                    </span>
                 </Row>
                 <Affix
                     onChange={affixed => this.setState({ affixed })}
@@ -468,7 +477,14 @@ class Problem extends Component {
                         <div className={styles.staticProblem}>
                             <span className={styles.left}>
                                 <span><FontAwesomeIcon icon={faFlagCheckered} /></span>
-                                <span className={styles.problem}>Problem</span>
+                                <span className={styles.problem}>
+                                    Problem
+                                    {finished && (
+                                        <div className={styles.check} aria-label="Finished Checkmark">
+                                            <FontAwesomeIcon icon={faCheckCircle} />
+                                        </div>
+                                    )}
+                                </span>
                             </span>
                             <span id="affixMathContainer" className={`${styles.right} ${showMathEllipsis ? styles.hasEllipsis : ''}`}>
                                 <MathfieldComponent
@@ -485,9 +501,23 @@ class Problem extends Component {
                     <hr />
                 </div>
                 {this.renderStepSection()}
-                <div className={styles.footerBtn}>
+                <div className={`${styles.footerBtn} ${sideBarCollapsed ? styles.sideBarCollapsed : styles.sideBarOpened}`}>
+                    {!finished && (
+                        <Button
+                            className={this.shouldMoveAddStep() ? styles.moveAddStep : ''}
+                            aria-label={Locales.strings.back_to_all_sets}
+                            type="primary"
+                            size="large"
+                            onClick={() => {
+                                this.props.commitProblemSolution('back', false, true);
+                            }}
+                        >
+                            <span>Finish?</span>
+                            <FontAwesomeIcon className={styles.finishBtn} icon={faCheckCircle} />
+                        </Button>
+                    )}
                     <Button
-                        className={this.shouldMoveAddStep() ? styles.moveAddStep : ''}
+                        className={`${this.shouldMoveAddStep() ? styles.moveAddStep : ''} ${finished ? styles.moveBtnRight : ''}`}
                         aria-label={Locales.strings.back_to_all_sets}
                         type="primary"
                         size="large"

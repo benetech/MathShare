@@ -46,6 +46,7 @@ const router = (state = initialState, {
             historyStack = [...historyStack, hashPath];
             return {
                 ...state,
+                isBack,
                 prevReplaced: state.current,
                 current: `/${window.location.hash}`,
                 historyStack,

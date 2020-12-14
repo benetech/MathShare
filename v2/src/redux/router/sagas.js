@@ -19,9 +19,13 @@ import {
     getRouterHookState,
 } from './selectors';
 import {
+    getState as getUserProfileState,
+} from '../userProfile/selectors';
+import {
     setTitle,
 } from './actions';
 import { setDropdownId } from '../ui/actions';
+import { fetchRecentWork } from '../userProfile/actions';
 
 function* changeTitleSaga() {
     yield takeLatest('CHANGE_TITLE', function* workerSaga({
@@ -59,6 +63,7 @@ function* changeRouteSaga() {
         const { pathname } = location;
         yield put(setDropdownId(null));
         const routerState = yield select(getRouterHookState);
+        const userInfoState = yield select(getUserProfileState);
         const {
             prev,
             prevReplaced,
@@ -86,6 +91,9 @@ function* changeRouteSaga() {
             }
         }
         let notAbleToFocus = true;
+        if (isBack && window.location.hash === '#/app' && userInfoState.email) {
+            yield put(fetchRecentWork(-1));
+        }
         if (action === 'POP' && isBack && !isFirstRendering) {
             if (window.location.hash.startsWith('#/app/problemSet/solve/')) {
                 yield delay(800);
