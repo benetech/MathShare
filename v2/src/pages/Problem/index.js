@@ -9,6 +9,7 @@ import {
 import { connect } from 'react-redux';
 import { MathfieldComponent } from 'react-mathlive';
 import {
+    isAndroid,
     isBrowser,
 } from 'react-device-detect';
 import problemActions from '../../redux/problem/actions';
@@ -296,7 +297,7 @@ class Problem extends Component {
 
         const focusedMathlive = (className || '').includes('ML__textarea__textarea');
         if (keyboardVisible
-            || (!isBrowser && tag === 'TEXTAREA' && !focusedMathlive)
+            || (!isBrowser && !isAndroid && tag === 'TEXTAREA' && !focusedMathlive)
         ) {
             return true;
         }
