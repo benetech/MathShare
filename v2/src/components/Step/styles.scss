@@ -59,8 +59,41 @@
                 display: flex;
                 position: relative;
 
+                > div {
+                    overflow: hidden;
+                }
+
                 :global(.ML__fieldcontainer__field) {
                     line-height: 20px;
+                    overflow: unset;
+                }
+
+                :global(.ML__selection) {
+                    border-left: 2px solid rgb(94, 158, 214);
+                    border-right: 2px solid rgb(94, 158, 214);
+                    top: 0px!important;
+                    height: 25px!important;
+
+                    &::before, &::after {
+                        content: '';
+                        display: inline-block;
+                        width: 10px;
+                        height: 10px;
+                        -moz-border-radius: 5px;
+                        -webkit-border-radius: 5px;
+                        border-radius: 5px;
+                        background-color: #0a80e7;
+                    }
+
+                    &::before {
+                        transform: translate(-7px, -14px);
+                    }
+
+                    &::after {
+                        transform: translate(6px, 21px);
+                        right: 0;
+                        position: absolute;
+                    }
                 }
 
                 > div {
