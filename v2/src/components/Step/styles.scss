@@ -59,6 +59,10 @@
                 display: flex;
                 position: relative;
 
+                :global(.ML__fieldcontainer__field) {
+                    line-height: 20px;
+                }
+
                 > div {
                     width: calc(100% - 30px);
                     padding-left: 15px;
