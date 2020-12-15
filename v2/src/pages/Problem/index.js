@@ -505,7 +505,7 @@ class Problem extends Component {
                     {!finished && (
                         <Button
                             className={this.shouldMoveAddStep() ? styles.moveAddStep : ''}
-                            aria-label={Locales.strings.back_to_all_sets}
+                            aria-label="Finish?"
                             type="primary"
                             size="large"
                             onClick={() => {
