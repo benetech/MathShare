@@ -8,10 +8,7 @@ import {
 } from 'antd';
 import { connect } from 'react-redux';
 import { MathfieldComponent } from 'react-mathlive';
-import {
-    isAndroid,
-    isBrowser,
-} from 'react-device-detect';
+import * as DeviceDetect from 'react-device-detect';
 import problemActions from '../../redux/problem/actions';
 import styles from './styles.scss';
 // import { stopEvent } from '../../services/events';
@@ -294,10 +291,16 @@ class Problem extends Component {
         const { keyboardVisible } = problemState;
         const { focused } = ui;
         const { className, tag } = focused;
+        const {
+            isAndroid,
+            isMobile,
+        } = DeviceDetect;
+
+        console.log('DeviceDetect', DeviceDetect);
 
         const focusedMathlive = (className || '').includes('ML__textarea__textarea');
         if (keyboardVisible
-            || (!isBrowser && !isAndroid && tag === 'TEXTAREA' && !focusedMathlive)
+            || (isMobile && !isAndroid && tag === 'TEXTAREA' && !focusedMathlive)
         ) {
             return true;
         }
