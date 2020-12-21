@@ -135,8 +135,12 @@ class ProblemCard extends React.Component {
                             {String(problemPosition).padStart(2, '0')}
                         </div>
                         {finished && (
-                            <div className={styles.check} aria-label="Completed checkmark">
-                                <FontAwesomeIcon icon={faCheckCircle} />
+                            <div className={styles.check}>
+                                <FontAwesomeIcon
+                                    icon={faCheckCircle}
+                                    title="Completed checkmark"
+                                    role="img"
+                                />
                             </div>
                         )}
                         {/* <div className={styles.iconContainer}>
