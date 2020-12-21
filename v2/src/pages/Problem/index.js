@@ -418,12 +418,20 @@ class Problem extends Component {
                     gutter={gutter}
                     className={styles.staticProblem}
                 >
-                    <span aria-label="checkered flag"><FontAwesomeIcon icon={faFlagCheckered} /></span>
+                    <FontAwesomeIcon
+                        icon={faFlagCheckered}
+                        title="checkered flag"
+                        role="img"
+                    />
                     <span className={styles.problem}>
                         Problem
                         {finished && (
-                            <div className={styles.check} aria-label="Finished Checkmark">
-                                <FontAwesomeIcon icon={faCheckCircle} />
+                            <div className={styles.check}>
+                                <FontAwesomeIcon
+                                    icon={faCheckCircle}
+                                    title="Finished Checkmark"
+                                    role="img"
+                                />
                             </div>
                         )}
                     </span>
@@ -483,8 +491,12 @@ class Problem extends Component {
                                 <span className={styles.problem}>
                                     Problem
                                     {finished && (
-                                        <div className={styles.check} aria-label="Finished Checkmark">
-                                            <FontAwesomeIcon icon={faCheckCircle} />
+                                        <div className={styles.check}>
+                                            <FontAwesomeIcon
+                                                icon={faCheckCircle}
+                                                title="Finished Checkmark"
+                                                role="img"
+                                            />
                                         </div>
                                     )}
                                 </span>
@@ -516,7 +528,12 @@ class Problem extends Component {
                             }}
                         >
                             <span>Finish?</span>
-                            <FontAwesomeIcon className={styles.finishBtn} icon={faCheckCircle} />
+                            <FontAwesomeIcon
+                                className={styles.finishBtn}
+                                icon={faCheckCircle}
+                                title="Finished Checkmark"
+                                role="img"
+                            />
                         </Button>
                     )}
                     <Button
