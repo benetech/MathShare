@@ -91,7 +91,7 @@ function* changeRouteSaga() {
             }
         }
         let notAbleToFocus = true;
-        if (isBack && window.location.hash === '#/app' && userInfoState.email) {
+        if (window.location.hash === '#/app' && userInfoState.email) {
             yield put(fetchRecentWork(-1));
         }
         if (action === 'POP' && isBack && !isFirstRendering) {
