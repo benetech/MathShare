@@ -1,0 +1,97 @@
+.modal {
+    background: rgb(255, 255, 255);
+    outline: 0;
+    border-radius: 4px;
+}
+
+.modalHeader,
+.modalBody,
+.modalFooter {
+    padding: 0.5em 1.5em;
+}
+
+.modalHeader {
+    text-align: center;
+    font-size: 24px;
+}
+
+.modalTitle {
+    margin: 0;
+}
+
+.modalFooter {
+    border-top: 1px solid rgb(238, 238, 238);
+    text-align: right;
+}
+
+.modalMessage {
+    margin-top: 15px;
+    padding: 10px 30px;
+}
+
+
+.shareContainer {
+    margin: auto;
+    text-align: center;
+
+    .shareLink {
+        width: 250px;
+        margin: 0 15px;
+        border: 1px solid;
+    }
+
+    .button {
+        margin-right: 10px;
+        border: 1px solid;
+    }
+}
+
+.modalBody {
+    ul.messageList li {
+        list-style-type: disc;
+    }
+
+    h1 {
+        text-align: center;
+        font-size: 24px;
+        padding-top: 20px;
+        padding-bottom: 20px;
+
+        span:global(.fa) {
+            padding-right: 10px;
+        }
+    }
+
+    .externalButtons {
+        display: block;
+
+        > span {
+            display: block;
+            margin: 10px;
+            > {
+                button.buttonContainer {
+                    width: 191px;
+                    display: inline-flex;
+                    padding: 2px;
+                    margin-left: 5px;
+                    .btnText {
+                        padding: 4px 5px;
+                    }
+                    img {
+                        height: 32px;
+                    }
+                }
+            }
+        } 
+        
+        .integrationBtn {
+            margin-left: 5px;
+        }
+    }
+}
+
+.modalFooter {
+    > svg {
+        margin-right: 5px;
+    }
+}

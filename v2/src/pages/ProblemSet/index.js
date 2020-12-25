@@ -1,5 +1,5 @@
 import {
-    faArrowLeft, faCopy, faEllipsisH, faMinusCircle,
+    faArrowLeft, faCopy, faEllipsisH, faMinusCircle, faShare,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -13,7 +13,8 @@ import problemSetActions from '../../redux/problemSet/actions';
 import styles from './styles.scss';
 import { stopEvent } from '../../services/events';
 import Locales from '../../strings';
-// import CopyLink from '../../components/CopyLink';
+import ProblemSetShareModal from '../../components/Modals/ProblemSetShareModal';
+import { FRONTEND_URL_PROTO } from '../../config';
 // import Select from '../../components/Select';
 
 const gutter = {
@@ -140,6 +141,7 @@ class ProblemSet extends Component {
                     {this.getData()
                         .map((problem, index) => (
                             <Card
+                                action={action}
                                 layoutMode={this.getLayout()}
                                 key={problem.id || index}
                                 {...problem.problem}
@@ -184,6 +186,36 @@ class ProblemSet extends Component {
                         </Button>
                     </Menu.Item>
                 )}
+                <Menu.Item>
+                    <Button
+                        type="text"
+                        icon={<FontAwesomeIcon icon={faShare} />}
+                        onClick={() => {
+                            this.setState({
+                                shareModal: true,
+                            });
+                        }}
+                    >
+                        {Locales.strings.share_my_work}
+                    </Button>
+                    <ProblemSetShareModal
+                        problemList={problemSet}
+                        shareLink={`${FRONTEND_URL_PROTO}/app/problemSet/review/${problemSet.problemSetShareCode}`}
+                        isSolutionSet
+                        centered
+                        visible={this.state.shareModal}
+                        onOk={() => {
+                            this.setState({
+                                shareModal: false,
+                            });
+                        }}
+                        onCancel={() => {
+                            this.setState({
+                                shareModal: false,
+                            });
+                        }}
+                    />
+                </Menu.Item>
                 {userProfile.email && (
                     <Menu.Item>
                         <Button
@@ -259,7 +291,7 @@ class ProblemSet extends Component {
                             stopEvent(e);
                         }}
                     >
-                        {(action === 'edit' || userProfile.email) && (
+                        {(action === 'edit' || userProfile.email) && (action !== 'review') && (
                             <Dropdown
                                 overlay={menu}
                                 placement="bottomRight"

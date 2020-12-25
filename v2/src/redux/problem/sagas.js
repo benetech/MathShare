@@ -36,6 +36,7 @@ import {
 import {
     loadProblemSetSolutionByEditCode,
     updateReviewSolutions,
+    requestProblemSet,
     setReviewSolutions,
     setProblemSetShareCode,
 } from '../problemSet/actions';
@@ -122,6 +123,9 @@ function* processFetchedProblem() {
             }));
         }
         yield put(setSolutionData(solution, action));
+        if (action === 'view' && solution.reviewCode) {
+            yield put(requestProblemSet('review', solution.reviewCode));
+        }
         const {
             problemSetSolutionEditCode,
         } = solution;

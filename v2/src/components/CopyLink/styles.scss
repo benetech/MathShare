@@ -25,3 +25,27 @@
         }
     }
 }
+
+.btnContainer {
+    display: block;
+    margin-bottom: 20px;
+    text-align: center;
+
+    .textArea {
+        resize: none;
+        width: 90%;
+        margin-bottom: 8px;
+        height: 30px;
+
+        &:focus {
+            outline-color: rgb(0, 95, 204);
+            outline-width: 1.11111px;
+            outline-style: auto;
+        }
+    }
+
+    button {
+        display: block;
+        margin: auto;
+    }
+}

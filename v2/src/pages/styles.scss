@@ -95,6 +95,15 @@
     max-width: calc(100vw - 50px);
 }
 
+:global(.sROnly) {
+    clip: rect(1px, 1px, 1px, 1px);
+    position: absolute !important;
+    white-space: nowrap;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+}
+
 // :global(.ML__keyboard) {
 //     &, :global(.keyboard-toolbar ){
 //         padding: 0 10px;
