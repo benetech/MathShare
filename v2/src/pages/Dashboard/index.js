@@ -12,7 +12,6 @@ import problemSetListActions from '../../redux/problemSetList/actions';
 import { fetchRecentWork } from '../../redux/userProfile/actions';
 import styles from './styles.scss';
 import { stopEvent } from '../../services/events';
-// import CopyLink from '../../components/CopyLink';
 // import Select from '../../components/Select';
 
 const gutter = {
@@ -206,9 +205,6 @@ class Dashboard extends Component {
                         </Col>
                     )}
                 </Row>
-                {/* <Row>
-                    <CopyLink />
-                </Row> */}
                 {userProfile.email && this.renderRecentSets()}
                 {!userProfile.email && (
                     <p className={styles.linkContainer}>

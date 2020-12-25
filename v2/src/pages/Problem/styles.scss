@@ -275,7 +275,62 @@
 
             .mySteps {
                 flex-grow: 1;
+                font-weight: 600;
             }
         }
+    }
+}
+
+.reviewStepContainer {
+    .stepNo {
+        font-size: 14px;
+        font-weight: 600;
+        color: hsl(245, 27%, 28%);
+    }
+    .stepMath {
+        font-size: 18px;
+        padding-bottom: 8px;
+
+        :global(.ML__mathlive) {
+            white-space: normal;
+            display: inline;
+            word-break: break-word;
+        }
+        :global(.ML__mathlive) :global(.ML__base) :global(.ML__text) {
+            white-space: normal;
+            user-select: text;
+            cursor: text;
+        }
+        
+        :global(.ML__mathlive) :global(.ML__base) > span > span:not(:global(.ML__cmr)) {
+            line-height: 1.5;
+        }
+
+        :global(.ML__mathlive)>:global(.ML__base) {
+            display: inline;
+        }
+        
+        :global(.ML__mathlive) {
+            text-align: center !important;
+        }
+        
+        :global(.ML__fieldcontainer),
+        :global(.ML__fieldcontainer__field) {
+            overflow-x: auto;
+        }
+    }
+    .stepNo, .stepExplanation, .stepMath {
+        border-bottom: 1px solid #D5D3DE;
+        padding-right: 8px;
+    }
+    .stepExplanation, .stepMath {
+        padding-left: 8px;
+    }
+    .stepExplanation, .stepNo {
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+    .stepExplanation {
+        font-weight: 300;
     }
 }
