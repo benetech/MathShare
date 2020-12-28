@@ -24,6 +24,10 @@ class MyWork extends Component {
         // eslint-disable-next-line no-unused-expressions
         this.scratchPadPainterro;
 
+        this.state = {
+            cleared: false,
+        };
+
         this.openScratchpad = this.openScratchpad.bind(this);
         this.hideScratchpad = this.hideScratchpad.bind(this);
         this.addStepCallback = this.addStepCallback.bind(this);
@@ -39,7 +43,7 @@ class MyWork extends Component {
         if (this.props.bindDisplayFunction) {
             this.props.bindDisplayFunction((scratchpadContent) => {
                 this.props.updateWork({
-                    scratchpadContent,
+                    scratchpadContent: scratchpadContent || '',
                     scratchPadPainterro: this.scratchPadPainterro,
                 });
                 this.displayScratchpadImage();
@@ -54,7 +58,7 @@ class MyWork extends Component {
     }
 
     getScratchPadValue = () => {
-        const { problem } = this.props;
+        const { problem, scratchpadContent } = this.props;
         let { scratchPadValue, height, width } = problem.work;
 
         if (problem.work.isScratchpadUsed) {
@@ -63,19 +67,28 @@ class MyWork extends Component {
             width = this.scratchPadPainterro.canvas.width;
         }
 
-        if (scratchPadValue) {
-            const blank = document.createElement('canvas');
-            blank.width = width;
-            blank.height = height;
-            const ctx = blank.getContext('2d');
-            ctx.fillStyle = 'white';
-            ctx.fillRect(0, 0, width, height);
+        const blank = document.createElement('canvas');
+        blank.width = width;
+        blank.height = height;
+        const ctx = blank.getContext('2d');
+        ctx.fillStyle = 'white';
+        ctx.fillRect(0, 0, width, height);
 
+        if (scratchPadValue) {
             if (scratchPadValue !== blank.toDataURL()) {
                 return scratchPadValue;
             }
+            return '';
         }
-        return undefined;
+
+        if (this.state.cleared) {
+            return '';
+        }
+
+        if (scratchpadContent && scratchpadContent !== blank.toDataURL()) {
+            return scratchpadContent;
+        }
+        return '';
     }
 
     HandleKeyDown = (event) => {
@@ -181,7 +194,7 @@ class MyWork extends Component {
         reader.onload = (e) => {
             const scratchpadContent = e.target.result;
             this.props.updateWork({
-                scratchpadContent,
+                scratchpadContent: scratchpadContent || '',
                 scratchPadPainterro: this.scratchPadPainterro,
             });
             this.scratchPadPainterro.show(scratchpadContent);
@@ -191,21 +204,29 @@ class MyWork extends Component {
 
     displayScratchpadImage() {
         const { work } = this.props.problem;
-        if (work.scratchpadMode) {
-            this.clearAndResizeScratchPad(work.scratchpadContent);
-            this.scratchPadPainterro.show(work.scratchpadContent);
+        if (work.scratchpadContent) {
+            setTimeout(() => {
+                this.clearAndResizeScratchPad(work.scratchpadContent);
+                this.scratchPadPainterro.show(work.scratchpadContent || '');
+            }, 500);
         }
     }
 
     clearAndResizeScratchPad(content) {
         const { work } = this.props.problem;
-        if (work.scratchpadMode) {
-            this.scratchPadPainterro.clear();
+        if (work.scratchpadMode || content) {
+            try {
+                this.scratchPadPainterro.clear();
+            // eslint-disable-next-line no-empty
+            } catch (error) {
+                console.log('error', error);
+            }
             this.props.updateWork({
                 isScratchpadUsed: false,
-                scratchpadContent: content,
+                scratchpadContent: '',
                 scratchPadPainterro: this.scratchPadPainterro,
             });
+            this.setState({ cleared: true });
         }
     }
 
