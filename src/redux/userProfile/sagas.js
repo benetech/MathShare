@@ -22,7 +22,8 @@ import {
     setAuthRedirect,
     setMobileNotifySuccess,
     setPersonalizationSettings,
-    setRecentWork,
+    setRecentProblemSets,
+    setRecentSolutionSets,
     setUserInfo,
 } from './actions';
 import {
@@ -31,12 +32,13 @@ import {
 import {
     fetchCurrentUserApi,
     fetchUserInfoApi,
-    fetchRecentWorkApi,
     getConfigApi,
     logoutApi,
     saveUserInfoApi,
     setConfigApi,
     updateNotifyMobileApi,
+    fetchRecentSolutionsApi,
+    fetchRecentProblemsApi,
 } from './apis';
 import {
     alertError, alertInfo, alertSuccess, dismissAlert, focusOnAlert,
@@ -158,25 +160,53 @@ function* checkUserLoginSaga() {
 
 function* fetchRecentWorkSaga() {
     yield takeLatest('FETCH_RECENT_WORK', function* workerSaga() {
+        yield put({
+            type: 'FETCH_RECENT_PROBLEM_SETS',
+        });
+        yield put({
+            type: 'FETCH_RECENT_SOLUTION_SETS',
+        });
+    });
+}
+
+function* fetchRecentSolutionSetsSaga() {
+    yield takeLatest('FETCH_RECENT_SOLUTION_SETS', function* workerSaga() {
         try {
-            const {
-                info,
-            } = yield select(getState);
-            const response = yield call(fetchRecentWorkApi(info.userType), {});
+            const response = yield call(fetchRecentSolutionsApi, {});
             if (response.status !== 200) {
                 throw Error('Unable to fetch work');
             }
             const {
                 data,
             } = response;
-            yield put(setRecentWork(data));
+            yield put(setRecentSolutionSets(data));
         } catch (error) {
             yield put({
-                type: 'FETCH_RECENT_WORK_FAILURE',
+                type: 'FETCH_RECENT_SOLUTION_SETS_FAILURE',
             });
         }
     });
 }
+
+function* fetchRecentProblemSetsSaga() {
+    yield takeLatest('FETCH_RECENT_PROBLEM_SETS', function* workerSaga() {
+        try {
+            const response = yield call(fetchRecentProblemsApi, {});
+            if (response.status !== 200) {
+                throw Error('Unable to fetch work');
+            }
+            const {
+                data,
+            } = response;
+            yield put(setRecentProblemSets(data));
+        } catch (error) {
+            yield put({
+                type: 'FETCH_RECENT_PROBLEM_SETS_FAILURE',
+            });
+        }
+    });
+}
+
 function* redirectAfterLoginSaga() {
     yield takeLatest('REDIRECT_AFTER_LOGIN', function* workerSaga({
         payload: {
@@ -343,6 +373,8 @@ export default function* rootSaga() {
     yield all([
         fork(checkUserLoginSaga),
         fork(fetchRecentWorkSaga),
+        fork(fetchRecentProblemSetsSaga),
+        fork(fetchRecentSolutionSetsSaga),
         fork(redirectAfterLoginSaga),
         fork(saveUserInfoSaga),
         fork(setUserProfileSaga),

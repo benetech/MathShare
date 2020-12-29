@@ -6,6 +6,7 @@ const initialState = {
     defaultRevisionCode: null,
     exampleProblemSets: [],
     archivedProblemSets: [],
+    archivedSolutionSets: [],
     set: {
         problems: [],
         editCode: null,
@@ -64,6 +65,7 @@ const problems = (state = initialState, {
         return {
             ...state,
             archivedProblemSets: null,
+            archivedSolutionSets: null,
         };
     case 'REQUEST_EXAMPLE_SETS_SUCCESS':
     case 'REQUEST_ARCHIVED_SETS_SUCCESS':
@@ -71,6 +73,7 @@ const problems = (state = initialState, {
             ...state,
             ...payload,
         };
+    case 'ARCHIVE_SOLUTION_SET_SUCCESS':
     case 'ARCHIVE_PROBLEM_SET_SUCCESS': {
         const { editCode, key } = payload;
         if (key !== 'archivedProblemSets') {
@@ -81,6 +84,17 @@ const problems = (state = initialState, {
             archivedProblemSets: state.archivedProblemSets.filter(set => set.editCode !== editCode),
         };
     }
+    // case 'ARCHIVE_SOLUTION_SET_SUCCESS': {
+    //     const { editCode, key } = payload;
+    //     if (key !== 'archivedSolutionSets') {
+    //         return state;
+    //     }
+    //     return {
+    //         ...state,
+    //         archivedSolutionSets: state.archivedSolutionSets
+    //             .filter(set => set.editCode !== editCode),
+    //     };
+    // }
     case 'CLEAR_PROBLEM_SET':
         return {
             ...state,

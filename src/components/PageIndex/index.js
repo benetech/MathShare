@@ -96,6 +96,72 @@ class Index extends Component {
         this.props.push('/signIn');
     }
 
+    renderRecentSolutionSets = () => {
+        const { props } = this;
+        const { userProfile, archiveMode } = props;
+        if (archiveMode) {
+            return null;
+        }
+        const recentContentClass = `text-center ${pageIndex.recentContent}`;
+        if (userProfile.recentSolutionSets === null) {
+            return (
+                <>
+                    <h2 id="recent-sets-header" className={pageIndex.title}>{Locales.strings.my_solution_sets}</h2>
+                    <div className={recentContentClass}>{Locales.strings.loading}</div>
+                </>
+            );
+        }
+        if (userProfile.recentSolutionSets.length > 0) {
+            return (
+                <>
+                    <h2 id="recent-sets-header" className={pageIndex.title}>{Locales.strings.my_solution_sets}</h2>
+                    <ol className={pageIndex.problemSetList} aria-labelledby="recent-sets-header">
+                        {userProfile.recentSolutionSets.map(this.renderProblemSet(false, true))}
+                    </ol>
+                </>
+            );
+        }
+        return (
+            <>
+                <h2 id="recent-sets-header" className={pageIndex.title}>{Locales.strings.my_solution_sets}</h2>
+                <div className={recentContentClass}>{Locales.strings.no_recent_sets}</div>
+            </>
+        );
+    }
+
+    renderRecentProblemSets = () => {
+        const { props } = this;
+        const { userProfile, archiveMode } = props;
+        if (archiveMode) {
+            return null;
+        }
+        const recentContentClass = `text-center ${pageIndex.recentContent}`;
+        if (userProfile.recentProblemSets === null) {
+            return (
+                <>
+                    <h2 id="recent-sets-header" className={pageIndex.title}>{Locales.strings.my_created_sets}</h2>
+                    <div className={recentContentClass}>{Locales.strings.loading}</div>
+                </>
+            );
+        }
+        if (userProfile.recentProblemSets.length > 0) {
+            return (
+                <>
+                    <h2 id="recent-sets-header" className={pageIndex.title}>{Locales.strings.my_created_sets}</h2>
+                    <ol className={pageIndex.problemSetList} aria-labelledby="recent-sets-header">
+                        {userProfile.recentProblemSets.map(this.renderProblemSet(false, true))}
+                    </ol>
+                </>
+            );
+        }
+        return (
+            <>
+                <h2 id="recent-sets-header" className={pageIndex.title}>{Locales.strings.my_created_sets}</h2>
+                <div className={recentContentClass}>{Locales.strings.no_recent_sets}</div>
+            </>
+        );
+    }
+
     renderRecent = () => {
         const { props } = this;
         const { userProfile, archiveMode } = props;
@@ -103,7 +169,6 @@ class Index extends Component {
             return null;
         }
         let recentContent = null;
-        const recentContentClass = `text-center ${pageIndex.recentContent}`;
         if (!userProfile.service) {
             recentContent = (
                 <div className={`text-center ${pageIndex.signInContainer}`}>
@@ -117,22 +182,23 @@ class Index extends Component {
                     </a>
                 </div>
             );
-        } else if (userProfile.recentProblemSets === null) {
-            recentContent = <div className={recentContentClass}>{Locales.strings.loading}</div>;
-        } else if (userProfile.recentProblemSets.length > 0) {
+        } else if (userProfile.userType === 'student') {
             recentContent = (
-                <ol className={pageIndex.problemSetList} aria-labelledby="recent-sets-header">
-                    {userProfile.recentProblemSets.map(this.renderProblemSet(false, true))}
-                </ol>
+                <>
+                    {this.renderRecentSolutionSets()}
+                    {this.renderRecentProblemSets()}
+                </>
             );
         } else {
             recentContent = (
-                <div className={recentContentClass}>{Locales.strings.no_recent_sets}</div>
+                <>
+                    {this.renderRecentProblemSets()}
+                    {this.renderRecentSolutionSets()}
+                </>
             );
         }
         return (
             <>
-                <h2 id="recent-sets-header" className="title">{Locales.strings.recent_sets}</h2>
                 {recentContent}
                 {userProfile.email && (
                     <a className={`pull-right btn btn-primary ${pageIndex.archivedList}`} href="/#/app/archived">
@@ -289,7 +355,7 @@ class Index extends Component {
         }
         return (
             <>
-                <h2 id="pre-made-sets-header" className="title">{Locales.strings.pre_made_sets}</h2>
+                <h2 id="pre-made-sets-header" className={pageIndex.title}>{Locales.strings.pre_made_sets}</h2>
                 <ol className={pageIndex.problemSetList} aria-labelledby="pre-made-sets-header">
                     {problemList.exampleProblemSets.map(this.renderProblemSet(true))}
                 </ol>
@@ -321,7 +387,7 @@ class Index extends Component {
                     ariaLabel={Locales.strings.back}
                     content={Locales.strings.back}
                 />
-                <h2 id="archived-sets-header" className="title">
+                <h2 id="archived-sets-header" className={pageIndex.title}>
                     {Locales.strings.archived_sets}
                 </h2>
                 {problemList.archivedProblemSets && (
