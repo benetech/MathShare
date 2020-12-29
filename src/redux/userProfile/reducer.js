@@ -6,6 +6,7 @@ const initialState = {
     mode: null,
     service: null,
     recentProblemSets: null,
+    recentSolutionSets: null,
     notifyForMobile: null,
     checking: true,
     config: null,
@@ -48,12 +49,20 @@ const userProfile = (state = initialState, {
         return {
             ...state,
             recentProblemSets: null,
+            recentSolutionSets: null,
         };
-    case 'SET_RECENT_WORK': {
+    case 'SET_RECENT_PROBLEM_SETS': {
         const { recentProblemSets } = payload;
         return {
             ...state,
             recentProblemSets,
+        };
+    }
+    case 'SET_RECENT_SOLUTION_SETS': {
+        const { recentSolutionSets } = payload;
+        return {
+            ...state,
+            recentSolutionSets,
         };
     }
     case 'ARCHIVE_PROBLEM_SET_SUCCESS': {
@@ -64,6 +73,16 @@ const userProfile = (state = initialState, {
         return {
             ...state,
             recentProblemSets: state.recentProblemSets.filter(set => set.editCode !== editCode),
+        };
+    }
+    case 'ARCHIVE_SOLUTION_SET_SUCCESS': {
+        const { editCode, key } = payload;
+        if (key !== 'recentSolutionSets') {
+            return state;
+        }
+        return {
+            ...state,
+            recentSolutionSets: state.recentSolutionSets.filter(set => set.editCode !== editCode),
         };
     }
     case 'SET_MOBILE_NOTIFY_SUCCESS': {
