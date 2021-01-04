@@ -62,10 +62,11 @@ export const saveUserInfo = (userType, grades, role) => ({
     },
 });
 
-export const fetchRecentWork = offset => ({
+export const fetchRecentWork = (offset, type) => ({
     type: 'REQUEST_RECENT_SETS',
     payload: {
         offset,
+        type,
     },
 });
 

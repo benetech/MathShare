@@ -35,8 +35,8 @@ export const fetchRecentSolutionsApi = headers => axios.get(`${SERVER_URL}/priva
     headers,
 });
 
-export const fetchRecentWorkApi = (role) => {
-    if (!role || role === 'student') {
+export const fetchRecentWorkApi = (type) => {
+    if (type === 'recentSolutionSets') {
         return fetchRecentSolutionsApi;
     }
     return fetchRecentProblemsApi;

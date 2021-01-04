@@ -20,7 +20,12 @@ export const fetchRecentSolutionsApi = headers => axios.get(`${SERVER_URL}/priva
     headers,
 });
 
-export const fetchRecentWorkApi = () => fetchRecentSolutionsApi;
+export const fetchRecentWorkApi = (type) => {
+    if (type === 'recentSolutionSets') {
+        return fetchRecentSolutionsApi;
+    }
+    return fetchRecentProblemsApi;
+};
 
 export const saveProblemSetApi = set => axios.post(`${SERVER_URL}/problemSet/`, set, commonRequestConfig);
 
