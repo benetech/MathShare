@@ -7,12 +7,13 @@ const initialState = {
     recentProblemSets: {
         data: [],
         loading: false,
+        showLoadMore: false,
     },
     recentSolutionSets: {
         data: [],
         loading: false,
+        showLoadMore: false,
     },
-    showLoadMore: false,
 };
 
 const problems = (state = initialState, {
@@ -38,24 +39,25 @@ const problems = (state = initialState, {
         if (payload.offset === -1) {
             return {
                 ...state,
+                recentProblemSets: {
+                    ...initialState.recentProblemSets,
+                    loading: true,
+                    showLoadMore: false,
+                },
                 recentSolutionSets: {
                     ...initialState.recentSolutionSets,
                     loading: true,
+                    showLoadMore: false,
                 },
             };
         }
         return {
             ...state,
-            recentSolutionSets: {
-                ...state.recentSolutionSets,
+            [payload.type]: {
+                ...state[payload.type],
                 loading: true,
+                showLoadMore: false,
             },
-        };
-    case 'REQUEST_RECENT_SOLUTION_SETS_SUCCESS':
-    case 'REQUEST_RECENT_PROBLEM_SETS_SUCCESS':
-        return {
-            ...state,
-            ...payload,
         };
     case 'REQUEST_RECENT_SETS_SUCCESS':
         return {
