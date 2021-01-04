@@ -25,18 +25,18 @@ export const updateNotifyMobileApi = notifyForMobile => axios.put(`${SERVER_URL}
     notifyForMobile,
 }, commonRequestConfig);
 
-export const fetchRecentProblemsApi = headers => axios.get(`${SERVER_URL}/private/recent`, {
+export const fetchRecentProblemsApi = headers => axios.get(`${SERVER_URL}/private/v2/recent`, {
     ...commonRequestConfig,
     headers,
 });
 
-export const fetchRecentSolutionsApi = headers => axios.get(`${SERVER_URL}/private/recentSolutions`, {
+export const fetchRecentSolutionsApi = headers => axios.get(`${SERVER_URL}/private/v2/recentSolutions`, {
     ...commonRequestConfig,
     headers,
 });
 
-export const fetchRecentWorkApi = (role) => {
-    if (!role || role === 'student') {
+export const fetchRecentWorkApi = (type) => {
+    if (type === 'recentSolutionSets') {
         return fetchRecentSolutionsApi;
     }
     return fetchRecentProblemsApi;

@@ -67,10 +67,6 @@ export const saveUserInfoPayload = payload => ({
     payload,
 });
 
-export const fetchRecentWork = () => ({
-    type: 'FETCH_RECENT_WORK',
-});
-
 export const setRecentProblemSets = recentProblemSets => ({
     type: 'SET_RECENT_PROBLEM_SETS',
     payload: {
@@ -115,9 +111,22 @@ export const setUserInfo = payload => ({
     payload,
 });
 
+export const fetchRecentSets = (offset, type) => ({
+    type: 'REQUEST_RECENT_SETS',
+    payload: {
+        offset,
+        type,
+    },
+});
+
+export const fetchRecentWork = () => ({
+    type: 'FETCH_RECENT_WORK',
+});
+
 export default {
     checkUserLogin,
     fetchRecentWork,
+    fetchRecentSets,
     logoutOfUserProfile,
     redirectAfterLogin,
     resetUserProfile,
