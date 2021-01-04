@@ -5,6 +5,7 @@ import {
     fork,
     put,
     select,
+    takeEvery,
     takeLatest,
     throttle,
 } from 'redux-saga/effects';
@@ -30,6 +31,7 @@ import {
     getState,
 } from './selectors';
 import {
+    fetchRecentWorkApi,
     fetchCurrentUserApi,
     fetchUserInfoApi,
     getConfigApi,
@@ -52,6 +54,7 @@ import { getFormattedUserType } from '../../services/mathshare';
 const loginAlertId = 'login-alert';
 const redirectAlertId = 'redirect-info';
 const redirectWait = 2500;
+const PAGINATION_SIZE = 15;
 
 
 function* checkUserLoginSaga() {
@@ -119,7 +122,8 @@ function* checkUserLoginSaga() {
                 }
             } finally {
                 try {
-                    yield put(fetchRecentWork());
+                    yield put(fetchRecentWork(null, 'recentSolutionSets'));
+                    yield put(fetchRecentWork(null, 'recentProblemSets'));
                     const configResponse = yield call(getConfigApi);
                     if (configResponse.status === 200) {
                         const {
@@ -179,7 +183,11 @@ function* fetchRecentSolutionSetsSaga() {
             const {
                 data,
             } = response;
-            yield put(setRecentSolutionSets(data));
+            yield put(setRecentSolutionSets({
+                data,
+                loading: false,
+                showLoadMore: data.length === PAGINATION_SIZE,
+            }));
         } catch (error) {
             yield put({
                 type: 'FETCH_RECENT_SOLUTION_SETS_FAILURE',
@@ -198,10 +206,63 @@ function* fetchRecentProblemSetsSaga() {
             const {
                 data,
             } = response;
-            yield put(setRecentProblemSets(data));
+            yield put(setRecentProblemSets({
+                data,
+                loading: false,
+                showLoadMore: data.length === PAGINATION_SIZE,
+            }));
         } catch (error) {
             yield put({
                 type: 'FETCH_RECENT_PROBLEM_SETS_FAILURE',
+            });
+        }
+    });
+}
+
+function* requestRecentSetsSaga() {
+    yield takeEvery('REQUEST_RECENT_SETS', function* workerSaga({
+        payload: {
+            offset,
+            type,
+        },
+    }) {
+        try {
+            const requestPayload = {
+                'x-content-size': PAGINATION_SIZE,
+            };
+            if (offset) {
+                requestPayload['x-offset'] = offset;
+            }
+            const res = yield call(fetchRecentWorkApi(type), requestPayload);
+            const { data } = res;
+            const state = yield select(getState);
+            const oldData = state[type].data;
+            const oldIds = oldData.map(o => o.id);
+            const newData = data.filter(d => !oldIds.includes(d.id));
+            yield put({
+                type: 'REQUEST_RECENT_SETS_SUCCESS',
+                payload: {
+                    [type]: {
+                        data: [
+                            ...state[type].data,
+                            ...newData,
+                        ],
+                        loading: false,
+                        showLoadMore: (newData.length === PAGINATION_SIZE),
+                    },
+                },
+            });
+            if (newData.length === 0) {
+                alertSuccess(Locales.strings.no_more_problem_sets, Locales.strings.info);
+            }
+        } catch (error) {
+            alertError(Locales.strings.unable_to_load, Locales.strings.failure);
+            yield put({
+                type: 'REQUEST_RECENT_SETS_FAILURE',
+                payload: {
+                    type,
+                },
+                error,
             });
         }
     });
@@ -379,6 +440,7 @@ export default function* rootSaga() {
         fork(saveUserInfoSaga),
         fork(setUserProfileSaga),
         fork(logoutSaga),
+        fork(requestRecentSetsSaga),
         fork(setMobileNotifySaga),
         fork(savePersonalizationSettingsSaga),
         fork(setUserInfoSaga),
