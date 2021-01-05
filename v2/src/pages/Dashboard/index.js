@@ -239,9 +239,9 @@ class Dashboard extends Component {
 
         return (
             <div style={{ padding: '20px' }}>
-                {this.renderSetsContainer('recentProblemSets', Locales.strings.my_solution_sets, true)}
+                {this.renderSetsContainer('recentProblemSets', Locales.strings.my_created_sets, true)}
                 {this.renderSignInBanner()}
-                {userProfile.email && this.renderSetsContainer('recentSolutionSets', Locales.strings.my_created_sets)}
+                {userProfile.email && this.renderSetsContainer('recentSolutionSets', Locales.strings.my_solution_sets)}
                 {this.renderExampleSets()}
             </div>
         );
