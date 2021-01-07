@@ -265,14 +265,13 @@ class ProblemSet extends Component {
                     <Col className={`gutter-row ${styles.topBar}`} xs={24} sm={24} md={18} lg={18} xl={18}>
                         <span className={styles.back}>
                             <Button
-                                aria-label={Locales.strings.back_to_all_sets}
+                                aria-label={Locales.strings.back_to_dashboard}
                                 onClick={() => {
                                     this.props.history.replace('/app');
                                 }}
                                 type="text"
                                 icon={(
                                     <>
-                                        <span />
                                         <FontAwesomeIcon icon={faArrowLeft} size="2x" />
                                     </>
                                 )}

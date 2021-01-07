@@ -18,6 +18,7 @@ class Locales {
                 back: 'Go back',
                 back_2: 'Back',
                 back_to_all_sets: 'Back to All Sets',
+                back_to_dashboard: 'Back to Dashboard',
                 back_to_problem_set: 'Back to \'{title}\' set',
                 benefits_of_logging_in: 'Benefits of logging in',
                 benefits_of_signing_up: 'Benefits of signing up',
