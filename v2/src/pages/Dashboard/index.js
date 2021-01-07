@@ -1,5 +1,5 @@
 import {
-    faBars, faThLarge,
+    faBars, faPlusCircle, faThLarge,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -7,8 +7,10 @@ import {
 } from 'antd';
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
+import * as dayjs from 'dayjs';
 import Card from '../../components/Card';
 import problemSetListActions from '../../redux/problemSetList/actions';
+import problemSetActions from '../../redux/problemSet/actions';
 import { fetchRecentWork } from '../../redux/userProfile/actions';
 import { stopEvent } from '../../services/events';
 import Locales from '../../strings';
@@ -44,6 +46,17 @@ class Dashboard extends Component {
     duplicateProblemSet = problemSet => (e) => {
         this.props.duplicateProblemSet(problemSet);
         return stopEvent(e);
+    }
+
+    newProblemSet = () => {
+        this.props.setTempPalettes([
+            'Edit',
+            'Operators',
+            'Notations',
+            'Geometry',
+        ]);
+
+        this.props.saveProblemSet([], `${Locales.strings.new_problem_set} ${dayjs().format('MM-DD-YYYY')}`, null);
     }
 
     archiveProblemSet = problemSet => (e) => {
@@ -189,6 +202,18 @@ class Dashboard extends Component {
                         </Col>
                     )}
                 </Row>
+                {key === 'recentProblemSets' && (
+                    <Row className={`${styles.problemSetGrid} ${this.getLayout()} ${styles.newProblemSetContainer}`}>
+                        <Button
+                            type="ghost"
+                            icon={<FontAwesomeIcon icon={faPlusCircle} />}
+                            aria-label="Add New Problem Set"
+                            onClick={this.newProblemSet}
+                        >
+                            New Problem Set
+                        </Button>
+                    </Row>
+                )}
                 {userProfile.email && this.renderSetsCommon(key)}
             </>
         );
@@ -227,7 +252,7 @@ class Dashboard extends Component {
         //     },
         // ];
 
-        if (userProfile.role === 'student') {
+        if (userProfile.userType === 'student') {
             return (
                 <div style={{ padding: '20px' }}>
                     {this.renderSetsContainer('recentSolutionSets', Locales.strings.my_solution_sets, true)}
@@ -257,6 +282,7 @@ export default connect(
         router: state.router,
     }),
     {
+        ...problemSetActions,
         ...problemSetListActions,
         fetchRecentWork,
     },

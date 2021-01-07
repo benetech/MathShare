@@ -12,26 +12,27 @@ import {
     goBack,
 } from 'connected-react-router';
 import {
-    // resetProblemSet,
+    resetProblemSet,
     saveProblems,
     setProblemSetShareCode,
     // toggleModals,
     updateProblemList,
     updateTempSet,
-    // finishEditing,
+    finishEditing,
     updateSet,
     shareSolutions as shareSolutionsAction,
     setReviewSolutions,
     requestProblemSetSuccess,
     updateProblemSetPayload,
 } from './actions';
-// import {
-//     updateProblemStore,
-// } from '../problem/actions';
+import {
+    updateProblemStore,
+} from '../problem/actions';
 import {
     fetchEditableProblemSetSolutionApi,
     fetchPartnerSubmitOptionsApi,
     fetchProblemsByActionAndCodeApi,
+    saveProblemSetApi,
     updateProblemsApi,
     // submitToPartnerApi,
 } from './apis';
@@ -234,9 +235,9 @@ function* addProblemSaga() {
                 yield put({
                     type: 'SAVE_PROBLEM_SUCCESS',
                 });
-                // yield put(updateProblemStore({
-                //     textAreaValue: '',
-                // }));
+                yield put(updateProblemStore({
+                    textAreaValue: '',
+                }));
                 yield put({
                     type: 'CLEAR_SCRATCH_PAD_CONTENT',
                 });
@@ -483,77 +484,71 @@ function* requestShareSolutionsSaga() {
     });
 }
 
-// function* requestSaveProblemSetSaga() {
-//     yield takeLatest('REQUEST_SAVE_PROBLEM_SET', function* workerSaga({
-//         payload: {
-//             problems,
-//             title,
-//             redirect,
-//         },
-//     }) {
-//         try {
-//             const match = yield select(matchCurrentRoute('/app/problemSet/:action'));
-//             if (match) {
-//                 const {
-//                     params,
-//                 } = match;
-//                 if (params && params.action === 'edit') {
-//                     yield put(finishEditing(redirect));
-//                     return;
-//                 }
-//             }
+function* requestSaveProblemSetSaga() {
+    yield takeLatest('REQUEST_SAVE_PROBLEM_SET', function* workerSaga({
+        payload: {
+            problems,
+            title,
+            redirect,
+        },
+    }) {
+        try {
+            const match = yield select(matchCurrentRoute('/app/problemSet/:action'));
+            if (match) {
+                const {
+                    params,
+                } = match;
+                if (params && params.action === 'edit') {
+                    yield put(finishEditing(redirect));
+                    return;
+                }
+            }
 
-//             const {
-//                 tempPalettes,
-//             } = yield select(getState);
-//             yield put(resetProblemSet());
-//             const set = {
-//                 problems,
-//                 title,
-//                 palettes: tempPalettes,
-//                 hideSteps: true,
-//                 optionalExplanations: true,
-//             };
-//             const {
-//                 data,
-//             } = yield call(saveProblemSetApi, set);
-//             const {
-//                 editCode,
-//                 shareCode,
-//             } = data;
-//             yield put({
-//                 type: 'REQUEST_SAVE_PROBLEM_SET_SUCCESS',
-//                 payload: {
-//                     editCode,
-//                     shareCode,
-//                 },
-//             });
+            const {
+                tempPalettes,
+            } = yield select(getState);
+            yield put(resetProblemSet());
+            const set = {
+                problems,
+                title,
+                palettes: tempPalettes,
+                hideSteps: true,
+                optionalExplanations: true,
+            };
+            const {
+                data,
+            } = yield call(saveProblemSetApi, set);
+            const {
+                editCode,
+                shareCode,
+            } = data;
+            yield put({
+                type: 'REQUEST_SAVE_PROBLEM_SET_SUCCESS',
+                payload: {
+                    editCode,
+                    shareCode,
+                },
+            });
 
-//             const {
-//                 activeModals,
-//             } = yield select(getModalState);
-//             if (activeModals.includes(ADD_PROBLEM_SET)) {
-//                 yield put(toggleModals([ADD_PROBLEM_SET]));
-//             }
-//             if (redirect !== null) {
-//                 if (redirect) {
-//                     yield put(push(`/app/problemSet/view/${shareCode}`));
-//                 } else {
-//                     yield put(push(`/app/problemSet/edit/${editCode}`));
-//                     yield put(toggleModals([SHARE_NEW_SET]));
-//                 }
-//                 alertSuccess(Locales.strings.created_problem_set, Locales.strings.success);
-//             } else {
-//                 yield put(push(`/app/problemSet/edit/${editCode}`));
-//             }
-//         } catch (error) {
-//             yield put({
-//                 type: 'REQUEST_SAVE_PROBLEM_SET_FAILURE',
-//                 error,
-//             });
-//         }
-//     });
-// }
+            if (redirect !== null) {
+                if (redirect) {
+                    yield put(push(`/app/problemSet/view/${shareCode}`));
+                } else {
+                    yield put(push(`/app/problemSet/edit/${editCode}`));
+                }
+                displayAlert('success', Locales.strings.created_problem_set, Locales.strings.success);
+            } else {
+                yield put(push(`/app/problemSet/edit/${editCode}`));
+            }
+        } catch (error) {
+            yield put({
+                type: 'REQUEST_SAVE_PROBLEM_SET_FAILURE',
+                error,
+            });
+            displayAlert('error', Locales.strings.failure_in_creating_problem_set, Locales.strings.failure);
+        }
+    });
+}
 
 function* requestFinishEditingSaga() {
     yield takeLatest('FINISH_EDITING', function* workerSaga({
@@ -698,7 +693,7 @@ export default function* rootSaga() {
         fork(requestSaveProblemsSaga),
         fork(requestEditProblemSaga),
         fork(requestShareSolutionsSaga),
-        // fork(requestSaveProblemSetSaga),
+        fork(requestSaveProblemSetSaga),
         fork(requestUpdateProblemsSaga),
         fork(requestFinishEditingSaga),
         fork(requestUpdateTitleSaga),
