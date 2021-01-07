@@ -8,7 +8,6 @@ import { faCheckCircle, faShare, faTimes } from '@fortawesome/free-solid-svg-ico
 import editor from './styles.scss';
 import Locales from '../../../strings';
 import { passEventForKeys } from '../../../services/events';
-import googleClassroomIcon from '../../../../../images/google-classroom-icon.png';
 import msTeamIcon from '../../../../../images/ms-team-icon.svg';
 // import googleAnalytics from '../../scripts/googleAnalytics';
 import CopyLink from '../../CopyLink';
@@ -168,7 +167,7 @@ export default class ProblemSetShareModal extends React.Component {
                                             }
                                             type="button"
                                         >
-                                            <img src={googleClassroomIcon} alt="" />
+                                            <img src="https://mathshare-qa.diagramcenter.org/images/google-classroom-icon.png" alt="" />
                                             <span className={editor.btnText}>
                                                 <span className="sROnly">
                                                     {Locales.strings.share_on}
