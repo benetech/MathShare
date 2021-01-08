@@ -9,6 +9,7 @@ import {
     faEllipsisH,
     faMinusCircle,
     faPlusCircle,
+    faShare,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -21,6 +22,8 @@ import {
 import styles from './styles.scss';
 import Locales from '../../strings';
 import { stopEvent } from '../../services/events';
+import ProblemSetShareModal from '../Modals/ProblemSetShareModal';
+import { FRONTEND_URL_PROTO } from '../../config';
 
 const getColor = (id) => {
     const hash = Number(id || '0') % 3;
@@ -112,8 +115,10 @@ const Card = (props) => {
         archiveProblemSet,
         duplicateProblemSet,
         userProfile,
+        problemSet,
     } = props;
     const [isModalVisible, updateModalVisible] = useState(false);
+    const [shareModal, updateShareModal] = useState(false);
     if (newSet) {
         return (
             <div
@@ -150,6 +155,32 @@ const Card = (props) => {
                     <Button type="text" icon={<FontAwesomeIcon icon={faCopy} />} onClick={duplicateProblemSet}>
                         Duplicate
                     </Button>
+                </Menu.Item>
+            )}
+            {solutions && userProfile.email && (
+                <Menu.Item>
+                    <Button
+                        type="text"
+                        icon={<FontAwesomeIcon icon={faShare} />}
+                        onClick={() => {
+                            updateShareModal(true);
+                        }}
+                    >
+                        {Locales.strings.share_my_work}
+                    </Button>
+                    <ProblemSetShareModal
+                        problemList={problemSet}
+                        shareLink={`${FRONTEND_URL_PROTO}/app/problemSet/review/${problemSet.problemSetShareCode}`}
+                        isSolutionSet
+                        centered
+                        visible={shareModal}
+                        onOk={() => {
+                            updateShareModal(false);
+                        }}
+                        onCancel={() => {
+                            updateShareModal(false);
+                        }}
+                    />
                 </Menu.Item>
             )}
             {!isExampleSet && userProfile.email && (

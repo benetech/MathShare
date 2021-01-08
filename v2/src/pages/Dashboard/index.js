@@ -133,6 +133,11 @@ class Dashboard extends Component {
                             <Card
                                 key={recentSet.id}
                                 {...recentSet}
+                                problemSet={{
+                                    ...recentSet,
+                                    set: recentSet,
+                                    problemSetShareCode: recentSet.reviewCode,
+                                }}
                                 duplicateProblemSet={this.duplicateProblemSet(recentSet)}
                                 archiveProblemSet={this.archiveProblemSet(recentSet)}
                                 userProfile={userProfile}

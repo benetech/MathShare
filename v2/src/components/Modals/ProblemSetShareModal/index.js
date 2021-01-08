@@ -214,7 +214,7 @@ export default class ProblemSetShareModal extends React.Component {
                                         </button>
                                     </Tooltip>
                                 </span>
-                                {(isSolutionSet && currentSet.partner
+                                {(isSolutionSet && currentSet && currentSet.partner
                                     && currentSet.partner.canSubmit) && (
                                     <Button
                                         id="partnerBtn"
