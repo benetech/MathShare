@@ -27,6 +27,10 @@
 .modalMessage {
     margin-top: 15px;
     padding: 10px 30px;
+
+    > p {
+        margin-bottom: 0;
+    }
 }
 
 
@@ -93,5 +97,16 @@
 .modalFooter {
     > svg {
         margin-right: 5px;
+    }
+}
+
+.setShareModal {
+    :global(.ant-modal-header) {
+        padding: 8px 12px;
+    }
+
+    :global(.ant-modal-body) {
+        padding: 0;
+        padding-top: 10px;
     }
 }
