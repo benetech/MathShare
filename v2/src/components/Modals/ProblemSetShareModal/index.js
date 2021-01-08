@@ -123,8 +123,8 @@ export default class ProblemSetShareModal extends React.Component {
                         {' Close'}
                     </Button>,
                 ]}
-                width="80vw"
                 style={{ width: '100%' }}
+                className={editor.setShareModal}
             >
                 <div id="ProblemSetShareModal" className={editor.modal}>
                     <div className={editor.modalBody}>
@@ -238,7 +238,6 @@ export default class ProblemSetShareModal extends React.Component {
                         </div>
                     </div>
                 </div>
-                <Button type="primary" />
             </Modal>
         );
     }
