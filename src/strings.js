@@ -401,6 +401,7 @@ class Locales {
                 thanks_for_mobile_notfiy: 'Thanks, we will notify you once we add mobile compatibility',
                 the: 'The',
                 title: 'Title',
+                title_max_length: 'Max length of title is 2000 characters',
                 to_mathshare_twitter: 'Twitter',
                 to_mathshare_youtube: 'YouTube',
                 to_track: 'to track your problem sets',
