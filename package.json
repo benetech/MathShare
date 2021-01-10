@@ -94,6 +94,6 @@
     "redux-saga": "^1.0.2",
     "speech-rule-engine": "^2.4.0",
     "styled-components": "^4.2.0",
-    "watson-speech": "^0.35.12"
+    "watson-speech": "^0.38.2"
   }
 }
