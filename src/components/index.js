@@ -171,6 +171,8 @@ class App extends Component {
             } else {
                 message = Locales.strings.no_problem_title_warning;
             }
+        } else if ($.trim(text).length > 2000) {
+            message = Locales.strings.title_max_length;
         } else if (problemList.theActiveMathField.$latex() === '' && image === null) {
             message = Locales.strings.no_problem_equation_or_image_warning;
         }

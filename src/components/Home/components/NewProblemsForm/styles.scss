@@ -35,7 +35,7 @@ div.row {
 .container table {
     width: calc(100% - 20px);
     margin: 10px;
-    min-width: 950px;
+    table-layout: fixed;
 
     .headerRow {
         th[scope='col'] {
@@ -75,7 +75,9 @@ div.row {
 }
 
 .titleCell {
-    width: 320px;
+    width: 350px;
+    padding-left: 10px;
+    padding-right: 45px;
 }
 
 .tableControlHeader {
@@ -92,6 +94,8 @@ div.row {
     cursor: pointer;
     display: flex;
     justify-content: flex-end;
+    background: white;
+    position: relative;
 
     > span {
         display: inherit;
