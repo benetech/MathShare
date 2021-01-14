@@ -281,7 +281,9 @@ function* requestSaveProblemsSaga() {
             } = yield select(getState);
 
             yield put(updateProblemSetPayload({
-                problems: newProblems || set.problems,
+                problems: (
+                    newProblems || set.problems.filter(problem => problem.text || problem.title)
+                ),
             }));
         } catch (error) {
             yield put({
