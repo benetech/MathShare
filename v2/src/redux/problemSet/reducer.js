@@ -34,7 +34,26 @@ const initialState = {
 };
 
 
-const addPositionToProblems = (problemList) => {
+const addPositionToProblems = (newData, currentData) => {
+    const problemList = newData.problems;
+    let currentProblemList = [];
+    if (newData.editCode === currentData.set.editCode) {
+        currentProblemList = currentData.set.problems || [];
+        currentProblemList.map((currentProblem, index) => {
+            if (index >= problemList.length
+                && (problemList.length + 1) === currentProblemList.length) {
+                problemList.push(currentProblem);
+            }
+            return null;
+        });
+    }
+    if (!problemList || problemList.length === 0) {
+        return [{
+            position: 0,
+            text: '',
+            title: '',
+        }];
+    }
     const multipleZeros = problemList.filter(problem => (
         !problem.position || problem.position === 0
     ));
@@ -86,13 +105,27 @@ const problems = (state = initialState, {
             ...state,
             set: {
                 ...payload,
-                problems: addPositionToProblems(payload.problems),
+                problems: addPositionToProblems(payload, state),
             },
             newSetSharecode: payload.shareCode,
         };
-    case 'ADD_PROBLEM':
+    case 'ADD_PROBLEM': {
+        const setProblems = state.set.problems;
+        const problemToEditIndex = setProblems.length - 1;
+        const lastProblem = setProblems[problemToEditIndex];
+        if (lastProblem.text === '' && lastProblem.title === '') {
+            return {
+                ...state,
+                problemToEditIndex,
+                problemToEdit: {
+                    ...lastProblem,
+                },
+            };
+        }
         return {
             ...state,
+            problemToEditIndex: problemToEditIndex + 1,
+            problemToEdit: payload.problem,
             set: {
                 ...state.set,
                 problems: [
@@ -101,6 +134,7 @@ const problems = (state = initialState, {
                 ],
             },
         };
+    }
     case 'UPDATE_PROBLEM_LIST':
         return {
             ...state,
@@ -179,6 +213,25 @@ const problems = (state = initialState, {
             problemToEditIndex: payload.problemToEditIndex,
             problemToEdit: {
                 ...set.problems[payload.problemToEditIndex],
+            },
+        };
+    }
+    case 'UPDATE_EDIT_PROBLEM': {
+        const problemToEditIndex = state.problemToEditIndex || 0;
+        return {
+            ...state,
+            set: {
+                ...state.set,
+                problems: [
+                    ...state.set.problems.filter((_, index) => index < problemToEditIndex),
+                    {
+                        title: '',
+                        text: '',
+                        ...state.set.problems[problemToEditIndex],
+                        ...payload,
+                    },
+                    ...state.set.problems.filter((_, index) => index > problemToEditIndex),
+                ],
             },
         };
     }

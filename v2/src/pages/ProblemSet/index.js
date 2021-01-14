@@ -1,6 +1,7 @@
 import {
-    faArrowLeft, faCopy, faEllipsisH, faMinusCircle, faShare,
+    faArrowLeft, faCopy, faEllipsisH, faMinusCircle, faShare, faPen, faPlusCircle, faArrowRight,
 } from '@fortawesome/free-solid-svg-icons';
+import ContentEditable from 'react-contenteditable';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     Row, Col, Button, Dropdown, Menu, Modal,
@@ -15,6 +16,7 @@ import { stopEvent } from '../../services/events';
 import Locales from '../../strings';
 import ProblemSetShareModal from '../../components/Modals/ProblemSetShareModal';
 import { FRONTEND_URL_PROTO } from '../../config';
+import Step from '../../components/Step';
 // import Select from '../../components/Select';
 
 const gutter = {
@@ -25,9 +27,14 @@ const gutter = {
 };
 
 class ProblemSet extends Component {
+    contentEditable = React.createRef();
+
     state = {
         layout: 'grid',
         modalVisible: false,
+        editingTitle: false,
+        updatedTitleText: '',
+        currentProblem: 0,
     };
 
     componentDidMount() {
@@ -43,14 +50,58 @@ class ProblemSet extends Component {
         }
     }
 
+    componentWillReceiveProps(nextProps) {
+        const {
+            problemSet,
+        } = nextProps;
+        const { set } = problemSet;
+        const { title } = set;
+        if (title !== this.state.updatedTitleText) {
+            this.setState({ updatedTitleText: title });
+        }
+    }
+
     setLayout = (e) => {
         this.setState({
             layout: e.target.value,
         });
     }
 
-    handleDropdownSelect = (e) => {
-        console.log('e', e);
+    saveTitle = () => {
+        const {
+            problemSet,
+        } = this.props;
+        const { set } = problemSet;
+        if (!this.state.updatedTitleText || !this.state.updatedTitleText.trim()) {
+            return;
+        }
+        if (set.title !== this.state.updatedTitleText) {
+            this.props.updateProblemSetTitle(this.state.updatedTitleText);
+        }
+    }
+
+    handleKeyDown = (e) => {
+        this.setState({
+            updatedTitleText: (e.target.value || '').substring(0, 200),
+        });
+    }
+
+    focusTitle = () => {
+        this.contentEditable.current.focus();
+        const inp = this.contentEditable.current;
+        if (inp.createTextRange) {
+            const part = inp.createTextRange();
+            part.move('character', 0);
+            part.select();
+        } else if (inp.setSelectionRange) {
+            inp.setSelectionRange(0, 0);
+        }
+        document.execCommand('selectAll', false, null);
+    }
+
+    handleTitleFocus = () => {
+        this.contentEditable.current.focus();
+        document.execCommand('selectAll', false, null);
     }
 
     loadData = (action, code) => {
@@ -126,7 +177,7 @@ class ProblemSet extends Component {
         return layout;
     }
 
-    renderProblems() {
+    renderProblems = () => {
         const { problemSet, match } = this.props;
         const {
             action,
@@ -134,6 +185,14 @@ class ProblemSet extends Component {
         const { set } = problemSet;
         if (action === 'view' || set.loading) {
             return null;
+        }
+        if (action === 'edit') {
+            return (
+                <div className={styles.problemContainer}>
+                    {this.renderProblemSelector()}
+                    {this.renderSelectedProblem()}
+                </div>
+            );
         }
         return (
             <>
@@ -155,7 +214,98 @@ class ProblemSet extends Component {
         );
     }
 
-    render() {
+    renderProblemSelector = () => {
+        const {
+            match,
+            problemSet,
+        } = this.props;
+        const {
+            action,
+        } = match.params;
+        const { set, problemToEditIndex } = problemSet;
+        const selectedIndex = problemToEditIndex || 0;
+        const pageLength = 5;
+        const startIndex = Math.min(
+            Math.max(0, selectedIndex - (pageLength - 1) / 2),
+            Math.max(0, set.problems.length - pageLength),
+        );
+        const endIndex = Math.min(set.problems.length - 1, startIndex + pageLength - 1);
+        const range = Array(endIndex - startIndex + 1).fill().map((_, idx) => startIndex + idx);
+        return (
+            <div className={styles.stepActionsContainer}>
+                <div className={styles.paginator}>
+                    <Button
+                        type="text"
+                        size="large"
+                        disabled={selectedIndex === 0}
+                        icon={<FontAwesomeIcon icon={faArrowLeft} />}
+                        onClick={() => { this.props.setEditProblem(selectedIndex - 1, action); }}
+                        aria-label={Locales.strings.previous_problem.replace('{currentIndex}', selectedIndex + 1)}
+                    />
+                    {range.map(index => (
+                        <Button
+                            key={`problemIndex-${index}`}
+                            type="text"
+                            size="large"
+                            className={`${styles.paginatorBtn} ${index === selectedIndex ? styles.active : ''}`}
+                            onClick={() => { this.props.setEditProblem(index, action); }}
+                            aria-label={
+                                `${Locales.strings.problem} ${index + 1}${index === selectedIndex ? (`, ${Locales.strings.active}`) : ''}`
+                            }
+                        >
+                            {String(index + 1).padStart(2, '0')}
+                        </Button>
+                    ))}
+                    <Button
+                        type="text"
+                        size="large"
+                        disabled={(selectedIndex + 1) >= set.problems.length}
+                        icon={<FontAwesomeIcon icon={faArrowRight} />}
+                        onClick={() => { this.props.setEditProblem(selectedIndex + 1, action); }}
+                        aria-label={Locales.strings.next_problem.replace('{currentIndex}', selectedIndex + 1)}
+                    />
+                </div>
+                <Button
+                    className={styles.addNewProblem}
+                    type="text"
+                    icon={<FontAwesomeIcon icon={faPlusCircle} />}
+                    size="large"
+                    onClick={() => {
+                        this.props.addEmptyProblem();
+                    }}
+                    aria-label={Locales.strings.add_new_problem}
+                />
+            </div>
+        );
+    }
+
+    renderSelectedProblem = () => {
+        const {
+            problemSet,
+        } = this.props;
+        const { set } = problemSet;
+        if (!set.problems || set.problems.length === 0) {
+            return null;
+        }
+        const editIndex = problemSet.problemToEditIndex || 0;
+        const problem = set.problems[editIndex] || { text: '', title: '' };
+        return (
+            <div className={styles.stepContainer}>
+                <Step
+                    key={`${editIndex}-step`}
+                    index={editIndex}
+                    stepValue={problem.text}
+                    explanation={problem.title}
+                    explanationPlaceholder={Locales.strings.add_the_prompt}
+                    solvePlaceholder={Locales.strings.type_the_problem}
+                    hideHeading
+                    isProblemSet
+                />
+            </div>
+        );
+    }
+
+    renderHeader = () => {
         const {
             match,
             problemSet,
@@ -186,36 +336,38 @@ class ProblemSet extends Component {
                         </Button>
                     </Menu.Item>
                 )}
-                <Menu.Item>
-                    <Button
-                        type="text"
-                        icon={<FontAwesomeIcon icon={faShare} />}
-                        onClick={() => {
-                            this.setState({
-                                shareModal: true,
-                            });
-                        }}
-                    >
-                        {Locales.strings.share_my_work}
-                    </Button>
-                    <ProblemSetShareModal
-                        problemList={problemSet}
-                        shareLink={`${FRONTEND_URL_PROTO}/app/problemSet/review/${problemSet.problemSetShareCode}`}
-                        isSolutionSet
-                        centered
-                        visible={this.state.shareModal}
-                        onOk={() => {
-                            this.setState({
-                                shareModal: false,
-                            });
-                        }}
-                        onCancel={() => {
-                            this.setState({
-                                shareModal: false,
-                            });
-                        }}
-                    />
-                </Menu.Item>
+                {action !== 'edit' && (
+                    <Menu.Item>
+                        <Button
+                            type="text"
+                            icon={<FontAwesomeIcon icon={faShare} />}
+                            onClick={() => {
+                                this.setState({
+                                    shareModal: true,
+                                });
+                            }}
+                        >
+                            {Locales.strings.share_my_work}
+                        </Button>
+                        <ProblemSetShareModal
+                            problemList={problemSet}
+                            shareLink={`${FRONTEND_URL_PROTO}/app/problemSet/review/${problemSet.problemSetShareCode}`}
+                            isSolutionSet
+                            centered
+                            visible={this.state.shareModal}
+                            onOk={() => {
+                                this.setState({
+                                    shareModal: false,
+                                });
+                            }}
+                            onCancel={() => {
+                                this.setState({
+                                    shareModal: false,
+                                });
+                            }}
+                        />
+                    </Menu.Item>
+                )}
                 {userProfile.email && (
                     <Menu.Item>
                         <Button
@@ -230,7 +382,7 @@ class ProblemSet extends Component {
                             {Locales.strings.delete}
                         </Button>
                         <Modal
-                            title="Confirm"
+                            title={Locales.strings.confirm}
                             visible={modalVisible}
                             onOk={(e) => {
                                 this.archiveProblemSet({
@@ -256,60 +408,107 @@ class ProblemSet extends Component {
             </Menu>
         );
 
+        const firstSmall = action === 'edit' ? 6 : 24;
+        const firstLarge = action === 'edit' ? 6 : 18;
+        const secondSmall = action === 'edit' ? 18 : 24;
+        const secondLarge = action === 'edit' ? 18 : 6;
+
+        return (
+            <Row
+                className={`justify-content-between ${styles.heading} ${action === 'edit' ? styles.editActionBar : ''}`}
+                gutter={gutter}
+            >
+                <Col className={`gutter-row ${styles.topBar}`} xs={firstSmall} sm={firstSmall} md={firstLarge} lg={firstLarge} xl={firstLarge}>
+                    <span className={styles.back}>
+                        <Button
+                            aria-label={Locales.strings.back_to_dashboard}
+                            onClick={() => {
+                                this.props.history.replace('/app');
+                            }}
+                            type="text"
+                            icon={(
+                                <>
+                                    <FontAwesomeIcon icon={faArrowLeft} size="2x" />
+                                </>
+                            )}
+                        />
+                    </span>
+                    {action !== 'edit' && <span className={styles.title}>{set.title}</span>}
+                </Col>
+                <Col
+                    className={`gutter-row ${styles.topBar} ${action === 'edit' ? styles.editRightSection : ''}`}
+                    xs={secondSmall}
+                    sm={secondSmall}
+                    md={secondLarge}
+                    lg={secondLarge}
+                    xl={secondLarge}
+                    onClick={(e) => {
+                        stopEvent(e);
+                    }}
+                >
+                    {action === 'edit' && (
+                        <Button
+                            type="primary"
+                            icon={<FontAwesomeIcon icon={faShare} />}
+                            className={styles.assignSet}
+                            onClick={() => {
+                                console.log('share modal');
+                            }}
+                        >
+                            {Locales.strings.assign_set}
+                        </Button>
+                    )}
+                    {(action === 'edit' || userProfile.email) && (action !== 'review') && (
+                        <Dropdown
+                            overlay={menu}
+                            placement="bottomRight"
+                            className={styles.options}
+                            overlayClassName={styles.dropdown}
+                            trigger={['click']}
+                            getPopupContainer={triggerNode => triggerNode.parentNode}
+                        >
+                            <Button
+                                type="text"
+                                icon={<FontAwesomeIcon icon={faEllipsisH} size="4x" />}
+                                onClick={(e) => {
+                                    stopEvent(e);
+                                }}
+                            />
+                        </Dropdown>
+                    )}
+                </Col>
+                {action === 'edit' && (
+                    <Col
+                        xs={22}
+                        className={styles.editTitleContainer}
+                        onFocus={() => this.contentEditable.current.focus()}
+                    >
+                        <ContentEditable
+                            className={styles.titleText}
+                            innerRef={this.contentEditable}
+                            html={this.state.updatedTitleText}
+                            disabled={false}
+                            onChange={this.handleKeyDown}
+                            // onFocusCapture={this.handleTitleFocus}
+                            onBlur={this.saveTitle}
+                        />
+                        <FontAwesomeIcon
+                            forwardedRef={(ref) => { this.titleEditIcon = ref; }}
+                            className={styles.editBtn}
+                            icon={faPen}
+                            onFocus={this.focusTitle}
+                            onClick={this.focusTitle}
+                        />
+                    </Col>
+                )}
+            </Row>
+        );
+    }
+
+    render() {
         return (
             <div>
-                <Row
-                    className={`justify-content-between ${styles.heading}`}
-                    gutter={gutter}
-                >
-                    <Col className={`gutter-row ${styles.topBar}`} xs={24} sm={24} md={18} lg={18} xl={18}>
-                        <span className={styles.back}>
-                            <Button
-                                aria-label={Locales.strings.back_to_dashboard}
-                                onClick={() => {
-                                    this.props.history.replace('/app');
-                                }}
-                                type="text"
-                                icon={(
-                                    <>
-                                        <FontAwesomeIcon icon={faArrowLeft} size="2x" />
-                                    </>
-                                )}
-                            />
-                        </span>
-                        <span className={styles.title}>{set.title}</span>
-                    </Col>
-                    <Col
-                        className={`gutter-row ${styles.topBar}`}
-                        xs={24}
-                        sm={24}
-                        md={6}
-                        lg={6}
-                        xl={6}
-                        onClick={(e) => {
-                            stopEvent(e);
-                        }}
-                    >
-                        {(action === 'edit' || userProfile.email) && (action !== 'review') && (
-                            <Dropdown
-                                overlay={menu}
-                                placement="bottomRight"
-                                className={styles.options}
-                                overlayClassName={styles.dropdown}
-                                trigger={['click']}
-                                getPopupContainer={triggerNode => triggerNode.parentNode}
-                            >
-                                <Button
-                                    type="text"
-                                    icon={<FontAwesomeIcon icon={faEllipsisH} size="4x" />}
-                                    onClick={(e) => {
-                                        stopEvent(e);
-                                    }}
-                                />
-                            </Dropdown>
-                        )}
-                    </Col>
-                </Row>
+                {this.renderHeader()}
                 {this.renderProblems()}
             </div>
         );

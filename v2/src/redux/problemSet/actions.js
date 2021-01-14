@@ -24,6 +24,17 @@ export const addProblem = (imageData, text, index, newProblemSet) => ({
     },
 });
 
+export const addEmptyProblem = () => ({
+    type: 'ADD_PROBLEM',
+    payload: {
+        problem: {
+            title: '',
+            text: '',
+            steps: [],
+        },
+    },
+});
+
 export const deleteProblem = () => ({
     type: 'REQUEST_DELETE_PROBLEM',
 });
@@ -138,6 +149,11 @@ export const setEditProblem = (index, action, textAreaValue) => ({
     },
 });
 
+export const updateEditProblem = payload => ({
+    type: 'UPDATE_EDIT_PROBLEM',
+    payload,
+});
+
 export const finishEditing = redirect => ({
     type: 'FINISH_EDITING',
     payload: {
@@ -218,4 +234,6 @@ export default {
     updateReviewSolutions,
     loadProblemSetSolutionByEditCode,
     submitToPartner,
+    addEmptyProblem,
+    updateEditProblem,
 };
