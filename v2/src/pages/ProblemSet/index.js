@@ -81,8 +81,12 @@ class ProblemSet extends Component {
     }
 
     handleKeyDown = (e) => {
+        const rawText = (e.target.value || '')
+            .replace(/(?:^[\s\u00a0]+)|(?:[\s\u00a0]+$)/g, '')
+            .replace(/&amp;/g, '')
+            .replace(/<br>/g, '');
         this.setState({
-            updatedTitleText: (e.target.value || '').substring(0, 200),
+            updatedTitleText: rawText.substring(0, 200),
         });
     }
 
