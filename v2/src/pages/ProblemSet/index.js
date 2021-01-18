@@ -483,26 +483,28 @@ class ProblemSet extends Component {
                 </Col>
                 {action === 'edit' && (
                     <Col
-                        xs={22}
-                        className={styles.editTitleContainer}
+                        xs={24}
+                        className={styles.titleRow}
                         onFocus={() => this.contentEditable.current.focus()}
                     >
-                        <ContentEditable
-                            className={styles.titleText}
-                            innerRef={this.contentEditable}
-                            html={this.state.updatedTitleText}
-                            disabled={false}
-                            onChange={this.handleKeyDown}
-                            // onFocusCapture={this.handleTitleFocus}
-                            onBlur={this.saveTitle}
-                        />
-                        <FontAwesomeIcon
-                            forwardedRef={(ref) => { this.titleEditIcon = ref; }}
-                            className={styles.editBtn}
-                            icon={faPen}
-                            onFocus={this.focusTitle}
-                            onClick={this.focusTitle}
-                        />
+                        <div className={styles.editTitleContainer}>
+                            <ContentEditable
+                                className={styles.titleText}
+                                innerRef={this.contentEditable}
+                                html={this.state.updatedTitleText}
+                                disabled={false}
+                                onChange={this.handleKeyDown}
+                                // onFocusCapture={this.handleTitleFocus}
+                                onBlur={this.saveTitle}
+                            />
+                            <FontAwesomeIcon
+                                forwardedRef={(ref) => { this.titleEditIcon = ref; }}
+                                className={styles.editBtn}
+                                icon={faPen}
+                                onFocus={this.focusTitle}
+                                onClick={this.focusTitle}
+                            />
+                        </div>
                     </Col>
                 )}
             </Row>

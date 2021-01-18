@@ -73,8 +73,12 @@
 }
 
 .heading {
-    .editTitleContainer {
+    .titleRow {
+        max-width: calc(100% - 40px);
         margin: auto;
+    }
+
+    .editTitleContainer {
         background: rgba(245, 243, 255, 0.75);
         padding: 12px;
         border-radius: 5px;
@@ -97,8 +101,12 @@
     }
 }
 
+:global(.sidebar-open) .problemContainer {
+    padding: 16px 28px;
+}
+
 .problemContainer {
-    padding: 16px;
+    padding: 16px 20px;
 
     .stepActionsContainer {
         display: flex;

@@ -29,7 +29,14 @@ class App extends Component {
         this.setCurrentFocusedElement();
     }
 
-    getClassFromUserConfig = () => 'container-fluid';
+    getClassFromUserConfig = () => {
+        const { ui } = this.props;
+        const { sideBarCollapsed } = ui;
+        if (sideBarCollapsed) {
+            return 'container-fluid';
+        }
+        return 'sidebar-open container-fluid';
+    };
 
     getBodyClass = () => 'flex-xl-nowrap row';
 
