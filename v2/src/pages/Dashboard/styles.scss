@@ -39,13 +39,10 @@
     }
 }
 
-@media (max-width: 480px) {
-    .newProblemSetContainer {
-
-        > button {
-            flex: 1;
-            max-width: unset;
-        }
+:global(.line-item).newProblemSetContainer {
+    > button {
+        flex: 1;
+        max-width: unset;
     }
 }
 
