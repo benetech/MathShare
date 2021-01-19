@@ -141,8 +141,12 @@
                 width: calc(100% - 30px);
                 outline: none;
                 line-height: 32px;
-                white-space: nowrap;
-                overflow: auto;
+
+                word-break: break-word;
+                flex-grow: 1;
+                &, &:focus {
+                    outline: none!important;
+                }
             }
         }
     }

@@ -3,6 +3,7 @@
 
 import { faCopy, faEllipsisH, faMinusCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import ContentEditable from 'react-contenteditable';
 import {
     Button, Dropdown, Menu,
 } from 'antd';
@@ -23,6 +24,7 @@ class Step extends Component {
             explanationFocused: false,
             latex: '',
         };
+        this.contentEditable = React.createRef();
     }
 
     scrollToTargetAdjusted = () => {
@@ -31,6 +33,35 @@ class Step extends Component {
 
     handleFocus = () => {
         this.mathfieldRef.mathfield.focus();
+    }
+
+    saveTitle = () => {
+        const {
+            isProblemSet,
+        } = this.props;
+        this.setState({ explanationFocused: false });
+        if (isProblemSet) {
+            this.props.saveProblems();
+        }
+    }
+
+    handleKeyDown = (e) => {
+        const {
+            index,
+            isProblemSet,
+        } = this.props;
+        const rawText = (e.target.value || '')
+            .replace(/(?:^[\s\u00a0]+)|(?:[\s\u00a0]+$)/g, '')
+            .replace(/&amp;/g, '')
+            .replace(/<br>/g, '');
+        const value = e.target.value;
+        if (isProblemSet) {
+            this.props.updateEditProblem({
+                title: rawText,
+            });
+        } else {
+            this.props.updateStepExplanation(index, value);
+        }
     }
 
     handleTab = (sender, direction) => {
@@ -120,7 +151,6 @@ class Step extends Component {
             explanation,
             explanationPlaceholder,
             hideHeading,
-            isProblemSet,
         } = this.props;
         const { explanationFocused, focused } = this.state;
 
@@ -179,32 +209,18 @@ class Step extends Component {
                     </div>
                     <div className={styles.explanationContainer}>
                         <span className={styles.icon} role="img" aria-label="speech bubble emoji">💬</span>
-                        <textarea
+                        <ContentEditable
                             className={styles.explanation}
+                            innerRef={this.contentEditable}
+                            html={explanation}
                             placeholder={explanationPlaceholder || 'Add your explanation here'}
-                            value={explanation}
-                            rows="1"
-                            onBlur={() => {
-                                this.setState({ explanationFocused: false });
-                                if (isProblemSet) {
-                                    this.props.saveProblems();
-                                }
-                            }}
+                            disabled={false}
+                            onChange={this.handleKeyDown}
                             onFocus={() => {
                                 this.setState({ explanationFocused: true });
                                 this.props.setCurrentStep(index);
                             }}
-                            onChange={(e) => {
-                                const value = e.target.value;
-                                if (isProblemSet) {
-                                    this.props.updateEditProblem({
-                                        title: value,
-                                    });
-                                } else {
-                                    this.props.updateStepExplanation(index, value);
-                                }
-                            }}
-                            ref={(ref) => { this.textAreaRef = ref; }}
+                            onBlur={this.saveTitle}
                         />
                     </div>
                 </div>
