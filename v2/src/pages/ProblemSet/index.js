@@ -246,9 +246,9 @@ class ProblemSet extends Component {
                         onClick={() => { this.props.setEditProblem(selectedIndex - 1, action); }}
                         aria-label={Locales.strings.previous_problem.replace('{currentIndex}', selectedIndex + 1)}
                     />
-                    {range.map(index => (
+                    {range.map((index, id) => (
                         <Button
-                            key={`problemIndex-${index}`}
+                            key={`problemIndex-${id}`}
                             type="text"
                             size="large"
                             className={`${styles.paginatorBtn} ${index === selectedIndex ? styles.active : ''}`}
