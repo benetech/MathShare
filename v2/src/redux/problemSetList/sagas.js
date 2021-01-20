@@ -55,10 +55,11 @@ function* requestRecentSetsSaga() {
         },
     }) {
         try {
-            const { data } = yield call(fetchRecentWorkApi(type), {
+            const res = yield call(fetchRecentWorkApi(type), {
                 'x-content-size': PAGINATION_SIZE,
                 'x-offset': offset,
             });
+            const { data, headers } = res;
             const state = yield select(getState);
             yield put({
                 type: 'REQUEST_RECENT_SETS_SUCCESS',
@@ -69,7 +70,7 @@ function* requestRecentSetsSaga() {
                             ...data,
                         ],
                         loading: false,
-                        showLoadMore: data.length === PAGINATION_SIZE,
+                        showLoadMore: headers['x-load-more'] === 'true',
                     },
                 },
             });

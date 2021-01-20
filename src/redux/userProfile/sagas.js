@@ -182,11 +182,12 @@ function* fetchRecentSolutionSetsSaga() {
             }
             const {
                 data,
+                headers,
             } = response;
             yield put(setRecentSolutionSets({
                 data,
                 loading: false,
-                showLoadMore: data.length === PAGINATION_SIZE,
+                showLoadMore: headers['x-load-more'] === 'true',
             }));
         } catch (error) {
             yield put({
@@ -205,11 +206,12 @@ function* fetchRecentProblemSetsSaga() {
             }
             const {
                 data,
+                headers,
             } = response;
             yield put(setRecentProblemSets({
                 data,
                 loading: false,
-                showLoadMore: data.length === PAGINATION_SIZE,
+                showLoadMore: headers['x-load-more'] === 'true',
             }));
         } catch (error) {
             yield put({
@@ -234,7 +236,7 @@ function* requestRecentSetsSaga() {
                 requestPayload['x-offset'] = offset;
             }
             const res = yield call(fetchRecentWorkApi(type), requestPayload);
-            const { data } = res;
+            const { data, headers } = res;
             const state = yield select(getState);
             const oldData = state[type].data;
             const oldIds = oldData.map(o => o.id);
@@ -248,7 +250,7 @@ function* requestRecentSetsSaga() {
                             ...newData,
                         ],
                         loading: false,
-                        showLoadMore: (newData.length === PAGINATION_SIZE),
+                        showLoadMore: headers['x-load-more'] === 'true',
                     },
                 },
             });
