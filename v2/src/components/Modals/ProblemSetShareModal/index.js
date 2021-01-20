@@ -119,7 +119,14 @@ export default class ProblemSetShareModal extends React.Component {
                 )}
                 closable={false}
                 footer={[
-                    <Button className={editor.modalFooter} key="submit" icon={<FontAwesomeIcon icon={faTimes} />} type="primary" onClick={this.props.onCancel}>
+                    <Button
+                        className={editor.modalFooter}
+                        key="submit"
+                        icon={<FontAwesomeIcon icon={faTimes} />}
+                        type="primary"
+                        aria-label="Close"
+                        onClick={this.props.onCancel}
+                    >
                         {' Close'}
                     </Button>,
                 ]}
@@ -148,6 +155,7 @@ export default class ProblemSetShareModal extends React.Component {
                                     shareLink={this.props.shareLink}
                                     copyLinkCallback={this.copyLinkCallback}
                                     className={classNames('btn', editor.button)}
+                                    btnProps={{ 'aria-label': Locales.strings.copy_link_url.trim() }}
                                 />
                             </div>
                             <div className={classNames('col-12', 'text-center', editor.externalButtons)}>

@@ -32,6 +32,7 @@ class ProblemSet extends Component {
     state = {
         layout: 'grid',
         modalVisible: false,
+        assignModal: false,
         editingTitle: false,
         updatedTitleText: '',
         currentProblem: 0,
@@ -451,16 +452,36 @@ class ProblemSet extends Component {
                     }}
                 >
                     {action === 'edit' && (
-                        <Button
-                            type="primary"
-                            icon={<FontAwesomeIcon icon={faShare} />}
-                            className={styles.assignSet}
-                            onClick={() => {
-                                console.log('share modal');
-                            }}
-                        >
-                            {Locales.strings.assign_set}
-                        </Button>
+                        <>
+                            <Button
+                                type="primary"
+                                icon={<FontAwesomeIcon icon={faShare} />}
+                                className={styles.assignSet}
+                                onClick={() => {
+                                    this.setState({
+                                        assignModal: true,
+                                    });
+                                }}
+                            >
+                                {Locales.strings.assign_set}
+                            </Button>
+                            <ProblemSetShareModal
+                                problemList={problemSet}
+                                shareLink={`${FRONTEND_URL_PROTO}/app/problemSet/view/${set.shareCode}`}
+                                centered
+                                visible={this.state.assignModal}
+                                onOk={() => {
+                                    this.setState({
+                                        assignModal: false,
+                                    });
+                                }}
+                                onCancel={() => {
+                                    this.setState({
+                                        assignModal: false,
+                                    });
+                                }}
+                            />
+                        </>
                     )}
                     {(action === 'edit' || userProfile.email) && (action !== 'review') && (
                         <Dropdown
