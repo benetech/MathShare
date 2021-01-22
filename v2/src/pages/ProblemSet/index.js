@@ -531,7 +531,7 @@ class ProblemSet extends Component {
                                 className={styles.titleText}
                                 defaultValue={this.state.updatedTitleText}
                                 maxLength="200"
-                                // onKeyDown={this.onEnter}
+                                onKeyDown={this.onEnter}
                                 onChange={this.handleKeyDown}
                                 onBlur={this.saveTitle}
                                 ref={this.textAreaRef}
