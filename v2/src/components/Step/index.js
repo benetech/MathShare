@@ -3,7 +3,7 @@
 
 import { faCopy, faEllipsisH, faMinusCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import ContentEditable from 'react-contenteditable';
+import Textarea from 'react-expanding-textarea';
 import {
     Button, Dropdown, Menu,
 } from 'antd';
@@ -50,17 +50,13 @@ class Step extends Component {
             index,
             isProblemSet,
         } = this.props;
-        const rawText = (e.target.value || '')
-            .replace(/(?:^[\s\u00a0]+)|(?:[\s\u00a0]+$)/g, '')
-            .replace(/&amp;/g, '')
-            .replace(/<br>/g, '');
-        const value = e.target.value;
+        const rawText = (e.target.value || '').trim();
         if (isProblemSet) {
             this.props.updateEditProblem({
                 title: rawText,
             });
         } else {
-            this.props.updateStepExplanation(index, value);
+            this.props.updateStepExplanation(index, rawText);
         }
     }
 
@@ -209,18 +205,18 @@ class Step extends Component {
                     </div>
                     <div className={styles.explanationContainer}>
                         <span className={styles.icon} role="img" aria-label="speech bubble emoji">💬</span>
-                        <ContentEditable
-                            className={styles.explanation}
+                        <Textarea
                             innerRef={this.contentEditable}
-                            html={explanation}
+                            className={styles.explanation}
                             placeholder={explanationPlaceholder || 'Add your explanation here'}
-                            disabled={false}
+                            defaultValue={explanation}
                             onChange={this.handleKeyDown}
                             onFocus={() => {
                                 this.setState({ explanationFocused: true });
                                 this.props.setCurrentStep(index);
                             }}
-                            onBlur={this.saveTitle}
+                            ref={this.textAreaRef}
+                            disabled={false}
                         />
                     </div>
                 </div>

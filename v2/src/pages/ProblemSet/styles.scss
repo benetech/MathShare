@@ -89,6 +89,10 @@
         .titleText {
             word-break: break-word;
             flex-grow: 1;
+            background: none;
+            border: none;
+            resize: none;
+
             &, &:focus {
                 outline: none!important;
             }
