@@ -75,7 +75,9 @@ class ProblemSet extends Component {
         } = this.props;
         const { set } = problemSet;
         const { title } = set;
-        const cleanedTitleText = (this.textAreaRef.current.value || '').trim();
+        const cleanedTitleText = (this.textAreaRef.current.value || '')
+            .replace(/\r?\n|\r/g, '')
+            .trim();
         if (cleanedTitleText === '') {
             this.setState({
                 updatedTitleText: title,
@@ -85,6 +87,7 @@ class ProblemSet extends Component {
         }
         if (set.title !== cleanedTitleText) {
             this.props.updateProblemSetTitle(cleanedTitleText);
+            this.textAreaRef.current.value = cleanedTitleText;
         }
     }
 
@@ -333,6 +336,10 @@ class ProblemSet extends Component {
         const { set } = problemSet;
         const { modalVisible } = this.state;
 
+        if (!this.state.updatedTitleText) {
+            return null;
+        }
+
         const menu = (
             <Menu
                 getPopupContainer={triggerNode => triggerNode.parentNode}
@@ -524,7 +531,7 @@ class ProblemSet extends Component {
                                 className={styles.titleText}
                                 defaultValue={this.state.updatedTitleText}
                                 maxLength="200"
-                                onKeyDown={this.onEnter}
+                                // onKeyDown={this.onEnter}
                                 onChange={this.handleKeyDown}
                                 onBlur={this.saveTitle}
                                 ref={this.textAreaRef}
