@@ -98,7 +98,7 @@ export default class ProblemSetShareModal extends React.Component {
             ];
         } else {
             message = Locales.strings.share_your_problem_set;
-            header = Locales.strings.share_problem_set;
+            header = Locales.strings.assign_problem_set;
             iconName = faShare;
             messageList = [
                 Locales.strings.allow_students_to_see,
