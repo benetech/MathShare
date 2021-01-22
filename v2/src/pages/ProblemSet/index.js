@@ -1,7 +1,7 @@
 import {
     faArrowLeft, faCopy, faEllipsisH, faMinusCircle, faShare, faPen, faPlusCircle, faArrowRight,
 } from '@fortawesome/free-solid-svg-icons';
-import ContentEditable from 'react-contenteditable';
+import Textarea from 'react-expanding-textarea';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     Row, Col, Button, Dropdown, Menu, Modal,
@@ -27,7 +27,7 @@ const gutter = {
 };
 
 class ProblemSet extends Component {
-    contentEditable = React.createRef();
+    textAreaRef = React.createRef();
 
     state = {
         layout: 'grid',
@@ -35,6 +35,7 @@ class ProblemSet extends Component {
         assignModal: false,
         editingTitle: false,
         updatedTitleText: '',
+        lastSavedTitle: '',
         currentProblem: 0,
     };
 
@@ -58,7 +59,7 @@ class ProblemSet extends Component {
         const { set } = problemSet;
         const { title } = set;
         if (title !== this.state.updatedTitleText) {
-            this.setState({ updatedTitleText: title });
+            this.setState({ updatedTitleText: title, lastSavedTitle: title });
         }
     }
 
@@ -73,21 +74,31 @@ class ProblemSet extends Component {
             problemSet,
         } = this.props;
         const { set } = problemSet;
-        if (!this.state.updatedTitleText || !this.state.updatedTitleText.trim()) {
+        const { title } = set;
+        const cleanedTitleText = (this.textAreaRef.current.value || '').trim();
+        if (cleanedTitleText === '') {
+            this.setState({
+                updatedTitleText: title,
+            });
+            this.textAreaRef.current.value = title;
             return;
         }
-        if (set.title !== this.state.updatedTitleText) {
-            this.props.updateProblemSetTitle(this.state.updatedTitleText);
+        if (set.title !== cleanedTitleText) {
+            this.props.updateProblemSetTitle(cleanedTitleText);
         }
     }
 
+    onEnter = (e) => {
+        if (e.key === 'Enter') {
+            return stopEvent(e);
+        }
+        return true;
+    }
+
     handleKeyDown = (e) => {
-        const rawText = (e.target.value || '')
-            .replace(/(?:^[\s\u00a0]+)|(?:[\s\u00a0]+$)/g, '')
-            .replace(/&amp;/g, '')
-            .replace(/<br>/g, '');
+        const rawText = e.target.value;
         this.setState({
-            updatedTitleText: rawText.substring(0, 200),
+            updatedTitleText: rawText,
         });
     }
 
@@ -105,7 +116,7 @@ class ProblemSet extends Component {
     }
 
     handleTitleFocus = () => {
-        this.contentEditable.current.focus();
+        this.textAreaRef.current.focus();
         document.execCommand('selectAll', false, null);
     }
 
@@ -506,17 +517,17 @@ class ProblemSet extends Component {
                     <Col
                         xs={24}
                         className={styles.titleRow}
-                        onFocus={() => this.contentEditable.current.focus()}
+                        onFocus={() => this.textAreaRef.current.focus()}
                     >
                         <div className={styles.editTitleContainer}>
-                            <ContentEditable
+                            <Textarea
                                 className={styles.titleText}
-                                innerRef={this.contentEditable}
-                                html={this.state.updatedTitleText}
-                                disabled={false}
+                                defaultValue={this.state.updatedTitleText}
+                                maxLength="200"
+                                onKeyDown={this.onEnter}
                                 onChange={this.handleKeyDown}
-                                // onFocusCapture={this.handleTitleFocus}
                                 onBlur={this.saveTitle}
+                                ref={this.textAreaRef}
                             />
                             <FontAwesomeIcon
                                 forwardedRef={(ref) => { this.titleEditIcon = ref; }}
