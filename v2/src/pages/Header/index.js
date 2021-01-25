@@ -15,13 +15,14 @@ class Header extends React.Component {
         const { userProfile, routerHooks } = this.props;
         const { email, name } = userProfile;
         const menu = (
-            <Menu>
+            <Menu className={styles.dropdown}>
                 <Menu.Item role="presentation">
                     <div>{name}</div>
                     <div>{email}</div>
                 </Menu.Item>
                 <Menu.Item>
                     <Button
+                        className={styles.signoutBtn}
                         type="text"
                         onClick={(e) => {
                             this.props.logoutOfUserProfile();
