@@ -54,11 +54,16 @@ class ProblemSet extends Component {
 
     componentWillReceiveProps(nextProps) {
         const {
+            match,
             problemSet,
         } = nextProps;
         const { set } = problemSet;
         const { title } = set;
-        if (title !== this.state.updatedTitleText) {
+        const oldParams = this.props.match.params;
+        const newParams = match.params;
+        if (oldParams.action !== newParams.action || oldParams.code !== newParams.code) {
+            this.loadData(newParams.action, newParams.code);
+        } else if (title !== this.state.updatedTitleText) {
             this.setState({ updatedTitleText: title, lastSavedTitle: title });
         }
     }
