@@ -23,10 +23,18 @@ class Sidebar extends React.Component {
         this.setState({ contrast });
     };
 
+    getRole = () => {
+        const { userProfile } = this.props;
+        const { info } = userProfile;
+        if (info.userType === 'teacher') {
+            return info.role;
+        }
+        return (info.userType || '').replace(/(^|\s)\S/g, t => t.toUpperCase());
+    }
+
     render() {
         const { contrast } = this.state;
         const { routerHooks, userProfile, ui } = this.props;
-        const { info } = userProfile;
         if (routerHooks.current === '/#/userDetailsEdit' || routerHooks.current === '/#/userDetails') {
             return null;
         }
@@ -57,9 +65,7 @@ class Sidebar extends React.Component {
                                 {userProfile.name}
                             </div>
                             <div className={styles.title}>
-                                {(info.userType || '').replace(/(^|\s)\S/g, t => t.toUpperCase())}
-                                {' '}
-                                {info.role}
+                                {this.getRole()}
                             </div>
                             <Button
                                 type="text"
