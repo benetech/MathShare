@@ -99,7 +99,7 @@ class ProblemSet extends Component {
     }
 
     handleKeyDown = (e) => {
-        const rawText = e.target.value;
+        const rawText = e.target.value || ' ';
         this.setState({
             updatedTitleText: rawText,
         });
