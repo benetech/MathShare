@@ -1,12 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {
-    Button, Layout, Menu, Radio,
+    Button, Layout, Menu,
 } from 'antd';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-    faMicrophone, faMinus, faPlus, faVolumeUp,
-} from '@fortawesome/free-solid-svg-icons';
 import { updateSideBarCollapsed } from '../../redux/ui/actions';
 import { logoutOfUserProfile } from '../../redux/userProfile/actions';
 import styles from './styles.scss';
@@ -33,7 +29,6 @@ class Sidebar extends React.Component {
     }
 
     render() {
-        const { contrast } = this.state;
         const { routerHooks, userProfile, ui } = this.props;
         if (routerHooks.current === '/#/userDetailsEdit' || routerHooks.current === '/#/userDetails') {
             return null;
@@ -78,45 +73,6 @@ class Sidebar extends React.Component {
                             </Button>
                         </div>
                     )}
-                    <div className={styles.actionButtons}>
-                        <div>
-                            <Button icon={<FontAwesomeIcon icon={faVolumeUp} size="2x" />} size="middle" />
-                            <Button icon={<FontAwesomeIcon icon={faMicrophone} size="2x" />} size="middle" />
-                        </div>
-                        <div className="flex-end">
-                            <Button
-                                icon={(
-                                    <>
-                                        <span>A</span>
-                                        <FontAwesomeIcon icon={faMinus} size="xs" />
-                                    </>
-                                )}
-                                size="middle"
-                            />
-                            <Button
-                                icon={(
-                                    <>
-                                        <span>A</span>
-                                        <FontAwesomeIcon icon={faPlus} size="xs" />
-                                    </>
-                                )}
-                                size="middle"
-                            />
-                        </div>
-                    </div>
-                    <div className={styles.contrastButtons}>
-                        <Radio.Group
-                            buttonStyle="solid"
-                            onChange={this.handleContrastChange}
-                            size="large"
-                            value={contrast}
-                            style={{ marginBottom: 8 }}
-                        >
-                            <Radio.Button value="standard">Standard</Radio.Button>
-                            <Radio.Button value="high">High Contrast</Radio.Button>
-                            <Radio.Button value="low">Low Contrast</Radio.Button>
-                        </Radio.Group>
-                    </div>
                     <Menu
                         mode="inline"
                         defaultSelectedKeys={['1']}
