@@ -6,6 +6,7 @@ class Locales {
             en: {
                 active: 'active',
                 add_new_problem: 'Add New Problem',
+                add_new_problem_disabled: 'Add New Problem (enter data in current problem to enable this)',
                 add_step: 'Add Step',
                 add_the_prompt: 'Add the prompt and any details here',
                 allow_educators_to_duplicate: 'Allows eductators to duplicate and re-use this problem set',
