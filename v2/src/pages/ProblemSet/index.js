@@ -255,6 +255,10 @@ class ProblemSet extends Component {
         );
         const endIndex = Math.min(set.problems.length - 1, startIndex + pageLength - 1);
         const range = Array(endIndex - startIndex + 1).fill().map((_, idx) => startIndex + idx);
+        const problem = set.problems[selectedIndex];
+        const disabledAddNew = problem && (selectedIndex + 1) === set.problems.length
+            && problem.text === ''
+            && problem.title === '';
         return (
             <div className={styles.stepActionsContainer}>
                 <div className={styles.paginator}>
@@ -297,7 +301,10 @@ class ProblemSet extends Component {
                     onClick={() => {
                         this.props.addEmptyProblem();
                     }}
-                    aria-label={Locales.strings.add_new_problem}
+                    disabled={disabledAddNew}
+                    aria-label={disabledAddNew
+                        ? Locales.strings.add_new_problem_disabled : Locales.strings.add_new_problem
+                    }
                 />
             </div>
         );
