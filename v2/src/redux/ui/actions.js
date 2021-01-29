@@ -43,6 +43,16 @@ export const blurFocusedElement = payload => ({
     payload,
 });
 
+export const goToPage = payload => ({
+    type: 'GOTO_PAGE',
+    payload,
+});
+
+export const scrollTo = payload => ({
+    type: 'SCROLL_TO',
+    payload,
+});
+
 export default {
     setDropdownId,
     setTtsPlaying,
@@ -51,4 +61,6 @@ export default {
     setCurrentHeight,
     setFocusedElement,
     blurFocusedElement,
+    goToPage,
+    scrollTo,
 };

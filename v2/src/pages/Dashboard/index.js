@@ -87,7 +87,7 @@ class Dashboard extends Component {
         const allowedSets = ['Example Problem Set', 'Combining Like Terms', 'Solve for X'];
         return (
             <>
-                <div className={styles.heading}>
+                <div className={styles.heading} id="example_sets">
                     <span className={styles.title}>{Locales.strings.example_sets}</span>
                 </div>
                 <Row className={`${styles.problemSetGrid} ${this.getLayout()}`}>
@@ -177,7 +177,7 @@ class Dashboard extends Component {
                     className={`justify-content-between ${styles.heading}`}
                     gutter={gutter}
                 >
-                    <Col className={`gutter-row ${styles.topBar}`} xs={24} sm={24} md={12} lg={12} xl={12}>
+                    <Col className={`gutter-row ${styles.topBar}`} xs={24} sm={24} md={12} lg={12} xl={12} id={title.replace(/ /g, '_').toLowerCase()}>
                         <span className={styles.title}>{title}</span>
                     </Col>
                     {isFirst && !ui.sideBarCollapsed && (
@@ -269,7 +269,7 @@ class Dashboard extends Component {
 
         return (
             <div style={{ padding: '20px' }}>
-                {this.renderSetsContainer('recentProblemSets', Locales.strings.my_created_sets, true)}
+                {this.renderSetsContainer('recentProblemSets', userProfile.email ? Locales.strings.my_created_sets : Locales.strings.my_sets, true)}
                 {this.renderSignInBanner()}
                 {userProfile.email && this.renderSetsContainer('recentSolutionSets', Locales.strings.my_solution_sets)}
                 {this.renderExampleSets()}
