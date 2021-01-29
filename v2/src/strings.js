@@ -4,6 +4,8 @@ class Locales {
     constructor() {
         this.strings = new LocalizedStrings({
             en: {
+                about_mathshare: 'About Mathshare',
+                accessibility: 'Accessibility',
                 active: 'active',
                 add_new_problem: 'Add New Problem',
                 add_new_problem_disabled: 'Add New Problem (enter data in current problem to enable this)',
@@ -55,6 +57,7 @@ class Locales {
                 grade_and_role_warning: 'Please make sure a grade and role is selected',
                 grade_of_study: 'What grade do you study in',
                 grade_of_work: 'What grade do you work with?',
+                help_center: 'Help Center',
                 info: 'Info',
                 load_more: 'Load More',
                 loading: 'Loading...',
@@ -64,6 +67,7 @@ class Locales {
                 ms: 'Microsoft',
                 ms_team: 'Microsoft Teams',
                 my_created_sets: 'My Created Sets',
+                my_sets: 'My Sets',
                 my_solution_sets: 'My Solution Sets',
                 my_steps: 'My Steps',
                 next_problem: 'Next Problem, {currentIndex} is currently active',

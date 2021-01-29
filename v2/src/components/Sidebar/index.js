@@ -3,8 +3,9 @@ import { connect } from 'react-redux';
 import {
     Button, Layout, Menu,
 } from 'antd';
-import { updateSideBarCollapsed } from '../../redux/ui/actions';
+import { goToPage, scrollTo, updateSideBarCollapsed } from '../../redux/ui/actions';
 import { logoutOfUserProfile } from '../../redux/userProfile/actions';
+import Locales from '../../strings';
 import styles from './styles.scss';
 
 const { Sider } = Layout;
@@ -12,6 +13,7 @@ const { Sider } = Layout;
 class Sidebar extends React.Component {
     state = {
         contrast: 'standard',
+        selectedKey: '',
     };
 
     handleContrastChange = (e) => {
@@ -28,11 +30,79 @@ class Sidebar extends React.Component {
         return (info.userType || '').replace(/(^|\s)\S/g, t => t.toUpperCase());
     }
 
+    getMenu = () => {
+        const { userProfile } = this.props;
+        const menuList = [];
+        if (userProfile.email) {
+            if (userProfile.userType === 'student') {
+                menuList.push({
+                    key: 'my_solution_sets',
+                    text: Locales.strings.my_solution_sets,
+                });
+                menuList.push({
+                    key: 'my_created_sets',
+                    text: Locales.strings.my_created_sets,
+                });
+            } else {
+                menuList.push({
+                    key: 'my_created_sets',
+                    text: Locales.strings.my_created_sets,
+                });
+                menuList.push({
+                    key: 'my_solution_sets',
+                    text: Locales.strings.my_solution_sets,
+                });
+            }
+        } else {
+            menuList.push({
+                key: 'my_sets',
+                text: Locales.strings.my_sets,
+            });
+        }
+        menuList.push({
+            key: 'example_sets',
+            text: Locales.strings.example_sets,
+        });
+        menuList.push({
+            key: 'about_mathshare',
+            text: Locales.strings.about_mathshare,
+        });
+        menuList.push({
+            key: 'help_center',
+            text: Locales.strings.help_center,
+        });
+        menuList.push({
+            key: 'accessibility',
+            text: Locales.strings.accessibility,
+        });
+        return menuList;
+    }
+
+    handleMenuSelect = (event) => {
+        const { key } = event;
+        this.setState({ selectedKey: key });
+        if (!['my_sets', 'my_solution_sets', 'my_created_sets', 'example_sets'].includes(key)) {
+            return null;
+        }
+        if (window.location.hash === '#/app') {
+            this.props.scrollTo({
+                scrollTo: key,
+            });
+        } else {
+            this.props.goToPage({
+                page: '/app',
+                scrollTo: key,
+            });
+        }
+        return null;
+    }
+
     render() {
         const { routerHooks, userProfile, ui } = this.props;
         if (routerHooks.current === '/#/userDetailsEdit' || routerHooks.current === '/#/userDetails') {
             return null;
         }
+        const active = routerHooks.current === '/#/app' ? this.state.selectedKey : '';
         return (
             <Sider
                 breakpoint="xl"
@@ -75,23 +145,14 @@ class Sidebar extends React.Component {
                     )}
                     <Menu
                         mode="inline"
-                        defaultSelectedKeys={['2']}
+                        selectedKeys={[active]}
+                        onSelect={this.handleMenuSelect}
                     >
-                        <Menu.Item key="2">
-                            My Sets
-                        </Menu.Item>
-                        <Menu.Item key="3">
-                            Example Sets
-                        </Menu.Item>
-                        <Menu.Item key="4">
-                            About Mathshare
-                        </Menu.Item>
-                        <Menu.Item key="5">
-                            Help
-                        </Menu.Item>
-                        <Menu.Item key="6">
-                            Settings
-                        </Menu.Item>
+                        {this.getMenu().map(menuItem => (
+                            <Menu.Item key={menuItem.key}>
+                                {menuItem.text}
+                            </Menu.Item>
+                        ))}
                     </Menu>
                 </div>
             </Sider>
@@ -106,6 +167,8 @@ export default connect(
         ui: state.ui,
     }),
     {
+        goToPage,
+        scrollTo,
         updateSideBarCollapsed,
         logoutOfUserProfile,
     },
