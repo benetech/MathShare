@@ -42,11 +42,15 @@ class ProblemCard extends React.Component {
     getUrl = () => {
         const {
             editCode,
+            shareCode,
         } = this.props;
-        if (!editCode) {
-            return null;
+        if (editCode) {
+            return `/#/app/problem/edit/${editCode}`;
         }
-        return `/#/app/problem/edit/${editCode}`;
+        if (shareCode) {
+            return `/#/app/problem/view/${shareCode}`;
+        }
+        return null;
     }
 
     renderTitle() {
@@ -78,6 +82,7 @@ class ProblemCard extends React.Component {
             history,
             text,
             finished,
+            action,
             problemPosition,
         } = this.props;
         if (newSet) {
@@ -134,9 +139,13 @@ class ProblemCard extends React.Component {
                         <div className={styles.number}>
                             {String(problemPosition).padStart(2, '0')}
                         </div>
-                        {finished && (
-                            <div className={styles.check} aria-label="Completed checkmark">
-                                <FontAwesomeIcon icon={faCheckCircle} />
+                        {finished && action !== 'review' && (
+                            <div className={styles.check}>
+                                <FontAwesomeIcon
+                                    icon={faCheckCircle}
+                                    title="Completed checkmark"
+                                    role="img"
+                                />
                             </div>
                         )}
                         {/* <div className={styles.iconContainer}>

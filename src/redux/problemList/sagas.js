@@ -41,7 +41,8 @@ import {
     submitToPartnerApi,
 } from './apis';
 import {
-    fetchRecentWorkApi,
+    fetchRecentProblemsApi,
+    fetchRecentSolutionsApi,
 } from '../userProfile/apis';
 import {
     getState,
@@ -52,9 +53,6 @@ import {
 import {
     getState as getModalState,
 } from '../modal/selectors';
-import {
-    getState as getStateFromUserProfile,
-} from '../userProfile/selectors';
 import {
     ADD_PROBLEM_SET,
     SHARE_NEW_SET,
@@ -120,15 +118,15 @@ function* requestExampleSetSaga() {
 function* requestArchivedSetSaga() {
     yield takeLatest('REQUEST_ARCHIVED_SETS', function* workerSaga() {
         try {
-            const {
-                info,
-            } = yield select(getStateFromUserProfile);
-            const response = yield call(fetchRecentWorkApi(info.userType), { 'x-archive-mode': 'archived' });
-            const archivedProblemSets = response.data;
+            const solutionsResponse = yield call(fetchRecentSolutionsApi, { 'x-archive-mode': 'archived' });
+            const problemsResponse = yield call(fetchRecentProblemsApi, { 'x-archive-mode': 'archived' });
             yield put({
                 type: 'REQUEST_ARCHIVED_SETS_SUCCESS',
                 payload: {
-                    archivedProblemSets,
+                    archivedProblemSets: [
+                        ...solutionsResponse.data,
+                        ...problemsResponse.data,
+                    ],
                 },
             });
         } catch (error) {
@@ -777,16 +775,23 @@ function* requestArchiveProblemSet() {
         try {
             if (isSolutionSet) {
                 yield call(archiveSolutionSetApi, editCode, archiveMode);
+                yield put({
+                    type: 'ARCHIVE_SOLUTION_SET_SUCCESS',
+                    payload: {
+                        editCode,
+                        key: (archiveMode === 'archived' ? 'recentSolutionSets' : 'archivedProblemSets'),
+                    },
+                });
             } else {
                 yield call(archiveProblemSetApi, editCode, archiveMode);
+                yield put({
+                    type: 'ARCHIVE_PROBLEM_SET_SUCCESS',
+                    payload: {
+                        editCode,
+                        key: (archiveMode === 'archived' ? 'recentProblemSets' : 'archivedProblemSets'),
+                    },
+                });
             }
-            yield put({
-                type: 'ARCHIVE_PROBLEM_SET_SUCCESS',
-                payload: {
-                    editCode,
-                    key: (archiveMode === 'archived' ? 'recentProblemSets' : 'archivedProblemSets'),
-                },
-            });
             if (isSolutionSet) {
                 if (archiveMode === 'archived') {
                     alertSuccess(Locales.strings.archived_solutiom_set.replace('{title}', title), Locales.strings.success);

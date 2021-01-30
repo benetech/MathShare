@@ -9,3 +9,52 @@
 
     }
 }
+
+.newProblemSetContainer {
+    padding-bottom: 0;
+    display: flex;
+
+    &:global(.line-item) {
+        margin: 4px;
+    }
+
+    > button {
+        margin-left: 4px;
+        margin: 20px;
+        margin-bottom: 0;
+        text-align: left;
+        height: auto;
+        padding: 8px 16px;
+        padding-right: 20px;
+        border-radius: 20px;
+        font-size: 24px;
+        color: $primary-color;
+
+        > svg {
+            margin-right: 24px;
+            font-size: 32px;
+            top: 2px;
+            position: relative;
+        }
+    }
+}
+
+:global(.line-item).newProblemSetContainer {
+    > button {
+        flex: 1;
+        max-width: unset;
+    }
+}
+
+@media (max-width: 400px) {
+    .newProblemSetContainer {
+
+        > button {
+            font-size: 20px;
+
+            > svg {
+                font-size: 26px;
+            }
+        }
+    }
+}

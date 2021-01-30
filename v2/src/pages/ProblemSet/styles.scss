@@ -8,14 +8,6 @@
         >button {
             width: 40px;
             padding-left: 10px;
-            >span {
-                position: absolute;
-                width: 4px;
-                height: 20px;
-                background: #37345B;
-                left: 5px;
-                border-radius: 4px;
-            }
         }
 
         svg {
@@ -49,6 +41,19 @@
             font-size: 1.5em;
         }
     }
+
+    &.editRightSection {
+        display: flex;
+        justify-content: flex-end;
+
+        .assignSet {
+            margin-right: 10px;
+
+            > svg {
+                margin-right: 10px;
+            }
+        }
+    }
 }
 
 .menu {
@@ -59,6 +64,84 @@
 
         span {
             padding-left: 8px;
+        }
+    }
+}
+
+.editActionBar {
+    margin-top: 10px;
+}
+
+.heading {
+    .titleRow {
+        max-width: calc(100% - 40px);
+        margin: auto;
+    }
+
+    .editTitleContainer {
+        background: rgba(245, 243, 255, 0.75);
+        padding: 12px;
+        border-radius: 5px;
+        margin-top: 12px;
+        display: flex;
+        justify-content: space-between;
+
+        .titleText {
+            word-break: break-word;
+            flex-grow: 1;
+            background: none;
+            border: none;
+            resize: none;
+
+            &, &:focus {
+                outline: none!important;
+            }
+        }
+
+        .editBtn {
+            margin: auto 8px;
+            margin-right: 0;
+        }
+    }
+}
+
+:global(.sidebar-open) .problemContainer {
+    padding: 16px 28px;
+}
+
+.problemContainer {
+    padding: 16px 20px;
+
+    .stepActionsContainer {
+        display: flex;
+
+        .paginator {
+            flex: 1;
+
+            .paginatorBtn {
+                background-color: #E8E6EE;
+                color: #6D647D;
+                padding: 6px;
+                font-size: 12px;
+                margin: 4px;
+                line-height: 16px;
+                border-radius: 8px;
+                font-weight: 600;
+                height: auto;
+
+                &.active {
+                    background-color: #00857A;
+                    color: #FFFFFF;
+                }
+            }
+        }
+
+        .addNewProblem {
+            margin: auto;
+
+            svg {
+                font-size: 24px;
+            }
         }
     }
 }

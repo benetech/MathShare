@@ -15,7 +15,10 @@ import {
     requestExampleSets,
 } from '../../redux/problemList/actions';
 import { setDropdownId } from '../../redux/ui/actions';
-import { fetchRecentWork } from '../../redux/userProfile/actions';
+import {
+    fetchRecentWork,
+    fetchRecentSets,
+} from '../../redux/userProfile/actions';
 import googleAnalytics from '../../scripts/googleAnalytics';
 import pageIndex from './styles.scss';
 import { stopEvent, passEventForKeys } from '../../services/events';
@@ -96,6 +99,59 @@ class Index extends Component {
         this.props.push('/signIn');
     }
 
+    renderSetsCommon = (setKey, title) => {
+        const { props } = this;
+        const { userProfile, archiveMode } = props;
+        if (archiveMode) {
+            return null;
+        }
+        const recentContentClass = `text-center ${pageIndex.recentContent}`;
+        const id = `${setKey}-recent-sets-header`;
+        if (userProfile[setKey].loading
+            && userProfile[setKey].data.length === 0) {
+            return (
+                <>
+                    <h2 id={id} className={pageIndex.title}>{title}</h2>
+                    <div className={recentContentClass}>{Locales.strings.loading}</div>
+                </>
+            );
+        }
+        if (userProfile[setKey].data.length > 0) {
+            return (
+                <>
+                    <h2 id={id} className={pageIndex.title}>{title}</h2>
+                    <ol className={pageIndex.problemSetList} aria-labelledby={id}>
+                        {userProfile[setKey].data.map(this.renderProblemSet(false, true))}
+                    </ol>
+                    <div className={pageIndex.loadMoreContainer}>
+                        {(userProfile[setKey].showLoadMore || userProfile[setKey].loading) && (
+                            <button
+                                type="button"
+                                className={`btn btn-primary ${pageIndex.loadMore}`}
+                                disabled={userProfile[setKey].loading}
+                                onClick={() => this.props.fetchRecentSets(
+                                    Math.min(
+                                        ...userProfile[setKey].data.map(item => item.id),
+                                    ),
+                                    setKey,
+                                )}
+                            >
+                                {userProfile[setKey].loading
+                                    ? Locales.strings.loading : Locales.strings.load_more}
+                            </button>
+                        )}
+                    </div>
+                </>
+            );
+        }
+        return (
+            <>
+                <h2 id={id} className={pageIndex.title}>{title}</h2>
+                <div className={recentContentClass}>{Locales.strings.no_recent_sets}</div>
+            </>
+        );
+    }
+
     renderRecent = () => {
         const { props } = this;
         const { userProfile, archiveMode } = props;
@@ -103,7 +159,6 @@ class Index extends Component {
             return null;
         }
         let recentContent = null;
-        const recentContentClass = `text-center ${pageIndex.recentContent}`;
         if (!userProfile.service) {
             recentContent = (
                 <div className={`text-center ${pageIndex.signInContainer}`}>
@@ -117,22 +172,23 @@ class Index extends Component {
                     </a>
                 </div>
             );
-        } else if (userProfile.recentProblemSets === null) {
-            recentContent = <div className={recentContentClass}>{Locales.strings.loading}</div>;
-        } else if (userProfile.recentProblemSets.length > 0) {
+        } else if (userProfile.userType === 'student') {
             recentContent = (
-                <ol className={pageIndex.problemSetList} aria-labelledby="recent-sets-header">
-                    {userProfile.recentProblemSets.map(this.renderProblemSet(false, true))}
-                </ol>
+                <>
+                    {this.renderSetsCommon('recentSolutionSets', Locales.strings.my_solution_sets)}
+                    {this.renderSetsCommon('recentProblemSets', Locales.strings.my_created_sets)}
+                </>
             );
         } else {
             recentContent = (
-                <div className={recentContentClass}>{Locales.strings.no_recent_sets}</div>
+                <>
+                    {this.renderSetsCommon('recentProblemSets', Locales.strings.my_created_sets)}
+                    {this.renderSetsCommon('recentSolutionSets', Locales.strings.my_solution_sets)}
+                </>
             );
         }
         return (
             <>
-                <h2 id="recent-sets-header" className="title">{Locales.strings.recent_sets}</h2>
                 {recentContent}
                 {userProfile.email && (
                     <a className={`pull-right btn btn-primary ${pageIndex.archivedList}`} href="/#/app/archived">
@@ -289,7 +345,7 @@ class Index extends Component {
         }
         return (
             <>
-                <h2 id="pre-made-sets-header" className="title">{Locales.strings.pre_made_sets}</h2>
+                <h2 id="pre-made-sets-header" className={pageIndex.title}>{Locales.strings.pre_made_sets}</h2>
                 <ol className={pageIndex.problemSetList} aria-labelledby="pre-made-sets-header">
                     {problemList.exampleProblemSets.map(this.renderProblemSet(true))}
                 </ol>
@@ -321,7 +377,7 @@ class Index extends Component {
                     ariaLabel={Locales.strings.back}
                     content={Locales.strings.back}
                 />
-                <h2 id="archived-sets-header" className="title">
+                <h2 id="archived-sets-header" className={pageIndex.title}>
                     {Locales.strings.archived_sets}
                 </h2>
                 {problemList.archivedProblemSets && (
@@ -451,6 +507,7 @@ export default connect(
     {
         archiveProblemSet,
         fetchRecentWork,
+        fetchRecentSets,
         replace,
         requestDefaultRevision,
         requestArchivedSets,

@@ -67,14 +67,17 @@ export const saveUserInfoPayload = payload => ({
     payload,
 });
 
-export const fetchRecentWork = () => ({
-    type: 'FETCH_RECENT_WORK',
-});
-
-export const setRecentWork = recentProblemSets => ({
-    type: 'SET_RECENT_WORK',
+export const setRecentProblemSets = recentProblemSets => ({
+    type: 'SET_RECENT_PROBLEM_SETS',
     payload: {
         recentProblemSets,
+    },
+});
+
+export const setRecentSolutionSets = recentSolutionSets => ({
+    type: 'SET_RECENT_SOLUTION_SETS',
+    payload: {
+        recentSolutionSets,
     },
 });
 
@@ -108,9 +111,22 @@ export const setUserInfo = payload => ({
     payload,
 });
 
+export const fetchRecentSets = (offset, type) => ({
+    type: 'REQUEST_RECENT_SETS',
+    payload: {
+        offset,
+        type,
+    },
+});
+
+export const fetchRecentWork = () => ({
+    type: 'FETCH_RECENT_WORK',
+});
+
 export default {
     checkUserLogin,
     fetchRecentWork,
+    fetchRecentSets,
     logoutOfUserProfile,
     redirectAfterLogin,
     resetUserProfile,
@@ -118,7 +134,8 @@ export default {
     saveUserInfoPayload,
     setAuthRedirect,
     setMobileNotify,
-    setRecentWork,
+    setRecentProblemSets,
+    setRecentSolutionSets,
     setUserProfile,
     handleSuccessfulLogin,
     savePersonalizationSettings,

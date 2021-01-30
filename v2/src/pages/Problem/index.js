@@ -17,7 +17,6 @@ import mathlive from '../../../../src/lib/mathlivedist/mathlive';
 import { compareStepArrays, countEditorPosition } from '../../redux/problem/helpers';
 import scrollTo from '../../services/scrollTo';
 import Step from '../../components/Step';
-// import CopyLink from '../../components/CopyLink';
 // import Select from '../../components/Select';
 
 const gutter = {
@@ -175,8 +174,6 @@ class Problem extends Component {
 
     saveNotNeeded = () => {
         const { solution, stepsFromLastSave } = this.props.problemState;
-        console.log('saveNotNeeded filtered steps', solution.steps.filter(step => step.stepValue || step.explanation));
-        console.log('saveNotNeeded stepsFromLastSave', stepsFromLastSave);
         const { location } = this.props;
         if (location.pathname.indexOf('/app/problem/view') === '0' // check if the open view is readonly
             || (compareStepArrays(
@@ -274,12 +271,20 @@ class Problem extends Component {
     }
 
     goBack = () => {
-        const { problemSet } = this.props;
-        const url = `/app/problemSet/solve/${problemSet.editCode}`;
-        if (this.saveNotNeeded()) {
-            this.props.history.replace(url);
-        } else {
-            this.props.commitProblemSolution(url);
+        const {
+            problemSet,
+            match,
+        } = this.props;
+        const { action } = match.params;
+        if (action === 'view') {
+            this.props.history.replace(`/app/problemSet/review/${problemSet.reviewCode}`);
+        } else if (action === 'edit') {
+            const url = `/app/problemSet/solve/${problemSet.editCode}`;
+            if (this.saveNotNeeded()) {
+                this.props.history.replace(url);
+            } else {
+                this.props.commitProblemSolution(url);
+            }
         }
     }
 
@@ -295,8 +300,6 @@ class Problem extends Component {
             isAndroid,
             isMobile,
         } = DeviceDetect;
-
-        console.log('DeviceDetect', DeviceDetect);
 
         const focusedMathlive = (className || '').includes('ML__textarea__textarea');
         if (keyboardVisible
@@ -321,26 +324,53 @@ class Problem extends Component {
         return <Step key={`${index}-step`} index={index} stepValue={stepValue} explanation={explanation} />;
     }
 
+    renderReviewStep = (step, index) => {
+        const { explanation, stepValue } = step;
+        return (
+            <div className={styles.reviewStepContainer}>
+                <div className={styles.stepNo}>
+                    {Locales.strings.step}
+                    {' '}
+                    {String(index + 1).padStart(2, '0')}
+                </div>
+                <div className={styles.stepMath}>
+                    <MathfieldComponent
+                        tabIndex={0}
+                        latex={stepValue || ''}
+                        mathfieldConfig={{
+                            readOnly: true,
+                        }}
+                    />
+                </div>
+                <div className={styles.stepExplanation}>{explanation}</div>
+            </div>
+        );
+    }
+
     renderStepSection = () => {
-        const { problemState, problemSet } = this.props;
+        const { match, problemState, problemSet } = this.props;
+        const { action } = match.params;
         const { solution } = problemState;
         const { solutions } = problemSet;
-        const editCodes = solutions && solutions.map(s => s.editCode);
-        if (!solution.editCode) {
+        const codeKey = (action === 'view') ? 'shareCode' : 'editCode';
+        const currentCode = solution[codeKey];
+        const editCodes = solutions && solutions.map(s => s[codeKey]);
+        const baseUrl = (action === 'view') ? '/app/problem/view' : '/app/problem/edit';
+        if (!currentCode) {
             return null;
         }
-        const currentIndex = editCodes && editCodes.indexOf(solution.editCode);
+        const currentIndex = editCodes && editCodes.indexOf(currentCode);
 
         return (
             <div className={styles.steps} style={this.getStepPaddingTop()}>
                 <div className={styles.stepSectionHeader}>
-                    <div className={styles.mySteps}>My Steps</div>
+                    <div className={styles.mySteps}>{Locales.strings.my_steps}</div>
                     <div className={styles.right}>
                         <Button
                             aria-label={Locales.strings.back_to_all_sets}
                             onClick={() => {
-                                const url = `/app/problem/edit/${editCodes[currentIndex - 1]}`;
-                                if (this.saveNotNeeded()) {
+                                const url = `${baseUrl}/${editCodes[currentIndex - 1]}`;
+                                if (action === 'view' || this.saveNotNeeded()) {
                                     this.props.history.replace(url);
                                 } else {
                                     this.props.commitProblemSolution(url);
@@ -353,8 +383,8 @@ class Problem extends Component {
                         <Button
                             aria-label={Locales.strings.back_to_all_sets}
                             onClick={() => {
-                                const url = `/app/problem/edit/${editCodes[currentIndex + 1]}`;
-                                if (this.saveNotNeeded()) {
+                                const url = `${baseUrl}/${editCodes[currentIndex + 1]}`;
+                                if (action === 'view' || this.saveNotNeeded()) {
                                     this.props.history.replace(url);
                                 } else {
                                     this.props.commitProblemSolution(url);
@@ -366,24 +396,102 @@ class Problem extends Component {
                         />
                     </div>
                 </div>
-                {solution.steps.map(this.renderStep)}
+                {this.renderStepList(solution)}
             </div>
         );
+    }
+
+    renderStepList = (solution) => {
+        const { match } = this.props;
+        const { action } = match.params;
+
+        if (!solution.steps) {
+            return null;
+        }
+
+        if (action === 'view') {
+            const viewSteps = solution.steps.slice(0, solution.steps.length - 1);
+            if (viewSteps.length === 0) {
+                return (
+                    <div>{Locales.strings.no_steps_have_been_added}</div>
+                );
+            }
+            return (
+                <>
+                    {viewSteps.map(this.renderReviewStep)}
+                </>
+            );
+        }
+        return (
+            <>
+                {solution.steps.map(this.renderStep)}
+            </>
+        );
+    }
+
+    renderFooter = () => {
+        const {
+            problemState,
+            ui,
+            match,
+        } = this.props;
+        const { action } = match.params;
+        const { solution } = problemState;
+        const { finished } = solution;
+        const { sideBarCollapsed } = ui;
+        if (action !== 'view') {
+            return (
+                <div className={`${styles.footerBtn} ${sideBarCollapsed ? styles.sideBarCollapsed : styles.sideBarOpened}`}>
+                    {!finished && (
+                        <Button
+                            className={this.shouldMoveAddStep() ? styles.moveAddStep : ''}
+                            aria-label={Locales.strings.finish_q}
+                            type="primary"
+                            size="large"
+                            onClick={() => {
+                                this.props.commitProblemSolution('back', false, true);
+                            }}
+                        >
+                            <span>{Locales.strings.finish_q}</span>
+                            <FontAwesomeIcon
+                                className={styles.finishBtn}
+                                icon={faCheckCircle}
+                                title={Locales.strings.finished_checkmark}
+                                role="img"
+                            />
+                        </Button>
+                    )}
+                    <Button
+                        className={`${this.shouldMoveAddStep() ? styles.moveAddStep : ''} ${finished ? styles.moveBtnRight : ''}`}
+                        aria-label={Locales.strings.back_to_all_sets}
+                        type="primary"
+                        size="large"
+                        onClick={() => {
+                            this.props.addStep(null);
+                            this.props.commitProblemSolution();
+                        }}
+                    >
+                        <span>{Locales.strings.add_step}</span>
+                        <FontAwesomeIcon icon={faLongArrowAltRight} size="2x" />
+                    </Button>
+                </div>
+            );
+        }
+        return null;
     }
 
     render() {
         const {
             problemState,
             problemSet,
-            ui,
-            // match,
+            match,
             // userProfile,
             // routerHooks,
         } = this.props;
+        const { action } = match.params;
         const { solution } = problemState;
         const { title } = problemSet;
         const { problem, finished } = solution;
-        const { sideBarCollapsed } = ui;
 
         const showMathEllipsis = this.showMathEllipsis();
         // const {
@@ -418,12 +526,20 @@ class Problem extends Component {
                     gutter={gutter}
                     className={styles.staticProblem}
                 >
-                    <span aria-label="checkered flag"><FontAwesomeIcon icon={faFlagCheckered} /></span>
+                    <FontAwesomeIcon
+                        icon={faFlagCheckered}
+                        title={Locales.strings.checkered_flag}
+                        role="img"
+                    />
                     <span className={styles.problem}>
-                        Problem
-                        {finished && (
-                            <div className={styles.check} aria-label="Finished Checkmark">
-                                <FontAwesomeIcon icon={faCheckCircle} />
+                        {Locales.strings.problem}
+                        {finished && action !== 'view' && (
+                            <div className={styles.check}>
+                                <FontAwesomeIcon
+                                    icon={faCheckCircle}
+                                    title={Locales.strings.finished_checkmark}
+                                    role="img"
+                                />
                             </div>
                         )}
                     </span>
@@ -481,10 +597,14 @@ class Problem extends Component {
                             <span className={styles.left}>
                                 <span><FontAwesomeIcon icon={faFlagCheckered} /></span>
                                 <span className={styles.problem}>
-                                    Problem
-                                    {finished && (
-                                        <div className={styles.check} aria-label="Finished Checkmark">
-                                            <FontAwesomeIcon icon={faCheckCircle} />
+                                    {Locales.strings.problem}
+                                    {finished && action !== 'view' && (
+                                        <div className={styles.check}>
+                                            <FontAwesomeIcon
+                                                icon={faCheckCircle}
+                                                title={Locales.strings.finished_checkmark}
+                                                role="img"
+                                            />
                                         </div>
                                     )}
                                 </span>
@@ -504,35 +624,7 @@ class Problem extends Component {
                     <hr />
                 </div>
                 {this.renderStepSection()}
-                <div className={`${styles.footerBtn} ${sideBarCollapsed ? styles.sideBarCollapsed : styles.sideBarOpened}`}>
-                    {!finished && (
-                        <Button
-                            className={this.shouldMoveAddStep() ? styles.moveAddStep : ''}
-                            aria-label="Finish?"
-                            type="primary"
-                            size="large"
-                            onClick={() => {
-                                this.props.commitProblemSolution('back', false, true);
-                            }}
-                        >
-                            <span>Finish?</span>
-                            <FontAwesomeIcon className={styles.finishBtn} icon={faCheckCircle} />
-                        </Button>
-                    )}
-                    <Button
-                        className={`${this.shouldMoveAddStep() ? styles.moveAddStep : ''} ${finished ? styles.moveBtnRight : ''}`}
-                        aria-label={Locales.strings.back_to_all_sets}
-                        type="primary"
-                        size="large"
-                        onClick={() => {
-                            this.props.addStep(null);
-                            this.props.commitProblemSolution();
-                        }}
-                    >
-                        <span>Add Step</span>
-                        <FontAwesomeIcon icon={faLongArrowAltRight} size="2x" />
-                    </Button>
-                </div>
+                {this.renderFooter()}
             </div>
         );
     }

@@ -91,8 +91,9 @@ function* changeRouteSaga() {
             }
         }
         let notAbleToFocus = true;
-        if (isBack && window.location.hash === '#/app' && userInfoState.email) {
-            yield put(fetchRecentWork(-1));
+        if (window.location.hash === '#/app' && userInfoState.email) {
+            yield put(fetchRecentWork(-1, 'recentSolutionSets'));
+            yield put(fetchRecentWork(-1, 'recentProblemSets'));
         }
         if (action === 'POP' && isBack && !isFirstRendering) {
             if (window.location.hash.startsWith('#/app/problemSet/solve/')) {

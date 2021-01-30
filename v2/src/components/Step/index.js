@@ -3,6 +3,7 @@
 
 import { faCopy, faEllipsisH, faMinusCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Textarea from 'react-expanding-textarea';
 import {
     Button, Dropdown, Menu,
 } from 'antd';
@@ -10,7 +11,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { MathfieldComponent } from 'react-mathlive';
 import { stopEvent } from '../../services/events';
+import Locales from '../../strings';
 import problemActions from '../../redux/problem/actions';
+import { saveProblems, updateEditProblem } from '../../redux/problemSet/actions';
 import styles from './styles.scss';
 
 class Step extends Component {
@@ -21,6 +24,7 @@ class Step extends Component {
             explanationFocused: false,
             latex: '',
         };
+        this.contentEditable = React.createRef();
     }
 
     scrollToTargetAdjusted = () => {
@@ -29,6 +33,31 @@ class Step extends Component {
 
     handleFocus = () => {
         this.mathfieldRef.mathfield.focus();
+    }
+
+    saveTitle = () => {
+        const {
+            isProblemSet,
+        } = this.props;
+        this.setState({ explanationFocused: false });
+        if (isProblemSet) {
+            this.props.saveProblems();
+        }
+    }
+
+    handleKeyDown = (e) => {
+        const {
+            index,
+            isProblemSet,
+        } = this.props;
+        const rawText = (e.target.value || '').trim();
+        if (isProblemSet) {
+            this.props.updateEditProblem({
+                title: rawText,
+            });
+        } else {
+            this.props.updateStepExplanation(index, rawText);
+        }
     }
 
     handleTab = (sender, direction) => {
@@ -59,13 +88,15 @@ class Step extends Component {
     }
 
     renderMathField = () => {
-        const { stepValue, index } = this.props;
+        const {
+            stepValue, index, solvePlaceholder, isProblemSet,
+        } = this.props;
         const { focused, latex } = this.state;
         return (
             <>
                 <input
                     ref={(ref) => { this.placeholderInput = ref; }}
-                    value={(stepValue || latex || focused) ? '' : 'Start solving here'}
+                    value={(stepValue || latex || focused) ? '' : (solvePlaceholder || 'Start solving here')}
                     onFocus={this.handleFocus}
                     // onBlur={() => this.setState({ focused: false })}
                     readOnly
@@ -77,7 +108,12 @@ class Step extends Component {
                         virtualKeyboardMode: 'onfocus',
                         smartMode: true,
                         onTabOutOf: this.handleTab,
-                        onBlur: () => this.setState({ focused: false }),
+                        onBlur: () => {
+                            this.setState({ focused: false });
+                            if (isProblemSet) {
+                                this.props.saveProblems();
+                            }
+                        },
                         onFocus: () => {
                             this.props.setCurrentStep(index);
                             this.setState({ focused: true });
@@ -91,7 +127,13 @@ class Step extends Component {
                             this.setState({
                                 latex: latexValue,
                             });
-                            this.props.updateStepMath(index, latexValue);
+                            if (isProblemSet) {
+                                this.props.updateEditProblem({
+                                    text: latexValue,
+                                });
+                            } else {
+                                this.props.updateStepMath(index, latexValue);
+                            }
                         },
                     }}
                 />
@@ -100,7 +142,12 @@ class Step extends Component {
     }
 
     render() {
-        const { index, explanation } = this.props;
+        const {
+            index,
+            explanation,
+            explanationPlaceholder,
+            hideHeading,
+        } = this.props;
         const { explanationFocused, focused } = this.state;
 
         const menu = (
@@ -115,7 +162,7 @@ class Step extends Component {
                         icon={<FontAwesomeIcon icon={faCopy} />}
                         onClick={() => { this.props.duplicateStep(index); }}
                     >
-                        Duplicate
+                        {Locales.strings.duplicate}
                     </Button>
                 </Menu.Item>
                 <Menu.Item onClick={e => stopEvent(e)}>
@@ -124,7 +171,7 @@ class Step extends Component {
                         icon={<FontAwesomeIcon icon={faMinusCircle} />}
                         onClick={() => { this.props.deleteStep(index); }}
                     >
-                        Delete
+                        {Locales.strings.delete}
                     </Button>
                 </Menu.Item>
             </Menu>
@@ -132,23 +179,25 @@ class Step extends Component {
 
         return (
             <div className={styles.step} ref={(ref) => { this.stepContainer = ref; }}>
-                <div className={styles.stepHeading}>
-                    <span>
-                        Step
-                        {' '}
-                        {index + 1}
-                    </span>
-                    <Dropdown
-                        overlay={menu}
-                        placement="bottomRight"
-                        className={styles.icon}
-                        overlayClassName={styles.dropdown}
-                        trigger={['click']}
-                        getPopupContainer={triggerNode => triggerNode.parentNode}
-                    >
-                        <Button type="text" size="large" icon={<FontAwesomeIcon icon={faEllipsisH} />} onClick={e => e.preventDefault()} />
-                    </Dropdown>
-                </div>
+                {!hideHeading && (
+                    <div className={styles.stepHeading}>
+                        <span>
+                            {Locales.strings.step}
+                            {' '}
+                            {index + 1}
+                        </span>
+                        <Dropdown
+                            overlay={menu}
+                            placement="bottomRight"
+                            className={styles.icon}
+                            overlayClassName={styles.dropdown}
+                            trigger={['click']}
+                            getPopupContainer={triggerNode => triggerNode.parentNode}
+                        >
+                            <Button type="text" size="large" icon={<FontAwesomeIcon icon={faEllipsisH} />} onClick={e => e.preventDefault()} />
+                        </Dropdown>
+                    </div>
+                )}
                 <div className={`${styles.stepBody} ${(explanationFocused || focused) ? styles.containerFocused : ''}`}>
                     <div className={styles.mathContainer}>
                         <span role="img" aria-label="pencil emoji">✏️</span>
@@ -156,18 +205,18 @@ class Step extends Component {
                     </div>
                     <div className={styles.explanationContainer}>
                         <span className={styles.icon} role="img" aria-label="speech bubble emoji">💬</span>
-                        <textarea
+                        <Textarea
+                            innerRef={this.contentEditable}
                             className={styles.explanation}
-                            placeholder="Add your explanation here"
-                            value={explanation}
-                            rows="1"
-                            onBlur={() => this.setState({ explanationFocused: false })}
+                            placeholder={explanationPlaceholder || 'Add your explanation here'}
+                            defaultValue={explanation}
+                            onChange={this.handleKeyDown}
                             onFocus={() => {
                                 this.setState({ explanationFocused: true });
                                 this.props.setCurrentStep(index);
                             }}
-                            onChange={e => this.props.updateStepExplanation(index, e.target.value)}
-                            ref={(ref) => { this.textAreaRef = ref; }}
+                            ref={this.textAreaRef}
+                            disabled={false}
                         />
                     </div>
                 </div>
@@ -180,5 +229,7 @@ export default connect(
     () => ({}),
     {
         ...problemActions,
+        saveProblems,
+        updateEditProblem,
     },
 )(Step);

@@ -1,5 +1,5 @@
 import {
-    faBars, faThLarge,
+    faBars, faPlusCircle, faThLarge,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -7,12 +7,14 @@ import {
 } from 'antd';
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
+import * as dayjs from 'dayjs';
 import Card from '../../components/Card';
 import problemSetListActions from '../../redux/problemSetList/actions';
+import problemSetActions from '../../redux/problemSet/actions';
 import { fetchRecentWork } from '../../redux/userProfile/actions';
-import styles from './styles.scss';
 import { stopEvent } from '../../services/events';
-// import CopyLink from '../../components/CopyLink';
+import Locales from '../../strings';
+import styles from './styles.scss';
 // import Select from '../../components/Select';
 
 const gutter = {
@@ -46,6 +48,17 @@ class Dashboard extends Component {
         return stopEvent(e);
     }
 
+    newProblemSet = () => {
+        this.props.setTempPalettes([
+            'Edit',
+            'Operators',
+            'Notations',
+            'Geometry',
+        ]);
+
+        this.props.saveProblemSet([], `${Locales.strings.new_problem_set} ${dayjs().format('MM-DD-YYYY')}`, null);
+    }
+
     archiveProblemSet = problemSet => (e) => {
         let archiveMode = null;
         const isSolutionSet = !problemSet.problems;
@@ -74,8 +87,8 @@ class Dashboard extends Component {
         const allowedSets = ['Example Problem Set', 'Combining Like Terms', 'Solve for X'];
         return (
             <>
-                <div className={styles.heading}>
-                    <span className={styles.title}>Example Sets</span>
+                <div className={styles.heading} id="example_sets">
+                    <span className={styles.title}>{Locales.strings.example_sets}</span>
                 </div>
                 <Row className={`${styles.problemSetGrid} ${this.getLayout()}`}>
                     {problemSetList.exampleProblemSets.data
@@ -95,37 +108,38 @@ class Dashboard extends Component {
         );
     }
 
-    renderRecentSets() {
+    renderSetsCommon(key) {
         const { problemSetList, userProfile } = this.props;
-        const { recentSolutionSets } = problemSetList;
-        if (recentSolutionSets.loading && recentSolutionSets.data.length === 0) {
+        const setData = problemSetList[key];
+        if (setData.loading && setData.data.length === 0) {
             return (
                 <Row className={`${styles.problemSetGrid} ${this.getLayout()}`}>
-                    Loading...
+                    {Locales.strings.loading}
                 </Row>
             );
         }
-        if (recentSolutionSets.data.length === 0) {
+        if (setData.data.length === 0 && key === 'recentSolutionSets') {
             return (
                 <Row className={`${styles.problemSetGrid} ${this.getLayout()}`}>
-                    You don&apos;t have any sets yet!
-                    {' '}
-                    Try solving an example problem set below,
-                    {' '}
-                    or create your own using the desktop version of Mathshare.
+                    {Locales.strings.you_dont_have_any_sets}
                 </Row>
             );
         }
         return (
             <>
                 <Row className={`${styles.problemSetGrid} ${this.getLayout()}`}>
-                    {recentSolutionSets.data
-                        .map(recentProblemSet => (
+                    {setData.data
+                        .map(recentSet => (
                             <Card
-                                key={recentProblemSet.id}
-                                {...recentProblemSet}
-                                duplicateProblemSet={this.duplicateProblemSet(recentProblemSet)}
-                                archiveProblemSet={this.archiveProblemSet(recentProblemSet)}
+                                key={recentSet.id}
+                                {...recentSet}
+                                problemSet={{
+                                    ...recentSet,
+                                    set: recentSet,
+                                    problemSetShareCode: recentSet.reviewCode,
+                                }}
+                                duplicateProblemSet={this.duplicateProblemSet(recentSet)}
+                                archiveProblemSet={this.archiveProblemSet(recentSet)}
                                 userProfile={userProfile}
                                 layoutMode={this.getLayout()}
                                 isRecent
@@ -134,18 +148,19 @@ class Dashboard extends Component {
                     }
                 </Row>
                 <Row className={styles.loadMoreContainer}>
-                    {problemSetList.showLoadMore && (
+                    {setData.showLoadMore && (
                         <Button
                             className={styles.loadMore}
                             type="primary"
-                            loading={problemSetList.recentSolutionSets.loading}
+                            loading={setData.loading}
                             onClick={() => this.props.fetchRecentWork(
                                 Math.min(
-                                    ...problemSetList.recentSolutionSets.data.map(item => item.id),
+                                    ...setData.data.map(item => item.id),
                                 ),
+                                key,
                             )}
                         >
-                            Load More
+                            {Locales.strings.load_more}
                         </Button>
                     )}
                 </Row>
@@ -153,33 +168,19 @@ class Dashboard extends Component {
         );
     }
 
-    render() {
+    renderSetsContainer(key, title, isFirst) {
         const { userProfile, ui } = this.props;
-        // const options = [
-        //     {
-        //         value: 'most_recent',
-        //         label: 'Most Recent',
-        //     },
-        //     {
-        //         value: 'assigned_to_me',
-        //         label: 'Assigned to Me',
-        //     },
-        //     {
-        //         value: 'Created by me',
-        //         label: 'Created by Me',
-        //     },
-        // ];
 
         return (
-            <div style={{ padding: '20px' }}>
+            <>
                 <Row
                     className={`justify-content-between ${styles.heading}`}
                     gutter={gutter}
                 >
-                    <Col className={`gutter-row ${styles.topBar}`} xs={24} sm={24} md={12} lg={12} xl={12}>
-                        <span className={styles.title}>Your Sets</span>
+                    <Col className={`gutter-row ${styles.topBar}`} xs={24} sm={24} md={12} lg={12} xl={12} id={title.replace(/ /g, '_').toLowerCase()}>
+                        <span className={styles.title}>{title}</span>
                     </Col>
-                    {!ui.sideBarCollapsed && (
+                    {isFirst && !ui.sideBarCollapsed && (
                         <Col className={`col-auto ${styles.setButtons}`} xs={24} sm={24} md={12} lg={12} xl={12}>
                             <div className={`btn-group ${styles.layoutBtns}`} role="group">
                                 <Radio.Group
@@ -206,19 +207,71 @@ class Dashboard extends Component {
                         </Col>
                     )}
                 </Row>
-                {/* <Row>
-                    <CopyLink />
-                </Row> */}
-                {userProfile.email && this.renderRecentSets()}
-                {!userProfile.email && (
-                    <p className={styles.linkContainer}>
-                        You&apos;re not logged in --
-                        {' '}
-                        <a className={styles.link} href="/#/login">log in</a>
-                        {' '}
-                        to view your problem sets.
-                    </p>
+                {key === 'recentProblemSets' && (
+                    <Row className={`${styles.problemSetGrid} ${this.getLayout()} ${styles.newProblemSetContainer}`}>
+                        <Button
+                            type="ghost"
+                            icon={<FontAwesomeIcon icon={faPlusCircle} />}
+                            aria-label="Add New Problem Set"
+                            onClick={this.newProblemSet}
+                        >
+                            New Problem Set
+                        </Button>
+                    </Row>
                 )}
+                {userProfile.email && this.renderSetsCommon(key)}
+            </>
+        );
+    }
+
+    renderSignInBanner() {
+        const { userProfile } = this.props;
+        if (userProfile.email) {
+            return null;
+        }
+        return (
+            <p className={styles.linkContainer}>
+                You&apos;re not logged in --
+                {' '}
+                <a className={styles.link} href="/#/login">log in</a>
+                {' '}
+                to view your problem sets.
+            </p>
+        );
+    }
+
+    render() {
+        const { userProfile } = this.props;
+        // const options = [
+        //     {
+        //         value: 'most_recent',
+        //         label: 'Most Recent',
+        //     },
+        //     {
+        //         value: 'assigned_to_me',
+        //         label: 'Assigned to Me',
+        //     },
+        //     {
+        //         value: 'Created by me',
+        //         label: 'Created by Me',
+        //     },
+        // ];
+
+        if (userProfile.userType === 'student') {
+            return (
+                <div style={{ padding: '20px' }}>
+                    {this.renderSetsContainer('recentSolutionSets', Locales.strings.my_solution_sets, true)}
+                    {userProfile.email && this.renderSetsContainer('recentProblemSets', Locales.strings.my_created_sets)}
+                    {this.renderExampleSets()}
+                </div>
+            );
+        }
+
+        return (
+            <div style={{ padding: '20px' }}>
+                {this.renderSetsContainer('recentProblemSets', userProfile.email ? Locales.strings.my_created_sets : Locales.strings.my_sets, true)}
+                {this.renderSignInBanner()}
+                {userProfile.email && this.renderSetsContainer('recentSolutionSets', Locales.strings.my_solution_sets)}
                 {this.renderExampleSets()}
             </div>
         );
@@ -234,6 +287,7 @@ export default connect(
         router: state.router,
     }),
     {
+        ...problemSetActions,
         ...problemSetListActions,
         fetchRecentWork,
     },

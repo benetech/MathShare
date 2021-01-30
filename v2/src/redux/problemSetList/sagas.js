@@ -5,6 +5,7 @@ import {
     fork,
     put,
     select,
+    takeEvery,
     takeLatest,
 } from 'redux-saga/effects';
 import { archiveSolutionSetApi } from '../../../../src/redux/problemList/apis';
@@ -47,47 +48,38 @@ function* requestExampleSetsSaga() {
 }
 
 function* requestRecentSetsSaga() {
-    yield takeLatest('REQUEST_RECENT_SETS', function* workerSaga({
+    yield takeEvery('REQUEST_RECENT_SETS', function* workerSaga({
         payload: {
             offset,
+            type,
         },
     }) {
         try {
-            const { data: recentSolutionSets } = yield call(fetchRecentWorkApi('student'), {
+            const res = yield call(fetchRecentWorkApi(type), {
                 'x-content-size': PAGINATION_SIZE,
                 'x-offset': offset,
             });
-            // const { data: recentProblemSets } = yield call(fetchRecentWorkApi('teacher'));
-
-            // yield put({
-            //     type: 'REQUEST_RECENT_PROBLEM_SETS_SUCCESS',
-            //     payload: {
-            //         recentProblemSets: {
-            //             data: recentProblemSets,
-            //             loading: false,
-            //         },
-            //     },
-            // });
+            const { data, headers } = res;
             const state = yield select(getState);
             yield put({
-                type: 'REQUEST_RECENT_SOLUTION_SETS_SUCCESS',
+                type: 'REQUEST_RECENT_SETS_SUCCESS',
                 payload: {
-                    recentSolutionSets: {
+                    [type]: {
                         data: [
-                            ...state.recentSolutionSets.data,
-                            ...recentSolutionSets,
+                            ...state[type].data,
+                            ...data,
                         ],
                         loading: false,
+                        showLoadMore: headers['x-load-more'] === 'true',
                     },
-                    showLoadMore: true,
                 },
             });
-            if (recentSolutionSets.length === 0) {
+            if (data.length === 0) {
                 displayAlert('info', 'No more problem sets found', 'Info');
             }
         } catch (error) {
             yield put({
-                type: 'REQUEST_EXAMPLE_SETS_FAILURE',
+                type: 'REQUEST_RECENT_SETS_FAILURE',
                 error,
             });
         }

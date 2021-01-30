@@ -113,3 +113,17 @@ div.problemSetList {
 .noArchivedSets {
     padding-bottom: 50px;
 }
+
+.loadMoreContainer {
+    justify-content: center;
+    margin-top: -20px;
+    padding-bottom: 30px;
+    text-align: center;
+
+    .loadMore {
+        &, &:hover, &:focus {
+            background-color: #3E3A5F;
+            border-color: unset;
+        }
+    }
+}

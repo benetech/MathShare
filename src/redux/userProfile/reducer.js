@@ -5,7 +5,16 @@ const initialState = {
     redirectTo: null,
     mode: null,
     service: null,
-    recentProblemSets: null,
+    recentProblemSets: {
+        data: [],
+        loading: false,
+        showLoadMore: false,
+    },
+    recentSolutionSets: {
+        data: [],
+        loading: false,
+        showLoadMore: false,
+    },
     notifyForMobile: null,
     checking: true,
     config: null,
@@ -47,13 +56,64 @@ const userProfile = (state = initialState, {
     case 'FETCH_RECENT_WORK':
         return {
             ...state,
-            recentProblemSets: null,
+            recentProblemSets: initialState.recentProblemSets,
+            recentSolutionSets: initialState.recentSolutionSets,
         };
-    case 'SET_RECENT_WORK': {
+    case 'REQUEST_RECENT_SETS': {
+        if (payload.type === 'recentProblemSets') {
+            return {
+                ...state,
+                recentProblemSets: {
+                    ...state.recentProblemSets,
+                    loading: true,
+                    showLoadMore: false,
+                },
+            };
+        }
+        return {
+            ...state,
+            recentSolutionSets: {
+                ...state.recentSolutionSets,
+                loading: true,
+                showLoadMore: false,
+            },
+        };
+    }
+    case 'REQUEST_RECENT_SETS_FAILURE': {
+        if (payload.type === 'recentProblemSets') {
+            return {
+                ...state,
+                recentProblemSets: {
+                    ...state.recentProblemSets,
+                    loading: false,
+                },
+            };
+        }
+        return {
+            ...state,
+            recentSolutionSets: {
+                ...state.recentSolutionSets,
+                loading: false,
+            },
+        };
+    }
+    case 'REQUEST_RECENT_SETS_SUCCESS':
+        return {
+            ...state,
+            ...payload,
+        };
+    case 'SET_RECENT_PROBLEM_SETS': {
         const { recentProblemSets } = payload;
         return {
             ...state,
             recentProblemSets,
+        };
+    }
+    case 'SET_RECENT_SOLUTION_SETS': {
+        const { recentSolutionSets } = payload;
+        return {
+            ...state,
+            recentSolutionSets,
         };
     }
     case 'ARCHIVE_PROBLEM_SET_SUCCESS': {
@@ -63,7 +123,23 @@ const userProfile = (state = initialState, {
         }
         return {
             ...state,
-            recentProblemSets: state.recentProblemSets.filter(set => set.editCode !== editCode),
+            recentProblemSets: {
+                ...state.recentProblemSets,
+                data: state.recentProblemSets.data.filter(set => set.editCode !== editCode),
+            },
+        };
+    }
+    case 'ARCHIVE_SOLUTION_SET_SUCCESS': {
+        const { editCode, key } = payload;
+        if (key !== 'recentSolutionSets') {
+            return state;
+        }
+        return {
+            ...state,
+            recentSolutionSets: {
+                ...state.recentSolutionSets,
+                data: state.recentSolutionSets.data.filter(set => set.editCode !== editCode),
+            },
         };
     }
     case 'SET_MOBILE_NOTIFY_SUCCESS': {

@@ -69,6 +69,13 @@
 
         .profileButton {
             margin-left: auto;
+
+            .dropdown {
+                button.signoutBtn {
+                    width: 100%;
+                    text-align: left;
+                }
+            }
         }
 
         :global(.ant-btn-primary) {

@@ -5,6 +5,7 @@ import {
     fork,
     put,
     select,
+    takeEvery,
     takeLatest,
     throttle,
 } from 'redux-saga/effects';
@@ -22,21 +23,24 @@ import {
     setAuthRedirect,
     setMobileNotifySuccess,
     setPersonalizationSettings,
-    setRecentWork,
+    setRecentProblemSets,
+    setRecentSolutionSets,
     setUserInfo,
 } from './actions';
 import {
     getState,
 } from './selectors';
 import {
+    fetchRecentWorkApi,
     fetchCurrentUserApi,
     fetchUserInfoApi,
-    fetchRecentWorkApi,
     getConfigApi,
     logoutApi,
     saveUserInfoApi,
     setConfigApi,
     updateNotifyMobileApi,
+    fetchRecentSolutionsApi,
+    fetchRecentProblemsApi,
 } from './apis';
 import {
     alertError, alertInfo, alertSuccess, dismissAlert, focusOnAlert,
@@ -50,6 +54,7 @@ import { getFormattedUserType } from '../../services/mathshare';
 const loginAlertId = 'login-alert';
 const redirectAlertId = 'redirect-info';
 const redirectWait = 2500;
+const PAGINATION_SIZE = 15;
 
 
 function* checkUserLoginSaga() {
@@ -117,7 +122,8 @@ function* checkUserLoginSaga() {
                 }
             } finally {
                 try {
-                    yield put(fetchRecentWork());
+                    yield put(fetchRecentWork(null, 'recentSolutionSets'));
+                    yield put(fetchRecentWork(null, 'recentProblemSets'));
                     const configResponse = yield call(getConfigApi);
                     if (configResponse.status === 200) {
                         const {
@@ -158,25 +164,112 @@ function* checkUserLoginSaga() {
 
 function* fetchRecentWorkSaga() {
     yield takeLatest('FETCH_RECENT_WORK', function* workerSaga() {
+        yield put({
+            type: 'FETCH_RECENT_PROBLEM_SETS',
+        });
+        yield put({
+            type: 'FETCH_RECENT_SOLUTION_SETS',
+        });
+    });
+}
+
+function* fetchRecentSolutionSetsSaga() {
+    yield takeLatest('FETCH_RECENT_SOLUTION_SETS', function* workerSaga() {
         try {
-            const {
-                info,
-            } = yield select(getState);
-            const response = yield call(fetchRecentWorkApi(info.userType), {});
+            const response = yield call(fetchRecentSolutionsApi, {});
             if (response.status !== 200) {
                 throw Error('Unable to fetch work');
             }
             const {
                 data,
+                headers,
             } = response;
-            yield put(setRecentWork(data));
+            yield put(setRecentSolutionSets({
+                data,
+                loading: false,
+                showLoadMore: headers['x-load-more'] === 'true',
+            }));
         } catch (error) {
             yield put({
-                type: 'FETCH_RECENT_WORK_FAILURE',
+                type: 'FETCH_RECENT_SOLUTION_SETS_FAILURE',
             });
         }
     });
 }
+
+function* fetchRecentProblemSetsSaga() {
+    yield takeLatest('FETCH_RECENT_PROBLEM_SETS', function* workerSaga() {
+        try {
+            const response = yield call(fetchRecentProblemsApi, {});
+            if (response.status !== 200) {
+                throw Error('Unable to fetch work');
+            }
+            const {
+                data,
+                headers,
+            } = response;
+            yield put(setRecentProblemSets({
+                data,
+                loading: false,
+                showLoadMore: headers['x-load-more'] === 'true',
+            }));
+        } catch (error) {
+            yield put({
+                type: 'FETCH_RECENT_PROBLEM_SETS_FAILURE',
+            });
+        }
+    });
+}
+
+function* requestRecentSetsSaga() {
+    yield takeEvery('REQUEST_RECENT_SETS', function* workerSaga({
+        payload: {
+            offset,
+            type,
+        },
+    }) {
+        try {
+            const requestPayload = {
+                'x-content-size': PAGINATION_SIZE,
+            };
+            if (offset) {
+                requestPayload['x-offset'] = offset;
+            }
+            const res = yield call(fetchRecentWorkApi(type), requestPayload);
+            const { data, headers } = res;
+            const state = yield select(getState);
+            const oldData = state[type].data;
+            const oldIds = oldData.map(o => o.id);
+            const newData = data.filter(d => !oldIds.includes(d.id));
+            yield put({
+                type: 'REQUEST_RECENT_SETS_SUCCESS',
+                payload: {
+                    [type]: {
+                        data: [
+                            ...state[type].data,
+                            ...newData,
+                        ],
+                        loading: false,
+                        showLoadMore: headers['x-load-more'] === 'true',
+                    },
+                },
+            });
+            if (newData.length === 0) {
+                alertSuccess(Locales.strings.no_more_problem_sets, Locales.strings.info);
+            }
+        } catch (error) {
+            alertError(Locales.strings.unable_to_load, Locales.strings.failure);
+            yield put({
+                type: 'REQUEST_RECENT_SETS_FAILURE',
+                payload: {
+                    type,
+                },
+                error,
+            });
+        }
+    });
+}
+
 function* redirectAfterLoginSaga() {
     yield takeLatest('REDIRECT_AFTER_LOGIN', function* workerSaga({
         payload: {
@@ -343,10 +436,13 @@ export default function* rootSaga() {
     yield all([
         fork(checkUserLoginSaga),
         fork(fetchRecentWorkSaga),
+        fork(fetchRecentProblemSetsSaga),
+        fork(fetchRecentSolutionSetsSaga),
         fork(redirectAfterLoginSaga),
         fork(saveUserInfoSaga),
         fork(setUserProfileSaga),
         fork(logoutSaga),
+        fork(requestRecentSetsSaga),
         fork(setMobileNotifySaga),
         fork(savePersonalizationSettingsSaga),
         fork(setUserInfoSaga),
