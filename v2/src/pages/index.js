@@ -13,6 +13,7 @@ import './styles.scss';
 import 'antd/dist/antd.less';
 import Dashboard from './Dashboard';
 import Header from './Header';
+import SwitchToDesktop from './SwitchToDesktop';
 import NotFound from './NotFound';
 import Problem from './Problem';
 import ProblemSet from './ProblemSet';
@@ -93,7 +94,10 @@ class App extends Component {
                 />
                 <div id="contentContainer" className={this.getClassFromUserConfig()}>
                     {this.shouldRenderCommonComponents() && (
-                        <Header />
+                        <>
+                            <Header />
+                            <SwitchToDesktop />
+                        </>
                     )}
                     <Layout className={`body-container ${this.getBodyClass()}`}>
                         {this.shouldRenderCommonComponents() && <Sidebar router={router} />}
