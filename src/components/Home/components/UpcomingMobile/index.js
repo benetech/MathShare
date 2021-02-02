@@ -55,7 +55,7 @@ class UpcomingMobileHeader extends React.Component {
                 aria-labelledby="mobile-not-supported"
             >
                 <h2 id="mobile-not-supported" className="text-center">
-                    {Locales.strings.mobile_not_supported}
+                    {Locales.strings.mobile_not_supported_v2}
                 </h2>
                 <div className={classNames(upcoming.fullWidth)}>
                     {!this.state.emailMode && (
@@ -65,21 +65,16 @@ class UpcomingMobileHeader extends React.Component {
                             ariaHidden="false"
                             type="button"
                             icon="check"
-                            content={Locales.strings.get_notified_about_mobile}
+                            content={Locales.strings.mobile_view}
                             onClick={() => {
-                                if (userProfile.email) {
-                                    this.props.setMobileNotify(1);
-                                } else {
-                                    this.setState({
-                                        emailMode: true,
-                                    }, () => {
-                                        setTimeout(() => {
-                                            const inform = document.getElementById('inform-email');
-                                            if (inform) {
-                                                inform.focus();
-                                            }
-                                        }, 0);
-                                    });
+                                try {
+                                    localStorage.setItem('msVersion', 2);
+                                    window.location.reload();
+                                } catch (error) {
+                                    alertWarning(
+                                        Locales.strings.unable_to_switch_to_v2,
+                                        Locales.strings.warning,
+                                    );
                                 }
                             }}
                         />
