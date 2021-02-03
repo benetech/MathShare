@@ -43,6 +43,10 @@ function* requestExampleSetsSaga() {
                 type: 'REQUEST_EXAMPLE_SETS_FAILURE',
                 error,
             });
+        } finally {
+            yield put({
+                type: 'REQUEST_EXAMPLE_SETS_COMPLETE',
+            });
         }
     });
 }
@@ -81,6 +85,10 @@ function* requestRecentSetsSaga() {
             yield put({
                 type: 'REQUEST_RECENT_SETS_FAILURE',
                 error,
+            });
+        } finally {
+            yield put({
+                type: `REQUEST_RECENT_SETS_${type}_COMPLETE`,
             });
         }
     });

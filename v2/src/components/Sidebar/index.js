@@ -79,6 +79,8 @@ class Sidebar extends React.Component {
     }
 
     handleMenuSelect = (event) => {
+        const { userProfile } = this.props;
+        const { email } = userProfile;
         const { key } = event;
         this.setState({ selectedKey: key });
         if (!['my_sets', 'my_solution_sets', 'my_created_sets', 'example_sets'].includes(key)) {
@@ -89,9 +91,15 @@ class Sidebar extends React.Component {
                 scrollTo: key,
             });
         } else {
+            const waitForEvents = ['REQUEST_EXAMPLE_SETS_COMPLETE'];
+            if (email) {
+                waitForEvents.push('REQUEST_RECENT_SETS_recentProblemSets_COMPLETE');
+                waitForEvents.push('REQUEST_RECENT_SETS_recentSolutionSets_COMPLETE');
+            }
             this.props.goToPage({
                 page: '/app',
                 scrollTo: key,
+                waitForEvents,
             });
         }
         return null;
