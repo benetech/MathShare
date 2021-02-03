@@ -13,8 +13,71 @@ const { Sider } = Layout;
 class Sidebar extends React.Component {
     state = {
         contrast: 'standard',
+        siderClass: '',
         selectedKey: '',
     };
+
+    componentDidMount = () => {
+        this.checkCurrentActiveOption();
+        this.updateSiderClass();
+    }
+
+    updateSiderClass = () => {
+        const sidebar = document.getElementById('sidebar');
+        if (!sidebar) {
+            this.setState({ siderClass: '' });
+        } else {
+            const top = sidebar.getBoundingClientRect().top;
+            if (top > 0) {
+                this.setState({ siderClass: '' });
+            } else {
+                this.setState({ siderClass: styles.affix });
+            }
+        }
+        setTimeout(this.updateSiderClass, 100);
+    }
+
+    getTop = (obj) => {
+        if (obj.type === 'external') {
+            return 0;
+        }
+        const element = document.getElementById(obj.key);
+        if (element) {
+            return element.getBoundingClientRect().top;
+        }
+        return 0;
+    }
+
+    checkCurrentActiveOption = () => {
+        const { problemSetList } = this.props;
+        const { exampleProblemSets, recentProblemSets, recentSolutionSets } = problemSetList;
+        if (exampleProblemSets.loading || recentProblemSets.loading || recentSolutionSets.loading) {
+            setTimeout(this.checkCurrentActiveOption, 300);
+            return;
+        }
+        if (window.location.hash !== '#/app') {
+            this.setState({
+                selectedKey: '',
+            });
+            setTimeout(this.checkCurrentActiveOption, 300);
+            return;
+        }
+        const menu = this.getMenu().map(obj => ({
+            ...obj,
+            offset: this.getTop(obj),
+        }));
+        const firstNonNegativeIndex = Math.max(0, menu.findIndex(item => item.offset >= 0));
+        if (menu[firstNonNegativeIndex].offset < (window.innerHeight * 0.5) && menu[firstNonNegativeIndex].type !== 'external') {
+            this.setState({
+                selectedKey: menu[firstNonNegativeIndex].key,
+            });
+        } else {
+            this.setState({
+                selectedKey: menu[Math.max(firstNonNegativeIndex - 1, 0)].key,
+            });
+        }
+        setTimeout(this.checkCurrentActiveOption, 300);
+    }
 
     handleContrastChange = (e) => {
         const contrast = e.target.value;
@@ -38,42 +101,54 @@ class Sidebar extends React.Component {
                 menuList.push({
                     key: 'my_solution_sets',
                     text: Locales.strings.my_solution_sets,
+                    type: 'internal',
                 });
                 menuList.push({
                     key: 'my_created_sets',
                     text: Locales.strings.my_created_sets,
+                    type: 'internal',
                 });
             } else {
                 menuList.push({
                     key: 'my_created_sets',
                     text: Locales.strings.my_created_sets,
+                    type: 'internal',
                 });
                 menuList.push({
                     key: 'my_solution_sets',
                     text: Locales.strings.my_solution_sets,
+                    type: 'internal',
                 });
             }
         } else {
             menuList.push({
                 key: 'my_sets',
                 text: Locales.strings.my_sets,
+                type: 'internal',
             });
         }
         menuList.push({
             key: 'example_sets',
             text: Locales.strings.example_sets,
+            type: 'internal',
         });
         menuList.push({
             key: 'about_mathshare',
             text: Locales.strings.about_mathshare,
+            type: 'external',
+            href: 'https://mathsharedev.benetech.org/about/',
         });
         menuList.push({
             key: 'help_center',
             text: Locales.strings.help_center,
+            type: 'external',
+            href: 'https://mathsharedev.benetech.org/help/',
         });
         menuList.push({
             key: 'accessibility',
             text: Locales.strings.accessibility,
+            type: 'external',
+            href: 'https://mathsharedev.benetech.org/accessibility-2/',
         });
         return menuList;
     }
@@ -82,10 +157,10 @@ class Sidebar extends React.Component {
         const { userProfile } = this.props;
         const { email } = userProfile;
         const { key } = event;
-        this.setState({ selectedKey: key });
         if (!['my_sets', 'my_solution_sets', 'my_created_sets', 'example_sets'].includes(key)) {
             return null;
         }
+        this.setState({ selectedKey: key });
         if (window.location.hash === '#/app') {
             this.props.scrollTo({
                 scrollTo: key,
@@ -113,6 +188,8 @@ class Sidebar extends React.Component {
         const active = routerHooks.current === '/#/app' ? this.state.selectedKey : '';
         return (
             <Sider
+                id="sidebar"
+                className={styles.sidebar}
                 breakpoint="xl"
                 width={325}
                 collapsedWidth={0}
@@ -122,7 +199,7 @@ class Sidebar extends React.Component {
                     this.props.updateSideBarCollapsed(collapsed);
                 }}
             >
-                <div className={styles.sidebarContainer}>
+                <div className={`${styles.sidebarContainer} ${this.state.siderClass}`}>
                     {userProfile && userProfile.email && (
                         <div className={`${styles.profile} text-center`}>
                             <div className={`row justify-content-center ${styles.avatar}`}>
@@ -157,8 +234,12 @@ class Sidebar extends React.Component {
                         onSelect={this.handleMenuSelect}
                     >
                         {this.getMenu().map(menuItem => (
-                            <Menu.Item key={menuItem.key}>
-                                {menuItem.text}
+                            <Menu.Item key={menuItem.key} aria-label={`${active === menuItem.key ? 'Current: ' : ''}${menuItem.text}`}>
+                                {menuItem.type === 'external' ? (
+                                    <a href={menuItem.href} target="_blank" rel="noopener noreferrer">
+                                        {menuItem.text}
+                                    </a>
+                                ) : menuItem.text}
                             </Menu.Item>
                         ))}
                     </Menu>
@@ -172,6 +253,7 @@ export default connect(
     state => ({
         routerHooks: state.routerHooks,
         userProfile: state.userProfile,
+        problemSetList: state.problemSetList,
         ui: state.ui,
     }),
     {

@@ -5,6 +5,10 @@
     display: flex;
     flex-direction: column;
 
+    &:global(.sidebar-open) > :global(.body-container) {
+        background-color: white;
+    }
+
     > :global(.body-container) {
         flex: 1 0 auto;
     }
