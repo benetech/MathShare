@@ -66,7 +66,7 @@ export default class NewProblemsForm extends CommonModal {
     }
 
     textAreaChanged = (text) => {
-        this.props.updateProblemStore({ textAreaValue: text });
+        this.props.updateProblemStore({ textAreaValue: (text || '').substring(0, 2000) });
     }
 
     reorder = (oldIndex, newIndex) => {
