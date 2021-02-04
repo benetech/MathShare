@@ -81,7 +81,6 @@ function editStep(context, stepNumber) {
     const mathStep = problemStore.solution.steps[stepNumber - 1];
     const updatedMathField = problemList.theActiveMathField;
     updatedMathField.$latex(mathStep.stepValue);
-    problemStore.displayScratchpad(mathStep.scratchpad);
     const solution = Object.assign({}, problemStore.solution);
     const steps = problemStore.solution.steps.filter(step => !step.inProgress);
     solution.steps = steps;
@@ -99,6 +98,9 @@ function editStep(context, stepNumber) {
         isUpdated: true,
     });
     context.moveEditorBelowSpecificStep(stepNumber);
+    setTimeout(() => {
+        problemStore.displayScratchpad(mathStep.scratchpad);
+    }, 500);
 }
 
 function updateStep(context, img) {
@@ -130,6 +132,7 @@ function updateStep(context, img) {
         const problemSteps = problemStore.solution.problem.steps.filter(step => !step.inProgress);
         problemStore.solution.problem.steps = problemSteps;
     }
+    problemStore.displayScratchpad();
     updateProblemStore({
         isUpdated: true,
         solution,

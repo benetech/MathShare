@@ -267,7 +267,7 @@ class Editor extends Component {
                 deleteStepsCallback={() => clearAll(this)}
                 updateCallback={img => updateStep(this, img)}
                 bindDisplayFunction={
-                    f => this.props.updateProblemStore({ displayScratchpad: (f || (() => {})) })
+                    f => this.props.updateProblemStore({ displayScratchpad: f })
                 }
                 showDelete={problemStore.actionsStack.length > 0}
                 newProblem={this.id === 'newEditor'}

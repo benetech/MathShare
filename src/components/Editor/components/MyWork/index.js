@@ -40,6 +40,16 @@ class MyWork extends Component {
     }
 
     componentDidMount() {
+        document.getElementById('mathEditorActive').addEventListener('keydown', this.HandleKeyDown);
+        const { problem } = this.props;
+        const { scratchpadMode } = problem.work;
+        if (scratchpadMode) {
+            setTimeout(this.openScratchpad, 0);
+        }
+        this.bindingHelper();
+    }
+
+    bindingHelper = () => {
         if (this.props.bindDisplayFunction) {
             this.props.bindDisplayFunction((scratchpadContent) => {
                 this.props.updateWork({
@@ -48,12 +58,6 @@ class MyWork extends Component {
                 });
                 this.displayScratchpadImage();
             });
-        }
-        document.getElementById('mathEditorActive').addEventListener('keydown', this.HandleKeyDown);
-        const { problem } = this.props;
-        const { scratchpadMode } = problem.work;
-        if (scratchpadMode) {
-            setTimeout(this.openScratchpad, 0);
         }
     }
 
@@ -204,9 +208,9 @@ class MyWork extends Component {
 
     displayScratchpadImage() {
         const { work } = this.props.problem;
-        if (work.scratchpadContent) {
+        if (work.scratchpadContent || work.isScratchpadUsed) {
+            this.clearAndResizeScratchPad(work.scratchpadContent);
             setTimeout(() => {
-                this.clearAndResizeScratchPad(work.scratchpadContent);
                 this.scratchPadPainterro.show(work.scratchpadContent || '');
             }, 500);
         }
