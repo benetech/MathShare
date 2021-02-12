@@ -1,0 +1,39 @@
+@import '../../styles/colors.scss';
+
+.switchContainer {
+    display: flex;
+    justify-content: space-between;
+    background: #F5F3FF;
+    flex-wrap: wrap;
+
+    .left {
+        margin: auto;
+        font-family: 'Source Sans Pro', sans-serif;
+        padding: 12px;
+        padding-bottom: 0;
+    }
+
+    .right {
+        display: flex;
+        padding: 10px;
+
+        .buttons {
+            min-width: 160px;
+            text-align: right;
+
+            > button {
+                border-color: #61CBB8;
+                background-color: #61CBB8;
+                color: #37345B;
+
+                span {
+                    padding-left: 10px;
+                }
+            }
+        }
+
+        :global(.ant-btn-primary) {
+            border-radius: 8px;
+        }
+    }
+}

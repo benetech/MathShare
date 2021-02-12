@@ -54,6 +54,7 @@ const problem = (state = initialState, {
     case 'RESET_PROBLEM':
         return {
             ...initialState,
+            displayScratchpad: state.displayScratchpad,
             work: {
                 ...initialState.work,
                 scratchpadMode: state.work.scratchpadMode,
@@ -157,12 +158,18 @@ const problem = (state = initialState, {
     }
     case 'SET_EDIT_PROBLEM': {
         let textAreaValue = initialState.textAreaValue;
+        let scratchpadContent = initialState.work.scratchpadContent;
         if (payload.action === 'edit') {
             textAreaValue = payload.textAreaValue;
+            scratchpadContent = payload.scratchpadContent;
         }
         return {
             ...state,
             textAreaValue,
+            work: {
+                ...state.work,
+                scratchpadContent,
+            },
         };
     }
     case 'PROCESS_FETCHED_PROBLEM': {
@@ -182,6 +189,7 @@ const problem = (state = initialState, {
                 ...state,
                 textAreaValue: initialState.textAreaValue,
                 stepsFromLastSave: initialState.stepsFromLastSave,
+                work: initialState.work,
                 solution: initialState.solution,
             };
         }
@@ -190,7 +198,8 @@ const problem = (state = initialState, {
         if (payload.modals.includes('addProblems')) {
             return {
                 ...state,
-                textAreaValue: initialState.textAreaValue,
+                work: initialState.work,
+                scratchpadContent: initialState.scratchpadContent,
             };
         }
         return state;

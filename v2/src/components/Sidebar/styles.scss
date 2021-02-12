@@ -146,32 +146,50 @@
     }
 }
 
-.sidebarContainer {
+.sidebar {
+    width: 325px;
+    display: inline-table;
+    background: white;
 
-    :global(.ant-menu):not(:global(.ant-menu-horizontal)) :global(.ant-menu-item-selected),
-    :global(.ant-menu):not(:global(.ant-menu-horizontal)) :global(.ant-menu-item-selected) {
-        background-color: white;
-        font-weight: bold;
-    }
+    .sidebarContainer {
 
-    :global(.ant-menu-item) {
-        font-size: 17px;
-
-        &:not(:global(.ant-menu-item-selected)) {
-            color: #737185;
+        &.affix {
+            position: fixed;
+            top: 0;
         }
-    }
 
-    :global(.ant-menu):not(:global(.ant-menu-horizontal)) :global(.ant-menu-item-selected),
-    :global(.ant-menu):not(:global(.ant-menu-horizontal)) :global(.ant-menu-item-selected) {
-        background-color: white;
-        font-weight: bold;
-    }
+        width: 325px;
+    
+        :global(.ant-menu):not(:global(.ant-menu-horizontal)) :global(.ant-menu-item-selected),
+        :global(.ant-menu):not(:global(.ant-menu-horizontal)) :global(.ant-menu-item-selected) {
+            background-color: white;
+            font-weight: bold;
+        }
+    
+        :global(.ant-menu-item) {
+            font-size: 17px;
+    
+            &:not(:global(.ant-menu-item-selected)) {
+                color: #737185;
+            }
 
-    :global(.ant-menu-inline) :global(.ant-menu-item::after),
-    :global(.ant-menu-inline),
-    :global(.ant-menu-vertical),
-    :global(.ant-menu-vertical-left) {
-        border-right: none;
+            > a {
+                color: #737185;
+                text-decoration: none;
+            }
+        }
+    
+        :global(.ant-menu):not(:global(.ant-menu-horizontal)) :global(.ant-menu-item-selected),
+        :global(.ant-menu):not(:global(.ant-menu-horizontal)) :global(.ant-menu-item-selected) {
+            background-color: white;
+            font-weight: bold;
+        }
+    
+        :global(.ant-menu-inline) :global(.ant-menu-item::after),
+        :global(.ant-menu-inline),
+        :global(.ant-menu-vertical),
+        :global(.ant-menu-vertical-left) {
+            border-right: none;
+        }
     }
 }

@@ -50,10 +50,14 @@ function* gotoPageSaga() {
         payload: {
             page,
             scrollTo,
+            waitForEvents,
         },
     }) {
         yield put(push(page));
-        yield delay(1000);
+        console.log('waitForEvents', waitForEvents);
+        if (waitForEvents) {
+            yield all(waitForEvents.map(take));
+        }
         yield put(scrollToAction({
             scrollTo,
         }));
