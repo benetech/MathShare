@@ -252,6 +252,7 @@ class Editor extends Component {
         if (problemStore.notFound) {
             return <NotFound />;
         }
+        const currentSet = problemList.set;
 
         const myStepsList = (
             <MyStepsList
@@ -277,14 +278,16 @@ class Editor extends Component {
         return (
             <div id="MainWorkWrapper" className={editor.mainWorkWrapper}>
                 {this.renderHelmet()}
-                <MainPageHeader
-                    editing={params.action === 'edit' || params.action === 'new'}
-                    history={this.props.history}
-                    addProblemSetCallback={this.props.addProblemSet}
-                    duplicateProblemSet={this.props.duplicateProblemSet}
-                    editCode={problemList.set.editCode}
-                    action={params.action}
-                />
+                {!currentSet.partner && (
+                    <MainPageHeader
+                        editing={params.action === 'edit' || params.action === 'new'}
+                        history={this.props.history}
+                        addProblemSetCallback={this.props.addProblemSet}
+                        duplicateProblemSet={this.props.duplicateProblemSet}
+                        editCode={problemList.set.editCode}
+                        action={params.action}
+                    />
+                )}
                 <main id="MainWorkArea" className={editor.editorAndHistoryWrapper}>
                     <ProblemHeader
                         {...this}
