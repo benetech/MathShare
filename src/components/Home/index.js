@@ -425,14 +425,16 @@ class Home extends Component {
         return (
             <div className={home.mainWrapper}>
                 {this.renderHelmet()}
-                <MainPageHeader
-                    editing={params.action === 'edit' || params.action === 'new'}
-                    history={this.props.history}
-                    addProblemSetCallback={this.props.addProblemSet}
-                    duplicateProblemSet={this.props.duplicateProblemSet}
-                    editCode={problemList.set.editCode}
-                    action={params.action}
-                />
+                {!currentSet.partner && (
+                    <MainPageHeader
+                        editing={params.action === 'edit' || params.action === 'new'}
+                        history={this.props.history}
+                        addProblemSetCallback={this.props.addProblemSet}
+                        duplicateProblemSet={this.props.duplicateProblemSet}
+                        editCode={problemList.set.editCode}
+                        action={params.action}
+                    />
+                )}
                 <main id="mainContainer" className={home.leftNavigation}>
                     {(params.action !== 'new' && params.action !== 'edit' && params.action !== 'solve') && (
                         <NavigationHeader
