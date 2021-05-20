@@ -312,12 +312,16 @@ class Home extends Component {
     }
 
     renderNotLoggedInWarning = () => {
-        const { userProfile, match } = this.props;
+        const { userProfile, match, problemList } = this.props;
         const { params } = match;
+        const currentSet = problemList.set;
         if (params.action !== 'edit' && params.action !== 'solve') {
             return null;
         }
         if (userProfile.checking || userProfile.email) {
+            return null;
+        }
+        if (currentSet.partner) {
             return null;
         }
         return (
@@ -421,14 +425,16 @@ class Home extends Component {
         return (
             <div className={home.mainWrapper}>
                 {this.renderHelmet()}
-                <MainPageHeader
-                    editing={params.action === 'edit' || params.action === 'new'}
-                    history={this.props.history}
-                    addProblemSetCallback={this.props.addProblemSet}
-                    duplicateProblemSet={this.props.duplicateProblemSet}
-                    editCode={problemList.set.editCode}
-                    action={params.action}
-                />
+                {!currentSet.partner && (
+                    <MainPageHeader
+                        editing={params.action === 'edit' || params.action === 'new'}
+                        history={this.props.history}
+                        addProblemSetCallback={this.props.addProblemSet}
+                        duplicateProblemSet={this.props.duplicateProblemSet}
+                        editCode={problemList.set.editCode}
+                        action={params.action}
+                    />
+                )}
                 <main id="mainContainer" className={home.leftNavigation}>
                     {(params.action !== 'new' && params.action !== 'edit' && params.action !== 'solve') && (
                         <NavigationHeader
@@ -439,7 +445,7 @@ class Home extends Component {
                     {(params.action === 'new' || params.action === 'edit' || params.action === 'solve') && (
                         this.renderNewAndEditControls(currentSet)
                     )}
-                    {(params.action !== 'review' && params.action !== 'new') && currentSet.problems.length > 0 && (
+                    {(params.action !== 'review' && params.action !== 'new') && currentSet.problems.length > 0 && !currentSet.partner && (
                         <RenderActionButtons additionalClassName={home.floatingBtnBar}>
                             {[
                                 <Button
@@ -452,6 +458,29 @@ class Home extends Component {
                                     icon="check-circle"
                                     content={`\u00A0${Locales.strings.share_my_answers}`}
                                     onClick={this.shareProblemSet}
+                                />,
+                            ]}
+                        </RenderActionButtons>
+                    )}
+                    {(params.action !== 'review' && params.action !== 'new') && currentSet.problems.length > 0 && currentSet.partner && (
+                        <RenderActionButtons additionalClassName={home.floatingBtnBar}>
+                            {[
+                                <Button
+                                    id="shareBtn"
+                                    className={classNames([
+                                        'btn',
+                                        'btn-outline-dark',
+                                    ])}
+                                    type="button"
+                                    icon="check-circle"
+                                    content={`\u00A0${Locales.strings.submit_to_partner.replace('{partner}', currentSet.partner.name)}`}
+                                    onClick={() => {
+                                        this.props.submitToPartner(
+                                            currentSet.id,
+                                            problemList.editCode,
+                                            problemList.reviewCode,
+                                        );
+                                    }}
                                 />,
                             ]}
                         </RenderActionButtons>
