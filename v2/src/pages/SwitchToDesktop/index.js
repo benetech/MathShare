@@ -32,7 +32,7 @@ class SwitchToDesktop extends React.Component {
                     <span className={styles.buttons}>
                         <Button
                             type="primary"
-                            onClick={(e) = > {
+                            onClick={(e) => {
                                 e.preventDefault();
                                 window.open("https://mathsharedev.benetech.org/breaking-news/","_blank");
                                 }}
