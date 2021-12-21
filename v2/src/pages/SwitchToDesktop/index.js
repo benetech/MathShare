@@ -1,8 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Button } from 'antd';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faDesktop } from '@fortawesome/free-solid-svg-icons';
 import { displayAlert } from '../../services/alerts';
 import Locales from '../../strings';
 import styles from './styles.scss';
@@ -34,8 +32,8 @@ class SwitchToDesktop extends React.Component {
                             type="primary"
                             onClick={(e) => {
                                 e.preventDefault();
-                                window.open("https://mathsharedev.benetech.org/breaking-news/","_blank");
-                                }}
+                                window.open('https://mathsharedev.benetech.org/breaking-news/', '_blank');
+                            }}
                         >
                             {Locales.strings.desktop_view}
                         </Button>
