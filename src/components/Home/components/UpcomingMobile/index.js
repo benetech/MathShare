@@ -47,16 +47,9 @@ class UpcomingMobileHeader extends React.Component {
                             icon="check"
                             ariaLabel={Locales.strings.mobile_view.trim()}
                             content={Locales.strings.mobile_view}
-                            onClick={() => {
-                                try {
-                                    localStorage.setItem('msVersion', 2);
-                                    window.location.reload();
-                                } catch (error) {
-                                    alertWarning(
-                                        Locales.strings.unable_to_switch_to_v2,
-                                        Locales.strings.warning,
-                                    );
-                                }
+                            onClick={(e) => {
+                                e.preventDefault();
+                                window.open('https://mathsharedev.benetech.org/breaking-news/', '_blank');
                             }}
                         />
                     )}
