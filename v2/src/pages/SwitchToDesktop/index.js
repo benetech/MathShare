@@ -32,8 +32,10 @@ class SwitchToDesktop extends React.Component {
                     <span className={styles.buttons}>
                         <Button
                             type="primary"
-                            icon={<FontAwesomeIcon icon={faDesktop} />}
-                            onClick={this.switchToDesktop}
+                            onClick={(e) = > {
+                                e.preventDefault();
+                                window.open("https://mathsharedev.benetech.org/breaking-news/","_blank");
+                                }}
                         >
                             {Locales.strings.desktop_view}
                         </Button>
